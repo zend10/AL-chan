@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="yellow">#FCF1C2</color>
+    <color name="cyan">#DCFDF9</color>
+    <color name="cyanTransparent50">#80DCFDF9</color>
+    <color name="magentaDark">#C987C4</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="whiteTransparent12">#1FFFFFFF</color>
+
+    <color name="black">#000000</color>
+    <color name="blackTransparent86">#DB000000</color>
+    <color name="blackTransparent36">#5C000000</color>
+    
+    <color name="blackLight">#2F2F2F</color>
+    <color name="blackLightTransparent80">#CC2F2F2F</color>
+</resources>

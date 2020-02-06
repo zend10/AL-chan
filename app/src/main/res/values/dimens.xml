@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fontNormal">14sp</dimen>
+    <dimen name="fontSmall">12sp</dimen>
+    <dimen name="fontBig">20sp</dimen>
+
+    <dimen name="iconPadding">4dp</dimen>
+    <dimen name="iconSize">24dp</dimen>
+
+    <dimen name="marginPage">28dp</dimen>
+
+    <dimen name="marginClose">4dp</dimen>
+    <dimen name="marginSmall">8dp</dimen>
+    <dimen name="marginNormal">12dp</dimen>
+    <dimen name="marginFar">56dp</dimen>
+
+    <dimen name="statusBarHeight">24dp</dimen>
+
+    <dimen name="lineWidth">1dp</dimen>
+</resources>
