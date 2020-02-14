@@ -6,96 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.LoginActivity">
 
-    <ImageView
-        android:id="@+id/loginBackgroundImage"
-        android:scaleType="centerCrop"
+    <FrameLayout
+        android:id="@+id/loginFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <View
-        android:background="@drawable/dark_gradient_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="@dimen/marginPage"
-        android:layout_marginTop="@dimen/statusBarHeight"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/loginBackLayout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:tint="?themeContentColor"
-                android:src="@drawable/ic_long_arrow_left"
-                android:padding="@dimen/iconPadding"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                style="?themeRegularFont"
-                android:text="@string/back"
-                android:layout_marginStart="@dimen/marginNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <TextView
-            style="?themeTitleFont"
-            android:text="@string/important_to_know"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/loginExplanationText"
-            android:layout_marginBottom="@dimen/marginSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/loginExplanationText"
-            style="?themeRegularFont"
-            android:text="@string/you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/loginButtonsLayout"
-            android:layout_marginBottom="@dimen/marginFar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/loginButtonsLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/registerButton"
-                style="?themeButtonBorderPrimary"
-                android:text="@string/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <View
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginButton"
-                style="?themeButtonPrimary"
-                android:text="@string/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

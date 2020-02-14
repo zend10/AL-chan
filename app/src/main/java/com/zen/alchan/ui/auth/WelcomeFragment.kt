@@ -1,0 +1,48 @@
+package com.zen.alchan.ui.auth
+
+
+import android.content.Context
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+
+import com.zen.alchan.R
+import com.zen.alchan.helper.libs.GlideApp
+import kotlinx.android.synthetic.main.fragment_welcome.*
+
+class WelcomeFragment : Fragment() {
+
+    private var listener: LoginListener? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_welcome, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is LoginListener) {
+            listener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        GlideApp.with(this).load(R.drawable.welcome_background).into(welcomeBackgroundImage)
+
+        getStartedLayout.setOnClickListener {
+            listener?.changeFragment(LoginFragment())
+        }
+    }
+}

@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // Test
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -56,7 +57,7 @@ dependencies {
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
 
     // Gson
@@ -69,10 +70,10 @@ dependencies {
 
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
+    implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_version"
     compileOnly "org.jetbrains:annotations:13.0"
     testCompileOnly "org.jetbrains:annotations:13.0"
 
-    // Koin
+    // Koin DI
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
-
 }

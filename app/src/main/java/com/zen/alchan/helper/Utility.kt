@@ -2,13 +2,17 @@ package com.zen.alchan.helper
 
 import android.content.Context
 import android.util.TypedValue
+import android.widget.Toast
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.AppColorTheme
 
 object Utility {
 
-    fun getResValueFromRefAttr(context: Context, attrResId: Int): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(attrResId, typedValue, true)
-        return typedValue.data
+    fun getCurrentTimestamp(): Long {
+        return System.currentTimeMillis()
+    }
+
+    fun timeDiffMoreThanOneDay(timeInMillis: Long?): Boolean {
+        return System.currentTimeMillis() - (timeInMillis ?: 0) > 24 * 60 * 60 * 1000
     }
 }

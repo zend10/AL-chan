@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.auth
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,66 +12,54 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.Utility
+import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.ui.MainActivity
 import com.zen.alchan.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginActivity : BaseActivity() {
-
-    private val viewModel by viewModel<LoginViewModel>()
+class LoginActivity : BaseActivity(), LoginListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        initLayout()
-        setupObserver()
-    }
-
-    private fun setupObserver() {
-
-    }
-
-    private fun initLayout() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-        GlideApp.with(this).load(R.drawable.welcome_background).into(loginBackgroundImage)
 
-        val anilistText = "anilist.co"
-        val explanationText = SpannableString(getString(R.string.you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password))
-        val startIndex = explanationText.indexOf(anilistText)
-        val endIndex = startIndex + anilistText.length
-
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                launchBrowser(Constant.ANILIST_URL)
-            }
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            changeFragment(WelcomeFragment(), false)
         }
 
-        explanationText.setSpan(clickableSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        loginExplanationText.movementMethod = LinkMovementMethod.getInstance()
-        loginExplanationText.text = explanationText
+        if (intent?.data?.encodedFragment != null) {
+            val loginFragment = LoginFragment()
 
-        loginBackLayout.setOnClickListener {
-            finish()
-        }
+            val appLinkData = intent?.data?.encodedFragment!!
+            val accessToken = appLinkData.substring("access_token=".length, appLinkData.indexOf("&"))
 
-        registerButton.setOnClickListener {
-            launchBrowser(Constant.ANILIST_REGISTER_URL)
-        }
+            val bundle = Bundle()
+            bundle.putString(LoginFragment.BUNDLE_ACCESS_TOKEN, accessToken)
+            loginFragment.arguments = bundle
 
-        loginButton.setOnClickListener {
-            launchBrowser(Constant.ANILIST_LOGIN_URL)
+            changeFragment(loginFragment)
         }
     }
 
-    private fun launchBrowser(url: String) {
-        CustomTabsIntent.Builder()
-            .build()
-            .launchUrl(this@LoginActivity, Uri.parse(url))
+    override fun changeFragment(targetFragment: Fragment, addToBackStack: Boolean) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(loginFrameLayout.id, targetFragment)
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null)
+        }
+        fragmentTransaction.commit()
     }
 }

@@ -16,5 +16,7 @@
 
     <dimen name="statusBarHeight">24dp</dimen>
 
+    <dimen name="cornerNormal">4dp</dimen>
+
     <dimen name="lineWidth">1dp</dimen>
 </resources>

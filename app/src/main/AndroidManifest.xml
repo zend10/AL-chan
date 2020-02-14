@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.zen.alchan">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".AlchanApplication"
         android:allowBackup="true"
@@ -12,8 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.auth.LoginActivity"></activity>
-        <activity android:name=".ui.auth.WelcomeActivity" />
+        <activity android:name=".ui.auth.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="login"
+                    android:pathPattern=".*"
+                    android:scheme="alchan" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.auth.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

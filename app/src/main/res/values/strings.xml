@@ -9,4 +9,8 @@
     <string name="login">Login</string>
     <string name="important_to_know">Important to Know</string>
     <string name="you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password">You’ll be redirected to anilist.co to login/register. Make sure the URL is anilist.co before entering your email and password.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_wait">Please Wait</string>
 </resources>
