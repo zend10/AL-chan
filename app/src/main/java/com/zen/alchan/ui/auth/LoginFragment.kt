@@ -17,8 +17,7 @@ import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.DialogUtility
-import com.zen.alchan.helper.Utility
+import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.ui.MainActivity

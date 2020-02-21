@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.SplashActivity">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -15,19 +15,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             style="?themeAppNameFont"
             android:text="@string/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             style="?themeSmallFont"
             android:text="@string/powered_by_anilist"
             android:layout_marginTop="@dimen/marginClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

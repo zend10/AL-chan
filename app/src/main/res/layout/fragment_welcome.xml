@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.auth.WelcomeFragment">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/welcomeBackgroundImage"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
@@ -23,29 +23,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="?themeAppNameFont"
                 android:text="@string/app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="?themeSmallFont"
                 android:text="@string/powered_by_anilist"
                 android:layout_marginTop="@dimen/marginClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             style="?themeTitleFont"
             android:text="@string/welcome_to_al_chan"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/appExplanationText"
             style="?themeRegularFont"
             android:text="@string/al_chan_is_an_unofficial_client_for_anilist_a_place_where_you_can_track_share_discover_and_experience_anime_u0026_manga"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/getStartedLayout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/getStartedText"
                 style="?themeAppNameFont"
                 android:text="@string/get_started"
@@ -81,15 +81,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/getStartedArrowIcon"
                 android:tint="?themePrimaryColor"
-                android:src="@drawable/ic_right_arrow"
+                app:srcCompat="@drawable/ic_right_arrow"
                 android:padding="@dimen/iconPadding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,6 +11,6 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     fun doLogin(accessToken: String) {
         authRepository.setBearerToken(accessToken)
-        authRepository.getViewerData()
+        authRepository.retrieveViewerData()
     }
 }

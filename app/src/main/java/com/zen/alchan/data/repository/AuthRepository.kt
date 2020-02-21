@@ -5,11 +5,10 @@ import com.zen.alchan.data.network.Resource
 
 interface AuthRepository {
     val appColorTheme: Int
-    val viewerDataResponse: LiveData<Resource<ViewerQuery.Data>>
+    val viewerDataResponse: LiveData<Resource<Boolean>>
 
     val isLoggedIn: Boolean
-    val shouldRetrieveViewerData: Boolean
 
     fun setBearerToken(accessToken: String)
-    fun getViewerData()
+    fun retrieveViewerData()
 }

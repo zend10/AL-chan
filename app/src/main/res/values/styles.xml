@@ -11,6 +11,7 @@
         <item name="themeTitleFont">@style/FontTitle</item>
         <item name="themeRegularFont">@style/FontRegular</item>
         <item name="themeSmallFont">@style/FontSmall</item>
+        <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
         <item name="themeButtonPrimary">@style/ButtonPrimary</item>
         <item name="themeButtonBorderPrimary">@style/ButtonBorderPrimary</item>
     </style>
@@ -63,6 +64,12 @@
         <item name="android:textColor">?themeContentColor</item>
     </style>
 
+    <style name="FontSmallClickable">
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textSize">@dimen/fontSmall</item>
+        <item name="android:textColor">?themePrimaryColor</item>
+    </style>
+
     <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?themePrimaryColor</item>
         <item name="android:textColor">?themeBackgroundColor</item>
@@ -80,5 +87,14 @@
         <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
         <item name="android:letterSpacing">0</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

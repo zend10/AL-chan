@@ -1,4 +1,4 @@
-package com.zen.alchan.helper
+package com.zen.alchan.helper.utils
 
 import android.content.Context
 import android.util.TypedValue

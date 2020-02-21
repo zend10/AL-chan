@@ -1,31 +1,12 @@
 package com.zen.alchan.ui.auth
 
-import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.widget.Toast
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.Utility
-import com.zen.alchan.helper.enums.ResponseStatus
-import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.ui.MainActivity
 import com.zen.alchan.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity(), LoginListener {
 

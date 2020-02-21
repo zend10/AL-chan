@@ -27,7 +27,7 @@ class LocalStorageImpl(private val context: Context, private val sharedPreferenc
 
     override var viewerData: User?
         get() = gson.fromJson(getData(VIEWER_DATA), User::class.java)
-        set(value) { gson.toJson(value) }
+        set(value) { setData(VIEWER_DATA, gson.toJson(value)) }
 
     override var viewerDataLastRetrieved: Long?
         get() = getData(VIEWER_DATA_LAST_RETRIEVED)?.toLong()

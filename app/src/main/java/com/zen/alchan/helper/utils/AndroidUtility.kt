@@ -1,4 +1,4 @@
-package com.zen.alchan.helper
+package com.zen.alchan.helper.utils
 
 import android.content.Context
 import android.util.TypedValue
@@ -7,9 +7,9 @@ import com.zen.alchan.helper.enums.AppColorTheme
 
 object AndroidUtility {
 
-    fun getResValueFromRefAttr(context: Context, attrResId: Int): Int {
+    fun getResValueFromRefAttr(context: Context?, attrResId: Int): Int {
         val typedValue = TypedValue()
-        context.theme.resolveAttribute(attrResId, typedValue, true)
+        context?.theme?.resolveAttribute(attrResId, typedValue, true)
         return typedValue.data
     }
 

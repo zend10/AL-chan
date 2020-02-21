@@ -13,4 +13,21 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_wait">Please Wait</string>
+    <string name="home">Home</string>
+    <string name="anime">Anime</string>
+    <string name="manga">Manga</string>
+    <string name="social">Social</string>
+    <string name="profile">Profile</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="settings">Settings</string>
+    <string name="share_profile">Share Profile</string>
+    <string name="bio">Bio</string>
+    <string name="reviews">Reviews</string>
+    <string name="stats">Stats</string>
+    <string name="favorites">Favorites</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="follow">Follow</string>
 </resources>

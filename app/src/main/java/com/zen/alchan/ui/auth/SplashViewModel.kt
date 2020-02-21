@@ -8,15 +8,4 @@ class SplashViewModel(private val authRepository: AuthRepository) : ViewModel() 
 
     val isLoggedIn: Boolean
         get() = authRepository.isLoggedIn
-
-    val shouldRetrieveViewerData: Boolean
-        get() = authRepository.shouldRetrieveViewerData
-
-    val viewerDataResponse by lazy {
-        authRepository.viewerDataResponse
-    }
-
-    fun getViewerData() {
-        authRepository.getViewerData()
-    }
 }

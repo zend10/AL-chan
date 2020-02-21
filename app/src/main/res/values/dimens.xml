@@ -6,6 +6,7 @@
 
     <dimen name="iconPadding">4dp</dimen>
     <dimen name="iconSize">24dp</dimen>
+    <dimen name="imageCircleSize">100dp</dimen>
 
     <dimen name="marginPage">28dp</dimen>
 
@@ -17,6 +18,7 @@
     <dimen name="statusBarHeight">24dp</dimen>
 
     <dimen name="cornerNormal">4dp</dimen>
+    <dimen name="elevationNormal">4dp</dimen>
 
     <dimen name="lineWidth">1dp</dimen>
 </resources>
