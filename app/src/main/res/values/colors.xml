@@ -5,12 +5,32 @@
     <color name="cyanTransparent50">#80DCFDF9</color>
     <color name="magentaDark">#C987C4</color>
 
+    <color name="green">#BEFAC6</color>
+    <color name="lavender">#E3D8FB</color>
+    <color name="lavenderTransparent50">#80E3D8FB</color>
+    <color name="brown">#C7A683</color>
+
+    <color name="blue">#B0D2F8</color>
+    <color name="cream">#F9CDC9</color>
+    <color name="creamTransparent50">#80F9CDC9</color>
+    <color name="gold">#B9C478</color>
+
+    <color name="pink">#FCC3FF</color>
+    <color name="sunshine">#FFF7DB</color>
+    <color name="sunshineTransparent50">#80FFF7DB</color>
+    <color name="jade">#87CCBE</color>
+
+    <color name="red">#FDD5B5</color>
+    <color name="aloevera">#CFFDD0</color>
+    <color name="aloeveraTransparent50">#80CFFDD0</color>
+    <color name="purple">#8D7DC9</color>
+
     <color name="white">#FFFFFF</color>
     <color name="whiteTransparent12">#1FFFFFFF</color>
 
-    <color name="black">#000000</color>
-    <color name="blackTransparent86">#DB000000</color>
-    <color name="blackTransparent36">#5C000000</color>
+    <color name="black">#212121</color>
+    <color name="blackTransparent86">#DB212121</color>
+    <color name="blackTransparent36">#5C212121</color>
     
     <color name="blackLight">#2F2F2F</color>
     <color name="blackLightTransparent80">#CC2F2F2F</color>

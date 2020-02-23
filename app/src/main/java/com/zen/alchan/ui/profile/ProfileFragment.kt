@@ -1,16 +1,16 @@
 package com.zen.alchan.ui.profile
 
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
@@ -29,6 +29,7 @@ import com.zen.alchan.ui.mangalist.MangaListFragment
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.reviews.ReviewsFragment
+import com.zen.alchan.ui.profile.settings.SettingsActivity
 import com.zen.alchan.ui.profile.stats.StatsFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -42,6 +43,10 @@ class ProfileFragment : BaseMainFragment() {
 
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
+
+    private lateinit var itemNotifications: MenuItem
+    private lateinit var itemSettings: MenuItem
+    private lateinit var itemShareProfile: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +68,12 @@ class ProfileFragment : BaseMainFragment() {
 
         scaleUpAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up)
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
+
+        profileToolbar.menu.apply {
+            itemNotifications = findItem(R.id.itemNotifications)
+            itemSettings = findItem(R.id.itemSettings)
+            itemShareProfile = findItem(R.id.itemShareProfile)
+        }
 
         setupObserver()
         initLayout()
@@ -132,29 +143,37 @@ class ProfileFragment : BaseMainFragment() {
         profileReviewsLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.REVIEWS) }
 
         profileAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            // 70 is magic number gotten from trial and error
-            if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -70) {
+            // disable refresh when toolbar is not fully expanded
+            profileRefreshLayout.isEnabled = verticalOffset == 0
+
+            // 50 is magic number gotten from trial and error
+            if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
                 if (profileNumberLayout.isVisible) {
                     profileNumberLayout.startAnimation(scaleDownAnim)
                     profileNumberLayout.visibility = View.INVISIBLE
                 }
-
-                if (profileCardMenu.isVisible) {
-                    profileCardMenu.startAnimation(scaleDownAnim)
-                    profileCardMenu.visibility = View.INVISIBLE
-                }
             } else {
-                if (profileCardMenu.isInvisible) {
-                    profileCardMenu.startAnimation(scaleUpAnim)
-                    profileCardMenu.visibility = View.VISIBLE
-                }
-
                 if (profileNumberLayout.isInvisible) {
                     profileNumberLayout.startAnimation(scaleUpAnim)
                     profileNumberLayout.visibility = View.VISIBLE
                 }
             }
         })
+
+        itemNotifications.setOnMenuItemClickListener {
+            // TODO: open notification page
+            true
+        }
+
+        itemSettings.setOnMenuItemClickListener {
+            startActivity(Intent(activity, SettingsActivity::class.java))
+            true
+        }
+
+        itemShareProfile.setOnMenuItemClickListener {
+            // TODO: share profile
+            true
+        }
     }
 
     private fun setupSection() {

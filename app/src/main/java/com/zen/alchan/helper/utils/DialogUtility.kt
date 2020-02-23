@@ -10,6 +10,10 @@ object DialogUtility {
         Toast.makeText(context, message, length).show()
     }
 
+    fun showToast(context: Context?, message: Int, length: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(context, context?.getString(message), length).show()
+    }
+
     fun showOptionDialog(
         context: Context?,
         title: Int,
@@ -27,5 +31,9 @@ object DialogUtility {
             .show()
     }
 
-
+    fun showInfoDialog(context: Context?, message: Int) {
+        MaterialAlertDialogBuilder(context)
+            .setMessage(message)
+            .show()
+    }
 }

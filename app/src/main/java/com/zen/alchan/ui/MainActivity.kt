@@ -3,6 +3,7 @@ package com.zen.alchan.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.zen.alchan.R
 import com.zen.alchan.ui.animelist.AnimeListFragment
 import com.zen.alchan.ui.base.BaseActivity
@@ -13,15 +14,25 @@ import com.zen.alchan.ui.mangalist.MangaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity(), BaseMainFragmentListener {
+
+    private val viewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupObserver()
         initLayout()
+    }
+
+    private fun setupObserver() {
+        viewModel.appColorThemeLiveData.observe(this, Observer {
+            recreate()
+        })
     }
 
     private fun initLayout() {

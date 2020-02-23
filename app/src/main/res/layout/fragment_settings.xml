@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.profile.settings.SettingsFragment">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <ScrollView
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/appSettingsMenu"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/marginPage"
+                android:paddingEnd="@dimen/marginPage"
+                android:paddingTop="@dimen/marginNormal"
+                android:paddingBottom="@dimen/marginNormal"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_phonelink_setup"
+                    app:tint="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/app_settings"
+                        style="?themeRegularFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/personalise_al_chan_to_suit_your_taste"
+                        style="?themeSmallFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_ichevron_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include layout="@layout/layout_divider"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/anilistSettingsMenu"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/marginPage"
+                android:paddingEnd="@dimen/marginPage"
+                android:paddingTop="@dimen/marginNormal"
+                android:paddingBottom="@dimen/marginNormal"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_laptop_settings"
+                    app:tint="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/anilist_settings"
+                        style="?themeRegularFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/modify_anilist_settings"
+                        style="?themeSmallFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_ichevron_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include layout="@layout/layout_divider"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/listSettingsMenu"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/marginPage"
+                android:paddingEnd="@dimen/marginPage"
+                android:paddingTop="@dimen/marginNormal"
+                android:paddingBottom="@dimen/marginNormal"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_folder_settings"
+                    app:tint="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/list_settings"
+                        style="?themeRegularFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/configure_your_lists"
+                        style="?themeSmallFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_ichevron_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include layout="@layout/layout_divider"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/accountSettingsMenu"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/marginPage"
+                android:paddingEnd="@dimen/marginPage"
+                android:paddingTop="@dimen/marginNormal"
+                android:paddingBottom="@dimen/marginNormal"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_admin_settings_male"
+                    app:tint="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/account_settings"
+                        style="?themeRegularFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/manage_your_account"
+                        style="?themeSmallFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_ichevron_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include layout="@layout/layout_divider"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/aboutMenu"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/marginPage"
+                android:paddingEnd="@dimen/marginPage"
+                android:paddingTop="@dimen/marginNormal"
+                android:paddingBottom="@dimen/marginNormal"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_help"
+                    app:tint="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/about_al_chan"
+                        style="?themeRegularFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/know_more_about_al_chan_and_the_developer"
+                        style="?themeSmallFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_ichevron_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include layout="@layout/layout_divider"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

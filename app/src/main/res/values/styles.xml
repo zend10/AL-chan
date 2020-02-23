@@ -6,21 +6,23 @@
         <item name="colorAccent">?themePrimaryColor</item>
         <item name="android:windowBackground">?themeBackgroundColor</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:overScrollMode">never</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="themeAppNameFont">@style/FontAppName</item>
         <item name="themeTitleFont">@style/FontTitle</item>
         <item name="themeRegularFont">@style/FontRegular</item>
+        <item name="themeRegularBoldFont">@style/FontRegularBold</item>
         <item name="themeSmallFont">@style/FontSmall</item>
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
         <item name="themeButtonPrimary">@style/ButtonPrimary</item>
+        <item name="themeButtonSecondary">@style/ButtonSecondary</item>
         <item name="themeButtonBorderPrimary">@style/ButtonBorderPrimary</item>
+        <item name="themeButtonBorderSecondary">@style/ButtonBorderSecondary</item>
+        <item name="themeButtonBorderNegative">@style/ButtonBorderNegative</item>
+        <item name="themeRegularCheckBox">@style/CheckBoxRegular</item>
     </style>
 
-    <style name="AppTheme.ThemeYellow">
-        <item name="themePrimaryColor">@color/yellow</item>
-        <item name="themeSecondaryColor">@color/cyan</item>
-        <item name="themeSecondaryTransparentColor">@color/cyanTransparent50</item>
-        <item name="themeNegativeColor">@color/magentaDark</item>
+    <style name="DefaultAppTheme">
         <item name="themeBackgroundColor">@color/black</item>
         <item name="themeCardColor">@color/blackLight</item>
         <item name="themeCardTransparentColor">@color/blackLightTransparent80</item>
@@ -28,16 +30,40 @@
         <item name="themeContentColor">@color/white</item>
     </style>
 
-    <style name="AppTheme.ThemeCyan">
+    <style name="AppTheme.ThemeYellow" parent="DefaultAppTheme">
         <item name="themePrimaryColor">@color/yellow</item>
         <item name="themeSecondaryColor">@color/cyan</item>
         <item name="themeSecondaryTransparentColor">@color/cyanTransparent50</item>
         <item name="themeNegativeColor">@color/magentaDark</item>
-        <item name="themeBackgroundColor">@color/black</item>
-        <item name="themeCardColor">@color/blackLight</item>
-        <item name="themeCardTransparentColor">@color/blackLightTransparent80</item>
-        <item name="themeDividerColor">@color/whiteTransparent12</item>
-        <item name="themeContentColor">@color/white</item>
+
+    </style>
+
+    <style name="AppTheme.ThemeGreen" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/green</item>
+        <item name="themeSecondaryColor">@color/lavender</item>
+        <item name="themeSecondaryTransparentColor">@color/lavenderTransparent50</item>
+        <item name="themeNegativeColor">@color/brown</item>
+    </style>
+
+    <style name="AppTheme.ThemeBlue" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/blue</item>
+        <item name="themeSecondaryColor">@color/cream</item>
+        <item name="themeSecondaryTransparentColor">@color/creamTransparent50</item>
+        <item name="themeNegativeColor">@color/gold</item>
+    </style>
+
+    <style name="AppTheme.ThemePink" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/pink</item>
+        <item name="themeSecondaryColor">@color/sunshine</item>
+        <item name="themeSecondaryTransparentColor">@color/sunshineTransparent50</item>
+        <item name="themeNegativeColor">@color/jade</item>
+    </style>
+
+    <style name="AppTheme.ThemeRed" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/red</item>
+        <item name="themeSecondaryColor">@color/aloevera</item>
+        <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
+        <item name="themeNegativeColor">@color/purple</item>
     </style>
 
     <style name="FontAppName">
@@ -54,6 +80,12 @@
 
     <style name="FontRegular">
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textSize">@dimen/fontNormal</item>
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
+
+    <style name="FontRegularBold">
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
         <item name="android:textSize">@dimen/fontNormal</item>
         <item name="android:textColor">?themeContentColor</item>
     </style>
@@ -78,11 +110,39 @@
         <item name="android:letterSpacing">0</item>
     </style>
 
+    <style name="ButtonSecondary" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">?themeSecondaryColor</item>
+        <item name="android:textColor">?themeBackgroundColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
     <style name="ButtonBorderPrimary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeWidth">@dimen/lineWidth</item>
         <item name="strokeColor">?themePrimaryColor</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:textColor">?themePrimaryColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="ButtonBorderSecondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">@dimen/lineWidth</item>
+        <item name="strokeColor">?themeSecondaryColor</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">?themeSecondaryColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="ButtonBorderNegative" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">@dimen/lineWidth</item>
+        <item name="strokeColor">?themeNegativeColor</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">?themeNegativeColor</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
         <item name="android:letterSpacing">0</item>
@@ -96,5 +156,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CheckBoxRegular" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonCompat">@drawable/custom_checkbox</item>
+        <item name="android:buttonTint">?themePrimaryColor</item>
+    </style>
 
 </resources>

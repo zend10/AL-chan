@@ -1,7 +1,7 @@
-package com.zen.alchan.ui.auth
+package com.zen.alchan.ui.base
 
 import androidx.fragment.app.Fragment
 
-interface LoginListener {
+interface BaseListener {
     fun changeFragment(targetFragment: Fragment, addToBackStack: Boolean = true)
 }

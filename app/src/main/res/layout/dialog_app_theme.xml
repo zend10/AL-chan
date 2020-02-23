@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/marginPage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textview.MaterialTextView
+        style="?themeRegularFont"
+        android:text="Select theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/appThemeRecyclerView"
+        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/marginClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/primaryColorLayout"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@id/secondaryColorLayout"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/primary"
+                style="?themeRegularFont"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/primaryColorItem"
+                app:cardBackgroundColor="?themePrimaryColor"
+                app:strokeColor="?themeContentColor"
+                app:strokeWidth="@dimen/lineWidth"
+                app:cardCornerRadius="12dp"
+                android:padding="@dimen/iconPadding"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/secondaryColorLayout"
+            android:layout_below="@id/primaryColorLayout"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/secondary"
+                style="?themeRegularFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/secondaryColorItem"
+                app:cardBackgroundColor="?themeSecondaryColor"
+                app:strokeColor="?themeContentColor"
+                app:strokeWidth="@dimen/lineWidth"
+                app:cardCornerRadius="12dp"
+                android:layout_marginStart="@dimen/marginPage"
+                android:padding="@dimen/iconPadding"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_below="@id/secondaryColorLayout"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@id/secondaryColorLayout"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/negative"
+                style="?themeRegularFont"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/negativeColorItem"
+                app:cardBackgroundColor="?themeNegativeColor"
+                app:strokeColor="?themeContentColor"
+                app:strokeWidth="@dimen/lineWidth"
+                app:cardCornerRadius="12dp"
+                android:padding="@dimen/iconPadding"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

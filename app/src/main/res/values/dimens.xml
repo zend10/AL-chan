@@ -6,6 +6,7 @@
 
     <dimen name="iconPadding">4dp</dimen>
     <dimen name="iconSize">24dp</dimen>
+    <dimen name="iconSmallSize">18dp</dimen>
     <dimen name="imageCircleSize">100dp</dimen>
 
     <dimen name="marginPage">28dp</dimen>

@@ -13,6 +13,7 @@
     <attr name="themeAppNameFont" format="reference"/>
     <attr name="themeTitleFont" format="reference"/>
     <attr name="themeRegularFont" format="reference"/>
+    <attr name="themeRegularBoldFont" format="reference"/>
     <attr name="themeRegularClickableFont" format="reference"/>
     <attr name="themeRegularClickableBoldFont" format="reference"/>
     <attr name="themeSmallFont" format="reference"/>
@@ -20,6 +21,10 @@
     <attr name="themeSmallClickableBoldFont" format="reference"/>
 
     <attr name="themeButtonPrimary" format="reference"/>
+    <attr name="themeButtonSecondary" format="reference"/>
     <attr name="themeButtonBorderPrimary" format="reference"/>
+    <attr name="themeButtonBorderSecondary" format="reference"/>
+    <attr name="themeButtonBorderNegative" format="reference"/>
 
+    <attr name="themeRegularCheckBox" format="reference"/>
 </resources>

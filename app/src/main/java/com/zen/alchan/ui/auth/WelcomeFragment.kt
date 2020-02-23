@@ -10,11 +10,12 @@ import android.view.ViewGroup
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.ui.base.BaseListener
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
 class WelcomeFragment : Fragment() {
 
-    private var listener: LoginListener? = null
+    private var listener: BaseListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +27,7 @@ class WelcomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is LoginListener) {
+        if (context is BaseListener) {
             listener = context
         }
     }
