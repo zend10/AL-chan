@@ -2,22 +2,19 @@ package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
-import com.zen.alchan.data.datasource.AuthDataSource
+import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.localstorage.AppSettingsManager
-import com.zen.alchan.data.localstorage.LocalStorage
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Observer
-import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableSingleObserver
 
-class AuthRepositoryImpl(private val authDataSource: AuthDataSource,
+class AuthRepositoryImpl(private val userDataSource: UserDataSource,
                          private val appSettingsManager: AppSettingsManager,
                          private val userManager: UserManager
 ) : AuthRepository {
@@ -48,7 +45,7 @@ class AuthRepositoryImpl(private val authDataSource: AuthDataSource,
     override fun retrieveViewerData() {
         _viewerDataResponse.postValue(Resource.Loading())
 
-        authDataSource.getViewerData().subscribeWith(object : Observer<Response<ViewerQuery.Data>> {
+        userDataSource.getViewerData().subscribeWith(object : Observer<Response<ViewerQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<ViewerQuery.Data>) {

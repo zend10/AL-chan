@@ -6,9 +6,9 @@ class User(
     val about: String?,
     val avatar: UserAvatar?,
     val bannerImage: String?,
-    val options: UserOptions?,
-    val mediaListOptions: MediaListOptions?,
+    var options: UserOptions?,
+    var mediaListOptions: MediaListOptions?,
     val statistics: UserStatisticTypes?,
-    val unreadNotificationCount: Int?,
+    var unreadNotificationCount: Int?,
     val siteUrl: String?
 )

@@ -61,4 +61,9 @@
     <string name="are_you_sure_you_want_to_save_this_configuration">Are you sure you want to save this configuration?</string>
     <string name="these_push_notifications_will_only_work_if_the_notifications_settings_in_anilist_settings_are_also_enabled">These push notifications will only work if the Notifications settings in AniList Settings are also enabled.</string>
     <string name="change">Change</string>
+    <string name="title_language">Title Language</string>
+    <string name="_18_content">18+ Content</string>
+    <string name="show_18_content_because_i_m_a_responsible_adult">Show 18+ content because I\'m a responsible adult</string>
+    <string name="notifications_settings">Notifications Settings</string>
+    <string name="set_how_you_want_to_be_notified">Set how you want to be notified</string>
 </resources>

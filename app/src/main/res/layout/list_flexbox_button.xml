@@ -4,8 +4,8 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/appThemeItem"
-        style="?themeButtonBorderSecondary"
+        android:id="@+id/flexBoxItem"
+        style="?themeButtonBorderPrimary"
         android:layout_marginEnd="@dimen/marginSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

@@ -5,12 +5,12 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.utils.AndroidUtility
-import kotlinx.android.synthetic.main.list_app_theme.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.list_flexbox_button.view.*
 
 class AppThemeRvAdapter(private val context: Context,
                         private val list: List<AppColorTheme>,
@@ -23,7 +23,7 @@ class AppThemeRvAdapter(private val context: Context,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.list_app_theme, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.list_flexbox_button, parent, false)
         return ViewHolder(view)
     }
 
@@ -32,11 +32,11 @@ class AppThemeRvAdapter(private val context: Context,
         holder.appThemeItem.text = theme.name.toLowerCase().capitalize()
 
         if (theme == selectedTheme) {
-            holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeBackgroundColor))
-            holder.appThemeItem.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
+            holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
+            holder.appThemeItem.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
         } else {
-            holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
-            holder.appThemeItem.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeBackgroundColor))
+            holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+            holder.appThemeItem.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.transparent))
         }
 
         holder.appThemeItem.setOnClickListener {
@@ -49,6 +49,6 @@ class AppThemeRvAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val appThemeItem = view.appThemeItem!!
+        val appThemeItem = view.flexBoxItem!!
     }
 }

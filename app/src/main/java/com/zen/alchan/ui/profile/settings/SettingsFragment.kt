@@ -16,6 +16,7 @@ import com.zen.alchan.ui.profile.settings.account.AccountSettingsFragment
 import com.zen.alchan.ui.profile.settings.anilist.AniListSettingsFragment
 import com.zen.alchan.ui.profile.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.profile.settings.list.ListSettingsFragment
+import com.zen.alchan.ui.profile.settings.notifications.NotificationsSettingsFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
@@ -42,6 +43,7 @@ class SettingsFragment : BaseFragment() {
         appSettingsMenu.setOnClickListener { listener?.changeFragment(AppSettingsFragment()) }
         anilistSettingsMenu.setOnClickListener { listener?.changeFragment(AniListSettingsFragment()) }
         listSettingsMenu.setOnClickListener { listener?.changeFragment(ListSettingsFragment()) }
+        notificationsSettingsMenu.setOnClickListener { listener?.changeFragment(NotificationsSettingsFragment()) }
         accountSettingsMenu.setOnClickListener { listener?.changeFragment(AccountSettingsFragment()) }
         aboutMenu.setOnClickListener { listener?.changeFragment(AboutFragment()) }
     }

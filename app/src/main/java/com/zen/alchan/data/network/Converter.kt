@@ -39,12 +39,35 @@ object Converter {
         return notificationOptionList
     }
 
+    // Thanks JVM
+    fun convertNotificationOptionListFromSettingsMutation(notificationOption: List<AniListSettingsMutation.NotificationOption>?): List<NotificationOption> {
+        val notificationOptionList = ArrayList<NotificationOption>()
+        notificationOption?.forEach {
+            notificationOptionList.add(
+                NotificationOption(
+                    type = it.type(),
+                    enabled = it.enabled()
+                )
+            )
+        }
+        return notificationOptionList
+    }
+
     fun convertUserOptions(options: ViewerQuery.Options?): UserOptions {
         return UserOptions(
             titleLanguage = options?.titleLanguage(),
             displayAdultContent = options?.displayAdultContent(),
             airingNotifications = options?.airingNotifications(),
             notificationOptions = convertNotificationOptionList(options?.notificationOptions())
+        )
+    }
+
+    fun convertUserOptions(options: AniListSettingsMutation.Options?): UserOptions {
+        return UserOptions(
+            titleLanguage = options?.titleLanguage(),
+            displayAdultContent = options?.displayAdultContent(),
+            airingNotifications = options?.airingNotifications(),
+            notificationOptions = convertNotificationOptionListFromSettingsMutation(options?.notificationOptions())
         )
     }
 

@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
+import type.UserTitleLanguage
 
 interface ProfileRepository {
     val viewerDataResponse: LiveData<Resource<Boolean>>
     val viewerData: LiveData<User?>
+
+    val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
 
     val appColorTheme: AppColorTheme
     val homeShowWatching: Boolean
@@ -19,6 +22,8 @@ interface ProfileRepository {
 
     fun getViewerData()
     fun retrieveViewerData()
+
+    fun updateAniListSettings(titleLanguage: UserTitleLanguage, adultContent: Boolean, airingNotifications: Boolean)
 
     fun setAppSettings(
         appColorTheme: AppColorTheme,

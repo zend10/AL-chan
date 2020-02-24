@@ -1,0 +1,23 @@
+mutation AniListSettingsMutation(
+    $titleLanguage: UserTitleLanguage,
+    $displayAdultContent: Boolean,
+    $airingNotifications: Boolean
+) {
+    UpdateUser(
+        titleLanguage: $titleLanguage,
+        displayAdultContent: $displayAdultContent,
+        airingNotifications: $airingNotifications
+    ) {
+        id
+        name
+        options {
+            titleLanguage
+            displayAdultContent
+            airingNotifications
+            notificationOptions {
+                type
+                enabled
+            }
+        }
+    }
+}

@@ -39,10 +39,6 @@ class AppSettingsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        initLayout()
-    }
-
-    private fun initLayout() {
         toolbarLayout.apply {
             title = getString(R.string.app_settings)
             navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_left)
@@ -52,6 +48,12 @@ class AppSettingsFragment : Fragment() {
             itemSave = menu.findItem(R.id.itemSave)
         }
 
+        // TODO: move out notifications settings
+
+        initLayout()
+    }
+
+    private fun initLayout() {
         if (!viewModel.isInit) {
             viewModel.selectedAppTheme = viewModel.appColorTheme
             homeWatchingCheckBox.isChecked = viewModel.homeShowWatching
@@ -115,6 +117,8 @@ class AppSettingsFragment : Fragment() {
                         pushNotifForum = true,
                         pushNotifFollows = true
                     )
+                    viewModel.isInit = false
+                    initLayout()
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
                 },
@@ -136,7 +140,7 @@ class AppSettingsFragment : Fragment() {
             }
         })
         val bundle = Bundle()
-        bundle.putString(AppThemeDialog.SELECTED_THEME, viewModel.appColorTheme.toString())
+        bundle.putString(AppThemeDialog.SELECTED_THEME, viewModel.selectedAppTheme.toString())
         dialog.arguments = bundle
         dialog.show(childFragmentManager, null)
     }

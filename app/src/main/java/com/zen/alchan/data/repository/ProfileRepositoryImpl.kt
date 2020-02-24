@@ -4,20 +4,19 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
-import com.zen.alchan.data.datasource.AuthDataSource
+import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.localstorage.AppSettingsManager
-import com.zen.alchan.data.localstorage.LocalStorage
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.SingleLiveEvent
-import com.zen.alchan.helper.utils.Utility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.UserTitleLanguage
 
-class ProfileRepositoryImpl(private val authDataSource: AuthDataSource,
+class ProfileRepositoryImpl(private val userDataSource: UserDataSource,
                             private val appSettingsManager: AppSettingsManager,
                             private val userManager: UserManager
 ) : ProfileRepository {
@@ -29,6 +28,10 @@ class ProfileRepositoryImpl(private val authDataSource: AuthDataSource,
     private val _viewerData = MutableLiveData<User?>()
     override val viewerData: LiveData<User?>
         get() = _viewerData
+
+    private val _updateAniListSettingsResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
+        get() = _updateAniListSettingsResponse
 
     override val appColorTheme: AppColorTheme
         get() = appSettingsManager.appColorTheme
@@ -60,7 +63,7 @@ class ProfileRepositoryImpl(private val authDataSource: AuthDataSource,
     override fun retrieveViewerData() {
         _viewerDataResponse.postValue(Resource.Loading())
 
-        authDataSource.getViewerData().subscribeWith(object : Observer<Response<ViewerQuery.Data>> {
+        userDataSource.getViewerData().subscribeWith(object : Observer<Response<ViewerQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<ViewerQuery.Data>) {
@@ -75,6 +78,38 @@ class ProfileRepositoryImpl(private val authDataSource: AuthDataSource,
 
             override fun onError(e: Throwable) {
                 _viewerDataResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun updateAniListSettings(
+        titleLanguage: UserTitleLanguage,
+        adultContent: Boolean,
+        airingNotifications: Boolean
+    ) {
+        _updateAniListSettingsResponse.postValue(Resource.Loading())
+
+        userDataSource.updateAniListSettings(titleLanguage, adultContent, airingNotifications).subscribeWith(object : Observer<Response<AniListSettingsMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<AniListSettingsMutation.Data>) {
+                if (t.hasErrors()) {
+                    _updateAniListSettingsResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    val savedUser = userManager.viewerData
+                    savedUser?.options = Converter.convertUserOptions(t.data()?.UpdateUser()?.options())
+                    userManager.setViewerData(savedUser)
+
+                    _updateAniListSettingsResponse.postValue(Resource.Success(true))
+                    _viewerData.postValue(userManager.viewerData)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _updateAniListSettingsResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }
