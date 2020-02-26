@@ -20,6 +20,8 @@ import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.profile.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.profile.settings.app.AppSettingsViewModel
+import com.zen.alchan.ui.profile.settings.list.ListSettingsViewModel
+import com.zen.alchan.ui.profile.settings.notifications.NotificationsSettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -49,6 +51,8 @@ class ALchanApplication : Application() {
         viewModel { BioViewModel(get()) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
+        viewModel { ListSettingsViewModel(get()) }
+        viewModel { NotificationsSettingsViewModel(get()) }
     }
 
     override fun onCreate() {

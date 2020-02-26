@@ -66,4 +66,22 @@
     <string name="show_18_content_because_i_m_a_responsible_adult">Show 18+ content because I\'m a responsible adult</string>
     <string name="notifications_settings">Notifications Settings</string>
     <string name="set_how_you_want_to_be_notified">Set how you want to be notified</string>
+    <string name="scoring">Scoring</string>
+    <string name="scoring_system">Scoring system</string>
+    <string name="advanced_scoring_criteria">Advanced Scoring Criteria</string>
+    <string name="add_more">Add more</string>
+    <string name="list">List</string>
+    <string name="default_list_order">Default list order</string>
+    <string name="use_advanced_scoring">Use advanced scoring</string>
+    <string name="split_anime_completed_list_section_by_format">Split Anime completed list section by format</string>
+    <string name="split_manga_completed_list_section_by_format">Split Manga completed list section by format</string>
+    <string name="custom_anime_lists">Custom Anime Lists</string>
+    <string name="custom_manga_lists">Custom Manga Lists</string>
+    <string name="add">Add</string>
+    <string name="add_new_list">Add New List</string>
+    <string name="add_new_criteria">Add New Criteria</string>
+    <string name="no_item">No Item</string>
+    <string name="edit">Edit</string>
+    <string name="edit_list">Edit List</string>
+    <string name="edit_criteria">Edit Criteria</string>
 </resources>

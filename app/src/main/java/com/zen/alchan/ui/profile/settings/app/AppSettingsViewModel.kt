@@ -20,29 +20,7 @@ class AppSettingsViewModel(private val profileRepository: ProfileRepository) : V
     val homeShowReading: Boolean
         get() = profileRepository.homeShowReading
 
-    val pushNotifAiring: Boolean
-        get() = profileRepository.pushNotifAiring
-
-    val pushNotifActivity: Boolean
-        get() = profileRepository.pushNotifActivity
-
-    val pushNotifForum: Boolean
-        get() = profileRepository.pushNotifForum
-
-    val pushNotifFollows: Boolean
-        get() = profileRepository.pushNotifFollows
-
-    fun setAppSettings(
-        appColorTheme: AppColorTheme,
-        homeShowWatching: Boolean,
-        homeShowReading: Boolean,
-        pushNotifAiring: Boolean,
-        pushNotifActivity: Boolean,
-        pushNotifForum: Boolean,
-        pushNotifFollows: Boolean
-    ) {
-        profileRepository.setAppSettings(
-            appColorTheme, homeShowWatching, homeShowReading, pushNotifAiring, pushNotifActivity, pushNotifForum, pushNotifFollows
-        )
+    fun setAppSettings(appColorTheme: AppColorTheme, homeShowWatching: Boolean, homeShowReading: Boolean) {
+        profileRepository.setAppSettings(appColorTheme, homeShowWatching, homeShowReading)
     }
 }

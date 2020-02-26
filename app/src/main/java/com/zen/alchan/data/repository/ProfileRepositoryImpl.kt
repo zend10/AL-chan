@@ -9,11 +9,14 @@ import com.zen.alchan.data.localstorage.AppSettingsManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.ScoreFormat
 import type.UserTitleLanguage
 
 class ProfileRepositoryImpl(private val userDataSource: UserDataSource,
@@ -33,6 +36,10 @@ class ProfileRepositoryImpl(private val userDataSource: UserDataSource,
     override val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
         get() = _updateAniListSettingsResponse
 
+    private val _updateListSettingsResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val updateListSettingsResponse: LiveData<Resource<Boolean>>
+        get() = _updateListSettingsResponse
+
     override val appColorTheme: AppColorTheme
         get() = appSettingsManager.appColorTheme
 
@@ -42,17 +49,8 @@ class ProfileRepositoryImpl(private val userDataSource: UserDataSource,
     override val homeShowReading: Boolean
         get() = appSettingsManager.homeShowReading
 
-    override val pushNotifAiring: Boolean
-        get() = appSettingsManager.pushNotifAiring
-
-    override val pushNotifActivity: Boolean
-        get() = appSettingsManager.pushNotifActivity
-
-    override val pushNotifForum: Boolean
-        get() = appSettingsManager.pushNotifForum
-
-    override val pushNotifFollows: Boolean
-        get() = appSettingsManager.pushNotifFollows
+    override val pushNotificationsSettings: PushNotificationsSettings
+        get() = appSettingsManager.pushNotificationsSettings
 
     override fun getViewerData() {
         // used to trigger live data
@@ -116,23 +114,53 @@ class ProfileRepositoryImpl(private val userDataSource: UserDataSource,
         })
     }
 
-    override fun setAppSettings(
-        appColorTheme: AppColorTheme,
-        homeShowWatching: Boolean,
-        homeShowReading: Boolean,
+    @SuppressLint("CheckResult")
+    override fun updateListSettings(
+        scoreFormat: ScoreFormat,
+        rowOrder: String,
+        animeListOptions: MediaListTypeOptions,
+        mangaListOptions: MediaListTypeOptions
+    ) {
+        _updateListSettingsResponse.postValue(Resource.Loading())
+
+        userDataSource.updateListSettings(scoreFormat, rowOrder, animeListOptions, mangaListOptions).subscribeWith(object : Observer<Response<ListSettingsMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<ListSettingsMutation.Data>) {
+                if (t.hasErrors()) {
+                    _updateListSettingsResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    val savedUser = userManager.viewerData
+                    savedUser?.mediaListOptions = Converter.convertMediaListOptions(t.data()?.UpdateUser()?.mediaListOptions())
+                    userManager.setViewerData(savedUser)
+
+                    _updateListSettingsResponse.postValue(Resource.Success(true))
+                    _viewerData.postValue(userManager.viewerData)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _updateListSettingsResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    override fun setAppSettings(appColorTheme: AppColorTheme, homeShowWatching: Boolean, homeShowReading: Boolean) {
+        appSettingsManager.apply {
+            setAppColorTheme(appColorTheme)
+            setHomeShowWatching(homeShowWatching)
+            setHomeShowReading(homeShowReading)
+        }
+    }
+
+    override fun setPushNotificationsSettings(
         pushNotifAiring: Boolean,
         pushNotifActivity: Boolean,
         pushNotifForum: Boolean,
         pushNotifFollows: Boolean
     ) {
-        appSettingsManager.apply {
-            setAppColorTheme(appColorTheme)
-            setHomeShowWatching(homeShowWatching)
-            setHomeShowReading(homeShowReading)
-            setPushNotifAiring(pushNotifAiring)
-            setPushNotifActivity(pushNotifActivity)
-            setPushNotifForum(pushNotifForum)
-            setPushNotifFollows(pushNotifFollows)
-        }
+        appSettingsManager.setPushNotificationsSettings(PushNotificationsSettings(pushNotifAiring, pushNotifActivity, pushNotifForum, pushNotifFollows))
     }
 }

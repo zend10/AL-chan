@@ -6,6 +6,7 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.pojo.ColorPalette
+import type.ScoreFormat
 
 object AndroidUtility {
 

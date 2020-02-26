@@ -2,6 +2,7 @@ package com.zen.alchan.data.localstorage
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.PushNotificationsSettings
 
 interface AppSettingsManager {
     val appColorTheme: AppColorTheme
@@ -12,18 +13,12 @@ interface AppSettingsManager {
     val homeShowReading: Boolean
     val homeShowReadingLiveData: LiveData<Boolean>
 
-    val pushNotifAiring: Boolean
-    val pushNotifActivity: Boolean
-    val pushNotifForum: Boolean
-    val pushNotifFollows: Boolean
+    val pushNotificationsSettings: PushNotificationsSettings
 
     fun setAppColorTheme(appColorTheme: AppColorTheme)
 
     fun setHomeShowWatching(value: Boolean)
     fun setHomeShowReading(value: Boolean)
 
-    fun setPushNotifAiring(value: Boolean)
-    fun setPushNotifActivity(value: Boolean)
-    fun setPushNotifForum(value: Boolean)
-    fun setPushNotifFollows(value: Boolean)
+    fun setPushNotificationsSettings(pushNotificationsSettings: PushNotificationsSettings)
 }

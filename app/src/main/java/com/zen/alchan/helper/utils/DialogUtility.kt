@@ -1,6 +1,7 @@
 package com.zen.alchan.helper.utils
 
 import android.content.Context
+import android.view.View
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -34,6 +35,23 @@ object DialogUtility {
     fun showInfoDialog(context: Context?, message: Int) {
         MaterialAlertDialogBuilder(context)
             .setMessage(message)
+            .show()
+    }
+
+    fun showCustomViewDialog(
+        context: Context?,
+        title: Int,
+        customView: View,
+        positiveButton: Int,
+        positiveAction: () -> Unit,
+        negativeButton: Int,
+        negativeAction: () -> Unit
+    ) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setView(customView)
+            .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            .setNegativeButton(negativeButton) { _, _ -> negativeAction() }
             .show()
     }
 }

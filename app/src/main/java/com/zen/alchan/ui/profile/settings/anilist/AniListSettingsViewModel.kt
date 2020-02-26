@@ -26,7 +26,10 @@ class AniListSettingsViewModel(private val profileRepository: ProfileRepository)
         }
     }
 
-    fun updateAniListSetttings(titleLanguage: UserTitleLanguage, adultContent: Boolean, airingNotifications: Boolean) {
-        profileRepository.updateAniListSettings(titleLanguage, adultContent, airingNotifications)
+    fun updateAniListSettings( adultContent: Boolean, airingNotifications: Boolean) {
+        if (selectedTitleLanguage == null) {
+            return
+        }
+        profileRepository.updateAniListSettings(selectedTitleLanguage!!, adultContent, airingNotifications)
     }
 }

@@ -2,6 +2,7 @@ package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.PushNotificationsSettings
 
 interface LocalStorage {
     var bearerToken: String?
@@ -10,10 +11,7 @@ interface LocalStorage {
     var homeShowWatching: Boolean
     var homeShowReading: Boolean
 
-    var pushNotifAiring: Boolean
-    var pushNotifActivity: Boolean
-    var pushNotifForum: Boolean
-    var pushNotifFollows: Boolean
+    var pushNotificationsSettings: PushNotificationsSettings
 
     var viewerData: User?
     var viewerDataLastRetrieved: Long?

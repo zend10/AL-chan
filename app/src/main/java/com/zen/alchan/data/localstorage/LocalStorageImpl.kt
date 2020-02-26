@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.PushNotificationsSettings
 
 class LocalStorageImpl(private val context: Context, private val sharedPreferencesName: String) : LocalStorage {
 
@@ -16,10 +17,7 @@ class LocalStorageImpl(private val context: Context, private val sharedPreferenc
         private const val APP_COLOR_THEME = "appColorTheme"
         private const val HOME_SHOW_WATCHING = "homeShowWatching"
         private const val HOME_SHOW_READING = "homeShowReading"
-        private const val PUSH_NOTIF_AIRING = "pushNotifAiring"
-        private const val PUSH_NOTIF_ACTIVITY = "pushNotifActivity"
-        private const val PUSH_NOTIF_FORUM = "pushNotifForum"
-        private const val PUSH_NOTIF_FOLLOWS = "pushNotifFollows"
+        private const val PUSH_NOTIFICATIONS_SETTINGS = "pushNotificationsSettings"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
     }
@@ -40,21 +38,9 @@ class LocalStorageImpl(private val context: Context, private val sharedPreferenc
         get() = if (getData(HOME_SHOW_READING) == null) true else getData(HOME_SHOW_READING)!!.toBoolean()
         set(value) { setData(HOME_SHOW_READING, value.toString()) }
 
-    override var pushNotifAiring: Boolean
-        get() = if (getData(PUSH_NOTIF_AIRING) == null) true else getData(PUSH_NOTIF_AIRING)!!.toBoolean()
-        set(value) { setData(PUSH_NOTIF_AIRING, value.toString()) }
-
-    override var pushNotifActivity: Boolean
-        get() = if (getData(PUSH_NOTIF_ACTIVITY) == null) true else getData(PUSH_NOTIF_ACTIVITY)!!.toBoolean()
-        set(value) { setData(PUSH_NOTIF_ACTIVITY, value.toString()) }
-
-    override var pushNotifForum: Boolean
-        get() = if (getData(PUSH_NOTIF_FORUM) == null) true else getData(PUSH_NOTIF_FORUM)!!.toBoolean()
-        set(value) { setData(PUSH_NOTIF_FORUM, value.toString()) }
-
-    override var pushNotifFollows: Boolean
-        get() = if (getData(PUSH_NOTIF_FOLLOWS) == null) true else getData(PUSH_NOTIF_FOLLOWS)!!.toBoolean()
-        set(value) { setData(PUSH_NOTIF_FOLLOWS, value.toString()) }
+    override var pushNotificationsSettings: PushNotificationsSettings
+        get() = if (getData(PUSH_NOTIFICATIONS_SETTINGS) == null ) PushNotificationsSettings(true, true, true, true) else gson.fromJson(getData(PUSH_NOTIFICATIONS_SETTINGS), PushNotificationsSettings::class.java)
+        set(value) { setData(PUSH_NOTIFICATIONS_SETTINGS, gson.toJson(value)) }
 
     override var viewerData: User?
         get() = gson.fromJson(getData(VIEWER_DATA), User::class.java)

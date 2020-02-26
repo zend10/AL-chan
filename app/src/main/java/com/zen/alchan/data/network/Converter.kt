@@ -81,6 +81,16 @@ object Converter {
         )
     }
 
+    fun convertAnimeListMediaListTypeOptions(animeList: ListSettingsMutation.AnimeList?): MediaListTypeOptions {
+        return MediaListTypeOptions(
+            sectionOrder = animeList?.sectionOrder(),
+            splitCompletedSectionByFormat = animeList?.splitCompletedSectionByFormat(),
+            customLists = animeList?.customLists(),
+            advancedScoring = animeList?.advancedScoring(),
+            advancedScoringEnabled = animeList?.advancedScoringEnabled()
+        )
+    }
+
     fun convertMangaListMediaListTypeOptions(mangaList: ViewerQuery.MangaList?): MediaListTypeOptions {
         return MediaListTypeOptions(
             sectionOrder = mangaList?.sectionOrder(),
@@ -91,7 +101,26 @@ object Converter {
         )
     }
 
+    fun convertMangaListMediaListTypeOptions(mangaList: ListSettingsMutation.MangaList?): MediaListTypeOptions {
+        return MediaListTypeOptions(
+            sectionOrder = mangaList?.sectionOrder(),
+            splitCompletedSectionByFormat = mangaList?.splitCompletedSectionByFormat(),
+            customLists = mangaList?.customLists(),
+            advancedScoring = mangaList?.advancedScoring(),
+            advancedScoringEnabled = mangaList?.advancedScoringEnabled()
+        )
+    }
+
     fun convertMediaListOptions(mediaListOptions: ViewerQuery.MediaListOptions?): MediaListOptions {
+        return MediaListOptions(
+            scoreFormat = mediaListOptions?.scoreFormat(),
+            rowOrder = mediaListOptions?.rowOrder(),
+            animeList = convertAnimeListMediaListTypeOptions(mediaListOptions?.animeList()),
+            mangaList = convertMangaListMediaListTypeOptions(mediaListOptions?.mangaList())
+        )
+    }
+
+    fun convertMediaListOptions(mediaListOptions: ListSettingsMutation.MediaListOptions?): MediaListOptions {
         return MediaListOptions(
             scoreFormat = mediaListOptions?.scoreFormat(),
             rowOrder = mediaListOptions?.rowOrder(),

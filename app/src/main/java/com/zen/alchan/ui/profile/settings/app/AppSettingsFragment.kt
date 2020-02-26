@@ -48,8 +48,6 @@ class AppSettingsFragment : Fragment() {
             itemSave = menu.findItem(R.id.itemSave)
         }
 
-        // TODO: move out notifications settings
-
         initLayout()
     }
 
@@ -58,10 +56,6 @@ class AppSettingsFragment : Fragment() {
             viewModel.selectedAppTheme = viewModel.appColorTheme
             homeWatchingCheckBox.isChecked = viewModel.homeShowWatching
             homeReadingCheckBox.isChecked = viewModel.homeShowReading
-            notifAiringCheckBox.isChecked = viewModel.pushNotifAiring
-            notifActivityCheckBox.isChecked = viewModel.pushNotifActivity
-            notifForumCheckBox.isChecked = viewModel.pushNotifForum
-            notifFollowsCheckBox.isChecked = viewModel.pushNotifFollows
             viewModel.isInit = true
         }
 
@@ -75,11 +69,7 @@ class AppSettingsFragment : Fragment() {
                     viewModel.setAppSettings(
                         viewModel.selectedAppTheme!!,
                         homeShowWatching = homeWatchingCheckBox.isChecked,
-                        homeShowReading = homeReadingCheckBox.isChecked,
-                        pushNotifAiring = notifAiringCheckBox.isChecked,
-                        pushNotifActivity = notifActivityCheckBox.isChecked,
-                        pushNotifForum = notifForumCheckBox.isChecked,
-                        pushNotifFollows = notifFollowsCheckBox.isChecked
+                        homeShowReading = homeReadingCheckBox.isChecked
                     )
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
@@ -94,13 +84,6 @@ class AppSettingsFragment : Fragment() {
         secondaryColorItem.setOnClickListener { showAppThemeDialog() }
         negativeColorItem.setOnClickListener { showAppThemeDialog() }
 
-        pushNotificationsInfoIcon.setOnClickListener {
-            DialogUtility.showInfoDialog(
-                activity,
-                R.string.these_push_notifications_will_only_work_if_the_notifications_settings_in_anilist_settings_are_also_enabled
-            )
-        }
-
         resetDefaultButton.setOnClickListener {
             DialogUtility.showOptionDialog(
                 activity,
@@ -111,11 +94,7 @@ class AppSettingsFragment : Fragment() {
                     viewModel.setAppSettings(
                         Constant.DEFAULT_THEME,
                         homeShowWatching = true,
-                        homeShowReading = true,
-                        pushNotifAiring = true,
-                        pushNotifActivity = true,
-                        pushNotifForum = true,
-                        pushNotifFollows = true
+                        homeShowReading = true
                     )
                     viewModel.isInit = false
                     initLayout()

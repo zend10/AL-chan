@@ -94,7 +94,7 @@ class AniListSettingsFragment : Fragment() {
         }
 
         itemSave.setOnMenuItemClickListener {
-            viewModel.updateAniListSetttings(viewModel.selectedTitleLanguage!!, adultContentCheckBox.isChecked, airingAnimeNotifCheckBox.isChecked)
+            viewModel.updateAniListSettings(adultContentCheckBox.isChecked, airingAnimeNotifCheckBox.isChecked)
             true
         }
     }
