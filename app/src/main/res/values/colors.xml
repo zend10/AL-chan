@@ -30,7 +30,9 @@
 
     <color name="black">#212121</color>
     <color name="blackTransparent86">#DB212121</color>
+    <color name="blackTransparent50">#80212121</color>
     <color name="blackTransparent36">#5C212121</color>
+    <color name="blackTransparent0">#00212121</color>
     
     <color name="blackLight">#2F2F2F</color>
     <color name="blackLightTransparent80">#CC2F2F2F</color>

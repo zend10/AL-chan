@@ -84,4 +84,7 @@
     <string name="edit">Edit</string>
     <string name="edit_list">Edit List</string>
     <string name="edit_criteria">Edit Criteria</string>
+    <string name="what_are_you_looking_for">What are you looking for?</string>
+    <string name="currently_watching">Currently Watching</string>
+    <string name="currently_reading">Currently Reading</string>
 </resources>

@@ -15,6 +15,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 
 import com.zen.alchan.R
@@ -118,7 +119,7 @@ class ProfileFragment : BaseMainFragment() {
         }
 
         GlideApp.with(this).load(user?.bannerImage).into(profileBannerImage)
-        GlideApp.with(this).load(user?.avatar?.large).into(profileAvatarImage)
+        GlideApp.with(this).load(user?.avatar?.large).apply(RequestOptions.circleCropTransform()).into(profileAvatarImage)
         profileUsernameText.text = user?.name
         profileAnimeCountText.text = user?.statistics?.anime?.count.toString()
         profileMangaCountText.text = user?.statistics?.manga?.count.toString()

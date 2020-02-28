@@ -48,7 +48,7 @@
                             android:layout_height="match_parent"/>
 
                         <View
-                            android:background="@drawable/dark_gradient_background"
+                            android:background="@drawable/dark_gradient_two_background"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
 
@@ -70,6 +70,7 @@
                             android:id="@+id/profileAvatarImage"
                             android:layout_marginTop="@dimen/marginFar"
                             android:layout_gravity="center_horizontal"
+                            android:background="@drawable/shape_oval"
                             android:adjustViewBounds="true"
                             android:layout_width="@dimen/imageCircleSize"
                             android:layout_height="@dimen/imageCircleSize"/>

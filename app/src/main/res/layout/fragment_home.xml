@@ -1,14 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:layout_marginTop="@dimen/statusBarHeight"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/headerLayou"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/headerImage"
+                    android:scaleType="centerCrop"
+                    android:layout_alignTop="@id/greetingsLayout"
+                    android:layout_alignBottom="@id/greetingsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/dark_gradient_three_background"
+                    android:layout_alignTop="@id/greetingsLayout"
+                    android:layout_alignBottom="@id/greetingsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/greetingsLayout"
+                    android:padding="@dimen/marginPage"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/greetingsText"
+                            style="@style/FontTitle"
+                            android:layout_marginEnd="@dimen/marginPage"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/userAvatar"
+                            android:background="@drawable/shape_oval"
+                            android:layout_width="@dimen/imageCircleSize"
+                            android:layout_height="@dimen/imageCircleSize"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/searchBar"
+                        app:cardBackgroundColor="?themeContentColor"
+                        app:contentPadding="@dimen/marginNormal"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginTop="@dimen/marginPage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/what_are_you_looking_for"
+                            style="@style/FontRegular"
+                            android:textColor="?themeCardTransparentColor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/currentlyWatchingLayout"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/currently_watching"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/currentlyWatchingRecyclerView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/marginPage"
+                    android:clipToPadding="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/currentlyReadingLayout"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/currently_reading"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/currentlyReadingRecyclerView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/marginPage"
+                    android:clipToPadding="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+    <include layout="@layout/layout_loading"/>
+
+</RelativeLayout>

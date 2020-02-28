@@ -13,7 +13,7 @@
         android:layout_height="match_parent"/>
 
     <View
-        android:background="@drawable/dark_gradient_background"
+        android:background="@drawable/dark_gradient_two_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
