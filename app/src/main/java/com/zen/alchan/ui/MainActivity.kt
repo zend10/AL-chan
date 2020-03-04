@@ -1,10 +1,15 @@
 package com.zen.alchan.ui
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.zen.alchan.R
+import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.animelist.AnimeListFragment
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseMainFragmentListener
@@ -33,11 +38,13 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         viewModel.appColorThemeLiveData.observe(this, Observer {
             recreate()
         })
+
+        viewModel.listOrAniListSettingsChanged.observe(this, Observer {
+            recreate()
+        })
     }
 
     private fun initLayout() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-
         val fragmentList = listOf(HomeFragment(), AnimeListFragment(), MangaListFragment(), SocialFragment(), ProfileFragment())
 
         mainViewPager.setPagingEnabled(false)

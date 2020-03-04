@@ -1,18 +1,18 @@
 package com.zen.alchan.ui.profile
 
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
+import androidx.core.view.*
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
@@ -24,13 +24,11 @@ import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
-import com.zen.alchan.ui.animelist.AnimeListFragment
 import com.zen.alchan.ui.base.BaseMainFragment
-import com.zen.alchan.ui.mangalist.MangaListFragment
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.reviews.ReviewsFragment
-import com.zen.alchan.ui.profile.settings.SettingsActivity
+import com.zen.alchan.ui.settings.SettingsActivity
 import com.zen.alchan.ui.profile.stats.StatsFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_loading.*

@@ -1,0 +1,46 @@
+query AnimeListCollectionQuery(
+    $userId: Int
+) {
+    MediaListCollection(
+        userId: $userId,
+        type: ANIME
+    ) {
+        lists {
+            entries {
+                id
+                status
+                score
+                progress
+                priority
+                private
+                hiddenFromStatusLists
+                media {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    format
+                    status
+                    episodes
+                    coverImage {
+                        extraLarge
+                        large
+                    }
+                    isFavourite
+                    isAdult
+                    nextAiringEpisode {
+                        id
+                        airingAt
+                        timeUntilAiring
+                        episode
+                        mediaId
+                    }
+                }
+            }
+            name
+            isCustomList
+            isSplitCompletedList
+            status
+        }
+    }
+}

@@ -1,11 +1,19 @@
 package com.zen.alchan.ui
 
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.AuthRepository
+import com.zen.alchan.data.repository.UserRepository
 
-class MainViewModel(private val authRepository: AuthRepository) : ViewModel() {
+class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
+                    private val userRepository: UserRepository
+) : ViewModel() {
 
     val appColorThemeLiveData by lazy {
-        authRepository.appColorThemeLiveData
+        appSettingsRepository.appColorThemeLiveData
+    }
+
+    val listOrAniListSettingsChanged by lazy {
+        userRepository.listOrAniListSettingsChanged
     }
 }

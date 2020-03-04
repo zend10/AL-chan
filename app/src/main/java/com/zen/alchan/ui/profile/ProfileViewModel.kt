@@ -3,25 +3,25 @@ package com.zen.alchan.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zen.alchan.data.repository.ProfileRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
 
-class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewModel() {
+class ProfileViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     private val _currentSection = MutableLiveData<ProfileSection>()
     val currentSection: LiveData<ProfileSection>
         get() = _currentSection
 
     val viewerDataResponse by lazy {
-        profileRepository.viewerDataResponse
+        userRepository.viewerDataResponse
     }
 
     val viewerData by lazy {
-        profileRepository.viewerData
+        userRepository.viewerData
     }
 
     fun initData() {
-        profileRepository.getViewerData()
+        userRepository.getViewerData()
 
         if (currentSection.value == null) {
             _currentSection.postValue(ProfileSection.BIO)
@@ -35,6 +35,6 @@ class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewM
     }
 
     fun retrieveViewerData() {
-        profileRepository.retrieveViewerData()
+        userRepository.retrieveViewerData()
     }
 }

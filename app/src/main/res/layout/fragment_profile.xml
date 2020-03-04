@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    tools:context=".ui.profile.ProfileFragment">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".ui.profile.ProfileFragment">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/profileAppBarLayout"
-            android:fitsSystemWindows="true"
             android:backgroundTint="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -26,7 +24,6 @@
                 app:contentScrim="@android:color/transparent"
                 app:scrimAnimationDuration="200"
                 android:backgroundTint="@android:color/transparent"
-                android:fitsSystemWindows="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -48,7 +45,7 @@
                             android:layout_height="match_parent"/>
 
                         <View
-                            android:background="@drawable/dark_gradient_two_background"
+                            android:background="@drawable/dark_gradient_three_background"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
 
@@ -224,8 +221,8 @@
                     app:menu="@menu/menu_profile"
                     app:layout_collapseMode="pin"
                     android:elevation="0dp"
+                    android:fitsSystemWindows="false"
                     android:backgroundTint="@android:color/transparent"
-                    android:layout_marginTop="@dimen/statusBarHeight"
                     android:layout_width="match_parent"
                     android:layout_height="112dp"/>
 
@@ -383,6 +380,5 @@
         <include layout="@layout/layout_loading"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

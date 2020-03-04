@@ -6,12 +6,8 @@ import com.zen.alchan.helper.pojo.PushNotificationsSettings
 
 interface AppSettingsManager {
     val appColorTheme: AppColorTheme
-    val appColorThemeLiveData: LiveData<AppColorTheme>
-
     val homeShowWatching: Boolean
-    val homeShowWatchingLiveData: LiveData<Boolean>
     val homeShowReading: Boolean
-    val homeShowReadingLiveData: LiveData<Boolean>
 
     val pushNotificationsSettings: PushNotificationsSettings
 

@@ -159,4 +159,77 @@ object Converter {
             manga = convertMangaUserStatistics(statistics?.manga())
         )
     }
+
+    fun convertMediaListCollection(mediaListCollection: AnimeListCollectionQuery.MediaListCollection?): MediaListCollection {
+        return MediaListCollection(
+            lists = convertMediaListGroupList(mediaListCollection?.lists())
+        )
+    }
+
+    fun convertMediaListGroupList(lists: List<AnimeListCollectionQuery.List>?): List<MediaListGroup> {
+        val mediaListGroupList = ArrayList<MediaListGroup>()
+        lists?.forEach {
+            mediaListGroupList.add(
+                MediaListGroup(
+                    entries = convertMediaList(it.entries()),
+                    name = it.name(),
+                    isCustomList = it.isCustomList,
+                    isSplitCompletedList = it.isSplitCompletedList,
+                    status = it.status()
+                )
+            )
+        }
+        return mediaListGroupList
+    }
+
+    fun convertMediaList(entries: List<AnimeListCollectionQuery.Entry>?): List<MediaList> {
+        val mediaList = ArrayList<MediaList>()
+        entries?.forEach {
+            mediaList.add(
+                MediaList(
+                    id = it.id(),
+                    status = it.status(),
+                    score = it.score(),
+                    progress = it.progress(),
+                    priority = it.priority(),
+                    private = it.private_(),
+                    hiddenFromStatusList = it.hiddenFromStatusLists(),
+                    media = convertMedia(it.media()!!)
+                )
+            )
+        }
+        return mediaList
+    }
+
+    fun convertMedia(media: AnimeListCollectionQuery.Media): Media {
+        return Media(
+            id = media.id(),
+            title = convertMediaTitle(mediaTitle = media.title()!!),
+            format = media.format(),
+            status = media.status(),
+            episodes = media.episodes(),
+            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            isFavourite = media.isFavourite,
+            isAdult = media.isAdult,
+            nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null
+        )
+    }
+
+    fun convertMediaTitle(mediaTitle: AnimeListCollectionQuery.Title): MediaTitle {
+        return MediaTitle(mediaTitle.userPreferred()!!)
+    }
+
+    fun convertNextAiringEpisode(nextAiringEpisode: AnimeListCollectionQuery.NextAiringEpisode): AiringSchedule {
+        return AiringSchedule(
+            id = nextAiringEpisode.id(),
+            airingAt = nextAiringEpisode.airingAt(),
+            timeUntilAiring = nextAiringEpisode.timeUntilAiring(),
+            episode = nextAiringEpisode.episode(),
+            mediaId = nextAiringEpisode.mediaId()
+        )
+    }
+
+    fun convertMediaCoverImage(coverImage: AnimeListCollectionQuery.CoverImage): MediaCoverImage {
+        return MediaCoverImage(coverImage.extraLarge(), coverImage.large())
+    }
 }

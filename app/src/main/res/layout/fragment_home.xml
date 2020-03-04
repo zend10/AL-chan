@@ -7,7 +7,6 @@
     tools:context=".ui.home.HomeFragment">
 
     <ScrollView
-        android:layout_marginTop="@dimen/statusBarHeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/headerLayou"
+                android:id="@+id/headerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

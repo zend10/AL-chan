@@ -35,4 +35,13 @@ object AndroidUtility {
             AppColorTheme.RED -> ColorPalette(R.color.red, R.color.aloevera, R.color.purple)
         }
     }
+
+    fun getSmileyFromScore(score: Double?): Int? {
+        return when (score) {
+            1.0 -> R.drawable.ic_sad
+            2.0 -> R.drawable.ic_neutral
+            3.0 -> R.drawable.ic_happy
+            else -> R.drawable.ic_puzzled
+        }
+    }
 }

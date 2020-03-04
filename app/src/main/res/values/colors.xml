@@ -36,4 +36,6 @@
     
     <color name="blackLight">#2F2F2F</color>
     <color name="blackLightTransparent80">#CC2F2F2F</color>
+
+    <color name="yellowStar">#F1C40F</color>
 </resources>

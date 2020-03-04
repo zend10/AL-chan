@@ -15,4 +15,50 @@ object Constant {
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
 
     val DEFAULT_THEME = AppColorTheme.YELLOW
+    val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(
+        "Watching",
+        "Rewatching",
+        "Completed TV",
+        "Completed Movie",
+        "Completed OVA",
+        "Completed ONA",
+        "Completed TV Short",
+        "Completed Special",
+        "Completed Music",
+        "Paused",
+        "Dropped",
+        "Planning"
+    )
+
+    val DEFAULT_ANIME_LIST_ORDER = listOf(
+        "Watching",
+        "Rewatching",
+        "Completed",
+        "Paused",
+        "Dropped",
+        "Planning"
+    )
+
+    val DEFAULT_SPLIT_MANGA_LIST_ORDER = listOf(
+        "Reading",
+        "Rereading",
+        "Completed Manga",
+        "Completed Novel",
+        "Completed One Shot",
+        "Paused",
+        "Dropped",
+        "Planning"
+    )
+
+    val DEFAULT_MANGA_LIST_ORDER = listOf(
+        "Reading",
+        "Rereading",
+        "Completed",
+        "Paused",
+        "Dropped",
+        "Planning"
+    )
+
+    const val DATE_FORMAT = "dd MMM yyyy"
+    const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
 }

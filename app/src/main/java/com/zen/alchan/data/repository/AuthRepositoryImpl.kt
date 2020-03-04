@@ -15,20 +15,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableSingleObserver
 
 class AuthRepositoryImpl(private val userDataSource: UserDataSource,
-                         private val appSettingsManager: AppSettingsManager,
                          private val userManager: UserManager
 ) : AuthRepository {
-
-    init {
-        appSettingsManager.appColorThemeLiveData.observeForever { _appColorThemeLiveData.postValue(AndroidUtility.getAppColorThemeRes(it)) }
-    }
-
-    override val appColorTheme: Int
-        get() = AndroidUtility.getAppColorThemeRes(appSettingsManager.appColorTheme)
-
-    private val _appColorThemeLiveData = SingleLiveEvent<Int>()
-    override val appColorThemeLiveData: LiveData<Int>
-        get() = _appColorThemeLiveData
 
     private val _viewerDataResponse = SingleLiveEvent<Resource<Boolean>>()
     override val viewerDataResponse: LiveData<Resource<Boolean>>

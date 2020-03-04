@@ -76,6 +76,4 @@ dependencies {
 
     // Koin DI
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
-
-    implementation 'com.github.florent37:shapeofview:1.4.7'
 }

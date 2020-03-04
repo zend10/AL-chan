@@ -10,7 +10,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private val viewModel by viewModel<BaseViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(viewModel.appColorTheme)
+        setTheme(viewModel.appColorThemeResource)
         super.onCreate(savedInstanceState)
     }
 }
