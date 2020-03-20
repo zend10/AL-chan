@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.animelist
+package com.zen.alchan.ui.animelist.list
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.libs.GlideApp
@@ -17,13 +14,20 @@ import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_anime_list_default.view.*
-import type.MediaStatus
 import type.ScoreFormat
 
 class AnimeListRvAdapter(private val context: Context,
                          private val list: List<MediaList>,
-                         private val scoreFormat: ScoreFormat
+                         private val scoreFormat: ScoreFormat,
+                         private val listener: AnimeListListener
 ) : RecyclerView.Adapter<AnimeListRvAdapter.ViewHolder>() {
+
+    interface AnimeListListener {
+        fun openEditor(entryId: Int)
+        fun openScoreDialog(mediaList: MediaList)
+        fun openProgressDialog(mediaList: MediaList)
+        fun incrementProgress(mediaList: MediaList)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_anime_list_default, parent, false)
@@ -48,7 +52,7 @@ class AnimeListRvAdapter(private val context: Context,
 
         if (scoreFormat == ScoreFormat.POINT_3) {
             GlideApp.with(context).load(AndroidUtility.getSmileyFromScore(mediaList.score)).into(holder.animeStarIcon)
-            holder.animeStarIcon.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
+            holder.animeStarIcon.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
             holder.animeRatingText.text = ""
         } else {
             GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.animeStarIcon)
@@ -65,7 +69,27 @@ class AnimeListRvAdapter(private val context: Context,
         }
 
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
-        holder.animeIncrementProgressButton.visibility = if (mediaList.media?.episodes == null || mediaList.media?.episodes!! > mediaList.progress!!) View.VISIBLE else View.GONE
+        holder.animeIncrementProgressButton.visibility = if ((mediaList.media?.episodes == null || mediaList.media?.episodes!! > mediaList.progress!!) && mediaList.progress!! < UShort.MAX_VALUE.toInt()) View.VISIBLE else View.GONE
+
+        holder.itemView.setOnClickListener {
+            listener.openEditor(mediaList.id)
+        }
+
+        holder.animeIncrementProgressButton.setOnClickListener {
+            listener.incrementProgress(mediaList)
+        }
+
+        holder.animeProgressText.setOnClickListener {
+            listener.openProgressDialog(mediaList)
+        }
+
+        holder.animeRatingText.setOnClickListener {
+            listener.openScoreDialog(mediaList)
+        }
+
+        holder.animeStarIcon.setOnClickListener {
+            listener.openScoreDialog(mediaList)
+        }
     }
 
     override fun getItemCount(): Int {

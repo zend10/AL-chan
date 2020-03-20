@@ -15,6 +15,8 @@
         <item name="themeSmallFont">@style/FontSmall</item>
         <item name="themeRegularClickableFont">@style/FontRegularClickable</item>
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
+        <item name="themeLargeFont">@style/FontLarge</item>
+        <item name="themeHugeBoldFont">@style/FontHugeBold</item>
         <item name="themeButtonPrimary">@style/ButtonPrimary</item>
         <item name="themeButtonSecondary">@style/ButtonSecondary</item>
         <item name="themeButtonBorderPrimary">@style/ButtonBorderPrimary</item>
@@ -109,6 +111,18 @@
         <item name="android:textColor">?themePrimaryColor</item>
     </style>
 
+    <style name="FontLarge">
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textSize">@dimen/fontLarge</item>
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
+
+    <style name="FontHugeBold">
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:textSize">@dimen/fontHuge</item>
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
+
     <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?themePrimaryColor</item>
         <item name="android:textColor">?themeBackgroundColor</item>
@@ -168,5 +182,5 @@
         <item name="buttonCompat">@drawable/custom_checkbox</item>
         <item name="android:buttonTint">?themePrimaryColor</item>
     </style>
-
+    
 </resources>

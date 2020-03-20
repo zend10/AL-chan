@@ -91,4 +91,16 @@
     <string name="search">Search</string>
     <string name="customise_list">Customise List</string>
     <string name="filter">Filter</string>
+    <string name="move_to_watching">Move to Watching</string>
+    <string name="do_you_want_to_set_this_entry_into_watching">Do you want to set this entry into Watching?</string>
+    <string name="move">Move</string>
+    <string name="stay">Stay</string>
+    <string name="move_to_completed">Move to Completed</string>
+    <string name="do_you_want_to_set_this_entry_into_completed">Do you want to set this entry into Completed?</string>
+    <string name="automatically_set_start_date_when_moving_from_planning_to_watching_reading">Automatically set Start Date when moving from Planning to Watching/Reading</string>
+    <string name="automatically_set_finish_date_when_moving_to_completed">Automatically set Finish Date when moving to Completed</string>
+    <string name="set_progress">Set Progress</string>
+    <string name="set">Set</string>
+    <string name="advanced_scoring">Advanced Scoring</string>
+    <string name="set_score">Set Score</string>
 </resources>

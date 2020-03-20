@@ -48,6 +48,7 @@ class AppSettingsFragment : Fragment() {
         }
 
         // TODO: need to add settings to change header in Home
+        // TODO: need to add settings to automatically add started date and completed date
 
         initLayout()
     }

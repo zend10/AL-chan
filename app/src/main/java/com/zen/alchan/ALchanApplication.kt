@@ -12,7 +12,8 @@ import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.MainViewModel
-import com.zen.alchan.ui.animelist.AnimeListItemViewModel
+import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
+import com.zen.alchan.ui.animelist.list.AnimeListItemViewModel
 import com.zen.alchan.ui.animelist.AnimeListViewModel
 import com.zen.alchan.ui.auth.LoginViewModel
 import com.zen.alchan.ui.base.BaseViewModel
@@ -58,7 +59,18 @@ class ALchanApplication : Application() {
         viewModel { HomeViewModel(get(), get()) }
 
         viewModel { AnimeListViewModel(get()) }
-        viewModel { AnimeListItemViewModel(get(), get()) }
+        viewModel {
+            AnimeListItemViewModel(
+                get(),
+                get(),
+                get()
+            )
+        }
+        viewModel {
+            AnimeListEditorViewModel(
+                get()
+            )
+        }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }

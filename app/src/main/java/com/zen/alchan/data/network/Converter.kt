@@ -191,14 +191,43 @@ object Converter {
                     status = it.status(),
                     score = it.score(),
                     progress = it.progress(),
+                    repeat = it.repeat(),
                     priority = it.priority(),
-                    private = it.private_(),
-                    hiddenFromStatusList = it.hiddenFromStatusLists(),
+                    private = null,
+                    notes = null,
+                    hiddenFromStatusList = null,
+                    customLists = null,
+                    advancedScores = it.advancedScores(),
+                    startedAt = if (it.startedAt() != null) convertFuzzyDate(it.startedAt()!!) else null,
+                    completedAt = if (it.completedAt() != null) convertFuzzyDate(it.completedAt()!!) else null,
+                    updatedAt = null,
+                    createdAt = null,
                     media = convertMedia(it.media()!!)
                 )
             )
         }
         return mediaList
+    }
+
+    fun convertMediaListFromAnimeListMutation(entries: AnimeListEntryMutation.SaveMediaListEntry): MediaList {
+            return MediaList(
+                id = entries.id(),
+                status = entries.status(),
+                score = entries.score(),
+                progress = entries.progress(),
+                repeat = entries.repeat(),
+                priority = entries.priority(),
+                private = entries.private_(),
+                notes = entries.notes(),
+                hiddenFromStatusList = entries.hiddenFromStatusLists(),
+                customLists = entries.customLists(),
+                advancedScores = entries.advancedScores(),
+                startedAt = if (entries.startedAt() != null) convertFuzzyDate(entries.startedAt()!!) else null,
+                completedAt = if (entries.completedAt() != null) convertFuzzyDate(entries.completedAt()!!) else null,
+                updatedAt = entries.updatedAt(),
+                createdAt = entries.createdAt(),
+                media = convertMedia(entries.media()!!)
+            )
     }
 
     fun convertMedia(media: AnimeListCollectionQuery.Media): Media {
@@ -211,11 +240,31 @@ object Converter {
             coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
             isFavourite = media.isFavourite,
             isAdult = media.isAdult,
-            nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null
+            nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null,
+            siteUrl = null
+        )
+    }
+
+    fun convertMedia(media: AnimeListEntryMutation.Media): Media {
+        return Media(
+            id = media.id(),
+            title = convertMediaTitle(mediaTitle = media.title()!!),
+            format = media.format(),
+            status = media.status(),
+            episodes = media.episodes(),
+            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            isFavourite = media.isFavourite,
+            isAdult = media.isAdult,
+            nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null,
+            siteUrl = media.siteUrl()
         )
     }
 
     fun convertMediaTitle(mediaTitle: AnimeListCollectionQuery.Title): MediaTitle {
+        return MediaTitle(mediaTitle.userPreferred()!!)
+    }
+
+    fun convertMediaTitle(mediaTitle: AnimeListEntryMutation.Title): MediaTitle {
         return MediaTitle(mediaTitle.userPreferred()!!)
     }
 
@@ -229,7 +278,53 @@ object Converter {
         )
     }
 
+    fun convertNextAiringEpisode(nextAiringEpisode: AnimeListEntryMutation.NextAiringEpisode): AiringSchedule {
+        return AiringSchedule(
+            id = nextAiringEpisode.id(),
+            airingAt = nextAiringEpisode.airingAt(),
+            timeUntilAiring = nextAiringEpisode.timeUntilAiring(),
+            episode = nextAiringEpisode.episode(),
+            mediaId = nextAiringEpisode.mediaId()
+        )
+    }
+
     fun convertMediaCoverImage(coverImage: AnimeListCollectionQuery.CoverImage): MediaCoverImage {
         return MediaCoverImage(coverImage.extraLarge(), coverImage.large())
+    }
+
+    fun convertMediaCoverImage(coverImage: AnimeListEntryMutation.CoverImage): MediaCoverImage {
+        return MediaCoverImage(coverImage.extraLarge(), coverImage.large())
+    }
+
+    fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.StartedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.StartedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
     }
 }

@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import com.zen.alchan.helper.Constant
 import okhttp3.OkHttpClient
 import org.koin.android.ext.android.get
+import type.CustomType
 import java.util.concurrent.TimeUnit
 
 class ApolloHandler(private val headerInterceptor: HeaderInterceptor) {
@@ -18,5 +19,6 @@ class ApolloHandler(private val headerInterceptor: HeaderInterceptor) {
     val apolloClient = ApolloClient.builder()
         .serverUrl(Constant.ANILIST_API_URL)
         .okHttpClient(okHttpClient)
+        .addCustomTypeAdapter(CustomType.JSON, JsonAdapter())
         .build()
 }

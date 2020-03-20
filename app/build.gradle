@@ -77,3 +77,9 @@ dependencies {
     // Koin DI
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
 }
+
+apollo {
+    customTypeMapping = [
+            "Json"       : "java.lang.Object"
+    ]
+}

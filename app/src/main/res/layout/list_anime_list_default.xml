@@ -9,6 +9,7 @@
         android:layout_marginStart="@dimen/marginNormal"
         android:layout_marginEnd="@dimen/marginNormal"
         app:cardBackgroundColor="?themeCardColor"
+        android:foreground="?selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -106,7 +107,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/animeProgressText"
                 app:layout_constraintEnd_toStartOf="@id/animeProgressText"
                 android:layout_marginEnd="@dimen/marginNormal"
-                android:padding="@dimen/iconPadding"
+                android:padding="@dimen/marginNormal"
                 android:text="Rating"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
@@ -132,7 +133,6 @@
                 android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginEnd="@dimen/marginClose"
                 android:padding="@dimen/iconPadding"
-                android:foreground="?selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

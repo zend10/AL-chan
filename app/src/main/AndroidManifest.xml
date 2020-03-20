@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.search.SearchActivity"></activity>
-        <activity android:name="com.zen.alchan.ui.settings.SettingsActivity" />
+        <activity android:name=".ui.animelist.editor.AnimeListEditorActivity"></activity>
+        <activity android:name=".ui.search.SearchActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.auth.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

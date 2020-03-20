@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/marginPage"
+    android:id="@+id/setScoreDialogLayout"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/score100Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/setScore100Field"
+            style="?themeHugeBoldFont"
+            android:padding="@dimen/marginNormal"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:gravity="center"
+            android:maxLength="3"
+            android:layout_toStartOf="@id/maxScore100Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/maxScore100Text"
+            android:text="/ 100"
+            style="?themeLargeFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/setScore100Field"
+            android:layout_alignBottom="@id/setScore100Field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/score100AdvancedScoringLayout"
+            android:layout_below="@+id/setScore100Field"
+            android:layout_marginTop="@dimen/marginPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/advancedScoring100Label"
+                style="?themeRegularBoldFont"
+                android:text="@string/advanced_scoring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/advancedScoring100RecyclerView"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_below="@id/advancedScoring100Label"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/scoreDecimalLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/setScoreDecimalField"
+            style="?themeHugeBoldFont"
+            android:padding="@dimen/marginNormal"
+            android:inputType="numberDecimal"
+            android:digits="0123456789."
+            android:gravity="center"
+            android:maxLength="3"
+            android:layout_toStartOf="@id/maxScoreDecimalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/maxScoreDecimalText"
+            android:text="/ 10"
+            style="?themeLargeFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/setScoreDecimalField"
+            android:layout_alignBottom="@id/setScoreDecimalField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/scoreDecimalAdvancedScoringLayout"
+            android:layout_below="@+id/setScoreDecimalField"
+            android:layout_marginTop="@dimen/marginPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/advancedScoringDecimalLabel"
+                style="?themeRegularBoldFont"
+                android:text="@string/advanced_scoring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/advancedScoringDecimalRecyclerView"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_below="@id/advancedScoringDecimalLabel"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/score10Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <NumberPicker
+            android:id="@+id/setScore10Field"
+            android:scaleY="1.2"
+            android:layout_toStartOf="@id/maxScore10Text"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/maxScore10Text"
+            android:text="/ 10"
+            style="?themeLargeFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/setScore10Field"
+            android:layout_alignBottom="@id/setScore10Field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/score5Layout"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/setScore5Field"
+            android:numStars="5"
+            android:stepSize="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/score3Layout"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/setScore3Sad"
+                app:srcCompat="@drawable/ic_sad"
+                android:layout_width="@dimen/imageCircleSize"
+                android:layout_height="@dimen/imageCircleSize"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/setScore3Neutral"
+                app:srcCompat="@drawable/ic_neutral"
+                android:layout_width="@dimen/imageCircleSize"
+                android:layout_height="@dimen/imageCircleSize"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/setScore3Happy"
+                app:srcCompat="@drawable/ic_happy"
+                android:layout_width="@dimen/imageCircleSize"
+                android:layout_height="@dimen/imageCircleSize"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

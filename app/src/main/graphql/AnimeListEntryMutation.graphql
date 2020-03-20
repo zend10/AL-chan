@@ -1,0 +1,78 @@
+mutation AnimeListEntryMutation(
+    $id: Int,
+    $status: MediaListStatus,
+    $score: Float,
+    $progress: Int,
+    $repeat: Int,
+    $priority: Int,
+    $isPrivate: Boolean,
+    $notes: String,
+    $hiddenFromStatusLists: Boolean,
+    $customLists: [String],
+    $advancedScores: [Float],
+    $startedAt: FuzzyDateInput,
+    $completedAt: FuzzyDateInput
+) {
+    SaveMediaListEntry(
+        id: $id,
+        status: $status,
+        score: $score,
+        progress: $progress,
+        repeat: $repeat,
+        priority: $priority,
+        private: $isPrivate,
+        notes: $notes,
+        hiddenFromStatusLists: $hiddenFromStatusLists,
+        customLists: $customLists,
+        advancedScores: $advancedScores,
+        startedAt: $startedAt,
+        completedAt: $completedAt
+    ) {
+        id
+        status
+        score
+        progress
+        repeat
+        priority
+        private
+        notes
+        hiddenFromStatusLists
+        customLists
+        advancedScores
+        startedAt {
+            year
+            month
+            day
+        }
+        completedAt {
+            year
+            month
+            day
+        }
+        updatedAt
+        createdAt
+        media {
+            id
+            title {
+                userPreferred
+            }
+            format
+            status
+            episodes
+            isFavourite
+            isAdult
+            coverImage {
+                extraLarge
+                large
+            }
+            nextAiringEpisode {
+                id
+                airingAt
+                timeUntilAiring
+                episode
+                mediaId
+            }
+            siteUrl
+        }
+    }
+}

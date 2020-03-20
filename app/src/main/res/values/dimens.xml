@@ -3,6 +3,8 @@
     <dimen name="fontNormal">14sp</dimen>
     <dimen name="fontSmall">12sp</dimen>
     <dimen name="fontBig">20sp</dimen>
+    <dimen name="fontLarge">36sp</dimen>
+    <dimen name="fontHuge">48sp</dimen>
 
     <dimen name="iconPadding">4dp</dimen>
     <dimen name="iconSize">24dp</dimen>

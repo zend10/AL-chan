@@ -18,6 +18,8 @@ import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_anime_list.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -34,6 +36,9 @@ class AnimeListFragment : Fragment() {
     private lateinit var itemSearch: MenuItem
     private lateinit var itemCustomiseList: MenuItem
     private lateinit var itemFilter: MenuItem
+
+    private lateinit var searchView: SearchView
+    val source = PublishSubject.create<String>() // to send search query to AnimeListItemFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,16 +59,30 @@ class AnimeListFragment : Fragment() {
             itemFilter = menu.findItem(R.id.itemFilter)
         }
 
+        searchView = itemSearch.actionView as SearchView
+        searchView.queryHint = getString(R.string.search)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                source.onNext(query ?: "")
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                source.onNext(newText ?: "")
+                return true
+            }
+        })
+
         setupObserver()
         initLayout()
     }
 
     private fun setupObserver() {
-        viewModel.animeListData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                initLayout()
-            }
-        })
+//        viewModel.animeListData.observe(viewLifecycleOwner, Observer {
+//            if (it != null) {
+//                initLayout()
+//            }
+//        })
 
         viewModel.animeListDataResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
@@ -71,7 +90,10 @@ class AnimeListFragment : Fragment() {
                     animeListRefreshLayout.isRefreshing = false
                     loadingLayout.visibility = View.VISIBLE
                 }
-                ResponseStatus.SUCCESS -> loadingLayout.visibility = View.GONE
+                ResponseStatus.SUCCESS -> {
+                    initLayout()
+                    loadingLayout.visibility = View.GONE
+                }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)

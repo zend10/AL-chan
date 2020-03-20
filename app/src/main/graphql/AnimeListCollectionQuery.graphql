@@ -10,10 +10,20 @@ query AnimeListCollectionQuery(
                 id
                 status
                 score
+                repeat
                 progress
                 priority
-                private
-                hiddenFromStatusLists
+                advancedScores
+                startedAt {
+                    year
+                    month
+                    day
+                }
+                completedAt {
+                    year
+                    month
+                    day
+                }
                 media {
                     id
                     title {
@@ -22,11 +32,11 @@ query AnimeListCollectionQuery(
                     format
                     status
                     episodes
+                    isFavourite
                     coverImage {
                         extraLarge
                         large
                     }
-                    isFavourite
                     isAdult
                     nextAiringEpisode {
                         id

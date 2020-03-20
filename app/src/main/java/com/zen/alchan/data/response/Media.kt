@@ -12,5 +12,6 @@ class Media(
     val coverImage: MediaCoverImage?,
     var isFavourite: Boolean,
     val isAdult: Boolean?,
-    val nextAiringEpisode: AiringSchedule?
+    var nextAiringEpisode: AiringSchedule?,
+    val siteUrl: String?
 )

@@ -54,4 +54,18 @@ object DialogUtility {
             .setNegativeButton(negativeButton) { _, _ -> negativeAction() }
             .show()
     }
+
+    fun showActionDialog(
+        context: Context?,
+        title: Int,
+        message: Int,
+        positiveButton: Int,
+        positiveAction: () -> Unit
+    ) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            .show()
+    }
 }
