@@ -1,10 +1,8 @@
 package com.zen.alchan
 
 import android.app.Application
-import com.zen.alchan.data.datasource.MediaListDataSource
-import com.zen.alchan.data.datasource.MediaListDataSourceImpl
-import com.zen.alchan.data.datasource.UserDataSource
-import com.zen.alchan.data.datasource.UserDataSourceImpl
+import com.google.gson.Gson
+import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.network.ApolloHandler
 import com.zen.alchan.data.network.HeaderInterceptor
@@ -12,12 +10,13 @@ import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.MainViewModel
-import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
 import com.zen.alchan.ui.animelist.list.AnimeListItemViewModel
 import com.zen.alchan.ui.animelist.AnimeListViewModel
+import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
 import com.zen.alchan.ui.auth.LoginViewModel
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.auth.SplashViewModel
+import com.zen.alchan.ui.general.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
@@ -34,43 +33,38 @@ import org.koin.dsl.module
 class ALchanApplication : Application() {
 
     private val appModules = module {
-        single<LocalStorage> { LocalStorageImpl(this@ALchanApplication.applicationContext, Constant.SHARED_PREFERENCES_NAME) }
+        val gson = Gson()
+
+        single<LocalStorage> { LocalStorageImpl(this@ALchanApplication.applicationContext, Constant.SHARED_PREFERENCES_NAME, gson) }
         single<AppSettingsManager> { AppSettingsManagerImpl(get()) }
         single<UserManager> { UserManagerImpl(get()) }
+        single<MediaManager> { MediaManagerImpl(get()) }
 
         single<HeaderInterceptor> { HeaderInterceptorImpl(get()) }
         single { ApolloHandler(get()) }
 
         single<UserDataSource> { UserDataSourceImpl(get()) }
         single<MediaListDataSource> { MediaListDataSourceImpl(get()) }
+        single<MediaDataSource> { MediaDataSourceImpl(get()) }
 
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
         single<AppSettingsRepository> { AppSettingsRepositoryImpl(get())}
-        single<MediaListRepository> { MediaListRepositoryImpl(get(), get()) }
+        single<MediaListRepository> { MediaListRepositoryImpl(get(), get(), gson) }
+        single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
 
         viewModel { BaseViewModel(get()) }
+        viewModel { MediaFilterViewModel(get(), get(), gson) }
 
         viewModel { SplashViewModel(get()) }
         viewModel { LoginViewModel(get()) }
 
         viewModel { MainViewModel(get(), get()) }
 
-        viewModel { HomeViewModel(get(), get()) }
+        viewModel { HomeViewModel(get(), get(), get()) }
 
-        viewModel { AnimeListViewModel(get()) }
-        viewModel {
-            AnimeListItemViewModel(
-                get(),
-                get(),
-                get()
-            )
-        }
-        viewModel {
-            AnimeListEditorViewModel(
-                get()
-            )
-        }
+        viewModel { AnimeListViewModel(get(), gson) }
+        viewModel { AnimeListItemViewModel(get(), get(), gson) }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }

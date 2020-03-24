@@ -15,4 +15,7 @@ interface LocalStorage {
 
     var viewerData: User?
     var viewerDataLastRetrieved: Long?
+
+    var genreList: List<String>?
+    var genreListLastRetrieved: Long?
 }

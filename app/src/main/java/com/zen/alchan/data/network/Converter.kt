@@ -234,11 +234,20 @@ object Converter {
         return Media(
             id = media.id(),
             title = convertMediaTitle(mediaTitle = media.title()!!),
+            type = media.type(),
             format = media.format(),
             status = media.status(),
+            startDate = if (media.startDate() != null) convertFuzzyDate(media.startDate()!!) else null,
+            season = media.season(),
+            seasonYear = media.seasonYear(),
             episodes = media.episodes(),
-            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            countryOfOrigin = media.countryOfOrigin(),
+            source = media.source(),
             isFavourite = media.isFavourite,
+            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            genres = media.genres(),
+            averageScore = media.averageScore(),
+            popularity = media.popularity(),
             isAdult = media.isAdult,
             nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null,
             siteUrl = null
@@ -249,11 +258,20 @@ object Converter {
         return Media(
             id = media.id(),
             title = convertMediaTitle(mediaTitle = media.title()!!),
+            type = media.type(),
             format = media.format(),
             status = media.status(),
+            startDate = if (media.startDate() != null) convertFuzzyDate(media.startDate()!!) else null,
+            season = media.season(),
+            seasonYear = media.seasonYear(),
             episodes = media.episodes(),
-            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
             isFavourite = media.isFavourite,
+            countryOfOrigin = media.countryOfOrigin(),
+            source = media.source(),
+            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            genres = media.genres(),
+            averageScore = media.averageScore(),
+            popularity = media.popularity(),
             isAdult = media.isAdult,
             nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null,
             siteUrl = media.siteUrl()
@@ -321,6 +339,22 @@ object Converter {
     }
 
     fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.StartDate): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.StartDate): FuzzyDate {
         return FuzzyDate(
             fuzzyDate.year(),
             fuzzyDate.month(),

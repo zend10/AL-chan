@@ -28,6 +28,6 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
             }
             finish()
-        }, 2000)
+        }, 1000)
     }
 }

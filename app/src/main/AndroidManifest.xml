@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.animelist.editor.AnimeListEditorActivity"></activity>
+        <activity android:name=".ui.animelist.filter.FilterAnimeListActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.auth.LoginActivity">

@@ -103,4 +103,17 @@
     <string name="set">Set</string>
     <string name="advanced_scoring">Advanced Scoring</string>
     <string name="set_score">Set Score</string>
+    <string name="sort">Sort</string>
+    <string name="filters">Filters</string>
+    <string name="format">Format</string>
+    <string name="year">Year</string>
+    <string name="season">Season</string>
+    <string name="country">Country</string>
+    <string name="status">Status</string>
+    <string name="source">Source</string>
+    <string name="genres">Genres</string>
+    <string name="tags">Tags</string>
+    <string name="hide_anime_on_my_list">Hide Anime on my list</string>
+    <string name="only_show_anime_on_my_list">Only show Anime on my list</string>
+    <string name="apply">Apply</string>
 </resources>

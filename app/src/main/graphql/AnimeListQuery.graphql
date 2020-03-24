@@ -32,6 +32,7 @@ query AnimeListQuery(
             title {
                 userPreferred
             }
+            type
             format
             status
             episodes

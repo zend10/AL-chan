@@ -14,16 +14,20 @@ import androidx.viewpager.widget.ViewPager
 import com.google.gson.Gson
 
 import com.zen.alchan.R
+import com.zen.alchan.data.response.MediaListCollection
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.general.MediaFilterBottomSheet
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_anime_list.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaType
 
 /**
  * A simple [Fragment] subclass.
@@ -73,17 +77,27 @@ class AnimeListFragment : Fragment() {
             }
         })
 
+        itemFilter.setOnMenuItemClickListener {
+            val filterDialog = MediaFilterBottomSheet()
+            filterDialog.setListener(object : MediaFilterBottomSheet.MediaFilterListener {
+                override fun passFilterData(filterData: MediaFilteredData?) {
+                    viewModel.setFilteredData(filterData)
+                    initLayout()
+                }
+            })
+            val bundle = Bundle()
+            bundle.putString(MediaFilterBottomSheet.BUNDLE_MEDIA_TYPE, MediaType.ANIME.name)
+            bundle.putString(MediaFilterBottomSheet.BUNDLE_FILTERED_DATA, viewModel.gson.toJson(viewModel.filteredData))
+            filterDialog.arguments = bundle
+            filterDialog.show(childFragmentManager, null)
+            true
+        }
+
         setupObserver()
         initLayout()
     }
 
     private fun setupObserver() {
-//        viewModel.animeListData.observe(viewLifecycleOwner, Observer {
-//            if (it != null) {
-//                initLayout()
-//            }
-//        })
-
         viewModel.animeListDataResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> {

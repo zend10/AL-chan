@@ -5,11 +5,15 @@ import com.google.gson.Gson
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
+import com.zen.alchan.helper.utils.Utility
 
-class LocalStorageImpl(private val context: Context, private val sharedPreferencesName: String) : LocalStorage {
+class LocalStorageImpl(private val context: Context,
+                       private val sharedPreferencesName: String,
+                       private val gson: Gson
+) : LocalStorage {
 
-    private val gson = Gson()
     private val sharedPreferences = context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
 
     companion object {
@@ -20,6 +24,8 @@ class LocalStorageImpl(private val context: Context, private val sharedPreferenc
         private const val PUSH_NOTIFICATIONS_SETTINGS = "pushNotificationsSettings"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
+        private const val GENRE_LIST = "genreList"
+        private const val GENRE_LIST_LAST_RETRIEVED = "genreListLastRetrieved"
     }
 
     override var bearerToken: String?
@@ -49,6 +55,14 @@ class LocalStorageImpl(private val context: Context, private val sharedPreferenc
     override var viewerDataLastRetrieved: Long?
         get() = getData(VIEWER_DATA_LAST_RETRIEVED)?.toLong()
         set(value) { setData(VIEWER_DATA_LAST_RETRIEVED, value.toString()) }
+
+    override var genreList: List<String>?
+        get() = gson.fromJson(getData(GENRE_LIST), genericType<List<String>>())
+        set(value) { setData(GENRE_LIST, gson.toJson(value)) }
+
+    override var genreListLastRetrieved: Long?
+        get() = getData(GENRE_LIST_LAST_RETRIEVED)?.toLong()
+        set(value) { setData(GENRE_LIST_LAST_RETRIEVED, value.toString()) }
 
     private fun getData(key: String): String? {
         return sharedPreferences.getString(key, null)

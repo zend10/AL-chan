@@ -56,15 +56,28 @@ mutation AnimeListEntryMutation(
             title {
                 userPreferred
             }
+            type
             format
             status
+            startDate {
+                year
+                month
+                day
+            }
+            season
+            seasonYear
             episodes
+            countryOfOrigin
+            source
             isFavourite
-            isAdult
             coverImage {
                 extraLarge
                 large
             }
+            genres
+            averageScore
+            popularity
+            isAdult
             nextAiringEpisode {
                 id
                 airingAt

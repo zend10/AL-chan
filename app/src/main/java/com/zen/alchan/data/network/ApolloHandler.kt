@@ -20,5 +20,6 @@ class ApolloHandler(private val headerInterceptor: HeaderInterceptor) {
         .serverUrl(Constant.ANILIST_API_URL)
         .okHttpClient(okHttpClient)
         .addCustomTypeAdapter(CustomType.JSON, JsonAdapter())
+        .addCustomTypeAdapter(CustomType.COUNTRYCODE, CountryCodeAdapter())
         .build()
 }

@@ -3,6 +3,7 @@ package com.zen.alchan.helper
 import android.app.Activity
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
+import com.google.gson.reflect.TypeToken
 import com.zen.alchan.data.response.FuzzyDate
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -38,3 +39,9 @@ fun FuzzyDate?.toMillis(): Long? {
 
     return calendar.timeInMillis
 }
+
+fun String?.replaceUnderscore(): String {
+    return this?.replace("_", " ") ?: ""
+}
+
+inline fun <reified T> genericType() = object: TypeToken<T>() {}.type

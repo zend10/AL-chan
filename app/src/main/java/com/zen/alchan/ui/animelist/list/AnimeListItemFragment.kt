@@ -12,9 +12,9 @@ import com.google.gson.Gson
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.AnimeListFragment
-import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.general.SetProgressDialog
 import com.zen.alchan.ui.general.SetScoreDialog
 import io.reactivex.disposables.Disposable
@@ -39,8 +39,6 @@ class AnimeListItemFragment : Fragment() {
 
     private var disposable: Disposable? = null
     private var searchKeyWord = ""
-
-    private val gson = Gson()
 
     companion object {
         const val BUNDLE_ANIME_LIST_STATUS = "animeListStatus"
@@ -140,17 +138,18 @@ class AnimeListItemFragment : Fragment() {
             object :
                 AnimeListRvAdapter.AnimeListListener {
                 override fun openEditor(entryId: Int) {
-                    val intent = Intent(activity, AnimeListEditorActivity::class.java)
-                    intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, entryId)
-                    intent.putExtra(AnimeListEditorActivity.INTENT_SELECTED_STATUS, viewModel.selectedStatus)
-                    startActivity(intent)
+
+//                    val intent = Intent(activity, AnimeListEditorActivity::class.java)
+//                    intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, entryId)
+//                    intent.putExtra(AnimeListEditorActivity.INTENT_SELECTED_STATUS, viewModel.selectedStatus)
+//                    startActivity(intent)
                 }
 
                 override fun openScoreDialog(mediaList: MediaList) {
                     val setScoreDialog = SetScoreDialog()
                     val bundle = Bundle()
                     bundle.putString(SetScoreDialog.BUNDLE_SCORE_FORMAT, viewModel.scoreFormat.name)
-                    bundle.putString(SetScoreDialog.BUNDLE_MEDIA_LIST, gson.toJson(mediaList))
+                    bundle.putString(SetScoreDialog.BUNDLE_MEDIA_LIST, viewModel.gson.toJson(mediaList))
                     bundle.putStringArrayList(SetScoreDialog.BUNDLE_ADVANCED_SCORING, viewModel.advancedScoringList)
                     setScoreDialog.arguments = bundle
                     setScoreDialog.setListener(object : SetScoreDialog.SetScoreListener {
@@ -164,7 +163,7 @@ class AnimeListItemFragment : Fragment() {
                 override fun openProgressDialog(mediaList: MediaList) {
                     val setProgressDialog = SetProgressDialog()
                     val bundle = Bundle()
-                    bundle.putString(SetProgressDialog.BUNDLE_MEDIA_LIST, gson.toJson(mediaList))
+                    bundle.putString(SetProgressDialog.BUNDLE_MEDIA_LIST, viewModel.gson.toJson(mediaList))
                     setProgressDialog.arguments = bundle
                     setProgressDialog.setListener(object : SetProgressDialog.SetProgressListener {
                         override fun passProgress(newProgress: Int) {

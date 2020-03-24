@@ -3,6 +3,7 @@ package com.zen.alchan.helper.utils
 import android.content.Context
 import android.util.TypedValue
 import android.widget.Toast
+import com.google.gson.reflect.TypeToken
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.helper.enums.AppColorTheme
@@ -13,6 +14,10 @@ object Utility {
 
     fun getCurrentTimestamp(): Long {
         return Calendar.getInstance().timeInMillis
+    }
+
+    fun getCurrentYear(): Int {
+        return Calendar.getInstance().get(Calendar.YEAR)
     }
 
     fun timeDiffMoreThanOneDay(timeInMillis: Long?): Boolean {

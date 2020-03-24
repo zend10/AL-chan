@@ -80,6 +80,7 @@ dependencies {
 
 apollo {
     customTypeMapping = [
-            "Json"       : "java.lang.Object"
+            "Json": "java.lang.Object",
+            "CountryCode": "java.lang.String"
     ]
 }
