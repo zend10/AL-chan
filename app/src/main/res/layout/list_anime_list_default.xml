@@ -105,12 +105,20 @@
                 app:layout_constraintStart_toEndOf="@id/animeStarIcon"
                 app:layout_constraintTop_toTopOf="@id/animeProgressText"
                 app:layout_constraintBottom_toBottomOf="@id/animeProgressText"
-                app:layout_constraintEnd_toStartOf="@id/animeProgressText"
+                app:layout_constraintEnd_toStartOf="@id/dummySpace"
                 android:layout_marginEnd="@dimen/marginNormal"
                 android:padding="@dimen/marginNormal"
-                android:text="Rating"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+            <View
+                android:id="@+id/dummySpace"
+                app:layout_constraintTop_toTopOf="@id/animeProgressText"
+                app:layout_constraintBottom_toBottomOf="@id/animeProgressText"
+                app:layout_constraintStart_toEndOf="@id/animeRatingText"
+                app:layout_constraintEnd_toStartOf="@id/animeProgressText"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/animeProgressBar"

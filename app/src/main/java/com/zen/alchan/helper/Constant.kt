@@ -18,6 +18,8 @@ object Constant {
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
 
+    const val DEFAULT_DATE_FORMAT = "dd MMM yyyy"
+
     val DEFAULT_THEME = AppColorTheme.YELLOW
     val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(
         "Watching",

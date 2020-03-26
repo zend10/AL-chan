@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -25,24 +26,24 @@ class SetScoreDialog : DialogFragment() {
         fun passScore(newScore: Double, newAdvancedScores: List<Double>?)
     }
 
-    private lateinit var listener: SetScoreListener
+    private var listener: SetScoreListener? = null
     private val gson = Gson()
 
     private lateinit var scoreFormat: ScoreFormat
-    private lateinit var mediaList: MediaList
     private lateinit var advancedScoring: ArrayList<String>
 
     private lateinit var dialogView: View
     private var currentScore: Double? = null
     private var currentAdvancedScores: ArrayList<Double>? = null
 
-    private var advancedStoresList = ArrayList<AdvancedScoresItem>()
+    private var advancedScoresList = ArrayList<AdvancedScoresItem>()
     private var smileyList = ArrayList<ImageView>()
 
     companion object {
         const val BUNDLE_SCORE_FORMAT = "scoreFormat"
-        const val BUNDLE_MEDIA_LIST = "mediaList"
         const val BUNDLE_ADVANCED_SCORING = "advancedScoring"
+        const val BUNDLE_CURRENT_SCORE = "currentScore"
+        const val BUNDLE_ADVANCED_SCORES_LIST = "advancedScoresList"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -50,17 +51,14 @@ class SetScoreDialog : DialogFragment() {
         dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_set_score, setScoreDialogLayout, false)
 
         scoreFormat = ScoreFormat.valueOf(arguments?.getString(BUNDLE_SCORE_FORMAT)!!)
-        mediaList = gson.fromJson(arguments?.getString(BUNDLE_MEDIA_LIST), MediaList::class.java)
         advancedScoring = arguments?.getStringArrayList(BUNDLE_ADVANCED_SCORING)!!
-
-        currentScore = mediaList.score
+        currentScore = arguments?.getDouble(BUNDLE_CURRENT_SCORE)
+        advancedScoresList = gson.fromJson(arguments?.getString(BUNDLE_ADVANCED_SCORES_LIST), genericType<List<AdvancedScoresItem>>())
 
         if (scoreFormat == ScoreFormat.POINT_100 || scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
             currentAdvancedScores = ArrayList()
-            val advancedScoresMap = (mediaList.advancedScores as Map<*, *>)["value"] as LinkedTreeMap<String, Double>
-            advancedScoresMap.forEach { (key, value) ->
-                advancedStoresList.add(AdvancedScoresItem(key, value))
-                currentAdvancedScores?.add(value)
+            advancedScoresList.forEach {
+                currentAdvancedScores?.add(it.score)
             }
         }
 
@@ -82,9 +80,13 @@ class SetScoreDialog : DialogFragment() {
 
                 if (handleScore()) {
                     dismiss()
-                    listener.passScore(currentScore!!, currentAdvancedScores)
+                    listener?.passScore(currentScore!!, currentAdvancedScores)
                 }
             }
+        }
+
+        if (listener == null) {
+            dismiss()
         }
 
         return alertDialog
@@ -152,7 +154,7 @@ class SetScoreDialog : DialogFragment() {
     }
 
     private fun assignAdvancedScoringAdapter(): AdvancedScoringRvAdapter {
-        return AdvancedScoringRvAdapter(advancedStoresList, object : AdvancedScoringRvAdapter.AdvancedScoringListener {
+        return AdvancedScoringRvAdapter(advancedScoresList, object : AdvancedScoringRvAdapter.AdvancedScoringListener {
             override fun passScores(index: Int, newScore: Double) {
                 if (scoreFormat == ScoreFormat.POINT_100) {
                     currentAdvancedScores!![index] = if (newScore > 100) {

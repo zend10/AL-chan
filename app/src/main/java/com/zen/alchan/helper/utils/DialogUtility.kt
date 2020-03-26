@@ -32,6 +32,23 @@ object DialogUtility {
             .show()
     }
 
+    fun showOptionDialog(
+        context: Context?,
+        title: Int,
+        message: String,
+        positiveButton: Int,
+        positiveAction: () -> Unit,
+        negativeButton: Int,
+        negativeAction: () -> Unit
+    ) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            .setNegativeButton(negativeButton) { _, _ -> negativeAction() }
+            .show()
+    }
+
     fun showInfoDialog(context: Context?, message: Int) {
         MaterialAlertDialogBuilder(context)
             .setMessage(message)

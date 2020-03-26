@@ -4,6 +4,7 @@ import ViewerQuery
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.MediaListOptions
 import com.zen.alchan.data.response.MediaListTypeOptions
+import io.reactivex.Completable
 import io.reactivex.Observable
 import type.ScoreFormat
 import type.UserTitleLanguage
@@ -23,4 +24,12 @@ interface UserDataSource {
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions
     ): Observable<Response<ListSettingsMutation.Data>>
+
+    fun toggleFavourite(
+        animeId: Int?,
+        mangaId: Int?,
+        characterId: Int?,
+        staffId: Int?,
+        studioId: Int?
+    ): Completable
 }

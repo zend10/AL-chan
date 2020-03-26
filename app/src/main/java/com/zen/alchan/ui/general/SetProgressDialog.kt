@@ -18,21 +18,23 @@ class SetProgressDialog : DialogFragment() {
         fun passProgress(newProgress: Int)
     }
 
-    private lateinit var listener: SetProgressListener
-    private val gson = Gson()
+    private var listener: SetProgressListener? = null
 
     companion object {
-        const val BUNDLE_MEDIA_LIST = "mediaList"
+        const val BUNDLE_CURRENT_PROGRESS = "currentProgress"
+        const val BUNDLE_TOTAL_EPISODES = "totalEpisodes"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)
         val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_set_progress, setProgressDialogLayout, false)
 
-        val mediaList = gson.fromJson(arguments?.getString(BUNDLE_MEDIA_LIST), MediaList::class.java)
+        val currentProgress = arguments?.getInt(BUNDLE_CURRENT_PROGRESS)
+        var totalEpisodes = arguments?.getInt(BUNDLE_TOTAL_EPISODES)
+        if (totalEpisodes == 0) { totalEpisodes = null }
 
-        dialogView.currentProgressText.text = mediaList.progress?.toString()
-        dialogView.episodeCountText.text = "/ ${if (mediaList.media?.episodes != null) mediaList.media?.episodes?.toString() else "?"}"
+        dialogView.currentProgressText.text = currentProgress.toString()
+        dialogView.episodeCountText.text = "/ ${if (totalEpisodes != null) totalEpisodes.toString() else "?"}"
 
         builder.setTitle(R.string.set_progress)
         builder.setPositiveButton(R.string.set) { _, _ ->
@@ -47,14 +49,18 @@ class SetProgressDialog : DialogFragment() {
                 newProgress = UShort.MAX_VALUE.toInt()
             }
 
-            if (mediaList.media?.episodes != null && newProgress > mediaList.media?.episodes!!) {
-                newProgress = mediaList.media?.episodes!!
+            if (totalEpisodes != null && newProgress > totalEpisodes) {
+                newProgress = totalEpisodes
             }
 
-            listener.passProgress(newProgress)
+            listener?.passProgress(newProgress)
         }
         builder.setNegativeButton(R.string.cancel, null)
         builder.setView(dialogView)
+
+        if (listener == null) {
+            dismiss()
+        }
 
         return builder.create()
     }

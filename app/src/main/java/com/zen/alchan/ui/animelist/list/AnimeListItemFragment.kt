@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.AnimeListFragment
+import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.general.SetProgressDialog
 import com.zen.alchan.ui.general.SetScoreDialog
 import io.reactivex.disposables.Disposable
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_anime_list_item.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
+import type.ScoreFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -138,19 +142,27 @@ class AnimeListItemFragment : Fragment() {
             object :
                 AnimeListRvAdapter.AnimeListListener {
                 override fun openEditor(entryId: Int) {
-
-//                    val intent = Intent(activity, AnimeListEditorActivity::class.java)
-//                    intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, entryId)
-//                    intent.putExtra(AnimeListEditorActivity.INTENT_SELECTED_STATUS, viewModel.selectedStatus)
-//                    startActivity(intent)
+                    val intent = Intent(activity, AnimeListEditorActivity::class.java)
+                    intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, entryId)
+                    startActivity(intent)
                 }
 
                 override fun openScoreDialog(mediaList: MediaList) {
                     val setScoreDialog = SetScoreDialog()
                     val bundle = Bundle()
                     bundle.putString(SetScoreDialog.BUNDLE_SCORE_FORMAT, viewModel.scoreFormat.name)
-                    bundle.putString(SetScoreDialog.BUNDLE_MEDIA_LIST, viewModel.gson.toJson(mediaList))
+                    bundle.putDouble(SetScoreDialog.BUNDLE_CURRENT_SCORE, mediaList.score ?: 0.0)
                     bundle.putStringArrayList(SetScoreDialog.BUNDLE_ADVANCED_SCORING, viewModel.advancedScoringList)
+
+                    if (viewModel.scoreFormat == ScoreFormat.POINT_10_DECIMAL || viewModel.scoreFormat == ScoreFormat.POINT_100) {
+                        val advancedScoresMap = (mediaList.advancedScores as Map<*, *>)["value"] as LinkedTreeMap<String, Double>
+                        val advancedScoresList = ArrayList<AdvancedScoresItem>()
+                        advancedScoresMap.forEach { (key, value) ->
+                            advancedScoresList.add(AdvancedScoresItem(key, value))
+                        }
+                        bundle.putString(SetScoreDialog.BUNDLE_ADVANCED_SCORES_LIST, viewModel.gson.toJson(advancedScoresList))
+                    }
+
                     setScoreDialog.arguments = bundle
                     setScoreDialog.setListener(object : SetScoreDialog.SetScoreListener {
                         override fun passScore(newScore: Double, newAdvancedScores: List<Double>?) {
@@ -163,7 +175,10 @@ class AnimeListItemFragment : Fragment() {
                 override fun openProgressDialog(mediaList: MediaList) {
                     val setProgressDialog = SetProgressDialog()
                     val bundle = Bundle()
-                    bundle.putString(SetProgressDialog.BUNDLE_MEDIA_LIST, viewModel.gson.toJson(mediaList))
+                    bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progress ?: 0)
+                    if (mediaList.media?.episodes != null) {
+                        bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, mediaList.media?.episodes!!)
+                    }
                     setProgressDialog.arguments = bundle
                     setProgressDialog.setListener(object : SetProgressDialog.SetProgressListener {
                         override fun passProgress(newProgress: Int) {

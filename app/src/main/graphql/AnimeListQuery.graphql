@@ -1,8 +1,10 @@
 query AnimeListQuery(
-    $id: Int
+    $id: Int,
+    $userId: Int
 ) {
     MediaList(
-        id: $id
+        id: $id,
+        userId: $userId
     ) {
         id
         status

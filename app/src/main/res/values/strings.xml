@@ -116,4 +116,23 @@
     <string name="hide_anime_on_my_list">Hide Anime on my list</string>
     <string name="only_show_anime_on_my_list">Only show Anime on my list</string>
     <string name="apply">Apply</string>
+    <string name="general">General</string>
+    <string name="score">Score</string>
+    <string name="progress">Progress</string>
+    <string name="start_date">Start Date</string>
+    <string name="finish_date">Finish Date</string>
+    <string name="total_rewatches">Total Rewatches</string>
+    <string name="notes">Notes</string>
+    <string name="custom_lists">Custom Lists</string>
+    <string name="others">Others</string>
+    <string name="hide_from_status_lists">Hide from status lists</string>
+    <string name="private_">Private</string>
+    <string name="remove_from_list">Remove from list</string>
+    <string name="anime_list_editor">Anime List Editor</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_remove_this_entry_from_your_list">Are you sure you want to remove this entry from your list?</string>
+    <string name="open_media_page">Open Media Page</string>
+    <string name="open">Open</string>
+    <string name="change_saved">Change saved.</string>
+    <string name="entry_deleted">Entry deleted.</string>
 </resources>

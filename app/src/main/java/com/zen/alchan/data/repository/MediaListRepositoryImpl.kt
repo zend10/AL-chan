@@ -9,7 +9,7 @@ import com.zen.alchan.data.datasource.MediaListDataSource
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
-import com.zen.alchan.data.response.Media
+import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.data.response.MediaListCollection
 import com.zen.alchan.data.response.MediaListGroup
@@ -30,6 +30,10 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
     override val animeListDataResponse: LiveData<Resource<Boolean>>
         get() = _animeListDataResponse
 
+    private val _animeListDataDetailResponse = SingleLiveEvent<Resource<MediaList>>()
+    override val animeListDataDetailResponse: LiveData<Resource<MediaList>>
+        get() = _animeListDataDetailResponse
+
     private val _animeListData = MutableLiveData<MediaListCollection>()
     override val animeListData: LiveData<MediaListCollection>
         get() = _animeListData
@@ -38,9 +42,17 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
     override val updateAnimeListEntryResponse: LiveData<Resource<Boolean>>
         get() = _updateAnimeListEntryResponse
 
+    private val _updateAnimeListEntryDetailResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val updateAnimeListEntryDetailResponse: LiveData<Resource<Boolean>>
+        get() = _updateAnimeListEntryDetailResponse
+
+    private val _deleteMediaListEntryResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val deleteMediaListEntryResponse: LiveData<Resource<Boolean>>
+        get() = _deleteMediaListEntryResponse
+
     override var filteredData: MediaFilteredData? = null
 
-    // before filtered and sorted
+    // to store anime list before filtered and sorted
     private var rawAnimeList: MediaListCollection? = null
 
     @SuppressLint("CheckResult")
@@ -65,6 +77,33 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onError(e: Throwable) {
                 _animeListDataResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun retrieveAnimeListDataDetail(entryId: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        _animeListDataDetailResponse.postValue(Resource.Loading())
+
+        mediaListDataSource.getAnimeListDataDetail(entryId, userManager.viewerData?.id!!).subscribeWith(object : Observer<Response<AnimeListQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<AnimeListQuery.Data>) {
+                if (t.hasErrors()) {
+                    _animeListDataDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _animeListDataDetailResponse.postValue(Resource.Success(Converter.convertMediaList(t.data()?.MediaList()!!)))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _animeListDataDetailResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }
@@ -114,9 +153,13 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         })
     }
 
-    private fun handleUpdateAnimeEntryResult(t: Response<AnimeListEntryMutation.Data>, originStatus: MediaListStatus? = null) {
+    private fun handleUpdateAnimeEntryResult(t: Response<AnimeListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false) {
         if (t.hasErrors()) {
-            _updateAnimeListEntryResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+            if (isUpdateDetail) {
+                _updateAnimeListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+            } else {
+                _updateAnimeListEntryResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+            }
         } else {
             var editedEntriesIndex: Int? = null
             var editedListsIndex: Int? = null
@@ -139,7 +182,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
                     val tempNextAiringEp =  newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode
 
-                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaListFromAnimeListMutation(t.data()?.SaveMediaListEntry()!!)
+                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data()?.SaveMediaListEntry()!!)
 
                     // Needed because bugs in AniList where mutation won't return NextAiringEpisode
                     if (tempNextAiringEp != null) {
@@ -155,7 +198,11 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                 }
             }
 
-            _updateAnimeListEntryResponse.postValue(Resource.Success(true))
+            if (isUpdateDetail) {
+                _updateAnimeListEntryDetailResponse.postValue(Resource.Success(true))
+            } else {
+                _updateAnimeListEntryResponse.postValue(Resource.Success(true))
+            }
         }
     }
 
@@ -287,5 +334,67 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         if (isStopLoading) {
             _animeListDataResponse.postValue(Resource.Success(true))
         }
+    }
+
+    @SuppressLint("CheckResult")
+    override fun updateAnimeList(
+        entryId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    ) {
+        _updateAnimeListEntryDetailResponse.postValue(Resource.Loading())
+
+        mediaListDataSource.updateAnimeList(
+            entryId, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+        ).subscribeWith(object : Observer<Response<AnimeListEntryMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<AnimeListEntryMutation.Data>) {
+                handleUpdateAnimeEntryResult(t, status, isUpdateDetail = true)
+            }
+
+            override fun onError(e: Throwable) {
+                _updateAnimeListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun deleteMediaList(entryId: Int) {
+        _deleteMediaListEntryResponse.postValue(Resource.Loading())
+
+        mediaListDataSource.deleteMediaList(entryId).subscribeWith(object : Observer<Response<DeleteMediaListEntryMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<DeleteMediaListEntryMutation.Data>) {
+                if (t.hasErrors()) {
+                    _deleteMediaListEntryResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    if (t.data()?.DeleteMediaListEntry()?.deleted() == true) {
+                        retrieveAnimeListData()
+                        _deleteMediaListEntryResponse.postValue(Resource.Success(true))
+                    } else {
+                        _deleteMediaListEntryResponse.postValue(Resource.Error("Failed to delete this entry. Maybe try refreshing and try again."))
+                    }
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _deleteMediaListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
     }
 }

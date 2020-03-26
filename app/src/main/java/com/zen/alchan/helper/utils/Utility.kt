@@ -6,8 +6,11 @@ import android.widget.Toast
 import com.google.gson.reflect.TypeToken
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.toMillis
 import type.ScoreFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 object Utility {

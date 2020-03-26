@@ -11,6 +11,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.ScoreFormat
@@ -39,6 +40,10 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     private val _updateListSettingsResponse = SingleLiveEvent<Resource<Boolean>>()
     override val updateListSettingsResponse: LiveData<Resource<Boolean>>
         get() = _updateListSettingsResponse
+
+    private val _toggleFavouriteResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val toggleFavouriteResponse: LiveData<Resource<Boolean>>
+        get() = _toggleFavouriteResponse
 
     override val viewerDataLastRetrieved: Long?
         get() = userManager.viewerDataLastRetrieved
@@ -137,6 +142,29 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun toggleFavourite(
+        animeId: Int?,
+        mangaId: Int?,
+        characterId: Int?,
+        staffId: Int?,
+        studioId: Int?
+    ) {
+        _toggleFavouriteResponse.postValue(Resource.Loading())
+
+        userDataSource.toggleFavourite(animeId, mangaId, characterId, staffId, studioId).subscribeWith(object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onError(e: Throwable) {
+                _toggleFavouriteResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() {
+                _toggleFavouriteResponse.postValue(Resource.Success(true))
+            }
         })
     }
 }

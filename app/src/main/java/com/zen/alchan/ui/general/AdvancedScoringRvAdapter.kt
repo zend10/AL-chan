@@ -1,6 +1,5 @@
 package com.zen.alchan.ui.general
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.removeTrailingZero
-import kotlinx.android.synthetic.main.list_advanced_scoring.view.*
+import kotlinx.android.synthetic.main.list_advanced_scoring_input.view.*
 
 class AdvancedScoringRvAdapter(private val list: List<AdvancedScoresItem>,
                                private val listener: AdvancedScoringListener
@@ -20,7 +19,7 @@ class AdvancedScoringRvAdapter(private val list: List<AdvancedScoresItem>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_advanced_scoring, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_advanced_scoring_input, parent, false)
         return ViewHolder(view)
     }
 

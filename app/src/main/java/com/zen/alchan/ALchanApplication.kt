@@ -65,6 +65,7 @@ class ALchanApplication : Application() {
 
         viewModel { AnimeListViewModel(get(), gson) }
         viewModel { AnimeListItemViewModel(get(), get(), gson) }
+        viewModel { AnimeListEditorViewModel(get(), get(), gson) }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }

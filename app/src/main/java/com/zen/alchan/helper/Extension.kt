@@ -5,6 +5,7 @@ import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import com.google.gson.reflect.TypeToken
 import com.zen.alchan.data.response.FuzzyDate
+import type.MediaListStatus
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,3 +46,16 @@ fun String?.replaceUnderscore(): String {
 }
 
 inline fun <reified T> genericType() = object: TypeToken<T>() {}.type
+
+fun FuzzyDate?.toStringDateFormat(): String {
+    if (this?.year == null || month == null || day == null) {
+        return "-"
+    }
+
+    val dateFormat = SimpleDateFormat(Constant.DEFAULT_DATE_FORMAT, Locale.US)
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = this.toMillis()!!
+
+    return dateFormat.format(calendar.time)
+}
+

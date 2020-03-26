@@ -14,6 +14,7 @@ interface UserRepository {
 
     val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
     val updateListSettingsResponse: LiveData<Resource<Boolean>>
+    val toggleFavouriteResponse: LiveData<Resource<Boolean>>
 
     val viewerDataLastRetrieved: Long?
 
@@ -22,4 +23,11 @@ interface UserRepository {
 
     fun updateAniListSettings(titleLanguage: UserTitleLanguage, adultContent: Boolean, airingNotifications: Boolean)
     fun updateListSettings(scoreFormat: ScoreFormat, rowOrder: String, animeListOptions: MediaListTypeOptions, mangaListOptions: MediaListTypeOptions)
+    fun toggleFavourite(
+        animeId: Int?,
+        mangaId: Int?,
+        characterId: Int?,
+        staffId: Int?,
+        studioId: Int?
+    )
 }
