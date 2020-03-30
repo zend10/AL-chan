@@ -3,10 +3,8 @@ package com.zen.alchan.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.lifecycle.Observer
 import com.zen.alchan.R
-import com.zen.alchan.helper.enums.ResponseStatus
-import com.zen.alchan.ui.MainActivity
+import com.zen.alchan.ui.main.MainActivity
 import com.zen.alchan.ui.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -2,10 +2,8 @@ package com.zen.alchan.helper
 
 import android.app.Activity
 import android.view.WindowManager
-import androidx.core.app.ActivityCompat
 import com.google.gson.reflect.TypeToken
 import com.zen.alchan.data.response.FuzzyDate
-import type.MediaListStatus
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,3 +57,10 @@ fun FuzzyDate?.toStringDateFormat(): String {
     return dateFormat.format(calendar.time)
 }
 
+fun Int.toHex(): String {
+    return String.format("#%06X", 0xFFFFFF and this)
+}
+
+fun Long.toAlphaHex(): String {
+    return String.format("#%08X", 0xFFFFFFFF and this)
+}

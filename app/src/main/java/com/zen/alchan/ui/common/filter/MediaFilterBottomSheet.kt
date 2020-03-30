@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.general
+package com.zen.alchan.ui.common.filter
 
 import android.app.Dialog
 import android.os.Bundle
@@ -11,9 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.gson.Gson
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.Utility
@@ -91,8 +89,12 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
         dialogView.filterSourceText.text = viewModel.currentData.selectedSource?.name?.replaceUnderscore() ?: "-"
         dialogView.filterYearText.text = viewModel.currentData.selectedYear?.toString() ?: "-"
         dialogView.filterYearSeekBar.progress = if (viewModel.currentData.selectedYear == null) 0 else viewModel.currentData.selectedYear!! - MIN_YEAR
-        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList, LIST_GENRE)
-        dialogView.filterTagRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedTagList, LIST_TAG)
+        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList,
+            LIST_GENRE
+        )
+        dialogView.filterTagRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedTagList,
+            LIST_TAG
+        )
 
         if (viewModel.filteredData != null) {
             dialogView.filterResetButton.visibility = View.VISIBLE
@@ -206,12 +208,16 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
                 .setItems(viewModel.getGenreListStringArray()) { _, which ->
                     if (viewModel.currentData.selectedGenreList.isNullOrEmpty()) {
                         viewModel.currentData.selectedGenreList = arrayListOf(viewModel.genreList[which])
-                        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList, LIST_GENRE)
+                        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList,
+                            LIST_GENRE
+                        )
                         dialogView.filterTagRecyclerView.visibility = View.VISIBLE
                         dialogView.filterTagNoItemText.visibility = View.GONE
                     } else if (!viewModel.currentData.selectedGenreList!!.contains(viewModel.genreList[which])) {
                         viewModel.currentData.selectedGenreList!!.add(viewModel.genreList[which])
-                        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList, LIST_GENRE)
+                        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList,
+                            LIST_GENRE
+                        )
                         dialogView.filterTagRecyclerView.visibility = View.VISIBLE
                         dialogView.filterTagNoItemText.visibility = View.GONE
                     }
@@ -247,25 +253,29 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
             dialogView.filterTagNoItemText.visibility = View.GONE
         }
 
-        return MediaFilterRvAdapter(list ?: ArrayList(), code, object : MediaFilterRvAdapter.MediaFilterListListener {
-            override fun deleteItem(position: Int, code: Int) {
-                if (code == LIST_GENRE) {
-                    viewModel.currentData.selectedGenreList?.removeAt(position)
-                    dialogView.filterGenreRecyclerView.adapter?.notifyDataSetChanged()
-                    if (viewModel.currentData.selectedGenreList.isNullOrEmpty()) {
-                        dialogView.filterGenreRecyclerView.visibility = View.GONE
-                        dialogView.filterGenreNoItemText.visibility = View.VISIBLE
-                    }
-                } else if (code == LIST_TAG) {
-                    viewModel.currentData.selectedTagList?.removeAt(position)
-                    dialogView.filterTagRecyclerView.adapter?.notifyDataSetChanged()
-                    if (viewModel.currentData.selectedGenreList.isNullOrEmpty()) {
-                        dialogView.filterTagRecyclerView.visibility = View.GONE
-                        dialogView.filterTagNoItemText.visibility = View.VISIBLE
+        return MediaFilterRvAdapter(
+            list ?: ArrayList(),
+            code,
+            object :
+                MediaFilterRvAdapter.MediaFilterListListener {
+                override fun deleteItem(position: Int, code: Int) {
+                    if (code == LIST_GENRE) {
+                        viewModel.currentData.selectedGenreList?.removeAt(position)
+                        dialogView.filterGenreRecyclerView.adapter?.notifyDataSetChanged()
+                        if (viewModel.currentData.selectedGenreList.isNullOrEmpty()) {
+                            dialogView.filterGenreRecyclerView.visibility = View.GONE
+                            dialogView.filterGenreNoItemText.visibility = View.VISIBLE
+                        }
+                    } else if (code == LIST_TAG) {
+                        viewModel.currentData.selectedTagList?.removeAt(position)
+                        dialogView.filterTagRecyclerView.adapter?.notifyDataSetChanged()
+                        if (viewModel.currentData.selectedGenreList.isNullOrEmpty()) {
+                            dialogView.filterTagRecyclerView.visibility = View.GONE
+                            dialogView.filterTagNoItemText.visibility = View.VISIBLE
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     fun setListener(mediaFilterListener: MediaFilterListener) {

@@ -9,14 +9,15 @@ import com.zen.alchan.data.network.HeaderInterceptor
 import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.ui.MainViewModel
+import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.animelist.list.AnimeListItemViewModel
 import com.zen.alchan.ui.animelist.AnimeListViewModel
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
 import com.zen.alchan.ui.auth.LoginViewModel
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.auth.SplashViewModel
-import com.zen.alchan.ui.general.MediaFilterViewModel
+import com.zen.alchan.ui.common.customise.CustomiseListViewModel
+import com.zen.alchan.ui.common.filter.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
@@ -39,6 +40,7 @@ class ALchanApplication : Application() {
         single<AppSettingsManager> { AppSettingsManagerImpl(get()) }
         single<UserManager> { UserManagerImpl(get()) }
         single<MediaManager> { MediaManagerImpl(get()) }
+        single<ListStyleManager> { ListStyleManagerImpl(get()) }
 
         single<HeaderInterceptor> { HeaderInterceptorImpl(get()) }
         single { ApolloHandler(get()) }
@@ -52,9 +54,11 @@ class ALchanApplication : Application() {
         single<AppSettingsRepository> { AppSettingsRepositoryImpl(get())}
         single<MediaListRepository> { MediaListRepositoryImpl(get(), get(), gson) }
         single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
+        single<ListStyleRepository> { ListStyleRepositoryImpl(get()) }
 
         viewModel { BaseViewModel(get()) }
         viewModel { MediaFilterViewModel(get(), get(), gson) }
+        viewModel { CustomiseListViewModel(get()) }
 
         viewModel { SplashViewModel(get()) }
         viewModel { LoginViewModel(get()) }
@@ -63,8 +67,8 @@ class ALchanApplication : Application() {
 
         viewModel { HomeViewModel(get(), get(), get()) }
 
-        viewModel { AnimeListViewModel(get(), gson) }
-        viewModel { AnimeListItemViewModel(get(), get(), gson) }
+        viewModel { AnimeListViewModel(get(), get(), gson) }
+        viewModel { AnimeListItemViewModel(get(), get(), get(), gson) }
         viewModel { AnimeListEditorViewModel(get(), get(), gson) }
 
         viewModel { ProfileViewModel(get()) }

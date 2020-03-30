@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
@@ -15,35 +16,33 @@ import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
-import kotlinx.android.synthetic.main.list_anime_list_linear.view.*
+import com.zen.alchan.helper.utils.DialogUtility
+import kotlinx.android.synthetic.main.list_anime_list_grid.view.*
 import type.ScoreFormat
 
-class AnimeListRvAdapter(private val context: Context,
-                         private val list: List<MediaList>,
-                         private val scoreFormat: ScoreFormat,
-                         private val listStyle: ListStyle?,
-                         private val listener: AnimeListListener
-) : RecyclerView.Adapter<AnimeListRvAdapter.ViewHolder>() {
+class AnimeListGridRvAdapter(private val context: Context,
+                             private val list: List<MediaList>,
+                             private val scoreFormat: ScoreFormat,
+                             private val listStyle: ListStyle?,
+                             private val listener: AnimeListListener
+) : RecyclerView.Adapter<AnimeListGridRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_anime_list_linear, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_anime_list_grid, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mediaList = list[position]
 
-        GlideApp.with(context).load(mediaList.media?.coverImage?.large).into(holder.animeCoverImage)
+        GlideApp.with(context).load(mediaList.media?.coverImage?.extraLarge).into(holder.animeCoverImage)
         holder.animeTitleText.text = mediaList.media?.title?.userPreferred
         holder.animeFormatText.text = mediaList.media?.format?.name?.replace('_', ' ')
 
         if (mediaList.media?.nextAiringEpisode != null) {
-            holder.animeAiringDividerIcon.visibility = View.VISIBLE
-            holder.animeAiringDateText.visibility = View.VISIBLE
-            holder.animeAiringDateText.text = "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}"
+            holder.animeAiringLayout.visibility = View.VISIBLE
         } else {
-            holder.animeAiringDividerIcon.visibility = View.GONE
-            holder.animeAiringDateText.visibility = View.GONE
+            holder.animeAiringLayout.visibility = View.GONE
         }
 
         if (scoreFormat == ScoreFormat.POINT_3) {
@@ -56,61 +55,51 @@ class AnimeListRvAdapter(private val context: Context,
             holder.animeRatingText.text = mediaList.score?.removeTrailingZero()
         }
 
-        holder.animeProgressBar.progress = if (mediaList.media?.episodes == null && mediaList.progress!! > 0) {
-            50
-        } else if (mediaList.media?.episodes != null && mediaList.media?.episodes != 0) {
-            (mediaList.progress!!.toDouble() / mediaList.media?.episodes!!.toDouble() * 100).toInt()
-        } else {
-            0
-        }
-
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
-        holder.animeIncrementProgressButton.visibility = if ((mediaList.media?.episodes == null || mediaList.media?.episodes!! > mediaList.progress!!) && mediaList.progress!! < UShort.MAX_VALUE.toInt()) View.VISIBLE else View.GONE
 
-        holder.itemView.setOnClickListener {
-            listener.openEditor(mediaList.id)
+        holder.animeAiringLayout.setOnClickListener {
+            DialogUtility.showToast(
+                context,
+                "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}",
+                Toast.LENGTH_LONG
+            )
         }
 
-        holder.animeIncrementProgressButton.setOnClickListener {
-            listener.incrementProgress(mediaList)
-        }
-
-        holder.animeProgressText.setOnClickListener {
+        holder.animeProgressLayout.setOnClickListener {
             listener.openProgressDialog(mediaList)
         }
 
-        holder.animeRatingText.setOnClickListener {
+        holder.animeScoreLayout.setOnClickListener {
             listener.openScoreDialog(mediaList)
         }
 
-        holder.animeStarIcon.setOnClickListener {
-            listener.openScoreDialog(mediaList)
+        holder.animeCoverImage.setOnClickListener {
+            listener.openEditor(mediaList.id)
         }
 
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
+            
+            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(3)
+            holder.animeTitleLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.animeFormatLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.animeAiringLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
         }
 
         if (listStyle?.primaryColor != null) {
             holder.animeProgressText.setTextColor(Color.parseColor(listStyle.primaryColor))
-            holder.animeIncrementProgressButton.strokeColor = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
-            holder.animeIncrementProgressButton.setTextColor(Color.parseColor(listStyle.primaryColor))
             if (scoreFormat == ScoreFormat.POINT_3) {
                 holder.animeStarIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
             }
         }
 
         if (listStyle?.secondaryColor != null) {
-            holder.animeAiringDateText.setTextColor(Color.parseColor(listStyle.secondaryColor))
-            holder.animeProgressBar.progressTintList = ColorStateList.valueOf(Color.parseColor(listStyle.secondaryColor))
-            val transparentSecondary = listStyle.secondaryColor?.substring(0, 1) + "80" + listStyle.secondaryColor?.substring(1)
-            holder.animeProgressBar.progressBackgroundTintList = ColorStateList.valueOf(Color.parseColor(transparentSecondary))
+            holder.animeAiringIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.secondaryColor))
         }
 
         if (listStyle?.textColor != null) {
             holder.animeTitleText.setTextColor(Color.parseColor(listStyle.textColor))
             holder.animeFormatText.setTextColor(Color.parseColor(listStyle.textColor))
-            holder.animeAiringDividerIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.textColor))
             holder.animeRatingText.setTextColor(Color.parseColor(listStyle.textColor))
         }
     }
@@ -122,14 +111,16 @@ class AnimeListRvAdapter(private val context: Context,
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val listCardBackground = view.listCardBackground!!
         val animeTitleText = view.animeTitleText!!
+        val animeTitleLayout = view.animeTitleLayout!!
         val animeCoverImage = view.animeCoverImage!!
         val animeFormatText = view.animeFormatText!!
-        val animeAiringDividerIcon = view.animeAiringDividerIcon!!
-        val animeAiringDateText = view.animeAiringDateText!!
+        val animeFormatLayout = view.animeFormatLayout!!
+        val animeProgressText = view.animeProgressText!!
+        val animeScoreLayout = view.animeScoreLayout!!
         val animeStarIcon = view.animeStarIcon!!
         val animeRatingText = view.animeRatingText!!
-        val animeProgressBar = view.animeProgressBar!!
-        val animeProgressText = view.animeProgressText!!
-        val animeIncrementProgressButton = view.animeIncrementProgressButton!!
+        val animeProgressLayout = view.animeProgressLayout!!
+        val animeAiringLayout = view.animeAiringLayout!!
+        val animeAiringIcon = view.animeAiringIcon!!
     }
 }

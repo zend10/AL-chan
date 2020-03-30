@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.general
+package com.zen.alchan.ui.common
 
 import android.view.LayoutInflater
 import android.view.View

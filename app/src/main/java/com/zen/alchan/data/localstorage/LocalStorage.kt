@@ -2,6 +2,8 @@ package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.enums.ListType
+import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
 
 interface LocalStorage {
@@ -18,4 +20,7 @@ interface LocalStorage {
 
     var genreList: List<String>?
     var genreListLastRetrieved: Long?
+
+    var animeListStyle: ListStyle?
+    var mangaListStyle: ListStyle?
 }

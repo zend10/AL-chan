@@ -1,20 +1,12 @@
-package com.zen.alchan.ui
+package com.zen.alchan.ui.main
 
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
-import android.view.Window
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.zen.alchan.R
-import com.zen.alchan.helper.changeStatusBarColor
-import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.animelist.AnimeListFragment
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseMainFragmentListener
 import com.zen.alchan.ui.home.HomeFragment
-import com.zen.alchan.ui.main.MainViewPagerAdapter
 import com.zen.alchan.ui.mangalist.MangaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment

@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.general
+package com.zen.alchan.ui.common
 
 import android.app.Dialog
 import android.content.res.ColorStateList
@@ -8,9 +8,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
-import com.google.gson.internal.LinkedTreeMap
 import com.zen.alchan.R
-import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.removeTrailingZero
@@ -53,7 +51,10 @@ class SetScoreDialog : DialogFragment() {
         scoreFormat = ScoreFormat.valueOf(arguments?.getString(BUNDLE_SCORE_FORMAT)!!)
         advancedScoring = arguments?.getStringArrayList(BUNDLE_ADVANCED_SCORING)!!
         currentScore = arguments?.getDouble(BUNDLE_CURRENT_SCORE)
-        advancedScoresList = gson.fromJson(arguments?.getString(BUNDLE_ADVANCED_SCORES_LIST), genericType<List<AdvancedScoresItem>>())
+
+        if (arguments?.getString(BUNDLE_ADVANCED_SCORES_LIST) != null) {
+            advancedScoresList = gson.fromJson(arguments?.getString(BUNDLE_ADVANCED_SCORES_LIST), genericType<List<AdvancedScoresItem>>())
+        }
 
         if (scoreFormat == ScoreFormat.POINT_100 || scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
             currentAdvancedScores = ArrayList()

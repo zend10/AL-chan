@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.media.MediaDetailActivity"></activity>
+        <activity android:name=".ui.common.customise.CustomiseListActivity"></activity>
+        <activity android:name=".ui.media.MediaDetailActivity" />
         <activity android:name=".ui.animelist.editor.AnimeListEditorActivity" />
         <activity android:name=".ui.animelist.filter.FilterAnimeListActivity" />
         <activity android:name=".ui.search.SearchActivity" />
@@ -39,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.main.MainActivity" />
     </application>
 
 </manifest>

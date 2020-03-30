@@ -1,14 +1,10 @@
-package com.zen.alchan.ui.general
+package com.zen.alchan.ui.common
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.google.gson.Gson
 import com.zen.alchan.R
-import com.zen.alchan.data.response.MediaList
 import kotlinx.android.synthetic.main.dialog_set_progress.*
 import kotlinx.android.synthetic.main.dialog_set_progress.view.*
 
@@ -56,6 +52,14 @@ class SetProgressDialog : DialogFragment() {
             listener?.passProgress(newProgress)
         }
         builder.setNegativeButton(R.string.cancel, null)
+
+        if ((totalEpisodes == null || totalEpisodes > currentProgress ?: 0) && currentProgress ?: 0 < UShort.MAX_VALUE.toInt()) {
+            builder.setNeutralButton(R.string.increment) { _, _ ->
+                val newProgress = if (currentProgress == null) 1 else currentProgress + 1
+                listener?.passProgress(newProgress)
+            }
+        }
+
         builder.setView(dialogView)
 
         if (listener == null) {

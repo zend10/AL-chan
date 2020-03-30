@@ -20,7 +20,7 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.ui.MainActivity
+import com.zen.alchan.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

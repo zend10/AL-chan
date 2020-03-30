@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.general
+package com.zen.alchan.ui.common.filter
 
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
@@ -9,9 +9,7 @@ import com.zen.alchan.helper.enums.CountryCode
 import com.zen.alchan.helper.enums.MediaListSort
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.replaceUnderscore
-import io.reactivex.CompletableOnSubscribe
 import type.*
-import java.sql.Struct
 
 class MediaFilterViewModel(private val userRepository: UserRepository,
                            private val mediaRepository: MediaRepository,

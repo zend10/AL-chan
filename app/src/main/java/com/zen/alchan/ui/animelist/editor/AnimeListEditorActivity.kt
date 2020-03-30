@@ -11,13 +11,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
-import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.lifecycle.Observer
 import com.apollographql.apollo.response.CustomTypeValue
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
-import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
@@ -26,9 +24,9 @@ import com.zen.alchan.helper.pojo.CustomListsItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
-import com.zen.alchan.ui.general.CustomListsRvAdapter
-import com.zen.alchan.ui.general.SetProgressDialog
-import com.zen.alchan.ui.general.SetScoreDialog
+import com.zen.alchan.ui.common.CustomListsRvAdapter
+import com.zen.alchan.ui.common.SetProgressDialog
+import com.zen.alchan.ui.common.SetScoreDialog
 import com.zen.alchan.ui.media.MediaDetailActivity
 import kotlinx.android.synthetic.main.activity_anime_list_editor.*
 import kotlinx.android.synthetic.main.dialog_input.*
@@ -36,7 +34,6 @@ import kotlinx.android.synthetic.main.dialog_input.view.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaListStatus
 import type.ScoreFormat
 import java.util.*
 import kotlin.collections.ArrayList

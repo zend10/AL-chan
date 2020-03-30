@@ -90,21 +90,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/scoreText"
-                        style="?themeRegularClickableFont"
-                        android:text="0"
+                    <RelativeLayout
                         android:layout_weight="2"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:visibility="gone"
-                        android:id="@+id/scoreSmileyIcon"
-                        app:srcCompat="@drawable/ic_puzzled"
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/scoreText"
+                            style="?themeRegularClickableFont"
+                            android:text="0"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:visibility="gone"
+                            android:id="@+id/scoreSmileyIcon"
+                            app:srcCompat="@drawable/ic_puzzled"
+                            app:tint="?themePrimaryColor"
+                            android:layout_width="@dimen/iconSize"
+                            android:layout_height="@dimen/iconSize"/>
+
+                    </RelativeLayout>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

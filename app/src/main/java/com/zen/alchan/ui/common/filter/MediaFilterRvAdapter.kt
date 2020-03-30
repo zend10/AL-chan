@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.general
+package com.zen.alchan.ui.common.filter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +18,9 @@ class MediaFilterRvAdapter(private val list: List<String>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_flexbox_button_cancelable, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(
+            view
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

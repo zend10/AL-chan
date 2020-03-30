@@ -135,4 +135,18 @@
     <string name="open">Open</string>
     <string name="change_saved">Change saved.</string>
     <string name="entry_deleted">Entry deleted.</string>
+    <string name="list_type">List Type</string>
+    <string name="customise_anime_list">Customise Anime List</string>
+    <string name="customise_manga_list">Customise Manga List</string>
+    <string name="increment">Increment</string>
+    <string name="primary_color">Primary Color</string>
+    <string name="secondary_color">Secondary Color</string>
+    <string name="text_color">Text Color</string>
+    <string name="card_color">Card Color</string>
+    <string name="toolbar_color">Toolbar Color</string>
+    <string name="background_color">Background Color</string>
+    <string name="background_image">Background Image</string>
+    <string name="add_image">Add image</string>
+    <string name="no_image_selected">No image selected</string>
+    <string name="this_will_reset_your_anime_list_style_to_default_style">This will reset your Anime List style to default style.</string>
 </resources>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/animeListLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.animelist.AnimeListFragment">
 
@@ -12,19 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <include layout="@layout/layout_toolbar"/>
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/animeListAppBarLayout"
-        android:layout_below="@+id/toolbarLayout"
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_toolbar"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/animeListTabLayout"
             app:tabMode="scrollable"
             app:tabTextAppearance="?themeRegularFont"
-            app:tabBackground="?themeCardColor"
+            app:tabTextColor="?themeContentColor"
             android:backgroundTint="?themeCardColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

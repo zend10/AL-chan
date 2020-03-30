@@ -180,19 +180,28 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/setScore3Sad"
                 app:srcCompat="@drawable/ic_sad"
-                android:layout_width="@dimen/imageCircleSize"
+                android:layout_weight="1"
+                android:maxWidth="@dimen/imageCircleSize"
+                android:maxHeight="@dimen/imageCircleSize"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/imageCircleSize"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/setScore3Neutral"
                 app:srcCompat="@drawable/ic_neutral"
-                android:layout_width="@dimen/imageCircleSize"
+                android:layout_weight="1"
+                android:maxWidth="@dimen/imageCircleSize"
+                android:maxHeight="@dimen/imageCircleSize"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/imageCircleSize"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/setScore3Happy"
                 app:srcCompat="@drawable/ic_happy"
-                android:layout_width="@dimen/imageCircleSize"
+                android:layout_weight="1"
+                android:maxWidth="@dimen/imageCircleSize"
+                android:maxHeight="@dimen/imageCircleSize"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/imageCircleSize"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

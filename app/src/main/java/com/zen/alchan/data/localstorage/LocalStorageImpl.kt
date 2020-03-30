@@ -5,7 +5,9 @@ import com.google.gson.Gson
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.genericType
+import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import com.zen.alchan.helper.utils.Utility
 
@@ -26,6 +28,8 @@ class LocalStorageImpl(private val context: Context,
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
         private const val GENRE_LIST = "genreList"
         private const val GENRE_LIST_LAST_RETRIEVED = "genreListLastRetrieved"
+        private const val ANIME_LIST_STYLE = "animeListStyle"
+        private const val MANGA_LIST_STYLE = "mangaListStyle"
     }
 
     override var bearerToken: String?
@@ -63,6 +67,14 @@ class LocalStorageImpl(private val context: Context,
     override var genreListLastRetrieved: Long?
         get() = getData(GENRE_LIST_LAST_RETRIEVED)?.toLong()
         set(value) { setData(GENRE_LIST_LAST_RETRIEVED, value.toString()) }
+
+    override var animeListStyle: ListStyle?
+        get() = gson.fromJson(getData(ANIME_LIST_STYLE), ListStyle::class.java)
+        set(value) { setData(ANIME_LIST_STYLE, gson.toJson(value)) }
+
+    override var mangaListStyle: ListStyle?
+        get() = gson.fromJson(MANGA_LIST_STYLE, ListStyle::class.java)
+        set(value) { setData(MANGA_LIST_STYLE, gson.toJson(value)) }
 
     private fun getData(key: String): String? {
         return sharedPreferences.getString(key, null)

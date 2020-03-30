@@ -76,6 +76,9 @@ dependencies {
 
     // Koin DI
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
+
+    // Color Picker
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
 }
 
 apollo {

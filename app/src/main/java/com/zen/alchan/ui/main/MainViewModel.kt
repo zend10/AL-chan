@@ -1,4 +1,4 @@
-package com.zen.alchan.ui
+package com.zen.alchan.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository

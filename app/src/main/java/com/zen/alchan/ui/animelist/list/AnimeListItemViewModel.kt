@@ -3,6 +3,7 @@ package com.zen.alchan.ui.animelist.list
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zen.alchan.data.repository.AppSettingsRepository
+import com.zen.alchan.data.repository.ListStyleRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.MediaList
@@ -14,6 +15,7 @@ import type.ScoreFormat
 
 class AnimeListItemViewModel(private val mediaListRepository: MediaListRepository,
                              private val userRepository: UserRepository,
+                             private val listStyleRepository: ListStyleRepository,
                              val gson: Gson
 ) : ViewModel() {
 
@@ -33,6 +35,10 @@ class AnimeListItemViewModel(private val mediaListRepository: MediaListRepositor
         } else {
             ArrayList()
         }
+
+    val animeListStyleLiveData by lazy {
+        listStyleRepository.animeListStyleLiveData
+    }
 
     fun getSelectedList(): ArrayList<MediaList> {
         val selectedList = animeListData.value?.lists?.find { it.name == selectedStatus }?.entries
