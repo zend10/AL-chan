@@ -7,6 +7,7 @@ class MediaList(
     var status: MediaListStatus?,
     var score: Double?,
     var progress: Int?,
+    var progressVolumes: Int?,
     var repeat: Int?,
     var priority: Int?,
     var private: Boolean?,

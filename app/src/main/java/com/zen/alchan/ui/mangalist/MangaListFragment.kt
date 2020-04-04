@@ -1,18 +1,54 @@
 package com.zen.alchan.ui.mangalist
 
 
+import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.signature.ObjectKey
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaListTabItem
+import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
+import com.zen.alchan.ui.common.customise.CustomiseListActivity
+import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
+import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_manga_list.*
+import kotlinx.android.synthetic.main.layout_loading.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaType
 
 /**
  * A simple [Fragment] subclass.
  */
 class MangaListFragment : Fragment() {
+
+    private val viewModel by viewModel<MangaListViewModel>()
+
+    private lateinit var viewPagerAdapter: MangaListViewPagerAdapter
+    private lateinit var itemSearch: MenuItem
+    private lateinit var itemCustomiseList: MenuItem
+    private lateinit var itemFilter: MenuItem
+
+    private lateinit var searchView: SearchView
+    val source = PublishSubject.create<String>() // to send search query to MangaListItemFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,5 +58,167 @@ class MangaListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_manga_list, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
+        toolbarLayout.apply {
+            title = getString(R.string.manga_list)
+            inflateMenu(R.menu.menu_media_list)
+            itemSearch = menu.findItem(R.id.itemSearch)
+            itemCustomiseList = menu.findItem(R.id.itemCustomiseList)
+            itemFilter = menu.findItem(R.id.itemFilter)
+            elevation = 0F
+        }
+
+        searchView = itemSearch.actionView as SearchView
+        searchView.queryHint = getString(R.string.search)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                source.onNext(query ?: "")
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                source.onNext(newText ?: "")
+                return true
+            }
+        })
+
+        itemFilter.setOnMenuItemClickListener {
+            val filterDialog = MediaFilterBottomSheet()
+            filterDialog.setListener(object : MediaFilterBottomSheet.MediaFilterListener {
+                override fun passFilterData(filterData: MediaFilteredData?) {
+                    viewModel.setFilteredData(filterData)
+                    initLayout()
+                }
+            })
+            val bundle = Bundle()
+            bundle.putString(MediaFilterBottomSheet.BUNDLE_MEDIA_TYPE, MediaType.MANGA.name)
+            bundle.putString(MediaFilterBottomSheet.BUNDLE_FILTERED_DATA, viewModel.gson.toJson(viewModel.filteredData))
+            filterDialog.arguments = bundle
+            filterDialog.show(childFragmentManager, null)
+            true
+        }
+
+        itemCustomiseList.setOnMenuItemClickListener {
+            val intent = Intent(activity, CustomiseListActivity::class.java)
+            intent.putExtra(CustomiseListActivity.MEDIA_TYPE, MediaType.MANGA.name)
+            startActivity(intent)
+            true
+        }
+
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.mangaListDataResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> {
+                    mangaListRefreshLayout.isRefreshing = false
+                    loadingLayout.visibility = View.VISIBLE
+                }
+                ResponseStatus.SUCCESS -> {
+                    initLayout()
+                    loadingLayout.visibility = View.GONE
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.mangaListStyleLiveData.observe(viewLifecycleOwner, Observer {
+            initLayout()
+        })
+
+        viewModel.initData()
+    }
+
+    private fun initLayout() {
+        mangaListRefreshLayout.setOnRefreshListener {
+            loadingLayout.visibility = View.VISIBLE
+            viewModel.retrieveMangaListData()
+        }
+
+        val animeList = viewModel.mangaListData.value?.lists
+
+        if (!animeList.isNullOrEmpty()) {
+            viewModel.tabItemList.clear()
+            animeList.forEach { viewModel.tabItemList.add(MediaListTabItem(it.name!!, it.entries?.size!!)) }
+
+            viewPagerAdapter = MangaListViewPagerAdapter(childFragmentManager, viewModel.tabItemList)
+            mangaListViewPager.adapter = viewPagerAdapter
+            mangaListViewPager.offscreenPageLimit = viewPagerAdapter.count
+
+            mangaListTabLayout.setupWithViewPager(mangaListViewPager)
+
+            mangaListViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageSelected(position: Int) {
+                    viewModel.selectedTab = position
+                }
+
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                    // do nothing
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    // do nothing
+                }
+            })
+
+            mangaListViewPager.currentItem = viewModel.selectedTab
+        }
+
+        val listStyle = viewModel.mangaListStyleLiveData.value
+        if (listStyle?.toolbarColor != null) {
+            toolbarLayout.setBackgroundColor(Color.parseColor(listStyle.toolbarColor))
+            toolbarLayout.backgroundTintList = ColorStateList.valueOf(Color.parseColor(listStyle.toolbarColor))
+            mangaListTabLayout.setBackgroundColor(Color.parseColor(listStyle.toolbarColor))
+            mangaListTabLayout.backgroundTintList = ColorStateList.valueOf(Color.parseColor(listStyle.toolbarColor))
+        }
+
+        if (listStyle?.backgroundColor != null) {
+            mangaListLayout.setBackgroundColor(Color.parseColor(listStyle.backgroundColor))
+        }
+
+        if (listStyle?.textColor != null) {
+            toolbarLayout.setTitleTextColor(Color.parseColor(listStyle.textColor))
+            mangaListTabLayout.tabTextColors = ColorStateList.valueOf((Color.parseColor(listStyle.textColor)))
+
+            val searchDrawable = itemSearch.icon
+            searchDrawable.mutate()
+            searchDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
+
+            val overFlowDrawable = toolbarLayout.overflowIcon
+            overFlowDrawable?.mutate()
+            overFlowDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
+
+            val textSearch = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+            val closeSearch = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+            textSearch.setHintTextColor(Color.parseColor(listStyle.textColor))
+            textSearch.setTextColor(Color.parseColor(listStyle.textColor))
+            closeSearch.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.textColor))
+
+            val collapseDrawable = toolbarLayout.collapseIcon
+            collapseDrawable?.mutate()
+            collapseDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
+        }
+
+        if (listStyle?.primaryColor != null) {
+            mangaListTabLayout.setSelectedTabIndicatorColor(Color.parseColor(listStyle.primaryColor))
+            mangaListTabLayout.setTabTextColors(Color.parseColor(listStyle.textColor ?: "#000000"), Color.parseColor(listStyle.primaryColor))
+        }
+
+        if (listStyle?.backgroundImage == true) {
+            GlideApp.with(this)
+                .load(AndroidUtility.getImageFileFromFolder(activity, MediaType.MANGA))
+                .signature(ObjectKey(Utility.getCurrentTimestamp()))
+                .into(mangaListBackgroundImage)
+        }
+    }
 }

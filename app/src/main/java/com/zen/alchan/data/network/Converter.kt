@@ -162,16 +162,22 @@ object Converter {
 
     fun convertMediaListCollection(mediaListCollection: AnimeListCollectionQuery.MediaListCollection?): MediaListCollection {
         return MediaListCollection(
-            lists = convertMediaListGroupList(mediaListCollection?.lists())
+            lists = convertAnimeMediaListGroupList(mediaListCollection?.lists())
         )
     }
 
-    fun convertMediaListGroupList(lists: List<AnimeListCollectionQuery.List>?): List<MediaListGroup> {
+    fun convertMediaListCollection(mediaListCollection: MangaListCollectionQuery.MediaListCollection?): MediaListCollection {
+        return MediaListCollection(
+            lists = convertMangaMediaListGroupList(mediaListCollection?.lists())
+        )
+    }
+
+    fun convertAnimeMediaListGroupList(lists: List<AnimeListCollectionQuery.List>?): List<MediaListGroup> {
         val mediaListGroupList = ArrayList<MediaListGroup>()
         lists?.forEach {
             mediaListGroupList.add(
                 MediaListGroup(
-                    entries = convertMediaListList(it.entries()),
+                    entries = convertAnimeMediaListList(it.entries()),
                     name = it.name(),
                     isCustomList = it.isCustomList,
                     isSplitCompletedList = it.isSplitCompletedList,
@@ -182,7 +188,23 @@ object Converter {
         return mediaListGroupList
     }
 
-    fun convertMediaListList(entries: List<AnimeListCollectionQuery.Entry>?): List<MediaList> {
+    fun convertMangaMediaListGroupList(lists: List<MangaListCollectionQuery.List>?): List<MediaListGroup> {
+        val mediaListGroupList = ArrayList<MediaListGroup>()
+        lists?.forEach {
+            mediaListGroupList.add(
+                MediaListGroup(
+                    entries = convertMangaMediaListList(it.entries()),
+                    name = it.name(),
+                    isCustomList = it.isCustomList,
+                    isSplitCompletedList = it.isSplitCompletedList,
+                    status = it.status()
+                )
+            )
+        }
+        return mediaListGroupList
+    }
+
+    fun convertAnimeMediaListList(entries: List<AnimeListCollectionQuery.Entry>?): List<MediaList> {
         val mediaList = ArrayList<MediaList>()
         entries?.forEach {
             mediaList.add(
@@ -191,6 +213,35 @@ object Converter {
                     status = it.status(),
                     score = it.score(),
                     progress = it.progress(),
+                    progressVolumes = null,
+                    repeat = it.repeat(),
+                    priority = it.priority(),
+                    private = null,
+                    notes = null,
+                    hiddenFromStatusList = null,
+                    customLists = null,
+                    advancedScores = it.advancedScores(),
+                    startedAt = if (it.startedAt() != null) convertFuzzyDate(it.startedAt()!!) else null,
+                    completedAt = if (it.completedAt() != null) convertFuzzyDate(it.completedAt()!!) else null,
+                    updatedAt = null,
+                    createdAt = null,
+                    media = convertMedia(it.media()!!)
+                )
+            )
+        }
+        return mediaList
+    }
+
+    fun convertMangaMediaListList(entries: List<MangaListCollectionQuery.Entry>?): List<MediaList> {
+        val mediaList = ArrayList<MediaList>()
+        entries?.forEach {
+            mediaList.add(
+                MediaList(
+                    id = it.id(),
+                    status = it.status(),
+                    score = it.score(),
+                    progress = it.progress(),
+                    progressVolumes = it.progressVolumes(),
                     repeat = it.repeat(),
                     priority = it.priority(),
                     private = null,
@@ -215,6 +266,29 @@ object Converter {
             status = entries.status(),
             score = entries.score(),
             progress = entries.progress(),
+            progressVolumes = null,
+            repeat = entries.repeat(),
+            priority = entries.priority(),
+            private = entries.private_(),
+            notes = entries.notes(),
+            hiddenFromStatusList = entries.hiddenFromStatusLists(),
+            customLists = entries.customLists(),
+            advancedScores = entries.advancedScores(),
+            startedAt = if (entries.startedAt() != null) convertFuzzyDate(entries.startedAt()!!) else null,
+            completedAt = if (entries.completedAt() != null) convertFuzzyDate(entries.completedAt()!!) else null,
+            updatedAt = entries.updatedAt(),
+            createdAt = entries.createdAt(),
+            media = convertMedia(entries.media()!!)
+        )
+    }
+
+    fun convertMediaList(entries: MangaListEntryMutation.SaveMediaListEntry): MediaList {
+        return MediaList(
+            id = entries.id(),
+            status = entries.status(),
+            score = entries.score(),
+            progress = entries.progress(),
+            progressVolumes = entries.progressVolumes(),
             repeat = entries.repeat(),
             priority = entries.priority(),
             private = entries.private_(),
@@ -236,6 +310,29 @@ object Converter {
             status = entries.status(),
             score = entries.score(),
             progress = entries.progress(),
+            progressVolumes = null,
+            repeat = entries.repeat(),
+            priority = entries.priority(),
+            private = entries.private_(),
+            notes = entries.notes(),
+            hiddenFromStatusList = entries.hiddenFromStatusLists(),
+            customLists = entries.customLists(),
+            advancedScores = entries.advancedScores(),
+            startedAt = if (entries.startedAt() != null) convertFuzzyDate(entries.startedAt()!!) else null,
+            completedAt = if (entries.completedAt() != null) convertFuzzyDate(entries.completedAt()!!) else null,
+            updatedAt = entries.updatedAt(),
+            createdAt = entries.createdAt(),
+            media = convertMedia(entries.media()!!)
+        )
+    }
+
+    fun convertMediaList(entries: MangaListQuery.MediaList): MediaList {
+        return MediaList(
+            id = entries.id(),
+            status = entries.status(),
+            score = entries.score(),
+            progress = entries.progress(),
+            progressVolumes = entries.progressVolumes(),
             repeat = entries.repeat(),
             priority = entries.priority(),
             private = entries.private_(),
@@ -262,6 +359,8 @@ object Converter {
             season = media.season(),
             seasonYear = media.seasonYear(),
             episodes = media.episodes(),
+            chapters = null,
+            volumes = null,
             countryOfOrigin = media.countryOfOrigin(),
             source = media.source(),
             isFavourite = media.isFavourite,
@@ -271,6 +370,32 @@ object Converter {
             popularity = media.popularity(),
             isAdult = media.isAdult,
             nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null,
+            siteUrl = null
+        )
+    }
+
+    fun convertMedia(media: MangaListCollectionQuery.Media): Media {
+        return Media(
+            id = media.id(),
+            title = convertMediaTitle(mediaTitle = media.title()!!),
+            type = media.type(),
+            format = media.format(),
+            status = media.status(),
+            startDate = if (media.startDate() != null) convertFuzzyDate(media.startDate()!!) else null,
+            season = null,
+            seasonYear = null,
+            episodes = null,
+            chapters = media.chapters(),
+            volumes = media.volumes(),
+            countryOfOrigin = media.countryOfOrigin(),
+            source = media.source(),
+            isFavourite = media.isFavourite,
+            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            genres = media.genres(),
+            averageScore = media.averageScore(),
+            popularity = media.popularity(),
+            isAdult = media.isAdult,
+            nextAiringEpisode = null,
             siteUrl = null
         )
     }
@@ -286,6 +411,8 @@ object Converter {
             season = media.season(),
             seasonYear = media.seasonYear(),
             episodes = media.episodes(),
+            chapters = null,
+            volumes = null,
             isFavourite = media.isFavourite,
             countryOfOrigin = media.countryOfOrigin(),
             source = media.source(),
@@ -295,6 +422,32 @@ object Converter {
             popularity = media.popularity(),
             isAdult = media.isAdult,
             nextAiringEpisode = if (media.nextAiringEpisode() != null) convertNextAiringEpisode(media.nextAiringEpisode()!!) else null,
+            siteUrl = media.siteUrl()
+        )
+    }
+
+    fun convertMedia(media: MangaListEntryMutation.Media): Media {
+        return Media(
+            id = media.id(),
+            title = convertMediaTitle(mediaTitle = media.title()!!),
+            type = media.type(),
+            format = media.format(),
+            status = media.status(),
+            startDate = if (media.startDate() != null) convertFuzzyDate(media.startDate()!!) else null,
+            season = null,
+            seasonYear = null,
+            episodes = null,
+            chapters = media.chapters(),
+            volumes = media.volumes(),
+            isFavourite = media.isFavourite,
+            countryOfOrigin = media.countryOfOrigin(),
+            source = media.source(),
+            coverImage = if (media.coverImage() != null) convertMediaCoverImage(media.coverImage()!!) else null,
+            genres = media.genres(),
+            averageScore = media.averageScore(),
+            popularity = media.popularity(),
+            isAdult = media.isAdult,
+            nextAiringEpisode = null,
             siteUrl = media.siteUrl()
         )
     }
@@ -310,6 +463,34 @@ object Converter {
             season = null,
             seasonYear = null,
             episodes = media.episodes(),
+            chapters = null,
+            volumes = null,
+            isFavourite = media.isFavourite,
+            countryOfOrigin = null,
+            source = null,
+            coverImage = null,
+            genres = null,
+            averageScore = null,
+            popularity = null,
+            isAdult = media.isAdult,
+            nextAiringEpisode = null,
+            siteUrl = media.siteUrl()
+        )
+    }
+
+    fun convertMedia(media: MangaListQuery.Media): Media {
+        return Media(
+            id = media.id(),
+            title = convertMediaTitle(mediaTitle = media.title()!!),
+            type = media.type(),
+            format = media.format(),
+            status = media.status(),
+            startDate = null,
+            season = null,
+            seasonYear = null,
+            episodes = null,
+            chapters = media.chapters(),
+            volumes = media.volumes(),
             isFavourite = media.isFavourite,
             countryOfOrigin = null,
             source = null,
@@ -332,6 +513,18 @@ object Converter {
     }
 
     fun convertMediaTitle(mediaTitle: AnimeListQuery.Title): MediaTitle {
+        return MediaTitle(mediaTitle.userPreferred()!!)
+    }
+
+    fun convertMediaTitle(mediaTitle: MangaListCollectionQuery.Title): MediaTitle {
+        return MediaTitle(mediaTitle.userPreferred()!!)
+    }
+
+    fun convertMediaTitle(mediaTitle: MangaListEntryMutation.Title): MediaTitle {
+        return MediaTitle(mediaTitle.userPreferred()!!)
+    }
+
+    fun convertMediaTitle(mediaTitle: MangaListQuery.Title): MediaTitle {
         return MediaTitle(mediaTitle.userPreferred()!!)
     }
 
@@ -363,6 +556,14 @@ object Converter {
         return MediaCoverImage(coverImage.extraLarge(), coverImage.large())
     }
 
+    fun convertMediaCoverImage(coverImage: MangaListCollectionQuery.CoverImage): MediaCoverImage {
+        return MediaCoverImage(coverImage.extraLarge(), coverImage.large())
+    }
+
+    fun convertMediaCoverImage(coverImage: MangaListEntryMutation.CoverImage): MediaCoverImage {
+        return MediaCoverImage(coverImage.extraLarge(), coverImage.large())
+    }
+
     fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.StartedAt): FuzzyDate {
         return FuzzyDate(
             fuzzyDate.year(),
@@ -379,6 +580,22 @@ object Converter {
         )
     }
 
+    fun convertFuzzyDate(fuzzyDate: MangaListCollectionQuery.StartedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: MangaListEntryMutation.StartedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
     fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.CompletedAt): FuzzyDate {
         return FuzzyDate(
             fuzzyDate.year(),
@@ -388,6 +605,22 @@ object Converter {
     }
 
     fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: MangaListCollectionQuery.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: MangaListEntryMutation.CompletedAt): FuzzyDate {
         return FuzzyDate(
             fuzzyDate.year(),
             fuzzyDate.month(),
@@ -419,7 +652,39 @@ object Converter {
         )
     }
 
+    fun convertFuzzyDate(fuzzyDate: MangaListCollectionQuery.StartDate): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: MangaListEntryMutation.StartDate): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: MangaListQuery.StartedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
     fun convertFuzzyDate(fuzzyDate: AnimeListQuery.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year(),
+            fuzzyDate.month(),
+            fuzzyDate.day()
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: MangaListQuery.CompletedAt): FuzzyDate {
         return FuzzyDate(
             fuzzyDate.year(),
             fuzzyDate.month(),

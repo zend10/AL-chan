@@ -1,0 +1,63 @@
+query MangaListCollectionQuery(
+    $userId: Int
+) {
+    MediaListCollection(
+        userId: $userId,
+        type: MANGA
+    ) {
+        lists {
+            entries {
+                id
+                status
+                score
+                progress
+                progressVolumes
+                repeat
+                priority
+                customLists
+                advancedScores
+                startedAt {
+                    year
+                    month
+                    day
+                }
+                completedAt {
+                    year
+                    month
+                    day
+                }
+                media {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    type
+                    format
+                    status
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                    chapters
+                    volumes
+                    countryOfOrigin
+                    source
+                    isFavourite
+                    coverImage {
+                        extraLarge
+                        large
+                    }
+                    genres
+                    averageScore
+                    popularity
+                    isAdult
+                }
+            }
+            name
+            isCustomList
+            isSplitCompletedList
+            status
+        }
+    }
+}

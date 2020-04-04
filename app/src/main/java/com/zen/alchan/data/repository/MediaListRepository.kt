@@ -7,19 +7,23 @@ import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.data.response.MediaListCollection
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import type.MediaListStatus
+import type.MediaType
 
 interface MediaListRepository {
     val animeListDataResponse: LiveData<Resource<Boolean>>
-    val animeListDataDetailResponse: LiveData<Resource<MediaList>>
-
     val animeListData: LiveData<MediaListCollection>
-
     val updateAnimeListEntryResponse: LiveData<Resource<Boolean>>
-    val updateAnimeListEntryDetailResponse: LiveData<Resource<Boolean>>
 
+    val mangaListDataResponse: LiveData<Resource<Boolean>>
+    val mangaListData: LiveData<MediaListCollection>
+    val updateMangaListEntryResponse: LiveData<Resource<Boolean>>
+
+    val mediaListDataDetailResponse: LiveData<Resource<MediaList>>
+    val updateMediaListEntryDetailResponse: LiveData<Resource<Boolean>>
     val deleteMediaListEntryResponse: LiveData<Resource<Boolean>>
 
-    var filteredData: MediaFilteredData?
+    var animeFilteredData: MediaFilteredData?
+    var mangaFilteredData: MediaFilteredData?
 
     fun retrieveAnimeListData()
     fun retrieveAnimeListDataDetail(entryId: Int)
@@ -48,6 +52,37 @@ interface MediaListRepository {
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
     )
-    fun handleNewFilter(newFilteredData: MediaFilteredData?)
-    fun deleteMediaList(entryId: Int)
+
+    fun retrieveMangaListData()
+    fun retrieveMangaListDataDetail(entryId: Int)
+    fun updateMangaProgress(
+        entryId: Int,
+        status: MediaListStatus,
+        repeat: Int,
+        progress: Int?,
+        progressVolumes: Int?
+    )
+    fun updateMangaScore(
+        entryId: Int,
+        score: Double,
+        advancedScores: List<Double>?
+    )
+    fun updateMangaList(
+        entryId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        progressVolumes: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    )
+
+    fun handleNewFilter(newFilteredData: MediaFilteredData?, mediaType: MediaType)
+    fun deleteMediaList(entryId: Int, mediaType: MediaType)
 }

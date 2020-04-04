@@ -146,7 +146,15 @@
     <string name="toolbar_color">Toolbar Color</string>
     <string name="background_color">Background Color</string>
     <string name="background_image">Background Image</string>
-    <string name="add_image">Add image</string>
+    <string name="add_image">Add Image</string>
     <string name="no_image_selected">No image selected</string>
     <string name="this_will_reset_your_anime_list_style_to_default_style">This will reset your Anime List style to default style.</string>
+    <string name="storage_permission_is_required_to_pick_and_save_image">Storage permission is required to pick and save image.</string>
+    <string name="remove_image">Remove Image</string>
+    <string name="remove">Remove</string>
+    <string name="stop_using_this_image_for_your_list">Stop using this image for your list?</string>
+    <string name="manga_list">Manga List</string>
+    <string name="chapter">Chapter</string>
+    <string name="volume">Volume</string>
+    <string name="manga_list_editor">Manga List Editor</string>
 </resources>

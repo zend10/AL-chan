@@ -19,6 +19,9 @@ import com.zen.alchan.ui.auth.SplashViewModel
 import com.zen.alchan.ui.common.customise.CustomiseListViewModel
 import com.zen.alchan.ui.common.filter.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
+import com.zen.alchan.ui.mangalist.MangaListViewModel
+import com.zen.alchan.ui.mangalist.editor.MangaListEditorViewModel
+import com.zen.alchan.ui.mangalist.list.MangaListItemViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -70,6 +73,10 @@ class ALchanApplication : Application() {
         viewModel { AnimeListViewModel(get(), get(), gson) }
         viewModel { AnimeListItemViewModel(get(), get(), get(), gson) }
         viewModel { AnimeListEditorViewModel(get(), get(), gson) }
+
+        viewModel { MangaListViewModel(get(), get(), gson) }
+        viewModel { MangaListItemViewModel(get(), get(), get(), gson) }
+        viewModel { MangaListEditorViewModel(get(), get(), gson) }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }

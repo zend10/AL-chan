@@ -73,7 +73,7 @@ class LocalStorageImpl(private val context: Context,
         set(value) { setData(ANIME_LIST_STYLE, gson.toJson(value)) }
 
     override var mangaListStyle: ListStyle?
-        get() = gson.fromJson(MANGA_LIST_STYLE, ListStyle::class.java)
+        get() = gson.fromJson(getData(MANGA_LIST_STYLE), ListStyle::class.java)
         set(value) { setData(MANGA_LIST_STYLE, gson.toJson(value)) }
 
     private fun getData(key: String): String? {

@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.animelist.editor
+package com.zen.alchan.ui.mangalist.editor
 
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
@@ -12,7 +12,7 @@ import type.MediaListStatus
 import type.MediaType
 import type.ScoreFormat
 
-class AnimeListEditorViewModel(private val mediaListRepository: MediaListRepository,
+class MangaListEditorViewModel(private val mediaListRepository: MediaListRepository,
                                private val userRepository: UserRepository,
                                val gson: Gson
 ) : ViewModel() {
@@ -27,6 +27,7 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
     var selectedScore: Double? = null
     var selectedAdvancedScores = ArrayList<Double>()
     var selectedProgress: Int? = null
+    var selectedProgressVolumes: Int? = null
     var selectedStartDate: FuzzyDate? = null
     var selectedFinishDate: FuzzyDate? = null
     var selectedRewatches: Int? = null
@@ -35,11 +36,11 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
     var selectedHidden: Boolean? = null
     var selectedPrivate: Boolean? = null
 
-    val animeListDataDetailResponse by lazy {
+    val mangaListDataDetailResponse by lazy {
         mediaListRepository.mediaListDataDetailResponse
     }
 
-    val updateAnimeListEntryDetailResponse by lazy {
+    val updateMangaListEntryDetailResponse by lazy {
         mediaListRepository.updateMediaListEntryDetailResponse
     }
 
@@ -58,8 +59,8 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
         get() = userRepository.viewerData.value?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
 
     val advancedScoringList: ArrayList<String>
-        get() = if (userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoringEnabled == true) {
-            ArrayList(userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoring!!)
+        get() = if (userRepository.viewerData.value?.mediaListOptions?.mangaList?.advancedScoringEnabled == true) {
+            ArrayList(userRepository.viewerData.value?.mediaListOptions?.mangaList?.advancedScoring!!)
         } else {
             ArrayList()
         }
@@ -68,13 +69,13 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
         MediaListStatus.CURRENT, MediaListStatus.REPEATING, MediaListStatus.COMPLETED, MediaListStatus.PAUSED, MediaListStatus.DROPPED, MediaListStatus.PLANNING
     )
 
-    fun retrieveAnimeListDataDetail() {
+    fun retrieveMangaListDataDetail() {
         if (!isInit && entryId != null) {
-            mediaListRepository.retrieveAnimeListDataDetail(entryId!!)
+            mediaListRepository.retrieveMangaListDataDetail(entryId!!)
         }
     }
 
-    fun updateAnimeListEntryDetail() {
+    fun updateMangaListEntryDetail() {
         if (entryId == null ||
             selectedStatus == null ||
             selectedScore == null ||
@@ -86,11 +87,12 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
             return
         }
 
-        mediaListRepository.updateAnimeList(
+        mediaListRepository.updateMangaList(
             entryId!!,
             selectedStatus!!,
             selectedScore!!,
             selectedProgress!!,
+            selectedProgressVolumes!!,
             selectedRewatches!!,
             selectedPrivate!!,
             selectedNotes,
@@ -102,14 +104,14 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
         )
     }
 
-    fun deleteAnimeListEntry() {
+    fun deleteMangaListEntry() {
         if (entryId == null) return
-        mediaListRepository.deleteMediaList(entryId!!, MediaType.ANIME)
+        mediaListRepository.deleteMediaList(entryId!!, MediaType.MANGA)
     }
 
     fun updateFavourite() {
         userRepository.toggleFavourite(
-            animeListDataDetailResponse.value?.data?.media?.id, null, null, null, null
+            null, mangaListDataDetailResponse.value?.data?.media?.id, null, null, null
         )
     }
 }

@@ -1,11 +1,12 @@
-package com.zen.alchan.ui.animelist.list
+package com.zen.alchan.ui.mangalist.list
 
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.*
 import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,12 +18,12 @@ import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.utils.DialogUtility
-import com.zen.alchan.ui.animelist.AnimeListFragment
-import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.common.SetProgressDialog
 import com.zen.alchan.ui.common.SetScoreDialog
+import com.zen.alchan.ui.mangalist.MangaListFragment
+import com.zen.alchan.ui.mangalist.editor.MangaListEditorActivity
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_anime_list_item.*
+import kotlinx.android.synthetic.main.fragment_manga_list_item.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
@@ -31,9 +32,9 @@ import type.ScoreFormat
 /**
  * A simple [Fragment] subclass.
  */
-class AnimeListItemFragment : Fragment() {
+class MangaListItemFragment : Fragment() {
 
-    private val viewModel by viewModel<AnimeListItemViewModel>()
+    private val viewModel by viewModel<MangaListItemViewModel>()
 
     private var adapter: RecyclerView.Adapter<*>? = null
     private var mediaLists = ArrayList<MediaList>()
@@ -50,7 +51,7 @@ class AnimeListItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_anime_list_item, container, false)
+        return inflater.inflate(R.layout.fragment_manga_list_item, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,7 +67,7 @@ class AnimeListItemFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.animeListData.observe(viewLifecycleOwner, Observer {
+        viewModel.mangaListData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 mediaLists.clear()
                 viewModel.getSelectedList().forEach { filtered ->
@@ -77,16 +78,16 @@ class AnimeListItemFragment : Fragment() {
                 adapter?.notifyDataSetChanged()
 
                 if (mediaLists.isEmpty()) {
-                    animeListRecyclerView.visibility = View.GONE
+                    mangaListRecyclerView.visibility = View.GONE
                     emptyLayout.visibility = View.VISIBLE
                 } else {
-                    animeListRecyclerView.visibility = View.VISIBLE
+                    mangaListRecyclerView.visibility = View.VISIBLE
                     emptyLayout.visibility = View.GONE
                 }
             }
         })
 
-        viewModel.animeListStyleLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.mangaListStyleLiveData.observe(viewLifecycleOwner, Observer {
             initLayout()
         })
     }
@@ -95,11 +96,11 @@ class AnimeListItemFragment : Fragment() {
         mediaLists.clear()
         mediaLists.addAll(viewModel.getSelectedList())
         adapter = assignAdapter(mediaLists)
-        animeListRecyclerView.adapter = adapter
+        mangaListRecyclerView.adapter = adapter
 
         // Handle search view with Rx
-        if (parentFragment is AnimeListFragment && disposable == null) {
-            (parentFragment as AnimeListFragment).source.subscribe(object : io.reactivex.Observer<String> {
+        if (parentFragment is MangaListFragment && disposable == null) {
+            (parentFragment as MangaListFragment).source.subscribe(object : io.reactivex.Observer<String> {
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                 }
@@ -115,10 +116,10 @@ class AnimeListItemFragment : Fragment() {
                     adapter?.notifyDataSetChanged()
 
                     if (mediaLists.isEmpty()) {
-                        animeListRecyclerView.visibility = View.GONE
+                        mangaListRecyclerView.visibility = View.GONE
                         emptyLayout.visibility = View.VISIBLE
                     } else {
-                        animeListRecyclerView.visibility = View.VISIBLE
+                        mangaListRecyclerView.visibility = View.VISIBLE
                         emptyLayout.visibility = View.GONE
                     }
                 }
@@ -135,22 +136,22 @@ class AnimeListItemFragment : Fragment() {
     }
 
     private fun assignAdapter(list: List<MediaList>): RecyclerView.Adapter<*> {
-        return when (viewModel.animeListStyleLiveData.value?.listType ?: ListType.LINEAR) {
+        return when (viewModel.mangaListStyleLiveData.value?.listType ?: ListType.LINEAR) {
             ListType.LINEAR -> {
-                animeListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                AnimeListRvAdapter(activity!!, list, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, handleListAction())
+                mangaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                MangaListRvAdapter(activity!!, list, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
             }
             ListType.GRID -> {
-                animeListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
-                AnimeListGridRvAdapter(activity!!, list, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, handleListAction())
+                mangaListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+                MangaListGridRvAdapter(activity!!, list, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
             }
         }
     }
 
-    private fun handleListAction() = object : AnimeListListener {
+    private fun handleListAction() = object : MangaListListener {
         override fun openEditor(entryId: Int) {
-            val intent = Intent(activity, AnimeListEditorActivity::class.java)
-            intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, entryId)
+            val intent = Intent(activity, MangaListEditorActivity::class.java)
+            intent.putExtra(MangaListEditorActivity.INTENT_ENTRY_ID, entryId)
             startActivity(intent)
         }
 
@@ -173,42 +174,54 @@ class AnimeListItemFragment : Fragment() {
             setScoreDialog.arguments = bundle
             setScoreDialog.setListener(object : SetScoreDialog.SetScoreListener {
                 override fun passScore(newScore: Double, newAdvancedScores: List<Double>?) {
-                    viewModel.updateAnimeScore(mediaList.id, newScore, newAdvancedScores)
+                    viewModel.updateMangaScore(mediaList.id, newScore, newAdvancedScores)
                 }
             })
             setScoreDialog.show(childFragmentManager, null)
         }
 
-        override fun openProgressDialog(mediaList: MediaList) {
+        override fun openProgressDialog(mediaList: MediaList, isVolume: Boolean) {
             val setProgressDialog = SetProgressDialog()
             val bundle = Bundle()
-            bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progress ?: 0)
-            if (mediaList.media?.episodes != null) {
-                bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, mediaList.media?.episodes!!)
+            if (isVolume) {
+                bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progressVolumes ?: 0)
+                if (mediaList.media?.volumes != null) {
+                    bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, mediaList.media?.volumes!!)
+                }
+            } else {
+                bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progress ?: 0)
+                if (mediaList.media?.chapters != null) {
+                    bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, mediaList.media?.chapters!!)
+                }
             }
             setProgressDialog.arguments = bundle
             setProgressDialog.setListener(object : SetProgressDialog.SetProgressListener {
                 override fun passProgress(newProgress: Int) {
-                    handleUpdateProgressBehavior(mediaList, newProgress)
+                    handleUpdateProgressBehavior(mediaList, newProgress, isVolume)
                 }
             })
             setProgressDialog.show(childFragmentManager, null)
         }
 
-        override fun incrementProgress(mediaList: MediaList) {
-            handleUpdateProgressBehavior(mediaList, mediaList.progress!! + 1)
+        override fun incrementProgress(mediaList: MediaList, isVolume: Boolean) {
+            if (isVolume) {
+                handleUpdateProgressBehavior(mediaList, mediaList.progressVolumes!! + 1, isVolume)
+            } else {
+                handleUpdateProgressBehavior(mediaList, mediaList.progress!! + 1, isVolume)
+            }
         }
     }
 
-    private fun handleUpdateProgressBehavior(mediaList: MediaList, newProgress: Int) {
+    private fun handleUpdateProgressBehavior(mediaList: MediaList, newProgress: Int, isVolume: Boolean) {
         if (mediaList.progress == newProgress) {
             return
         }
 
         var status = mediaList.status
         var repeat = mediaList.repeat
+        val maxLimit = if (isVolume) mediaList.media?.volumes else mediaList.media?.chapters
 
-        if (newProgress == mediaList.media?.episodes) {
+        if (newProgress == maxLimit) {
             DialogUtility.showOptionDialog(
                 activity,
                 R.string.move_to_completed,
@@ -219,11 +232,11 @@ class AnimeListItemFragment : Fragment() {
                         repeat = repeat!! + 1
                     }
                     status = MediaListStatus.COMPLETED
-                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
                 },
                 R.string.stay,
                 {
-                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
                 }
             )
         } else {
@@ -236,20 +249,20 @@ class AnimeListItemFragment : Fragment() {
                         R.string.move,
                         {
                             status = MediaListStatus.CURRENT
-                            viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                            viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
                         },
                         R.string.stay,
                         {
-                            viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                            viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
                         }
                     )
                 }
                 MediaListStatus.COMPLETED -> {
                     status = MediaListStatus.CURRENT
-                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
                 }
                 else -> {
-                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
                 }
             }
         }

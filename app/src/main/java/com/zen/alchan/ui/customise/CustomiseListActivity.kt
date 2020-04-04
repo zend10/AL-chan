@@ -1,25 +1,37 @@
 package com.zen.alchan.ui.common.customise
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.bumptech.glide.signature.ObjectKey
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.jaredrummler.android.colorpicker.ColorShape
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
 import com.zen.alchan.helper.enums.ListType
+import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.toAlphaHex
 import com.zen.alchan.helper.toHex
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_customise_list.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
+import java.io.File
 
 class CustomiseListActivity : BaseActivity() {
 
@@ -28,6 +40,8 @@ class CustomiseListActivity : BaseActivity() {
 
     companion object {
         const val MEDIA_TYPE = "mediaType"
+        private const val PERMISSION_STORAGE = 100
+        private const val ACTIVITY_PICK_IMAGE = 200
 
         private const val COLOR_PRIMARY = 1
         private const val COLOR_SECONDARY = 2
@@ -63,6 +77,9 @@ class CustomiseListActivity : BaseActivity() {
         if (!viewModel.isInit) {
             viewModel.isInit = true
             viewModel.selectedListStyle = if (viewModel.mediaType == MediaType.ANIME) viewModel.animeListStyle else viewModel.mangaListStyle
+            if (viewModel.selectedListStyle.backgroundImage) {
+                viewModel.selectedImageUri = AndroidUtility.getImageFileFromFolder(this, viewModel.mediaType!!).toUri()
+            }
         }
 
         adapter = assignAdapter()
@@ -75,6 +92,18 @@ class CustomiseListActivity : BaseActivity() {
         if (listStyle.cardColor != null) cardColorItem.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
         if (listStyle.toolbarColor != null) toolbarColorItem.setCardBackgroundColor(Color.parseColor(listStyle.toolbarColor))
         if (listStyle.backgroundColor != null) backgroundColorItem.setCardBackgroundColor(Color.parseColor(listStyle.backgroundColor))
+
+        if (viewModel.selectedListStyle.backgroundImage) {
+            listBackgroundImage.visibility = View.VISIBLE
+            noImageSelectedText.visibility = View.GONE
+            addImageText.text = getString(R.string.remove_image)
+            GlideApp.with(this).load(viewModel.selectedImageUri).signature(ObjectKey(Utility.getCurrentTimestamp())).into(listBackgroundImage)
+        } else {
+            listBackgroundImage.visibility = View.GONE
+            noImageSelectedText.visibility = View.VISIBLE
+            addImageText.text = getString(R.string.add_image)
+            GlideApp.with(this).load(0).signature(ObjectKey(Utility.getCurrentTimestamp())).into(listBackgroundImage)
+        }
 
         primaryColorItem.setOnClickListener {
             showColorPickerDialog(COLOR_PRIMARY)
@@ -101,7 +130,27 @@ class CustomiseListActivity : BaseActivity() {
         }
 
         addImageText.setOnClickListener {
+            if (viewModel.selectedImageUri != null) {
+                DialogUtility.showOptionDialog(
+                    this,
+                    R.string.remove_image,
+                    R.string.stop_using_this_image_for_your_list,
+                    R.string.remove,
+                    {
+                        viewModel.selectedListStyle.backgroundImage = false
+                        viewModel.selectedImageUri = null
 
+                        GlideApp.with(this).load(0).signature(ObjectKey(Utility.getCurrentTimestamp())).into(listBackgroundImage)
+                        listBackgroundImage.visibility = View.GONE
+                        noImageSelectedText.visibility = View.VISIBLE
+                        addImageText.text = getString(R.string.add_image)
+                    },
+                    R.string.cancel,
+                    { }
+                )
+            } else {
+                getStoragePermission()
+            }
         }
 
         resetDefaultButton.setOnClickListener {
@@ -117,6 +166,8 @@ class CustomiseListActivity : BaseActivity() {
                     viewModel.selectedListStyle.cardColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor).toHex()
                     viewModel.selectedListStyle.toolbarColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor).toHex()
                     viewModel.selectedListStyle.backgroundColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeBackgroundColor).toHex()
+                    viewModel.selectedListStyle.backgroundImage = false
+                    viewModel.selectedImageUri = null
 
                     primaryColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themePrimaryColor))
                     secondaryColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor))
@@ -124,6 +175,9 @@ class CustomiseListActivity : BaseActivity() {
                     cardColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
                     toolbarColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
                     backgroundColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeBackgroundColor))
+                    GlideApp.with(this).load(0).signature(ObjectKey(Utility.getCurrentTimestamp())).into(listBackgroundImage)
+                    listBackgroundImage.visibility = View.GONE
+                    noImageSelectedText.visibility = View.VISIBLE
 
                     viewModel.saveListSettings()
                     finish()
@@ -207,6 +261,48 @@ class CustomiseListActivity : BaseActivity() {
         dialog.show(supportFragmentManager, null)
     }
 
+    private fun getStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSION_STORAGE)
+        } else {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), ACTIVITY_PICK_IMAGE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_STORAGE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getStoragePermission()
+            } else {
+                DialogUtility.showInfoDialog(this, R.string.storage_permission_is_required_to_pick_and_save_image)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ACTIVITY_PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+
+            viewModel.selectedImageUri = selectedImage
+            viewModel.selectedListStyle.backgroundImage = true
+
+            GlideApp.with(this).load(viewModel.selectedImageUri).signature(ObjectKey(Utility.getCurrentTimestamp())).into(listBackgroundImage)
+            listBackgroundImage.visibility = View.VISIBLE
+            noImageSelectedText.visibility = View.GONE
+            addImageText.text = getString(R.string.remove_image)
+
+            viewModel.isImageChanged = true
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_save, menu)
         return super.onCreateOptionsMenu(menu)
@@ -215,7 +311,11 @@ class CustomiseListActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.itemSave) {
             viewModel.saveListSettings()
-            finish()
+            if (viewModel.selectedImageUri != null && viewModel.isImageChanged) {
+                AndroidUtility.saveUriToFolder(this, viewModel.selectedImageUri!!, viewModel.mediaType!!) { finish() }
+            } else {
+                finish()
+            }
             return true
         }
         return super.onOptionsItemSelected(item)

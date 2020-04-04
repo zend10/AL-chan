@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mangaListLayout"
     tools:context=".ui.mangalist.MangaListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/mangaListBackgroundImage"
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Manga List" />
+        android:layout_height="match_parent"/>
 
-</FrameLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/mangaListAppBarLayout"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_toolbar"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/mangaListTabLayout"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="?themeRegularFont"
+            app:tabTextColor="?themeContentColor"
+            android:backgroundTint="?themeCardColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/mangaListRefreshLayout"
+        android:layout_below="@+id/mangaListAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/mangaListViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_loading"/>
+
+</RelativeLayout>

@@ -12,6 +12,8 @@ class Media(
     val season: MediaSeason?,
     val seasonYear: Int?,
     val episodes: Int?,
+    val chapters: Int?,
+    val volumes: Int?,
     val countryOfOrigin: String?,
     val source: MediaSource?,
     var isFavourite: Boolean,

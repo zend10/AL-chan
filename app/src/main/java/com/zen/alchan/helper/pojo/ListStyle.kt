@@ -10,5 +10,5 @@ class ListStyle(
     var cardColor: String? = null,
     var toolbarColor: String? = null,
     var backgroundColor: String? = null,
-    var backgroundImage: String? = null
+    var backgroundImage: Boolean = false
 )

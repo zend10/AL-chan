@@ -14,12 +14,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.signature.ObjectKey
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.pojo.MediaListTabItem
+import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.common.customise.CustomiseListActivity
 import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
 import io.reactivex.subjects.PublishSubject
@@ -208,8 +212,11 @@ class AnimeListFragment : Fragment() {
             animeListTabLayout.setTabTextColors(Color.parseColor(listStyle.textColor ?: "#000000"), Color.parseColor(listStyle.primaryColor))
         }
 
-        if (listStyle?.backgroundImage != null) {
-
+        if (listStyle?.backgroundImage == true) {
+            GlideApp.with(this)
+                .load(AndroidUtility.getImageFileFromFolder(activity, MediaType.ANIME))
+                .signature(ObjectKey(Utility.getCurrentTimestamp()))
+                .into(animeListBackgroundImage)
         }
     }
 }

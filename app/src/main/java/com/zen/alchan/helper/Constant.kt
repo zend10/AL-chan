@@ -17,6 +17,8 @@ object Constant {
     const val ANILIST_LOGIN_URL = "${ANILIST_URL}api/v2/oauth/authorize?client_id=${ANILIST_CLIENT_ID}&response_type=token"
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
+    const val ANIME_LIST_BACKGROUND_FILENAME = "anime_list_background.jpg"
+    const val MANGA_LIST_BACKGROUND_FILENAME = "manga_list_background.jpg"
 
     const val DEFAULT_DATE_FORMAT = "dd MMM yyyy"
 

@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.FuzzyDate
 import io.reactivex.Observable
+import io.reactivex.Observer
 import io.reactivex.Single
 import type.MediaListStatus
 
@@ -38,6 +39,40 @@ interface MediaListDataSource {
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
     ): Observable<Response<AnimeListEntryMutation.Data>>
+
+    fun getMangaListData(userId: Int): Observable<Response<MangaListCollectionQuery.Data>>
+
+    fun getMangaListDataDetail(id: Int, userId: Int): Observable<Response<MangaListQuery.Data>>
+
+    fun updateMangaProgress(
+        entryId: Int,
+        status: MediaListStatus,
+        repeat: Int,
+        progress: Int?,
+        progressVolume: Int?
+    ): Observable<Response<MangaListEntryMutation.Data>>
+
+    fun updateMangaScore(
+        entryId: Int,
+        score: Double,
+        advancedScores: List<Double>?
+    ): Observable<Response<MangaListEntryMutation.Data>>
+
+    fun updateMangaList(
+        entryId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        progressVolume: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    ): Observable<Response<MangaListEntryMutation.Data>>
 
     fun deleteMediaList(
         entryId: Int

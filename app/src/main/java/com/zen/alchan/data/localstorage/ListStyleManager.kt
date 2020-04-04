@@ -8,4 +8,5 @@ interface ListStyleManager {
     val mangaListStyle: ListStyle
 
     fun saveAnimeListStyle(newAnimeListStyle: ListStyle)
+    fun saveMangaListStyle(newMangaListStyle: ListStyle)
 }

@@ -9,6 +9,8 @@ interface ListStyleRepository {
     val mangaListStyle: ListStyle
 
     val animeListStyleLiveData: LiveData<ListStyle>
+    val mangaListStyleLiveData: LiveData<ListStyle>
 
     fun saveAnimeListStyle(newAnimeListStyle: ListStyle)
+    fun saveMangaListStyle(newMangaListStyle: ListStyle)
 }

@@ -110,6 +110,115 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getMangaListData(userId: Int): Observable<Response<MangaListCollectionQuery.Data>> {
+        val query = MangaListCollectionQuery.builder().userId(userId).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMangaListDataDetail(
+        id: Int,
+        userId: Int
+    ): Observable<Response<MangaListQuery.Data>> {
+        val query = MangaListQuery.builder().id(id).userId(userId).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateMangaProgress(
+        entryId: Int,
+        status: MediaListStatus,
+        repeat: Int,
+        progress: Int?,
+        progressVolume: Int?
+    ): Observable<Response<MangaListEntryMutation.Data>> {
+        val builder = MangaListEntryMutation.builder()
+        builder.id(entryId)
+        builder.status(status)
+        builder.repeat(repeat)
+
+        if (progress != null) {
+            builder.progress(progress)
+        }
+
+        if (progressVolume != null) {
+            builder.progressVolumes(progressVolume)
+        }
+
+        val mutation = builder.build()
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateMangaScore(
+        entryId: Int,
+        score: Double,
+        advancedScores: List<Double>?
+    ): Observable<Response<MangaListEntryMutation.Data>> {
+        val builder = MangaListEntryMutation.builder()
+
+        builder.id(entryId)
+        builder.score(score)
+
+        if (!advancedScores.isNullOrEmpty()) {
+            builder.advancedScores(advancedScores)
+        }
+
+        val mutation = builder.build()
+
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateMangaList(
+        entryId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        progressVolume: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    ): Observable<Response<MangaListEntryMutation.Data>> {
+        val builder = MangaListEntryMutation.builder()
+        builder.id(entryId)
+        builder.status(status)
+        builder.score(score)
+        builder.progress(progress)
+        builder.progressVolumes(progressVolume)
+        builder.repeat(repeat)
+        builder.isPrivate(isPrivate)
+        builder.notes(notes)
+        builder.hiddenFromStatusLists(hiddenFromStatusLists)
+        builder.customLists(customLists)
+
+        if (!advancedScores.isNullOrEmpty()) {
+            builder.advancedScores(advancedScores)
+        }
+
+        builder.startedAt(FuzzyDateInput.builder().year(startedAt?.year).month(startedAt?.month).day(startedAt?.day).build())
+        builder.completedAt(FuzzyDateInput.builder().year(completedAt?.year).month(completedAt?.month).day(completedAt?.day).build())
+
+        val mutation = builder.build()
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun deleteMediaList(entryId: Int): Observable<Response<DeleteMediaListEntryMutation.Data>> {
         val mutation = DeleteMediaListEntryMutation.builder().id(entryId).build()
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)

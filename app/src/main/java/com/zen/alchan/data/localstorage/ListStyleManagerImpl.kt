@@ -14,4 +14,8 @@ class ListStyleManagerImpl(private val localStorage: LocalStorage) : ListStyleMa
     override fun saveAnimeListStyle(newAnimeListStyle: ListStyle) {
         localStorage.animeListStyle = newAnimeListStyle
     }
+
+    override fun saveMangaListStyle(newMangaListStyle: ListStyle) {
+        localStorage.mangaListStyle = newMangaListStyle
+    }
 }
