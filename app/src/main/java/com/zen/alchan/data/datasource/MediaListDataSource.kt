@@ -26,7 +26,8 @@ interface MediaListDataSource {
     ): Observable<Response<AnimeListEntryMutation.Data>>
 
     fun updateAnimeList(
-        entryId: Int,
+        entryId: Int?,
+        mediaId: Int?,
         status: MediaListStatus,
         score: Double,
         progress: Int,
@@ -59,7 +60,8 @@ interface MediaListDataSource {
     ): Observable<Response<MangaListEntryMutation.Data>>
 
     fun updateMangaList(
-        entryId: Int,
+        entryId: Int?,
+        mediaId: Int?,
         status: MediaListStatus,
         score: Double,
         progress: Int,

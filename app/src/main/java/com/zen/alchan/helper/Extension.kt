@@ -7,6 +7,7 @@ import com.zen.alchan.data.response.FuzzyDate
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 fun Activity.changeStatusBarColor(color: Int) {
@@ -63,4 +64,19 @@ fun Int.toHex(): String {
 
 fun Long.toAlphaHex(): String {
     return String.format("#%08X", 0xFFFFFFFF and this)
+}
+
+fun String?.setRegularPlural(count: Int?): String {
+    if (this == null) return ""
+    if (count == null || abs(count) <= 1) return this
+
+    // TODO: add more rules
+
+    return if (endsWith("y")) {
+        replace(Regex("y$"), "ies")
+    } else if (endsWith("s") || endsWith("x") || endsWith("z") || endsWith("ch") || endsWith("sh")) {
+        this + "es"
+    } else {
+        this + "s"
+    }
 }

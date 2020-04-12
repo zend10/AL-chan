@@ -72,7 +72,8 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
     }
 
     override fun updateAnimeList(
-        entryId: Int,
+        entryId: Int?,
+        mediaId: Int?,
         status: MediaListStatus,
         score: Double,
         progress: Int,
@@ -86,7 +87,8 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
         completedAt: FuzzyDate?
     ): Observable<Response<AnimeListEntryMutation.Data>> {
         val builder = AnimeListEntryMutation.builder()
-        builder.id(entryId)
+        if (entryId != null) builder.id(entryId)
+        if (mediaId != null) builder.mediaId(mediaId)
         builder.status(status)
         builder.score(score)
         builder.progress(progress)
@@ -179,7 +181,8 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
     }
 
     override fun updateMangaList(
-        entryId: Int,
+        entryId: Int?,
+        mediaId: Int?,
         status: MediaListStatus,
         score: Double,
         progress: Int,
@@ -194,7 +197,8 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
         completedAt: FuzzyDate?
     ): Observable<Response<MangaListEntryMutation.Data>> {
         val builder = MangaListEntryMutation.builder()
-        builder.id(entryId)
+        if (entryId != null) builder.id(entryId)
+        if (mediaId != null) builder.mediaId(mediaId)
         builder.status(status)
         builder.score(score)
         builder.progress(progress)

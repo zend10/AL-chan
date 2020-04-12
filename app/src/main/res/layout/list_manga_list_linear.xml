@@ -136,10 +136,11 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mangaProgressVolumesText"
                 style="?themeRegularClickableFont"
-                app:layout_constraintBottom_toTopOf="@id/mangaIncrementProgressButton"
+                app:layout_constraintBottom_toTopOf="@id/mangaProgressText"
                 app:layout_constraintEnd_toStartOf="@id/mangaIncrementProgressVolumesButton"
                 android:text="0/?"
                 android:layout_marginEnd="@dimen/marginClose"
+                android:layout_marginBottom="@dimen/marginClose"
                 android:padding="@dimen/iconPadding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

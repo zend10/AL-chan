@@ -2,10 +2,7 @@ package com.zen.alchan.helper
 
 import com.zen.alchan.BuildConfig
 import com.zen.alchan.helper.enums.AppColorTheme
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSource
-import type.MediaStatus
+import type.*
 
 object Constant {
     const val ANILIST_URL = "https://anilist.co/"
@@ -101,5 +98,21 @@ object Constant {
         MediaSource.VIDEO_GAME,
         MediaSource.DOUJINSHI,
         MediaSource.OTHER
+    )
+
+    val MEDIA_RELATION_PRIORITY = hashMapOf(
+        Pair(MediaRelation.SOURCE, 0),
+        Pair(MediaRelation.ADAPTATION, 1),
+        Pair(MediaRelation.PARENT, 2),
+        Pair(MediaRelation.PREQUEL, 4),
+        Pair(MediaRelation.SEQUEL, 5),
+        Pair(MediaRelation.ALTERNATIVE, 6),
+        Pair(MediaRelation.SIDE_STORY, 7),
+        Pair(MediaRelation.SPIN_OFF, 8),
+        Pair(MediaRelation.SUMMARY, 9),
+        Pair(MediaRelation.COMPILATION, 10),
+        Pair(MediaRelation.CONTAINS, 11),
+        Pair(MediaRelation.CHARACTER, 12),
+        Pair(MediaRelation.OTHER, 13)
     )
 }

@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.internal.LinkedTreeMap
 
 import com.zen.alchan.R
+import com.zen.alchan.data.response.Media
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.common.SetProgressDialog
 import com.zen.alchan.ui.common.SetScoreDialog
 import com.zen.alchan.ui.mangalist.MangaListFragment
@@ -209,6 +212,23 @@ class MangaListItemFragment : Fragment() {
             } else {
                 handleUpdateProgressBehavior(mediaList, mediaList.progress!! + 1, isVolume)
             }
+        }
+
+        override fun openBrowsePage(media: Media) {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.open_media_page,
+                "Do you want to open ${media.title?.userPreferred} page?",
+                R.string.open,
+                {
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.MANGA.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, media.id)
+                    startActivity(intent)
+                },
+                R.string.cancel,
+                { }
+            )
         }
     }
 

@@ -22,6 +22,8 @@ import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.mangalist.MangaListViewModel
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorViewModel
 import com.zen.alchan.ui.mangalist.list.MangaListItemViewModel
+import com.zen.alchan.ui.media.MediaViewModel
+import com.zen.alchan.ui.media.overview.MediaOverviewViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -56,7 +58,7 @@ class ALchanApplication : Application() {
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
         single<AppSettingsRepository> { AppSettingsRepositoryImpl(get())}
         single<MediaListRepository> { MediaListRepositoryImpl(get(), get(), gson) }
-        single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
+        single<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
         single<ListStyleRepository> { ListStyleRepositoryImpl(get()) }
 
         viewModel { BaseViewModel(get()) }
@@ -78,12 +80,16 @@ class ALchanApplication : Application() {
         viewModel { MangaListItemViewModel(get(), get(), get(), gson) }
         viewModel { MangaListEditorViewModel(get(), get(), gson) }
 
+        viewModel { MediaViewModel(get()) }
+        viewModel { MediaOverviewViewModel(get()) }
+
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }
         viewModel { NotificationsSettingsViewModel(get()) }
+
     }
 
     override fun onCreate() {

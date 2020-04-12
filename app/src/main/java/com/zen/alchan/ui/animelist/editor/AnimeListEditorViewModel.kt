@@ -19,6 +19,11 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
 
     var isInit = false
     var entryId: Int? = null
+
+    var mediaId: Int? = null
+    var mediaTitle: String? = null
+    var mediaEpisode: Int? = null
+
     var customListsList = ArrayList<CustomListsItem>()
     var advancedScoresList = ArrayList<AdvancedScoresItem>()
 
@@ -64,42 +69,64 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
             ArrayList()
         }
 
+    val savedCustomListsList: ArrayList<String>
+        get() = if (userRepository.viewerData.value?.mediaListOptions?.animeList?.customLists.isNullOrEmpty()) {
+            ArrayList()
+        } else {
+            ArrayList(userRepository.viewerData.value?.mediaListOptions?.animeList?.customLists!!)
+        }
+
     val mediaListStatusList = listOf(
         MediaListStatus.CURRENT, MediaListStatus.REPEATING, MediaListStatus.COMPLETED, MediaListStatus.PAUSED, MediaListStatus.DROPPED, MediaListStatus.PLANNING
     )
 
     fun retrieveAnimeListDataDetail() {
-        if (!isInit && entryId != null) {
+        if (!isInit && entryId != null && entryId != 0) {
             mediaListRepository.retrieveAnimeListDataDetail(entryId!!)
         }
     }
 
     fun updateAnimeListEntryDetail() {
-        if (entryId == null ||
-            selectedStatus == null ||
-            selectedScore == null ||
-            selectedProgress == null ||
-            selectedRewatches == null ||
-            selectedPrivate == null ||
-            selectedHidden == null
+        if (
+            selectedStatus != null &&
+            selectedScore != null &&
+            selectedProgress != null &&
+            selectedRewatches != null &&
+            selectedPrivate != null &&
+            selectedHidden != null
         ) {
-            return
+            if (entryId != null && entryId != 0) {
+                mediaListRepository.updateAnimeList(
+                    entryId!!,
+                    selectedStatus!!,
+                    selectedScore!!,
+                    selectedProgress!!,
+                    selectedRewatches!!,
+                    selectedPrivate!!,
+                    selectedNotes,
+                    selectedHidden!!,
+                    selectedCustomLists,
+                    selectedAdvancedScores,
+                    selectedStartDate,
+                    selectedFinishDate
+                )
+            } else if (mediaId != null && mediaId != 0) {
+                mediaListRepository.addAnimeList(
+                    mediaId!!,
+                    selectedStatus!!,
+                    selectedScore!!,
+                    selectedProgress!!,
+                    selectedRewatches!!,
+                    selectedPrivate!!,
+                    selectedNotes,
+                    selectedHidden!!,
+                    selectedCustomLists,
+                    selectedAdvancedScores,
+                    selectedStartDate,
+                    selectedFinishDate
+                )
+            }
         }
-
-        mediaListRepository.updateAnimeList(
-            entryId!!,
-            selectedStatus!!,
-            selectedScore!!,
-            selectedProgress!!,
-            selectedRewatches!!,
-            selectedPrivate!!,
-            selectedNotes,
-            selectedHidden!!,
-            selectedCustomLists,
-            selectedAdvancedScores,
-            selectedStartDate,
-            selectedFinishDate
-        )
     }
 
     fun deleteAnimeListEntry() {
@@ -109,7 +136,7 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
 
     fun updateFavourite() {
         userRepository.toggleFavourite(
-            animeListDataDetailResponse.value?.data?.media?.id, null, null, null, null
+            animeListDataDetailResponse.value?.data?.media?.id ?: mediaId, null, null, null, null
         )
     }
 }

@@ -1,10 +1,13 @@
 package com.zen.alchan.ui.common.filter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_flexbox_button_cancelable.view.*
 
 class MediaFilterRvAdapter(private val list: List<String>,

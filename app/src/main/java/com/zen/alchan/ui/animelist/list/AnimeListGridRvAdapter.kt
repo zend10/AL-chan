@@ -77,6 +77,11 @@ class AnimeListGridRvAdapter(private val context: Context,
             listener.openEditor(mediaList.id)
         }
 
+        holder.itemView.setOnLongClickListener {
+            listener.openBrowsePage(mediaList.media!!)
+            true
+        }
+
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
             

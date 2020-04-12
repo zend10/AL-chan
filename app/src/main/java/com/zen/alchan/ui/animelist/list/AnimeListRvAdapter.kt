@@ -87,6 +87,11 @@ class AnimeListRvAdapter(private val context: Context,
             listener.openScoreDialog(mediaList)
         }
 
+        holder.itemView.setOnLongClickListener {
+            listener.openBrowsePage(mediaList.media!!)
+            true
+        }
+
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
         }

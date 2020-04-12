@@ -52,6 +52,20 @@ interface MediaListRepository {
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
     )
+    fun addAnimeList(
+        mediaId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    )
 
     fun retrieveMangaListData()
     fun retrieveMangaListDataDetail(entryId: Int)
@@ -69,6 +83,21 @@ interface MediaListRepository {
     )
     fun updateMangaList(
         entryId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        progressVolumes: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    )
+    fun addMangaList(
+        mediaId: Int,
         status: MediaListStatus,
         score: Double,
         progress: Int,

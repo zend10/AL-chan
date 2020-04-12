@@ -16,4 +16,23 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun getMedia(id: Int): Observable<Response<MediaQuery.Data>> {
+        val query = MediaQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun checkMediaStatus(
+        userId: Int,
+        mediaId: Int
+    ): Observable<Response<MediaStatusQuery.Data>> {
+        val query = MediaStatusQuery.builder().userId(userId).mediaId(mediaId).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

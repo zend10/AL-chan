@@ -19,6 +19,12 @@ class MangaListEditorViewModel(private val mediaListRepository: MediaListReposit
 
     var isInit = false
     var entryId: Int? = null
+
+    var mediaId: Int? = null
+    var mediaTitle: String? = null
+    var mediaChapter: Int? = null
+    var mediaVolume: Int? = null
+
     var customListsList = ArrayList<CustomListsItem>()
     var advancedScoresList = ArrayList<AdvancedScoresItem>()
 
@@ -65,43 +71,67 @@ class MangaListEditorViewModel(private val mediaListRepository: MediaListReposit
             ArrayList()
         }
 
+    val savedCustomListsList: ArrayList<String>
+        get() = if (userRepository.viewerData.value?.mediaListOptions?.mangaList?.customLists.isNullOrEmpty()) {
+            ArrayList()
+        } else {
+            ArrayList(userRepository.viewerData.value?.mediaListOptions?.mangaList?.customLists!!)
+        }
+
     val mediaListStatusList = listOf(
         MediaListStatus.CURRENT, MediaListStatus.REPEATING, MediaListStatus.COMPLETED, MediaListStatus.PAUSED, MediaListStatus.DROPPED, MediaListStatus.PLANNING
     )
 
     fun retrieveMangaListDataDetail() {
-        if (!isInit && entryId != null) {
+        if (!isInit && entryId != null && entryId != 0) {
             mediaListRepository.retrieveMangaListDataDetail(entryId!!)
         }
     }
 
     fun updateMangaListEntryDetail() {
-        if (entryId == null ||
-            selectedStatus == null ||
-            selectedScore == null ||
-            selectedProgress == null ||
-            selectedRewatches == null ||
-            selectedPrivate == null ||
-            selectedHidden == null
+        if (
+            selectedStatus != null &&
+            selectedScore != null &&
+            selectedProgress != null &&
+            selectedProgressVolumes != null &&
+            selectedRewatches != null &&
+            selectedPrivate != null &&
+            selectedHidden != null
         ) {
-            return
+            if (entryId != null && entryId != 0) {
+                mediaListRepository.updateMangaList(
+                    entryId!!,
+                    selectedStatus!!,
+                    selectedScore!!,
+                    selectedProgress!!,
+                    selectedProgressVolumes!!,
+                    selectedRewatches!!,
+                    selectedPrivate!!,
+                    selectedNotes,
+                    selectedHidden!!,
+                    selectedCustomLists,
+                    selectedAdvancedScores,
+                    selectedStartDate,
+                    selectedFinishDate
+                )
+            } else if (mediaId != null && mediaId != 0) {
+                mediaListRepository.addMangaList(
+                    mediaId!!,
+                    selectedStatus!!,
+                    selectedScore!!,
+                    selectedProgress!!,
+                    selectedProgressVolumes!!,
+                    selectedRewatches!!,
+                    selectedPrivate!!,
+                    selectedNotes,
+                    selectedHidden!!,
+                    selectedCustomLists,
+                    selectedAdvancedScores,
+                    selectedStartDate,
+                    selectedFinishDate
+                )
+            }
         }
-
-        mediaListRepository.updateMangaList(
-            entryId!!,
-            selectedStatus!!,
-            selectedScore!!,
-            selectedProgress!!,
-            selectedProgressVolumes!!,
-            selectedRewatches!!,
-            selectedPrivate!!,
-            selectedNotes,
-            selectedHidden!!,
-            selectedCustomLists,
-            selectedAdvancedScores,
-            selectedStartDate,
-            selectedFinishDate
-        )
     }
 
     fun deleteMangaListEntry() {
@@ -111,7 +141,7 @@ class MangaListEditorViewModel(private val mediaListRepository: MediaListReposit
 
     fun updateFavourite() {
         userRepository.toggleFavourite(
-            null, mangaListDataDetailResponse.value?.data?.media?.id, null, null, null
+            null, mangaListDataDetailResponse.value?.data?.media?.id ?: mediaId, null, null, null
         )
     }
 }

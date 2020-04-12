@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mediaRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.media.MediaFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/mediaAppBarLayout"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/mediaCollapsingToolbar"
+                app:toolbarId="@id/mediaToolbar"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="@android:color/transparent"
+                app:scrimAnimationDuration="200"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:background="?themeSecondaryTransparentColor"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignBottom="@id/mediaBannerContentLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/mediaBannerImage"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                        <View
+                            android:background="@drawable/dark_gradient_three_background"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mediaBannerContentLayout"
+                        android:layout_marginStart="@dimen/marginPage"
+                        android:layout_marginEnd="@dimen/marginPage"
+                        android:layout_marginTop="112dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/mediaImageGuideline"
+                            app:layout_constraintGuide_percent="0.35"
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/mediaCoverImage"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toTopOf="@+id/mediaManageListButton"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/mediaImageGuideline"
+                            app:layout_constraintDimensionRatio="2:3"
+                            android:layout_marginBottom="@dimen/marginNormal"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mediaTitleText"
+                            style="?themeTitleFont"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mediaYearText"
+                            style="?themeRegularFont"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintTop_toBottomOf="@id/mediaTitleText"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mediaFormatText"
+                            style="?themeRegularFont"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintTop_toBottomOf="@id/mediaYearText"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:visibility="gone"
+                            android:id="@+id/mediaTotalCountDividerIcon"
+                            app:srcCompat="@drawable/ic_filled_circle"
+                            app:layout_constraintStart_toEndOf="@id/mediaFormatText"
+                            app:layout_constraintTop_toTopOf="@id/mediaFormatText"
+                            app:layout_constraintBottom_toBottomOf="@id/mediaFormatText"
+                            android:layout_marginStart="@dimen/marginClose"
+                            android:layout_width="@dimen/iconPadding"
+                            android:layout_height="@dimen/iconPadding"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:visibility="gone"
+                            android:id="@+id/mediaTotalCountText"
+                            style="?themeRegularFont"
+                            app:layout_constraintStart_toEndOf="@id/mediaTotalCountDividerIcon"
+                            app:layout_constraintTop_toBottomOf="@id/mediaYearText"
+                            android:layout_marginStart="@dimen/marginClose"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/mediaRatingIcon"
+                            app:srcCompat="@drawable/ic_star_filled"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintTop_toBottomOf="@id/mediaFormatText"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginTop="@dimen/marginNormal"
+                            app:tint="@color/yellowStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mediaRatingText"
+                            style="?themeRegularBoldFont"
+                            app:layout_constraintStart_toEndOf="@id/mediaRatingIcon"
+                            app:layout_constraintTop_toTopOf="@id/mediaRatingIcon"
+                            app:layout_constraintBottom_toBottomOf="@id/mediaRatingIcon"
+                            android:layout_marginStart="@dimen/marginClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/mediaFavIcon"
+                            app:srcCompat="@drawable/ic_heart_outline"
+                            app:layout_constraintStart_toEndOf="@id/mediaRatingText"
+                            app:layout_constraintTop_toBottomOf="@id/mediaFormatText"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginTop="@dimen/marginNormal"
+                            app:tint="@color/redHeart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mediaFavText"
+                            style="?themeRegularBoldFont"
+                            app:layout_constraintStart_toEndOf="@id/mediaFavIcon"
+                            app:layout_constraintTop_toTopOf="@id/mediaFavIcon"
+                            app:layout_constraintBottom_toBottomOf="@id/mediaFavIcon"
+                            android:layout_marginStart="@dimen/marginClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <View
+                            android:id="@+id/mediaAiringDummyDivider"
+                            app:layout_constraintTop_toBottomOf="@id/mediaRatingIcon"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintBottom_toTopOf="@id/mediaAiringIcon"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:visibility="gone"
+                            android:id="@+id/mediaAiringIcon"
+                            app:srcCompat="@drawable/ic_filled_circle"
+                            app:tint="?themeSecondaryColor"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintBottom_toBottomOf="@id/mediaCoverImage"
+                            app:layout_constraintTop_toBottomOf="@+id/mediaAiringDummyDivider"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginTop="@dimen/marginNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:visibility="gone"
+                            android:id="@+id/mediaAiringText"
+                            style="?themeSmallFont"
+                            android:textColor="?themeSecondaryColor"
+                            app:layout_constraintStart_toEndOf="@id/mediaAiringIcon"
+                            app:layout_constraintTop_toTopOf="@id/mediaAiringIcon"
+                            app:layout_constraintBottom_toBottomOf="@id/mediaAiringIcon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/marginClose"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/mediaManageListButton"
+                            android:text="@string/add_to_list"
+                            style="?themeButtonPrimary"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:enabled="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/mediaToolbar"
+                    app:layout_collapseMode="pin"
+                    android:elevation="0dp"
+                    android:fitsSystemWindows="false"
+                    android:backgroundTint="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/mediaScrollView"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/mediaFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:layout_margin="@dimen/marginPage"
+            android:layout_gravity="bottom|end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:visibility="gone"
+                android:id="@+id/mediaSocialMenu"
+                app:icon="@drawable/ic_chat"
+                app:iconTint="?themeBackgroundColor"
+                android:text="@string/social"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:visibility="gone"
+                android:id="@+id/mediaReviewsMenu"
+                app:icon="@drawable/ic_inscription"
+                app:iconTint="?themeBackgroundColor"
+                android:text="@string/reviews"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:visibility="gone"
+                android:id="@+id/mediaStatsMenu"
+                app:icon="@drawable/ic_bar_chart"
+                app:iconTint="?themeBackgroundColor"
+                android:text="@string/stats"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:visibility="gone"
+                android:id="@+id/mediaOverviewMenu"
+                app:icon="@drawable/ic_contacts"
+                android:text="@string/overview"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/mediaFloatingMenu"
+                app:iconTint="?themeBackgroundColor"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/layout_loading"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

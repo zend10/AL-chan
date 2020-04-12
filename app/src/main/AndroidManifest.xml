@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.mangalist.editor.MangaListEditorActivity"></activity>
+        <activity android:name=".ui.browse.BrowseActivity"></activity>
+        <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
         <activity android:name=".ui.common.customise.CustomiseListActivity" />
         <activity android:name=".ui.media.MediaDetailActivity" />
         <activity android:name=".ui.animelist.editor.AnimeListEditorActivity" />

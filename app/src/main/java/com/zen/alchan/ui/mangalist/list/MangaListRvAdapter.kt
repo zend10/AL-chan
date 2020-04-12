@@ -16,6 +16,7 @@ import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_manga_list_linear.view.*
+import type.MediaFormat
 import type.ScoreFormat
 
 class MangaListRvAdapter(private val context: Context,
@@ -87,6 +88,11 @@ class MangaListRvAdapter(private val context: Context,
 
         holder.mangaStarIcon.setOnClickListener {
             listener.openScoreDialog(mediaList)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            listener.openBrowsePage(mediaList.media!!)
+            true
         }
 
         if (listStyle?.cardColor != null) {

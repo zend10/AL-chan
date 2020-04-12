@@ -59,7 +59,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:srcCompat="@drawable/ic_ichevron_right"
+                    app:srcCompat="@drawable/ic_chevron_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -108,7 +108,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:srcCompat="@drawable/ic_ichevron_right"
+                    app:srcCompat="@drawable/ic_chevron_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -157,7 +157,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:srcCompat="@drawable/ic_ichevron_right"
+                    app:srcCompat="@drawable/ic_chevron_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -206,7 +206,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:srcCompat="@drawable/ic_ichevron_right"
+                    app:srcCompat="@drawable/ic_chevron_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -255,7 +255,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:srcCompat="@drawable/ic_ichevron_right"
+                    app:srcCompat="@drawable/ic_chevron_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -304,7 +304,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:srcCompat="@drawable/ic_ichevron_right"
+                    app:srcCompat="@drawable/ic_chevron_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

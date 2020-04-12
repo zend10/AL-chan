@@ -189,12 +189,51 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
         mediaListDataSource.updateAnimeList(
-            entryId, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+            entryId, null, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
         ).subscribeWith(object : Observer<Response<AnimeListEntryMutation.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<AnimeListEntryMutation.Data>) {
                 handleUpdateAnimeEntryResult(t, status, isUpdateDetail = true)
+            }
+
+            override fun onError(e: Throwable) {
+                _updateMediaListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun addAnimeList(
+        mediaId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    ) {
+        _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
+
+        mediaListDataSource.updateAnimeList(
+            null, mediaId, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+        ).subscribeWith(object : Observer<Response<AnimeListEntryMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<AnimeListEntryMutation.Data>) {
+                if (t.hasErrors()) {
+                    _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    retrieveAnimeListData()
+                    _updateMediaListEntryDetailResponse.postValue(Resource.Success(true))
+                }
             }
 
             override fun onError(e: Throwable) {
@@ -559,12 +598,52 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
         mediaListDataSource.updateMangaList(
-            entryId, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+            entryId, null, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
         ).subscribeWith(object : Observer<Response<MangaListEntryMutation.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<MangaListEntryMutation.Data>) {
                 handleUpdateMangaEntryResult(t, status, isUpdateDetail = true)
+            }
+
+            override fun onError(e: Throwable) {
+                _updateMediaListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun addMangaList(
+        mediaId: Int,
+        status: MediaListStatus,
+        score: Double,
+        progress: Int,
+        progressVolumes: Int,
+        repeat: Int,
+        isPrivate: Boolean,
+        notes: String?,
+        hiddenFromStatusLists: Boolean,
+        customLists: List<String>?,
+        advancedScores: List<Double>?,
+        startedAt: FuzzyDate?,
+        completedAt: FuzzyDate?
+    ) {
+        _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
+
+        mediaListDataSource.updateMangaList(
+            null, mediaId, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+        ).subscribeWith(object : Observer<Response<MangaListEntryMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<MangaListEntryMutation.Data>) {
+                if (t.hasErrors()) {
+                    _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    retrieveMangaListData()
+                    _updateMediaListEntryDetailResponse.postValue(Resource.Success(true))
+                }
             }
 
             override fun onError(e: Throwable) {

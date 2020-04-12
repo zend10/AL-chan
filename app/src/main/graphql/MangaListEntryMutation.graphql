@@ -1,5 +1,6 @@
 mutation MangaListEntryMutation(
     $id: Int,
+    $mediaId: Int,
     $status: MediaListStatus,
     $score: Float,
     $progress: Int,
@@ -16,6 +17,7 @@ mutation MangaListEntryMutation(
 ) {
     SaveMediaListEntry(
         id: $id,
+        mediaId: $mediaId,
         status: $status,
         score: $score,
         progress: $progress,

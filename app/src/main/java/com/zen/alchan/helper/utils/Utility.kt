@@ -47,4 +47,16 @@ object Utility {
             else -> ""
         }
     }
+
+    fun convertToDateFormat(year: Int?, month: Int?, day: Int?) : String? {
+        if (year == null || month == null || day == null) {
+            return null
+        }
+        val dateFormat = SimpleDateFormat(Constant.DEFAULT_DATE_FORMAT, Locale.US)
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month - 1)
+        calendar.set(Calendar.DAY_OF_MONTH, day)
+        return dateFormat.format(calendar.time)
+    }
 }
