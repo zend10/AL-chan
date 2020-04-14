@@ -22,8 +22,8 @@ import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.mangalist.MangaListViewModel
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorViewModel
 import com.zen.alchan.ui.mangalist.list.MangaListItemViewModel
-import com.zen.alchan.ui.media.MediaViewModel
-import com.zen.alchan.ui.media.overview.MediaOverviewViewModel
+import com.zen.alchan.ui.browse.media.MediaViewModel
+import com.zen.alchan.ui.browse.media.overview.MediaOverviewViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel

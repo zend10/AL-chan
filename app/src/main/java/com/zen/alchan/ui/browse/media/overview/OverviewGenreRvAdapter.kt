@@ -1,6 +1,5 @@
-package com.zen.alchan.ui.media.overview
+package com.zen.alchan.ui.browse.media.overview
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View

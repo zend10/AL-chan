@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.media
+package com.zen.alchan.ui.browse.media
 
 
 import android.content.Intent
@@ -30,9 +30,11 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorActivity
-import com.zen.alchan.ui.media.overview.MediaOverviewFragment
-import com.zen.alchan.ui.media.social.MediaSocialFragment
-import com.zen.alchan.ui.media.stats.MediaStatsFragment
+import com.zen.alchan.ui.browse.media.overview.MediaOverviewFragment
+import com.zen.alchan.ui.browse.media.reviews.MediaReviewsFragment
+import com.zen.alchan.ui.browse.media.social.MediaSocialFragment
+import com.zen.alchan.ui.browse.media.staffs.MediaStaffsFragment
+import com.zen.alchan.ui.browse.media.stats.MediaStatsFragment
 import kotlinx.android.synthetic.main.fragment_media.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -52,6 +54,7 @@ class MediaFragment : BaseFragment() {
 
     private val floatingMenuIconMap = hashMapOf(
         Pair(MediaPage.OVERVIEW, R.drawable.ic_contacts),
+        Pair(MediaPage.STAFFS, R.drawable.ic_staff),
         Pair(MediaPage.STATS, R.drawable.ic_bar_chart),
         Pair(MediaPage.REVIEWS, R.drawable.ic_inscription),
         Pair(MediaPage.SOCIAL, R.drawable.ic_chat)
@@ -173,6 +176,7 @@ class MediaFragment : BaseFragment() {
         }
 
         mediaOverviewMenu.setOnClickListener { changeMediaPage(MediaPage.OVERVIEW) }
+        mediaStaffsMenu.setOnClickListener { changeMediaPage(MediaPage.STAFFS) }
         mediaStatsMenu.setOnClickListener { changeMediaPage(MediaPage.STATS) }
         mediaReviewsMenu.setOnClickListener { changeMediaPage(MediaPage.REVIEWS) }
         mediaSocialMenu.setOnClickListener { changeMediaPage(MediaPage.SOCIAL) }
@@ -286,7 +290,9 @@ class MediaFragment : BaseFragment() {
 
         val fragment = when (viewModel.currentMediaPage) {
             MediaPage.OVERVIEW -> MediaOverviewFragment()
+            MediaPage.STAFFS -> MediaStaffsFragment()
             MediaPage.STATS -> MediaStatsFragment()
+            MediaPage.REVIEWS -> MediaReviewsFragment()
             MediaPage.SOCIAL -> MediaSocialFragment()
             else -> MediaOverviewFragment()
         }
@@ -305,12 +311,14 @@ class MediaFragment : BaseFragment() {
     private fun handleFloatingMenuVisibility(shouldVisible: Boolean) {
         if (!shouldVisible) {
             mediaOverviewMenu.hide()
+            mediaStaffsMenu.hide()
             mediaStatsMenu.hide()
             mediaReviewsMenu.hide()
             mediaSocialMenu.hide()
             mediaFloatingMenu.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
         } else {
             mediaOverviewMenu.show()
+            mediaStaffsMenu.show()
             mediaStatsMenu.show()
             mediaReviewsMenu.show()
             mediaSocialMenu.show()

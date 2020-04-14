@@ -1,19 +1,18 @@
-package com.zen.alchan.ui.media.overview
+package com.zen.alchan.ui.browse.media.overview
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.KeyValueItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_text_clickable.view.*
 
-class OverviewStudiosRvAdapter(val context: Context?,
-                               val list: List<KeyValueItem>,
-                               val listener: OverviewStudioListener
+class OverviewStudiosRvAdapter(private val context: Context?,
+                               private val list: List<KeyValueItem>,
+                               private val listener: OverviewStudioListener
 ) : RecyclerView.Adapter<OverviewStudiosRvAdapter.ViewHolder>() {
 
     interface OverviewStudioListener {

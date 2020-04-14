@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.media.characters
+package com.zen.alchan.ui.browse.media.social
 
 
 import android.os.Bundle
@@ -12,14 +12,14 @@ import com.zen.alchan.R
 /**
  * A simple [Fragment] subclass.
  */
-class MediaCharactersFragment : Fragment() {
+class MediaSocialFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_media_characters, container, false)
+        return inflater.inflate(R.layout.fragment_media_social, container, false)
     }
 
 

@@ -1,11 +1,8 @@
-package com.zen.alchan.ui.media
+package com.zen.alchan.ui.browse.media
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.MediaRepository
 import com.zen.alchan.helper.enums.MediaPage
-import com.zen.alchan.helper.libs.SingleLiveEvent
 import type.MediaType
 
 class MediaViewModel(private val mediaRepository: MediaRepository) : ViewModel() {

@@ -1,7 +1,6 @@
-package com.zen.alchan.ui.media.overview
+package com.zen.alchan.ui.browse.media.overview
 
 import android.content.Context
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,10 @@ import com.zen.alchan.helper.pojo.MediaRelations
 import kotlinx.android.synthetic.main.list_media_relations.view.*
 import type.MediaType
 
-class OverviewRelationsRvAdapter(val context: Context,
-                                 val list: List<MediaRelations>,
-                                 val itemWidth: Int,
-                                 val listener: OverviewRelationsListener
+class OverviewRelationsRvAdapter(private val context: Context,
+                                 private val list: List<MediaRelations>,
+                                 private val itemWidth: Int,
+                                 private val listener: OverviewRelationsListener
 ) : RecyclerView.Adapter<OverviewRelationsRvAdapter.ViewHolder>() {
 
     interface OverviewRelationsListener {

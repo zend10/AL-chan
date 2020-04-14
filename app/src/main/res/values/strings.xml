@@ -186,4 +186,14 @@
     <string name="average">Average</string>
     <string name="mean">Mean</string>
     <string name="relations">Relations</string>
+    <string name="characters">Characters</string>
+    <string name="view_more">View more</string>
+    <string name="staffs">Staffs</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="links">Links</string>
+    <string name="show_spoiler">Show Spoiler</string>
+    <string name="hide_spoiler">Hide Spoiler</string>
+    <string name="recommendation_rating">Recommendation rating:</string>
+    <string name="rating">Rating:</string>
+    <string name="link_copied">Link copied.</string>
 </resources>

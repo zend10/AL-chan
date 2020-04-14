@@ -155,8 +155,12 @@ query MediaQuery(
                         title {
                             userPreferred
                         }
+                        seasonYear
+                        format
+                        averageScore
+                        favourites
                         coverImage {
-                            large
+                            extraLarge
                         }
                     }
                 }

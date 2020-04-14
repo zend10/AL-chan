@@ -5,7 +5,7 @@
     android:id="@+id/mediaRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.media.MediaFragment">
+    tools:context=".ui.browse.media.MediaFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:fitsSystemWindows="true"
@@ -289,6 +289,19 @@
                 app:icon="@drawable/ic_bar_chart"
                 app:iconTint="?themeBackgroundColor"
                 android:text="@string/stats"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:visibility="gone"
+                android:id="@+id/mediaStaffsMenu"
+                app:icon="@drawable/ic_staff"
+                app:iconTint="?themeBackgroundColor"
+                android:text="@string/staffs"
                 android:textAppearance="?themeRegularBoldFont"
                 android:textColor="?themeBackgroundColor"
                 app:backgroundTint="?themeSecondaryColor"

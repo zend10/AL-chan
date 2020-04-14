@@ -19,7 +19,7 @@
         <activity android:name=".ui.browse.BrowseActivity"></activity>
         <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
         <activity android:name=".ui.common.customise.CustomiseListActivity" />
-        <activity android:name=".ui.media.MediaDetailActivity" />
+        <activity android:name="com.zen.alchan.ui.browse.media.MediaDetailActivity" />
         <activity android:name=".ui.animelist.editor.AnimeListEditorActivity" />
         <activity android:name=".ui.animelist.filter.FilterAnimeListActivity" />
         <activity android:name=".ui.search.SearchActivity" />

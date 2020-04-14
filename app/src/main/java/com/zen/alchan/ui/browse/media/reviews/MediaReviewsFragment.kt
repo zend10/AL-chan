@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.media.recommendations
+package com.zen.alchan.ui.browse.media.reviews
 
 
 import android.os.Bundle
@@ -12,14 +12,14 @@ import com.zen.alchan.R
 /**
  * A simple [Fragment] subclass.
  */
-class MediaRecommendationsFragment : Fragment() {
+class MediaReviewsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_media_recommendations, container, false)
+        return inflater.inflate(R.layout.fragment_media_reviews, container, false)
     }
 
 
