@@ -29,6 +29,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.media.characters.MediaCharactersFragment
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorActivity
 import com.zen.alchan.ui.browse.media.overview.MediaOverviewFragment
 import com.zen.alchan.ui.browse.media.reviews.MediaReviewsFragment
@@ -54,6 +55,7 @@ class MediaFragment : BaseFragment() {
 
     private val floatingMenuIconMap = hashMapOf(
         Pair(MediaPage.OVERVIEW, R.drawable.ic_contacts),
+        Pair(MediaPage.CHARACTERS, R.drawable.ic_person),
         Pair(MediaPage.STAFFS, R.drawable.ic_staff),
         Pair(MediaPage.STATS, R.drawable.ic_bar_chart),
         Pair(MediaPage.REVIEWS, R.drawable.ic_inscription),
@@ -159,16 +161,6 @@ class MediaFragment : BaseFragment() {
             }
         })
 
-        mediaScrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (scrollY > oldScrollY) {
-                mediaFloatingMenu.hide()
-            } else {
-                mediaFloatingMenu.show()
-            }
-
-            handleFloatingMenuVisibility(false)
-        }
-
         mediaFloatingMenu.text = viewModel.currentMediaPage.name.toLowerCase().capitalize()
 
         mediaFloatingMenu.setOnClickListener {
@@ -176,6 +168,7 @@ class MediaFragment : BaseFragment() {
         }
 
         mediaOverviewMenu.setOnClickListener { changeMediaPage(MediaPage.OVERVIEW) }
+        mediaCharactersMenu.setOnClickListener { changeMediaPage(MediaPage.CHARACTERS) }
         mediaStaffsMenu.setOnClickListener { changeMediaPage(MediaPage.STAFFS) }
         mediaStatsMenu.setOnClickListener { changeMediaPage(MediaPage.STATS) }
         mediaReviewsMenu.setOnClickListener { changeMediaPage(MediaPage.REVIEWS) }
@@ -290,6 +283,7 @@ class MediaFragment : BaseFragment() {
 
         val fragment = when (viewModel.currentMediaPage) {
             MediaPage.OVERVIEW -> MediaOverviewFragment()
+            MediaPage.CHARACTERS -> MediaCharactersFragment()
             MediaPage.STAFFS -> MediaStaffsFragment()
             MediaPage.STATS -> MediaStatsFragment()
             MediaPage.REVIEWS -> MediaReviewsFragment()
@@ -299,6 +293,7 @@ class MediaFragment : BaseFragment() {
 
         val bundle = Bundle()
         bundle.putInt(MEDIA_ID, viewModel.mediaId!!)
+        bundle.putString(MEDIA_TYPE, viewModel.mediaType?.name)
 
         fragment.arguments = bundle
 
@@ -311,6 +306,7 @@ class MediaFragment : BaseFragment() {
     private fun handleFloatingMenuVisibility(shouldVisible: Boolean) {
         if (!shouldVisible) {
             mediaOverviewMenu.hide()
+            mediaCharactersMenu.hide()
             mediaStaffsMenu.hide()
             mediaStatsMenu.hide()
             mediaReviewsMenu.hide()
@@ -318,11 +314,21 @@ class MediaFragment : BaseFragment() {
             mediaFloatingMenu.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
         } else {
             mediaOverviewMenu.show()
+            mediaCharactersMenu.show()
             mediaStaffsMenu.show()
             mediaStatsMenu.show()
             mediaReviewsMenu.show()
             mediaSocialMenu.show()
             mediaFloatingMenu.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeNegativeColor))
+        }
+    }
+
+    fun handleChildFragmentScroll(scrollY: Int, oldScrollY: Int) {
+        if (scrollY > oldScrollY) {
+            handleFloatingMenuVisibility(false)
+            mediaFloatingMenu.hide()
+        } else {
+            mediaFloatingMenu.show()
         }
     }
 }

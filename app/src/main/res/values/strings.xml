@@ -196,4 +196,5 @@
     <string name="recommendation_rating">Recommendation rating:</string>
     <string name="rating">Rating:</string>
     <string name="link_copied">Link copied.</string>
+    <string name="language">Language</string>
 </resources>

@@ -237,18 +237,11 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/mediaScrollView"
+        <FrameLayout
+            android:id="@+id/mediaFrameLayout"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:id="@+id/mediaFrameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </androidx.core.widget.NestedScrollView>
+            android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
@@ -302,6 +295,19 @@
                 app:icon="@drawable/ic_staff"
                 app:iconTint="?themeBackgroundColor"
                 android:text="@string/staffs"
+                android:textAppearance="?themeRegularBoldFont"
+                android:textColor="?themeBackgroundColor"
+                app:backgroundTint="?themeSecondaryColor"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:visibility="gone"
+                android:id="@+id/mediaCharactersMenu"
+                app:icon="@drawable/ic_person"
+                app:iconTint="?themeBackgroundColor"
+                android:text="@string/characters"
                 android:textAppearance="?themeRegularBoldFont"
                 android:textColor="?themeBackgroundColor"
                 app:backgroundTint="?themeSecondaryColor"

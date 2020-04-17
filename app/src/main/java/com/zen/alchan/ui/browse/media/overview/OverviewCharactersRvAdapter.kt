@@ -19,7 +19,6 @@ class OverviewCharactersRvAdapter(private val context: Context,
 
     interface OverviewCharactersListener {
         fun passSelectedCharacter(characterId: Int)
-        fun viewMore()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,18 +29,9 @@ class OverviewCharactersRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-
-        if (item.isViewMore) {
-            holder.characterViewMoreLayout.visibility = View.VISIBLE
-            holder.characterNameText.text = ""
-            GlideApp.with(context).load(0).apply(RequestOptions.circleCropTransform()).into(holder.characterImage)
-            holder.itemView.setOnClickListener { listener.viewMore() }
-        } else {
-            holder.characterViewMoreLayout.visibility = View.GONE
-            holder.characterNameText.text = item.characterName
-            GlideApp.with(context).load(item.characterImage).apply(RequestOptions.circleCropTransform()).into(holder.characterImage)
-            holder.itemView.setOnClickListener { listener.passSelectedCharacter(item.characterId!!) }
-        }
+        holder.characterNameText.text = item.characterName
+        GlideApp.with(context).load(item.characterImage).apply(RequestOptions.circleCropTransform()).into(holder.characterImage)
+        holder.itemView.setOnClickListener { listener.passSelectedCharacter(item.characterId!!) }
     }
 
     override fun getItemCount(): Int {
@@ -51,6 +41,5 @@ class OverviewCharactersRvAdapter(private val context: Context,
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val characterImage = view.characterImage!!
         val characterNameText = view.characterNameText!!
-        val characterViewMoreLayout = view.characterViewMoreLayout!!
     }
 }

@@ -35,4 +35,23 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun getMediaCharacters(
+        id: Int,
+        page: Int
+    ): Observable<Response<MediaCharactersQuery.Data>> {
+        val query = MediaCharactersQuery.builder().id(id).page(page).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMediaStaffs(id: Int, page: Int): Observable<Response<MediaStaffsQuery.Data>> {
+        val query = MediaStaffsQuery.builder().id(id).page(page).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

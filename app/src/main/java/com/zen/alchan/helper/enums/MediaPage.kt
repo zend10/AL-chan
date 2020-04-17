@@ -5,8 +5,6 @@ enum class MediaPage {
     STATS,
     REVIEWS,
     SOCIAL,
-    RELATIONS,
     CHARACTERS,
-    STAFFS,
-    RECOMMENDATIONS
+    STAFFS
 }

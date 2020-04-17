@@ -8,6 +8,7 @@ import com.zen.alchan.data.localstorage.MediaManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import com.zen.alchan.helper.pojo.MediaCharacters
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
@@ -31,6 +32,14 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _mediaStatus = SingleLiveEvent<Resource<MediaStatusQuery.Data>>()
     override val mediaStatus: LiveData<Resource<MediaStatusQuery.Data>>
         get() = _mediaStatus
+
+    private val _mediaCharactersData = SingleLiveEvent<Resource<MediaCharactersQuery.Data>>()
+    override val mediaCharactersData: LiveData<Resource<MediaCharactersQuery.Data>>
+        get() = _mediaCharactersData
+
+    private val _mediaStaffsData = SingleLiveEvent<Resource<MediaStaffsQuery.Data>>()
+    override val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
+        get() = _mediaStaffsData
 
     @SuppressLint("CheckResult")
     override fun getGenre() {
@@ -86,6 +95,50 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onError(e: Throwable) {
                 _mediaStatus.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaCharacters(id: Int, page: Int) {
+        mediaDataSource.getMediaCharacters(id, page).subscribeWith(object : Observer<Response<MediaCharactersQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<MediaCharactersQuery.Data>) {
+                if (t.hasErrors()) {
+                    _mediaCharactersData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _mediaCharactersData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _mediaCharactersData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaStaffs(id: Int, page: Int) {
+        mediaDataSource.getMediaStaffs(id, page).subscribeWith(object : Observer<Response<MediaStaffsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<MediaStaffsQuery.Data>) {
+                if (t.hasErrors()) {
+                    _mediaStaffsData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _mediaStaffsData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _mediaStaffsData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 

@@ -77,15 +77,16 @@ class AnimeListGridRvAdapter(private val context: Context,
             listener.openEditor(mediaList.id)
         }
 
-        holder.itemView.setOnLongClickListener {
+        holder.animeCoverImage.setOnLongClickListener {
             listener.openBrowsePage(mediaList.media!!)
             true
         }
 
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
-            
-            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(3)
+
+            // 6 is color hex code length without the alpha
+            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6)
             holder.animeTitleLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
             holder.animeFormatLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
             holder.animeAiringLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))

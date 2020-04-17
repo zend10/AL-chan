@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.MediaPage
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.*
 import com.zen.alchan.helper.setRegularPlural
@@ -52,6 +54,13 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun initLayout() {
+        mediaOverviewScrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, oldScrollY: Int ->
+            // not the best way but I have no idea what to do
+            if (parentFragment is MediaFragment) {
+                (parentFragment as MediaFragment).handleChildFragmentScroll(scrollY, oldScrollY)
+            }
+        }
+
         handleGenre()
         handleDescription()
         handleCharacters()
@@ -101,26 +110,7 @@ class MediaOverviewFragment : BaseFragment() {
                         it.node()?.name()?.full(),
                         it.node()?.image()?.large(),
                         it.role(),
-                        null,
-                        null,
-                        null,
-                        it.voiceActors()?.find { va -> va.language() == StaffLanguage.JAPANESE }?.image()?.large()
-                    )
-                )
-            }
-
-            if (!viewModel.charactersList.isNullOrEmpty()) {
-                viewModel.charactersList.add(
-                    MediaCharacters(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        true
+                        null
                     )
                 )
             }
@@ -360,10 +350,6 @@ class MediaOverviewFragment : BaseFragment() {
         return OverviewCharactersRvAdapter(activity!!, viewModel.charactersList, width, object : OverviewCharactersRvAdapter.OverviewCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
                 // TODO: go to character
-            }
-
-            override fun viewMore() {
-                // TODO: go to more character page
             }
         })
     }

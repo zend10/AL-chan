@@ -1,13 +1,9 @@
-query MediaCharactersQuery(
+query MediaStaffsQuery(
     $id: Int,
-    $page: Int,
+    $page: Int
 ) {
     Media(id: $id) {
-        id
-        title {
-            userPreferred
-        }
-        characters(sort: [ROLE, ID], page: $page) {
+        staff(page: $page) {
             edges {
                 node {
                     id
@@ -18,18 +14,7 @@ query MediaCharactersQuery(
                         large
                     }
                 }
-                id
                 role
-                voiceActors {
-                    id
-                    name {
-                        full
-                    }
-                    language
-                    image {
-                        large
-                    }
-                }
             }
             pageInfo {
                 total

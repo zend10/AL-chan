@@ -60,7 +60,7 @@ class MangaListGridRvAdapter(private val context: Context,
             listener.openEditor(mediaList.id)
         }
 
-        holder.itemView.setOnLongClickListener {
+        holder.mangaCoverImage.setOnLongClickListener {
             listener.openBrowsePage(mediaList.media!!)
             true
         }
@@ -68,7 +68,8 @@ class MangaListGridRvAdapter(private val context: Context,
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
 
-            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(3)
+            // 6 is color hex code length without the alpha
+            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6)
             holder.mangaTitleLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
             holder.mangaFormatLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
         }
