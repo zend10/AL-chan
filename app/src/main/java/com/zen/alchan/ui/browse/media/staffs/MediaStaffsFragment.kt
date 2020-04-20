@@ -15,6 +15,7 @@ import com.zen.alchan.helper.pojo.MediaStaffs
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.staff.StaffFragment
 import kotlinx.android.synthetic.main.fragment_media_staffs.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,7 +54,11 @@ class MediaStaffsFragment : BaseFragment() {
     private fun assignAdapter(): MediaStaffsRvAdapter {
         return MediaStaffsRvAdapter(activity!!, viewModel.mediaStaffs, object : MediaStaffsRvAdapter.MediaStaffsListener {
             override fun passSelectedStaff(staffId: Int) {
-                // TODO: open staff page
+                val fragment = StaffFragment()
+                val bundle = Bundle()
+                bundle.putInt(StaffFragment.STAFF_ID, staffId)
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
             }
         })
     }

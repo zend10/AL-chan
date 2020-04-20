@@ -19,7 +19,9 @@ import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.pojo.MediaVoiceActors
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.staff.StaffFragment
 import kotlinx.android.synthetic.main.fragment_media_characters.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -59,11 +61,19 @@ class MediaCharactersFragment : BaseFragment() {
     private fun assignAdapter(): MediaCharactersRvAdapter {
         return MediaCharactersRvAdapter(activity!!, viewModel.mediaCharacters, viewModel.staffLanguage, object : MediaCharactersRvAdapter.MediaCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
-                // TODO: open character page
+                val fragment = CharacterFragment()
+                val bundle = Bundle()
+                bundle.putInt(CharacterFragment.CHARACTER_ID, characterId)
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
             }
 
             override fun passSelectedVoiceActor(voiceActorId: Int) {
-                // TODO: open staff page
+                val fragment = StaffFragment()
+                val bundle = Bundle()
+                bundle.putInt(StaffFragment.STAFF_ID, voiceActorId)
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
             }
         })
     }

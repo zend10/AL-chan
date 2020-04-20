@@ -23,6 +23,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import kotlinx.android.synthetic.main.fragment_media_overview.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -88,7 +89,7 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleDescription() {
-        val spanned = HtmlCompat.fromHtml(mediaData?.description() ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val spanned = HtmlCompat.fromHtml(mediaData?.description() ?: "No description.", HtmlCompat.FROM_HTML_MODE_LEGACY)
         mediaDescriptionText.text = spanned
         mediaDescriptionArrow.setOnClickListener {
             if (dummyMediaDescriptionText.isVisible) {
@@ -349,7 +350,11 @@ class MediaOverviewFragment : BaseFragment() {
         val width = metrics.widthPixels / 5
         return OverviewCharactersRvAdapter(activity!!, viewModel.charactersList, width, object : OverviewCharactersRvAdapter.OverviewCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
-                // TODO: go to character
+                val fragment = CharacterFragment()
+                val bundle = Bundle()
+                bundle.putInt(CharacterFragment.CHARACTER_ID, characterId)
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
             }
         })
     }

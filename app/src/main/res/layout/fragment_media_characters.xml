@@ -24,6 +24,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:text="@string/language"
+                style="?themeRegularFont"
                 android:layout_marginEnd="@dimen/marginNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -103,7 +103,7 @@ class MediaFragment : BaseFragment() {
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     if (it.data?.Media() != null) {
-                        viewModel.notifyMediaData(it.data.Media())
+                        viewModel.currentMediaData = it.data.Media()
                         setupHeader()
                     }
                 }
@@ -143,6 +143,12 @@ class MediaFragment : BaseFragment() {
     }
 
     private fun initLayout() {
+        mediaRefreshLayout.setOnRefreshListener {
+            mediaRefreshLayout.isRefreshing = false
+            viewModel.getMedia()
+            viewModel.checkMediaStatus()
+        }
+
         mediaAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
             mediaRefreshLayout.isEnabled = verticalOffset == 0

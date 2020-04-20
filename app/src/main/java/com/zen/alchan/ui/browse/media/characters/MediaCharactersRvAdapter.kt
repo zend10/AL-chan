@@ -57,7 +57,7 @@ class MediaCharactersRvAdapter(private val context: Context,
                     holder.voiceActorNameText.visibility = View.VISIBLE
                     holder.voiceActorImage.visibility = View.VISIBLE
 
-                    holder.characterImage.setOnClickListener {
+                    holder.voiceActorImage.setOnClickListener {
                         listener.passSelectedVoiceActor(voiceActor.voiceActorId!!)
                     }
                 } else {

@@ -16,6 +16,7 @@ import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
 import com.zen.alchan.ui.auth.LoginViewModel
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.auth.SplashViewModel
+import com.zen.alchan.ui.browse.character.CharacterViewModel
 import com.zen.alchan.ui.common.customise.CustomiseListViewModel
 import com.zen.alchan.ui.common.filter.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
@@ -55,6 +56,7 @@ class ALchanApplication : Application() {
         single<UserDataSource> { UserDataSourceImpl(get()) }
         single<MediaListDataSource> { MediaListDataSourceImpl(get()) }
         single<MediaDataSource> { MediaDataSourceImpl(get()) }
+        single<BrowseDataSource> { BrowseDataSourceImpl(get()) }
 
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
@@ -62,6 +64,7 @@ class ALchanApplication : Application() {
         single<MediaListRepository> { MediaListRepositoryImpl(get(), get(), gson) }
         single<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
         single<ListStyleRepository> { ListStyleRepositoryImpl(get()) }
+        single<BrowseRepository> { BrowseRepositoryImpl(get()) }
 
         viewModel { BaseViewModel(get()) }
         viewModel { MediaFilterViewModel(get(), get(), gson) }
@@ -86,6 +89,8 @@ class ALchanApplication : Application() {
         viewModel { MediaOverviewViewModel(get()) }
         viewModel { MediaCharactersViewModel(get()) }
         viewModel { MediaStaffsViewModel(get()) }
+
+        viewModel { CharacterViewModel(get(), get()) }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }

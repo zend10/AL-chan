@@ -1,0 +1,42 @@
+query CharacterMediaConnectionQuery($id: Int, $page: Int) {
+    Character(id: $id) {
+        id
+        name {
+            full
+        }
+        media(page: $page) {
+            edges {
+                node {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    type
+                }
+                relationType
+                characterRole
+                staffRole
+                voiceActors {
+                    id
+                    name {
+                        full
+                    }
+                    image {
+                        large
+                    }
+                    language
+                }
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+    }
+}

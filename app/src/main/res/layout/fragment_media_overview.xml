@@ -43,6 +43,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mediaDescriptionText"
+                style="?themeRegularFont"
                 android:layout_alignParentTop="true"
                 android:layout_alignBottom="@id/dummyMediaDescriptionText"
                 android:layout_width="match_parent"
@@ -50,6 +51,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/dummyMediaDescriptionText"
+                style="?themeRegularFont"
                 android:background="@drawable/dark_gradient_two_background"
                 android:lines="5"
                 android:maxLines="5"

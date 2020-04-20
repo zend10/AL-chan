@@ -28,8 +28,4 @@ class MediaViewModel(private val mediaRepository: MediaRepository) : ViewModel()
     fun checkMediaStatus() {
         if (mediaId != null) mediaRepository.checkMediaStatus(mediaId!!)
     }
-
-    fun notifyMediaData(mediaData: MediaQuery.Media?) {
-        currentMediaData = mediaData
-    }
 }

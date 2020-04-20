@@ -55,6 +55,12 @@ object DialogUtility {
             .show()
     }
 
+    fun showInfoDialog(context: Context?, message: String) {
+        MaterialAlertDialogBuilder(context)
+            .setMessage(message)
+            .show()
+    }
+
     fun showCustomViewDialog(
         context: Context?,
         title: Int,
