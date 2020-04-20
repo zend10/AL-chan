@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content">
 
                             <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/characterImageGuideline"
+                                android:id="@+id/leftImageGuideline"
                                 app:layout_constraintGuide_percent="0.35"
                                 android:orientation="vertical"
                                 android:layout_width="wrap_content"
@@ -71,13 +71,13 @@
                                 android:padding="@dimen/lineWidth"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/characterImageGuideline"
+                                app:layout_constraintEnd_toStartOf="@id/leftImageGuideline"
                                 app:layout_constraintDimensionRatio="1:1"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp">
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                    android:id="@+id/characterImage"
+                                    android:id="@+id/leftImage"
                                     android:scaleType="centerCrop"
                                     android:adjustViewBounds="true"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -90,7 +90,7 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.appcompat.widget.LinearLayoutCompat
-                                app:layout_constraintStart_toEndOf="@id/characterImageGuideline"
+                                app:layout_constraintStart_toEndOf="@id/leftImageGuideline"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +100,7 @@
                                 android:layout_height="wrap_content">
 
                                 <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/characterNameText"
+                                    android:id="@+id/leftText"
                                     style="?themeTitleFont"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>

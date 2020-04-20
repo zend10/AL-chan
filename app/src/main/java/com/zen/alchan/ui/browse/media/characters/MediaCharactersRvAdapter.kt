@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.browse.media.characters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaCharacters
-import kotlinx.android.synthetic.main.list_characters.view.*
+import kotlinx.android.synthetic.main.list_two_images.view.*
 import type.StaffLanguage
 
 class MediaCharactersRvAdapter(private val context: Context,
@@ -30,7 +29,7 @@ class MediaCharactersRvAdapter(private val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_characters, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_two_images, parent, false)
             ItemViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.list_loading, parent, false)
@@ -46,6 +45,10 @@ class MediaCharactersRvAdapter(private val context: Context,
             holder.characterRoleText.text = item?.role?.name
 
             holder.characterImage.setOnClickListener {
+                listener.passSelectedCharacter(item?.characterId!!)
+            }
+
+            holder.itemView.setOnClickListener {
                 listener.passSelectedCharacter(item?.characterId!!)
             }
 
@@ -80,11 +83,11 @@ class MediaCharactersRvAdapter(private val context: Context,
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val characterImage = view.characterImage!!
-        val characterNameText = view.characterNameText!!
-        val characterRoleText = view.characterRoleText!!
-        val voiceActorImage = view.voiceActorImage!!
-        val voiceActorNameText = view.voiceActorNameText!!
+        val characterImage = view.leftImage!!
+        val characterNameText = view.leftText!!
+        val characterRoleText = view.leftSubtitleText!!
+        val voiceActorImage = view.rightImage!!
+        val voiceActorNameText = view.righText!!
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view) {

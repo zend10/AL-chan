@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/characterImage"
+            android:id="@+id/leftImage"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/characterNameText"
+        android:id="@+id/leftText"
         style="?themeSmallClickableFont"
         android:text="Name"
         android:layout_marginTop="@dimen/marginClose"

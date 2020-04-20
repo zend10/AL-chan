@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaStaffs
-import kotlinx.android.synthetic.main.list_staffs.view.*
+import kotlinx.android.synthetic.main.list_one_image.view.*
 
 class MediaStaffsRvAdapter(private val context: Context,
                            private val list: List<MediaStaffs?>,
@@ -26,7 +26,7 @@ class MediaStaffsRvAdapter(private val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_staffs, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_one_image, parent, false)
             ItemViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.list_loading, parent, false)
@@ -55,9 +55,9 @@ class MediaStaffsRvAdapter(private val context: Context,
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val staffImage = view.staffImage!!
-        val staffNameText = view.staffNameText!!
-        val staffRoleText = view.staffRoleText!!
+        val staffImage = view.leftImage!!
+        val staffNameText = view.leftText!!
+        val staffRoleText = view.leftSubtitleText!!
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view) {

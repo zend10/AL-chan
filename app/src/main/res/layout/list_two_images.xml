@@ -14,17 +14,17 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/characterImageGuideline"
+            android:id="@+id/leftImageGuideline"
             app:layout_constraintGuide_percent="0.25"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/characterImage"
+            android:id="@+id/leftImage"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/characterImageGuideline"
+            app:layout_constraintEnd_toStartOf="@id/leftImageGuideline"
             app:layout_constraintDimensionRatio="2:3"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
@@ -32,11 +32,11 @@
             android:layout_height="0dp"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/characterNameText"
+            android:id="@+id/leftText"
             style="?themeRegularBoldFont"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/characterImageGuideline"
-            app:layout_constraintEnd_toStartOf="@id/voiceActorImage"
+            app:layout_constraintStart_toEndOf="@id/leftImageGuideline"
+            app:layout_constraintEnd_toStartOf="@id/rightImage"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginNormal"
@@ -47,11 +47,11 @@
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/characterRoleText"
+            android:id="@+id/leftSubtitleText"
             style="?themeSmallFont"
-            app:layout_constraintTop_toBottomOf="@id/characterNameText"
-            app:layout_constraintStart_toEndOf="@id/characterImageGuideline"
-            app:layout_constraintEnd_toStartOf="@id/voiceActorImage"
+            app:layout_constraintTop_toBottomOf="@id/leftText"
+            app:layout_constraintStart_toEndOf="@id/leftImageGuideline"
+            app:layout_constraintEnd_toStartOf="@id/rightImage"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginTop="@dimen/marginClose"
             android:layout_marginEnd="@dimen/marginNormal"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/voiceActorImageGuideline"
+            android:id="@+id/rightImageGuideline"
             app:layout_constraintGuide_percent="0.75"
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -68,10 +68,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:visibility="gone"
-            android:id="@+id/voiceActorImage"
+            android:id="@+id/rightImage"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/voiceActorImageGuideline"
+            app:layout_constraintStart_toEndOf="@id/rightImageGuideline"
             app:layout_constraintDimensionRatio="2:3"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
@@ -80,11 +80,11 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:visibility="gone"
-            android:id="@+id/voiceActorNameText"
+            android:id="@+id/righText"
             style="?themeRegularBoldFont"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/characterImage"
-            app:layout_constraintEnd_toStartOf="@id/voiceActorImage"
+            app:layout_constraintStart_toEndOf="@id/leftImage"
+            app:layout_constraintEnd_toStartOf="@id/rightImage"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginNormal"
             android:layout_marginBottom="@dimen/marginNormal"

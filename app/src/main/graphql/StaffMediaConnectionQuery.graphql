@@ -1,0 +1,33 @@
+query StaffMediaConnectionQuery(
+    $id: Int,
+    $page: Int
+) {
+    Staff(id: $id) {
+        id
+        name {
+            full
+        }
+        staffMedia(page: $page) {
+            edges {
+                node {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    type
+                }
+                staffRole
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+    }
+}

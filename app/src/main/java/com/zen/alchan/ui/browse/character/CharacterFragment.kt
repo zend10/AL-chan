@@ -9,7 +9,6 @@ import android.text.SpannableString
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -37,6 +36,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.staff.StaffFragment
 import kotlinx.android.synthetic.main.fragment_character.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -194,17 +194,17 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun setupHeader() {
-        GlideApp.with(this).load(viewModel.currentCharacterData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(characterImage)
+        GlideApp.with(this).load(viewModel.currentCharacterData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(leftImage)
 
         if (viewModel.currentCharacterData?.image()?.large() != null) {
-            characterImage.setOnClickListener {
+            leftImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentCharacterData?.image()?.large())) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(characterImage).show(true)
+                }.withTransitionFrom(leftImage).show(true)
             }
         }
 
-        characterNameText.text = viewModel.currentCharacterData?.name()?.full()
+        leftText.text = viewModel.currentCharacterData?.name()?.full()
         characterNativeNameText.text = viewModel.currentCharacterData?.name()?.native_()
 
         if (!viewModel.currentCharacterData?.name()?.alternative().isNullOrEmpty()) {
@@ -242,7 +242,9 @@ class CharacterFragment : BaseFragment() {
         characterRefreshLayout.setOnRefreshListener {
             characterRefreshLayout.isRefreshing = false
             viewModel.getCharacter()
-            // get character media
+            if (!viewModel.isInit) {
+                viewModel.getCharacterMedia()
+            }
         }
 
         characterAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -284,7 +286,7 @@ class CharacterFragment : BaseFragment() {
     private fun handleDescription() {
         val spoilerRegex = "(?<=<span class='markdown_spoiler'><span>).+?(?=<\\/span><\\/span>)".toRegex()
         val spoilerTag = "[Spoiler]"
-        val spoilerText = spoilerRegex.findAll(viewModel.currentCharacterData?.description() ?: "No description.")
+        val spoilerText = spoilerRegex.findAll(viewModel.currentCharacterData?.description() ?: "No description.").toList()
         val spoilerDescription = viewModel.currentCharacterData?.description()?.replace(spoilerRegex, spoilerTag)
         val spanned = HtmlCompat.fromHtml(spoilerDescription ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
@@ -296,7 +298,7 @@ class CharacterFragment : BaseFragment() {
             val clickableSpan = object : ClickableSpan() {
                 val internalCounter = counter
                 override fun onClick(widget: View) {
-                    DialogUtility.showInfoDialog(activity, HtmlCompat.fromHtml(spoilerText.toList()[internalCounter].value, HtmlCompat.FROM_HTML_MODE_LEGACY).toString())
+                    DialogUtility.showInfoDialog(activity, HtmlCompat.fromHtml(spoilerText[internalCounter].value, HtmlCompat.FROM_HTML_MODE_LEGACY).toString())
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -336,7 +338,11 @@ class CharacterFragment : BaseFragment() {
             }
 
             override fun passSelectedVoiceActor(voiceActorId: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                val fragment = StaffFragment()
+                val bundle = Bundle()
+                bundle.putInt(StaffFragment.STAFF_ID, voiceActorId)
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
             }
         })
     }

@@ -203,4 +203,6 @@
     <string name="favorited">Favorited</string>
     <string name="open_in_anilist">Open in AniList</string>
     <string name="copy_link">Copy link</string>
+    <string name="character_voice_roles">Character Voice Roles</string>
+    <string name="staff_roles">Staff Roles</string>
 </resources>

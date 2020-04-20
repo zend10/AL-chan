@@ -1,0 +1,42 @@
+query StaffCharacterConnectionQuery(
+    $id: Int,
+    $page: Int
+) {
+    Staff(id: $id) {
+        id
+        name {
+            full
+        }
+        characters(page: $page) {
+            edges {
+                node {
+                    id
+                    name {
+                        full
+                    }
+                    image {
+                        large
+                    }
+                }
+                role
+                media {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    type
+                }
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+    }
+}

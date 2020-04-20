@@ -35,4 +35,42 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun getStaff(id: Int): Observable<Response<StaffQuery.Data>> {
+        val query = StaffQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getStaffCharacter(
+        id: Int,
+        page: Int
+    ): Observable<Response<StaffCharacterConnectionQuery.Data>> {
+        val query = StaffCharacterConnectionQuery.builder().id(id).page(page).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getStaffMedia(
+        id: Int,
+        page: Int
+    ): Observable<Response<StaffMediaConnectionQuery.Data>> {
+        val query = StaffMediaConnectionQuery.builder().id(id).page(page).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun checkStaffIsFavorite(id: Int): Observable<Response<StaffIsFavoriteQuery.Data>> {
+        val query = StaffIsFavoriteQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

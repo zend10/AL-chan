@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.CharacterMedia
-import kotlinx.android.synthetic.main.list_characters.view.*
+import kotlinx.android.synthetic.main.list_two_images.view.*
 import type.MediaType
 import type.StaffLanguage
 
@@ -24,7 +24,7 @@ class CharacterMediaRvAdapter(private val context: Context,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_characters, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_two_images, parent, false)
         return ViewHolder(view)
     }
 
@@ -35,6 +35,10 @@ class CharacterMediaRvAdapter(private val context: Context,
         holder.characterRoleText.text = item.role?.name
 
         holder.mediaImage.setOnClickListener {
+            listener.passSelectedMedia(item.mediaId!!, item.mediaType!!)
+        }
+
+        holder.itemView.setOnClickListener {
             listener.passSelectedMedia(item.mediaId!!, item.mediaType!!)
         }
 
@@ -64,10 +68,10 @@ class CharacterMediaRvAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val mediaImage = view.characterImage!!
-        val mediaName = view.characterNameText!!
-        val characterRoleText = view.characterRoleText!!
-        val voiceActorImage = view.voiceActorImage!!
-        val voiceActorNameText = view.voiceActorNameText!!
+        val mediaImage = view.leftImage!!
+        val mediaName = view.leftText!!
+        val characterRoleText = view.leftSubtitleText!!
+        val voiceActorImage = view.rightImage!!
+        val voiceActorNameText = view.righText!!
     }
 }
