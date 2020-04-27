@@ -12,10 +12,12 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.MediaPage
+import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.*
 import com.zen.alchan.helper.setRegularPlural
@@ -26,6 +28,7 @@ import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import kotlinx.android.synthetic.main.fragment_media_overview.*
+import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
 import type.StaffLanguage
@@ -36,7 +39,8 @@ import type.StaffLanguage
 class MediaOverviewFragment : BaseFragment() {
 
     private val viewModel by viewModel<MediaOverviewViewModel>()
-    private var mediaData: MediaQuery.Media? = null
+
+    private var mediaData: MediaOverviewQuery.Media? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,18 +54,36 @@ class MediaOverviewFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.mediaId = arguments?.getInt(MediaFragment.MEDIA_ID)
-        mediaData = viewModel.mediaData
-        initLayout()
+
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.mediaOverviewData.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.mediaData = it.data?.Media()
+                    mediaData = it.data?.Media()
+                    initLayout()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        if (viewModel.mediaData == null) {
+            viewModel.getMediaOverview()
+        } else {
+            mediaData = viewModel.mediaData
+            initLayout()
+        }
     }
 
     private fun initLayout() {
-        mediaOverviewScrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, oldScrollY: Int ->
-            // not the best way but I have no idea what to do
-            if (parentFragment is MediaFragment) {
-                (parentFragment as MediaFragment).handleChildFragmentScroll(scrollY, oldScrollY)
-            }
-        }
-
         handleGenre()
         handleDescription()
         handleCharacters()

@@ -23,8 +23,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val genreListLastRetrieved: Long?
         get() = mediaManager.genreListLastRetrieved
 
-    override val savedMediaData = HashMap<Int, MediaQuery.Media>()
-
     private val _mediaData = SingleLiveEvent<Resource<MediaQuery.Data>>()
     override val mediaData: LiveData<Resource<MediaQuery.Data>>
         get() = _mediaData
@@ -32,6 +30,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _mediaStatus = SingleLiveEvent<Resource<MediaStatusQuery.Data>>()
     override val mediaStatus: LiveData<Resource<MediaStatusQuery.Data>>
         get() = _mediaStatus
+
+    private val _mediaOverviewData = SingleLiveEvent<Resource<MediaOverviewQuery.Data>>()
+    override val mediaOverviewData: LiveData<Resource<MediaOverviewQuery.Data>>
+        get() = _mediaOverviewData
 
     private val _mediaCharactersData = SingleLiveEvent<Resource<MediaCharactersQuery.Data>>()
     override val mediaCharactersData: LiveData<Resource<MediaCharactersQuery.Data>>
@@ -66,7 +68,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaData.postValue(Resource.Error(t.errors()[0].message()!!))
                 } else {
-                    savedMediaData[t.data()?.Media()?.id()!!] = t.data()?.Media()!!
                     _mediaData.postValue(Resource.Success(t.data()!!))
                 }
             }
@@ -99,6 +100,30 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
             }
 
             override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaOverview(id: Int) {
+        _mediaData.postValue(Resource.Loading())
+
+        mediaDataSource.getMediaOverview(id).subscribeWith(object : Observer<Response<MediaOverviewQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<MediaOverviewQuery.Data>) {
+                if (t.hasErrors()) {
+                    _mediaOverviewData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _mediaOverviewData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _mediaOverviewData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() { }
         })
     }
 

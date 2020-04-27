@@ -224,7 +224,7 @@
                     android:fitsSystemWindows="false"
                     android:backgroundTint="@android:color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="112dp"/>
+                    android:layout_height="@dimen/toolbarBigHeight"/>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -236,7 +236,6 @@
             android:layout_marginStart="@dimen/marginPage"
             android:layout_marginEnd="@dimen/marginPage"
             android:layout_marginBottom="@dimen/marginPage"
-            android:layout_alignBottom="@+id/profileBannerMargin"
             app:layout_anchor="@id/profileCollapsingToolbar"
             app:layout_anchorGravity="bottom"
             app:cardElevation="@dimen/elevationNormal"

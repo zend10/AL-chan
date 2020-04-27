@@ -8,16 +8,16 @@ interface MediaRepository {
     val genreList: List<String>
     val genreListLastRetrieved: Long?
 
-    val savedMediaData: HashMap<Int, MediaQuery.Media>
-
     val mediaData: LiveData<Resource<MediaQuery.Data>>
     val mediaStatus: LiveData<Resource<MediaStatusQuery.Data>>
+    val mediaOverviewData: LiveData<Resource<MediaOverviewQuery.Data>>
     val mediaCharactersData: LiveData<Resource<MediaCharactersQuery.Data>>
     val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
 
     fun getGenre()
     fun getMedia(id: Int)
     fun checkMediaStatus(mediaId: Int)
+    fun getMediaOverview(id: Int)
     fun getMediaCharacters(id: Int, page: Int)
     fun getMediaStaffs(id: Int, page: Int)
 }

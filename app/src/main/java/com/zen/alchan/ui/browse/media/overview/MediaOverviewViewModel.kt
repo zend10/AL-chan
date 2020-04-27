@@ -7,6 +7,7 @@ import com.zen.alchan.helper.pojo.*
 class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : ViewModel() {
 
     var mediaId: Int? = null
+    var mediaData: MediaOverviewQuery.Media? = null
 
     var charactersList = ArrayList<MediaCharacters>()
     var studioList = ArrayList<KeyValueItem>()
@@ -17,6 +18,11 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
     var recommendationsList = ArrayList<MediaRecommendations>()
     var linksList = ArrayList<MediaLinks>()
 
-    val mediaData: MediaQuery.Media?
-        get() = if (mediaId != null) mediaRepository.savedMediaData[mediaId!!] else null
+    val mediaOverviewData by lazy {
+        mediaRepository.mediaOverviewData
+    }
+
+    fun getMediaOverview() {
+        if (mediaId != null) mediaRepository.getMediaOverview(mediaId!!)
+    }
 }

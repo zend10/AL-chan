@@ -6,6 +6,7 @@ import com.zen.alchan.data.network.ApolloHandler
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import type.MediaSort
 
 class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDataSource {
 
@@ -68,6 +69,34 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
 
     override fun checkStaffIsFavorite(id: Int): Observable<Response<StaffIsFavoriteQuery.Data>> {
         val query = StaffIsFavoriteQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getStudio(id: Int): Observable<Response<StudioQuery.Data>> {
+        val query = StudioQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getStudioMedia(
+        id: Int,
+        page: Int,
+        sort: MediaSort
+    ): Observable<Response<StudioMediaConnectionQuery.Data>> {
+        val query = StudioMediaConnectionQuery.builder().id(id).page(page).sort(sort).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun checkStudioIsFavorite(id: Int): Observable<Response<StudioIsFavoriteQuery.Data>> {
+        val query = StudioIsFavoriteQuery.builder().id(id).build()
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

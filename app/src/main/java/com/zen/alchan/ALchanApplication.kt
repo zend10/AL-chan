@@ -28,6 +28,7 @@ import com.zen.alchan.ui.browse.media.characters.MediaCharactersViewModel
 import com.zen.alchan.ui.browse.media.overview.MediaOverviewViewModel
 import com.zen.alchan.ui.browse.media.staffs.MediaStaffsViewModel
 import com.zen.alchan.ui.browse.staff.StaffViewModel
+import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -93,6 +94,7 @@ class ALchanApplication : Application() {
 
         viewModel { CharacterViewModel(get(), get()) }
         viewModel { StaffViewModel(get(), get()) }
+        viewModel { StudioViewModel(get(), get()) }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }

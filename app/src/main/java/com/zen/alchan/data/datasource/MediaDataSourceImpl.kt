@@ -36,6 +36,14 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getMediaOverview(id: Int): Observable<Response<MediaOverviewQuery.Data>> {
+        val query = MediaOverviewQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun getMediaCharacters(
         id: Int,
         page: Int

@@ -194,17 +194,17 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun setupHeader() {
-        GlideApp.with(this).load(viewModel.currentCharacterData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(leftImage)
+        GlideApp.with(this).load(viewModel.currentCharacterData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(characterImage)
 
         if (viewModel.currentCharacterData?.image()?.large() != null) {
-            leftImage.setOnClickListener {
+            characterImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentCharacterData?.image()?.large())) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(leftImage).show(true)
+                }.withTransitionFrom(characterImage).show(true)
             }
         }
 
-        leftText.text = viewModel.currentCharacterData?.name()?.full()
+        characterNameText.text = viewModel.currentCharacterData?.name()?.full()
         characterNativeNameText.text = viewModel.currentCharacterData?.name()?.native_()
 
         if (!viewModel.currentCharacterData?.name()?.alternative().isNullOrEmpty()) {

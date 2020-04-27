@@ -39,7 +39,7 @@ class OverviewCharactersRvAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val characterImage = view.leftImage!!
-        val characterNameText = view.leftText!!
+        val characterImage = view.characterImage!!
+        val characterNameText = view.characterNameText!!
     }
 }

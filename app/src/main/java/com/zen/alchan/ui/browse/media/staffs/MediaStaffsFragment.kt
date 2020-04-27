@@ -120,9 +120,9 @@ class MediaStaffsFragment : BaseFragment() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (parentFragment is MediaFragment) {
-                    (parentFragment as MediaFragment).handleChildFragmentScroll(dy, 0)
-                }
+//                if (parentFragment is MediaFragment) {
+//                    (parentFragment as MediaFragment).handleChildFragmentScroll(dy, 0)
+//                }
             }
         })
     }

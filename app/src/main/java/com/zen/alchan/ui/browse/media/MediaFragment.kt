@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -50,17 +52,11 @@ class MediaFragment : BaseFragment() {
 
     private val viewModel by viewModel<MediaViewModel>()
 
+    private lateinit var mediaSectionMap: HashMap<MediaPage, Pair<ImageView, TextView>>
+    private lateinit var mediaFragmentList: List<Fragment>
+
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
-
-    private val floatingMenuIconMap = hashMapOf(
-        Pair(MediaPage.OVERVIEW, R.drawable.ic_contacts),
-        Pair(MediaPage.CHARACTERS, R.drawable.ic_person),
-        Pair(MediaPage.STAFFS, R.drawable.ic_staff),
-        Pair(MediaPage.STATS, R.drawable.ic_bar_chart),
-        Pair(MediaPage.REVIEWS, R.drawable.ic_inscription),
-        Pair(MediaPage.SOCIAL, R.drawable.ic_chat)
-    )
 
     companion object {
         const val MEDIA_ID = "mediaId"
@@ -81,6 +77,17 @@ class MediaFragment : BaseFragment() {
         viewModel.mediaId = arguments?.getInt(MEDIA_ID)
         viewModel.mediaType = MediaType.valueOf(arguments?.getString(MEDIA_TYPE)!!)
 
+        mediaSectionMap = hashMapOf(
+            Pair(MediaPage.OVERVIEW, Pair(mediaOverviewIcon, mediaOverviewText)),
+            Pair(MediaPage.CHARACTERS, Pair(mediaCharactersIcon, mediaCharactersText)),
+            Pair(MediaPage.STAFFS, Pair(mediaStaffsIcon, mediaStaffsText)),
+            Pair(MediaPage.STATS, Pair(mediaStatsIcon, mediaStatsText)),
+            Pair(MediaPage.REVIEWS, Pair(mediaReviewsIcon, mediaReviewsText)),
+            Pair(MediaPage.SOCIAL, Pair(mediaSocialIcon, mediaSocialText))
+        )
+
+        mediaFragmentList = arrayListOf(MediaOverviewFragment(), MediaCharactersFragment(), MediaStaffsFragment(), MediaStatsFragment(), MediaReviewsFragment(), MediaSocialFragment())
+
         scaleUpAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up)
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
 
@@ -89,6 +96,7 @@ class MediaFragment : BaseFragment() {
 
         initLayout()
         setupObserver()
+        setupSection()
     }
 
     override fun onStart() {
@@ -97,6 +105,10 @@ class MediaFragment : BaseFragment() {
     }
 
     private fun setupObserver() {
+        viewModel.currentSection.observe(viewLifecycleOwner, Observer {
+            setupSection()
+        })
+
         viewModel.mediaData.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
@@ -139,7 +151,7 @@ class MediaFragment : BaseFragment() {
             mediaManageListButton.isEnabled = true
         })
 
-        viewModel.getMedia()
+        viewModel.initData()
     }
 
     private fun initLayout() {
@@ -147,6 +159,7 @@ class MediaFragment : BaseFragment() {
             mediaRefreshLayout.isRefreshing = false
             viewModel.getMedia()
             viewModel.checkMediaStatus()
+            viewModel.getMediaOverview()
         }
 
         mediaAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -166,19 +179,6 @@ class MediaFragment : BaseFragment() {
                 }
             }
         })
-
-        mediaFloatingMenu.text = viewModel.currentMediaPage.name.toLowerCase().capitalize()
-
-        mediaFloatingMenu.setOnClickListener {
-            handleFloatingMenuVisibility(!mediaOverviewMenu.isVisible)
-        }
-
-        mediaOverviewMenu.setOnClickListener { changeMediaPage(MediaPage.OVERVIEW) }
-        mediaCharactersMenu.setOnClickListener { changeMediaPage(MediaPage.CHARACTERS) }
-        mediaStaffsMenu.setOnClickListener { changeMediaPage(MediaPage.STAFFS) }
-        mediaStatsMenu.setOnClickListener { changeMediaPage(MediaPage.STATS) }
-        mediaReviewsMenu.setOnClickListener { changeMediaPage(MediaPage.REVIEWS) }
-        mediaSocialMenu.setOnClickListener { changeMediaPage(MediaPage.SOCIAL) }
 
         mediaManageListButton.setOnClickListener {
             val entryId = viewModel.mediaStatus.value?.data?.MediaList()?.id()
@@ -208,7 +208,16 @@ class MediaFragment : BaseFragment() {
             }
         }
 
-        changeMediaPage(viewModel.currentMediaPage)
+        mediaOverviewLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.OVERVIEW) }
+        mediaCharactersLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.CHARACTERS) }
+        mediaStaffsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STAFFS) }
+        mediaStatsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STATS) }
+        mediaReviewsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.REVIEWS) }
+        mediaSocialLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.SOCIAL) }
+
+        mediaViewPager.setPagingEnabled(false)
+        mediaViewPager.offscreenPageLimit = mediaSectionMap.size
+        mediaViewPager.adapter = MediaViewPagerAdapter(childFragmentManager, viewModel.mediaId!!, viewModel.mediaType!!, mediaFragmentList)
     }
 
     private fun setupHeader() {
@@ -276,65 +285,28 @@ class MediaFragment : BaseFragment() {
             mediaAiringText.visibility = View.GONE
         }
 
-        changeMediaPage(viewModel.currentMediaPage)
+        viewModel.setMediaSection(viewModel.currentSection.value ?: MediaPage.OVERVIEW)
     }
 
-    private fun changeMediaPage(targetMediaPage: MediaPage) {
-        viewModel.currentMediaPage = targetMediaPage
-
-        mediaFloatingMenu.text = viewModel.currentMediaPage.name.toLowerCase().capitalize()
-        mediaFloatingMenu.icon = ContextCompat.getDrawable(activity!!, floatingMenuIconMap[viewModel.currentMediaPage] ?: R.drawable.ic_contacts)
-
-        handleFloatingMenuVisibility(false)
-
-        val fragment = when (viewModel.currentMediaPage) {
-            MediaPage.OVERVIEW -> MediaOverviewFragment()
-            MediaPage.CHARACTERS -> MediaCharactersFragment()
-            MediaPage.STAFFS -> MediaStaffsFragment()
-            MediaPage.STATS -> MediaStatsFragment()
-            MediaPage.REVIEWS -> MediaReviewsFragment()
-            MediaPage.SOCIAL -> MediaSocialFragment()
-            else -> MediaOverviewFragment()
+    private fun setupSection() {
+        mediaSectionMap.forEach {
+            if (it.key == viewModel.currentSection.value) {
+                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themePrimaryColor))
+                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themePrimaryColor))
+            } else {
+                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+            }
         }
 
-        val bundle = Bundle()
-        bundle.putInt(MEDIA_ID, viewModel.mediaId!!)
-        bundle.putString(MEDIA_TYPE, viewModel.mediaType?.name)
-
-        fragment.arguments = bundle
-
-        val fragmentTransaction = childFragmentManager.beginTransaction()
-        fragmentTransaction.replace(mediaFrameLayout.id, fragment)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        fragmentTransaction.commit()
-    }
-
-    private fun handleFloatingMenuVisibility(shouldVisible: Boolean) {
-        if (!shouldVisible) {
-            mediaOverviewMenu.hide()
-            mediaCharactersMenu.hide()
-            mediaStaffsMenu.hide()
-            mediaStatsMenu.hide()
-            mediaReviewsMenu.hide()
-            mediaSocialMenu.hide()
-            mediaFloatingMenu.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
-        } else {
-            mediaOverviewMenu.show()
-            mediaCharactersMenu.show()
-            mediaStaffsMenu.show()
-            mediaStatsMenu.show()
-            mediaReviewsMenu.show()
-            mediaSocialMenu.show()
-            mediaFloatingMenu.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeNegativeColor))
-        }
-    }
-
-    fun handleChildFragmentScroll(scrollY: Int, oldScrollY: Int) {
-        if (scrollY > oldScrollY) {
-            handleFloatingMenuVisibility(false)
-            mediaFloatingMenu.hide()
-        } else {
-            mediaFloatingMenu.show()
+        mediaViewPager.currentItem = when (viewModel.currentSection.value) {
+            MediaPage.OVERVIEW -> 0
+            MediaPage.CHARACTERS -> 1
+            MediaPage.STAFFS -> 2
+            MediaPage.STATS -> 3
+            MediaPage.REVIEWS -> 4
+            MediaPage.SOCIAL -> 5
+            else -> 0
         }
     }
 }

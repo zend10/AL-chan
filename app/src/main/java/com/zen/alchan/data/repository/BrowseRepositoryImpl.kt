@@ -8,6 +8,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.MediaSort
 
 class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : BrowseRepository {
 
@@ -38,6 +39,18 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     private val _staffIsFavoriteData = SingleLiveEvent<Resource<StaffIsFavoriteQuery.Data>>()
     override val staffIsFavoriteData: LiveData<Resource<StaffIsFavoriteQuery.Data>>
         get() = _staffIsFavoriteData
+
+    private val _studioData = SingleLiveEvent<Resource<StudioQuery.Data>>()
+    override val studioData: LiveData<Resource<StudioQuery.Data>>
+        get() = _studioData
+
+    private val _studioMediaData = SingleLiveEvent<Resource<StudioMediaConnectionQuery.Data>>()
+    override val studioMediaData: LiveData<Resource<StudioMediaConnectionQuery.Data>>
+        get() = _studioMediaData
+
+    private val _studioIsFavoriteData = SingleLiveEvent<Resource<StudioIsFavoriteQuery.Data>>()
+    override val studioIsFavoriteData: LiveData<Resource<StudioIsFavoriteQuery.Data>>
+        get() = _studioIsFavoriteData
 
     @SuppressLint("CheckResult")
     override fun getCharacter(id: Int) {
@@ -190,6 +203,72 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onError(e: Throwable) {
                 _staffIsFavoriteData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getStudio(id: Int) {
+        browseDataSource.getStudio(id).subscribeWith(object : Observer<Response<StudioQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<StudioQuery.Data>) {
+                if (t.hasErrors()) {
+                    _studioData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _studioData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _studioData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getStudioMedia(id: Int, page: Int, sort: MediaSort) {
+        browseDataSource.getStudioMedia(id, page, sort).subscribeWith(object : Observer<Response<StudioMediaConnectionQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<StudioMediaConnectionQuery.Data>) {
+                if (t.hasErrors()) {
+                    _studioMediaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _studioMediaData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _studioMediaData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun checkStudioIsFavorite(id: Int) {
+        browseDataSource.checkStudioIsFavorite(id).subscribeWith(object : Observer<Response<StudioIsFavoriteQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<StudioIsFavoriteQuery.Data>) {
+                if (t.hasErrors()) {
+                    _studioIsFavoriteData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _studioIsFavoriteData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _studioIsFavoriteData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 

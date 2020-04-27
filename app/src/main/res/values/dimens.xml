@@ -24,4 +24,6 @@
     <dimen name="elevationNormal">4dp</dimen>
 
     <dimen name="lineWidth">1dp</dimen>
+    <dimen name="menuWidth">100dp</dimen>
+    <dimen name="toolbarBigHeight">112dp</dimen>
 </resources>
