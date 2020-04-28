@@ -316,7 +316,7 @@ class StaffFragment : BaseFragment() {
     private fun handleDescription() {
         val urlRegex = "(?<=<a href=\").+?(?=\">)".toRegex()
         val linkRegex =  "(?<=\">).+?(?=<\\/a>)".toRegex()
-        val description = viewModel.currentStaffData?.description() ?: "No description."
+        val description = viewModel.currentStaffData?.description() ?: getString(R.string.no_description)
         val urlList = urlRegex.findAll(description).toList()
         val linkList = linkRegex.findAll(description).toList()
         val spanned = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY)

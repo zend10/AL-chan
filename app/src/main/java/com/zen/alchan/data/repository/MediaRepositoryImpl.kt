@@ -105,7 +105,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
     @SuppressLint("CheckResult")
     override fun getMediaOverview(id: Int) {
-        _mediaData.postValue(Resource.Loading())
+        _mediaOverviewData.postValue(Resource.Loading())
 
         mediaDataSource.getMediaOverview(id).subscribeWith(object : Observer<Response<MediaOverviewQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }

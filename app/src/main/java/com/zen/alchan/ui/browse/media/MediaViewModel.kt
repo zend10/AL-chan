@@ -46,7 +46,13 @@ class MediaViewModel(private val mediaRepository: MediaRepository) : ViewModel()
         _currentSection.postValue(section)
     }
 
-    fun getMediaOverview() {
-        if (mediaId != null) mediaRepository.getMediaOverview(mediaId!!)
+    fun refreshData() {
+        if (mediaId != null) {
+            getMedia()
+            checkMediaStatus()
+            mediaRepository.getMediaOverview(mediaId!!)
+            mediaRepository.getMediaCharacters(mediaId!!, 1)
+            mediaRepository.getMediaStaffs(mediaId!!, 1)
+        }
     }
 }

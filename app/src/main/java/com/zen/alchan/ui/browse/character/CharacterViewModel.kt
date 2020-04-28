@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.pojo.CharacterMedia
+import com.zen.alchan.helper.pojo.CharacterVoiceActors
 import type.StaffLanguage
 
 class CharacterViewModel(private val browseRepository: BrowseRepository,
@@ -15,23 +16,11 @@ class CharacterViewModel(private val browseRepository: BrowseRepository,
 
     var page = 1
     var hasNextPage = true
-    var staffLanguage = StaffLanguage.JAPANESE
 
     var isInit = false
-    var characterMedia = ArrayList<CharacterMedia>()
 
-    val staffLanguageArray = arrayOf(
-        StaffLanguage.JAPANESE.name,
-        StaffLanguage.ENGLISH.name,
-        StaffLanguage.KOREAN.name,
-        StaffLanguage.ITALIAN.name,
-        StaffLanguage.SPANISH.name,
-        StaffLanguage.PORTUGUESE.name,
-        StaffLanguage.FRENCH.name,
-        StaffLanguage.GERMAN.name,
-        StaffLanguage.HEBREW.name,
-        StaffLanguage.HUNGARIAN.name
-    )
+    var characterMedia = ArrayList<CharacterMedia>()
+    var characterVoiceActors = ArrayList<CharacterVoiceActors>()
 
     val characterData by lazy {
         browseRepository.characterData

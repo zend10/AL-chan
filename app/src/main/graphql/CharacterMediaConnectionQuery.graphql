@@ -15,6 +15,7 @@ query CharacterMediaConnectionQuery($id: Int, $page: Int) {
                         extraLarge
                     }
                     type
+                    format
                 }
                 relationType
                 characterRole

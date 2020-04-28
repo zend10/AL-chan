@@ -5,6 +5,7 @@ import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
+import type.StaffLanguage
 
 interface LocalStorage {
     var bearerToken: String?
@@ -12,6 +13,7 @@ interface LocalStorage {
     var appColorTheme: AppColorTheme
     var homeShowWatching: Boolean
     var homeShowReading: Boolean
+    var voiceActorLanguage: StaffLanguage
 
     var pushNotificationsSettings: PushNotificationsSettings
 

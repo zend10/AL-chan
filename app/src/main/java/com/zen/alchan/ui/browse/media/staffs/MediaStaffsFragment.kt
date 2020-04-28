@@ -17,6 +17,7 @@ import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.staff.StaffFragment
 import kotlinx.android.synthetic.main.fragment_media_staffs.*
+import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
@@ -74,6 +75,10 @@ class MediaStaffsFragment : BaseFragment() {
                         isLoading = false
                     }
 
+                    if (!viewModel.hasNextPage) {
+                        return@Observer
+                    }
+
                     viewModel.hasNextPage = it.data?.Media()?.staff()?.pageInfo()?.hasNextPage() ?: false
                     viewModel.page += 1
                     viewModel.isInit = true
@@ -89,6 +94,7 @@ class MediaStaffsFragment : BaseFragment() {
                     }
 
                     adapter.notifyDataSetChanged()
+                    emptyLayout.visibility = if (viewModel.mediaStaffs.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
                 ResponseStatus.ERROR -> {
                     DialogUtility.showToast(activity, it.message)
@@ -97,6 +103,7 @@ class MediaStaffsFragment : BaseFragment() {
                         adapter.notifyItemRemoved(viewModel.mediaStaffs.size)
                         isLoading = false
                     }
+                    emptyLayout.visibility = if (viewModel.mediaStaffs.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
             }
         })
@@ -116,13 +123,6 @@ class MediaStaffsFragment : BaseFragment() {
                     loadMore()
                     isLoading = true
                 }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-//                if (parentFragment is MediaFragment) {
-//                    (parentFragment as MediaFragment).handleChildFragmentScroll(dy, 0)
-//                }
             }
         })
     }

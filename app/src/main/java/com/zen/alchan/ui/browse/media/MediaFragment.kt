@@ -19,6 +19,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.textview.MaterialTextView
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
@@ -52,7 +53,7 @@ class MediaFragment : BaseFragment() {
 
     private val viewModel by viewModel<MediaViewModel>()
 
-    private lateinit var mediaSectionMap: HashMap<MediaPage, Pair<ImageView, TextView>>
+    private lateinit var mediaSectionMap: HashMap<MediaPage, Pair<ImageView, MaterialTextView>>
     private lateinit var mediaFragmentList: List<Fragment>
 
     private lateinit var scaleUpAnim: Animation
@@ -157,9 +158,7 @@ class MediaFragment : BaseFragment() {
     private fun initLayout() {
         mediaRefreshLayout.setOnRefreshListener {
             mediaRefreshLayout.isRefreshing = false
-            viewModel.getMedia()
-            viewModel.checkMediaStatus()
-            viewModel.getMediaOverview()
+            viewModel.refreshData()
         }
 
         mediaAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -207,17 +206,6 @@ class MediaFragment : BaseFragment() {
                 startActivity(intent)
             }
         }
-
-        mediaOverviewLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.OVERVIEW) }
-        mediaCharactersLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.CHARACTERS) }
-        mediaStaffsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STAFFS) }
-        mediaStatsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STATS) }
-        mediaReviewsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.REVIEWS) }
-        mediaSocialLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.SOCIAL) }
-
-        mediaViewPager.setPagingEnabled(false)
-        mediaViewPager.offscreenPageLimit = mediaSectionMap.size
-        mediaViewPager.adapter = MediaViewPagerAdapter(childFragmentManager, viewModel.mediaId!!, viewModel.mediaType!!, mediaFragmentList)
     }
 
     private fun setupHeader() {
@@ -283,6 +271,19 @@ class MediaFragment : BaseFragment() {
         } else {
             mediaAiringIcon.visibility = View.GONE
             mediaAiringText.visibility = View.GONE
+        }
+
+        mediaOverviewLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.OVERVIEW) }
+        mediaCharactersLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.CHARACTERS) }
+        mediaStaffsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STAFFS) }
+        mediaStatsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STATS) }
+        mediaReviewsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.REVIEWS) }
+        mediaSocialLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.SOCIAL) }
+
+        if (mediaViewPager.adapter == null) {
+            mediaViewPager.setPagingEnabled(false)
+            mediaViewPager.offscreenPageLimit = mediaSectionMap.size
+            mediaViewPager.adapter = MediaViewPagerAdapter(childFragmentManager, viewModel.mediaId!!, viewModel.mediaType!!, mediaFragmentList)
         }
 
         viewModel.setMediaSection(viewModel.currentSection.value ?: MediaPage.OVERVIEW)

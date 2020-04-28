@@ -10,6 +10,7 @@ import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import com.zen.alchan.helper.utils.Utility
+import type.StaffLanguage
 
 class LocalStorageImpl(private val context: Context,
                        private val sharedPreferencesName: String,
@@ -23,6 +24,7 @@ class LocalStorageImpl(private val context: Context,
         private const val APP_COLOR_THEME = "appColorTheme"
         private const val HOME_SHOW_WATCHING = "homeShowWatching"
         private const val HOME_SHOW_READING = "homeShowReading"
+        private const val VOICE_ACTOR_LANGUAGE = "voiceActorLanguage"
         private const val PUSH_NOTIFICATIONS_SETTINGS = "pushNotificationsSettings"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
@@ -47,6 +49,10 @@ class LocalStorageImpl(private val context: Context,
     override var homeShowReading: Boolean
         get() = if (getData(HOME_SHOW_READING) == null) true else getData(HOME_SHOW_READING)!!.toBoolean()
         set(value) { setData(HOME_SHOW_READING, value.toString()) }
+
+    override var voiceActorLanguage: StaffLanguage
+        get() = if (getData(VOICE_ACTOR_LANGUAGE) == null) StaffLanguage.JAPANESE else StaffLanguage.valueOf(getData(VOICE_ACTOR_LANGUAGE)!!)
+        set(value) { setData(VOICE_ACTOR_LANGUAGE, value.name) }
 
     override var pushNotificationsSettings: PushNotificationsSettings
         get() = if (getData(PUSH_NOTIFICATIONS_SETTINGS) == null ) PushNotificationsSettings(true, true, true, true) else gson.fromJson(getData(PUSH_NOTIFICATIONS_SETTINGS), PushNotificationsSettings::class.java)

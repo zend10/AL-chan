@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
+import type.StaffLanguage
 
 class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettingsManager {
 
@@ -15,6 +16,9 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
 
     override val homeShowReading: Boolean
         get() = localStorage.homeShowReading
+
+    override val voiceActorLanguage: StaffLanguage
+        get() = localStorage.voiceActorLanguage
 
     override val pushNotificationsSettings: PushNotificationsSettings
         get() = localStorage.pushNotificationsSettings
@@ -29,6 +33,10 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
 
     override fun setHomeShowReading(value: Boolean) {
         localStorage.homeShowReading = value
+    }
+
+    override fun setVoiceActorLanguage(staffLanguage: StaffLanguage) {
+        localStorage.voiceActorLanguage = staffLanguage
     }
 
     override fun setPushNotificationsSettings(pushNotificationsSettings: PushNotificationsSettings) {

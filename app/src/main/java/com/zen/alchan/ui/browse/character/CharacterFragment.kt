@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -36,6 +37,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.media.characters.MediaCharactersRvAdapter
 import com.zen.alchan.ui.browse.staff.StaffFragment
 import kotlinx.android.synthetic.main.fragment_character.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -55,6 +57,7 @@ class CharacterFragment : BaseFragment() {
     private lateinit var scaleDownAnim: Animation
 
     private lateinit var adapter: CharacterMediaRvAdapter
+    private lateinit var voiceActorAdapter: CharacterVoiceActorRvAdapter
     private lateinit var itemOpenAniList: MenuItem
     private lateinit var itemCopyLink: MenuItem
 
@@ -86,6 +89,9 @@ class CharacterFragment : BaseFragment() {
         adapter = assignAdapter()
         characterMediaRecyclerView.adapter = adapter
 
+        voiceActorAdapter = assignVoiceActorAdapter()
+        characterVoiceActorsRecyclerView.adapter = voiceActorAdapter
+
         setupObserver()
         initLayout()
     }
@@ -116,32 +122,37 @@ class CharacterFragment : BaseFragment() {
 
         viewModel.characterMediaData.observe(viewLifecycleOwner, Observer {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
+                if (!viewModel.hasNextPage) {
+                    return@Observer
+                }
+
                 viewModel.hasNextPage = it.data?.Character()?.media()?.pageInfo()?.hasNextPage() ?: false
                 viewModel.page += 1
                 viewModel.isInit = true
 
                 it.data?.Character()?.media()?.edges()?.forEach { edge ->
-                    val voiceActors = ArrayList<CharacterVoiceActors>()
-                    edge.voiceActors()?.forEach { va ->
-                        voiceActors.add(
-                            CharacterVoiceActors(
-                                va.id(),
-                                va.name()?.full(),
-                                va.image()?.large(),
-                                va.language()
-                            )
-                        )
-                    }
-
                     val characterMedia = CharacterMedia(
                         edge.node()?.id(),
                         edge.node()?.title()?.userPreferred(),
                         edge.node()?.coverImage()?.extraLarge(),
                         edge.node()?.type(),
-                        edge.characterRole(),
-                        voiceActors
+                        edge.node()?.format(),
+                        edge.characterRole()
                     )
                     viewModel.characterMedia.add(characterMedia)
+
+                    edge.voiceActors()?.forEach { va ->
+                        val findVa = viewModel.characterVoiceActors.find { cva -> cva.voiceActorId == va.id() }
+                        if (findVa != null) {
+                            val vaIndex = viewModel.characterVoiceActors.indexOf(findVa)
+                            viewModel.characterVoiceActors[vaIndex].characterMediaList?.add(characterMedia)
+                        } else {
+                            val voiceActor = CharacterVoiceActors(
+                                va.id(), va.name()?.full(), va.image()?.large(), va.language(), arrayListOf(characterMedia)
+                            )
+                            viewModel.characterVoiceActors.add(voiceActor)
+                        }
+                    }
                 }
 
                 if (viewModel.hasNextPage) {
@@ -149,6 +160,10 @@ class CharacterFragment : BaseFragment() {
                 } else {
                     adapter = assignAdapter()
                     characterMediaRecyclerView.adapter = adapter
+
+                    voiceActorAdapter = assignVoiceActorAdapter()
+                    characterVoiceActorsRecyclerView.adapter = voiceActorAdapter
+                    characterVoiceActorsLayout.visibility = if (viewModel.characterVoiceActors.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
             }
         })
@@ -214,7 +229,12 @@ class CharacterFragment : BaseFragment() {
                 if (index != viewModel.currentCharacterData?.name()?.alternative()?.lastIndex) aliasesString += ", "
             }
             characterAliasesText.text = aliasesString
-            characterAliasesText.visibility = View.VISIBLE
+
+            if (aliasesString.isBlank()) {
+                characterAliasesText.visibility = View.GONE
+            } else {
+                characterAliasesText.visibility = View.VISIBLE
+            }
         } else {
             characterAliasesText.visibility = View.GONE
         }
@@ -242,6 +262,7 @@ class CharacterFragment : BaseFragment() {
         characterRefreshLayout.setOnRefreshListener {
             characterRefreshLayout.isRefreshing = false
             viewModel.getCharacter()
+            viewModel.checkCharacterIsFavorite()
             if (!viewModel.isInit) {
                 viewModel.getCharacterMedia()
             }
@@ -265,30 +286,19 @@ class CharacterFragment : BaseFragment() {
             }
         })
 
-        voiceActorLanguageText.text = viewModel.staffLanguage.name
-
-        voiceActorLanguageText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.staffLanguageArray) { _, which ->
-                    viewModel.staffLanguage = StaffLanguage.valueOf(viewModel.staffLanguageArray[which])
-                    voiceActorLanguageText.text = viewModel.staffLanguageArray[which]
-                    adapter = assignAdapter()
-                    characterMediaRecyclerView.adapter = adapter
-                }
-                .show()
-        }
-
         characterFavoriteButton.setOnClickListener {
             viewModel.updateFavorite()
         }
+
+        characterVoiceActorsLayout.visibility = if (viewModel.characterVoiceActors.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun handleDescription() {
         val spoilerRegex = "(?<=<span class='markdown_spoiler'><span>).+?(?=<\\/span><\\/span>)".toRegex()
         val spoilerTag = "[Spoiler]"
-        val spoilerText = spoilerRegex.findAll(viewModel.currentCharacterData?.description() ?: "No description.").toList()
+        val spoilerText = spoilerRegex.findAll(viewModel.currentCharacterData?.description() ?: getString(R.string.no_description)).toList()
         val spoilerDescription = viewModel.currentCharacterData?.description()?.replace(spoilerRegex, spoilerTag)
-        val spanned = HtmlCompat.fromHtml(spoilerDescription ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val spanned = HtmlCompat.fromHtml(if (spoilerDescription.isNullOrBlank()) getString(R.string.no_description) else spoilerDescription, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         val spannableString = SpannableString(spanned.toString())
 
@@ -327,7 +337,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun assignAdapter(): CharacterMediaRvAdapter {
-        return CharacterMediaRvAdapter(activity!!, viewModel.characterMedia, viewModel.staffLanguage, object : CharacterMediaRvAdapter.CharacterMediaListener {
+        return CharacterMediaRvAdapter(activity!!, viewModel.characterMedia, object : CharacterMediaRvAdapter.CharacterMediaListener {
             override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
                 val fragment = MediaFragment()
                 val bundle = Bundle()
@@ -336,13 +346,38 @@ class CharacterFragment : BaseFragment() {
                 fragment.arguments = bundle
                 listener?.changeFragment(fragment)
             }
+        })
+    }
 
+    private fun assignVoiceActorAdapter(): CharacterVoiceActorRvAdapter {
+        val metrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        val width = metrics.widthPixels / 5
+        return CharacterVoiceActorRvAdapter(activity!!, viewModel.characterVoiceActors, width, object : CharacterVoiceActorRvAdapter.CharacterVoiceActorListener {
             override fun passSelectedVoiceActor(voiceActorId: Int) {
                 val fragment = StaffFragment()
                 val bundle = Bundle()
                 bundle.putInt(StaffFragment.STAFF_ID, voiceActorId)
                 fragment.arguments = bundle
                 listener?.changeFragment(fragment)
+            }
+
+            override fun showMediaList(list: List<CharacterMedia>) {
+                val titleList = ArrayList<String>()
+                list.forEach {
+                    titleList.add("${it.mediaTitle} (${it.mediaFormat})")
+                }
+                MaterialAlertDialogBuilder(activity)
+                    .setItems(titleList.toTypedArray()) { _, which ->
+                        val selectedMedia = list[which]
+                        val fragment = MediaFragment()
+                        val bundle = Bundle()
+                        bundle.putInt(MediaFragment.MEDIA_ID, selectedMedia.mediaId!!)
+                        bundle.putString(MediaFragment.MEDIA_TYPE, selectedMedia.mediaType?.name)
+                        fragment.arguments = bundle
+                        listener?.changeFragment(fragment)
+                    }
+                    .show()
             }
         })
     }

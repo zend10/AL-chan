@@ -111,7 +111,7 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleDescription() {
-        val spanned = HtmlCompat.fromHtml(mediaData?.description() ?: "No description.", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val spanned = HtmlCompat.fromHtml(mediaData?.description() ?: getString(R.string.no_description), HtmlCompat.FROM_HTML_MODE_LEGACY)
         mediaDescriptionText.text = spanned
         mediaDescriptionArrow.setOnClickListener {
             if (dummyMediaDescriptionText.isVisible) {

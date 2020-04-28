@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="@dimen/marginPage"
+    android:paddingTop="@dimen/marginFar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ui.browse.media.staffs.MediaStaffsFragment">
@@ -12,6 +12,14 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_empty"/>
+
+    </androidx.core.widget.NestedScrollView>
 
     <include layout="@layout/layout_loading"/>
 

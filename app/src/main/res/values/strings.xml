@@ -205,4 +205,6 @@
     <string name="copy_link">Copy link</string>
     <string name="character_voice_roles">Character Voice Roles</string>
     <string name="staff_roles">Staff Roles</string>
+    <string name="no_description">No description.</string>
+    <string name="voice_actors">Voice Actors</string>
 </resources>

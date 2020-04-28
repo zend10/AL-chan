@@ -89,7 +89,7 @@ class ALchanApplication : Application() {
 
         viewModel { MediaViewModel(get()) }
         viewModel { MediaOverviewViewModel(get()) }
-        viewModel { MediaCharactersViewModel(get()) }
+        viewModel { MediaCharactersViewModel(get(), get()) }
         viewModel { MediaStaffsViewModel(get()) }
 
         viewModel { CharacterViewModel(get(), get()) }

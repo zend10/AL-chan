@@ -6,6 +6,7 @@ import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import com.zen.alchan.helper.utils.AndroidUtility
+import type.StaffLanguage
 
 class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManager) : AppSettingsRepository {
 
@@ -24,6 +25,9 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
 
     override val homeShowReading: Boolean
         get() = appSettingsManager.homeShowReading
+
+    override val voiceActorLanguage: StaffLanguage
+        get() = appSettingsManager.voiceActorLanguage
 
     override val pushNotificationsSettings: PushNotificationsSettings
         get() = appSettingsManager.pushNotificationsSettings

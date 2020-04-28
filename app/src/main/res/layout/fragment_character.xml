@@ -54,8 +54,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_marginStart="@dimen/marginPage"
                             android:layout_marginEnd="@dimen/marginPage"
-                            android:layout_marginTop="112dp"
-                            android:layout_marginBottom="@dimen/marginNormal"
+                            android:layout_marginTop="@dimen/toolbarBigHeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -128,24 +127,13 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/characterAliasesText"
-                            style="?themeRegularBoldFont"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:layout_marginBottom="@dimen/marginNormal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/characterFavoriteButton"
                             android:text="@string/set_as_favorite"
                             android:textAllCaps="true"
                             style="?themeButtonPrimary"
                             android:enabled="false"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:layout_marginBottom="@dimen/marginPage"
+                            android:layout_margin="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
@@ -178,6 +166,16 @@
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/characterAliasesText"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <RelativeLayout
                     android:layout_marginStart="@dimen/marginPage"
@@ -214,6 +212,49 @@
                 </RelativeLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="visible"
+                    android:id="@+id/characterVoiceActorsLayout"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_marginStart="@dimen/marginPage"
+                        android:layout_marginBottom="@dimen/marginNormal"
+                        android:layout_marginEnd="@dimen/marginPage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/voice_actors"
+                            style="?themeRegularBoldFont"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="Long press to view series they feature in"
+                            style="?themeSmallFont"
+                            android:textColor="?themeDividerColor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/characterVoiceActorsRecyclerView"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/marginPage"
+                        android:clipToPadding="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_marginTop="@dimen/marginPage"
                     android:layout_marginBottom="@dimen/marginNormal"
                     android:layout_marginStart="@dimen/marginPage"
@@ -225,37 +266,26 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:text="@string/series"
                         style="?themeRegularBoldFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/voiceActorLanguageLayout"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="M = Main, S = Supporting, B = Background"
+                        style="?themeSmallFont"
+                        android:textColor="?themeDividerColor"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:text="@string/language"
-                            style="?themeRegularFont"
-                            android:layout_marginEnd="@dimen/marginNormal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/voiceActorLanguageText"
-                            style="?themeRegularClickableFont"
-                            android:padding="@dimen/iconPadding"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/characterMediaRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     android:nestedScrollingEnabled="false"
+                    app:spanCount="3"
+                    android:paddingStart="@dimen/marginNormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
