@@ -48,13 +48,14 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/staffBannerContentLayout"
                         android:orientation="vertical"
+                        android:paddingBottom="@dimen/marginFar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_marginStart="@dimen/marginPage"
                             android:layout_marginEnd="@dimen/marginPage"
-                            android:layout_marginTop="112dp"
+                            android:layout_marginTop="@dimen/toolbarBigHeight"
                             android:layout_marginBottom="@dimen/marginNormal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -128,15 +129,6 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/staffAliasesText"
-                            style="?themeRegularBoldFont"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:layout_marginBottom="@dimen/marginNormal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/staffFavoriteButton"
                             android:text="@string/set_as_favorite"
@@ -145,7 +137,6 @@
                             android:enabled="false"
                             android:layout_marginStart="@dimen/marginPage"
                             android:layout_marginEnd="@dimen/marginPage"
-                            android:layout_marginBottom="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
@@ -160,113 +151,149 @@
                     android:fitsSystemWindows="false"
                     android:backgroundTint="@android:color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="@dimen/toolbarBigHeight"/>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/staffCardMenu"
+            app:cardBackgroundColor="?themeCardColor"
+            android:layout_marginStart="@dimen/marginPage"
+            android:layout_marginEnd="@dimen/marginPage"
+            android:layout_marginBottom="@dimen/marginPage"
+            app:layout_anchor="@id/staffCollapsingToolbar"
+            app:layout_anchorGravity="bottom"
+            app:cardElevation="@dimen/elevationNormal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginPage"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:orientation="vertical"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_marginStart="@dimen/marginPage"
-                    android:layout_marginEnd="@dimen/marginPage"
-                    android:layout_marginBottom="@dimen/marginPage"
-                    android:layout_width="match_parent"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/staffBioLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/staffDescriptionText"
-                        style="?themeRegularFont"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignBottom="@id/dummyStaffDescriptionText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/dummyStaffDescriptionText"
-                        style="?themeRegularFont"
-                        android:background="@drawable/dark_gradient_two_background"
-                        android:lines="5"
-                        android:maxLines="5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/staffDescriptionArrow"
-                        app:srcCompat="@drawable/ic_chevron_down"
-                        android:padding="@dimen/iconPadding"
-                        android:layout_alignBottom="@id/staffDescriptionText"
-                        android:layout_centerHorizontal="true"
+                        android:id="@+id/staffBioIcon"
+                        app:srcCompat="@drawable/ic_contacts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-
-                </RelativeLayout>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
-                    android:id="@+id/staffVoiceLayout"
-                    android:layout_marginBottom="@dimen/marginPage"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/character_voice_roles"
-                        style="?themeRegularBoldFont"
-                        android:layout_marginBottom="@dimen/marginNormal"
-                        android:layout_marginStart="@dimen/marginPage"
-                        android:layout_marginEnd="@dimen/marginPage"
+                        android:id="@+id/staffBioText"
+                        style="?themeSmallFont"
+                        android:text="@string/bio"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/staffVoiceRecyclerView"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
-                    android:id="@+id/staffRolesLayout"
-                    android:layout_marginBottom="@dimen/marginPage"
+                    android:id="@+id/staffVoiceLayout"
+                    android:foreground="?selectableItemBackground"
                     android:orientation="vertical"
-                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/staff_roles"
-                        style="?themeRegularBoldFont"
-                        android:layout_marginBottom="@dimen/marginNormal"
-                        android:layout_marginStart="@dimen/marginPage"
-                        android:layout_marginEnd="@dimen/marginPage"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/staffVoiceIcon"
+                        app:srcCompat="@drawable/ic_person"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/staffRolesRecyclerView"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/staffVoiceText"
+                        style="?themeSmallFont"
+                        android:text="@string/voice"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/staffAnimeLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/staffAnimeIcon"
+                        app:srcCompat="@drawable/ic_cinema"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/staffAnimeText"
+                        style="?themeSmallFont"
+                        android:text="@string/anime"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/staffMangaLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/staffMangaIcon"
+                        app:srcCompat="@drawable/ic_book"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/staffMangaText"
+                        style="?themeSmallFont"
+                        android:text="@string/manga"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.core.widget.NestedScrollView>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.zen.alchan.helper.libs.CustomViewPager
+            android:id="@+id/staffViewPager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <include layout="@layout/layout_loading"/>
 

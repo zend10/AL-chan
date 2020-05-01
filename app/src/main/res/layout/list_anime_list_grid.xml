@@ -45,7 +45,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/animeTitleText"
-                    style="?themeSmallFont"
+                    style="?themeSmallClickableFont"
                     android:gravity="center_vertical"
                     android:textAlignment="center"
                     android:lines="2"

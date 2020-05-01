@@ -207,4 +207,7 @@
     <string name="staff_roles">Staff Roles</string>
     <string name="no_description">No description.</string>
     <string name="voice_actors">Voice Actors</string>
+    <string name="voice">Voice</string>
+    <string name="nyaat_found">Nyaat Found</string>
+    <string name="retry">Retry</string>
 </resources>

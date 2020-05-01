@@ -39,6 +39,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/animeTitleText"
                 style="?themeRegularBoldFont"
+                android:textColor="?themePrimaryColor"
                 android:text="Title"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/animeImageGuideline"

@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.webkit.WebChromeClient
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
@@ -30,6 +31,7 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.handleSpoilerAndLink
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.CharacterMedia
 import com.zen.alchan.helper.pojo.CharacterVoiceActors
@@ -294,35 +296,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun handleDescription() {
-        val spoilerRegex = "(?<=<span class='markdown_spoiler'><span>).+?(?=<\\/span><\\/span>)".toRegex()
-        val spoilerTag = "[Spoiler]"
-        val spoilerText = spoilerRegex.findAll(viewModel.currentCharacterData?.description() ?: getString(R.string.no_description)).toList()
-        val spoilerDescription = viewModel.currentCharacterData?.description()?.replace(spoilerRegex, spoilerTag)
-        val spanned = HtmlCompat.fromHtml(if (spoilerDescription.isNullOrBlank()) getString(R.string.no_description) else spoilerDescription, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-        val spannableString = SpannableString(spanned.toString())
-
-        var findIndex = spanned.indexOf(spoilerTag)
-        var counter = 0
-        while (findIndex != -1) {
-            val clickableSpan = object : ClickableSpan() {
-                val internalCounter = counter
-                override fun onClick(widget: View) {
-                    DialogUtility.showInfoDialog(activity, HtmlCompat.fromHtml(spoilerText[internalCounter].value, HtmlCompat.FROM_HTML_MODE_LEGACY).toString())
-                }
-
-                override fun updateDrawState(ds: TextPaint) {
-                    super.updateDrawState(ds)
-                    ds.isUnderlineText = false
-                    ds.color =  AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeNegativeColor)
-                }
-            }
-            spannableString.setSpan(clickableSpan, findIndex, findIndex + spoilerTag.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            counter += 1
-            findIndex = spanned.indexOf(spoilerTag, findIndex + spoilerTag.length)
-        }
-
-        characterDescriptionText.text = spannableString
+        characterDescriptionText.text = viewModel.currentCharacterData?.description()?.handleSpoilerAndLink(activity!!)
         characterDescriptionText.movementMethod = LinkMovementMethod.getInstance()
 
         characterDescriptionArrow.setOnClickListener {

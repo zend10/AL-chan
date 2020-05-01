@@ -9,6 +9,7 @@ import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.MediaSort
+import type.MediaType
 
 class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : BrowseRepository {
 
@@ -28,13 +29,21 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     override val staffData: LiveData<Resource<StaffQuery.Data>>
         get() = _staffData
 
+    private val _staffBioData = SingleLiveEvent<Resource<StaffBioQuery.Data>>()
+    override val staffBioData: LiveData<Resource<StaffBioQuery.Data>>
+        get() = _staffBioData
+
     private val _staffCharacterData = SingleLiveEvent<Resource<StaffCharacterConnectionQuery.Data>>()
     override val staffCharacterData: LiveData<Resource<StaffCharacterConnectionQuery.Data>>
         get() = _staffCharacterData
 
-    private val _staffMediaData = SingleLiveEvent<Resource<StaffMediaConnectionQuery.Data>>()
-    override val staffMediaData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
-        get() = _staffMediaData
+    private val _staffAnimeData = SingleLiveEvent<Resource<StaffMediaConnectionQuery.Data>>()
+    override val staffAnimeData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
+        get() = _staffAnimeData
+
+    private val _staffMangaData = SingleLiveEvent<Resource<StaffMediaConnectionQuery.Data>>()
+    override val staffMangaData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
+        get() = _staffMangaData
 
     private val _staffIsFavoriteData = SingleLiveEvent<Resource<StaffIsFavoriteQuery.Data>>()
     override val staffIsFavoriteData: LiveData<Resource<StaffIsFavoriteQuery.Data>>
@@ -145,6 +154,30 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     }
 
     @SuppressLint("CheckResult")
+    override fun getStaffBio(id: Int) {
+        _staffBioData.postValue(Resource.Loading())
+
+        browseDataSource.getStaffBio(id).subscribeWith(object : Observer<Response<StaffBioQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<StaffBioQuery.Data>) {
+                if (t.hasErrors()) {
+                    _staffBioData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _staffBioData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _staffBioData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
     override fun getStaffCharacter(id: Int, page: Int) {
         browseDataSource.getStaffCharacter(id, page).subscribeWith(object : Observer<Response<StaffCharacterConnectionQuery.Data>> {
             override fun onSubscribe(d: Disposable) {}
@@ -167,20 +200,42 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     }
 
     @SuppressLint("CheckResult")
-    override fun getStaffMedia(id: Int, page: Int) {
-        browseDataSource.getStaffMedia(id, page).subscribeWith(object : Observer<Response<StaffMediaConnectionQuery.Data>> {
+    override fun getStaffAnime(id: Int, page: Int) {
+        browseDataSource.getStaffMedia(id, MediaType.ANIME, page).subscribeWith(object : Observer<Response<StaffMediaConnectionQuery.Data>> {
             override fun onSubscribe(d: Disposable) {}
 
             override fun onNext(t: Response<StaffMediaConnectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffMediaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffAnimeData.postValue(Resource.Error(t.errors()[0].message()!!))
                 } else {
-                    _staffMediaData.postValue(Resource.Success(t.data()!!))
+                    _staffAnimeData.postValue(Resource.Success(t.data()!!))
                 }
             }
 
             override fun onError(e: Throwable) {
-                _staffMediaData.postValue(Resource.Error(e.localizedMessage))
+                _staffAnimeData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getStaffManga(id: Int, page: Int) {
+        browseDataSource.getStaffMedia(id, MediaType.MANGA, page).subscribeWith(object : Observer<Response<StaffMediaConnectionQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<StaffMediaConnectionQuery.Data>) {
+                if (t.hasErrors()) {
+                    _staffMangaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _staffMangaData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _staffMangaData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 

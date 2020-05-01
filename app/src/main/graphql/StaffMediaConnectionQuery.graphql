@@ -1,5 +1,6 @@
 query StaffMediaConnectionQuery(
     $id: Int,
+    $type: MediaType,
     $page: Int
 ) {
     Staff(id: $id) {
@@ -7,7 +8,7 @@ query StaffMediaConnectionQuery(
         name {
             full
         }
-        staffMedia(page: $page) {
+        staffMedia(type: $type, page: $page) {
             edges {
                 node {
                     id

@@ -7,6 +7,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import type.MediaSort
+import type.MediaType
 
 class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDataSource {
 
@@ -45,6 +46,14 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getStaffBio(id: Int): Observable<Response<StaffBioQuery.Data>> {
+        val query = StaffBioQuery.builder().id(id).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun getStaffCharacter(
         id: Int,
         page: Int
@@ -58,9 +67,10 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
 
     override fun getStaffMedia(
         id: Int,
+        type: MediaType,
         page: Int
     ): Observable<Response<StaffMediaConnectionQuery.Data>> {
-        val query = StaffMediaConnectionQuery.builder().id(id).page(page).build()
+        val query = StaffMediaConnectionQuery.builder().id(id).type(type).page(page).build()
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

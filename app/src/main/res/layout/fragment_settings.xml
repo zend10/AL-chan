@@ -31,7 +31,6 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_phonelink_setup"
-                    app:tint="?themeSecondaryColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -80,7 +79,6 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_laptop_settings"
-                    app:tint="?themeSecondaryColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -129,7 +127,6 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_folder_settings"
-                    app:tint="?themeSecondaryColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -178,7 +175,6 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_alarm"
-                    app:tint="?themeSecondaryColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -227,7 +223,6 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_admin_settings_male"
-                    app:tint="?themeSecondaryColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -276,7 +271,6 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_help"
-                    app:tint="?themeSecondaryColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

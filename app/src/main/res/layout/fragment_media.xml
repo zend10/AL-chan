@@ -57,7 +57,7 @@
                         android:id="@+id/mediaBannerContentLayout"
                         android:layout_marginStart="@dimen/marginPage"
                         android:layout_marginEnd="@dimen/marginPage"
-                        android:layout_marginTop="112dp"
+                        android:layout_marginTop="@dimen/toolbarBigHeight"
                         android:paddingBottom="@dimen/marginFar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">

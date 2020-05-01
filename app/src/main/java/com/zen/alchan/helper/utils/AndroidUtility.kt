@@ -4,7 +4,14 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.ClickableSpan
 import android.util.TypedValue
+import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.text.HtmlCompat
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme

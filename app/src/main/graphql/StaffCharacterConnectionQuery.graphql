@@ -28,6 +28,7 @@ query StaffCharacterConnectionQuery(
                         extraLarge
                     }
                     type
+                    format
                 }
             }
             pageInfo {

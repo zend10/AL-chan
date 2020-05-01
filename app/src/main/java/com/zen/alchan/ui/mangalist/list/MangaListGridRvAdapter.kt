@@ -60,9 +60,8 @@ class MangaListGridRvAdapter(private val context: Context,
             listener.openEditor(mediaList.id)
         }
 
-        holder.mangaCoverImage.setOnLongClickListener {
+        holder.mangaTitleLayout.setOnClickListener {
             listener.openBrowsePage(mediaList.media!!)
-            true
         }
 
         if (listStyle?.cardColor != null) {

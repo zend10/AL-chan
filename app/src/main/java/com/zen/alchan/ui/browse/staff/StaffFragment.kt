@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
@@ -24,10 +25,12 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.textview.MaterialTextView
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.enums.StaffPage
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.StaffCharacter
 import com.zen.alchan.helper.pojo.StaffMedia
@@ -36,6 +39,10 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.staff.anime.StaffAnimeFragment
+import com.zen.alchan.ui.browse.staff.bio.StaffBioFragment
+import com.zen.alchan.ui.browse.staff.manga.StaffMangaFragment
+import com.zen.alchan.ui.browse.staff.voice.StaffVoiceFragment
 import kotlinx.android.synthetic.main.fragment_staff.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,11 +56,11 @@ class StaffFragment : BaseFragment() {
 
     private val viewModel by viewModel<StaffViewModel>()
 
+    private lateinit var staffSectionMap: HashMap<StaffPage, Pair<ImageView, MaterialTextView>>
+    private lateinit var staffFragmentList: List<Fragment>
+
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
-
-    private lateinit var characterAdapter: StaffCharacterRvAdapter
-    private lateinit var mediaAdapter: StaffMediaRvAdapter
 
     private lateinit var itemOpenAniList: MenuItem
     private lateinit var itemCopyLink: MenuItem
@@ -74,6 +81,16 @@ class StaffFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.staffId = arguments?.getInt(STAFF_ID)
+
+        staffSectionMap = hashMapOf(
+            Pair(StaffPage.BIO, Pair(staffBioIcon, staffBioText)),
+            Pair(StaffPage.VOICE, Pair(staffVoiceIcon, staffVoiceText)),
+            Pair(StaffPage.ANIME, Pair(staffAnimeIcon, staffAnimeText)),
+            Pair(StaffPage.MANGA, Pair(staffMangaIcon, staffMangaText))
+        )
+
+        staffFragmentList = arrayListOf(StaffBioFragment(), StaffVoiceFragment(), StaffAnimeFragment(), StaffMangaFragment())
+
         scaleUpAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up)
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
 
@@ -83,14 +100,9 @@ class StaffFragment : BaseFragment() {
         itemOpenAniList = staffToolbar.menu.findItem(R.id.itemOpenAnilist)
         itemCopyLink = staffToolbar.menu.findItem(R.id.itemCopyLink)
 
-        characterAdapter = assignCharacterAdapter()
-        staffVoiceRecyclerView.adapter = characterAdapter
-
-        mediaAdapter = assignMediaAdapter()
-        staffRolesRecyclerView.adapter = mediaAdapter
-
-        setupObserver()
         initLayout()
+        setupObserver()
+        setupSection()
     }
 
     override fun onStart() {
@@ -99,6 +111,10 @@ class StaffFragment : BaseFragment() {
     }
 
     private fun setupObserver() {
+        viewModel.currentSection.observe(viewLifecycleOwner, Observer {
+            setupSection()
+        })
+
         viewModel.staffData.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
@@ -107,81 +123,11 @@ class StaffFragment : BaseFragment() {
                     if (it.data?.Staff() != null) {
                         viewModel.currentStaffData = it.data.Staff()
                         setupHeader()
-                        handleDescription()
                     }
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                }
-            }
-        })
-
-        viewModel.staffCharacterData.observe(viewLifecycleOwner, Observer {
-            if (it.responseStatus == ResponseStatus.SUCCESS) {
-                viewModel.characterHasNextPage = it.data?.Staff()?.characters()?.pageInfo()?.hasNextPage() ?: false
-                viewModel.characterPage += 1
-                viewModel.isCharacterInit = true
-
-                it.data?.Staff()?.characters()?.edges()?.forEach { edge ->
-                    edge.media()?.forEach { media ->
-                        val staffCharacter = StaffCharacter(
-                            media.id(),
-                            media.title()?.userPreferred(),
-                            media.coverImage()?.extraLarge(),
-                            media.type(),
-                            edge.role(),
-                            edge.node()?.id(),
-                            edge.node()?.name()?.full(),
-                            edge.node()?.image()?.large()
-                        )
-                        viewModel.staffCharacterList.add(staffCharacter)
-                    }
-                }
-
-                if (viewModel.characterHasNextPage) {
-                    viewModel.getStaffCharacter()
-                } else {
-                    characterAdapter = assignCharacterAdapter()
-                    staffVoiceRecyclerView.adapter = characterAdapter
-
-                    if (viewModel.staffCharacterList.isNullOrEmpty()) {
-                        staffVoiceLayout.visibility = View.GONE
-                    } else {
-                        staffVoiceLayout.visibility = View.VISIBLE
-                    }
-                }
-            }
-        })
-
-        viewModel.staffMediaData.observe(viewLifecycleOwner, Observer {
-            if (it.responseStatus == ResponseStatus.SUCCESS) {
-                viewModel.mediaHasNextPage = it.data?.Staff()?.staffMedia()?.pageInfo()?.hasNextPage() ?: false
-                viewModel.mediaPage += 1
-                viewModel.isMediaInit = true
-
-                it.data?.Staff()?.staffMedia()?.edges()?.forEach { edge ->
-                    val staffMedia = StaffMedia(
-                        edge.node()?.id(),
-                        edge.node()?.title()?.userPreferred(),
-                        edge.node()?.coverImage()?.extraLarge(),
-                        edge.node()?.type(),
-                        edge.staffRole()
-                    )
-                    viewModel.staffMediaList.add(staffMedia)
-                }
-
-                if (viewModel.mediaHasNextPage) {
-                    viewModel.getStaffMedia()
-                } else {
-                    mediaAdapter = assignMediaAdapter()
-                    staffRolesRecyclerView.adapter = mediaAdapter
-
-                    if (viewModel.staffMediaList.isNullOrEmpty()) {
-                        staffRolesLayout.visibility = View.GONE
-                    } else {
-                        staffRolesLayout.visibility = View.VISIBLE
-                    }
                 }
             }
         })
@@ -220,74 +166,13 @@ class StaffFragment : BaseFragment() {
             }
         })
 
-        viewModel.getStaff()
-
-        if (!viewModel.isCharacterInit) {
-            viewModel.getStaffCharacter()
-        }
-
-        if (!viewModel.isMediaInit) {
-            viewModel.getStaffMedia()
-        }
-    }
-
-    private fun setupHeader() {
-        GlideApp.with(this).load(viewModel.currentStaffData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(leftImage)
-
-        if (viewModel.currentStaffData?.image()?.large() != null) {
-            leftImage.setOnClickListener {
-                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentStaffData?.image()?.large())) { view, image ->
-                    GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(leftImage).show(true)
-            }
-        }
-
-        leftText.text = viewModel.currentStaffData?.name()?.full()
-        staffNativeNameText.text = viewModel.currentStaffData?.name()?.native_()
-
-        if (!viewModel.currentStaffData?.name()?.alternative().isNullOrEmpty()) {
-            var aliasesString = ""
-            viewModel.currentStaffData?.name()?.alternative()?.forEachIndexed { index, s ->
-                aliasesString += s
-                if (index != viewModel.currentStaffData?.name()?.alternative()?.lastIndex) aliasesString += ", "
-            }
-            staffAliasesText.text = aliasesString
-            staffAliasesText.visibility = View.VISIBLE
-        } else {
-            staffAliasesText.visibility = View.GONE
-        }
-
-        staffFavoriteCountText.text = viewModel.currentStaffData?.favourites()?.toString()
-
-        itemOpenAniList.isVisible = true
-        itemCopyLink.isVisible = true
-
-        itemOpenAniList.setOnMenuItemClickListener {
-            CustomTabsIntent.Builder()
-                .build()
-                .launchUrl(activity!!, Uri.parse(viewModel.currentStaffData?.siteUrl()))
-            true
-        }
-
-        itemCopyLink.setOnMenuItemClickListener {
-            AndroidUtility.copyToClipboard(activity, viewModel.currentStaffData?.siteUrl()!!)
-            DialogUtility.showToast(activity, R.string.link_copied)
-            true
-        }
+        viewModel.initData()
     }
 
     private fun initLayout() {
         staffRefreshLayout.setOnRefreshListener {
             staffRefreshLayout.isRefreshing = false
-            viewModel.getStaff()
-
-            if (viewModel.isCharacterInit) {
-                viewModel.getStaffCharacter()
-            }
-
-            if (!viewModel.isMediaInit) {
-                viewModel.getStaffMedia()
-            }
+            viewModel.refreshData()
         }
 
         staffAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -313,91 +198,70 @@ class StaffFragment : BaseFragment() {
         }
     }
 
-    private fun handleDescription() {
-        val urlRegex = "(?<=<a href=\").+?(?=\">)".toRegex()
-        val linkRegex =  "(?<=\">).+?(?=<\\/a>)".toRegex()
-        val description = viewModel.currentStaffData?.description() ?: getString(R.string.no_description)
-        val urlList = urlRegex.findAll(description).toList()
-        val linkList = linkRegex.findAll(description).toList()
-        val spanned = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    private fun setupHeader() {
+        GlideApp.with(this).load(viewModel.currentStaffData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(leftImage)
 
-        val spannableString = SpannableString(spanned.toString())
-
-        if (!linkList.isNullOrEmpty()) {
-            var counter = 0
-            var findIndex = spanned.indexOf(linkList[counter].value)
-
-            while (findIndex != -1) {
-                val clickableSpan = object : ClickableSpan() {
-                    val internalCounter = counter
-
-                    override fun onClick(widget: View) {
-                        CustomTabsIntent.Builder()
-                            .build()
-                            .launchUrl(activity!!, Uri.parse(urlList[internalCounter].value))
-                    }
-
-                    override fun updateDrawState(ds: TextPaint) {
-                        super.updateDrawState(ds)
-                        ds.isUnderlineText = false
-                        ds.color =  AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeNegativeColor)
-                    }
-                }
-                spannableString.setSpan(clickableSpan, findIndex, findIndex + linkList[counter].value.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                counter += 1
-                findIndex = if (counter < linkList.size) {
-                    spanned.indexOf(linkList[counter].value, findIndex + linkList[counter - 1].value.length)
-                } else {
-                    -1
-                }
+        if (viewModel.currentStaffData?.image()?.large() != null) {
+            leftImage.setOnClickListener {
+                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentStaffData?.image()?.large())) { view, image ->
+                    GlideApp.with(context!!).load(image).into(view)
+                }.withTransitionFrom(leftImage).show(true)
             }
         }
 
-        staffDescriptionText.text = spannableString
-        staffDescriptionText.movementMethod = LinkMovementMethod.getInstance()
+        leftText.text = viewModel.currentStaffData?.name()?.full()
+        staffNativeNameText.text = viewModel.currentStaffData?.name()?.native_()
 
-        staffDescriptionArrow.setOnClickListener {
-            if (dummyStaffDescriptionText.isVisible) {
-                dummyStaffDescriptionText.visibility = View.GONE
-                GlideApp.with(this).load(R.drawable.ic_chevron_up).into(staffDescriptionArrow)
+        staffFavoriteCountText.text = viewModel.currentStaffData?.favourites()?.toString()
+
+        itemOpenAniList.isVisible = true
+        itemCopyLink.isVisible = true
+
+        itemOpenAniList.setOnMenuItemClickListener {
+            CustomTabsIntent.Builder()
+                .build()
+                .launchUrl(activity!!, Uri.parse(viewModel.currentStaffData?.siteUrl()))
+            true
+        }
+
+        itemCopyLink.setOnMenuItemClickListener {
+            AndroidUtility.copyToClipboard(activity, viewModel.currentStaffData?.siteUrl()!!)
+            DialogUtility.showToast(activity, R.string.link_copied)
+            true
+        }
+
+        staffBioLayout.setOnClickListener { viewModel.setStaffSection(StaffPage.BIO) }
+        staffVoiceLayout.setOnClickListener { viewModel.setStaffSection(StaffPage.VOICE) }
+        staffAnimeLayout.setOnClickListener { viewModel.setStaffSection(StaffPage.ANIME) }
+        staffMangaLayout.setOnClickListener { viewModel.setStaffSection(StaffPage.MANGA) }
+
+        if (staffViewPager.adapter == null) {
+            staffViewPager.setPagingEnabled(false)
+            staffViewPager.offscreenPageLimit = staffSectionMap.size
+            staffViewPager.adapter = StaffViewPagerAdapter(childFragmentManager, viewModel.staffId!!, staffFragmentList)
+        }
+
+        viewModel.setStaffSection(viewModel.currentSection.value ?: StaffPage.BIO)
+    }
+
+    private fun setupSection() {
+        staffSectionMap.forEach {
+            if (it.key == viewModel.currentSection.value) {
+                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
+                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
             } else {
-                dummyStaffDescriptionText.visibility = View.VISIBLE
-                GlideApp.with(this).load(R.drawable.ic_chevron_down).into(staffDescriptionArrow)
+                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
             }
         }
-    }
 
-    private fun assignCharacterAdapter(): StaffCharacterRvAdapter {
-        return StaffCharacterRvAdapter(activity!!, viewModel.staffCharacterList, object : StaffCharacterRvAdapter.StaffCharacterListener {
-            override fun passSelectedCharacter(characterId: Int) {
-                val fragment = CharacterFragment()
-                val bundle = Bundle()
-                bundle.putInt(CharacterFragment.CHARACTER_ID, characterId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
-            }
-
-            override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
-            }
-        })
-    }
-
-    private fun assignMediaAdapter(): StaffMediaRvAdapter {
-        return StaffMediaRvAdapter(activity!!, viewModel.staffMediaList, object : StaffMediaRvAdapter.StaffMediaListener {
-            override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
-            }
-        })
+        // maybe should not use magic number
+        staffViewPager.currentItem = when (viewModel.currentSection.value) {
+            StaffPage.BIO -> 0
+            StaffPage.VOICE -> 1
+            StaffPage.ANIME -> 2
+            StaffPage.MANGA -> 3
+            else -> 0
+        }
     }
 }

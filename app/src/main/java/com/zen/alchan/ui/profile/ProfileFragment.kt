@@ -189,8 +189,8 @@ class ProfileFragment : BaseMainFragment() {
 
         profileSectionMap.forEach {
             if (it.key == viewModel.currentSection.value) {
-                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themePrimaryColor))
-                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themePrimaryColor))
+                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
+                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
             } else {
                 it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
                 it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))

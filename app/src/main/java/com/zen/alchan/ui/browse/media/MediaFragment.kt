@@ -292,14 +292,15 @@ class MediaFragment : BaseFragment() {
     private fun setupSection() {
         mediaSectionMap.forEach {
             if (it.key == viewModel.currentSection.value) {
-                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themePrimaryColor))
-                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themePrimaryColor))
+                it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
+                it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
             } else {
                 it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
                 it.value.second.setTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
             }
         }
 
+        // maybe should not use magic number
         mediaViewPager.currentItem = when (viewModel.currentSection.value) {
             MediaPage.OVERVIEW -> 0
             MediaPage.CHARACTERS -> 1
