@@ -16,6 +16,6 @@ interface AppSettingsRepository {
     val pushNotificationsSettings: PushNotificationsSettings
 
     // TODO: change this later
-    fun setAppSettings(appColorTheme: AppColorTheme, homeShowWatching: Boolean, homeShowReading: Boolean)
+    fun setAppSettings(appColorTheme: AppColorTheme, homeShowWatching: Boolean, homeShowReading: Boolean, voiceActorLanguage: StaffLanguage)
     fun setPushNotificationsSettings(pushNotifAiring: Boolean, pushNotifActivity: Boolean, pushNotifForum: Boolean, pushNotifFollows: Boolean)
 }

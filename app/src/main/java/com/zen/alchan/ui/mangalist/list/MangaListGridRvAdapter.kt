@@ -74,6 +74,8 @@ class MangaListGridRvAdapter(private val context: Context,
         }
 
         if (listStyle?.primaryColor != null) {
+            holder.mangaTitleText.setTextColor(Color.parseColor(listStyle.primaryColor))
+            holder.mangaRatingText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.mangaProgressText.setTextColor(Color.parseColor(listStyle.primaryColor))
             if (scoreFormat == ScoreFormat.POINT_3) {
                 holder.mangaStarIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
@@ -81,9 +83,7 @@ class MangaListGridRvAdapter(private val context: Context,
         }
 
         if (listStyle?.textColor != null) {
-            holder.mangaTitleText.setTextColor(Color.parseColor(listStyle.textColor))
             holder.mangaFormatText.setTextColor(Color.parseColor(listStyle.textColor))
-            holder.mangaRatingText.setTextColor(Color.parseColor(listStyle.textColor))
         }
     }
 

@@ -267,6 +267,8 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
     @SuppressLint("CheckResult")
     override fun getStudio(id: Int) {
+        _studioData.postValue(Resource.Loading())
+
         browseDataSource.getStudio(id).subscribeWith(object : Observer<Response<StudioQuery.Data>> {
             override fun onSubscribe(d: Disposable) {}
 

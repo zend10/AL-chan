@@ -133,7 +133,7 @@
                     android:text="@string/show_currently_watching_at_home_menu"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -155,7 +155,7 @@
                     android:text="@string/show_currently_reading_at_home_menu"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -163,6 +163,36 @@
                     style="?themeRegularCheckBox"
                     android:layout_width="@dimen/iconSize"
                     android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="?themeRegularBoldFont"
+                android:text="@string/others"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/default_voice_actor_language"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/defaultVoiceActorLanguageText"
+                    style="?themeRegularClickableFont"
+                    android:text="JAPANESE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

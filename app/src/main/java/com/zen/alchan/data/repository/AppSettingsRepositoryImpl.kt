@@ -35,12 +35,14 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
     override fun setAppSettings(
         appColorTheme: AppColorTheme,
         homeShowWatching: Boolean,
-        homeShowReading: Boolean
+        homeShowReading: Boolean,
+        voiceActorLanguage: StaffLanguage
     ) {
         appSettingsManager.apply {
             setAppColorTheme(appColorTheme)
             setHomeShowWatching(homeShowWatching)
             setHomeShowReading(homeShowReading)
+            setVoiceActorLanguage(voiceActorLanguage)
         }
         _appColorThemeLiveData.postValue(appColorThemeResource)
     }

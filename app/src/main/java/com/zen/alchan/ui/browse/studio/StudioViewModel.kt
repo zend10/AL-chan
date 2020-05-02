@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.pojo.StudioMedia
+import com.zen.alchan.helper.replaceUnderscore
 import type.MediaSort
 
 class StudioViewModel(private val browseRepository: BrowseRepository,
@@ -15,10 +16,44 @@ class StudioViewModel(private val browseRepository: BrowseRepository,
 
     var page = 1
     var hasNextPage = true
-    var mediaSort = MediaSort.START_DATE_DESC
+    var mediaSortIndex = 0
 
     var isInit = false
-    var studioMediaList = ArrayList<StudioMedia>()
+    var studioMediaList = ArrayList<StudioMedia?>()
+
+    val mediaSortArray = arrayOf(
+        "NEWEST",
+        "OLDEST",
+        "TITLE ROMAJI",
+        "TITLE ENGLISH",
+        "TITLE NATIVE",
+        "FIRST ADDED",
+        "LAST ADDED",
+        "HIGHEST SCORE",
+        "LOWEST SCORE",
+        "MOST POPULAR",
+        "LEAST POPULAR",
+        "MOST FAVORITE",
+        "LEAST FAVORITE",
+        "TRENDING"
+    )
+
+    var mediaSortList = arrayListOf(
+        MediaSort.START_DATE_DESC,
+        MediaSort.START_DATE,
+        MediaSort.TITLE_ROMAJI,
+        MediaSort.TITLE_ENGLISH,
+        MediaSort.TITLE_NATIVE,
+        MediaSort.ID,
+        MediaSort.ID_DESC,
+        MediaSort.SCORE_DESC,
+        MediaSort.SCORE,
+        MediaSort.POPULARITY_DESC,
+        MediaSort.POPULARITY,
+        MediaSort.FAVOURITES_DESC,
+        MediaSort.FAVOURITES,
+        MediaSort.TRENDING_DESC
+    )
 
     val studioData by lazy {
         browseRepository.studioData
@@ -41,7 +76,7 @@ class StudioViewModel(private val browseRepository: BrowseRepository,
     }
 
     fun getStudioMedia() {
-        if (hasNextPage && studioId != null) browseRepository.getStudioMedia(studioId!!, page, mediaSort)
+        if (hasNextPage && studioId != null) browseRepository.getStudioMedia(studioId!!, page, mediaSortList[mediaSortIndex])
     }
 
     fun checkStudioIsFavorite() {

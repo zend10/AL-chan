@@ -27,6 +27,7 @@ import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.studio.StudioFragment
 import kotlinx.android.synthetic.main.fragment_media_overview.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -385,7 +386,11 @@ class MediaOverviewFragment : BaseFragment() {
         return OverviewStudiosRvAdapter(activity, list, object : OverviewStudiosRvAdapter.OverviewStudioListener {
             override fun passSelectedStudio(studioId: Int?) {
                 if (studioId == null) return
-                // TODO: go to studio
+                val fragment = StudioFragment()
+                val bundle = Bundle()
+                bundle.putInt(StudioFragment.STUDIO_ID, studioId)
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
             }
         })
     }

@@ -99,6 +99,8 @@ class MangaListRvAdapter(private val context: Context,
         }
 
         if (listStyle?.primaryColor != null) {
+            holder.mangaTitleText.setTextColor(Color.parseColor(listStyle.primaryColor))
+            holder.mangaRatingText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.mangaProgressText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.mangaIncrementProgressButton.strokeColor = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
             holder.mangaIncrementProgressButton.setTextColor(Color.parseColor(listStyle.primaryColor))
@@ -121,9 +123,7 @@ class MangaListRvAdapter(private val context: Context,
         }
 
         if (listStyle?.textColor != null) {
-            holder.mangaTitleText.setTextColor(Color.parseColor(listStyle.textColor))
             holder.mangaFormatText.setTextColor(Color.parseColor(listStyle.textColor))
-            holder.mangaRatingText.setTextColor(Color.parseColor(listStyle.textColor))
         }
     }
 

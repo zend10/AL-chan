@@ -96,9 +96,12 @@ class AnimeListRvAdapter(private val context: Context,
         }
 
         if (listStyle?.primaryColor != null) {
+            holder.animeTitleText.setTextColor(Color.parseColor(listStyle.primaryColor))
+            holder.animeRatingText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.animeProgressText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.animeIncrementProgressButton.strokeColor = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
             holder.animeIncrementProgressButton.setTextColor(Color.parseColor(listStyle.primaryColor))
+
             if (scoreFormat == ScoreFormat.POINT_3) {
                 holder.animeStarIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
             }
@@ -112,10 +115,8 @@ class AnimeListRvAdapter(private val context: Context,
         }
 
         if (listStyle?.textColor != null) {
-            holder.animeTitleText.setTextColor(Color.parseColor(listStyle.textColor))
             holder.animeFormatText.setTextColor(Color.parseColor(listStyle.textColor))
             holder.animeAiringDividerIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.textColor))
-            holder.animeRatingText.setTextColor(Color.parseColor(listStyle.textColor))
         }
     }
 
