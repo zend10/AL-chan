@@ -7,7 +7,10 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
+import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.staff.StaffFragment
+import com.zen.alchan.ui.browse.studio.StudioFragment
 import kotlinx.android.synthetic.main.activity_browse.*
 import type.MediaType
 
@@ -38,10 +41,16 @@ class BrowseActivity : BaseActivity(), BaseListener {
                     bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.MANGA.name)
                 }
                 BrowsePage.CHARACTER -> {
-
+                    targetFragment = CharacterFragment()
+                    bundle.putInt(CharacterFragment.CHARACTER_ID, intent.getIntExtra(LOAD_ID, 0))
                 }
-                else -> {
-
+                BrowsePage.STAFF -> {
+                    targetFragment = StaffFragment()
+                    bundle.putInt(StaffFragment.STAFF_ID, intent.getIntExtra(LOAD_ID, 0))
+                }
+                BrowsePage.STUDIO -> {
+                    targetFragment = StudioFragment()
+                    bundle.putInt(StudioFragment.STUDIO_ID, intent.getIntExtra(LOAD_ID, 0))
                 }
             }
 

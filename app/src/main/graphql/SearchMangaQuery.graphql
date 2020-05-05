@@ -1,0 +1,35 @@
+query SearchMangaQuery(
+    $page: Int,
+    $search: String
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            type: MANGA,
+            search: $search
+        ) {
+            id
+            title {
+                userPreferred
+            }
+            coverImage {
+                extraLarge
+            }
+            type
+            format
+            averageScore
+            favourites
+            startDate {
+                year
+                month
+                day
+            }
+        }
+    }
+}

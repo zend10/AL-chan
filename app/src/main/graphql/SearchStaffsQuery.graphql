@@ -1,0 +1,25 @@
+query SearchStaffsQuery(
+    $page: Int,
+    $search: String
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        staff(search: $search) {
+            id
+            name {
+                full
+                native
+            }
+            image {
+                large
+            }
+            favourites
+        }
+    }
+}

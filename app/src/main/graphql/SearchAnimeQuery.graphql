@@ -1,0 +1,35 @@
+query SearchAnimeQuery(
+    $page: Int,
+    $search: String
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            type: ANIME,
+            search: $search
+        ) {
+            id
+            title {
+                userPreferred
+            }
+            coverImage {
+                extraLarge
+            }
+            type
+            format
+            averageScore
+            favourites
+            startDate {
+                year
+                month
+                day
+            }
+        }
+    }
+}
