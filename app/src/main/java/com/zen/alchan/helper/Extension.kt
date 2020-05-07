@@ -80,7 +80,7 @@ fun Long.toAlphaHex(): String {
 
 fun String?.setRegularPlural(count: Int?): String {
     if (this == null) return ""
-    if (count == null || abs(count) <= 1) return this
+    if (count == null || abs(count) == 1) return this
 
     // TODO: add more rules
 

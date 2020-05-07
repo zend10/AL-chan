@@ -101,7 +101,7 @@ class StaffVoiceFragment : BaseFragment() {
                                 StaffCharacterMedia(
                                     media.id(),
                                     media.title()?.userPreferred(),
-                                    media.coverImage()?.extraLarge(),
+                                    media.coverImage()?.large(),
                                     media.type(),
                                     media.format()
                                 )

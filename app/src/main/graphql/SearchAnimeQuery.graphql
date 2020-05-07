@@ -19,7 +19,7 @@ query SearchAnimeQuery(
                 userPreferred
             }
             coverImage {
-                extraLarge
+                large
             }
             type
             format

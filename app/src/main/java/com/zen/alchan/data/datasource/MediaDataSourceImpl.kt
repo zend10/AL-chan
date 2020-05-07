@@ -6,6 +6,8 @@ import com.zen.alchan.data.network.ApolloHandler
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import type.MediaSeason
+import type.MediaType
 
 class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataSource {
 
@@ -57,6 +59,33 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
 
     override fun getMediaStaffs(id: Int, page: Int): Observable<Response<MediaStaffsQuery.Data>> {
         val query = MediaStaffsQuery.builder().id(id).page(page).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getTrendingMedia(type: MediaType): Observable<Response<TrendingMediaQuery.Data>> {
+        val query = TrendingMediaQuery.builder().type(type).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getPopularThisSeason(
+        season: MediaSeason,
+        seasonYear: Int
+    ): Observable<Response<PopularSeasonQuery.Data>> {
+        val query = PopularSeasonQuery.builder().season(season).seasonYear(seasonYear).build()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getReleasingToday(page: Int): Observable<Response<ReleasingTodayQuery.Data>> {
+        val query = ReleasingTodayQuery.builder().page(page).build()
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

@@ -6,81 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.SearchActivity">
 
-    <RelativeLayout
-        android:id="@+id/searchLayout"
-        android:layout_margin="@dimen/marginPage"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchBarLayout"
+        android:layout_marginEnd="@dimen/marginNormal"
+        app:cardElevation="0dp"
+        app:contentPadding="@dimen/marginSmall"
+        app:cardBackgroundColor="?themeContentColor"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/marginPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/searchBarLayout"
-            android:layout_marginEnd="@dimen/marginNormal"
-            app:cardElevation="0dp"
-            app:contentPadding="@dimen/marginSmall"
-            app:cardBackgroundColor="?themeContentColor"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/advancedSearchButton"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/searchBackButton"
-                    app:srcCompat="@drawable/ic_long_arrow_left"
-                    android:padding="@dimen/iconPadding"
-                    app:tint="?themeBackgroundColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/searchBarEditText"
-                    style="?themeRegularFont"
-                    android:textColor="?themeBackgroundColor"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_marginStart="@dimen/marginNormal"
-                    android:hint="@string/search"
-                    android:textColorHint="?themeCardColor"
-                    android:background="@android:color/transparent"
-                    android:maxLines="1"
-                    android:inputType="textCapWords"
-                    android:imeOptions="actionDone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/advancedSearchButton"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignBottom="@id/searchBarLayout"
-            app:cardElevation="0dp"
-            app:contentPadding="@dimen/marginNormal"
-            app:cardBackgroundColor="?themePrimaryColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
             <androidx.appcompat.widget.AppCompatImageView
-                app:srcCompat="@drawable/ic_advanced_search"
+                android:id="@+id/searchBackButton"
+                app:srcCompat="@drawable/ic_long_arrow_left"
+                android:padding="@dimen/iconPadding"
                 app:tint="?themeBackgroundColor"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </com.google.android.material.card.MaterialCardView>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/searchBarEditText"
+                style="?themeRegularFont"
+                android:textColor="?themeBackgroundColor"
+                android:padding="@dimen/iconPadding"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:hint="@string/search"
+                android:textColorHint="?themeCardColor"
+                android:background="@android:color/transparent"
+                android:maxLines="1"
+                android:inputType="textCapWords"
+                android:imeOptions="actionDone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <HorizontalScrollView
         android:id="@+id/searchCategoryLayout"
-        app:layout_constraintTop_toBottomOf="@id/searchLayout"
+        app:layout_constraintTop_toBottomOf="@id/searchBarLayout"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/marginNormal"
         android:paddingStart="@dimen/marginPage"

@@ -212,4 +212,13 @@
     <string name="retry">Retry</string>
     <string name="default_voice_actor_language">Default voice actor language</string>
     <string name="priority">Priority</string>
+    <string name="trending_right_now">Trending Right Now</string>
+    <string name="popular_this_season">Popular This Season</string>
+    <string name="releasing_today">Releasing Today</string>
+    <string name="no_new_episode_today">No new episode today</string>
+    <string name="seasonal_chart">Seasonal Chart</string>
+    <string name="release_calendar">Release Calendar</string>
+    <string name="top_rated_anime">Top Rated Anime</string>
+    <string name="top_rated_manga">Top Rated Manga</string>
+    <string name="explore">Explore</string>
 </resources>

@@ -175,7 +175,7 @@ class StudioFragment : BaseFragment() {
                             edge.node()?.title()?.userPreferred(),
                             edge.node()?.type(),
                             edge.node()?.format(),
-                            edge.node()?.coverImage()?.extraLarge()
+                            edge.node()?.coverImage()?.large()
                         )
                         viewModel.studioMediaList.add(staffMedia)
                     }

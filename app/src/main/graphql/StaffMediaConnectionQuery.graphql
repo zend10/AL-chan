@@ -16,7 +16,7 @@ query StaffMediaConnectionQuery(
                         userPreferred
                     }
                     coverImage {
-                        extraLarge
+                        large
                     }
                     type
                 }

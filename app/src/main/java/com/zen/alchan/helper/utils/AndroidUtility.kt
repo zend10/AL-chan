@@ -16,11 +16,13 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.pojo.ColorPalette
+import type.MediaSeason
 import type.MediaType
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.util.*
 import kotlin.math.max
 
 
@@ -134,6 +136,17 @@ object AndroidUtility {
             "Supernatural" -> "#338074"
             "Thriller" -> "#224C80"
             else -> "#727272"
+        }
+    }
+
+    fun getCurrentSeason(): MediaSeason {
+        val calendar = Calendar.getInstance()
+        return when(calendar.get(Calendar.MONTH)) {
+            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> MediaSeason.WINTER
+            in Calendar.MARCH..Calendar.MAY -> MediaSeason.SPRING
+            in Calendar.JUNE..Calendar.AUGUST -> MediaSeason.SUMMER
+            in Calendar.SEPTEMBER..Calendar.NOVEMBER -> MediaSeason.FALL
+            else -> MediaSeason.WINTER
         }
     }
 }

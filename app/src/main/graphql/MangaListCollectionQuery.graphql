@@ -45,7 +45,6 @@ query MangaListCollectionQuery(
                     source
                     isFavourite
                     coverImage {
-                        extraLarge
                         large
                     }
                     genres

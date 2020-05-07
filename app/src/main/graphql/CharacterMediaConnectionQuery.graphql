@@ -12,7 +12,7 @@ query CharacterMediaConnectionQuery($id: Int, $page: Int) {
                         userPreferred
                     }
                     coverImage {
-                        extraLarge
+                        large
                     }
                     type
                     format

@@ -2,10 +2,8 @@ package com.zen.alchan.ui.search
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.button.MaterialButton
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -13,12 +11,10 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.base.BaseActivity
-import com.zen.alchan.ui.search.advanced.AdvancedSearchActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.fragment_search_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -50,11 +46,6 @@ class SearchActivity : BaseActivity() {
             .debounce(800, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { string -> source.onNext(string.toString()) }
-
-        advancedSearchButton.setOnClickListener {
-            finish()
-            startActivity(Intent(this, AdvancedSearchActivity::class.java))
-        }
 
         searchAnimeButton.setOnClickListener { handleSearchCategoryButton(BrowsePage.ANIME) }
         searchMangaButton.setOnClickListener { handleSearchCategoryButton(BrowsePage.MANGA) }

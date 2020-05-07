@@ -9,8 +9,11 @@ import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaCharacters
+import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.MediaType
+import java.util.*
 
 class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                           private val mediaManager: MediaManager,
@@ -42,6 +45,22 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _mediaStaffsData = SingleLiveEvent<Resource<MediaStaffsQuery.Data>>()
     override val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
         get() = _mediaStaffsData
+
+    private val _trendingAnimeData = SingleLiveEvent<Resource<TrendingMediaQuery.Data>>()
+    override val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
+        get() = _trendingAnimeData
+
+    private val _trendingMangaData = SingleLiveEvent<Resource<TrendingMediaQuery.Data>>()
+    override val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
+        get() = _trendingMangaData
+
+    private val _popularThisSeasonData = SingleLiveEvent<Resource<PopularSeasonQuery.Data>>()
+    override val popularThisSeasonData: LiveData<Resource<PopularSeasonQuery.Data>>
+        get() = _popularThisSeasonData
+
+    private val _releasingTodayData = SingleLiveEvent<Resource<ReleasingTodayQuery.Data>>()
+    override val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
+        get() = _releasingTodayData
 
     @SuppressLint("CheckResult")
     override fun getGenre() {
@@ -164,6 +183,102 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onError(e: Throwable) {
                 _mediaStaffsData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getTrendingAnime() {
+        _trendingAnimeData.postValue(Resource.Loading())
+
+        mediaDataSource.getTrendingMedia(MediaType.ANIME).subscribeWith(object : Observer<Response<TrendingMediaQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<TrendingMediaQuery.Data>) {
+                if (t.hasErrors()) {
+                    _trendingAnimeData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _trendingAnimeData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _trendingAnimeData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getTrendingManga() {
+        _trendingMangaData.postValue(Resource.Loading())
+
+        mediaDataSource.getTrendingMedia(MediaType.MANGA).subscribeWith(object : Observer<Response<TrendingMediaQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<TrendingMediaQuery.Data>) {
+                if (t.hasErrors()) {
+                    _trendingMangaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _trendingMangaData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _trendingMangaData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getPopularThisSeason() {
+        _popularThisSeasonData.postValue(Resource.Loading())
+
+        mediaDataSource.getPopularThisSeason(AndroidUtility.getCurrentSeason(), Calendar.getInstance().get(Calendar.YEAR)).subscribeWith(object : Observer<Response<PopularSeasonQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<PopularSeasonQuery.Data>) {
+                if (t.hasErrors()) {
+                    _popularThisSeasonData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _popularThisSeasonData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _popularThisSeasonData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getReleasingToday(page: Int) {
+        _releasingTodayData.postValue(Resource.Loading())
+
+        mediaDataSource.getReleasingToday(page).subscribeWith(object : Observer<Response<ReleasingTodayQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<ReleasingTodayQuery.Data>) {
+                if (t.hasErrors()) {
+                    _releasingTodayData.postValue(Resource.Error(t.errors()[0].message()!!))
+                } else {
+                    _releasingTodayData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _releasingTodayData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 

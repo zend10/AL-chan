@@ -136,7 +136,7 @@ class CharacterFragment : BaseFragment() {
                     val characterMedia = CharacterMedia(
                         edge.node()?.id(),
                         edge.node()?.title()?.userPreferred(),
-                        edge.node()?.coverImage()?.extraLarge(),
+                        edge.node()?.coverImage()?.large(),
                         edge.node()?.type(),
                         edge.node()?.format(),
                         edge.characterRole()

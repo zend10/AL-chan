@@ -24,6 +24,7 @@
             android:layout_height="0dp"/>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mediaFormatLayout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:cardCornerRadius="@dimen/cornerNormal"

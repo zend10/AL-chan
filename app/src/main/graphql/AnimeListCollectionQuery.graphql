@@ -44,7 +44,6 @@ query AnimeListCollectionQuery(
                     source
                     isFavourite
                     coverImage {
-                        extraLarge
                         large
                     }
                     genres

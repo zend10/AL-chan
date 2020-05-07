@@ -14,7 +14,7 @@ query StudioMediaConnectionQuery(
                         userPreferred
                     }
                     coverImage {
-                        extraLarge
+                        large
                     }
                     type
                     format

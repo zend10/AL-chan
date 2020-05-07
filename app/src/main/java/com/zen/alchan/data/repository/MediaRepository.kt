@@ -14,10 +14,20 @@ interface MediaRepository {
     val mediaCharactersData: LiveData<Resource<MediaCharactersQuery.Data>>
     val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
 
+    val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
+    val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
+    val popularThisSeasonData: LiveData<Resource<PopularSeasonQuery.Data>>
+    val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
+
     fun getGenre()
     fun getMedia(id: Int)
     fun checkMediaStatus(mediaId: Int)
     fun getMediaOverview(id: Int)
     fun getMediaCharacters(id: Int, page: Int)
     fun getMediaStaffs(id: Int, page: Int)
+
+    fun getTrendingAnime()
+    fun getTrendingManga()
+    fun getPopularThisSeason()
+    fun getReleasingToday(page: Int)
 }

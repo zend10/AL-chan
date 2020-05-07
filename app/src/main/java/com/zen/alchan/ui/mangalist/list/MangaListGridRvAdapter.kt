@@ -32,7 +32,7 @@ class MangaListGridRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mediaList = list[position]
 
-        GlideApp.with(context).load(mediaList.media?.coverImage?.extraLarge).into(holder.mangaCoverImage)
+        GlideApp.with(context).load(mediaList.media?.coverImage?.large).into(holder.mangaCoverImage)
         holder.mangaTitleText.text = mediaList.media?.title?.userPreferred
         holder.mangaFormatText.text = mediaList.media?.format?.name?.replace('_', ' ')
 

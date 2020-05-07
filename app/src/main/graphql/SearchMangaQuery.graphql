@@ -19,7 +19,7 @@ query SearchMangaQuery(
                 userPreferred
             }
             coverImage {
-                extraLarge
+                large
             }
             type
             format

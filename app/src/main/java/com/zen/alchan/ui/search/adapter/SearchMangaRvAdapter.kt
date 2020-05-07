@@ -38,7 +38,7 @@ class SearchMangaRvAdapter(private val context: Context,
             holder.searchNameText.text = item?.mangaSearchResult?.title()?.userPreferred()
             holder.searchYearText.text = item?.mangaSearchResult?.startDate()?.year()?.toString() ?: "TBA"
             holder.searchFormatText.text = item?.mangaSearchResult?.format()?.name?.replaceUnderscore()
-            GlideApp.with(context).load(item?.mangaSearchResult?.coverImage()?.extraLarge()).into(holder.searchImage)
+            GlideApp.with(context).load(item?.mangaSearchResult?.coverImage()?.large()).into(holder.searchImage)
             holder.searchScoreText.text = item?.mangaSearchResult?.averageScore()?.toString() ?: "0"
             holder.searchFavoriteText.text = item?.mangaSearchResult?.favourites()?.toString() ?: "0"
             holder.itemView.setOnClickListener {

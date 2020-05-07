@@ -87,7 +87,7 @@ class StaffAnimeFragment : BaseFragment() {
                         val staffMedia = StaffMedia(
                             edge.node()?.id(),
                             edge.node()?.title()?.userPreferred(),
-                            edge.node()?.coverImage()?.extraLarge(),
+                            edge.node()?.coverImage()?.large(),
                             edge.node()?.type(),
                             edge.staffRole()
                         )

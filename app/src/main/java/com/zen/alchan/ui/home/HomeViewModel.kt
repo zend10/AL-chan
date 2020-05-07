@@ -11,6 +11,15 @@ class HomeViewModel(private val userRepository: UserRepository,
                     private val mediaRepository: MediaRepository
 ) : ViewModel() {
 
+    var isInit = false
+    var page = 1
+    var hasNextPage = true
+    var releasingTodayList = ArrayList<HomeFragment.ReleasingTodayItem>()
+
+    var popularThisSeasonList = ArrayList<PopularSeasonQuery.Medium>()
+    var trendingAnimeList = ArrayList<HomeFragment.TrendingMediaItem>()
+    var trendingMangaList = ArrayList<HomeFragment.TrendingMediaItem>()
+
     val viewerDataResponse by lazy {
         userRepository.viewerDataResponse
     }
@@ -19,8 +28,27 @@ class HomeViewModel(private val userRepository: UserRepository,
         userRepository.viewerData
     }
 
+    val trendingAnimeData by lazy {
+        mediaRepository.trendingAnimeData
+    }
+
+    val trendingMangaData by lazy {
+        mediaRepository.trendingMangaData
+    }
+
+    val popularThisSeasonData by lazy {
+        mediaRepository.popularThisSeasonData
+    }
+
+    val releasingTodayData by lazy {
+        mediaRepository.releasingTodayData
+    }
+
     fun initData() {
         userRepository.getViewerData()
+        mediaRepository.getTrendingAnime()
+        mediaRepository.getTrendingManga()
+        mediaRepository.getPopularThisSeason()
 
         if (Utility.timeDiffMoreThanOneDay(userRepository.viewerDataLastRetrieved)) {
             userRepository.retrieveViewerData()
@@ -29,5 +57,9 @@ class HomeViewModel(private val userRepository: UserRepository,
         if (Utility.timeDiffMoreThanOneDay(mediaRepository.genreListLastRetrieved) || mediaRepository.genreList.isNullOrEmpty()) {
             mediaRepository.getGenre()
         }
+    }
+
+    fun getReleasingToday() {
+        if (hasNextPage) mediaRepository.getReleasingToday(page)
     }
 }
