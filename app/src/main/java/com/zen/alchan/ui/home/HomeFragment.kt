@@ -77,17 +77,7 @@ class HomeFragment : Fragment() {
         greetingsText.text = "Hello, ${user?.name}."
         GlideApp.with(this).load(user?.avatar?.large).apply(RequestOptions.circleCropTransform()).into(userAvatar)
 
-        if (viewModel.homeShowWatching) {
-            currentlyWatchingLayout.visibility = View.VISIBLE
-        } else {
-            currentlyWatchingLayout.visibility = View.GONE
-        }
 
-        if (viewModel.homeShowReading) {
-            currentlyReadingLayout.visibility = View.VISIBLE
-        } else {
-            currentlyReadingLayout.visibility = View.GONE
-        }
 
 
     }

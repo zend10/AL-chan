@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.apollographql.apollo.response.CustomTypeValue
@@ -77,7 +78,7 @@ class AnimeListEditorActivity : BaseActivity() {
         /**
          * Important Note:
          * - When editing an anime that's not on your list, entryId will be 0
-         * - Instead, mediaId will have value
+         * - Other than that, mediaId will have value
          * - And vice versa
          */
 
@@ -200,6 +201,7 @@ class AnimeListEditorActivity : BaseActivity() {
             viewModel.selectedFinishDate = mediaList.completedAt
             viewModel.selectedRewatches = mediaList.repeat
             viewModel.selectedNotes = mediaList.notes
+            viewModel.selectedPriority = mediaList.priority
 
             if (mediaList.customLists != null) {
                 viewModel.customListsList.clear()
@@ -226,6 +228,7 @@ class AnimeListEditorActivity : BaseActivity() {
             viewModel.selectedRewatches = 0
             viewModel.selectedHidden = false
             viewModel.selectedPrivate = false
+            viewModel.selectedPriority = 0
 
             // handle advanced score
             viewModel.advancedScoresList.clear()
@@ -420,6 +423,18 @@ class AnimeListEditorActivity : BaseActivity() {
                 { }
             )
         }
+
+        // handle priority
+        prioritySeekBar.progress = viewModel.selectedPriority ?: 0
+        priorityText.text = viewModel.getPriorityLabel()
+        prioritySeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                viewModel.selectedPriority = progress
+                priorityText.text = viewModel.getPriorityLabel()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
         // handle custom lists
         customListsAdapter = assignAdapter(viewModel.customListsList)

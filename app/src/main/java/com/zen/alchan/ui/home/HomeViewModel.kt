@@ -11,12 +11,6 @@ class HomeViewModel(private val userRepository: UserRepository,
                     private val mediaRepository: MediaRepository
 ) : ViewModel() {
 
-    val homeShowWatching: Boolean
-        get() = appSettingsRepository.homeShowWatching
-
-    val homeShowReading: Boolean
-        get() = appSettingsRepository.homeShowReading
-
     val viewerDataResponse by lazy {
         userRepository.viewerDataResponse
     }

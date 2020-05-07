@@ -11,8 +11,6 @@ interface LocalStorage {
     var bearerToken: String?
 
     var appColorTheme: AppColorTheme
-    var homeShowWatching: Boolean
-    var homeShowReading: Boolean
     var voiceActorLanguage: StaffLanguage
 
     var pushNotificationsSettings: PushNotificationsSettings

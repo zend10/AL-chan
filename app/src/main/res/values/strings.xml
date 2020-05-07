@@ -211,4 +211,5 @@
     <string name="nyaat_found">Nyaat Found</string>
     <string name="retry">Retry</string>
     <string name="default_voice_actor_language">Default voice actor language</string>
+    <string name="priority">Priority</string>
 </resources>

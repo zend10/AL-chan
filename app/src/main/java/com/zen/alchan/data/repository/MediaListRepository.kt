@@ -50,7 +50,8 @@ interface MediaListRepository {
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     )
     fun addAnimeList(
         mediaId: Int,
@@ -64,7 +65,8 @@ interface MediaListRepository {
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     )
 
     fun retrieveMangaListData()
@@ -94,7 +96,8 @@ interface MediaListRepository {
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     )
     fun addMangaList(
         mediaId: Int,
@@ -109,7 +112,8 @@ interface MediaListRepository {
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     )
 
     fun handleNewFilter(newFilteredData: MediaFilteredData?, mediaType: MediaType)

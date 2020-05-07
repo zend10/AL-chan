@@ -50,7 +50,6 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:text="@string/general"
                     style="?themeRegularBoldFont"
-                    android:layout_below="@+id/titleText"
                     android:layout_marginBottom="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -244,11 +243,45 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/priority"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/priorityText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    android:id="@+id/prioritySeekBar"
+                    android:thumbTint="?themePrimaryColor"
+                    android:progressTint="?themePrimaryColor"
+                    android:layout_marginStart="-8dp"
+                    android:layout_marginEnd="-8dp"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:min="0"
+                    android:max="5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/customListsTitleText"
                     android:text="@string/custom_lists"
                     style="?themeRegularBoldFont"
-                    android:layout_below="@+id/titleText"
                     android:layout_marginBottom="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -264,7 +297,6 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:text="@string/others"
                     style="?themeRegularBoldFont"
-                    android:layout_below="@+id/titleText"
                     android:layout_marginBottom="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

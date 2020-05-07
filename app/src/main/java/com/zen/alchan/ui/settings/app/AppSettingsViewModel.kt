@@ -14,12 +14,6 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
     val appColorTheme: AppColorTheme
         get() = appSettingsRepository.appColorTheme
 
-    val homeShowWatching: Boolean
-        get() = appSettingsRepository.homeShowWatching
-
-    val homeShowReading: Boolean
-        get() = appSettingsRepository.homeShowReading
-
     val voiceActorLanguage: StaffLanguage
         get() = appSettingsRepository.voiceActorLanguage
 
@@ -36,7 +30,7 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         StaffLanguage.HUNGARIAN.name
     )
 
-    fun setAppSettings(appColorTheme: AppColorTheme, homeShowWatching: Boolean, homeShowReading: Boolean, voiceActorLanguage: StaffLanguage) {
-        appSettingsRepository.setAppSettings(appColorTheme, homeShowWatching, homeShowReading, voiceActorLanguage)
+    fun setAppSettings(appColorTheme: AppColorTheme, voiceActorLanguage: StaffLanguage) {
+        appSettingsRepository.setAppSettings(appColorTheme, voiceActorLanguage)
     }
 }

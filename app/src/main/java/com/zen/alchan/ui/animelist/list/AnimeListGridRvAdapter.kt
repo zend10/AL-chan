@@ -15,6 +15,7 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
+import com.zen.alchan.helper.setRegularPlural
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.list_anime_list_grid.view.*
@@ -41,6 +42,11 @@ class AnimeListGridRvAdapter(private val context: Context,
 
         if (mediaList.media?.nextAiringEpisode != null) {
             holder.animeAiringLayout.visibility = View.VISIBLE
+            if (mediaList.media?.nextAiringEpisode?.episode!! > mediaList.progress!! + 1) {
+                GlideApp.with(context).load(R.drawable.ic_spam).into(holder.animeAiringIcon)
+            } else {
+                GlideApp.with(context).load(R.drawable.ic_filled_circle).into(holder.animeAiringIcon)
+            }
         } else {
             holder.animeAiringLayout.visibility = View.GONE
         }
@@ -58,10 +64,12 @@ class AnimeListGridRvAdapter(private val context: Context,
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
 
         holder.animeAiringLayout.setOnClickListener {
-            DialogUtility.showToast(
-                context,
-                "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}",
-                Toast.LENGTH_LONG
+            var message = "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}."
+            val epDiff = mediaList.media?.nextAiringEpisode?.episode!! - mediaList.progress!!
+            if (epDiff > 1) {
+                message += "\nYou are ${epDiff - 1} ${"episode".setRegularPlural(epDiff - 1)} behind."
+            }
+            DialogUtility.showToast(context, message, Toast.LENGTH_LONG
             )
         }
 
@@ -89,6 +97,8 @@ class AnimeListGridRvAdapter(private val context: Context,
             holder.animeTitleLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
             holder.animeFormatLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
             holder.animeAiringLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.animeScoreLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.animeProgressLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
         }
 
         if (listStyle?.primaryColor != null) {

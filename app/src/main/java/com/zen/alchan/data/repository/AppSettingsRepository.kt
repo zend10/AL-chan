@@ -10,12 +10,9 @@ interface AppSettingsRepository {
     val appColorThemeLiveData: LiveData<Int>
 
     val appColorTheme: AppColorTheme
-    val homeShowWatching: Boolean
-    val homeShowReading: Boolean
     val voiceActorLanguage: StaffLanguage
     val pushNotificationsSettings: PushNotificationsSettings
 
-    // TODO: change this later
-    fun setAppSettings(appColorTheme: AppColorTheme, homeShowWatching: Boolean, homeShowReading: Boolean, voiceActorLanguage: StaffLanguage)
+    fun setAppSettings(appColorTheme: AppColorTheme, voiceActorLanguage: StaffLanguage)
     fun setPushNotificationsSettings(pushNotifAiring: Boolean, pushNotifActivity: Boolean, pushNotifForum: Boolean, pushNotifFollows: Boolean)
 }

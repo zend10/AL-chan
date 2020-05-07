@@ -46,10 +46,15 @@ class MangaListGridRvAdapter(private val context: Context,
             holder.mangaRatingText.text = mediaList.score?.removeTrailingZero()
         }
 
-        holder.mangaProgressText.text = "${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
+        holder.mangaProgressText.text = "Ch. ${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
+        holder.mangaProgressVolumesText.text = "Vo ${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
 
         holder.mangaProgressLayout.setOnClickListener {
             listener.openProgressDialog(mediaList)
+        }
+
+        holder.mangaProgressVolumesLayout.setOnClickListener {
+            listener.openProgressDialog(mediaList, true)
         }
 
         holder.mangaScoreLayout.setOnClickListener {
@@ -71,12 +76,16 @@ class MangaListGridRvAdapter(private val context: Context,
             val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6)
             holder.mangaTitleLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
             holder.mangaFormatLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.mangaScoreLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.mangaProgressLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            holder.mangaProgressVolumesLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
         }
 
         if (listStyle?.primaryColor != null) {
             holder.mangaTitleText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.mangaRatingText.setTextColor(Color.parseColor(listStyle.primaryColor))
             holder.mangaProgressText.setTextColor(Color.parseColor(listStyle.primaryColor))
+            holder.mangaProgressVolumesText.setTextColor(Color.parseColor(listStyle.primaryColor))
             if (scoreFormat == ScoreFormat.POINT_3) {
                 holder.mangaStarIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
             }
@@ -99,9 +108,11 @@ class MangaListGridRvAdapter(private val context: Context,
         val mangaFormatText = view.mangaFormatText!!
         val mangaFormatLayout = view.mangaFormatLayout!!
         val mangaProgressText = view.mangaProgressText!!
+        val mangaProgressVolumesText = view.mangaProgressVolumesText!!
         val mangaScoreLayout = view.mangaScoreLayout!!
         val mangaStarIcon = view.mangaStarIcon!!
         val mangaRatingText = view.mangaRatingText!!
         val mangaProgressLayout = view.mangaProgressLayout!!
+        val mangaProgressVolumesLayout = view.mangaProgressVolumesLayout!!
     }
 }

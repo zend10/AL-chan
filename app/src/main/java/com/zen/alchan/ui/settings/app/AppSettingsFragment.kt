@@ -57,8 +57,6 @@ class AppSettingsFragment : Fragment() {
     private fun initLayout() {
         if (!viewModel.isInit) {
             viewModel.selectedAppTheme = viewModel.appColorTheme
-            homeWatchingCheckBox.isChecked = viewModel.homeShowWatching
-            homeReadingCheckBox.isChecked = viewModel.homeShowReading
             viewModel.selectedLanguage = viewModel.voiceActorLanguage
             viewModel.isInit = true
         }
@@ -72,8 +70,6 @@ class AppSettingsFragment : Fragment() {
                 {
                     viewModel.setAppSettings(
                         appColorTheme = viewModel.selectedAppTheme!!,
-                        homeShowWatching = homeWatchingCheckBox.isChecked,
-                        homeShowReading = homeReadingCheckBox.isChecked,
                         voiceActorLanguage = viewModel.selectedLanguage!!
                     )
                     activity?.recreate()
@@ -101,8 +97,6 @@ class AppSettingsFragment : Fragment() {
                 {
                     viewModel.setAppSettings(
                         appColorTheme = Constant.DEFAULT_THEME,
-                        homeShowWatching = true,
-                        homeShowReading = true,
                         voiceActorLanguage = StaffLanguage.JAPANESE
                     )
                     viewModel.isInit = false

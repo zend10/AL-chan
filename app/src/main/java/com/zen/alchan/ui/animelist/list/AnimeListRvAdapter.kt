@@ -14,6 +14,7 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
+import com.zen.alchan.helper.setRegularPlural
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_anime_list_linear.view.*
 import type.ScoreFormat
@@ -40,7 +41,13 @@ class AnimeListRvAdapter(private val context: Context,
         if (mediaList.media?.nextAiringEpisode != null) {
             holder.animeAiringDividerIcon.visibility = View.VISIBLE
             holder.animeAiringDateText.visibility = View.VISIBLE
-            holder.animeAiringDateText.text = "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}"
+
+            var nextEpisodeMessage = "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}"
+            val epDiff = mediaList.media?.nextAiringEpisode?.episode!! - mediaList.progress!!
+            if (epDiff > 1) {
+                nextEpisodeMessage += ". You are ${epDiff - 1} ${"episode".setRegularPlural(epDiff - 1)} behind."
+            }
+            holder.animeAiringDateText.text = nextEpisodeMessage
         } else {
             holder.animeAiringDividerIcon.visibility = View.GONE
             holder.animeAiringDateText.visibility = View.GONE

@@ -20,12 +20,6 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
     override val appColorTheme: AppColorTheme
         get() = appSettingsManager.appColorTheme
 
-    override val homeShowWatching: Boolean
-        get() = appSettingsManager.homeShowWatching
-
-    override val homeShowReading: Boolean
-        get() = appSettingsManager.homeShowReading
-
     override val voiceActorLanguage: StaffLanguage
         get() = appSettingsManager.voiceActorLanguage
 
@@ -34,14 +28,10 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
 
     override fun setAppSettings(
         appColorTheme: AppColorTheme,
-        homeShowWatching: Boolean,
-        homeShowReading: Boolean,
         voiceActorLanguage: StaffLanguage
     ) {
         appSettingsManager.apply {
             setAppColorTheme(appColorTheme)
-            setHomeShowWatching(homeShowWatching)
-            setHomeShowReading(homeShowReading)
             setVoiceActorLanguage(voiceActorLanguage)
         }
         _appColorThemeLiveData.postValue(appColorThemeResource)

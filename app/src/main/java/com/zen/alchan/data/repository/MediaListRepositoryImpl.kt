@@ -184,12 +184,13 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ) {
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
         mediaListDataSource.updateAnimeList(
-            entryId, null, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+            entryId, null, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt, priority
         ).subscribeWith(object : Observer<Response<AnimeListEntryMutation.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
@@ -218,12 +219,13 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ) {
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
         mediaListDataSource.updateAnimeList(
-            null, mediaId, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+            null, mediaId, status, score, progress, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt, priority
         ).subscribeWith(object : Observer<Response<AnimeListEntryMutation.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
@@ -331,6 +333,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             MediaListSort.RELEASE_DATE -> ArrayList(entries.sortedWith(compareByDescending { it.media?.startDate.toMillis() }))
             MediaListSort.AVERAGE_SCORE -> ArrayList(entries.sortedWith(compareByDescending { it.media?.averageScore }))
             MediaListSort.POPULARITY -> ArrayList(entries.sortedWith(compareByDescending { it.media?.popularity }))
+            MediaListSort.PRIORITY -> ArrayList(entries.sortedWith(compareByDescending { it.priority }))
         }
     }
 
@@ -593,12 +596,13 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ) {
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
         mediaListDataSource.updateMangaList(
-            entryId, null, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+            entryId, null, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt, priority
         ).subscribeWith(object : Observer<Response<MangaListEntryMutation.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
@@ -628,12 +632,13 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ) {
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
         mediaListDataSource.updateMangaList(
-            null, mediaId, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt
+            null, mediaId, status, score, progress, progressVolumes, repeat, isPrivate, notes, hiddenFromStatusLists, customLists, advancedScores, startedAt, completedAt, priority
         ).subscribeWith(object : Observer<Response<MangaListEntryMutation.Data>> {
             override fun onSubscribe(d: Disposable) { }
 

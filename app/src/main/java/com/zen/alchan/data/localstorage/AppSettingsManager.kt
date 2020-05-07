@@ -7,16 +7,11 @@ import type.StaffLanguage
 
 interface AppSettingsManager {
     val appColorTheme: AppColorTheme
-    val homeShowWatching: Boolean
-    val homeShowReading: Boolean
     val voiceActorLanguage: StaffLanguage
 
     val pushNotificationsSettings: PushNotificationsSettings
 
     fun setAppColorTheme(appColorTheme: AppColorTheme)
-
-    fun setHomeShowWatching(value: Boolean)
-    fun setHomeShowReading(value: Boolean)
 
     fun setVoiceActorLanguage(staffLanguage: StaffLanguage)
 

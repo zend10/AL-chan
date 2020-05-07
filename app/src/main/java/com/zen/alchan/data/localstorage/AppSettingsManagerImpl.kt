@@ -11,12 +11,6 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
     override val appColorTheme: AppColorTheme
         get() = localStorage.appColorTheme
 
-    override val homeShowWatching: Boolean
-        get() = localStorage.homeShowWatching
-
-    override val homeShowReading: Boolean
-        get() = localStorage.homeShowReading
-
     override val voiceActorLanguage: StaffLanguage
         get() = localStorage.voiceActorLanguage
 
@@ -25,14 +19,6 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
 
     override fun setAppColorTheme(appColorTheme: AppColorTheme) {
         localStorage.appColorTheme = appColorTheme
-    }
-
-    override fun setHomeShowWatching(value: Boolean) {
-        localStorage.homeShowWatching = value
-    }
-
-    override fun setHomeShowReading(value: Boolean) {
-        localStorage.homeShowReading = value
     }
 
     override fun setVoiceActorLanguage(staffLanguage: StaffLanguage) {

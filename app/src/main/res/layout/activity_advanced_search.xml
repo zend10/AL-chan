@@ -6,4 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.advanced.AdvancedSearchActivity">
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

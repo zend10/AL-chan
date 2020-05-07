@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.apollographql.apollo.response.CustomTypeValue
@@ -206,6 +207,7 @@ class MangaListEditorActivity : BaseActivity() {
             viewModel.selectedFinishDate = mediaList.completedAt
             viewModel.selectedRewatches = mediaList.repeat
             viewModel.selectedNotes = mediaList.notes
+            viewModel.selectedPriority = mediaList.priority
 
             if (mediaList.customLists != null) {
                 viewModel.customListsList.clear()
@@ -234,6 +236,7 @@ class MangaListEditorActivity : BaseActivity() {
             viewModel.selectedRewatches = 0
             viewModel.selectedHidden = false
             viewModel.selectedPrivate = false
+            viewModel.selectedPriority = 0
 
             // handle advanced score
             viewModel.advancedScoresList.clear()
@@ -456,6 +459,18 @@ class MangaListEditorActivity : BaseActivity() {
                 { }
             )
         }
+
+        // handle priority
+        prioritySeekBar.progress = viewModel.selectedPriority ?: 0
+        priorityText.text = viewModel.getPriorityLabel()
+        prioritySeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                viewModel.selectedPriority = progress
+                priorityText.text = viewModel.getPriorityLabel()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
         // handle custom lists
         customListsAdapter = assignAdapter(viewModel.customListsList)

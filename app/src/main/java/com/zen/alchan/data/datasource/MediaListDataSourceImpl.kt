@@ -84,7 +84,8 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ): Observable<Response<AnimeListEntryMutation.Data>> {
         val builder = AnimeListEntryMutation.builder()
         if (entryId != null) builder.id(entryId)
@@ -97,6 +98,7 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
         builder.notes(notes)
         builder.hiddenFromStatusLists(hiddenFromStatusLists)
         builder.customLists(customLists)
+        if (priority != null) builder.priority(priority)
 
         if (!advancedScores.isNullOrEmpty()) {
             builder.advancedScores(advancedScores)
@@ -194,7 +196,8 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ): Observable<Response<MangaListEntryMutation.Data>> {
         val builder = MangaListEntryMutation.builder()
         if (entryId != null) builder.id(entryId)
@@ -208,6 +211,7 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
         builder.notes(notes)
         builder.hiddenFromStatusLists(hiddenFromStatusLists)
         builder.customLists(customLists)
+        if (priority != null) builder.priority(priority)
 
         if (!advancedScores.isNullOrEmpty()) {
             builder.advancedScores(advancedScores)

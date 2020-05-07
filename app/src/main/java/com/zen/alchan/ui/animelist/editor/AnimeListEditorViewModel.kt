@@ -39,6 +39,7 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
     var selectedCustomLists = ArrayList<String>()
     var selectedHidden: Boolean? = null
     var selectedPrivate: Boolean? = null
+    var selectedPriority: Int? = null
 
     val animeListDataDetailResponse by lazy {
         mediaListRepository.mediaListDataDetailResponse
@@ -108,7 +109,8 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
                     selectedCustomLists,
                     selectedAdvancedScores,
                     selectedStartDate,
-                    selectedFinishDate
+                    selectedFinishDate,
+                    selectedPriority
                 )
             } else if (mediaId != null && mediaId != 0) {
                 mediaListRepository.addAnimeList(
@@ -123,7 +125,8 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
                     selectedCustomLists,
                     selectedAdvancedScores,
                     selectedStartDate,
-                    selectedFinishDate
+                    selectedFinishDate,
+                    selectedPriority
                 )
             }
         }
@@ -138,5 +141,17 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
         userRepository.toggleFavourite(
             animeListDataDetailResponse.value?.data?.media?.id ?: mediaId, null, null, null, null
         )
+    }
+
+    fun getPriorityLabel(): String {
+        return when (selectedPriority) {
+            0 -> "No Priority"
+            1 -> "Very Low"
+            2 -> "Low"
+            3 -> "Medium"
+            4 -> "High"
+            5 -> "Very High"
+            else -> "No Priority"
+        }
     }
 }

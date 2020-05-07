@@ -10,5 +10,6 @@ enum class MediaListSort(val value: String) {
     COMPLETED_DATE("completedDate"),
     RELEASE_DATE("releaseDate"),
     AVERAGE_SCORE("averageScore"),
-    POPULARITY("popularity")
+    POPULARITY("popularity"),
+    PRIORITY("priority")
 }

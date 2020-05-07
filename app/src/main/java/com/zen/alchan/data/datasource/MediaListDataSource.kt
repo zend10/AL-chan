@@ -38,7 +38,8 @@ interface MediaListDataSource {
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ): Observable<Response<AnimeListEntryMutation.Data>>
 
     fun getMangaListData(userId: Int): Observable<Response<MangaListCollectionQuery.Data>>
@@ -73,7 +74,8 @@ interface MediaListDataSource {
         customLists: List<String>?,
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
-        completedAt: FuzzyDate?
+        completedAt: FuzzyDate?,
+        priority: Int?
     ): Observable<Response<MangaListEntryMutation.Data>>
 
     fun deleteMediaList(

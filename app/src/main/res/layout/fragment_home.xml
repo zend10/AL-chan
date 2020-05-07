@@ -85,59 +85,6 @@
 
             </RelativeLayout>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/currentlyWatchingLayout"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/marginPage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/currently_watching"
-                    style="?themeRegularBoldFont"
-                    android:layout_marginStart="@dimen/marginPage"
-                    android:layout_marginEnd="@dimen/marginPage"
-                    android:layout_marginBottom="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/currentlyWatchingRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/marginPage"
-                    android:clipToPadding="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/currentlyReadingLayout"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/marginPage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/currently_reading"
-                    style="?themeRegularBoldFont"
-                    android:layout_marginStart="@dimen/marginPage"
-                    android:layout_marginEnd="@dimen/marginPage"
-                    android:layout_marginBottom="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/currentlyReadingRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/marginPage"
-                    android:clipToPadding="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 

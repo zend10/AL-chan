@@ -22,8 +22,6 @@ class LocalStorageImpl(private val context: Context,
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val APP_COLOR_THEME = "appColorTheme"
-        private const val HOME_SHOW_WATCHING = "homeShowWatching"
-        private const val HOME_SHOW_READING = "homeShowReading"
         private const val VOICE_ACTOR_LANGUAGE = "voiceActorLanguage"
         private const val PUSH_NOTIFICATIONS_SETTINGS = "pushNotificationsSettings"
         private const val VIEWER_DATA = "viewerData"
@@ -41,14 +39,6 @@ class LocalStorageImpl(private val context: Context,
     override var appColorTheme: AppColorTheme
         get() = AppColorTheme.valueOf(getData(APP_COLOR_THEME) ?: Constant.DEFAULT_THEME.name)
         set(value) { setData(APP_COLOR_THEME, value.name) }
-
-    override var homeShowWatching: Boolean
-        get() = if (getData(HOME_SHOW_WATCHING) == null) true else getData(HOME_SHOW_WATCHING)!!.toBoolean()
-        set(value) { setData(HOME_SHOW_WATCHING, value.toString()) }
-
-    override var homeShowReading: Boolean
-        get() = if (getData(HOME_SHOW_READING) == null) true else getData(HOME_SHOW_READING)!!.toBoolean()
-        set(value) { setData(HOME_SHOW_READING, value.toString()) }
 
     override var voiceActorLanguage: StaffLanguage
         get() = if (getData(VOICE_ACTOR_LANGUAGE) == null) StaffLanguage.JAPANESE else StaffLanguage.valueOf(getData(VOICE_ACTOR_LANGUAGE)!!)
