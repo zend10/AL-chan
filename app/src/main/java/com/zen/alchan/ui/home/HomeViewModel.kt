@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.MediaRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.utils.Utility
 
 class HomeViewModel(private val userRepository: UserRepository,
@@ -16,9 +17,12 @@ class HomeViewModel(private val userRepository: UserRepository,
     var hasNextPage = true
     var releasingTodayList = ArrayList<HomeFragment.ReleasingTodayItem>()
 
-    var popularThisSeasonList = ArrayList<PopularSeasonQuery.Medium>()
     var trendingAnimeList = ArrayList<HomeFragment.TrendingMediaItem>()
     var trendingMangaList = ArrayList<HomeFragment.TrendingMediaItem>()
+
+    var explorePageArray = arrayOf(
+        BrowsePage.ANIME.name, BrowsePage.MANGA.name, BrowsePage.CHARACTER.name, BrowsePage.STAFF.name, BrowsePage.STUDIO.name
+    )
 
     val viewerDataResponse by lazy {
         userRepository.viewerDataResponse
@@ -36,10 +40,6 @@ class HomeViewModel(private val userRepository: UserRepository,
         mediaRepository.trendingMangaData
     }
 
-    val popularThisSeasonData by lazy {
-        mediaRepository.popularThisSeasonData
-    }
-
     val releasingTodayData by lazy {
         mediaRepository.releasingTodayData
     }
@@ -48,7 +48,6 @@ class HomeViewModel(private val userRepository: UserRepository,
         userRepository.getViewerData()
         mediaRepository.getTrendingAnime()
         mediaRepository.getTrendingManga()
-        mediaRepository.getPopularThisSeason()
 
         if (Utility.timeDiffMoreThanOneDay(userRepository.viewerDataLastRetrieved)) {
             userRepository.retrieveViewerData()

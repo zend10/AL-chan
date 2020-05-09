@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import kotlinx.android.synthetic.main.list_flexbox_button_cancelable.view.*
 
-class ListSettingsRvAdapter(private val list: List<String>,
+class ListSettingsRvAdapter(private val list: List<String?>,
                             private val code: Int,
                             private val listener: ListSettingsListener
 ) : RecyclerView.Adapter<ListSettingsRvAdapter.ViewHolder>() {

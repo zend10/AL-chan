@@ -5,7 +5,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.pojo.MediaCharacters
 
 interface MediaRepository {
-    val genreList: List<String>
+    val genreList: List<String?>
     val genreListLastRetrieved: Long?
 
     val mediaData: LiveData<Resource<MediaQuery.Data>>
@@ -16,7 +16,6 @@ interface MediaRepository {
 
     val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
     val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
-    val popularThisSeasonData: LiveData<Resource<PopularSeasonQuery.Data>>
     val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
 
     fun getGenre()
@@ -28,6 +27,5 @@ interface MediaRepository {
 
     fun getTrendingAnime()
     fun getTrendingManga()
-    fun getPopularThisSeason()
     fun getReleasingToday(page: Int)
 }

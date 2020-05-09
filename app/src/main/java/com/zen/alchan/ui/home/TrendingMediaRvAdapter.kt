@@ -32,7 +32,7 @@ class TrendingMediaRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        GlideApp.with(context).load(item.trendingMedia.coverImage()?.large()).into(holder.trendingMediaImage)
+        GlideApp.with(context).load(item.trendingMedia?.coverImage?.large).into(holder.trendingMediaImage)
         if (item.isSelected) {
             holder.trendingMediaCard.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
         } else {

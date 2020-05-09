@@ -35,14 +35,14 @@ class SearchMangaRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             val item = list[position]
-            holder.searchNameText.text = item?.mangaSearchResult?.title()?.userPreferred()
-            holder.searchYearText.text = item?.mangaSearchResult?.startDate()?.year()?.toString() ?: "TBA"
-            holder.searchFormatText.text = item?.mangaSearchResult?.format()?.name?.replaceUnderscore()
-            GlideApp.with(context).load(item?.mangaSearchResult?.coverImage()?.large()).into(holder.searchImage)
-            holder.searchScoreText.text = item?.mangaSearchResult?.averageScore()?.toString() ?: "0"
-            holder.searchFavoriteText.text = item?.mangaSearchResult?.favourites()?.toString() ?: "0"
+            holder.searchNameText.text = item?.mangaSearchResult?.title?.userPreferred
+            holder.searchYearText.text = item?.mangaSearchResult?.startDate?.year?.toString() ?: "TBA"
+            holder.searchFormatText.text = item?.mangaSearchResult?.format?.name?.replaceUnderscore()
+            GlideApp.with(context).load(item?.mangaSearchResult?.coverImage?.large).into(holder.searchImage)
+            holder.searchScoreText.text = item?.mangaSearchResult?.averageScore?.toString() ?: "0"
+            holder.searchFavoriteText.text = item?.mangaSearchResult?.favourites?.toString() ?: "0"
             holder.itemView.setOnClickListener {
-                listener.passSelectedItem(item?.mangaSearchResult?.id()!!)
+                listener.passSelectedItem(item?.mangaSearchResult?.id!!)
             }
         }
     }

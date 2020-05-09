@@ -34,18 +34,18 @@ class SearchStudioRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             val item = list[position]
-            holder.searchNameText.text = item?.studiosSearchResult?.name()
-            holder.searchFavoriteText.text = item?.studiosSearchResult?.favourites()?.toString() ?: "0"
+            holder.searchNameText.text = item?.studiosSearchResult?.name
+            holder.searchFavoriteText.text = item?.studiosSearchResult?.favourites?.toString() ?: "0"
 
-            if (item?.studiosSearchResult?.media()?.edges()?.isNullOrEmpty() == false) {
-                GlideApp.with(context).load(item.studiosSearchResult?.media()?.edges()!![0].node()?.coverImage()?.extraLarge()).into(holder.searchImage)
+            if (item?.studiosSearchResult?.media?.edges?.isNullOrEmpty() == false) {
+                GlideApp.with(context).load(item.studiosSearchResult?.media?.edges!![0]?.node?.coverImage?.extraLarge).into(holder.searchImage)
             }
 
             holder.searchInfoLayout.visibility = View.GONE
             holder.searchScoreText.visibility = View.GONE
 
             holder.itemView.setOnClickListener {
-                listener.passSelectedItem(item?.studiosSearchResult?.id()!!)
+                listener.passSelectedItem(item?.studiosSearchResult?.id!!)
             }
         }
     }

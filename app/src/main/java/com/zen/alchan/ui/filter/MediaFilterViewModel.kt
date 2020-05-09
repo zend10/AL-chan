@@ -77,7 +77,7 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
 
     val mediaSortList = MediaListSort.values().toList()
 
-    val genreList: List<String>
+    val genreList: List<String?>
         get() = mediaRepository.genreList
 
     fun getMediaFormatStringArray(): Array<String> {
@@ -128,7 +128,7 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
         return stringList.toTypedArray()
     }
 
-    fun getGenreListStringArray(): Array<String> {
+    fun getGenreListStringArray(): Array<String?> {
         return genreList.toTypedArray()
     }
 }

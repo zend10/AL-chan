@@ -120,8 +120,8 @@ class StaffFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    if (it.data?.Staff() != null) {
-                        viewModel.currentStaffData = it.data.Staff()
+                    if (it.data?.staff != null) {
+                        viewModel.currentStaffData = it.data.staff
                         setupHeader()
                     }
                 }
@@ -134,7 +134,7 @@ class StaffFragment : BaseFragment() {
 
         viewModel.staffIsFavoriteData.observe(viewLifecycleOwner, Observer {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
-                if (it.data?.Staff()?.isFavourite == true) {
+                if (it.data?.staff?.isFavourite == true) {
                     staffFavoriteButton.text = getString(R.string.favorited)
                     staffFavoriteButton.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
                     staffFavoriteButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
@@ -199,20 +199,20 @@ class StaffFragment : BaseFragment() {
     }
 
     private fun setupHeader() {
-        GlideApp.with(this).load(viewModel.currentStaffData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(leftImage)
+        GlideApp.with(this).load(viewModel.currentStaffData?.image?.large).apply(RequestOptions.circleCropTransform()).into(leftImage)
 
-        if (viewModel.currentStaffData?.image()?.large() != null) {
+        if (viewModel.currentStaffData?.image?.large != null) {
             leftImage.setOnClickListener {
-                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentStaffData?.image()?.large())) { view, image ->
+                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentStaffData?.image?.large)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
                 }.withTransitionFrom(leftImage).show(true)
             }
         }
 
-        leftText.text = viewModel.currentStaffData?.name()?.full()
-        staffNativeNameText.text = viewModel.currentStaffData?.name()?.native_()
+        leftText.text = viewModel.currentStaffData?.name?.full
+        staffNativeNameText.text = viewModel.currentStaffData?.name?.native_
 
-        staffFavoriteCountText.text = viewModel.currentStaffData?.favourites()?.toString()
+        staffFavoriteCountText.text = viewModel.currentStaffData?.favourites?.toString()
 
         itemOpenAniList.isVisible = true
         itemCopyLink.isVisible = true
@@ -220,12 +220,12 @@ class StaffFragment : BaseFragment() {
         itemOpenAniList.setOnMenuItemClickListener {
             CustomTabsIntent.Builder()
                 .build()
-                .launchUrl(activity!!, Uri.parse(viewModel.currentStaffData?.siteUrl()))
+                .launchUrl(activity!!, Uri.parse(viewModel.currentStaffData?.siteUrl))
             true
         }
 
         itemCopyLink.setOnMenuItemClickListener {
-            AndroidUtility.copyToClipboard(activity, viewModel.currentStaffData?.siteUrl()!!)
+            AndroidUtility.copyToClipboard(activity, viewModel.currentStaffData?.siteUrl!!)
             DialogUtility.showToast(activity, R.string.link_copied)
             true
         }

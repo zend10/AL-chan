@@ -20,7 +20,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                           private val userManager: UserManager
 ) : MediaRepository {
 
-    override val genreList: List<String>
+    override val genreList: List<String?>
         get() = mediaManager.genreList
 
     override val genreListLastRetrieved: Long?
@@ -54,10 +54,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
         get() = _trendingMangaData
 
-    private val _popularThisSeasonData = SingleLiveEvent<Resource<PopularSeasonQuery.Data>>()
-    override val popularThisSeasonData: LiveData<Resource<PopularSeasonQuery.Data>>
-        get() = _popularThisSeasonData
-
     private val _releasingTodayData = SingleLiveEvent<Resource<ReleasingTodayQuery.Data>>()
     override val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
         get() = _releasingTodayData
@@ -67,8 +63,8 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
         mediaDataSource.getGenre().subscribeWith(object : Observer<Response<GenreQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
             override fun onNext(t: Response<GenreQuery.Data>) {
-                if (!t.hasErrors() && !t.data()?.GenreCollection().isNullOrEmpty()) {
-                    mediaManager.setGenreList(t.data()?.GenreCollection()!!)
+                if (!t.hasErrors() && !t.data?.genreCollection.isNullOrEmpty()) {
+                    mediaManager.setGenreList(t.data?.genreCollection!!)
                 }
             }
             override fun onError(e: Throwable) { e.printStackTrace() }
@@ -85,7 +81,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<MediaQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _mediaData.postValue(Resource.Success(t.data()!!))
                 }
@@ -107,7 +103,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<MediaStatusQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaStatus.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaStatus.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _mediaStatus.postValue(Resource.Success(t.data()!!))
                 }
@@ -131,7 +127,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<MediaOverviewQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaOverviewData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaOverviewData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _mediaOverviewData.postValue(Resource.Success(t.data()!!))
                 }
@@ -153,7 +149,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<MediaCharactersQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaCharactersData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaCharactersData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _mediaCharactersData.postValue(Resource.Success(t.data()!!))
                 }
@@ -175,7 +171,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<MediaStaffsQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaStaffsData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaStaffsData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _mediaStaffsData.postValue(Resource.Success(t.data()!!))
                 }
@@ -199,7 +195,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<TrendingMediaQuery.Data>) {
                 if (t.hasErrors()) {
-                    _trendingAnimeData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _trendingAnimeData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _trendingAnimeData.postValue(Resource.Success(t.data()!!))
                 }
@@ -223,7 +219,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<TrendingMediaQuery.Data>) {
                 if (t.hasErrors()) {
-                    _trendingMangaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _trendingMangaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _trendingMangaData.postValue(Resource.Success(t.data()!!))
                 }
@@ -231,30 +227,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onError(e: Throwable) {
                 _trendingMangaData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
-    }
-
-    @SuppressLint("CheckResult")
-    override fun getPopularThisSeason() {
-        _popularThisSeasonData.postValue(Resource.Loading())
-
-        mediaDataSource.getPopularThisSeason(AndroidUtility.getCurrentSeason(), Calendar.getInstance().get(Calendar.YEAR)).subscribeWith(object : Observer<Response<PopularSeasonQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<PopularSeasonQuery.Data>) {
-                if (t.hasErrors()) {
-                    _popularThisSeasonData.postValue(Resource.Error(t.errors()[0].message()!!))
-                } else {
-                    _popularThisSeasonData.postValue(Resource.Success(t.data()!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _popularThisSeasonData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 
@@ -271,7 +243,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onNext(t: Response<ReleasingTodayQuery.Data>) {
                 if (t.hasErrors()) {
-                    _releasingTodayData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _releasingTodayData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _releasingTodayData.postValue(Resource.Success(t.data()!!))
                 }

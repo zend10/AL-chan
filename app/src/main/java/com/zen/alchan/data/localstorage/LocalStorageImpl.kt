@@ -56,7 +56,7 @@ class LocalStorageImpl(private val context: Context,
         get() = getData(VIEWER_DATA_LAST_RETRIEVED)?.toLong()
         set(value) { setData(VIEWER_DATA_LAST_RETRIEVED, value.toString()) }
 
-    override var genreList: List<String>?
+    override var genreList: List<String?>?
         get() = gson.fromJson(getData(GENRE_LIST), genericType<List<String>>())
         set(value) { setData(GENRE_LIST, gson.toJson(value)) }
 

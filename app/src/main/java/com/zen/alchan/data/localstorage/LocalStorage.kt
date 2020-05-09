@@ -18,7 +18,7 @@ interface LocalStorage {
     var viewerData: User?
     var viewerDataLastRetrieved: Long?
 
-    var genreList: List<String>?
+    var genreList: List<String?>?
     var genreListLastRetrieved: Long?
 
     var animeListStyle: ListStyle?

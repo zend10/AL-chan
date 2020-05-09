@@ -26,9 +26,9 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : ViewMo
     var selectedScoringSystem: ScoreFormat? = null
     var selectedDefaultListOrder: String? = null
 
-    var advancedScoringLists = ArrayList<String>()
-    var customAnimeLists = ArrayList<String>()
-    var customMangaLists = ArrayList<String>()
+    var advancedScoringLists = ArrayList<String?>()
+    var customAnimeLists = ArrayList<String?>()
+    var customMangaLists = ArrayList<String?>()
 
     var isInit = false
 

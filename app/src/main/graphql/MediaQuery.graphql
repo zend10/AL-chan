@@ -1,7 +1,8 @@
 query MediaQuery(
-    $id: Int
+    $id: Int,
+    $sort: [MediaSort]
 ) {
-    Media(id: $id) {
+    Media(id: $id, sort: $sort) {
         id
         title {
             userPreferred

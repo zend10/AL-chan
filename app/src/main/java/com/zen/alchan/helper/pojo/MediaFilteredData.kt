@@ -15,6 +15,6 @@ class MediaFilteredData(
     var selectedCountry: CountryCode? = null,
     var selectedStatus: MediaStatus? = null,
     var selectedSource: MediaSource? = null,
-    var selectedGenreList: ArrayList<String>? = null,
-    var selectedTagList: ArrayList<String>? = null
+    var selectedGenreList: ArrayList<String?>? = null,
+    var selectedTagList: ArrayList<String?>? = null
 )

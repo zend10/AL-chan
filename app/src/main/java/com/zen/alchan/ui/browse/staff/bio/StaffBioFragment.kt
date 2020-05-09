@@ -62,8 +62,8 @@ class StaffBioFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    viewModel.staffData = it.data?.Staff()
-                    staffData = it.data?.Staff()
+                    viewModel.staffData = it.data?.staff
+                    staffData = it.data?.staff
                     initLayout()
                 }
                 ResponseStatus.ERROR -> {
@@ -82,11 +82,11 @@ class StaffBioFragment : BaseFragment() {
     }
 
     private fun initLayout() {
-        if (staffData?.name()?.alternative().isNullOrEmpty()) {
+        if (staffData?.name?.alternative.isNullOrEmpty()) {
             var aliasesString = ""
-            staffData?.name()?.alternative()?.forEachIndexed { index, s ->
+            staffData?.name?.alternative?.forEachIndexed { index, s ->
                 aliasesString += s
-                if (index != staffData?.name()?.alternative()?.lastIndex) aliasesString += ", "
+                if (index != staffData?.name?.alternative?.lastIndex) aliasesString += ", "
             }
             staffAliasesText.text = aliasesString
             staffAliasesText.visibility = View.VISIBLE
@@ -94,7 +94,7 @@ class StaffBioFragment : BaseFragment() {
             staffAliasesText.visibility = View.GONE
         }
 
-        staffDescriptionText.text = staffData?.description()?.handleSpoilerAndLink(activity!!)
+        staffDescriptionText.text = staffData?.description?.handleSpoilerAndLink(activity!!)
         staffDescriptionText.movementMethod = LinkMovementMethod.getInstance()
     }
 }

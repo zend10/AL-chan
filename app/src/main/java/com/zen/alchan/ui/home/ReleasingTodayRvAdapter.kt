@@ -27,25 +27,25 @@ class ReleasingTodayRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        GlideApp.with(context).load(item.releasingToday.coverImage()?.large()).into(holder.mediaCoverImage)
-        holder.mediaTitleText.text = item.releasingToday.title()?.userPreferred()
+        GlideApp.with(context).load(item.releasingToday?.coverImage?.large).into(holder.mediaCoverImage)
+        holder.mediaTitleText.text = item.releasingToday?.title?.userPreferred
         holder.characterRoleLayout.visibility = View.GONE
         if (item.timestamp >= 0) {
             if (item.timestamp >= 3600) {
-                holder.airingTimeText.text = "Airing in ${item.timestamp / 3600} ${"hour".setRegularPlural(item.timestamp / 3600)}"
+                holder.airingTimeText.text = "In ${item.timestamp / 3600} ${"hour".setRegularPlural(item.timestamp / 3600)}"
             } else {
-                holder.airingTimeText.text = "Airing in ${item.timestamp / 60} ${"minute".setRegularPlural(item.timestamp / 60)}"
+                holder.airingTimeText.text = "In ${item.timestamp / 60} ${"minute".setRegularPlural(item.timestamp / 60)}"
             }
         } else if (item.timestamp < 0) {
             if (abs(item.timestamp) < 3600) {
-                holder.airingTimeText.text = "Airing ${abs(item.timestamp / 60)} ${"minute".setRegularPlural(item.timestamp / 60)} ago"
+                holder.airingTimeText.text = "${abs(item.timestamp / 60)} ${"minute".setRegularPlural(item.timestamp / 60)} ago"
             } else {
-                holder.airingTimeText.text = "Airing ${abs(item.timestamp / 3600)} ${"hour".setRegularPlural(item.timestamp / 3600)} ago"
+                holder.airingTimeText.text = "${abs(item.timestamp / 3600)} ${"hour".setRegularPlural(item.timestamp / 3600)} ago"
             }
         }
 
         holder.mediaCoverImage.setOnClickListener {
-            listener.passSelectedAnime(item.releasingToday.id())
+            listener.passSelectedAnime(item.releasingToday?.id!!)
         }
     }
 

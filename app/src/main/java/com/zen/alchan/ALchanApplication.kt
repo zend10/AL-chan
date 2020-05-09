@@ -33,6 +33,7 @@ import com.zen.alchan.ui.browse.staff.bio.StaffBioViewModel
 import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
 import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
+import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.search.SearchListViewModel
@@ -88,6 +89,7 @@ class ALchanApplication : Application() {
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
+        viewModel { ExploreViewModel() }
 
         viewModel { AnimeListViewModel(get(), get(), gson) }
         viewModel { AnimeListItemViewModel(get(), get(), get(), gson) }

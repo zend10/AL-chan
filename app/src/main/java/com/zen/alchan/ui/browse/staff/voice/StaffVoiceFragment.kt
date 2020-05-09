@@ -89,30 +89,30 @@ class StaffVoiceFragment : BaseFragment() {
                         return@Observer
                     }
 
-                    viewModel.hasNextPage = it.data?.Staff()?.characters()?.pageInfo()?.hasNextPage() ?: false
+                    viewModel.hasNextPage = it.data?.staff?.characters?.pageInfo?.hasNextPage ?: false
                     viewModel.page += 1
                     viewModel.isInit = true
 
-                    it.data?.Staff()?.characters()?.edges()?.forEach { edge ->
+                    it.data?.staff?.characters?.edges?.forEach { edge ->
                         val characterMedia = ArrayList<StaffCharacterMedia>()
 
-                        edge.media()?.forEach { media ->
+                        edge?.media?.forEach { media ->
                             characterMedia.add(
                                 StaffCharacterMedia(
-                                    media.id(),
-                                    media.title()?.userPreferred(),
-                                    media.coverImage()?.large(),
-                                    media.type(),
-                                    media.format()
+                                    media?.id,
+                                    media?.title?.userPreferred,
+                                    media?.coverImage?.large,
+                                    media?.type,
+                                    media?.format
                                 )
                             )
                         }
 
                         val staffCharacter = StaffCharacter(
-                            edge.node()?.id(),
-                            edge.role(),
-                            edge.node()?.name()?.full(),
-                            edge.node()?.image()?.large(),
+                            edge?.node?.id,
+                            edge?.role,
+                            edge?.node?.name?.full,
+                            edge?.node?.image?.large,
                             characterMedia
                         )
                         viewModel.staffCharacters.add(staffCharacter)

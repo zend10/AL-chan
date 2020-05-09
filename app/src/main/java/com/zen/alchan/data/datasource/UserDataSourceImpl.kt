@@ -1,6 +1,10 @@
 package com.zen.alchan.data.datasource
 
+import AniListSettingsMutation
+import ListSettingsMutation
+import ToggleFavouriteMutation
 import ViewerQuery
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.apollographql.apollo.rx2.rxPrefetch
@@ -18,7 +22,7 @@ import type.UserTitleLanguage
 class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSource {
 
     override fun getViewerData(): Observable<Response<ViewerQuery.Data>> {
-        val query = ViewerQuery.builder().build()
+        val query = ViewerQuery()
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
@@ -30,11 +34,11 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         adultContent: Boolean,
         airingNotifications: Boolean
     ): Observable<Response<AniListSettingsMutation.Data>> {
-        val mutation = AniListSettingsMutation.builder()
-            .titleLanguage(titleLanguage)
-            .displayAdultContent(adultContent)
-            .airingNotifications(airingNotifications)
-            .build()
+        val mutation = AniListSettingsMutation(
+            titleLanguage = Input.fromNullable(titleLanguage),
+            displayAdultContent = Input.fromNullable(adultContent),
+            airingNotifications = Input.fromNullable(airingNotifications)
+        )
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
@@ -47,7 +51,7 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions
     ): Observable<Response<ListSettingsMutation.Data>> {
-        val animeSectionOrder = ArrayList<String>()
+        val animeSectionOrder = ArrayList<String?>()
 
         if (animeListOptions.splitCompletedSectionByFormat == true) {
             animeSectionOrder.addAll(Constant.DEFAULT_SPLIT_ANIME_LIST_ORDER)
@@ -59,15 +63,15 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             animeSectionOrder.addAll(ArrayList(animeListOptions.customLists))
         }
 
-        val animeListOptionsBuilder = MediaListOptionsInput.builder()
-            .sectionOrder(animeSectionOrder)
-            .splitCompletedSectionByFormat(animeListOptions.splitCompletedSectionByFormat)
-            .customLists(animeListOptions.customLists)
-            .advancedScoring(animeListOptions.advancedScoring)
-            .advancedScoringEnabled(animeListOptions.advancedScoringEnabled)
-            .build()
+        val animeListOptionsBuilder = MediaListOptionsInput(
+            sectionOrder = Input.fromNullable(animeSectionOrder),
+            splitCompletedSectionByFormat = Input.fromNullable(animeListOptions.splitCompletedSectionByFormat),
+            customLists = Input.fromNullable(animeListOptions.customLists),
+            advancedScoring = Input.fromNullable(animeListOptions.advancedScoring),
+            advancedScoringEnabled = Input.fromNullable(animeListOptions.advancedScoringEnabled)
+        )
 
-        val mangaSectionOrder = ArrayList<String>()
+        val mangaSectionOrder = ArrayList<String?>()
 
         if (mangaListOptions.splitCompletedSectionByFormat == true) {
             mangaSectionOrder.addAll(Constant.DEFAULT_SPLIT_MANGA_LIST_ORDER)
@@ -79,23 +83,21 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             mangaSectionOrder.addAll(ArrayList(mangaListOptions.customLists))
         }
 
-        val mangaListOptionsBuilder = MediaListOptionsInput.builder()
-            .sectionOrder(mangaSectionOrder)
-            .splitCompletedSectionByFormat(mangaListOptions.splitCompletedSectionByFormat)
-            .customLists(mangaListOptions.customLists)
-            .advancedScoring(mangaListOptions.advancedScoring)
-            .advancedScoringEnabled(mangaListOptions.advancedScoringEnabled)
-            .build()
+        val mangaListOptionsBuilder = MediaListOptionsInput(
+            sectionOrder = Input.fromNullable(mangaSectionOrder),
+            splitCompletedSectionByFormat = Input.fromNullable(mangaListOptions.splitCompletedSectionByFormat),
+            customLists = Input.fromNullable(mangaListOptions.customLists),
+            advancedScoring = Input.fromNullable(mangaListOptions.advancedScoring),
+            advancedScoringEnabled = Input.fromNullable(mangaListOptions.advancedScoringEnabled)
+        )
 
-        val mutation = ListSettingsMutation.builder()
-            .scoreFormat(scoreFormat)
-            .rowOrder(rowOrder)
-            .animeListOptions(animeListOptionsBuilder)
-            .mangaListOptions(mangaListOptionsBuilder)
-            .build()
-
+        val mutation = ListSettingsMutation(
+            scoreFormat = Input.fromNullable(scoreFormat),
+            rowOrder = Input.fromNullable(rowOrder),
+            animeListOptions = Input.fromNullable(animeListOptionsBuilder),
+            mangaListOptions = Input.fromNullable(mangaListOptionsBuilder)
+        )
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
-
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -108,15 +110,13 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         staffId: Int?,
         studioId: Int?
     ): Completable {
-        val builder = ToggleFavouriteMutation.builder()
-
-        if (animeId != null) builder.animeId(animeId)
-        if (mangaId != null) builder.mangaId(mangaId)
-        if (characterId != null) builder.characterId(characterId)
-        if (staffId != null) builder.staffId(staffId)
-        if (studioId != null) builder.studioId(studioId)
-
-        val mutation = builder.build()
+        val mutation = ToggleFavouriteMutation(
+            animeId = Input.optional(animeId),
+            mangaId = Input.optional(mangaId),
+            characterId = Input.optional(characterId),
+            staffId = Input.optional(staffId),
+            studioId = Input.optional(studioId)
+        )
         val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())

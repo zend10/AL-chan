@@ -115,8 +115,8 @@ class MediaFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    if (it.data?.Media() != null) {
-                        viewModel.currentMediaData = it.data.Media()
+                    if (it.data?.media != null) {
+                        viewModel.currentMediaData = it.data.media
                         setupHeader()
                     }
                 }
@@ -128,15 +128,15 @@ class MediaFragment : BaseFragment() {
         })
 
         viewModel.mediaStatus.observe(viewLifecycleOwner, Observer {
-            if (it.data?.MediaList() != null) {
-                if (it.data.MediaList()?.status() == MediaListStatus.CURRENT) {
+            if (it.data?.mediaList != null) {
+                if (it.data.mediaList.status == MediaListStatus.CURRENT) {
                     mediaManageListButton.text = if (viewModel.mediaType == MediaType.MANGA) {
                         getString(R.string.reading_caps)
                     } else {
                         getString(R.string.watching_caps)
                     }
                 } else {
-                    mediaManageListButton.text = it.data.MediaList()?.status()?.name
+                    mediaManageListButton.text = it.data.mediaList.status?.name
                 }
                 mediaManageListButton.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
                 mediaManageListButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
@@ -180,15 +180,15 @@ class MediaFragment : BaseFragment() {
         })
 
         mediaManageListButton.setOnClickListener {
-            val entryId = viewModel.mediaStatus.value?.data?.MediaList()?.id()
+            val entryId = viewModel.mediaStatus.value?.data?.mediaList?.id
             if (viewModel.mediaType == MediaType.ANIME) {
                 val intent = Intent(activity, AnimeListEditorActivity::class.java)
                 if (entryId != null) {
                     intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, entryId)
                 } else {
                     intent.putExtra(AnimeListEditorActivity.INTENT_MEDIA_ID, viewModel.mediaId)
-                    intent.putExtra(AnimeListEditorActivity.INTENT_MEDIA_TITLE, viewModel.currentMediaData?.title()?.userPreferred())
-                    intent.putExtra(AnimeListEditorActivity.INTENT_MEDIA_EPISODE, viewModel.currentMediaData?.episodes())
+                    intent.putExtra(AnimeListEditorActivity.INTENT_MEDIA_TITLE, viewModel.currentMediaData?.title?.userPreferred)
+                    intent.putExtra(AnimeListEditorActivity.INTENT_MEDIA_EPISODE, viewModel.currentMediaData?.episodes)
                     intent.putExtra(AnimeListEditorActivity.INTENT_IS_FAVOURITE, viewModel.currentMediaData?.isFavourite)
                 }
                 startActivity(intent)
@@ -198,9 +198,9 @@ class MediaFragment : BaseFragment() {
                     intent.putExtra(MangaListEditorActivity.INTENT_ENTRY_ID, entryId)
                 } else {
                     intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_ID, viewModel.mediaId)
-                    intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_TITLE, viewModel.currentMediaData?.title()?.userPreferred())
-                    intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_CHAPTER, viewModel.currentMediaData?.chapters())
-                    intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_VOLUME, viewModel.currentMediaData?.volumes())
+                    intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_TITLE, viewModel.currentMediaData?.title?.userPreferred)
+                    intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_CHAPTER, viewModel.currentMediaData?.chapters)
+                    intent.putExtra(MangaListEditorActivity.INTENT_MEDIA_VOLUME, viewModel.currentMediaData?.volumes)
                     intent.putExtra(MangaListEditorActivity.INTENT_IS_FAVOURITE, viewModel.currentMediaData?.isFavourite)
                 }
                 startActivity(intent)
@@ -209,57 +209,57 @@ class MediaFragment : BaseFragment() {
     }
 
     private fun setupHeader() {
-        GlideApp.with(this).load(viewModel.currentMediaData?.bannerImage()).into(mediaBannerImage)
-        GlideApp.with(this).load(viewModel.currentMediaData?.coverImage()?.extraLarge()).into(mediaCoverImage)
+        GlideApp.with(this).load(viewModel.currentMediaData?.bannerImage).into(mediaBannerImage)
+        GlideApp.with(this).load(viewModel.currentMediaData?.coverImage?.extraLarge).into(mediaCoverImage)
 
-        if (viewModel.currentMediaData?.coverImage()?.extraLarge() != null) {
+        if (viewModel.currentMediaData?.coverImage?.extraLarge != null) {
             mediaCoverImage.setOnClickListener {
-                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentMediaData?.coverImage()?.extraLarge())) { view, image ->
+                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentMediaData?.coverImage?.extraLarge)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
                 }.withTransitionFrom(mediaCoverImage).show(true)
             }
         }
 
-        if (viewModel.currentMediaData?.bannerImage() != null) {
+        if (viewModel.currentMediaData?.bannerImage != null) {
             mediaBannerImage.setOnClickListener {
-                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentMediaData?.bannerImage())) { view, image ->
+                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentMediaData?.bannerImage)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
                 }.withTransitionFrom(mediaBannerImage).show(true)
             }
         }
 
-        mediaTitleText.text = viewModel.currentMediaData?.title()?.userPreferred()
-        mediaYearText.text = viewModel.currentMediaData?.startDate()?.year().toString()
+        mediaTitleText.text = viewModel.currentMediaData?.title?.userPreferred
+        mediaYearText.text = viewModel.currentMediaData?.startDate?.year.toString()
 
         if (viewModel.mediaType == MediaType.ANIME) {
-            if (viewModel.currentMediaData?.episodes() != null && viewModel.currentMediaData?.episodes() != 0) {
+            if (viewModel.currentMediaData?.episodes != null && viewModel.currentMediaData?.episodes != 0) {
                 mediaTotalCountDividerIcon.visibility = View.VISIBLE
                 mediaTotalCountText.visibility = View.VISIBLE
                 mediaTotalCountText.text =
-                    "${viewModel.currentMediaData?.episodes()} ${getString(R.string.episode).setRegularPlural(viewModel.currentMediaData?.episodes())}"
+                    "${viewModel.currentMediaData?.episodes} ${getString(R.string.episode).setRegularPlural(viewModel.currentMediaData?.episodes)}"
             } else {
                 mediaTotalCountDividerIcon.visibility = View.GONE
                 mediaTotalCountText.visibility = View.GONE
             }
         } else if (viewModel.mediaType == MediaType.MANGA) {
-            if (viewModel.currentMediaData?.chapters() != null && viewModel.currentMediaData?.chapters() != 0) {
+            if (viewModel.currentMediaData?.chapters != null && viewModel.currentMediaData?.chapters != 0) {
                 mediaTotalCountDividerIcon.visibility = View.VISIBLE
                 mediaTotalCountText.visibility = View.VISIBLE
-                mediaTotalCountText.text = "${viewModel.currentMediaData?.chapters()} ${getString(R.string.chapter).setRegularPlural(viewModel.currentMediaData?.chapters())}"
+                mediaTotalCountText.text = "${viewModel.currentMediaData?.chapters} ${getString(R.string.chapter).setRegularPlural(viewModel.currentMediaData?.chapters)}"
             } else {
                 mediaTotalCountDividerIcon.visibility = View.GONE
                 mediaTotalCountText.visibility = View.GONE
             }
         }
 
-        mediaFormatText.text = viewModel.currentMediaData?.format()?.name?.replace("_", " ")
-        mediaRatingText.text = viewModel.currentMediaData?.averageScore()?.toString() ?: "0"
-        mediaFavText.text = viewModel.currentMediaData?.favourites()?.toString() ?: "0"
+        mediaFormatText.text = viewModel.currentMediaData?.format?.name?.replace("_", " ")
+        mediaRatingText.text = viewModel.currentMediaData?.averageScore?.toString() ?: "0"
+        mediaFavText.text = viewModel.currentMediaData?.favourites?.toString() ?: "0"
 
-        if (viewModel.currentMediaData?.nextAiringEpisode() != null) {
+        if (viewModel.currentMediaData?.nextAiringEpisode != null) {
             mediaAiringIcon.visibility = View.VISIBLE
             mediaAiringText.visibility = View.VISIBLE
-            mediaAiringText.text = "Ep ${viewModel.currentMediaData?.nextAiringEpisode()?.episode()} on ${viewModel.currentMediaData?.nextAiringEpisode()?.airingAt()?.secondsToDateTime()}"
+            mediaAiringText.text = "Ep ${viewModel.currentMediaData?.nextAiringEpisode?.episode} on ${viewModel.currentMediaData?.nextAiringEpisode?.airingAt?.secondsToDateTime()}"
 
             mediaAiringIcon.setOnClickListener {
                 DialogUtility.showToast(activity, mediaAiringText.text.toString())

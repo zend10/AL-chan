@@ -10,7 +10,7 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_flexbox_button_cancelable.view.*
 
-class MediaFilterRvAdapter(private val list: List<String>,
+class MediaFilterRvAdapter(private val list: List<String?>,
                            private val code: Int,
                            private val listener: MediaFilterListListener
 ) : RecyclerView.Adapter<MediaFilterRvAdapter.ViewHolder>() {

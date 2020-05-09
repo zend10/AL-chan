@@ -236,7 +236,7 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun assignAdapter(list: List<String>?, code: Int): MediaFilterRvAdapter {
+    private fun assignAdapter(list: List<String?>?, code: Int): MediaFilterRvAdapter {
         if (viewModel.currentData.selectedGenreList.isNullOrEmpty()) {
             dialogView.filterGenreRecyclerView.visibility = View.GONE
             dialogView.filterGenreNoItemText.visibility = View.VISIBLE

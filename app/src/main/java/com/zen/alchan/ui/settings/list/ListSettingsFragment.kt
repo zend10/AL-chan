@@ -230,7 +230,7 @@ class ListSettingsFragment : Fragment() {
         }
     }
 
-    private fun assignAdapter(list: List<String>, code: Int): ListSettingsRvAdapter {
+    private fun assignAdapter(list: List<String?>, code: Int): ListSettingsRvAdapter {
         return ListSettingsRvAdapter(list, code, object : ListSettingsRvAdapter.ListSettingsListener {
             override fun editItem(position: Int, code: Int) {
                 val inputDialogView = layoutInflater.inflate(R.layout.dialog_input, inputDialogLayout, false)

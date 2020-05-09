@@ -1,6 +1,17 @@
 query SearchAnimeQuery(
     $page: Int,
-    $search: String
+    $search: String,
+    $season: MediaSeason,
+    $seasonYear: Int,
+    $format: MediaFormat,
+    $status: MediaStatus,
+    $isAdult: Boolean,
+    $onList: Boolean,
+    $source: MediaSource,
+    $countryOfOrigin: CountryCode,
+    $genre_in: [String],
+    $tag_in: [String],
+    $sort: [MediaSort]
 ) {
     Page(page: $page) {
         pageInfo {
@@ -12,7 +23,18 @@ query SearchAnimeQuery(
         }
         media(
             type: ANIME,
-            search: $search
+            search: $search,
+            season: $season,
+            seasonYear: $seasonYear,
+            format: $format,
+            status: $status,
+            isAdult: $isAdult,
+            onList: $onList,
+            source: $source,
+            countryOfOrigin: $countryOfOrigin,
+            genre_in: $genre_in,
+            tag_in: $tag_in,
+            sort: $sort
         ) {
             id
             title {
@@ -23,12 +45,23 @@ query SearchAnimeQuery(
             }
             type
             format
+            status
+            episodes
             averageScore
             favourites
             startDate {
                 year
                 month
                 day
+            }
+            genres
+            studios (isMain: true) {
+                edges {
+                    node {
+                        id
+                        name
+                    }
+                }
             }
         }
     }

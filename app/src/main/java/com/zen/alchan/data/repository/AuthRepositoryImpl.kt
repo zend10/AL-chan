@@ -38,9 +38,9 @@ class AuthRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onNext(t: Response<ViewerQuery.Data>) {
                 if (t.hasErrors()) {
-                    _viewerDataResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _viewerDataResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    userManager.setViewerData(Converter.convertUser(t.data()?.Viewer()))
+                    userManager.setViewerData(Converter.convertUser(t.data?.viewer))
                     _viewerDataResponse.postValue(Resource.Success(true))
                 }
             }

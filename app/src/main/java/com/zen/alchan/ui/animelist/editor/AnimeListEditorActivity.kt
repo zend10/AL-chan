@@ -13,7 +13,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.apollographql.apollo.response.CustomTypeValue
+import com.apollographql.apollo.api.CustomTypeValue
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
@@ -235,7 +235,7 @@ class AnimeListEditorActivity : BaseActivity() {
             viewModel.selectedAdvancedScores.clear()
 
             viewModel.advancedScoringList.forEach {
-                viewModel.advancedScoresList.add(AdvancedScoresItem(it, 0.0))
+                viewModel.advancedScoresList.add(AdvancedScoresItem(it!!, 0.0))
                 viewModel.selectedAdvancedScores.add(0.0)
             }
 
@@ -244,7 +244,7 @@ class AnimeListEditorActivity : BaseActivity() {
             viewModel.selectedCustomLists.clear()
 
             viewModel.savedCustomListsList.forEach {
-                viewModel.customListsList.add(CustomListsItem(it, false))
+                viewModel.customListsList.add(CustomListsItem(it!!, false))
             }
         }
 

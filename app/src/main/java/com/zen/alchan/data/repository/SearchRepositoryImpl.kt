@@ -40,7 +40,7 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
 
             override fun onNext(t: Response<SearchAnimeQuery.Data>) {
                 if (t.hasErrors()) {
-                    _searchAnimeResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _searchAnimeResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _searchAnimeResponse.postValue(Resource.Success(t.data()!!))
                 }
@@ -64,7 +64,7 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
 
             override fun onNext(t: Response<SearchMangaQuery.Data>) {
                 if (t.hasErrors()) {
-                    _searchMangaResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _searchMangaResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _searchMangaResponse.postValue(Resource.Success(t.data()!!))
                 }
@@ -88,7 +88,7 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
 
             override fun onNext(t: Response<SearchCharactersQuery.Data>) {
                 if (t.hasErrors()) {
-                    _searchCharactersResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _searchCharactersResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _searchCharactersResponse.postValue(Resource.Success(t.data()!!))
                 }
@@ -112,7 +112,7 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
 
             override fun onNext(t: Response<SearchStaffsQuery.Data>) {
                 if (t.hasErrors()) {
-                    _searchStaffsResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _searchStaffsResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _searchStaffsResponse.postValue(Resource.Success(t.data()!!))
                 }
@@ -136,7 +136,7 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
 
             override fun onNext(t: Response<SearchStudiosQuery.Data>) {
                 if (t.hasErrors()) {
-                    _searchStudiosResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _searchStudiosResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _searchStudiosResponse.postValue(Resource.Success(t.data()!!))
                 }

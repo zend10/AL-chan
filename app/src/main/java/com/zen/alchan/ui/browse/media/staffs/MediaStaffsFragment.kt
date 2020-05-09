@@ -79,16 +79,16 @@ class MediaStaffsFragment : BaseFragment() {
                         return@Observer
                     }
 
-                    viewModel.hasNextPage = it.data?.Media()?.staff()?.pageInfo()?.hasNextPage() ?: false
+                    viewModel.hasNextPage = it.data?.media?.staff?.pageInfo?.hasNextPage ?: false
                     viewModel.page += 1
                     viewModel.isInit = true
 
-                    it.data?.Media()?.staff()?.edges()?.forEach { edge ->
+                    it.data?.media?.staff?.edges?.forEach { edge ->
                         val mediaStaff = MediaStaffs(
-                            edge.node()?.id(),
-                            edge.node()?.name()?.full(),
-                            edge.node()?.image()?.large(),
-                            edge.role()
+                            edge?.node?.id,
+                            edge?.node?.name?.full,
+                            edge?.node?.image?.large,
+                            edge?.role
                         )
                         viewModel.mediaStaffs.add(mediaStaff)
                     }

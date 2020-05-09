@@ -221,4 +221,6 @@
     <string name="top_rated_anime">Top Rated Anime</string>
     <string name="top_rated_manga">Top Rated Manga</string>
     <string name="explore">Explore</string>
+    <string name="trending_anime_right_now">Trending Anime Right Now</string>
+    <string name="trending_manga_right_now">Trending Manga Right Now</string>
 </resources>

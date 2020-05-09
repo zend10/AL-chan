@@ -86,9 +86,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<AnimeListCollectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _animeListDataResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _animeListDataResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    rawAnimeList = Converter.convertMediaListCollection(t.data()?.MediaListCollection())
+                    rawAnimeList = Converter.convertMediaListCollection(t.data?.mediaListCollection)
                     notifyLiveDataFromRawAnimeList(true)
                 }
             }
@@ -114,9 +114,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<AnimeListQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaListDataDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaListDataDetailResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaListDataDetailResponse.postValue(Resource.Success(Converter.convertMediaList(t.data()?.MediaList()!!)))
+                    _mediaListDataDetailResponse.postValue(Resource.Success(Converter.convertMediaList(t.data?.mediaList!!)))
                 }
             }
 
@@ -231,7 +231,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<AnimeListEntryMutation.Data>) {
                 if (t.hasErrors()) {
-                    _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     retrieveAnimeListData()
                     _updateMediaListEntryDetailResponse.postValue(Resource.Success(true))
@@ -249,9 +249,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
     private fun handleUpdateAnimeEntryResult(t: Response<AnimeListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false) {
         if (t.hasErrors()) {
             if (isUpdateDetail) {
-                _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors!![0].message))
             } else {
-                _updateAnimeListEntryResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                _updateAnimeListEntryResponse.postValue(Resource.Error(t.errors!![0].message))
             }
         } else {
             var editedEntriesIndex: Int? = null
@@ -259,7 +259,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             val currentList = rawAnimeList
             currentList?.lists?.forEachIndexed { index, group ->
                 if (editedEntriesIndex == null || editedEntriesIndex == -1) {
-                    editedEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data()?.SaveMediaListEntry()?.id() }
+                    editedEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data?.saveMediaListEntry?.id }
                     editedListsIndex = index
                 }
             }
@@ -275,7 +275,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
                     val tempNextAiringEp =  newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode
 
-                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data()?.SaveMediaListEntry()!!)
+                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
 
                     // Needed because bugs in AniList where mutation won't return NextAiringEpisode
                     if (tempNextAiringEp != null) {
@@ -436,8 +436,8 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
         val sortedList = ArrayList<MediaListGroup>()
 
-        var sectionOrder: List<String>? = null
-        var customList: List<String>? = null
+        var sectionOrder: List<String?>? = null
+        var customList: List<String?>? = null
 
         if (mediaType == MediaType.ANIME) {
             sectionOrder = userManager.viewerData?.mediaListOptions?.animeList?.sectionOrder
@@ -496,9 +496,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<MangaListCollectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mangaListDataResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mangaListDataResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    rawMangaList = Converter.convertMediaListCollection(t.data()?.MediaListCollection())
+                    rawMangaList = Converter.convertMediaListCollection(t.data?.mediaListCollection)
                     notifyLiveDataFromRawMangaList(true)
                 }
             }
@@ -524,9 +524,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<MangaListQuery.Data>) {
                 if (t.hasErrors()) {
-                    _mediaListDataDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _mediaListDataDetailResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaListDataDetailResponse.postValue(Resource.Success(Converter.convertMediaList(t.data()?.MediaList()!!)))
+                    _mediaListDataDetailResponse.postValue(Resource.Success(Converter.convertMediaList(t.data?.mediaList!!)))
                 }
             }
 
@@ -644,7 +644,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<MangaListEntryMutation.Data>) {
                 if (t.hasErrors()) {
-                    _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     retrieveMangaListData()
                     _updateMediaListEntryDetailResponse.postValue(Resource.Success(true))
@@ -662,9 +662,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
     private fun handleUpdateMangaEntryResult(t: Response<MangaListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false) {
         if (t.hasErrors()) {
             if (isUpdateDetail) {
-                _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors!![0].message))
             } else {
-                _updateMangaListEntryResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                _updateMangaListEntryResponse.postValue(Resource.Error(t.errors!![0].message))
             }
         } else {
             var editedEntriesIndex: Int? = null
@@ -672,7 +672,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             val currentList = rawMangaList
             currentList?.lists?.forEachIndexed { index, group ->
                 if (editedEntriesIndex == null || editedEntriesIndex == -1) {
-                    editedEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data()?.SaveMediaListEntry()?.id() }
+                    editedEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data?.saveMediaListEntry?.id }
                     editedListsIndex = index
                 }
             }
@@ -688,7 +688,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
                     val tempNextAiringEp =  newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode
 
-                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data()?.SaveMediaListEntry()!!)
+                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
 
                     // Needed because bugs in AniList where mutation won't return NextAiringEpisode
                     // Manga has no NextAiringEpisode anyway, this will be skipped
@@ -751,9 +751,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onNext(t: Response<DeleteMediaListEntryMutation.Data>) {
                 if (t.hasErrors()) {
-                    _deleteMediaListEntryResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _deleteMediaListEntryResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    if (t.data()?.DeleteMediaListEntry()?.deleted() == true) {
+                    if (t.data?.deleteMediaListEntry?.deleted == true) {
                         if (mediaType == MediaType.ANIME) {
                             retrieveAnimeListData()
                         } else if (mediaType == MediaType.MANGA) {

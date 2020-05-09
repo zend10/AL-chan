@@ -106,8 +106,8 @@ class StudioFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    if (it.data?.Studio() != null) {
-                        viewModel.currentStudioData = it.data.Studio()
+                    if (it.data?.studio != null) {
+                        viewModel.currentStudioData = it.data.studio
                         setupHeader()
                     }
                 }
@@ -120,7 +120,7 @@ class StudioFragment : BaseFragment() {
 
         viewModel.studioIsFavoriteData.observe(viewLifecycleOwner, Observer {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
-                if (it.data?.Studio()?.isFavourite == true) {
+                if (it.data?.studio?.isFavourite == true) {
                     studioFavoriteButton.text = getString(R.string.favorited)
                     studioFavoriteButton.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
                     studioFavoriteButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
@@ -165,17 +165,17 @@ class StudioFragment : BaseFragment() {
                         return@Observer
                     }
 
-                    viewModel.hasNextPage = it.data?.Studio()?.media()?.pageInfo()?.hasNextPage() ?: false
+                    viewModel.hasNextPage = it.data?.studio?.media?.pageInfo?.hasNextPage ?: false
                     viewModel.page += 1
                     viewModel.isInit = true
 
-                    it.data?.Studio()?.media()?.edges()?.forEach { edge ->
+                    it.data?.studio?.media?.edges?.forEach { edge ->
                         val staffMedia = StudioMedia(
-                            edge.node()?.id(),
-                            edge.node()?.title()?.userPreferred(),
-                            edge.node()?.type(),
-                            edge.node()?.format(),
-                            edge.node()?.coverImage()?.large()
+                            edge?.node?.id,
+                            edge?.node?.title?.userPreferred,
+                            edge?.node?.type,
+                            edge?.node?.format,
+                            edge?.node?.coverImage?.large
                         )
                         viewModel.studioMediaList.add(staffMedia)
                     }
@@ -208,8 +208,8 @@ class StudioFragment : BaseFragment() {
     }
 
     private fun setupHeader() {
-        studioNameText.text = viewModel.currentStudioData?.name()
-        studioFavoriteCountText.text = viewModel.currentStudioData?.favourites()?.toString()
+        studioNameText.text = viewModel.currentStudioData?.name
+        studioFavoriteCountText.text = viewModel.currentStudioData?.favourites?.toString()
 
         itemOpenAniList.isVisible = true
         itemCopyLink.isVisible = true
@@ -217,12 +217,12 @@ class StudioFragment : BaseFragment() {
         itemOpenAniList.setOnMenuItemClickListener {
             CustomTabsIntent.Builder()
                 .build()
-                .launchUrl(activity!!, Uri.parse(viewModel.currentStudioData?.siteUrl()))
+                .launchUrl(activity!!, Uri.parse(viewModel.currentStudioData?.siteUrl))
             true
         }
 
         itemCopyLink.setOnMenuItemClickListener {
-            AndroidUtility.copyToClipboard(activity, viewModel.currentStudioData?.siteUrl()!!)
+            AndroidUtility.copyToClipboard(activity, viewModel.currentStudioData?.siteUrl!!)
             DialogUtility.showToast(activity, R.string.link_copied)
             true
         }

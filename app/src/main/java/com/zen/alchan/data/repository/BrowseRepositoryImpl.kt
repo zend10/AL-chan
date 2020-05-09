@@ -70,7 +70,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<CharacterQuery.Data>) {
                 if (t.hasErrors()) {
-                    _characterData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _characterData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _characterData.postValue(Resource.Success(t.data()!!))
                 }
@@ -92,7 +92,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<CharacterMediaConnectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _characterMediaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _characterMediaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _characterMediaData.postValue(Resource.Success(t.data()!!))
                 }
@@ -114,7 +114,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<CharacterIsFavoriteQuery.Data>) {
                 if (t.hasErrors()) {
-                    _characterIsFavoriteData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _characterIsFavoriteData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _characterIsFavoriteData.postValue(Resource.Success(t.data()!!))
                 }
@@ -138,7 +138,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StaffQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _staffData.postValue(Resource.Success(t.data()!!))
                 }
@@ -162,7 +162,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StaffBioQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffBioData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffBioData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _staffBioData.postValue(Resource.Success(t.data()!!))
                 }
@@ -184,7 +184,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StaffCharacterConnectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffCharacterData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffCharacterData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _staffCharacterData.postValue(Resource.Success(t.data()!!))
                 }
@@ -206,7 +206,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StaffMediaConnectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffAnimeData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffAnimeData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _staffAnimeData.postValue(Resource.Success(t.data()!!))
                 }
@@ -228,7 +228,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StaffMediaConnectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffMangaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffMangaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _staffMangaData.postValue(Resource.Success(t.data()!!))
                 }
@@ -250,7 +250,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StaffIsFavoriteQuery.Data>) {
                 if (t.hasErrors()) {
-                    _staffIsFavoriteData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _staffIsFavoriteData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _staffIsFavoriteData.postValue(Resource.Success(t.data()!!))
                 }
@@ -274,7 +274,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StudioQuery.Data>) {
                 if (t.hasErrors()) {
-                    _studioData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _studioData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _studioData.postValue(Resource.Success(t.data()!!))
                 }
@@ -296,7 +296,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StudioMediaConnectionQuery.Data>) {
                 if (t.hasErrors()) {
-                    _studioMediaData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _studioMediaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _studioMediaData.postValue(Resource.Success(t.data()!!))
                 }
@@ -318,7 +318,7 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
 
             override fun onNext(t: Response<StudioIsFavoriteQuery.Data>) {
                 if (t.hasErrors()) {
-                    _studioIsFavoriteData.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _studioIsFavoriteData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     _studioIsFavoriteData.postValue(Resource.Success(t.data()!!))
                 }

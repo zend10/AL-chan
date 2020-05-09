@@ -109,8 +109,8 @@ class CharacterFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    if (it.data?.Character() != null) {
-                        viewModel.currentCharacterData = it.data.Character()
+                    if (it.data?.character != null) {
+                        viewModel.currentCharacterData = it.data.character
                         setupHeader()
                         handleDescription()
                     }
@@ -128,29 +128,29 @@ class CharacterFragment : BaseFragment() {
                     return@Observer
                 }
 
-                viewModel.hasNextPage = it.data?.Character()?.media()?.pageInfo()?.hasNextPage() ?: false
+                viewModel.hasNextPage = it.data?.character?.media?.pageInfo?.hasNextPage ?: false
                 viewModel.page += 1
                 viewModel.isInit = true
 
-                it.data?.Character()?.media()?.edges()?.forEach { edge ->
+                it.data?.character?.media?.edges?.forEach { edge ->
                     val characterMedia = CharacterMedia(
-                        edge.node()?.id(),
-                        edge.node()?.title()?.userPreferred(),
-                        edge.node()?.coverImage()?.large(),
-                        edge.node()?.type(),
-                        edge.node()?.format(),
-                        edge.characterRole()
+                        edge?.node?.id,
+                        edge?.node?.title?.userPreferred,
+                        edge?.node?.coverImage?.large,
+                        edge?.node?.type,
+                        edge?.node?.format,
+                        edge?.characterRole
                     )
                     viewModel.characterMedia.add(characterMedia)
 
-                    edge.voiceActors()?.forEach { va ->
-                        val findVa = viewModel.characterVoiceActors.find { cva -> cva.voiceActorId == va.id() }
+                    edge?.voiceActors?.forEach { va ->
+                        val findVa = viewModel.characterVoiceActors.find { cva -> cva.voiceActorId == va?.id }
                         if (findVa != null) {
                             val vaIndex = viewModel.characterVoiceActors.indexOf(findVa)
                             viewModel.characterVoiceActors[vaIndex].characterMediaList?.add(characterMedia)
                         } else {
                             val voiceActor = CharacterVoiceActors(
-                                va.id(), va.name()?.full(), va.image()?.large(), va.language(), arrayListOf(characterMedia)
+                                va?.id, va?.name?.full, va?.image?.large, va?.language, arrayListOf(characterMedia)
                             )
                             viewModel.characterVoiceActors.add(voiceActor)
                         }
@@ -172,7 +172,7 @@ class CharacterFragment : BaseFragment() {
 
         viewModel.characterIsFavoriteData.observe(viewLifecycleOwner, Observer {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
-                if (it.data?.Character()?.isFavourite == true) {
+                if (it.data?.character?.isFavourite == true) {
                     characterFavoriteButton.text = getString(R.string.favorited)
                     characterFavoriteButton.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
                     characterFavoriteButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
@@ -211,24 +211,24 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun setupHeader() {
-        GlideApp.with(this).load(viewModel.currentCharacterData?.image()?.large()).apply(RequestOptions.circleCropTransform()).into(characterImage)
+        GlideApp.with(this).load(viewModel.currentCharacterData?.image?.large).apply(RequestOptions.circleCropTransform()).into(characterImage)
 
-        if (viewModel.currentCharacterData?.image()?.large() != null) {
+        if (viewModel.currentCharacterData?.image?.large != null) {
             characterImage.setOnClickListener {
-                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentCharacterData?.image()?.large())) { view, image ->
+                StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentCharacterData?.image?.large)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
                 }.withTransitionFrom(characterImage).show(true)
             }
         }
 
-        characterNameText.text = viewModel.currentCharacterData?.name()?.full()
-        characterNativeNameText.text = viewModel.currentCharacterData?.name()?.native_()
+        characterNameText.text = viewModel.currentCharacterData?.name?.full
+        characterNativeNameText.text = viewModel.currentCharacterData?.name?.native_
 
-        if (!viewModel.currentCharacterData?.name()?.alternative().isNullOrEmpty()) {
+        if (!viewModel.currentCharacterData?.name?.alternative.isNullOrEmpty()) {
             var aliasesString = ""
-            viewModel.currentCharacterData?.name()?.alternative()?.forEachIndexed { index, s ->
+            viewModel.currentCharacterData?.name?.alternative?.forEachIndexed { index, s ->
                 aliasesString += s
-                if (index != viewModel.currentCharacterData?.name()?.alternative()?.lastIndex) aliasesString += ", "
+                if (index != viewModel.currentCharacterData?.name?.alternative?.lastIndex) aliasesString += ", "
             }
             characterAliasesText.text = aliasesString
 
@@ -241,7 +241,7 @@ class CharacterFragment : BaseFragment() {
             characterAliasesText.visibility = View.GONE
         }
 
-        characterFavoriteCountText.text = viewModel.currentCharacterData?.favourites()?.toString()
+        characterFavoriteCountText.text = viewModel.currentCharacterData?.favourites?.toString()
 
         itemOpenAniList.isVisible = true
         itemCopyLink.isVisible = true
@@ -249,12 +249,12 @@ class CharacterFragment : BaseFragment() {
         itemOpenAniList.setOnMenuItemClickListener {
             CustomTabsIntent.Builder()
                 .build()
-                .launchUrl(activity!!, Uri.parse(viewModel.currentCharacterData?.siteUrl()))
+                .launchUrl(activity!!, Uri.parse(viewModel.currentCharacterData?.siteUrl))
             true
         }
 
         itemCopyLink.setOnMenuItemClickListener {
-            AndroidUtility.copyToClipboard(activity, viewModel.currentCharacterData?.siteUrl()!!)
+            AndroidUtility.copyToClipboard(activity, viewModel.currentCharacterData?.siteUrl!!)
             DialogUtility.showToast(activity, R.string.link_copied)
             true
         }
@@ -296,7 +296,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun handleDescription() {
-        characterDescriptionText.text = viewModel.currentCharacterData?.description()?.handleSpoilerAndLink(activity!!)
+        characterDescriptionText.text = viewModel.currentCharacterData?.description?.handleSpoilerAndLink(activity!!)
         characterDescriptionText.movementMethod = LinkMovementMethod.getInstance()
 
         characterDescriptionArrow.setOnClickListener {

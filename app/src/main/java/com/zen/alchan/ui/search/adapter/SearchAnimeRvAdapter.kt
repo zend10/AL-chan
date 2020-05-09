@@ -35,14 +35,14 @@ class SearchAnimeRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             val item = list[position]
-            holder.searchNameText.text = item?.animeSearchResult?.title()?.userPreferred()
-            holder.searchYearText.text = item?.animeSearchResult?.startDate()?.year()?.toString() ?: "TBA"
-            holder.searchFormatText.text = item?.animeSearchResult?.format()?.name?.replaceUnderscore()
-            GlideApp.with(context).load(item?.animeSearchResult?.coverImage()?.large()).into(holder.searchImage)
-            holder.searchScoreText.text = item?.animeSearchResult?.averageScore()?.toString() ?: "0"
-            holder.searchFavoriteText.text = item?.animeSearchResult?.favourites()?.toString() ?: "0"
+            holder.searchNameText.text = item?.animeSearchResult?.title?.userPreferred
+            holder.searchYearText.text = item?.animeSearchResult?.startDate?.year?.toString() ?: "TBA"
+            holder.searchFormatText.text = item?.animeSearchResult?.format?.name?.replaceUnderscore()
+            GlideApp.with(context).load(item?.animeSearchResult?.coverImage?.large).into(holder.searchImage)
+            holder.searchScoreText.text = item?.animeSearchResult?.averageScore?.toString() ?: "0"
+            holder.searchFavoriteText.text = item?.animeSearchResult?.favourites?.toString() ?: "0"
             holder.itemView.setOnClickListener {
-                listener.passSelectedItem(item?.animeSearchResult?.id()!!)
+                listener.passSelectedItem(item?.animeSearchResult?.id!!)
             }
         }
     }

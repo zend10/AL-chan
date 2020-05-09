@@ -29,7 +29,7 @@ class AnimeListItemViewModel(private val mediaListRepository: MediaListRepositor
     val scoreFormat: ScoreFormat
         get() = userRepository.viewerData.value?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
 
-    val advancedScoringList: ArrayList<String>
+    val advancedScoringList: ArrayList<String?>
         get() = if (userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoringEnabled == true) {
             ArrayList(userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoring!!)
         } else {

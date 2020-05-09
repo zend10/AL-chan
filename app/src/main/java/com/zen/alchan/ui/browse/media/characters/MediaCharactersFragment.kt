@@ -94,28 +94,28 @@ class MediaCharactersFragment : BaseFragment() {
                         return@Observer
                     }
 
-                    viewModel.hasNextPage = it.data?.Media()?.characters()?.pageInfo()?.hasNextPage() ?: false
+                    viewModel.hasNextPage = it.data?.media?.characters?.pageInfo?.hasNextPage ?: false
                     viewModel.page += 1
                     viewModel.isInit = true
 
-                    it.data?.Media()?.characters()?.edges()?.forEach { edge ->
+                    it.data?.media?.characters?.edges?.forEach { edge ->
                         val voiceActors = ArrayList<MediaVoiceActors>()
-                        edge.voiceActors()?.forEach { va ->
+                        edge?.voiceActors?.forEach { va ->
                             voiceActors.add(
                                 MediaVoiceActors(
-                                    va.id(),
-                                    va.name()?.full(),
-                                    va.language(),
-                                    va.image()?.large()
+                                    va?.id,
+                                    va?.name?.full,
+                                    va?.language,
+                                    va?.image?.large
                                 )
                             )
                         }
 
                         val mediaCharacter = MediaCharacters(
-                            edge.node()?.id(),
-                            edge.node()?.name()?.full(),
-                            edge.node()?.image()?.large(),
-                            edge.role(),
+                            edge?.node?.id,
+                            edge?.node?.name?.full,
+                            edge?.node?.image?.large,
+                            edge?.role,
                             voiceActors
                         )
                         viewModel.mediaCharacters.add(mediaCharacter)

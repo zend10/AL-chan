@@ -18,7 +18,7 @@ class Media(
     val source: MediaSource?,
     var isFavourite: Boolean,
     val coverImage: MediaCoverImage?,
-    val genres: List<String>?,
+    val genres: List<String?>?,
     val averageScore: Int?,
     val popularity: Int?,
     val isAdult: Boolean?,

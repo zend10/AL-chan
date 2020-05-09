@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.explore.ExploreActivity">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/searchBarLayout"
+                android:layout_marginEnd="@dimen/marginNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginSmall"
+                app:cardBackgroundColor="?themeContentColor"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/searchSettingButton"
+                android:layout_margin="@dimen/marginPage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/searchBackButton"
+                        app:srcCompat="@drawable/ic_long_arrow_left"
+                        android:padding="@dimen/iconPadding"
+                        app:tint="?themeBackgroundColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/searchBarEditText"
+                        style="?themeRegularFont"
+                        android:textColor="?themeBackgroundColor"
+                        android:padding="@dimen/iconPadding"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:hint="@string/search"
+                        android:textColorHint="?themeCardColor"
+                        android:background="@android:color/transparent"
+                        android:maxLines="1"
+                        android:inputType="textCapWords"
+                        android:imeOptions="actionDone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/searchSettingButton"
+                app:cardBackgroundColor="?themePrimaryColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/searchBarLayout"
+                app:layout_constraintBottom_toBottomOf="@id/searchBarLayout"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_marginEnd="@dimen/marginPage"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_tune"
+                    app:tint="?themeContentColor"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/exploreTypeLayout"
+                app:layout_constraintTop_toBottomOf="@id/searchBarLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginPage"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="Exploring"
+                    style="?themeSmallFont"
+                    android:layout_marginEnd="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/exploreTypeText"
+                    android:text="Exploring"
+                    style="?themeRegularClickableFont"
+                    android:padding="@dimen/marginSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <RelativeLayout
+                app:layout_constraintTop_toBottomOf="@id/exploreTypeLayout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/exploreRecyclerView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <include layout="@layout/layout_empty"/>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_loading"/>
+
+</RelativeLayout>

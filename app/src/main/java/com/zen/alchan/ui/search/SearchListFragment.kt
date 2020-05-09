@@ -84,36 +84,36 @@ class SearchListFragment : Fragment() {
                     when (viewModel.searchPage) {
                         BrowsePage.ANIME -> {
                             val searchAnimeResponse = it as Resource<SearchAnimeQuery.Data>
-                            viewModel.hasNextPage = searchAnimeResponse.data?.Page()?.pageInfo()?.hasNextPage() ?: false
-                            searchAnimeResponse.data?.Page()?.media()?.forEach { anime ->
+                            viewModel.hasNextPage = searchAnimeResponse.data?.page?.pageInfo?.hasNextPage ?: false
+                            searchAnimeResponse.data?.page?.media?.forEach { anime ->
                                 viewModel.searchResultList.add(SearchResult(animeSearchResult = anime))
                             }
                         }
                         BrowsePage.MANGA -> {
                             val searchMangaResponse = it as Resource<SearchMangaQuery.Data>
-                            viewModel.hasNextPage = searchMangaResponse.data?.Page()?.pageInfo()?.hasNextPage() ?: false
-                            searchMangaResponse.data?.Page()?.media()?.forEach { manga ->
+                            viewModel.hasNextPage = searchMangaResponse.data?.page?.pageInfo?.hasNextPage ?: false
+                            searchMangaResponse.data?.page?.media?.forEach { manga ->
                                 viewModel.searchResultList.add(SearchResult(mangaSearchResult =  manga))
                             }
                         }
                         BrowsePage.CHARACTER -> {
                             val searchCharactersResponse = it as Resource<SearchCharactersQuery.Data>
-                            viewModel.hasNextPage = searchCharactersResponse.data?.Page()?.pageInfo()?.hasNextPage() ?: false
-                            searchCharactersResponse.data?.Page()?.characters()?.forEach { character ->
+                            viewModel.hasNextPage = searchCharactersResponse.data?.page?.pageInfo?.hasNextPage ?: false
+                            searchCharactersResponse.data?.page?.characters?.forEach { character ->
                                 viewModel.searchResultList.add(SearchResult(charactersSearchResult =  character))
                             }
                         }
                         BrowsePage.STAFF -> {
                             val searchStaffsResponse = it as Resource<SearchStaffsQuery.Data>
-                            viewModel.hasNextPage = searchStaffsResponse.data?.Page()?.pageInfo()?.hasNextPage() ?: false
-                            searchStaffsResponse.data?.Page()?.staff()?.forEach { staff ->
+                            viewModel.hasNextPage = searchStaffsResponse.data?.page?.pageInfo?.hasNextPage ?: false
+                            searchStaffsResponse.data?.page?.staff?.forEach { staff ->
                                 viewModel.searchResultList.add(SearchResult(staffsSearchResult =  staff))
                             }
                         }
                         BrowsePage.STUDIO -> {
                             val searchStudiosResponse = it as Resource<SearchStudiosQuery.Data>
-                            viewModel.hasNextPage = searchStudiosResponse.data?.Page()?.pageInfo()?.hasNextPage() ?: false
-                            searchStudiosResponse.data?.Page()?.studios()?.forEach { studio ->
+                            viewModel.hasNextPage = searchStudiosResponse.data?.page?.pageInfo?.hasNextPage ?: false
+                            searchStudiosResponse.data?.page?.studios?.forEach { studio ->
                                 viewModel.searchResultList.add(SearchResult(studiosSearchResult =  studio))
                             }
                         }

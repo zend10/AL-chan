@@ -9,7 +9,7 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_flexbox_genre.view.*
 
-class OverviewGenreRvAdapter(private val list: List<String>,
+class OverviewGenreRvAdapter(private val list: List<String?>,
                              private val listener: OverviewGenreListener
 ) : RecyclerView.Adapter<OverviewGenreRvAdapter.ViewHolder>() {
 
@@ -23,7 +23,7 @@ class OverviewGenreRvAdapter(private val list: List<String>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
+        val item = list[position]!!
 
         val genreColor = Color.parseColor(AndroidUtility.getGenreHexColor(item))
         holder.genreCard.setCardBackgroundColor(genreColor)

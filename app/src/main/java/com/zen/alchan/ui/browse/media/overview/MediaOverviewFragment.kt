@@ -65,8 +65,8 @@ class MediaOverviewFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    viewModel.mediaData = it.data?.Media()
-                    mediaData = it.data?.Media()
+                    viewModel.mediaData = it.data?.media
+                    mediaData = it.data?.media
                     initLayout()
                 }
                 ResponseStatus.ERROR -> {
@@ -99,9 +99,9 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleGenre() {
-        if (!mediaData?.genres().isNullOrEmpty()) {
+        if (!mediaData?.genres.isNullOrEmpty()) {
             mediaGenreRecyclerView.visibility = View.VISIBLE
-            mediaGenreRecyclerView.adapter = OverviewGenreRvAdapter(mediaData?.genres()!!, object : OverviewGenreRvAdapter.OverviewGenreListener {
+            mediaGenreRecyclerView.adapter = OverviewGenreRvAdapter(mediaData?.genres!!, object : OverviewGenreRvAdapter.OverviewGenreListener {
                 override fun passSelectedGenre(genre: String) {
                     // TODO: open genre search
                 }
@@ -112,7 +112,7 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleDescription() {
-        val spanned = HtmlCompat.fromHtml(mediaData?.description() ?: getString(R.string.no_description), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val spanned = HtmlCompat.fromHtml(mediaData?.description ?: getString(R.string.no_description), HtmlCompat.FROM_HTML_MODE_LEGACY)
         mediaDescriptionText.text = spanned
         mediaDescriptionArrow.setOnClickListener {
             if (dummyMediaDescriptionText.isVisible) {
@@ -127,13 +127,13 @@ class MediaOverviewFragment : BaseFragment() {
 
     private fun handleCharacters() {
         if (viewModel.charactersList.isNullOrEmpty()) {
-            mediaData?.characters()?.edges()?.forEach {
+            mediaData?.characters?.edges?.forEach {
                 viewModel.charactersList.add(
                     MediaCharacters(
-                        it.node()?.id(),
-                        it.node()?.name()?.full(),
-                        it.node()?.image()?.large(),
-                        it.role(),
+                        it?.node?.id,
+                        it?.node?.name?.full,
+                        it?.node?.image?.large,
+                        it?.role,
                         null
                     )
                 )
@@ -149,25 +149,25 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleTitles() {
-        mediaRomajiText.text = mediaData?.title()?.romaji()
+        mediaRomajiText.text = mediaData?.title?.romaji
         mediaRomajiText.setOnClickListener {
             AndroidUtility.copyToClipboard(activity, mediaRomajiText.text.toString())
             DialogUtility.showToast(activity, R.string.text_copied)
         }
 
-        mediaEnglishText.text = mediaData?.title()?.english() ?: mediaData?.title()?.romaji()
+        mediaEnglishText.text = mediaData?.title?.english ?: mediaData?.title?.romaji
         mediaEnglishText.setOnClickListener {
             AndroidUtility.copyToClipboard(activity, mediaEnglishText.text.toString())
             DialogUtility.showToast(activity, R.string.text_copied)
         }
 
-        mediaNativeText.text = mediaData?.title()?.native_()
+        mediaNativeText.text = mediaData?.title?.native_
         mediaNativeText.setOnClickListener {
             AndroidUtility.copyToClipboard(activity, mediaNativeText.text.toString())
             DialogUtility.showToast(activity, R.string.text_copied)
         }
 
-        val synonymsList = mediaData?.synonyms()
+        val synonymsList = mediaData?.synonyms
         if (!synonymsList.isNullOrEmpty()) {
             mediaSynonymsLayout.visibility = View.VISIBLE
             var synonymText = ""
@@ -182,48 +182,48 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleInfo() {
-        mediaFormatText.text = mediaData?.format()?.name?.replace("_", " ")
-        mediaSourceText.text = mediaData?.source()?.name?.replace("_", " ") ?: "-"
-        mediaStatusText.text = mediaData?.status()?.name?.replace("_", " ")
+        mediaFormatText.text = mediaData?.format?.name?.replace("_", " ")
+        mediaSourceText.text = mediaData?.source?.name?.replace("_", " ") ?: "-"
+        mediaStatusText.text = mediaData?.status?.name?.replace("_", " ")
 
-        mediaStartDateText.text = if (mediaData?.startDate() != null) {
-            Utility.convertToDateFormat(mediaData?.startDate()?.year(), mediaData?.startDate()?.month(), mediaData?.startDate()?.day()) ?: "?"
+        mediaStartDateText.text = if (mediaData?.startDate != null) {
+            Utility.convertToDateFormat(mediaData?.startDate?.year, mediaData?.startDate?.month, mediaData?.startDate?.day) ?: "?"
         } else {
             "?"
         }
 
-        mediaEndDateText.text = if (mediaData?.endDate() != null) {
-            Utility.convertToDateFormat(mediaData?.endDate()?.year(), mediaData?.endDate()?.month(), mediaData?.endDate()?.day()) ?: "?"
+        mediaEndDateText.text = if (mediaData?.endDate != null) {
+            Utility.convertToDateFormat(mediaData?.endDate?.year, mediaData?.endDate?.month, mediaData?.endDate?.day) ?: "?"
         } else {
             "?"
         }
 
-        if (mediaData?.type() == MediaType.ANIME) {
+        if (mediaData?.type == MediaType.ANIME) {
             mediaProgressLabel.text = getString(R.string.episodes)
-            mediaProgressText.text = if (mediaData?.episodes() == null || mediaData?.episodes() == 0) "?" else mediaData?.episodes()?.toString()
-            if (mediaData?.duration() != null && mediaData?.duration() != 0) {
+            mediaProgressText.text = if (mediaData?.episodes == null || mediaData?.episodes == 0) "?" else mediaData?.episodes?.toString()
+            if (mediaData?.duration != null && mediaData?.duration != 0) {
                 mediaDurationLayout.visibility = View.VISIBLE
-                mediaDurationText.text = "${mediaData?.duration()} ${getString(R.string.min).setRegularPlural(mediaData?.duration())}"
+                mediaDurationText.text = "${mediaData?.duration} ${getString(R.string.min).setRegularPlural(mediaData?.duration)}"
             } else {
                 mediaDurationLayout.visibility = View.GONE
             }
             mediaVolumesLayout.visibility = View.GONE
-            if (mediaData?.season() != null) {
+            if (mediaData?.season != null) {
                 mediaSeasonLayout.visibility = View.VISIBLE
-                mediaSeasonText.text = "${mediaData?.season()?.name} ${mediaData?.seasonYear()}"
+                mediaSeasonText.text = "${mediaData?.season?.name} ${mediaData?.seasonYear}"
                 mediaSeasonText.setOnClickListener {
                     // TODO: open seasonal chart
                 }
             } else {
                 mediaSeasonLayout.visibility = View.GONE
             }
-        } else if (mediaData?.type() == MediaType.MANGA) {
+        } else if (mediaData?.type == MediaType.MANGA) {
             mediaProgressLabel.text = getString(R.string.chapters)
-            mediaProgressText.text = if (mediaData?.chapters() == null || mediaData?.chapters() == 0) "?" else mediaData?.chapters()?.toString()
+            mediaProgressText.text = if (mediaData?.chapters == null || mediaData?.chapters == 0) "?" else mediaData?.chapters?.toString()
             mediaDurationLayout.visibility = View.GONE
-            if (mediaData?.volumes() != null && mediaData?.volumes() != 0) {
+            if (mediaData?.volumes != null && mediaData?.volumes != 0) {
                 mediaVolumesLayout.visibility = View.VISIBLE
-                mediaVolumeText.text = mediaData?.volumes()?.toString()
+                mediaVolumeText.text = mediaData?.volumes?.toString()
             } else {
                 mediaVolumesLayout.visibility = View.GONE
             }
@@ -232,15 +232,15 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleStudios() {
-        if (viewModel.mediaData?.type() == MediaType.ANIME) {
+        if (viewModel.mediaData?.type == MediaType.ANIME) {
             mediaStudioLayout.visibility = View.VISIBLE
 
             if (viewModel.studioList.isNullOrEmpty()) {
-                mediaData?.studios()?.edges()?.forEach {
-                    if (it.isMain) {
-                        viewModel.studioList.add(KeyValueItem(it.node()?.name()!!, it.node()?.id()))
+                mediaData?.studios?.edges?.forEach {
+                    if (it?.isMain == true) {
+                        viewModel.studioList.add(KeyValueItem(it.node?.name!!, it.node.id))
                     } else {
-                        viewModel.producerList.add(KeyValueItem(it.node()?.name()!!, it.node()?.id()))
+                        viewModel.producerList.add(KeyValueItem(it?.node?.name!!, it.node.id))
                     }
                 }
 
@@ -261,10 +261,10 @@ class MediaOverviewFragment : BaseFragment() {
     }
 
     private fun handleStats() {
-        mediaAvgScoreText.text = "${mediaData?.averageScore()?.toString() ?: "0"}%"
-        mediaMeanScoreText.text = "${mediaData?.meanScore()?.toString() ?: "0"}%"
-        mediaPopularityText.text = mediaData?.popularity()?.toString() ?: "0"
-        mediaFavoritesText.text = mediaData?.favourites()?.toString() ?: "0"
+        mediaAvgScoreText.text = "${mediaData?.averageScore?.toString() ?: "0"}%"
+        mediaMeanScoreText.text = "${mediaData?.meanScore?.toString() ?: "0"}%"
+        mediaPopularityText.text = mediaData?.popularity?.toString() ?: "0"
+        mediaFavoritesText.text = mediaData?.favourites?.toString() ?: "0"
     }
 
     private fun handleTags() {
@@ -277,12 +277,12 @@ class MediaOverviewFragment : BaseFragment() {
         }
 
         if (viewModel.tagsList.isNullOrEmpty()) {
-            mediaData?.tags()?.forEach {
+            mediaData?.tags?.forEach {
                 viewModel.tagsList.add(
                     MediaTags(
-                        it.id(),
-                        it.name(),
-                        it.rank(),
+                        it?.id!!,
+                        it.name,
+                        it.rank,
                         it.isGeneralSpoiler,
                         it.isMediaSpoiler,
                         it.isAdult
@@ -307,15 +307,15 @@ class MediaOverviewFragment : BaseFragment() {
 
     private fun handleRelations() {
         if (viewModel.relationsList.isNullOrEmpty()) {
-            mediaData?.relations()?.edges()?.forEach {
+            mediaData?.relations?.edges?.forEach {
                 viewModel.relationsList.add(
                     MediaRelations(
-                        it.node()?.id()!!,
-                        it.node()?.title()?.userPreferred()!!,
-                        it.node()?.coverImage()?.extraLarge(),
-                        it.node()?.type()!!,
-                        it.node()?.format()!!,
-                        it.relationType()!!
+                        it?.node?.id!!,
+                        it.node.title?.userPreferred!!,
+                        it.node.coverImage?.extraLarge,
+                        it.node.type!!,
+                        it.node.format!!,
+                        it.relationType!!
                     )
                 )
             }
@@ -333,16 +333,16 @@ class MediaOverviewFragment : BaseFragment() {
 
     private fun handleRecommendations() {
         if (viewModel.recommendationsList.isNullOrEmpty()) {
-            mediaData?.recommendations()?.edges()?.forEach {
+            mediaData?.recommendations?.edges?.forEach {
                 viewModel.recommendationsList.add(
                     MediaRecommendations(
-                        it.node()?.mediaRecommendation()?.id()!!,
-                        it.node()?.rating(),
-                        it.node()?.mediaRecommendation()?.title()?.userPreferred(),
-                        it.node()?.mediaRecommendation()?.format(),
-                        it.node()?.mediaRecommendation()?.averageScore(),
-                        it.node()?.mediaRecommendation()?.favourites(),
-                        it.node()?.mediaRecommendation()?.coverImage()?.extraLarge()
+                        it?.node?.mediaRecommendation?.id!!,
+                        it.node.rating,
+                        it.node.mediaRecommendation.title?.userPreferred,
+                        it.node.mediaRecommendation.format,
+                        it.node.mediaRecommendation.averageScore,
+                        it.node.mediaRecommendation.favourites,
+                        it.node.mediaRecommendation.coverImage?.extraLarge
                     )
                 )
             }
@@ -358,10 +358,10 @@ class MediaOverviewFragment : BaseFragment() {
 
     private fun handleLinks() {
         if (viewModel.linksList.isNullOrEmpty()) {
-            mediaData?.externalLinks()?.forEach {
-                viewModel.linksList.add(MediaLinks(it.site(), it.url()))
+            mediaData?.externalLinks?.forEach {
+                viewModel.linksList.add(MediaLinks(it?.site!!, it.url))
             }
-            viewModel.linksList.add(0, MediaLinks("AniList", mediaData?.siteUrl() ?: "${Constant.ANILIST_URL}${mediaData?.type()?.name?.toLowerCase()}/${mediaData?.id()}"))
+            viewModel.linksList.add(0, MediaLinks("AniList", mediaData?.siteUrl ?: "${Constant.ANILIST_URL}${mediaData?.type?.name?.toLowerCase()}/${mediaData?.id}"))
         }
 
         mediaLinksRecyclerView.adapter = assignLinksAdapter()

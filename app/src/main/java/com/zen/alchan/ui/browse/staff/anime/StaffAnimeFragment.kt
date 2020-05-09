@@ -79,17 +79,17 @@ class StaffAnimeFragment : BaseFragment() {
                         return@Observer
                     }
 
-                    viewModel.hasNextPage = it.data?.Staff()?.staffMedia()?.pageInfo()?.hasNextPage() ?: false
+                    viewModel.hasNextPage = it.data?.staff?.staffMedia?.pageInfo?.hasNextPage ?: false
                     viewModel.page += 1
                     viewModel.isInit = true
 
-                    it.data?.Staff()?.staffMedia()?.edges()?.forEach { edge ->
+                    it.data?.staff?.staffMedia?.edges?.forEach { edge ->
                         val staffMedia = StaffMedia(
-                            edge.node()?.id(),
-                            edge.node()?.title()?.userPreferred(),
-                            edge.node()?.coverImage()?.large(),
-                            edge.node()?.type(),
-                            edge.staffRole()
+                            edge?.node?.id,
+                            edge?.node?.title?.userPreferred,
+                            edge?.node?.coverImage?.large,
+                            edge?.node?.type,
+                            edge?.staffRole
                         )
                         viewModel.staffMedia.add(staffMedia)
                     }

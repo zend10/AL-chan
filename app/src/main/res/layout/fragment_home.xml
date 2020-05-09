@@ -96,164 +96,104 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/seasonalChartMenu"
+                        app:contentPadding="@dimen/marginSmall"
+                        app:cardBackgroundColor="?themeCardColor"
+                        android:layout_marginBottom="@dimen/marginNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/seasonalChartMenu"
-                            app:contentPadding="@dimen/marginSmall"
-                            app:cardBackgroundColor="?themeCardColor"
-                            android:layout_marginEnd="@dimen/marginSmall"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/seasonal_chart"
+                            style="?themeRegularFont"
+                            app:drawableStartCompat="@drawable/ic_calendar"
+                            app:drawableTint="?themeContentColor"
+                            android:drawablePadding="@dimen/marginSmall"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:text="@string/seasonal_chart"
-                                style="?themeRegularFont"
-                                app:drawableStartCompat="@drawable/ic_calendar"
-                                app:drawableTint="?themeContentColor"
-                                android:drawablePadding="@dimen/marginSmall"
-                                android:gravity="center_vertical"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/releaseCalendarMenu"
-                            app:contentPadding="@dimen/marginSmall"
-                            app:cardBackgroundColor="?themeCardColor"
-                            android:layout_marginStart="@dimen/marginSmall"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:text="@string/release_calendar"
-                                style="?themeRegularFont"
-                                app:drawableStartCompat="@drawable/ic_schedule"
-                                app:drawableTint="?themeContentColor"
-                                android:drawablePadding="@dimen/marginSmall"
-                                android:gravity="center_vertical"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_marginTop="@dimen/marginNormal"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/releaseCalendarMenu"
+                        app:contentPadding="@dimen/marginSmall"
+                        app:cardBackgroundColor="?themeCardColor"
+                        android:layout_marginBottom="@dimen/marginNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/topAnimeMenu"
-                            app:contentPadding="@dimen/marginSmall"
-                            app:cardBackgroundColor="?themeCardColor"
-                            android:layout_marginEnd="@dimen/marginSmall"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/release_calendar"
+                            style="?themeRegularFont"
+                            app:drawableStartCompat="@drawable/ic_schedule"
+                            app:drawableTint="?themeContentColor"
+                            android:drawablePadding="@dimen/marginSmall"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:text="@string/top_rated_anime"
-                                style="?themeRegularFont"
-                                app:drawableStartCompat="@drawable/ic_retro_tv_star"
-                                app:drawableTint="?themeContentColor"
-                                android:drawablePadding="@dimen/marginSmall"
-                                android:gravity="center_vertical"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/topMangaMenu"
-                            app:contentPadding="@dimen/marginSmall"
-                            app:cardBackgroundColor="?themeCardColor"
-                            android:layout_marginStart="@dimen/marginSmall"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:text="@string/top_rated_manga"
-                                style="?themeRegularFont"
-                                app:drawableStartCompat="@drawable/ic_book_stack_star"
-                                app:drawableTint="?themeContentColor"
-                                android:drawablePadding="@dimen/marginSmall"
-                                android:gravity="center_vertical"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_marginTop="@dimen/marginNormal"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/topAnimeMenu"
+                        app:contentPadding="@dimen/marginSmall"
+                        app:cardBackgroundColor="?themeCardColor"
+                        android:layout_marginBottom="@dimen/marginNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/exploreMenu"
-                            app:contentPadding="@dimen/marginSmall"
-                            app:cardBackgroundColor="?themeCardColor"
-                            android:layout_marginEnd="@dimen/marginSmall"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/top_rated_anime"
+                            style="?themeRegularFont"
+                            app:drawableStartCompat="@drawable/ic_retro_tv_star"
+                            app:drawableTint="?themeContentColor"
+                            android:drawablePadding="@dimen/marginSmall"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:text="@string/explore"
-                                style="?themeRegularFont"
-                                app:drawableStartCompat="@drawable/ic_compass"
-                                app:drawableTint="?themeContentColor"
-                                android:drawablePadding="@dimen/marginSmall"
-                                android:gravity="center_vertical"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/topMangaMenu"
+                        app:contentPadding="@dimen/marginSmall"
+                        app:cardBackgroundColor="?themeCardColor"
+                        android:layout_marginBottom="@dimen/marginNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:visibility="invisible"
-                            android:id="@+id/reviewsMenu"
-                            app:contentPadding="@dimen/marginSmall"
-                            app:cardBackgroundColor="?themeCardColor"
-                            android:layout_marginStart="@dimen/marginSmall"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/top_rated_manga"
+                            style="?themeRegularFont"
+                            app:drawableStartCompat="@drawable/ic_book_stack_star"
+                            app:drawableTint="?themeContentColor"
+                            android:drawablePadding="@dimen/marginSmall"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:text="@string/reviews"
-                                style="?themeRegularFont"
-                                app:drawableStartCompat="@drawable/ic_inscription"
-                                app:drawableTint="?themeContentColor"
-                                android:drawablePadding="@dimen/marginSmall"
-                                android:gravity="center_vertical"
-                                android:lines="2"
-                                android:maxLines="2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/exploreMenu"
+                        app:contentPadding="@dimen/marginSmall"
+                        app:cardBackgroundColor="?themeCardColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/explore"
+                            style="?themeRegularFont"
+                            app:drawableStartCompat="@drawable/ic_compass"
+                            app:drawableTint="?themeContentColor"
+                            android:drawablePadding="@dimen/marginSmall"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -290,7 +230,7 @@
                 </RelativeLayout>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/popular_this_season"
+                    android:text="@string/trending_anime_right_now"
                     style="?themeRegularBoldFont"
                     android:layout_marginTop="@dimen/marginPage"
                     android:layout_marginStart="@dimen/marginPage"
@@ -299,39 +239,6 @@
                     android:layout_height="wrap_content"/>
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/popularThisSeasonRecyclerView"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/marginNormal"
-                        android:clipToPadding="false"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                    <ProgressBar
-                        android:visibility="gone"
-                        android:id="@+id/popularThisSeasonLoading"
-                        android:indeterminateTint="?themeContentColor"
-                        android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </RelativeLayout>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/trending_right_now"
-                    style="?themeRegularBoldFont"
-                    android:layout_marginTop="@dimen/marginPage"
-                    android:layout_marginStart="@dimen/marginPage"
-                    android:layout_marginBottom="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <RelativeLayout
-                    android:layout_marginBottom="@dimen/marginPage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -492,6 +399,15 @@
 
                 </RelativeLayout>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/trending_manga_right_now"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <RelativeLayout
                     android:layout_marginBottom="@dimen/marginPage"
                     android:layout_width="match_parent"
@@ -641,6 +557,14 @@
                         android:layout_marginTop="@dimen/marginNormal"
                         android:paddingStart="@dimen/marginNormal"
                         android:clipToPadding="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:id="@+id/trendingMangaLoading"
+                        android:indeterminateTint="?themeContentColor"
+                        android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

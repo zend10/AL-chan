@@ -62,9 +62,9 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onNext(t: Response<ViewerQuery.Data>) {
                 if (t.hasErrors()) {
-                    _viewerDataResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _viewerDataResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    userManager.setViewerData(Converter.convertUser(t.data()?.Viewer()))
+                    userManager.setViewerData(Converter.convertUser(t.data?.viewer))
                     _viewerDataResponse.postValue(Resource.Success(true))
                     _viewerData.postValue(userManager.viewerData)
                 }
@@ -91,10 +91,10 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onNext(t: Response<AniListSettingsMutation.Data>) {
                 if (t.hasErrors()) {
-                    _updateAniListSettingsResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _updateAniListSettingsResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     val savedUser = userManager.viewerData
-                    savedUser?.options = Converter.convertUserOptions(t.data()?.UpdateUser()?.options())
+                    savedUser?.options = Converter.convertUserOptions(t.data?.updateUser?.options)
                     userManager.setViewerData(savedUser)
 
                     _updateAniListSettingsResponse.postValue(Resource.Success(true))
@@ -125,10 +125,10 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onNext(t: Response<ListSettingsMutation.Data>) {
                 if (t.hasErrors()) {
-                    _updateListSettingsResponse.postValue(Resource.Error(t.errors()[0].message()!!))
+                    _updateListSettingsResponse.postValue(Resource.Error(t.errors!![0].message))
                 } else {
                     val savedUser = userManager.viewerData
-                    savedUser?.mediaListOptions = Converter.convertMediaListOptions(t.data()?.UpdateUser()?.mediaListOptions())
+                    savedUser?.mediaListOptions = Converter.convertMediaListOptions(t.data?.updateUser?.mediaListOptions)
                     userManager.setViewerData(savedUser)
 
                     _updateListSettingsResponse.postValue(Resource.Success(true))

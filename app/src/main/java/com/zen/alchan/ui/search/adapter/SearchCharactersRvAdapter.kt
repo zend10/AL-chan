@@ -34,15 +34,15 @@ class SearchCharactersRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             val item = list[position]
-            holder.searchNameText.text = item?.charactersSearchResult?.name()?.full()
-            GlideApp.with(context).load(item?.charactersSearchResult?.image()?.large()).into(holder.searchImage)
-            holder.searchFavoriteText.text = item?.charactersSearchResult?.favourites()?.toString() ?: "0"
+            holder.searchNameText.text = item?.charactersSearchResult?.name?.full
+            GlideApp.with(context).load(item?.charactersSearchResult?.image?.large).into(holder.searchImage)
+            holder.searchFavoriteText.text = item?.charactersSearchResult?.favourites?.toString() ?: "0"
 
             holder.searchInfoLayout.visibility = View.GONE
             holder.searchScoreText.visibility = View.GONE
 
             holder.itemView.setOnClickListener {
-                listener.passSelectedItem(item?.charactersSearchResult?.id()!!)
+                listener.passSelectedItem(item?.charactersSearchResult?.id!!)
             }
         }
     }
