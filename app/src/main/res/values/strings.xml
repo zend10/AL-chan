@@ -223,4 +223,6 @@
     <string name="explore">Explore</string>
     <string name="trending_anime_right_now">Trending Anime Right Now</string>
     <string name="trending_manga_right_now">Trending Manga Right Now</string>
+    <string name="only_show_manga_on_my_list">Only show Manga on my list</string>
+    <string name="hide_manga_on_my_list">Hide Manga on my list</string>
 </resources>

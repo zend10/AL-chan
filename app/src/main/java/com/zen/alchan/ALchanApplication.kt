@@ -89,7 +89,7 @@ class ALchanApplication : Application() {
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
-        viewModel { ExploreViewModel() }
+        viewModel { ExploreViewModel(get(), gson) }
 
         viewModel { AnimeListViewModel(get(), get(), gson) }
         viewModel { AnimeListItemViewModel(get(), get(), get(), gson) }

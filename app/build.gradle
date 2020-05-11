@@ -89,7 +89,7 @@ dependencies {
 apollo {
     customTypeMapping = [
             "Json"       : "java.lang.Object",
-            "CountryCode": "java.lang.String"
+            "CountryCode": "kotlin.String"
     ]
     generateKotlinModels.set(true)
 }

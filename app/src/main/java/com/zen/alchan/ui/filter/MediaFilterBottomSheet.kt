@@ -17,6 +17,7 @@ import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.Utility
 import kotlinx.android.synthetic.main.bottomsheet_filter_media.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaSort
 import type.MediaType
 
 class MediaFilterBottomSheet : BottomSheetDialogFragment() {
@@ -74,14 +75,20 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
     private fun initLayout() {
         // sort will never be null after being initialised for the first time
         // that's why I'm checking current data through selectedSort
-        if (viewModel.currentData.selectedSort == null) {
-            viewModel.currentData.selectedSort = viewModel.defaultSort
+        if (viewModel.currentData.selectedListSort == null) {
+            viewModel.currentData.selectedListSort = viewModel.defaultSort
+            viewModel.currentData.selectedSort = MediaSort.POPULARITY_DESC
             if (viewModel.filteredData != null) {
                 viewModel.currentData = viewModel.filteredData!!
             }
         }
 
-        dialogView.sortText.text = viewModel.currentData.selectedSort?.name?.replaceUnderscore() ?: "-"
+        if (viewModel.isHandleSearch) {
+            val sortListIndex = viewModel.mediaSortList.indexOf(viewModel.currentData.selectedSort)
+            dialogView.sortText.text = if (sortListIndex != -1) viewModel.mediaSortArray[sortListIndex] else "-"
+        } else {
+            dialogView.sortText.text = viewModel.currentData.selectedListSort?.name?.replaceUnderscore() ?: "-"
+        }
         dialogView.filterFormatText.text = viewModel.currentData.selectedFormat?.name?.replaceUnderscore() ?: "-"
         dialogView.filterSeasonText.text = viewModel.currentData.selectedSeason?.name?.replaceUnderscore() ?: "-"
         dialogView.filterCountryText.text = viewModel.currentData.selectedCountry?.value?.replaceUnderscore() ?: "-"
@@ -89,12 +96,10 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
         dialogView.filterSourceText.text = viewModel.currentData.selectedSource?.name?.replaceUnderscore() ?: "-"
         dialogView.filterYearText.text = viewModel.currentData.selectedYear?.toString() ?: "-"
         dialogView.filterYearSeekBar.progress = if (viewModel.currentData.selectedYear == null) 0 else viewModel.currentData.selectedYear!! - MIN_YEAR
-        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList,
-            LIST_GENRE
-        )
-        dialogView.filterTagRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedTagList,
-            LIST_TAG
-        )
+        dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList, LIST_GENRE)
+        dialogView.filterTagRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedTagList, LIST_TAG)
+        dialogView.filterHideMediaCheckBox.isChecked = viewModel.currentData.selectedOnList == false
+        dialogView.filterOnlyShowMediaCheckBox.isChecked = viewModel.currentData.selectedOnList == true
 
         if (viewModel.filteredData != null) {
             dialogView.filterResetButton.visibility = View.VISIBLE
@@ -112,17 +117,30 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
 
         if (viewModel.mediaType == MediaType.ANIME) {
             dialogView.filterSeasonLayout.visibility = View.VISIBLE
+            dialogView.filterOnlyShowMediaText.text = getString(R.string.only_show_anime_on_my_list)
+            dialogView.filterHideMediaText.text = getString(R.string.hide_anime_on_my_list)
         } else {
             dialogView.filterSeasonLayout.visibility = View.GONE
+            dialogView.filterOnlyShowMediaText.text = getString(R.string.only_show_manga_on_my_list)
+            dialogView.filterHideMediaText.text = getString(R.string.hide_manga_on_my_list)
         }
 
         dialogView.sortLayout.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.getMediaListSortStringArray()) { _, which ->
-                    viewModel.currentData.selectedSort = viewModel.mediaSortList[which]
-                    dialogView.sortText.text = viewModel.mediaSortList[which].name.replaceUnderscore()
-                }
-                .show()
+            if (viewModel.isHandleSearch) {
+                MaterialAlertDialogBuilder(activity)
+                    .setItems(viewModel.mediaSortArray) { _, which ->
+                        viewModel.currentData.selectedSort = viewModel.mediaSortList[which]
+                        dialogView.sortText.text = viewModel.mediaSortArray[which].replaceUnderscore()
+                    }
+                    .show()
+            } else {
+                MaterialAlertDialogBuilder(activity)
+                    .setItems(viewModel.getMediaListSortStringArray()) { _, which ->
+                        viewModel.currentData.selectedListSort = viewModel.mediaListSortList[which]
+                        dialogView.sortText.text = viewModel.mediaListSortList[which].name.replaceUnderscore()
+                    }
+                    .show()
+            }
         }
 
         dialogView.filterFormatLayout.setOnClickListener {
@@ -223,6 +241,24 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
                     }
                 }
                 .show()
+        }
+
+        dialogView.filterOnlyShowMediaCheckBox.setOnClickListener {
+            if (dialogView.filterOnlyShowMediaCheckBox.isChecked) {
+                dialogView.filterHideMediaCheckBox.isChecked = false
+                viewModel.currentData.selectedOnList = true
+            } else {
+                viewModel.currentData.selectedOnList = null
+            }
+        }
+
+        dialogView.filterHideMediaCheckBox.setOnClickListener {
+            if (dialogView.filterHideMediaCheckBox.isChecked) {
+                dialogView.filterOnlyShowMediaCheckBox.isChecked = false
+                viewModel.currentData.selectedOnList = false
+            } else {
+                viewModel.currentData.selectedOnList = null
+            }
         }
 
         dialogView.filterApplyButton.setOnClickListener {

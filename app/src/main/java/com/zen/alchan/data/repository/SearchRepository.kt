@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
+import type.*
 
 interface SearchRepository {
     val searchAnimeResponse: LiveData<Resource<SearchAnimeQuery.Data>>
@@ -10,9 +11,39 @@ interface SearchRepository {
     val searchStaffsResponse: LiveData<Resource<SearchStaffsQuery.Data>>
     val searchStudiosResponse: LiveData<Resource<SearchStudiosQuery.Data>>
 
-    fun searchAnime(page: Int, search: String)
-    fun searchManga(page: Int, search: String)
-    fun searchCharacters(page: Int, search: String)
-    fun searchStaffs(page: Int, search: String)
-    fun searchStudios(page: Int, search: String)
+    fun searchAnime(
+        page: Int,
+        search: String,
+        season: MediaSeason? = null,
+        seasonYear: Int? = null,
+        format: MediaFormat? = null,
+        status: MediaStatus? = null,
+        isAdult: Boolean? = null,
+        onList: Boolean? = null,
+        source: MediaSource? = null,
+        countryOfOrigin: String? = null,
+        genreIn: List<String?>? = null,
+        tagIn: List<String?>? = null,
+        sort: List<MediaSort>? = null
+    )
+
+    fun searchManga(
+        page: Int,
+        search: String,
+        startDateGreater: Int? = null,
+        endDateLesser: Int? = null,
+        format: MediaFormat? = null,
+        status: MediaStatus? = null,
+        isAdult: Boolean? = null,
+        onList: Boolean? = null,
+        source: MediaSource? = null,
+        countryOfOrigin: String? = null,
+        genreIn: List<String?>? = null,
+        tagIn: List<String?>? = null,
+        sort: List<MediaSort>? = null
+    )
+
+    fun searchCharacters(page: Int, search: String?, sort: List<CharacterSort>? = null)
+    fun searchStaffs(page: Int, search: String?, sort: List<StaffSort>? = null)
+    fun searchStudios(page: Int, search: String?, sort: List<StudioSort>? = null)
 }

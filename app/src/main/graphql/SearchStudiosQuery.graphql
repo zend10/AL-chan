@@ -1,6 +1,7 @@
 query SearchStudiosQuery(
     $page: Int,
-    $search: String
+    $search: String,
+    $sort: [StudioSort]
 ) {
     Page(page: $page) {
         pageInfo {
@@ -10,7 +11,7 @@ query SearchStudiosQuery(
             lastPage
             hasNextPage
         }
-        studios(search: $search) {
+        studios(search: $search, sort: $sort) {
             id
             name
             favourites
@@ -18,7 +19,7 @@ query SearchStudiosQuery(
                 edges {
                     node {
                         coverImage {
-                            extraLarge
+                            large
                         }
                     }
                 }

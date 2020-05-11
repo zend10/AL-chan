@@ -38,7 +38,7 @@ class SearchStudioRvAdapter(private val context: Context,
             holder.searchFavoriteText.text = item?.studiosSearchResult?.favourites?.toString() ?: "0"
 
             if (item?.studiosSearchResult?.media?.edges?.isNullOrEmpty() == false) {
-                GlideApp.with(context).load(item.studiosSearchResult?.media?.edges!![0]?.node?.coverImage?.extraLarge).into(holder.searchImage)
+                GlideApp.with(context).load(item.studiosSearchResult?.media?.edges!![0]?.node?.coverImage?.large).into(holder.searchImage)
             }
 
             holder.searchInfoLayout.visibility = View.GONE

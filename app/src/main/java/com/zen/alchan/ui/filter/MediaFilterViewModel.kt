@@ -75,7 +75,41 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
             return sourceList
         }
 
-    val mediaSortList = MediaListSort.values().toList()
+    val mediaListSortList = MediaListSort.values().toList()
+
+    val mediaSortArray = arrayOf(
+        "NEWEST",
+        "OLDEST",
+        "TITLE ROMAJI",
+        "TITLE ENGLISH",
+        "TITLE NATIVE",
+        "FIRST ADDED",
+        "LAST ADDED",
+        "HIGHEST SCORE",
+        "LOWEST SCORE",
+        "MOST POPULAR",
+        "LEAST POPULAR",
+        "MOST FAVORITE",
+        "LEAST FAVORITE",
+        "TRENDING"
+    )
+
+    var mediaSortList = arrayListOf(
+        MediaSort.START_DATE_DESC,
+        MediaSort.START_DATE,
+        MediaSort.TITLE_ROMAJI,
+        MediaSort.TITLE_ENGLISH,
+        MediaSort.TITLE_NATIVE,
+        MediaSort.ID,
+        MediaSort.ID_DESC,
+        MediaSort.SCORE_DESC,
+        MediaSort.SCORE,
+        MediaSort.POPULARITY_DESC,
+        MediaSort.POPULARITY,
+        MediaSort.FAVOURITES_DESC,
+        MediaSort.FAVOURITES,
+        MediaSort.TRENDING_DESC
+    )
 
     val genreList: List<String?>
         get() = mediaRepository.genreList
@@ -122,7 +156,7 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
 
     fun getMediaListSortStringArray(): Array<String> {
         val stringList = ArrayList<String>()
-        mediaSortList.forEach {
+        mediaListSortList.forEach {
             stringList.add(it.name.replaceUnderscore())
         }
         return stringList.toTypedArray()

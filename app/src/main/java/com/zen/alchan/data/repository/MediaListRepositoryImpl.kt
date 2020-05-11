@@ -313,12 +313,12 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         }
 
         if (mediaType == MediaType.ANIME) {
-            if (animeFilteredData != null && animeFilteredData?.selectedSort != null) {
-                rowOrderEnum = animeFilteredData?.selectedSort!!
+            if (animeFilteredData != null && animeFilteredData?.selectedListSort != null) {
+                rowOrderEnum = animeFilteredData?.selectedListSort!!
             }
         } else if (mediaType == MediaType.MANGA) {
-            if (mangaFilteredData != null && mangaFilteredData?.selectedSort != null) {
-                rowOrderEnum = mangaFilteredData?.selectedSort!!
+            if (mangaFilteredData != null && mangaFilteredData?.selectedListSort != null) {
+                rowOrderEnum = mangaFilteredData?.selectedListSort!!
             }
         }
 

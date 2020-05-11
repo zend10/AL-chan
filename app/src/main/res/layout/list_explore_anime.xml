@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/marginNormal"
+    android:layout_marginEnd="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginNormal"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/exploreImageGuideline"
+            app:layout_constraintGuide_percent="0.25"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/exploreCoverImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/exploreImageGuideline"
+            app:layout_constraintDimensionRatio="2:3"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginBottom="@dimen/marginSmall"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/exploreTitleText"
+            style="?themeRegularBoldFont"
+            android:text="Title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/exploreCreatorText"
+            style="?themeRegularFont"
+            app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
+            app:layout_constraintTop_toBottomOf="@id/exploreTitleText"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/exploreYearText"
+            style="?themeRegularFont"
+            app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
+            app:layout_constraintTop_toBottomOf="@id/exploreCreatorText"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/exploreFormatIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            app:layout_constraintStart_toEndOf="@id/exploreYearText"
+            app:layout_constraintTop_toTopOf="@id/exploreYearText"
+            app:layout_constraintBottom_toBottomOf="@id/exploreYearText"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="@dimen/iconPadding"
+            android:layout_height="@dimen/iconPadding"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/exploreFormatText"
+            style="?themeRegularFont"
+            app:layout_constraintStart_toEndOf="@id/exploreFormatIcon"
+            app:layout_constraintTop_toBottomOf="@id/exploreCreatorText"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="gone"
+            android:id="@+id/exploreCountIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            app:layout_constraintStart_toEndOf="@id/exploreFormatText"
+            app:layout_constraintTop_toTopOf="@id/exploreFormatText"
+            app:layout_constraintBottom_toBottomOf="@id/exploreFormatText"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="@dimen/iconPadding"
+            android:layout_height="@dimen/iconPadding"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:visibility="gone"
+            android:id="@+id/exploreCountText"
+            style="?themeRegularFont"
+            app:layout_constraintStart_toEndOf="@id/exploreCountIcon"
+            app:layout_constraintTop_toBottomOf="@id/exploreCreatorText"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/exploreScoreLayout"
+            app:layout_constraintTop_toBottomOf="@id/exploreFormatText"
+            app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginSmall"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/exploreScoreText"
+                android:text="0"
+                style="?themeRegularBoldFont"
+                app:drawableStartCompat="@drawable/ic_star_filled"
+                app:drawableTint="@color/yellowStar"
+                android:drawablePadding="@dimen/marginClose"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/exploreFavoriteText"
+                android:text="0"
+                style="?themeRegularBoldFont"
+                app:drawableStartCompat="@drawable/ic_heart_outline"
+                app:drawableTint="@color/redHeart"
+                android:drawablePadding="@dimen/marginClose"
+                android:gravity="center_vertical"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/exploreGenreRecyclerView"
+            app:layout_constraintStart_toStartOf="@id/exploreImageGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exploreScoreLayout"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginSmall"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

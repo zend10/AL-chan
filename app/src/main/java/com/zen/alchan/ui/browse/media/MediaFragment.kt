@@ -229,7 +229,7 @@ class MediaFragment : BaseFragment() {
         }
 
         mediaTitleText.text = viewModel.currentMediaData?.title?.userPreferred
-        mediaYearText.text = viewModel.currentMediaData?.startDate?.year.toString()
+        mediaYearText.text = viewModel.currentMediaData?.startDate?.year?.toString() ?: "TBA"
 
         if (viewModel.mediaType == MediaType.ANIME) {
             if (viewModel.currentMediaData?.episodes != null && viewModel.currentMediaData?.episodes != 0) {
