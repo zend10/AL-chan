@@ -13,35 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/animeListAppBarLayout"
-        android:background="@android:color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/layout_toolbar"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/animeListTabLayout"
-            app:tabMode="scrollable"
-            app:tabTextAppearance="?themeRegularFont"
-            app:tabTextColor="?themeContentColor"
-            android:backgroundTint="?themeCardColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include layout="@layout/layout_toolbar"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/animeListRefreshLayout"
-        android:layout_below="@+id/animeListAppBarLayout"
+        android:layout_below="@+id/toolbarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/animeListViewPager"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/animeListRecyclerView"
+            android:paddingTop="@dimen/marginNormal"
+            android:paddingStart="@dimen/marginNormal"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/layout_empty"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -2,7 +2,9 @@ package com.zen.alchan.ui.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.lifecycle.Observer
+import androidx.viewpager.widget.ViewPager
 import com.zen.alchan.R
 import com.zen.alchan.ui.animelist.AnimeListFragment
 import com.zen.alchan.ui.base.BaseActivity
@@ -36,20 +38,17 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         viewModel.listOrAniListSettingsChanged.observe(this, Observer {
             recreate()
         })
-
-        viewModel.shouldLoading.observe(this, Observer {
-            if (it) {
-                loadingLayout.visibility = View.VISIBLE
-            } else {
-                loadingLayout.visibility = View.GONE
-            }
-        })
     }
 
     private fun initLayout() {
         val fragmentList = listOf(HomeFragment(), AnimeListFragment(), MangaListFragment(), SocialFragment(), ProfileFragment())
 
-        mainViewPager.setPagingEnabled(false)
+        mainViewPager.setPagingEnabled(true)
+        mainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageSelected(position: Int) { mainBottomNavigation.menu[position].isChecked = true }
+        })
         mainViewPager.offscreenPageLimit = fragmentList.size
         mainViewPager.adapter = MainViewPagerAdapter(supportFragmentManager, fragmentList)
 

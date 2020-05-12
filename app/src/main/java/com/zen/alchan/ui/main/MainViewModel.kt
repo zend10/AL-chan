@@ -18,8 +18,4 @@ class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
     val listOrAniListSettingsChanged by lazy {
         userRepository.listOrAniListSettingsChanged
     }
-
-    val shouldLoading by lazy {
-        mediaListRepository.shouldLoading
-    }
 }

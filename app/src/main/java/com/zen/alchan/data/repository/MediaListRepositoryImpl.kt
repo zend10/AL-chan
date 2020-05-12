@@ -30,10 +30,6 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                               private val gson: Gson
 ) : MediaListRepository {
 
-    private val _shouldLoading = SingleLiveEvent<Boolean>()
-    override val shouldLoading: LiveData<Boolean>
-        get() = _shouldLoading
-
     private val _animeListDataResponse = SingleLiveEvent<Resource<Boolean>>()
     override val animeListDataResponse: LiveData<Resource<Boolean>>
         get() = _animeListDataResponse
@@ -79,10 +75,6 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
     // to store manga list before filtered and sorted
     private var rawMangaList: MediaListCollection? = null
-
-    override fun setShouldLoading(shouldLoading: Boolean) {
-        _shouldLoading.postValue(shouldLoading)
-    }
 
     @SuppressLint("CheckResult")
     override fun retrieveAnimeListData() {

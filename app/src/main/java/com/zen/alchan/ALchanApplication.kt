@@ -10,7 +10,6 @@ import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.main.MainViewModel
-import com.zen.alchan.ui.animelist.list.AnimeListItemViewModel
 import com.zen.alchan.ui.animelist.AnimeListViewModel
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
 import com.zen.alchan.ui.auth.LoginViewModel
@@ -22,7 +21,6 @@ import com.zen.alchan.ui.common.filter.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.mangalist.MangaListViewModel
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorViewModel
-import com.zen.alchan.ui.mangalist.list.MangaListItemViewModel
 import com.zen.alchan.ui.browse.media.MediaViewModel
 import com.zen.alchan.ui.browse.media.characters.MediaCharactersViewModel
 import com.zen.alchan.ui.browse.media.overview.MediaOverviewViewModel
@@ -91,12 +89,10 @@ class ALchanApplication : Application() {
         viewModel { SearchListViewModel(get()) }
         viewModel { ExploreViewModel(get(), gson) }
 
-        viewModel { AnimeListViewModel(get(), get(), gson) }
-        viewModel { AnimeListItemViewModel(get(), get(), get(), gson) }
+        viewModel { AnimeListViewModel(get(), get(), get(), gson) }
         viewModel { AnimeListEditorViewModel(get(), get(), gson) }
 
-        viewModel { MangaListViewModel(get(), get(), gson) }
-        viewModel { MangaListItemViewModel(get(), get(), get(), gson) }
+        viewModel { MangaListViewModel(get(), get(), get(), gson) }
         viewModel { MangaListEditorViewModel(get(), get(), gson) }
 
         viewModel { MediaViewModel(get()) }

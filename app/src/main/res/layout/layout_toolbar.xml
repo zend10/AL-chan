@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:titleTextAppearance="?themeTitleFont"
+    app:subtitleTextAppearance="?themeRegularFont"
     android:background="?themeCardColor"
     android:elevation="@dimen/elevationNormal"
     android:id="@+id/toolbarLayout"

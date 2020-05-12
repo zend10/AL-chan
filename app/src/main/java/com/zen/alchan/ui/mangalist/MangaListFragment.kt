@@ -15,25 +15,45 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.signature.ObjectKey
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.internal.LinkedTreeMap
 
 import com.zen.alchan.R
+import com.zen.alchan.data.response.Media
+import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
+import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.common.SetProgressDialog
+import com.zen.alchan.ui.common.SetScoreDialog
 import com.zen.alchan.ui.common.customise.CustomiseListActivity
 import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
+import com.zen.alchan.ui.mangalist.editor.MangaListEditorActivity
+import com.zen.alchan.ui.mangalist.list.MangaListGridRvAdapter
+import com.zen.alchan.ui.mangalist.list.MangaListListener
+import com.zen.alchan.ui.mangalist.list.MangaListRvAdapter
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_manga_list.*
+import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaListStatus
 import type.MediaType
+import type.ScoreFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -42,13 +62,13 @@ class MangaListFragment : Fragment() {
 
     private val viewModel by viewModel<MangaListViewModel>()
 
-    private lateinit var viewPagerAdapter: MangaListViewPagerAdapter
+    private lateinit var adapter: RecyclerView.Adapter<*>
     private lateinit var itemSearch: MenuItem
+    private lateinit var itemList: MenuItem
     private lateinit var itemCustomiseList: MenuItem
     private lateinit var itemFilter: MenuItem
 
     private lateinit var searchView: SearchView
-    val source = PublishSubject.create<String>() // to send search query to MangaListItemFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,24 +85,58 @@ class MangaListFragment : Fragment() {
             title = getString(R.string.manga_list)
             inflateMenu(R.menu.menu_media_list)
             itemSearch = menu.findItem(R.id.itemSearch)
+            itemList = menu.findItem(R.id.itemList)
             itemCustomiseList = menu.findItem(R.id.itemCustomiseList)
             itemFilter = menu.findItem(R.id.itemFilter)
-            elevation = 0F
         }
 
         searchView = itemSearch.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                source.onNext(query ?: "")
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                source.onNext(newText ?: "")
+                viewModel.currentList.clear()
+                viewModel.getSelectedList().forEach { filtered ->
+                    if (filtered.media?.title?.userPreferred?.toLowerCase()?.contains(newText ?: "") == true) {
+                        viewModel.currentList.add(filtered)
+                    }
+                }
+                adapter.notifyDataSetChanged()
+
+                if (viewModel.currentList.isNullOrEmpty()) {
+                    emptyLayout.visibility = View.VISIBLE
+                } else {
+                    emptyLayout.visibility = View.GONE
+                }
                 return true
             }
         })
+
+        itemList.setOnMenuItemClickListener {
+            MaterialAlertDialogBuilder(activity)
+                .setItems(viewModel.getTabItemArray()) { _, which ->
+                    viewModel.selectedTab = which
+
+                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
+                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
+
+                    viewModel.currentList = ArrayList(viewModel.mangaListData.value?.lists?.find { it.name == currentTab.status }?.entries)
+
+                    adapter = assignAdapter()
+                    mangaListRecyclerView.adapter = adapter
+
+                    if (viewModel.currentList.isNullOrEmpty()) {
+                        emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        emptyLayout.visibility = View.GONE
+                    }
+                }
+                .show()
+            true
+        }
 
         itemFilter.setOnMenuItemClickListener {
             val filterDialog = MediaFilterBottomSheet()
@@ -107,6 +161,7 @@ class MangaListFragment : Fragment() {
             true
         }
 
+        initLayout()
         setupObserver()
     }
 
@@ -118,7 +173,6 @@ class MangaListFragment : Fragment() {
                     loadingLayout.visibility = View.VISIBLE
                 }
                 ResponseStatus.SUCCESS -> {
-                    initLayout()
                     loadingLayout.visibility = View.GONE
                 }
                 ResponseStatus.ERROR -> {
@@ -128,8 +182,34 @@ class MangaListFragment : Fragment() {
             }
         })
 
+        viewModel.mangaListData.observe(viewLifecycleOwner, Observer {
+            viewModel.tabItemList.clear()
+            it.lists?.forEach { list -> viewModel.tabItemList.add(MediaListTabItem(list.name!!, list.entries?.size!!)) }
+
+            val currentTab = viewModel.tabItemList[viewModel.selectedTab]
+            toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
+
+            viewModel.currentList = ArrayList(it.lists?.find { it.name == currentTab.status }?.entries)
+            adapter = assignAdapter()
+            mangaListRecyclerView.adapter = adapter
+
+            if (viewModel.currentList.isNullOrEmpty()) {
+                emptyLayout.visibility = View.VISIBLE
+            } else {
+                emptyLayout.visibility = View.GONE
+            }
+        })
+
         viewModel.mangaListStyleLiveData.observe(viewLifecycleOwner, Observer {
+            adapter = assignAdapter()
+            mangaListRecyclerView.adapter = adapter
             initLayout()
+
+            if (viewModel.currentList.isNullOrEmpty()) {
+                emptyLayout.visibility = View.VISIBLE
+            } else {
+                emptyLayout.visibility = View.GONE
+            }
         })
 
         viewModel.initData()
@@ -141,45 +221,10 @@ class MangaListFragment : Fragment() {
             viewModel.retrieveMangaListData()
         }
 
-        val animeList = viewModel.mangaListData.value?.lists
-
-        if (!animeList.isNullOrEmpty()) {
-            viewModel.tabItemList.clear()
-            animeList.forEach { viewModel.tabItemList.add(MediaListTabItem(it.name!!, it.entries?.size!!)) }
-
-            viewPagerAdapter = MangaListViewPagerAdapter(childFragmentManager, viewModel.tabItemList)
-            mangaListViewPager.adapter = viewPagerAdapter
-            mangaListViewPager.offscreenPageLimit = viewPagerAdapter.count
-
-            mangaListTabLayout.setupWithViewPager(mangaListViewPager)
-
-            mangaListViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageSelected(position: Int) {
-                    viewModel.selectedTab = position
-                }
-
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                    // do nothing
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {
-                    // do nothing
-                }
-            })
-
-            mangaListViewPager.currentItem = viewModel.selectedTab
-        }
-
         val listStyle = viewModel.mangaListStyleLiveData.value
         if (listStyle?.toolbarColor != null) {
             toolbarLayout.setBackgroundColor(Color.parseColor(listStyle.toolbarColor))
             toolbarLayout.backgroundTintList = ColorStateList.valueOf(Color.parseColor(listStyle.toolbarColor))
-            mangaListTabLayout.setBackgroundColor(Color.parseColor(listStyle.toolbarColor))
-            mangaListTabLayout.backgroundTintList = ColorStateList.valueOf(Color.parseColor(listStyle.toolbarColor))
         }
 
         if (listStyle?.backgroundColor != null) {
@@ -188,11 +233,15 @@ class MangaListFragment : Fragment() {
 
         if (listStyle?.textColor != null) {
             toolbarLayout.setTitleTextColor(Color.parseColor(listStyle.textColor))
-            mangaListTabLayout.tabTextColors = ColorStateList.valueOf((Color.parseColor(listStyle.textColor)))
+            toolbarLayout.setSubtitleTextColor(Color.parseColor(listStyle.textColor))
 
             val searchDrawable = itemSearch.icon
             searchDrawable.mutate()
             searchDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
+
+            val listDrawable = itemList.icon
+            listDrawable.mutate()
+            listDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
 
             val overFlowDrawable = toolbarLayout.overflowIcon
             overFlowDrawable?.mutate()
@@ -209,16 +258,161 @@ class MangaListFragment : Fragment() {
             collapseDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
         }
 
-        if (listStyle?.primaryColor != null) {
-            mangaListTabLayout.setSelectedTabIndicatorColor(Color.parseColor(listStyle.primaryColor))
-            mangaListTabLayout.setTabTextColors(Color.parseColor(listStyle.textColor ?: "#000000"), Color.parseColor(listStyle.primaryColor))
-        }
-
         if (listStyle?.backgroundImage == true) {
             GlideApp.with(this)
                 .load(AndroidUtility.getImageFileFromFolder(activity, MediaType.MANGA))
                 .signature(ObjectKey(Utility.getCurrentTimestamp()))
                 .into(mangaListBackgroundImage)
+        }
+    }
+
+    private fun assignAdapter(): RecyclerView.Adapter<*> {
+        return when (viewModel.mangaListStyleLiveData.value?.listType ?: ListType.LINEAR) {
+            ListType.LINEAR -> {
+                mangaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                MangaListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
+            }
+            ListType.GRID -> {
+                mangaListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+                MangaListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
+            }
+        }
+    }
+
+    private fun handleListAction() = object : MangaListListener {
+        override fun openEditor(entryId: Int) {
+            val intent = Intent(activity, MangaListEditorActivity::class.java)
+            intent.putExtra(MangaListEditorActivity.INTENT_ENTRY_ID, entryId)
+            startActivity(intent)
+        }
+
+        override fun openScoreDialog(mediaList: MediaList) {
+            val setScoreDialog = SetScoreDialog()
+            val bundle = Bundle()
+            bundle.putString(SetScoreDialog.BUNDLE_SCORE_FORMAT, viewModel.scoreFormat.name)
+            bundle.putDouble(SetScoreDialog.BUNDLE_CURRENT_SCORE, mediaList.score ?: 0.0)
+            bundle.putStringArrayList(SetScoreDialog.BUNDLE_ADVANCED_SCORING, viewModel.advancedScoringList)
+
+            if (viewModel.scoreFormat == ScoreFormat.POINT_10_DECIMAL || viewModel.scoreFormat == ScoreFormat.POINT_100) {
+                val advancedScoresMap = (mediaList.advancedScores as Map<*, *>)["value"] as LinkedTreeMap<String, Double>
+                val advancedScoresList = ArrayList<AdvancedScoresItem>()
+                advancedScoresMap.forEach { (key, value) ->
+                    advancedScoresList.add(AdvancedScoresItem(key, value))
+                }
+                bundle.putString(SetScoreDialog.BUNDLE_ADVANCED_SCORES_LIST, viewModel.gson.toJson(advancedScoresList))
+            }
+
+            setScoreDialog.arguments = bundle
+            setScoreDialog.setListener(object : SetScoreDialog.SetScoreListener {
+                override fun passScore(newScore: Double, newAdvancedScores: List<Double>?) {
+                    viewModel.updateMangaScore(mediaList.id, newScore, newAdvancedScores)
+                }
+            })
+            setScoreDialog.show(childFragmentManager, null)
+        }
+
+        override fun openProgressDialog(mediaList: MediaList, isVolume: Boolean) {
+            val setProgressDialog = SetProgressDialog()
+            val bundle = Bundle()
+            if (isVolume) {
+                bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progressVolumes ?: 0)
+                if (mediaList.media?.volumes != null) {
+                    bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, mediaList.media?.volumes!!)
+                }
+            } else {
+                bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progress ?: 0)
+                if (mediaList.media?.chapters != null) {
+                    bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, mediaList.media?.chapters!!)
+                }
+            }
+            setProgressDialog.arguments = bundle
+            setProgressDialog.setListener(object : SetProgressDialog.SetProgressListener {
+                override fun passProgress(newProgress: Int) {
+                    handleUpdateProgressBehavior(mediaList, newProgress, isVolume)
+                }
+            })
+            setProgressDialog.show(childFragmentManager, null)
+        }
+
+        override fun incrementProgress(mediaList: MediaList, isVolume: Boolean) {
+            if (isVolume) {
+                handleUpdateProgressBehavior(mediaList, mediaList.progressVolumes!! + 1, isVolume)
+            } else {
+                handleUpdateProgressBehavior(mediaList, mediaList.progress!! + 1, isVolume)
+            }
+        }
+
+        override fun openBrowsePage(media: Media) {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.open_media_page,
+                "Do you want to open ${media.title?.userPreferred} page?",
+                R.string.open,
+                {
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.MANGA.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, media.id)
+                    startActivity(intent)
+                },
+                R.string.cancel,
+                { }
+            )
+        }
+    }
+
+    private fun handleUpdateProgressBehavior(mediaList: MediaList, newProgress: Int, isVolume: Boolean) {
+        if (mediaList.progress == newProgress) {
+            return
+        }
+
+        var status = mediaList.status
+        var repeat = mediaList.repeat
+        val maxLimit = if (isVolume) mediaList.media?.volumes else mediaList.media?.chapters
+
+        if (newProgress == maxLimit) {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.move_to_completed,
+                R.string.do_you_want_to_set_this_entry_into_completed,
+                R.string.move,
+                {
+                    if (status == MediaListStatus.REPEATING) {
+                        repeat = repeat!! + 1
+                    }
+                    status = MediaListStatus.COMPLETED
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
+                },
+                R.string.stay,
+                {
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
+                }
+            )
+        } else {
+            when (mediaList.status) {
+                MediaListStatus.PLANNING, MediaListStatus.PAUSED, MediaListStatus.DROPPED -> {
+                    DialogUtility.showOptionDialog(
+                        activity,
+                        R.string.move_to_watching,
+                        R.string.do_you_want_to_set_this_entry_into_watching,
+                        R.string.move,
+                        {
+                            status = MediaListStatus.CURRENT
+                            viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
+                        },
+                        R.string.stay,
+                        {
+                            viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
+                        }
+                    )
+                }
+                MediaListStatus.COMPLETED -> {
+                    status = MediaListStatus.CURRENT
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
+                }
+                else -> {
+                    viewModel.updateMangaProgress(mediaList.id, status!!, repeat!!, newProgress, isVolume)
+                }
+            }
         }
     }
 }
