@@ -6,7 +6,9 @@ import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.datasource.MediaDataSource
 import com.zen.alchan.data.localstorage.MediaManager
 import com.zen.alchan.data.localstorage.UserManager
+import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -25,6 +27,12 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
     override val genreListLastRetrieved: Long?
         get() = mediaManager.genreListLastRetrieved
+
+    override val tagList: List<MediaTagCollection>
+        get() = mediaManager.tagList
+
+    override val tagListLastRetrieved: Long?
+        get() = mediaManager.tagListLastRetrieved
 
     private val _mediaData = SingleLiveEvent<Resource<MediaQuery.Data>>()
     override val mediaData: LiveData<Resource<MediaQuery.Data>>
@@ -65,6 +73,21 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
             override fun onNext(t: Response<GenreQuery.Data>) {
                 if (!t.hasErrors() && !t.data?.genreCollection.isNullOrEmpty()) {
                     mediaManager.setGenreList(t.data?.genreCollection!!)
+                }
+            }
+            override fun onError(e: Throwable) { e.printStackTrace() }
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getTag() {
+        mediaDataSource.getTag().subscribeWith(object : Observer<Response<TagQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+            override fun onNext(t: Response<TagQuery.Data>) {
+                if (!t.hasErrors() && !t.data?.mediaTagCollection.isNullOrEmpty()) {
+                    val mediaTagCollections = Converter.convertMediaTagCollection(t.data?.mediaTagCollection!!)
+                    mediaManager.setTagList(mediaTagCollections)
                 }
             }
             override fun onError(e: Throwable) { e.printStackTrace() }

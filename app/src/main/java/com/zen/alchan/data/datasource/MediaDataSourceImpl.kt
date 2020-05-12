@@ -7,6 +7,7 @@ import MediaQuery
 import MediaStaffsQuery
 import MediaStatusQuery
 import ReleasingTodayQuery
+import TagQuery
 import TrendingMediaQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -22,6 +23,14 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
 
     override fun getGenre(): Observable<Response<GenreQuery.Data>> {
         val query = GenreQuery()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getTag(): Observable<Response<TagQuery.Data>> {
+        val query = TagQuery()
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

@@ -7,6 +7,7 @@ import type.MediaType
 
 interface MediaDataSource {
     fun getGenre(): Observable<Response<GenreQuery.Data>>
+    fun getTag(): Observable<Response<TagQuery.Data>>
     fun getMedia(id: Int): Observable<Response<MediaQuery.Data>>
     fun checkMediaStatus(userId: Int, mediaId: Int): Observable<Response<MediaStatusQuery.Data>>
     fun getMediaOverview(id: Int): Observable<Response<MediaOverviewQuery.Data>>

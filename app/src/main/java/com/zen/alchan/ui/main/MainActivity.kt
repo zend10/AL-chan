@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import com.zen.alchan.R
 import com.zen.alchan.ui.animelist.AnimeListFragment
@@ -11,6 +12,7 @@ import com.zen.alchan.ui.mangalist.MangaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -33,6 +35,14 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
         viewModel.listOrAniListSettingsChanged.observe(this, Observer {
             recreate()
+        })
+
+        viewModel.shouldLoading.observe(this, Observer {
+            if (it) {
+                loadingLayout.visibility = View.VISIBLE
+            } else {
+                loadingLayout.visibility = View.GONE
+            }
         })
     }
 

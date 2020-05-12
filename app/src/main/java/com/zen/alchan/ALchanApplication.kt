@@ -84,7 +84,7 @@ class ALchanApplication : Application() {
         viewModel { SplashViewModel(get()) }
         viewModel { LoginViewModel(get()) }
 
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
 
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel() }

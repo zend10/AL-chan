@@ -2,14 +2,13 @@ package com.zen.alchan.data.localstorage
 
 import android.content.Context
 import com.google.gson.Gson
+import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.PushNotificationsSettings
-import com.zen.alchan.helper.utils.Utility
 import type.StaffLanguage
 
 class LocalStorageImpl(private val context: Context,
@@ -28,6 +27,8 @@ class LocalStorageImpl(private val context: Context,
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
         private const val GENRE_LIST = "genreList"
         private const val GENRE_LIST_LAST_RETRIEVED = "genreListLastRetrieved"
+        private const val TAG_LIST = "tagList"
+        private const val TAG_LIST_LAST_RETRIEVED = "tagListLastRetrieved"
         private const val ANIME_LIST_STYLE = "animeListStyle"
         private const val MANGA_LIST_STYLE = "mangaListStyle"
     }
@@ -63,6 +64,14 @@ class LocalStorageImpl(private val context: Context,
     override var genreListLastRetrieved: Long?
         get() = getData(GENRE_LIST_LAST_RETRIEVED)?.toLong()
         set(value) { setData(GENRE_LIST_LAST_RETRIEVED, value.toString()) }
+
+    override var tagList: List<MediaTagCollection>?
+        get() = gson.fromJson(getData(TAG_LIST), genericType<List<MediaTagCollection>>())
+        set(value) { setData(TAG_LIST, gson.toJson(value)) }
+
+    override var tagListLastRetrieved: Long?
+        get() = getData(TAG_LIST_LAST_RETRIEVED)?.toLong()
+        set(value) { setData(TAG_LIST_LAST_RETRIEVED, value.toString()) }
 
     override var animeListStyle: ListStyle?
         get() = gson.fromJson(getData(ANIME_LIST_STYLE), ListStyle::class.java)

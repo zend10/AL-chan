@@ -137,46 +137,6 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/topAnimeMenu"
-                        app:contentPadding="@dimen/marginSmall"
-                        app:cardBackgroundColor="?themeCardColor"
-                        android:layout_marginBottom="@dimen/marginNormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:text="@string/top_rated_anime"
-                            style="?themeRegularFont"
-                            app:drawableStartCompat="@drawable/ic_retro_tv_star"
-                            app:drawableTint="?themeContentColor"
-                            android:drawablePadding="@dimen/marginSmall"
-                            android:gravity="center_vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/topMangaMenu"
-                        app:contentPadding="@dimen/marginSmall"
-                        app:cardBackgroundColor="?themeCardColor"
-                        android:layout_marginBottom="@dimen/marginNormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:text="@string/top_rated_manga"
-                            style="?themeRegularFont"
-                            app:drawableStartCompat="@drawable/ic_book_stack_star"
-                            app:drawableTint="?themeContentColor"
-                            android:drawablePadding="@dimen/marginSmall"
-                            android:gravity="center_vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/exploreMenu"
                         app:contentPadding="@dimen/marginSmall"
                         app:cardBackgroundColor="?themeCardColor"

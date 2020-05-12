@@ -1,5 +1,6 @@
 package com.zen.alchan.data.localstorage
 
+import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.enums.ListType
@@ -20,6 +21,9 @@ interface LocalStorage {
 
     var genreList: List<String?>?
     var genreListLastRetrieved: Long?
+
+    var tagList: List<MediaTagCollection>?
+    var tagListLastRetrieved: Long?
 
     var animeListStyle: ListStyle?
     var mangaListStyle: ListStyle?

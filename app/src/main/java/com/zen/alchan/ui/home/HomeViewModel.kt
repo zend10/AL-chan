@@ -56,6 +56,10 @@ class HomeViewModel(private val userRepository: UserRepository,
         if (Utility.timeDiffMoreThanOneDay(mediaRepository.genreListLastRetrieved) || mediaRepository.genreList.isNullOrEmpty()) {
             mediaRepository.getGenre()
         }
+
+        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {
+            mediaRepository.getTag()
+        }
     }
 
     fun getReleasingToday() {

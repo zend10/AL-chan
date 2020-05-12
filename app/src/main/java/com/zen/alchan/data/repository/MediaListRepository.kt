@@ -10,6 +10,8 @@ import type.MediaListStatus
 import type.MediaType
 
 interface MediaListRepository {
+    val shouldLoading: LiveData<Boolean>
+
     val animeListDataResponse: LiveData<Resource<Boolean>>
     val animeListData: LiveData<MediaListCollection>
     val updateAnimeListEntryResponse: LiveData<Resource<Boolean>>
@@ -24,6 +26,8 @@ interface MediaListRepository {
 
     var animeFilteredData: MediaFilteredData?
     var mangaFilteredData: MediaFilteredData?
+
+    fun setShouldLoading(shouldLoading: Boolean)
 
     fun retrieveAnimeListData()
     fun retrieveAnimeListDataDetail(entryId: Int)

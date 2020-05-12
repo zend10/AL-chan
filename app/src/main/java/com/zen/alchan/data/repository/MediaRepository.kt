@@ -2,11 +2,15 @@ package com.zen.alchan.data.repository
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.helper.pojo.MediaCharacters
 
 interface MediaRepository {
     val genreList: List<String?>
     val genreListLastRetrieved: Long?
+
+    val tagList: List<MediaTagCollection>
+    val tagListLastRetrieved: Long?
 
     val mediaData: LiveData<Resource<MediaQuery.Data>>
     val mediaStatus: LiveData<Resource<MediaStatusQuery.Data>>
@@ -19,6 +23,7 @@ interface MediaRepository {
     val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
 
     fun getGenre()
+    fun getTag()
     fun getMedia(id: Int)
     fun checkMediaStatus(mediaId: Int)
     fun getMediaOverview(id: Int)

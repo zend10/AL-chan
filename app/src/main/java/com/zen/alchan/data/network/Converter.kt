@@ -691,4 +691,12 @@ object Converter {
             fuzzyDate.day
         )
     }
+
+    fun convertMediaTagCollection(mediaTagCollections: List<TagQuery.MediaTagCollection?>): List<MediaTagCollection> {
+        val mediaTagCollectionList = ArrayList<MediaTagCollection>()
+        mediaTagCollections.forEach {
+            if (it != null) mediaTagCollectionList.add(MediaTagCollection(it.id, it.name, it.description, it.category))
+        }
+        return mediaTagCollectionList
+    }
 }

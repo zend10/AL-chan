@@ -42,4 +42,8 @@ class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
     fun setFilteredData(newFilteredData: MediaFilteredData?) {
         mediaListRepository.handleNewFilter(newFilteredData, MediaType.ANIME)
     }
+
+    fun setShouldLoading(shouldLoading: Boolean) {
+        mediaListRepository.setShouldLoading(shouldLoading)
+    }
 }

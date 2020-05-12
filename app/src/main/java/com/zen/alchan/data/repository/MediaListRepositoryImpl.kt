@@ -1,6 +1,7 @@
 package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
@@ -17,6 +18,8 @@ import com.zen.alchan.helper.enums.MediaListSort
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.toMillis
+import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.Utility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.MediaListStatus
@@ -26,6 +29,10 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                               private val userManager: UserManager,
                               private val gson: Gson
 ) : MediaListRepository {
+
+    private val _shouldLoading = SingleLiveEvent<Boolean>()
+    override val shouldLoading: LiveData<Boolean>
+        get() = _shouldLoading
 
     private val _animeListDataResponse = SingleLiveEvent<Resource<Boolean>>()
     override val animeListDataResponse: LiveData<Resource<Boolean>>
@@ -72,6 +79,10 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
     // to store manga list before filtered and sorted
     private var rawMangaList: MediaListCollection? = null
+
+    override fun setShouldLoading(shouldLoading: Boolean) {
+        _shouldLoading.postValue(shouldLoading)
+    }
 
     @SuppressLint("CheckResult")
     override fun retrieveAnimeListData() {
