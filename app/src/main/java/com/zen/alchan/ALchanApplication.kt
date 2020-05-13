@@ -25,6 +25,7 @@ import com.zen.alchan.ui.browse.media.MediaViewModel
 import com.zen.alchan.ui.browse.media.characters.MediaCharactersViewModel
 import com.zen.alchan.ui.browse.media.overview.MediaOverviewViewModel
 import com.zen.alchan.ui.browse.media.staffs.MediaStaffsViewModel
+import com.zen.alchan.ui.browse.media.stats.MediaStatsViewModel
 import com.zen.alchan.ui.browse.staff.StaffViewModel
 import com.zen.alchan.ui.browse.staff.anime.StaffAnimeViewModel
 import com.zen.alchan.ui.browse.staff.bio.StaffBioViewModel
@@ -77,15 +78,19 @@ class ALchanApplication : Application() {
         single<BrowseRepository> { BrowseRepositoryImpl(get()) }
         single<SearchRepository> { SearchRepositoryImpl(get()) }
 
+        // common
         viewModel { BaseViewModel(get()) }
         viewModel { MediaFilterViewModel(get(), get(), gson) }
         viewModel { CustomiseListViewModel(get()) }
 
+        // auth
         viewModel { SplashViewModel(get()) }
         viewModel { LoginViewModel(get()) }
 
+        // main
         viewModel { MainViewModel(get(), get(), get()) }
 
+        // home, search, explore, seasonal
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
@@ -93,17 +98,22 @@ class ALchanApplication : Application() {
         viewModel { SeasonalViewModel(get(), get(), get(), gson) }
         viewModel { SeasonalDialogViewModel(gson) }
 
+        // anime list
         viewModel { AnimeListViewModel(get(), get(), get(), gson) }
         viewModel { AnimeListEditorViewModel(get(), get(), gson) }
 
+        // manga list
         viewModel { MangaListViewModel(get(), get(), get(), gson) }
         viewModel { MangaListEditorViewModel(get(), get(), gson) }
 
+        // browse media
         viewModel { MediaViewModel(get(), get()) }
         viewModel { MediaOverviewViewModel(get()) }
         viewModel { MediaCharactersViewModel(get(), get()) }
         viewModel { MediaStaffsViewModel(get()) }
+        viewModel { MediaStatsViewModel(get()) }
 
+        // browse character, staff, studio
         viewModel { CharacterViewModel(get(), get()) }
         viewModel { StaffViewModel(get(), get()) }
         viewModel { StaffBioViewModel(get()) }
@@ -112,6 +122,7 @@ class ALchanApplication : Application() {
         viewModel { StaffMangaViewModel(get()) }
         viewModel { StudioViewModel(get(), get()) }
 
+        // profile and settings
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }
         viewModel { AppSettingsViewModel(get()) }

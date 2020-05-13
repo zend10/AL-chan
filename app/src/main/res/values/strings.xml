@@ -244,4 +244,8 @@
     <string name="dropped">Dropped</string>
     <string name="paused">Paused</string>
     <string name="original_anime">Original Anime</string>
+    <string name="rankings">Rankings</string>
+    <string name="score_distribution">Score Distribution</string>
+    <string name="status_distribution">Status Distribution</string>
+    <string name="performance">Performance</string>
 </resources>

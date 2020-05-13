@@ -59,6 +59,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
         get() = _mediaStaffsData
 
+    private val _mediaStatsData = SingleLiveEvent<Resource<MediaStatsQuery.Data>>()
+    override val mediaStatsData: LiveData<Resource<MediaStatsQuery.Data>>
+        get() = _mediaStatsData
+
     private val _trendingAnimeData = SingleLiveEvent<Resource<TrendingMediaQuery.Data>>()
     override val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
         get() = _trendingAnimeData
@@ -207,6 +211,30 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onError(e: Throwable) {
                 _mediaStaffsData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaStats(id: Int) {
+        _mediaStatsData.postValue(Resource.Loading())
+
+        mediaDataSource.getMediaStats(id).subscribeWith(object : Observer<Response<MediaStatsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<MediaStatsQuery.Data>) {
+                if (t.hasErrors()) {
+                    _mediaStatsData.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _mediaStatsData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _mediaStatsData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 

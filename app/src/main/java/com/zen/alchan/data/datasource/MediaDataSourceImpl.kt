@@ -5,6 +5,7 @@ import MediaCharactersQuery
 import MediaOverviewQuery
 import MediaQuery
 import MediaStaffsQuery
+import MediaStatsQuery
 import MediaStatusQuery
 import ReleasingTodayQuery
 import SeasonalAnimeQuery
@@ -81,6 +82,14 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
 
     override fun getMediaStaffs(id: Int, page: Int): Observable<Response<MediaStaffsQuery.Data>> {
         val query = MediaStaffsQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMediaStats(id: Int): Observable<Response<MediaStatsQuery.Data>> {
+        val query = MediaStatsQuery(id = Input.fromNullable(id))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

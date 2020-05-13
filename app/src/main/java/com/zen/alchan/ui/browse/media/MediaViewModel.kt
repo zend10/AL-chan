@@ -56,6 +56,7 @@ class MediaViewModel(private val mediaRepository: MediaRepository,
             getMedia()
             checkMediaStatus()
             mediaRepository.getMediaOverview(mediaId!!)
+            mediaRepository.getMediaStats(mediaId!!)
         }
     }
 }
