@@ -258,6 +258,11 @@ class AnimeListEditorActivity : BaseActivity() {
         titleText.text = mediaList?.media?.title?.userPreferred ?: viewModel.mediaTitle
         if (mediaList != null) {
             titleText.setOnClickListener {
+                if (mediaList.media?.isAdult == true && viewModel.viewerData?.options?.displayAdultContent != true) {
+                    DialogUtility.showToast(this, R.string.you_are_not_allowed_to_view_this_content)
+                    return@setOnClickListener
+                }
+
                 DialogUtility.showOptionDialog(
                     this,
                     R.string.open_media_page,

@@ -37,6 +37,9 @@ class MangaListViewModel(private val mediaListRepository: MediaListRepository,
         listStyleRepository.mangaListStyleLiveData
     }
 
+    val allowAdultContent: Boolean
+        get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
+
     val scoreFormat: ScoreFormat
         get() = userRepository.viewerData.value?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
 

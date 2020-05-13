@@ -6,6 +6,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.pojo.SearchResult
+import type.MediaSort
 
 class SearchListViewModel(private val searchRepository: SearchRepository) : ViewModel() {
 

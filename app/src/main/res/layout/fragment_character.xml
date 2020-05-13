@@ -235,7 +235,7 @@
                             android:layout_height="wrap_content"/>
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:text="Long press to view series they feature in"
+                            android:text="@string/long_press_to_view_series_they_feature_in"
                             style="?themeSmallFont"
                             android:textColor="?themeDividerColor"
                             android:layout_width="wrap_content"
@@ -272,7 +272,7 @@
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="M = Main, S = Supporting, B = Background"
+                        android:text="@string/m_main_s_supporting_b_background"
                         style="?themeSmallFont"
                         android:textColor="?themeDividerColor"
                         android:layout_width="wrap_content"

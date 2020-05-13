@@ -66,6 +66,10 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
     override val deleteMediaListEntryResponse: LiveData<Resource<Boolean>>
         get() = _deleteMediaListEntryResponse
 
+    private val _addAnimeToPlanningResponse = SingleLiveEvent<Resource<AnimeListEntryMutation.Data>>()
+    override val addAnimeToPlanningResponse: LiveData<Resource<AnimeListEntryMutation.Data>>
+        get() = _addAnimeToPlanningResponse
+
     override var animeFilteredData: MediaFilteredData? = null
 
     override var mangaFilteredData: MediaFilteredData? = null
@@ -771,6 +775,30 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
             override fun onError(e: Throwable) {
                 _deleteMediaListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun addAnimeToPlanning(mediaId: Int) {
+        _addAnimeToPlanningResponse.postValue(Resource.Loading())
+
+        mediaListDataSource.addAnimeToPlanning(mediaId).subscribeWith(object : Observer<Response<AnimeListEntryMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<AnimeListEntryMutation.Data>) {
+                if (t.hasErrors()) {
+                    _addAnimeToPlanningResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    retrieveAnimeListData()
+                    _addAnimeToPlanningResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _addAnimeToPlanningResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }

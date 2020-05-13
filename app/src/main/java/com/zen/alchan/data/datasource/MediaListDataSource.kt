@@ -81,4 +81,6 @@ interface MediaListDataSource {
     fun deleteMediaList(
         entryId: Int
     ): Observable<Response<DeleteMediaListEntryMutation.Data>>
+
+    fun addAnimeToPlanning(mediaId: Int): Observable<Response<AnimeListEntryMutation.Data>>
 }

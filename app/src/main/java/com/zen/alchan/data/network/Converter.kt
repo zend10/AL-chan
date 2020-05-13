@@ -348,6 +348,28 @@ object Converter {
         )
     }
 
+    fun convertMediaList(entries: SeasonalAnimeQuery.MediaListEntry): MediaList {
+        return MediaList(
+            id = entries.id,
+            status = entries.status,
+            score = null,
+            progress = null,
+            progressVolumes = null,
+            repeat = null,
+            priority = null,
+            private = null,
+            notes = null,
+            hiddenFromStatusList = null,
+            customLists = null,
+            advancedScores = null,
+            startedAt = null,
+            completedAt = null,
+            updatedAt = null,
+            createdAt = null,
+            media = null
+        )
+    }
+
     private fun convertMedia(media: AnimeListCollectionQuery.Media): Media {
         return Media(
             id = media.id,
@@ -528,6 +550,10 @@ object Converter {
         return MediaTitle(mediaTitle.userPreferred!!)
     }
 
+    private fun convertMediaTitle(mediaTitle: SeasonalAnimeQuery.Title): MediaTitle {
+        return MediaTitle(mediaTitle.userPreferred!!)
+    }
+
     private fun convertNextAiringEpisode(nextAiringEpisode: AnimeListCollectionQuery.NextAiringEpisode): AiringSchedule {
         return AiringSchedule(
             id = nextAiringEpisode.id,
@@ -561,6 +587,10 @@ object Converter {
     }
 
     private fun convertMediaCoverImage(coverImage: MangaListEntryMutation.CoverImage): MediaCoverImage {
+        return MediaCoverImage(coverImage.large)
+    }
+
+    private fun convertMediaCoverImage(coverImage: SeasonalAnimeQuery.CoverImage): MediaCoverImage {
         return MediaCoverImage(coverImage.large)
     }
 
@@ -692,11 +722,68 @@ object Converter {
         )
     }
 
+    private fun convertFuzzyDate(fuzzyDate: SeasonalAnimeQuery.StartDate): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year,
+            fuzzyDate.month,
+            fuzzyDate.day
+        )
+    }
+
     fun convertMediaTagCollection(mediaTagCollections: List<TagQuery.MediaTagCollection?>): List<MediaTagCollection> {
         val mediaTagCollectionList = ArrayList<MediaTagCollection>()
         mediaTagCollections.forEach {
             if (it != null) mediaTagCollectionList.add(MediaTagCollection(it.id, it.name, it.description, it.category))
         }
         return mediaTagCollectionList
+    }
+
+    fun convertSeasonalAnime(media: List<SeasonalAnimeQuery.Medium?>?): List<SeasonalAnime> {
+        val seasonalAnimeList = ArrayList<SeasonalAnime>()
+        media?.forEach {
+            seasonalAnimeList.add(
+                SeasonalAnime(
+                    id = it?.id!!,
+                    title = convertMediaTitle(mediaTitle = it.title!!),
+                    coverImage = convertMediaCoverImage(coverImage = it.coverImage!!),
+                    format = it.format,
+                    source = it.source,
+                    episodes = it.episodes,
+                    averageScore = it.averageScore,
+                    favourites = it.favourites,
+                    description = it.description,
+                    startDate = if (it.startDate != null) convertFuzzyDate(it.startDate) else null,
+                    genres = it.genres,
+                    studios = if (it.studios != null) convertStudioConnection(it.studios) else null,
+                    stats = if (it.stats != null) convertMediaStats(it.stats) else null,
+                    mediaListEntry = if (it.mediaListEntry != null) convertMediaList(it.mediaListEntry) else null
+                )
+            )
+        }
+        return seasonalAnimeList
+    }
+
+    private fun convertStudioConnection(studioConnection: SeasonalAnimeQuery.Studios): StudioConnection {
+        return StudioConnection(edges = convertStudioEdge(studioConnection.edges))
+    }
+
+    private fun convertStudioEdge(studioEdges: List<SeasonalAnimeQuery.Edge?>?): List<StudioEdge> {
+        val edges = ArrayList<StudioEdge>()
+        studioEdges?.forEach { edges.add(StudioEdge(node = convertStudioNode(it?.node!!))) }
+        return edges
+    }
+
+    private fun convertStudioNode(studioNode: SeasonalAnimeQuery.Node): Studio {
+        return Studio(id = studioNode.id, name = studioNode.name)
+    }
+
+    private fun convertMediaStats(stats: SeasonalAnimeQuery.Stats): MediaStats {
+        return MediaStats(statusDistribution = convertStatusDistribution(statusDistributions = stats.statusDistribution))
+    }
+
+    private fun convertStatusDistribution(statusDistributions: List<SeasonalAnimeQuery.StatusDistribution?>?): List<StatusDistribution> {
+        val statusDistributionList = ArrayList<StatusDistribution>()
+        statusDistributions?.forEach { statusDistributionList.add(StatusDistribution(status = it?.status!!, amount = it.amount!!)) }
+        return statusDistributionList
     }
 }

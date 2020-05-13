@@ -7,6 +7,7 @@ import MediaQuery
 import MediaStaffsQuery
 import MediaStatusQuery
 import ReleasingTodayQuery
+import SeasonalAnimeQuery
 import TagQuery
 import TrendingMediaQuery
 import com.apollographql.apollo.api.Input
@@ -16,7 +17,10 @@ import com.zen.alchan.data.network.ApolloHandler
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.internal.format
+import type.MediaFormat
 import type.MediaSeason
+import type.MediaSort
 import type.MediaType
 
 class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataSource {

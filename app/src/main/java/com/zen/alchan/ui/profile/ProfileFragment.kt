@@ -130,10 +130,10 @@ class ProfileFragment : BaseMainFragment() {
             listener?.changeMenu(R.id.itemManga)
         }
         profileFollowingCountLayout.setOnClickListener {
-            // TODO: open following list
+            listener?.changeMenu(R.id.itemSocial)
         }
         profileFollowersCountLayout.setOnClickListener {
-            // TODO: open followers list
+            listener?.changeMenu(R.id.itemSocial)
         }
 
         profileBioLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.BIO) }

@@ -17,7 +17,11 @@ object Constant {
     const val ANIME_LIST_BACKGROUND_FILENAME = "anime_list_background.jpg"
     const val MANGA_LIST_BACKGROUND_FILENAME = "manga_list_background.jpg"
 
+    const val FILTER_EARLIEST_YEAR = 1950
+
     const val DEFAULT_DATE_FORMAT = "dd MMM yyyy"
+    const val DATE_FORMAT = "dd MMM yyyy"
+    const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
 
     val DEFAULT_THEME = AppColorTheme.YELLOW
     val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(
@@ -64,16 +68,17 @@ object Constant {
         "Planning"
     )
 
-    const val DATE_FORMAT = "dd MMM yyyy"
-    const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
-
     val ANIME_FORMAT_LIST = listOf(
         MediaFormat.TV, MediaFormat.TV_SHORT, MediaFormat.MOVIE, MediaFormat.SPECIAL, MediaFormat.OVA, MediaFormat.ONA, MediaFormat.MUSIC
     )
 
-    val MANGA_FORMAT_LIST = listOf(MediaFormat.MANGA, MediaFormat.NOVEL, MediaFormat.ONE_SHOT)
+    val MANGA_FORMAT_LIST = listOf(
+        MediaFormat.MANGA, MediaFormat.NOVEL, MediaFormat.ONE_SHOT
+    )
 
-    val SEASON_LIST = listOf(MediaSeason.WINTER, MediaSeason.SPRING, MediaSeason.SUMMER, MediaSeason.FALL)
+    val SEASON_LIST = listOf(
+        MediaSeason.WINTER, MediaSeason.SPRING, MediaSeason.SUMMER, MediaSeason.FALL
+    )
 
     val MEDIA_STATUS_LIST = listOf(
         MediaStatus.FINISHED, MediaStatus.RELEASING, MediaStatus.NOT_YET_RELEASED, MediaStatus.CANCELLED

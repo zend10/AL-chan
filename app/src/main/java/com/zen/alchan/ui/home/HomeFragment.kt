@@ -23,6 +23,7 @@ import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
 import com.zen.alchan.ui.explore.ExploreActivity
 import com.zen.alchan.ui.search.SearchActivity
+import com.zen.alchan.ui.seasonal.SeasonalActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -191,6 +192,10 @@ class HomeFragment : Fragment() {
                     startActivity(intent)
                 }
                 .show()
+        }
+
+        seasonalChartMenu.setOnClickListener {
+            startActivity(Intent(activity, SeasonalActivity::class.java))
         }
     }
 

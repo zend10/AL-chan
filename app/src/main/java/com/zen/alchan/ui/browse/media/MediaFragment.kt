@@ -115,6 +115,13 @@ class MediaFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (it.data?.media?.isAdult == true && !viewModel.showAdultContent) {
+                        DialogUtility.showToast(activity, R.string.you_are_not_allowed_to_view_this_content)
+                        activity?.finish()
+                        return@Observer
+                    }
+
                     if (it.data?.media != null) {
                         viewModel.currentMediaData = it.data.media
                         setupHeader()

@@ -9,11 +9,16 @@ import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaTagCollection
+import com.zen.alchan.data.response.SeasonalAnime
+import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.MediaFormat
+import type.MediaSeason
+import type.MediaSort
 import type.MediaType
 import java.util.*
 

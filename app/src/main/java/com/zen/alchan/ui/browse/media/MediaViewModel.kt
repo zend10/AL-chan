@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.MediaRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.MediaPage
 import type.MediaType
 
-class MediaViewModel(private val mediaRepository: MediaRepository) : ViewModel() {
+class MediaViewModel(private val mediaRepository: MediaRepository,
+                     private val userRepository: UserRepository) : ViewModel() {
 
     private val _currentSection = MutableLiveData<MediaPage>()
     val currentSection: LiveData<MediaPage>
@@ -25,6 +27,9 @@ class MediaViewModel(private val mediaRepository: MediaRepository) : ViewModel()
     val mediaStatus by lazy {
         mediaRepository.mediaStatus
     }
+
+    val showAdultContent: Boolean
+        get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
 
     fun initData() {
         getMedia()

@@ -37,6 +37,9 @@ class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
         listStyleRepository.animeListStyleLiveData
     }
 
+    val allowAdultContent: Boolean
+        get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
+
     val scoreFormat: ScoreFormat
         get() = userRepository.viewerData.value?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
 

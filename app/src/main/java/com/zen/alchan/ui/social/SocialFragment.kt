@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.zen.alchan.R
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
 /**
  * A simple [Fragment] subclass.
@@ -22,5 +23,9 @@ class SocialFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_social, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
+        toolbarLayout.title = getString(R.string.social)
+    }
 }

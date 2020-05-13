@@ -36,6 +36,8 @@ import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.search.SearchListViewModel
 import com.zen.alchan.ui.search.SearchViewModel
+import com.zen.alchan.ui.seasonal.SeasonalDialogViewModel
+import com.zen.alchan.ui.seasonal.SeasonalViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
@@ -88,6 +90,8 @@ class ALchanApplication : Application() {
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
         viewModel { ExploreViewModel(get(), gson) }
+        viewModel { SeasonalViewModel(get(), get(), get(), gson) }
+        viewModel { SeasonalDialogViewModel(gson) }
 
         viewModel { AnimeListViewModel(get(), get(), get(), gson) }
         viewModel { AnimeListEditorViewModel(get(), get(), gson) }
@@ -95,7 +99,7 @@ class ALchanApplication : Application() {
         viewModel { MangaListViewModel(get(), get(), get(), gson) }
         viewModel { MangaListEditorViewModel(get(), get(), gson) }
 
-        viewModel { MediaViewModel(get()) }
+        viewModel { MediaViewModel(get(), get()) }
         viewModel { MediaOverviewViewModel(get()) }
         viewModel { MediaCharactersViewModel(get(), get()) }
         viewModel { MediaStaffsViewModel(get()) }

@@ -241,4 +241,15 @@ class MediaListDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaL
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun addAnimeToPlanning(mediaId: Int): Observable<Response<AnimeListEntryMutation.Data>> {
+        val mutation = AnimeListEntryMutation(
+            mediaId = Input.fromNullable(mediaId),
+            status = Input.fromNullable(MediaListStatus.PLANNING)
+        )
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

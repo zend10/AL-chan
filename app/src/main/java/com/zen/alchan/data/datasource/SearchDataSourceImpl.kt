@@ -5,6 +5,7 @@ import SearchCharactersQuery
 import SearchMangaQuery
 import SearchStaffsQuery
 import SearchStudiosQuery
+import SeasonalAnimeQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.Rx2Apollo
@@ -143,6 +144,32 @@ class SearchDataSourceImpl(private val apolloHandler: ApolloHandler) : SearchDat
             page = Input.fromNullable(page),
             search = Input.optional(checkSearch),
             sort = Input.optional(checkSort)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getSeasonalAnime(
+        page: Int,
+        season: MediaSeason?,
+        seasonYear: Int?,
+        status: MediaStatus?,
+        formatIn: List<MediaFormat>,
+        isAdult: Boolean,
+        onList: Boolean?,
+        sort: List<MediaSort>
+    ): Observable<Response<SeasonalAnimeQuery.Data>> {
+        val query = SeasonalAnimeQuery(
+            page = Input.fromNullable(page),
+            season = Input.fromNullable(season),
+            seasonYear = Input.fromNullable(seasonYear),
+            status = Input.optional(status),
+            format_in = Input.fromNullable(formatIn),
+            isAdult = Input.fromNullable(isAdult),
+            onList = Input.optional(onList),
+            sort = Input.fromNullable(sort)
         )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)

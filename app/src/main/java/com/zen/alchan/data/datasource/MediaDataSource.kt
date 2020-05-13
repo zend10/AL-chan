@@ -2,7 +2,9 @@ package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo.api.Response
 import io.reactivex.Observable
+import type.MediaFormat
 import type.MediaSeason
+import type.MediaSort
 import type.MediaType
 
 interface MediaDataSource {

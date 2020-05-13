@@ -3,7 +3,12 @@ package com.zen.alchan.data.repository
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaTagCollection
+import com.zen.alchan.data.response.SeasonalAnime
+import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.pojo.MediaCharacters
+import type.MediaFormat
+import type.MediaSeason
+import type.MediaSort
 
 interface MediaRepository {
     val genreList: List<String?>

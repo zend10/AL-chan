@@ -62,71 +62,86 @@ class ExploreActivity : BaseActivity() {
     private fun setupObserver() {
         viewModel.searchAnimeResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.ANIME) return@Observer
-            loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
                     it.data?.page?.media?.forEach { anime -> viewModel.searchResultList.add(SearchResult(animeSearchResult = anime)) }
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.searchResultList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
-                ResponseStatus.ERROR -> handleSearchError(it.message)
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    handleSearchError(it.message)
+                }
             }
         })
 
         viewModel.searchMangaResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.MANGA) return@Observer
-            loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
                     it.data?.page?.media?.forEach { manga -> viewModel.searchResultList.add(SearchResult(mangaSearchResult = manga)) }
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.searchResultList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
-                ResponseStatus.ERROR -> handleSearchError(it.message)
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    handleSearchError(it.message)
+                }
             }
         })
 
         viewModel.searchCharactersResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.CHARACTER) return@Observer
-            loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
                     it.data?.page?.characters?.forEach { character -> viewModel.searchResultList.add(SearchResult(charactersSearchResult = character)) }
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.searchResultList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
-                ResponseStatus.ERROR -> handleSearchError(it.message)
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    handleSearchError(it.message)
+                }
             }
         })
 
         viewModel.searchStaffsResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.STAFF) return@Observer
-            loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
                     it.data?.page?.staff?.forEach { staff -> viewModel.searchResultList.add(SearchResult(staffsSearchResult = staff)) }
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.searchResultList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
-                ResponseStatus.ERROR -> handleSearchError(it.message)
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    handleSearchError(it.message)
+                }
             }
         })
 
         viewModel.searchStudiosResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.STUDIO) return@Observer
-            loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
                     it.data?.page?.studios?.forEach { studio -> viewModel.searchResultList.add(SearchResult(studiosSearchResult = studio)) }
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.searchResultList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 }
-                ResponseStatus.ERROR -> handleSearchError(it.message)
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    handleSearchError(it.message)
+                }
             }
         })
 

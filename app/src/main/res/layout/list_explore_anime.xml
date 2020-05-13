@@ -49,17 +49,19 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/exploreCreatorText"
-            style="?themeRegularFont"
+            style="?themeSmallFont"
             app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
             app:layout_constraintTop_toBottomOf="@id/exploreTitleText"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginTop="@dimen/marginClose"
-            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/marginSmall"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/exploreYearText"
-            style="?themeRegularFont"
+            style="?themeSmallFont"
             app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
             app:layout_constraintTop_toBottomOf="@id/exploreCreatorText"
             android:layout_marginStart="@dimen/marginNormal"
@@ -79,7 +81,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/exploreFormatText"
-            style="?themeRegularFont"
+            style="?themeSmallFont"
             app:layout_constraintStart_toEndOf="@id/exploreFormatIcon"
             app:layout_constraintTop_toBottomOf="@id/exploreCreatorText"
             android:layout_marginStart="@dimen/marginClose"
@@ -101,7 +103,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:visibility="gone"
             android:id="@+id/exploreCountText"
-            style="?themeRegularFont"
+            style="?themeSmallFont"
             app:layout_constraintStart_toEndOf="@id/exploreCountIcon"
             app:layout_constraintTop_toBottomOf="@id/exploreCreatorText"
             android:layout_marginStart="@dimen/marginClose"

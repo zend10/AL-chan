@@ -225,4 +225,23 @@
     <string name="trending_manga_right_now">Trending Manga Right Now</string>
     <string name="only_show_manga_on_my_list">Only show Manga on my list</string>
     <string name="hide_manga_on_my_list">Hide Manga on my list</string>
+    <string name="you_are_not_allowed_to_view_this_content">You are not allowed to view this content.</string>
+    <string name="show_adult_content">Show adult content</string>
+    <string name="tv">TV</string>
+    <string name="tv_short">TV SHORT</string>
+    <string name="movie">MOVIE</string>
+    <string name="no_short_anime_this_season">No Short Anime this season</string>
+    <string name="no_tv_anime_this_season">No TV Anime this season</string>
+    <string name="no_anime_movie_this_season">No Anime Movie this season</string>
+    <string name="ova_ona_special">OVA, ONA, SPECIAL</string>
+    <string name="no_ova_ona_or_special_this_season">No OVA, ONA, or Special this season</string>
+    <string name="add_to_planning">Add to Planning</string>
+    <string name="long_press_to_view_series_they_feature_in">Long press to view series they feature in</string>
+    <string name="m_main_s_supporting_b_background">M = Main, S = Supporting, B = Background</string>
+    <string name="long_press_to_quick_view_anime_detail">Long press to quick view Anime detail</string>
+    <string name="planning">Planning</string>
+    <string name="completed">Completed</string>
+    <string name="dropped">Dropped</string>
+    <string name="paused">Paused</string>
+    <string name="original_anime">Original Anime</string>
 </resources>

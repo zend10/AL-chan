@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.explore.ExploreActivity"></activity>
+        <activity android:name=".ui.seasonal.SeasonalActivity"></activity>
+        <activity android:name=".ui.explore.ExploreActivity" />
         <activity android:name=".ui.search.advanced.AdvancedSearchActivity" />
         <activity android:name=".ui.browse.BrowseActivity" />
         <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />

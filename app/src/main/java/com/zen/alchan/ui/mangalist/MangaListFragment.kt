@@ -161,6 +161,9 @@ class MangaListFragment : Fragment() {
             true
         }
 
+        adapter = assignAdapter()
+        mangaListRecyclerView.adapter = adapter
+
         initLayout()
         setupObserver()
     }
@@ -189,9 +192,9 @@ class MangaListFragment : Fragment() {
             val currentTab = viewModel.tabItemList[viewModel.selectedTab]
             toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-            viewModel.currentList = ArrayList(it.lists?.find { it.name == currentTab.status }?.entries)
-            adapter = assignAdapter()
-            mangaListRecyclerView.adapter = adapter
+            viewModel.currentList.clear()
+            viewModel.currentList.addAll(ArrayList(it.lists?.find { it.name == currentTab.status }?.entries))
+            adapter.notifyDataSetChanged()
 
             if (viewModel.currentList.isNullOrEmpty()) {
                 emptyLayout.visibility = View.VISIBLE
@@ -343,6 +346,11 @@ class MangaListFragment : Fragment() {
         }
 
         override fun openBrowsePage(media: Media) {
+            if (media.isAdult == true && !viewModel.allowAdultContent) {
+                DialogUtility.showToast(activity, R.string.you_are_not_allowed_to_view_this_content)
+                return
+            }
+
             DialogUtility.showOptionDialog(
                 activity,
                 R.string.open_media_page,

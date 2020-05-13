@@ -22,6 +22,8 @@ interface MediaListRepository {
     val updateMediaListEntryDetailResponse: LiveData<Resource<Boolean>>
     val deleteMediaListEntryResponse: LiveData<Resource<Boolean>>
 
+    val addAnimeToPlanningResponse: LiveData<Resource<AnimeListEntryMutation.Data>>
+
     var animeFilteredData: MediaFilteredData?
     var mangaFilteredData: MediaFilteredData?
 
@@ -118,4 +120,6 @@ interface MediaListRepository {
 
     fun handleNewFilter(newFilteredData: MediaFilteredData?, mediaType: MediaType)
     fun deleteMediaList(entryId: Int, mediaType: MediaType)
+
+    fun addAnimeToPlanning(mediaId: Int)
 }

@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.Utility
@@ -38,8 +39,6 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
 
         private const val LIST_GENRE = 1
         private const val LIST_TAG = 2
-
-        private const val MIN_YEAR = 1950
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +94,7 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
         dialogView.filterStatusText.text = viewModel.currentData.selectedStatus?.name?.replaceUnderscore() ?: "-"
         dialogView.filterSourceText.text = viewModel.currentData.selectedSource?.name?.replaceUnderscore() ?: "-"
         dialogView.filterYearText.text = viewModel.currentData.selectedYear?.toString() ?: "-"
-        dialogView.filterYearSeekBar.progress = if (viewModel.currentData.selectedYear == null) 0 else viewModel.currentData.selectedYear!! - MIN_YEAR
+        dialogView.filterYearSeekBar.progress = if (viewModel.currentData.selectedYear == null) 0 else viewModel.currentData.selectedYear!! - Constant.FILTER_EARLIEST_YEAR
         dialogView.filterGenreRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedGenreList, LIST_GENRE)
         dialogView.filterTagRecyclerView.adapter = assignAdapter(viewModel.currentData.selectedTagList, LIST_TAG)
         dialogView.filterHideMediaCheckBox.isChecked = viewModel.currentData.selectedOnList == false
@@ -108,7 +107,8 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
         }
 
         if (viewModel.isHandleSearch) {
-            dialogView.filterTagLayout.visibility = View.VISIBLE
+            // TODO: uncomment later when filter by tag is supported
+//            dialogView.filterTagLayout.visibility = View.VISIBLE
             dialogView.filterExtraOptionsLayout.visibility = View.VISIBLE
         } else {
             dialogView.filterTagLayout.visibility = View.GONE
@@ -188,15 +188,15 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
                 .show()
         }
 
-        dialogView.filterYearSeekBar.max = Utility.getCurrentYear() - MIN_YEAR
+        dialogView.filterYearSeekBar.max = Utility.getCurrentYear() - Constant.FILTER_EARLIEST_YEAR
         dialogView.filterYearSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (progress == 0) {
                     dialogView.filterYearText.text = "-"
                     viewModel.currentData.selectedYear = null
                 } else {
-                    dialogView.filterYearText.text = (progress + MIN_YEAR).toString()
-                    viewModel.currentData.selectedYear = progress + MIN_YEAR
+                    dialogView.filterYearText.text = (progress + Constant.FILTER_EARLIEST_YEAR).toString()
+                    viewModel.currentData.selectedYear = progress + Constant.FILTER_EARLIEST_YEAR
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}

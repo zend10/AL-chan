@@ -41,4 +41,15 @@ interface SearchDataSource {
     fun searchCharacters(page: Int, search: String?, sort: List<CharacterSort>?): Observable<Response<SearchCharactersQuery.Data>>
     fun searchStaffs(page: Int, search: String?, sort: List<StaffSort>?): Observable<Response<SearchStaffsQuery.Data>>
     fun searchStudios(page: Int, search: String?, sort: List<StudioSort>?): Observable<Response<SearchStudiosQuery.Data>>
+
+    fun getSeasonalAnime(
+        page: Int,
+        season: MediaSeason?,
+        seasonYear: Int?,
+        status: MediaStatus?,
+        formatIn: List<MediaFormat>,
+        isAdult: Boolean,
+        onList: Boolean?,
+        sort: List<MediaSort>
+    ): Observable<Response<SeasonalAnimeQuery.Data>>
 }
