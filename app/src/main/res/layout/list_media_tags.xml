@@ -9,7 +9,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tagNameText"
         android:text="Tag"
-        style="?themeSmallClickableFont"
+        style="?themeSmallFont"
         android:layout_marginEnd="@dimen/marginSmall"
         android:layout_weight="2"
         android:layout_width="0dp"
@@ -18,7 +18,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tagRankText"
         android:text="90%"
-        style="?themeSmallClickableFont"
+        style="?themeSmallFont"
         android:textAlignment="textEnd"
         android:layout_weight="1"
         android:layout_width="0dp"

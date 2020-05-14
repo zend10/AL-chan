@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -70,8 +70,9 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/statusText"
                         style="?themeRegularClickableFont"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -100,8 +101,9 @@
                             android:id="@+id/scoreText"
                             style="?themeRegularClickableFont"
                             android:text="0"
-                            android:paddingTop="@dimen/iconPadding"
-                            android:paddingBottom="@dimen/iconPadding"
+                            android:paddingTop="@dimen/marginSmall"
+                            android:paddingBottom="@dimen/marginSmall"
+                            android:foreground="?selectableItemBackground"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
@@ -110,6 +112,7 @@
                             android:id="@+id/scoreSmileyIcon"
                             app:srcCompat="@drawable/ic_puzzled"
                             app:tint="?themePrimaryColor"
+                            android:foreground="?selectableItemBackground"
                             android:layout_width="@dimen/iconSize"
                             android:layout_height="@dimen/iconSize"/>
 
@@ -133,8 +136,9 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/chapterText"
                         style="?themeRegularClickableFont"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -157,8 +161,9 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/volumeText"
                         style="?themeRegularClickableFont"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -182,8 +187,9 @@
                         android:id="@+id/startDateText"
                         style="?themeRegularClickableFont"
                         android:text="-"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -207,8 +213,9 @@
                         android:id="@+id/finishDateText"
                         style="?themeRegularClickableFont"
                         android:text="-"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -232,8 +239,9 @@
                         android:id="@+id/totalRereadsText"
                         style="?themeRegularClickableFont"
                         android:text="0"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -259,8 +267,9 @@
                         android:text="-"
                         android:maxLines="5"
                         android:ellipsize="end"
-                        android:paddingTop="@dimen/iconPadding"
-                        android:paddingBottom="@dimen/iconPadding"
+                        android:paddingTop="@dimen/marginSmall"
+                        android:paddingBottom="@dimen/marginSmall"
+                        android:foreground="?selectableItemBackground"
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
@@ -338,6 +347,7 @@
                         android:layout_height="@dimen/iconSize"/>
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/hideFromStatusListsText"
                         style="?themeRegularFont"
                         android:text="@string/hide_from_status_lists"
                         android:layout_marginStart="@dimen/marginNormal"
@@ -359,6 +369,7 @@
                         android:layout_height="@dimen/iconSize"/>
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/privateText"
                         style="?themeRegularFont"
                         android:text="@string/private_"
                         android:layout_marginStart="@dimen/marginNormal"
@@ -376,7 +387,7 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

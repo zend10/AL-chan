@@ -252,6 +252,10 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
             }
         }
 
+        dialogView.filterOnlyShowMediaText.setOnClickListener {
+            dialogView.filterOnlyShowMediaCheckBox.performClick()
+        }
+
         dialogView.filterHideMediaCheckBox.setOnClickListener {
             if (dialogView.filterHideMediaCheckBox.isChecked) {
                 dialogView.filterOnlyShowMediaCheckBox.isChecked = false
@@ -259,6 +263,10 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
             } else {
                 viewModel.currentData.selectedOnList = null
             }
+        }
+
+        dialogView.filterHideMediaText.setOnClickListener {
+            dialogView.filterHideMediaCheckBox.performClick()
         }
 
         dialogView.filterApplyButton.setOnClickListener {

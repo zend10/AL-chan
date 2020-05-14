@@ -2,10 +2,7 @@ package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo.api.Response
 import io.reactivex.Observable
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSort
-import type.MediaType
+import type.*
 
 interface MediaDataSource {
     fun getGenre(): Observable<Response<GenreQuery.Data>>
@@ -16,6 +13,7 @@ interface MediaDataSource {
     fun getMediaCharacters(id: Int, page: Int): Observable<Response<MediaCharactersQuery.Data>>
     fun getMediaStaffs(id: Int, page: Int): Observable<Response<MediaStaffsQuery.Data>>
     fun getMediaStats(id: Int): Observable<Response<MediaStatsQuery.Data>>
+    fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>): Observable<Response<MediaReviewsQuery.Data>>
 
     fun getTrendingMedia(type: MediaType): Observable<Response<TrendingMediaQuery.Data>>
     fun getReleasingToday(page: Int): Observable<Response<ReleasingTodayQuery.Data>>

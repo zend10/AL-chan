@@ -19,7 +19,7 @@
             android:layout_marginEnd="@dimen/marginPage"
             android:layout_marginBottom="@dimen/marginNormal"
             android:gravity="center_vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
@@ -32,8 +32,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/voiceActorLanguageText"
                 style="?themeRegularClickableFont"
+                android:foreground="?selectableItemBackground"
                 android:padding="@dimen/iconPadding"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

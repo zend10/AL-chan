@@ -9,6 +9,7 @@ import com.zen.alchan.helper.pojo.MediaCharacters
 import type.MediaFormat
 import type.MediaSeason
 import type.MediaSort
+import type.ReviewSort
 
 interface MediaRepository {
     val genreList: List<String?>
@@ -23,6 +24,7 @@ interface MediaRepository {
     val mediaCharactersData: LiveData<Resource<MediaCharactersQuery.Data>>
     val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
     val mediaStatsData: LiveData<Resource<MediaStatsQuery.Data>>
+    val mediaReviewsData: LiveData<Resource<MediaReviewsQuery.Data>>
 
     val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
     val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
@@ -36,6 +38,7 @@ interface MediaRepository {
     fun getMediaCharacters(id: Int, page: Int)
     fun getMediaStaffs(id: Int, page: Int)
     fun getMediaStats(id: Int)
+    fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>)
 
     fun getTrendingAnime()
     fun getTrendingManga()

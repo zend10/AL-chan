@@ -250,6 +250,7 @@
                     android:id="@+id/addImageText"
                     style="?themeRegularClickableFont"
                     android:text="@string/add_image"
+                    android:foreground="?selectableItemBackground"
                     android:padding="@dimen/iconPadding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

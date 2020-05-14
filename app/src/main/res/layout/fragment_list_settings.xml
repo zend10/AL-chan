@@ -42,6 +42,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/scoringSystemText"
                     style="?themeRegularClickableFont"
+                    android:foreground="?selectableItemBackground"
                     android:padding="@dimen/iconPadding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -92,6 +93,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/addMoreAdvancedScoringText"
                         style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
                         android:text="@string/add_more"
                         android:padding="@dimen/iconPadding"
                         android:layout_width="wrap_content"
@@ -151,6 +153,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/defaultListOrderText"
                     style="?themeRegularClickableFont"
+                    android:foreground="?selectableItemBackground"
                     android:padding="@dimen/iconPadding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -217,6 +220,7 @@
                     android:id="@+id/addMoreCustomAnimeListsText"
                     style="?themeRegularClickableFont"
                     android:text="@string/add_more"
+                    android:foreground="?selectableItemBackground"
                     android:padding="@dimen/iconPadding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -264,6 +268,7 @@
                     android:id="@+id/addMoreCustomMangaListsText"
                     style="?themeRegularClickableFont"
                     android:text="@string/add_more"
+                    android:foreground="?selectableItemBackground"
                     android:padding="@dimen/iconPadding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

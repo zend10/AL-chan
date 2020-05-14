@@ -53,7 +53,8 @@ interface MediaListRepository {
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?,
-        priority: Int?
+        priority: Int?,
+        updateCustomList: Boolean? = false
     )
     fun addAnimeList(
         mediaId: Int,
@@ -99,7 +100,8 @@ interface MediaListRepository {
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?,
-        priority: Int?
+        priority: Int?,
+        updateCustomList: Boolean? = false
     )
     fun addMangaList(
         mediaId: Int,

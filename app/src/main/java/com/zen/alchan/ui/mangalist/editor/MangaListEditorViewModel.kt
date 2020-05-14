@@ -43,6 +43,8 @@ class MangaListEditorViewModel(private val mediaListRepository: MediaListReposit
     var selectedPrivate: Boolean? = null
     var selectedPriority: Int? = null
 
+    var isCustomListsModified = false
+
     val mangaListDataDetailResponse by lazy {
         mediaListRepository.mediaListDataDetailResponse
     }
@@ -114,7 +116,8 @@ class MangaListEditorViewModel(private val mediaListRepository: MediaListReposit
                     selectedAdvancedScores,
                     selectedStartDate,
                     selectedFinishDate,
-                    selectedPriority
+                    selectedPriority,
+                    isCustomListsModified
                 )
             } else if (mediaId != null && mediaId != 0) {
                 mediaListRepository.addMangaList(

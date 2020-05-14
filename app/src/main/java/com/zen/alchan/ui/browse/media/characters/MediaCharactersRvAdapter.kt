@@ -90,7 +90,5 @@ class MediaCharactersRvAdapter(private val context: Context,
         val voiceActorNameText = view.righText!!
     }
 
-    class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-    }
+    class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

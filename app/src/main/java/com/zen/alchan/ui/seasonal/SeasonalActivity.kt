@@ -305,6 +305,10 @@ class SeasonalActivity : BaseActivity() {
             viewModel.refresh()
         }
 
+        seasonalHideOnListText.setOnClickListener {
+            seasonalHideOnListCheckBox.performClick()
+        }
+
         seasonalShowOnListCheckBox.setOnClickListener {
             if (seasonalShowOnListCheckBox.isChecked) {
                 viewModel.selectedOnList = true
@@ -316,10 +320,18 @@ class SeasonalActivity : BaseActivity() {
             viewModel.refresh()
         }
 
+        seasonalShowOnListText.setOnClickListener {
+            seasonalShowOnListCheckBox.performClick()
+        }
+
         seasonalShowAdultCheckBox.setOnClickListener {
             viewModel.selectedIsAdult = seasonalShowAdultCheckBox.isChecked
             viewModel.resetHasNextPage()
             viewModel.refresh()
+        }
+
+        seasonalShowAdultText.setOnClickListener {
+            seasonalShowAdultCheckBox.performClick()
         }
     }
 

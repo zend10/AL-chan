@@ -494,11 +494,17 @@ class MangaListEditorActivity : BaseActivity() {
         hideFromStatusListsCheckBox.setOnClickListener {
             viewModel.selectedHidden = viewModel.selectedHidden != true
         }
+        hideFromStatusListsText.setOnClickListener {
+            hideFromStatusListsCheckBox.performClick()
+        }
 
         // handle private
         privateCheckBox.isChecked = viewModel.selectedPrivate == true
         privateCheckBox.setOnClickListener {
             viewModel.selectedPrivate = viewModel.selectedPrivate != true
+        }
+        privateText.setOnClickListener {
+            privateCheckBox.performClick()
         }
 
         if (mediaList == null) {
@@ -604,6 +610,7 @@ class MangaListEditorActivity : BaseActivity() {
                     viewModel.selectedCustomLists.remove(viewModel.customListsList[index].customList)
                 }
                 customListsAdapter.notifyDataSetChanged()
+                viewModel.isCustomListsModified = true
             }
         })
     }

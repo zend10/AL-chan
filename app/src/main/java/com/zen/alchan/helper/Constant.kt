@@ -20,7 +20,6 @@ object Constant {
     const val FILTER_EARLIEST_YEAR = 1950
 
     const val DEFAULT_DATE_FORMAT = "dd MMM yyyy"
-    const val DATE_FORMAT = "dd MMM yyyy"
     const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
 
     val DEFAULT_THEME = AppColorTheme.YELLOW

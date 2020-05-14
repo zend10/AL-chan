@@ -192,7 +192,8 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?,
-        priority: Int?
+        priority: Int?,
+        updateCustomList: Boolean?
     ) {
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
@@ -202,7 +203,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<AnimeListEntryMutation.Data>) {
-                handleUpdateAnimeEntryResult(t, status, isUpdateDetail = true)
+                handleUpdateAnimeEntryResult(t, status, isUpdateDetail = true, isUpdateCustomList = updateCustomList ?: false)
             }
 
             override fun onError(e: Throwable) {
@@ -253,7 +254,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         })
     }
 
-    private fun handleUpdateAnimeEntryResult(t: Response<AnimeListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false) {
+    private fun handleUpdateAnimeEntryResult(t: Response<AnimeListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false, isUpdateCustomList: Boolean = false) {
         if (t.hasErrors()) {
             if (isUpdateDetail) {
                 _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors!![0].message))
@@ -272,7 +273,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             if (editedListsIndex != null && editedEntriesIndex != null && editedEntriesIndex != -1) {
-                if (originStatus != null && currentList?.lists!![editedListsIndex!!].entries!![editedEntriesIndex!!].status != originStatus) {
+                if (isUpdateCustomList || (originStatus != null && currentList?.lists!![editedListsIndex!!].entries!![editedEntriesIndex!!].status != originStatus)) {
                     // if status is changed, reload list
                     retrieveAnimeListData()
                 } else {
@@ -604,7 +605,8 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?,
-        priority: Int?
+        priority: Int?,
+        updateCustomList: Boolean?
     ) {
         _updateMediaListEntryDetailResponse.postValue(Resource.Loading())
 
@@ -614,7 +616,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<MangaListEntryMutation.Data>) {
-                handleUpdateMangaEntryResult(t, status, isUpdateDetail = true)
+                handleUpdateMangaEntryResult(t, status, isUpdateDetail = true, isUpdateCustomList = updateCustomList ?: false)
             }
 
             override fun onError(e: Throwable) {
@@ -666,7 +668,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         })
     }
 
-    private fun handleUpdateMangaEntryResult(t: Response<MangaListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false) {
+    private fun handleUpdateMangaEntryResult(t: Response<MangaListEntryMutation.Data>, originStatus: MediaListStatus? = null, isUpdateDetail: Boolean = false, isUpdateCustomList: Boolean = false) {
         if (t.hasErrors()) {
             if (isUpdateDetail) {
                 _updateMediaListEntryDetailResponse.postValue(Resource.Error(t.errors!![0].message))
@@ -685,7 +687,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             if (editedListsIndex != null && editedEntriesIndex != null && editedEntriesIndex != -1) {
-                if (originStatus != null && currentList?.lists!![editedListsIndex!!].entries!![editedEntriesIndex!!].status != originStatus) {
+                if (isUpdateCustomList || (originStatus != null && currentList?.lists!![editedListsIndex!!].entries!![editedEntriesIndex!!].status != originStatus)) {
                     // if status is changed, reload list
                     retrieveMangaListData()
                 } else {

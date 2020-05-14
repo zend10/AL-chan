@@ -86,6 +86,7 @@
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/seasonalHideOnListText"
                         android:text="@string/hide_anime_on_my_list"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginSmall"
@@ -100,6 +101,7 @@
                         android:layout_height="@dimen/iconSize"/>
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/seasonalShowOnListText"
                         android:text="@string/only_show_anime_on_my_list"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginSmall"

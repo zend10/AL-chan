@@ -40,6 +40,12 @@ fun Int.secondsToDateTime(): String {
     return dateFormat.format(date)
 }
 
+fun Int.secondsToDate(): String {
+    val dateFormat = SimpleDateFormat(Constant.DEFAULT_DATE_FORMAT, Locale.US)
+    val date = Date(this * 1000L)
+    return dateFormat.format(date)
+}
+
 fun FuzzyDate?.toMillis(): Long? {
     if (this?.year == null || month == null || day == null) {
         return null

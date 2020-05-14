@@ -26,6 +26,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/selected_theme"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/selectedThemeText"
+                    style="?themeRegularClickableFont"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <RelativeLayout
                 android:layout_marginTop="@dimen/marginNormal"
                 android:layout_width="wrap_content"
@@ -139,7 +163,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/defaultVoiceActorLanguageText"
                     style="?themeRegularClickableFont"
-                    android:text="JAPANESE"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

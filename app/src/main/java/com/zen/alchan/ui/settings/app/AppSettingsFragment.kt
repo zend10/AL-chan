@@ -49,8 +49,6 @@ class AppSettingsFragment : Fragment() {
             itemSave = menu.findItem(R.id.itemSave)
         }
 
-        // TODO: need to add settings to change header in Home
-
         initLayout()
     }
 
@@ -81,9 +79,8 @@ class AppSettingsFragment : Fragment() {
             true
         }
 
-        primaryColorItem.setOnClickListener { showAppThemeDialog() }
-        secondaryColorItem.setOnClickListener { showAppThemeDialog() }
-        negativeColorItem.setOnClickListener { showAppThemeDialog() }
+        selectedThemeText.text = viewModel.selectedAppTheme?.name
+        selectedThemeText.setOnClickListener { showAppThemeDialog() }
 
         defaultVoiceActorLanguageText.text = viewModel.selectedLanguage?.name
         defaultVoiceActorLanguageText.setOnClickListener { showLanguageDialog() }
@@ -115,6 +112,8 @@ class AppSettingsFragment : Fragment() {
         dialog.setListener(object : AppThemeDialogListener {
             override fun passSelectedTheme(theme: AppColorTheme) {
                 viewModel.selectedAppTheme = theme
+                selectedThemeText.text = theme.name
+
                 val palette = AndroidUtility.getColorPalette(viewModel.selectedAppTheme)
                 primaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.primaryColor))
                 secondaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.secondaryColor))

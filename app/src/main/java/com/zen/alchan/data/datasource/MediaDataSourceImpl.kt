@@ -4,6 +4,7 @@ import GenreQuery
 import MediaCharactersQuery
 import MediaOverviewQuery
 import MediaQuery
+import MediaReviewsQuery
 import MediaStaffsQuery
 import MediaStatsQuery
 import MediaStatusQuery
@@ -19,10 +20,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.internal.format
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSort
-import type.MediaType
+import type.*
 
 class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataSource {
 
@@ -90,6 +88,22 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
 
     override fun getMediaStats(id: Int): Observable<Response<MediaStatsQuery.Data>> {
         val query = MediaStatsQuery(id = Input.fromNullable(id))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMediaReviews(
+        id: Int,
+        page: Int,
+        sort: List<ReviewSort>
+    ): Observable<Response<MediaReviewsQuery.Data>> {
+        val query = MediaReviewsQuery(
+            id = Input.fromNullable(id),
+            page = Input.fromNullable(page),
+            sort = Input.fromNullable(sort)
+        )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

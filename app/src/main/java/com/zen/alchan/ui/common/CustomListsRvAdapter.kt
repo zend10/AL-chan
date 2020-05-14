@@ -28,6 +28,9 @@ class CustomListsRvAdapter(private val list: List<CustomListsItem>,
         holder.checkBoxField.setOnClickListener {
             listener.passSelected(position, !item.isChecked)
         }
+        holder.checkBoxLabel.setOnClickListener {
+            holder.checkBoxField.performClick()
+        }
     }
 
     override fun getItemCount(): Int {

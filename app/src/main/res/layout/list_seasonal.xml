@@ -124,6 +124,7 @@
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginSmall"
             android:layout_marginBottom="@dimen/marginSmall"
+            android:foreground="?selectableItemBackground"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 

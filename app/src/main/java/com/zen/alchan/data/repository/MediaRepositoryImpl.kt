@@ -16,10 +16,7 @@ import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSort
-import type.MediaType
+import type.*
 import java.util.*
 
 class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
@@ -62,6 +59,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _mediaStatsData = SingleLiveEvent<Resource<MediaStatsQuery.Data>>()
     override val mediaStatsData: LiveData<Resource<MediaStatsQuery.Data>>
         get() = _mediaStatsData
+
+    private val _mediaReviewsData = SingleLiveEvent<Resource<MediaReviewsQuery.Data>>()
+    override val mediaReviewsData: LiveData<Resource<MediaReviewsQuery.Data>>
+        get() = _mediaReviewsData
 
     private val _trendingAnimeData = SingleLiveEvent<Resource<TrendingMediaQuery.Data>>()
     override val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
@@ -235,6 +236,30 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
             override fun onError(e: Throwable) {
                 _mediaStatsData.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>) {
+        _mediaReviewsData.postValue(Resource.Loading())
+
+        mediaDataSource.getMediaReviews(id, page, sort).subscribeWith(object : Observer<Response<MediaReviewsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: Response<MediaReviewsQuery.Data>) {
+                if (t.hasErrors()) {
+                    _mediaReviewsData.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _mediaReviewsData.postValue(Resource.Success(t.data()!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _mediaReviewsData.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 
