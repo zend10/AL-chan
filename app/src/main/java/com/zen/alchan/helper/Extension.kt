@@ -14,6 +14,7 @@ import androidx.core.text.HtmlCompat
 import com.google.gson.reflect.TypeToken
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import java.text.DecimalFormat
@@ -93,7 +94,7 @@ fun String?.setRegularPlural(count: Int?): String {
     }
 }
 
-fun String?.handleSpoilerAndLink(context: Context): SpannableString {
+fun String?.handleSpoilerAndLink(context: Context, urlAction: (BrowsePage, Int) -> Unit): SpannableString {
     if (this == null) return SpannableString(context.getString(R.string.no_description))
 
     val spoilerRegex = "(?<=<span class='markdown_spoiler'><span>).+?(?=<\\/span><\\/span>)".toRegex()
@@ -148,7 +149,13 @@ fun String?.handleSpoilerAndLink(context: Context): SpannableString {
                 val internalCounter = counter
 
                 override fun onClick(widget: View) {
-                    CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(urlList[internalCounter].value))
+                    val url = urlList[internalCounter].value
+                    if (url.contains(Constant.ANILIST_URL) && url.contains(Regex("((anime)|(manga)|(character)|(staff)|(studio))/[0-9]+"))) {
+                        val urlSplit = url.substringAfter(Constant.ANILIST_URL).split("/")
+                        urlAction(BrowsePage.valueOf(urlSplit[0].toUpperCase()), urlSplit[1].toInt())
+                    } else {
+                        CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(urlList[internalCounter].value))
+                    }
                 }
 
                 override fun updateDrawState(ds: TextPaint) {

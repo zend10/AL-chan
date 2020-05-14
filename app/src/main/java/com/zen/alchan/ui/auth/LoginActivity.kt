@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
 import kotlinx.android.synthetic.main.activity_login.*

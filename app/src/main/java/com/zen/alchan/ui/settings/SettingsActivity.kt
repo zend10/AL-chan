@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener

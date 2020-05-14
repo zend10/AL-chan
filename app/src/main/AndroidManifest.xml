@@ -18,13 +18,21 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.seasonal.SeasonalActivity"></activity>
         <activity android:name=".ui.explore.ExploreActivity" />
-        <activity android:name=".ui.search.advanced.AdvancedSearchActivity" />
-        <activity android:name=".ui.browse.BrowseActivity" />
+        <activity android:name=".ui.browse.BrowseActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/anime/.*" />-->
+<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/manga/.*" />-->
+<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/character/.*" />-->
+<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/staff/.*" />-->
+<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/studio/.*" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
         <activity android:name=".ui.common.customise.CustomiseListActivity" />
-        <activity android:name=".ui.browse.media.MediaDetailActivity" />
         <activity android:name=".ui.animelist.editor.AnimeListEditorActivity" />
-        <activity android:name=".ui.animelist.filter.FilterAnimeListActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.auth.LoginActivity">
@@ -35,9 +43,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:scheme="alchan"
                     android:host="login"
-                    android:pathPattern=".*"
-                    android:scheme="alchan" />
+                    android:pathPattern=".*" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.auth.SplashActivity">

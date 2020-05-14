@@ -94,7 +94,9 @@ class StaffBioFragment : BaseFragment() {
             staffAliasesText.visibility = View.GONE
         }
 
-        staffDescriptionText.text = staffData?.description?.handleSpoilerAndLink(activity!!)
+        staffDescriptionText.text = staffData?.description?.handleSpoilerAndLink(activity!!) { page, id ->
+            listener?.changeFragment(page, id)
+        }
         staffDescriptionText.movementMethod = LinkMovementMethod.getInstance()
     }
 }

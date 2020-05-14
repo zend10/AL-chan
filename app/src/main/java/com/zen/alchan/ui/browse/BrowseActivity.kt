@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
@@ -26,36 +27,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
         setContentView(R.layout.activity_browse)
 
         if (supportFragmentManager.backStackEntryCount == 0) {
-            lateinit var targetFragment: Fragment
-            val bundle = Bundle()
-
-            when (BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE))) {
-                BrowsePage.ANIME -> {
-                    targetFragment = MediaFragment()
-                    bundle.putInt(MediaFragment.MEDIA_ID, intent.getIntExtra(LOAD_ID, 0))
-                    bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.ANIME.name)
-                }
-                BrowsePage.MANGA -> {
-                    targetFragment = MediaFragment()
-                    bundle.putInt(MediaFragment.MEDIA_ID, intent.getIntExtra(LOAD_ID, 0))
-                    bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.MANGA.name)
-                }
-                BrowsePage.CHARACTER -> {
-                    targetFragment = CharacterFragment()
-                    bundle.putInt(CharacterFragment.CHARACTER_ID, intent.getIntExtra(LOAD_ID, 0))
-                }
-                BrowsePage.STAFF -> {
-                    targetFragment = StaffFragment()
-                    bundle.putInt(StaffFragment.STAFF_ID, intent.getIntExtra(LOAD_ID, 0))
-                }
-                BrowsePage.STUDIO -> {
-                    targetFragment = StudioFragment()
-                    bundle.putInt(StudioFragment.STUDIO_ID, intent.getIntExtra(LOAD_ID, 0))
-                }
-            }
-
-            targetFragment.arguments = bundle
-            changeFragment(targetFragment, false)
+            changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE)), intent.getIntExtra(LOAD_ID, 0), false)
         }
     }
 
@@ -67,5 +39,38 @@ class BrowseActivity : BaseActivity(), BaseListener {
             fragmentTransaction.addToBackStack(null)
         }
         fragmentTransaction.commit()
+    }
+
+    override fun changeFragment(browsePage: BrowsePage, id: Int, addToBackStack: Boolean) {
+        lateinit var targetFragment: Fragment
+        val bundle = Bundle()
+
+        when (browsePage) {
+            BrowsePage.ANIME -> {
+                targetFragment = MediaFragment()
+                bundle.putInt(MediaFragment.MEDIA_ID, id)
+                bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.ANIME.name)
+            }
+            BrowsePage.MANGA -> {
+                targetFragment = MediaFragment()
+                bundle.putInt(MediaFragment.MEDIA_ID, id)
+                bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.MANGA.name)
+            }
+            BrowsePage.CHARACTER -> {
+                targetFragment = CharacterFragment()
+                bundle.putInt(CharacterFragment.CHARACTER_ID, id)
+            }
+            BrowsePage.STAFF -> {
+                targetFragment = StaffFragment()
+                bundle.putInt(StaffFragment.STAFF_ID, id)
+            }
+            BrowsePage.STUDIO -> {
+                targetFragment = StudioFragment()
+                bundle.putInt(StudioFragment.STUDIO_ID, id)
+            }
+        }
+
+        targetFragment.arguments = bundle
+        changeFragment(targetFragment, addToBackStack)
     }
 }

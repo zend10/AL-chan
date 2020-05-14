@@ -30,6 +30,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.handleSpoilerAndLink
 import com.zen.alchan.helper.libs.GlideApp
@@ -296,7 +298,9 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun handleDescription() {
-        characterDescriptionText.text = viewModel.currentCharacterData?.description?.handleSpoilerAndLink(activity!!)
+        characterDescriptionText.text = viewModel.currentCharacterData?.description?.handleSpoilerAndLink(activity!!) { page, id ->
+            listener?.changeFragment(page, id)
+        }
         characterDescriptionText.movementMethod = LinkMovementMethod.getInstance()
 
         characterDescriptionArrow.setOnClickListener {
