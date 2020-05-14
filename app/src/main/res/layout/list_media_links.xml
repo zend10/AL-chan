@@ -8,23 +8,34 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:gravity="center_vertical"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="gone"
             android:id="@+id/mediaLinkIcon"
-            android:layout_marginEnd="@dimen/marginSmall"
+            app:srcCompat="@drawable/ic_anilist"
+            android:layout_marginEnd="@dimen/marginClose"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dummyMediaLinkIcon"
+            android:layout_centerVertical="true"
             android:layout_width="@dimen/iconSize"
             android:layout_height="@dimen/iconSize"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mediaLinkWeb"
+            android:text="AniList"
             style="?themeRegularBoldFont"
+            android:layout_toEndOf="@id/mediaLinkIcon"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

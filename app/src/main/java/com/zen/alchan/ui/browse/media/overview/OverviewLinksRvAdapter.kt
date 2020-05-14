@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaLinks
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -29,9 +30,19 @@ class OverviewLinksRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        val siteTheme = getSiteTheme(item.site)
-        GlideApp.with(context).load(siteTheme.first).into(holder.mediaLinkIcon)
-        holder.mediaLinkCard.setCardBackgroundColor(siteTheme.second)
+        val cardTheme = if (Constant.EXTERNAL_LINK.containsKey(item.site.toLowerCase())) {
+            Constant.EXTERNAL_LINK[item.site.toLowerCase()]!!
+        } else {
+            Pair(null, AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
+        }
+        if (cardTheme.first != null) {
+            holder.mediaLinkIcon.visibility = View.VISIBLE
+            GlideApp.with(context).load(cardTheme.first).into(holder.mediaLinkIcon)
+        } else {
+            holder.mediaLinkIcon.visibility = View.GONE
+            GlideApp.with(context).load(0).into(holder.mediaLinkIcon)
+        }
+        holder.mediaLinkCard.setCardBackgroundColor(cardTheme.second)
         holder.mediaLinkWeb.text = item.site
         holder.itemView.setOnClickListener { listener.openUrl(item.url) }
         holder.itemView.setOnLongClickListener {
@@ -44,22 +55,60 @@ class OverviewLinksRvAdapter(private val context: Context,
         return list.size
     }
 
-    private fun getSiteTheme(site: String): Pair<Int, Int> {
-        return when (site.toLowerCase()) {
-            "anilist" -> Pair(R.drawable.ic_anilist, Color.parseColor("#324760"))
-            "twitter" -> Pair(R.drawable.ic_twitter, Color.parseColor("#03A9F4"))
-            "netflix" -> Pair(R.drawable.ic_website, Color.parseColor("#F44335"))
-            "hulu" -> Pair(R.drawable.ic_website, Color.parseColor("#8AC34A"))
-            "crunchyroll" -> Pair(R.drawable.ic_crunchyroll, Color.parseColor("#FF9100"))
-            "funimation" -> Pair(R.drawable.ic_website, Color.parseColor("#452C8A"))
-            "animelab" -> Pair(R.drawable.ic_website, Color.parseColor("#3B0087"))
-            "vrv" -> Pair(R.drawable.ic_website, Color.parseColor("#FEDD01"))
-            "viz" -> Pair(R.drawable.ic_website, Color.parseColor("#FF0000"))
-            "manga plus" -> Pair(R.drawable.ic_website, Color.parseColor("#DC0812"))
-            "pocket magazine (jp)" -> Pair(R.drawable.ic_website, Color.parseColor("#0C2F89"))
-            else -> Pair(R.drawable.ic_website, AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
+    /*
+         anime values: {
+            "crunchyroll": "Crunchyroll",
+            "funimation": "Funimation",
+            "hidive": "Hidive",
+            "vrv": "VRV",
+            "netflix": "Netflix",
+            "amazon": "Amazon",
+            "hulu": "Hulu",
+            "animelab": "Animelab",
+            "viz": "Viz",
+            "midnightpulp.com": "Midnight Pulp",
+            "tubitv.com": "Tubi TV",
+            "contv.com": "CONtv",
         }
-    }
+
+        manga English: {
+            "mangaplus.shueisha.co.jp": "Manga Plus",
+            "viz": "Viz",
+            "crunchyroll": "Crunchyroll",
+            "manga.club": "Manga.Club",
+            "fakku": "Fakku",
+            "webtoons.com/en": "Webtoons",
+            "lezhin.com/en": "Lezhin",
+            "global.toomics.com": "Toomics",
+            "webcomicsapp.com": "Web Comics",
+        },
+        Japanese: {
+            "comic-walker": "ComicWalker",
+            "comic.pixiv.net": "Pixiv Comic",
+            "comico.jp": "Comico",
+            "mangabox": "Mangabox",
+            "novel.pixiv.net": "Pixiv Novel",
+            "piccoma.com": "Piccoma",
+            "pocket.shonenmagazine.com": "Pocket Magazine",
+            "seiga.nicovideo.jp": "Nico Nico Seiga",
+            "shonenjumpplus.com": "Shonen Jump Plus",
+        },
+        Korean: {
+            "lezhin.com/ko": "Lezhin",
+            "naver": "Naver",
+            "webtoon.daum.net": "Daum Webtoon",
+            "toomics.com": "Toomics",
+            "bomtoon": "Bomtoon",
+            "kakao": "KakaoPage",
+        },
+        Chinese: {
+            "Kuaikanmanhua": "KuaiKan Manhua",
+            "ac.qq.com": "QQ",
+            "dajiaochongmanhua.com": "Dajiaochong Manhua",
+            "manhua.weibo.com": "Weibo Manhua",
+            "manmanapp.com": "Manman Manhua",
+        }
+     */
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mediaLinkCard = view.mediaLinkCard!!

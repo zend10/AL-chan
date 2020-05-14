@@ -445,7 +445,7 @@ class MediaOverviewFragment : BaseFragment() {
 
             override fun copyUrl(url: String) {
                 AndroidUtility.copyToClipboard(activity, url)
-                DialogUtility.showToast(activity, R.string.link_copied)
+                DialogUtility.showToast(activity, "${getString(R.string.link_copied)}: $url")
             }
         })
     }

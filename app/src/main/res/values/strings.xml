@@ -249,4 +249,5 @@
     <string name="status_distribution">Status Distribution</string>
     <string name="performance">Performance</string>
     <string name="selected_theme">Selected theme</string>
+    <string name="long_press_to_copy_link">Long press to copy link</string>
 </resources>

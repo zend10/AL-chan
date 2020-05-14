@@ -1,6 +1,8 @@
 package com.zen.alchan.helper
 
+import android.graphics.Color
 import com.zen.alchan.BuildConfig
+import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppColorTheme
 import type.*
 
@@ -118,5 +120,47 @@ object Constant {
         Pair(MediaRelation.CONTAINS, 11),
         Pair(MediaRelation.CHARACTER, 12),
         Pair(MediaRelation.OTHER, 13)
+    )
+
+    val EXTERNAL_LINK = hashMapOf(
+        Pair("anilist", Pair(R.drawable.ic_anilist, Color.parseColor("#324760"))),
+        Pair("twitter", Pair(R.drawable.ic_twitter, Color.parseColor("#03A9F4"))),
+        Pair("crunchyroll", Pair(R.drawable.ic_crunchyroll, Color.parseColor("#FF9100"))),
+        Pair("funimation", Pair(null, Color.parseColor("#452C8A"))),
+        Pair("hidive", Pair(null, Color.parseColor("#03A8EB"))),
+        Pair("vrv", Pair(null, Color.parseColor("#FEDD01"))),
+        Pair("netflix", Pair(null, Color.parseColor("#F44335"))),
+        Pair("amazon", Pair(null, Color.parseColor("#04A3DD"))),
+        Pair("hulu", Pair(null, Color.parseColor("#8AC34A"))),
+        Pair("animelab", Pair(null, Color.parseColor("#3B0087"))),
+        Pair("viz", Pair(null, Color.parseColor("#FF0000"))),
+        Pair("midnight pulp", Pair(null, Color.parseColor("#B7F00F"))),
+        Pair("tubi tv", Pair(null, Color.parseColor("#F84C18"))),
+        Pair("contv", Pair(null, Color.parseColor("#E35623"))),
+        Pair("manga plus", Pair(null, Color.parseColor("#DC0812"))),
+        Pair("manga.club", Pair(null, Color.parseColor("#F47D30"))),
+        Pair("fakku", Pair(null, Color.parseColor("#911918"))),
+        Pair("webtoons", Pair(null, Color.parseColor("#04CF62"))),
+        Pair("lezhin", Pair(null, Color.parseColor("#E71D31"))),
+        Pair("toomics", Pair(null, Color.parseColor("#EB2C2C"))),
+        Pair("web comics", Pair(null, Color.parseColor("#F7745E"))),
+        Pair("comicwalker (jp)", Pair(null, Color.parseColor("#F80003"))),
+        Pair("pixiv comic (jp)", Pair(null, Color.parseColor("#088ED5"))),
+        Pair("comico (jp)", Pair(null, Color.parseColor("#EE0208"))),
+        Pair("mangabox (jp)", Pair(null, Color.parseColor("#3999B8"))),
+        Pair("pixiv novel (jp)", Pair(null, Color.parseColor("#088ED5"))),
+        Pair("piccoma (jp)", Pair(null, Color.parseColor("#F3C016"))),
+        Pair("pocket magazine (jp)", Pair(null, Color.parseColor("#0C2F89"))),
+        Pair("nico nico seiga (jp)", Pair(null, Color.parseColor("#323232"))),
+        Pair("shonen jump plus (jp)", Pair(null, Color.parseColor("#E60109"))),
+        Pair("naver (ko)", Pair(null, Color.parseColor("#00CE63"))),
+        Pair("daum webtoon (ko)", Pair(null, Color.parseColor("#F82E40"))),
+        Pair("bomtoon (ko)", Pair(null, Color.parseColor("#F82BA8"))),
+        Pair("kakaopage (ko)", Pair(null, Color.parseColor("#F8CD01"))),
+        Pair("kuaikan manhua (cn)", Pair(null, Color.parseColor("#F8D00B"))),
+        Pair("qq (cn)", Pair(null, Color.parseColor("#FB9144"))),
+        Pair("dajiaochong manhua (cn)", Pair(null, Color.parseColor("#E9CE0E"))),
+        Pair("weibo manhua (cn)", Pair(null, Color.parseColor("#E0172B"))),
+        Pair("manman manhua (cn)", Pair(null, Color.parseColor("#FF5746")))
     )
 }
