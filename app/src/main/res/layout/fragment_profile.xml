@@ -362,19 +362,11 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <androidx.core.widget.NestedScrollView
+        <com.zen.alchan.helper.libs.CustomViewPager
+            android:id="@+id/profileViewPager"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:id="@+id/profileFrameLayout"
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_marginBottom="@dimen/marginPage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </androidx.core.widget.NestedScrollView>
+            android:layout_height="wrap_content"/>
 
         <include layout="@layout/layout_loading"/>
 

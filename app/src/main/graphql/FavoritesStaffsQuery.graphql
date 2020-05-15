@@ -1,0 +1,29 @@
+query FavoritesStaffsQuery($page: Int) {
+    Viewer {
+        id
+        name
+        favourites {
+            staff(page: $page) {
+                edges {
+                    node {
+                        id
+                        name {
+                            full
+                        }
+                        image {
+                            large
+                        }
+                    }
+                    favouriteOrder
+                }
+                pageInfo {
+                    total
+                    perPage
+                    currentPage
+                    lastPage
+                    hasNextPage
+                }
+            }
+        }
+    }
+}

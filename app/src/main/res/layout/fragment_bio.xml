@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="@dimen/marginFar"
+    android:paddingBottom="@dimen/marginPage"
+    android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.profile.bio.BioFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_marginStart="@dimen/marginPage"
-        android:layout_marginEnd="@dimen/marginPage"
-        app:cardBackgroundColor="?themeCardColor"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:contentPadding="@dimen/marginNormal"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <WebView
-            android:id="@+id/bioWebView"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_marginStart="@dimen/marginPage"
+            android:layout_marginEnd="@dimen/marginPage"
+            app:cardBackgroundColor="?themeCardColor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:contentPadding="@dimen/marginNormal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
 
-    </com.google.android.material.card.MaterialCardView>
+            <WebView
+                android:id="@+id/bioWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

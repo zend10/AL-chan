@@ -16,6 +16,12 @@ interface UserRepository {
     val updateListSettingsResponse: LiveData<Resource<Boolean>>
     val toggleFavouriteResponse: LiveData<Resource<Boolean>>
 
+    val favoriteAnimeResponse: LiveData<Resource<FavoritesAnimeQuery.Data>>
+    val favoriteMangaResponse: LiveData<Resource<FavoritesMangaQuery.Data>>
+    val favoriteCharactersResponse: LiveData<Resource<FavoritesCharactersQuery.Data>>
+    val favoriteStaffsResponse: LiveData<Resource<FavoritesStaffsQuery.Data>>
+    val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
+
     val viewerDataLastRetrieved: Long?
 
     fun getViewerData()
@@ -30,4 +36,10 @@ interface UserRepository {
         staffId: Int?,
         studioId: Int?
     )
+
+    fun getFavoriteAnime(page: Int)
+    fun getFavoriteManga(page: Int)
+    fun getFavoriteCharacters(page: Int)
+    fun getFavoriteStaffs(page: Int)
+    fun getFavoriteStudios(page: Int)
 }

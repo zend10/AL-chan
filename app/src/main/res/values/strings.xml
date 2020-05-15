@@ -250,4 +250,6 @@
     <string name="performance">Performance</string>
     <string name="selected_theme">Selected theme</string>
     <string name="long_press_to_copy_link">Long press to copy link</string>
+    <string name="reorder_favorites">Reorder Favorites</string>
+    <string name="refresh">Refresh</string>
 </resources>

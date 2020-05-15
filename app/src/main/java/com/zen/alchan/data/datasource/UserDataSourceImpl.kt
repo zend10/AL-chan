@@ -1,6 +1,11 @@
 package com.zen.alchan.data.datasource
 
 import AniListSettingsMutation
+import FavoritesAnimeQuery
+import FavoritesCharactersQuery
+import FavoritesMangaQuery
+import FavoritesStaffsQuery
+import FavoritesStudiosQuery
 import ListSettingsMutation
 import ToggleFavouriteMutation
 import ViewerQuery
@@ -119,6 +124,46 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         )
         val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
         return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFavoriteAnime(page: Int): Observable<Response<FavoritesAnimeQuery.Data>> {
+        val query = FavoritesAnimeQuery(page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFavoriteManga(page: Int): Observable<Response<FavoritesMangaQuery.Data>> {
+        val query = FavoritesMangaQuery(page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFavoriteCharacters(page: Int): Observable<Response<FavoritesCharactersQuery.Data>> {
+        val query = FavoritesCharactersQuery(page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFavoriteStaffs(page: Int): Observable<Response<FavoritesStaffsQuery.Data>> {
+        val query = FavoritesStaffsQuery(page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFavoriteStudios(page: Int): Observable<Response<FavoritesStudiosQuery.Data>> {
+        val query = FavoritesStudiosQuery(page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

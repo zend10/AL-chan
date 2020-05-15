@@ -33,7 +33,6 @@ class BioFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setupObserver()
         initLayout()
-
     }
 
     private fun setupObserver() {

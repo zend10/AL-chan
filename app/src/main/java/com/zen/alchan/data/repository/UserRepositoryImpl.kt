@@ -45,6 +45,26 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val toggleFavouriteResponse: LiveData<Resource<Boolean>>
         get() = _toggleFavouriteResponse
 
+    private val _favoriteAnimeResponse = SingleLiveEvent<Resource<FavoritesAnimeQuery.Data>>()
+    override val favoriteAnimeResponse: LiveData<Resource<FavoritesAnimeQuery.Data>>
+        get() = _favoriteAnimeResponse
+
+    private val _favoriteMangaResponse = SingleLiveEvent<Resource<FavoritesMangaQuery.Data>>()
+    override val favoriteMangaResponse: LiveData<Resource<FavoritesMangaQuery.Data>>
+        get() = _favoriteMangaResponse
+
+    private val _favoriteCharactersResponse = SingleLiveEvent<Resource<FavoritesCharactersQuery.Data>>()
+    override val favoriteCharactersResponse: LiveData<Resource<FavoritesCharactersQuery.Data>>
+        get() = _favoriteCharactersResponse
+
+    private val _favoriteStaffsResponse = SingleLiveEvent<Resource<FavoritesStaffsQuery.Data>>()
+    override val favoriteStaffsResponse: LiveData<Resource<FavoritesStaffsQuery.Data>>
+        get() = _favoriteStaffsResponse
+
+    private val _favoriteStudiosResponse = SingleLiveEvent<Resource<FavoritesStudiosQuery.Data>>()
+    override val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
+        get() = _favoriteStudiosResponse
+
     override val viewerDataLastRetrieved: Long?
         get() = userManager.viewerDataLastRetrieved
 
@@ -165,6 +185,121 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             override fun onComplete() {
                 _toggleFavouriteResponse.postValue(Resource.Success(true))
             }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFavoriteAnime(page: Int) {
+        _favoriteAnimeResponse.postValue(Resource.Loading())
+
+        userDataSource.getFavoriteAnime(page).subscribeWith(object : Observer<Response<FavoritesAnimeQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<FavoritesAnimeQuery.Data>) {
+                if (t.hasErrors()) {
+                    _favoriteAnimeResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _favoriteAnimeResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _favoriteAnimeResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFavoriteManga(page: Int) {
+        _favoriteMangaResponse.postValue(Resource.Loading())
+
+        userDataSource.getFavoriteManga(page).subscribeWith(object : Observer<Response<FavoritesMangaQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<FavoritesMangaQuery.Data>) {
+                if (t.hasErrors()) {
+                    _favoriteMangaResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _favoriteMangaResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _favoriteMangaResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFavoriteCharacters(page: Int) {
+        _favoriteCharactersResponse.postValue(Resource.Loading())
+
+        userDataSource.getFavoriteCharacters(page).subscribeWith(object : Observer<Response<FavoritesCharactersQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<FavoritesCharactersQuery.Data>) {
+                if (t.hasErrors()) {
+                    _favoriteCharactersResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _favoriteCharactersResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _favoriteCharactersResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFavoriteStaffs(page: Int) {
+        _favoriteStaffsResponse.postValue(Resource.Loading())
+
+        userDataSource.getFavoriteStaffs(page).subscribeWith(object : Observer<Response<FavoritesStaffsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<FavoritesStaffsQuery.Data>) {
+                if (t.hasErrors()) {
+                    _favoriteStaffsResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _favoriteStaffsResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _favoriteStaffsResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFavoriteStudios(page: Int) {
+        _favoriteStudiosResponse.postValue(Resource.Loading())
+
+        userDataSource.getFavoriteStudios(page).subscribeWith(object : Observer<Response<FavoritesStudiosQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<FavoritesStudiosQuery.Data>) {
+                if (t.hasErrors()) {
+                    _favoriteStudiosResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _favoriteStudiosResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _favoriteStudiosResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
         })
     }
 }

@@ -16,19 +16,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.seasonal.SeasonalActivity"></activity>
+        <activity android:name=".ui.profile.favorites.reorder.ReorderFavoritesActivity"></activity>
+        <activity android:name=".ui.seasonal.SeasonalActivity" />
         <activity android:name=".ui.explore.ExploreActivity" />
         <activity android:name=".ui.browse.BrowseActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/anime/.*" />-->
-<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/manga/.*" />-->
-<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/character/.*" />-->
-<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/staff/.*" />-->
-<!--                <data android:scheme="https" android:host="anilist.co" android:pathPattern="/studio/.*" />-->
-<!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+            <!-- <data android:scheme="https" android:host="anilist.co" android:pathPattern="/anime/.*" /> -->
+            <!-- <data android:scheme="https" android:host="anilist.co" android:pathPattern="/manga/.*" /> -->
+            <!-- <data android:scheme="https" android:host="anilist.co" android:pathPattern="/character/.*" /> -->
+            <!-- <data android:scheme="https" android:host="anilist.co" android:pathPattern="/staff/.*" /> -->
+            <!-- <data android:scheme="https" android:host="anilist.co" android:pathPattern="/studio/.*" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
         <activity android:name=".ui.common.customise.CustomiseListActivity" />
@@ -43,9 +45,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="alchan"
                     android:host="login"
-                    android:pathPattern=".*" />
+                    android:pathPattern=".*"
+                    android:scheme="alchan" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.auth.SplashActivity">

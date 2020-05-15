@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.*
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
@@ -38,7 +39,9 @@ import kotlin.math.abs
 class ProfileFragment : BaseMainFragment() {
 
     private val viewModel by viewModel<ProfileViewModel>()
+
     private lateinit var profileSectionMap: HashMap<ProfileSection, Pair<ImageView, TextView>>
+    private lateinit var profileFragmentList: List<Fragment>
 
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
@@ -65,6 +68,8 @@ class ProfileFragment : BaseMainFragment() {
             Pair(ProfileSection.REVIEWS, Pair(profileReviewsIcon, profileReviewsText))
         )
 
+        profileFragmentList = arrayListOf(BioFragment(), FavoritesFragment(), StatsFragment(), ReviewsFragment())
+
         scaleUpAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up)
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
 
@@ -76,7 +81,6 @@ class ProfileFragment : BaseMainFragment() {
 
         setupObserver()
         initLayout()
-        setupSection()
     }
 
     private fun setupObserver() {
@@ -113,7 +117,6 @@ class ProfileFragment : BaseMainFragment() {
         profileRefreshLayout.setOnRefreshListener {
             profileRefreshLayout.isRefreshing = false
             viewModel.retrieveViewerData()
-            // TODO: reload data reviews, stats, favs
         }
 
         GlideApp.with(this).load(user?.bannerImage).into(profileBannerImage)
@@ -140,6 +143,14 @@ class ProfileFragment : BaseMainFragment() {
         profileFavoritesLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.FAVORITES) }
         profileStatsLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.STATS) }
         profileReviewsLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.REVIEWS) }
+
+        if (profileViewPager.adapter == null) {
+            profileViewPager.setPagingEnabled(false)
+            profileViewPager.offscreenPageLimit = profileSectionMap.size
+            profileViewPager.adapter = ProfileViewPagerAdapter(childFragmentManager, profileFragmentList)
+        }
+
+        viewModel.setProfileSection(viewModel.currentSection.value ?: ProfileSection.BIO)
 
         profileAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
@@ -176,17 +187,6 @@ class ProfileFragment : BaseMainFragment() {
     }
 
     private fun setupSection() {
-        val fragmentTransaction = childFragmentManager.beginTransaction()
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-
-        when (viewModel.currentSection.value) {
-            ProfileSection.BIO -> fragmentTransaction.replace(profileFrameLayout.id, BioFragment())
-            ProfileSection.FAVORITES -> fragmentTransaction.replace(profileFrameLayout.id, FavoritesFragment())
-            ProfileSection.STATS -> fragmentTransaction.replace(profileFrameLayout.id, StatsFragment())
-            ProfileSection.REVIEWS -> fragmentTransaction.replace(profileFrameLayout.id, ReviewsFragment())
-        }
-
         profileSectionMap.forEach {
             if (it.key == viewModel.currentSection.value) {
                 it.value.first.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor))
@@ -197,6 +197,12 @@ class ProfileFragment : BaseMainFragment() {
             }
         }
 
-        fragmentTransaction.commit()
+        profileViewPager.currentItem = when (viewModel.currentSection.value) {
+            ProfileSection.BIO -> 0
+            ProfileSection.FAVORITES -> 1
+            ProfileSection.STATS -> 2
+            ProfileSection.REVIEWS -> 3
+            else -> 0
+        }
     }
 }

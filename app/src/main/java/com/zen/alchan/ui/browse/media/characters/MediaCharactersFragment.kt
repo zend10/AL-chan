@@ -145,9 +145,9 @@ class MediaCharactersFragment : BaseFragment() {
 
     private fun initLayout() {
         if (viewModel.mediaType == MediaType.ANIME) {
-            voiceActorLanguageScrollView.visibility = View.VISIBLE
+            voiceActorLanguageLayout.visibility = View.VISIBLE
         } else {
-            voiceActorLanguageScrollView.visibility = View.GONE
+            voiceActorLanguageLayout.visibility = View.GONE
         }
 
         voiceActorLanguageText.text = viewModel.staffLanguage.name

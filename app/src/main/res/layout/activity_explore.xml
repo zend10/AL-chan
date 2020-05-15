@@ -95,8 +95,8 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/exploreTypeText"
-                android:text="Exploring"
                 style="?themeRegularClickableFont"
+                android:foreground="?selectableItemBackground"
                 android:padding="@dimen/marginSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

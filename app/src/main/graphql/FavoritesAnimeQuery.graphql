@@ -1,0 +1,29 @@
+query FavoritesAnimeQuery($page: Int) {
+    Viewer {
+        id
+        name
+        favourites {
+            anime(page: $page) {
+                edges {
+                    node {
+                        id
+                        title {
+                            userPreferred
+                        }
+                        coverImage {
+                            large
+                        }
+                    }
+                    favouriteOrder
+                }
+                pageInfo {
+                    total
+                    perPage
+                    currentPage
+                    lastPage
+                    hasNextPage
+                }
+            }
+        }
+    }
+}

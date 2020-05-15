@@ -36,6 +36,9 @@ import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
+import com.zen.alchan.ui.profile.favorites.FavoritesViewModel
+import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesActivity
+import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesViewModel
 import com.zen.alchan.ui.search.SearchListViewModel
 import com.zen.alchan.ui.search.SearchViewModel
 import com.zen.alchan.ui.seasonal.SeasonalDialogViewModel
@@ -127,6 +130,8 @@ class ALchanApplication : Application() {
         // profile and settings
         viewModel { ProfileViewModel(get()) }
         viewModel { BioViewModel(get()) }
+        viewModel { FavoritesViewModel(get(), gson) }
+        viewModel { ReorderFavoritesViewModel(get(), gson) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }
