@@ -23,7 +23,7 @@ class FavoritesRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        GlideApp.with(context).load(item.content).into(holder.mediaCoverImage)
+        GlideApp.with(context).load(item.image).into(holder.mediaCoverImage)
         holder.itemView.setOnClickListener { listener.passSelectedItem(item.id, item.browsePage) }
     }
 

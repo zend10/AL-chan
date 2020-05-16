@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
+// base fragment for fragments in MainViewPagerAdapter
 abstract class BaseMainFragment : Fragment() {
 
     protected var listener: BaseMainFragmentListener? = null

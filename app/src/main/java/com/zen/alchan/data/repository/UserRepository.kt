@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.User
+import io.reactivex.Completable
 import type.ScoreFormat
 import type.UserTitleLanguage
 
@@ -21,6 +22,9 @@ interface UserRepository {
     val favoriteCharactersResponse: LiveData<Resource<FavoritesCharactersQuery.Data>>
     val favoriteStaffsResponse: LiveData<Resource<FavoritesStaffsQuery.Data>>
     val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
+    val triggerRefreshFavorite: LiveData<Boolean>
+
+    val reorderFavoritesResponse: LiveData<Resource<Boolean>>
 
     val viewerDataLastRetrieved: Long?
 
@@ -42,4 +46,18 @@ interface UserRepository {
     fun getFavoriteCharacters(page: Int)
     fun getFavoriteStaffs(page: Int)
     fun getFavoriteStudios(page: Int)
+    fun triggerRefreshFavorite()
+
+    fun reorderFavorites(
+        animeIds: List<Int>?,
+        mangaIds: List<Int>?,
+        characterIds: List<Int>?,
+        staffIds: List<Int>?,
+        studioIds: List<Int>?,
+        animeOrder: List<Int>?,
+        mangaOrder: List<Int>?,
+        characterOrder: List<Int>?,
+        staffOrder: List<Int>?,
+        studioOrder: List<Int>?
+    )
 }

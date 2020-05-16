@@ -38,4 +38,17 @@ interface UserDataSource {
     fun getFavoriteCharacters(page: Int): Observable<Response<FavoritesCharactersQuery.Data>>
     fun getFavoriteStaffs(page: Int): Observable<Response<FavoritesStaffsQuery.Data>>
     fun getFavoriteStudios(page: Int): Observable<Response<FavoritesStudiosQuery.Data>>
+
+    fun reorderFavorites(
+        animeIds: List<Int>?,
+        mangaIds: List<Int>?,
+        characterIds: List<Int>?,
+        staffIds: List<Int>?,
+        studioIds: List<Int>?,
+        animeOrder: List<Int>?,
+        mangaOrder: List<Int>?,
+        characterOrder: List<Int>?,
+        staffOrder: List<Int>?,
+        studioOrder: List<Int>?
+    ): Completable
 }

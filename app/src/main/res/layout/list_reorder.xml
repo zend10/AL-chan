@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:contentPadding="@dimen/marginNormal"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginStart="@dimen/marginNormal"
+    android:layout_marginEnd="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reorderText"
+            style="?themeRegularFont"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/reorderIcon"
+            app:srcCompat="@drawable/ic_drag_reorder"
+            app:tint="?themeContentColor"
+            android:layout_width="@dimen/iconSmallSize"
+            android:layout_height="@dimen/iconSmallSize"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

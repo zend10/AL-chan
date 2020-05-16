@@ -7,6 +7,7 @@ import FavoritesMangaQuery
 import FavoritesStaffsQuery
 import FavoritesStudiosQuery
 import ListSettingsMutation
+import ReorderFavoritesMutation
 import ToggleFavouriteMutation
 import ViewerQuery
 import com.apollographql.apollo.api.Input
@@ -164,6 +165,36 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         val query = FavoritesStudiosQuery(page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun reorderFavorites(
+        animeIds: List<Int>?,
+        mangaIds: List<Int>?,
+        characterIds: List<Int>?,
+        staffIds: List<Int>?,
+        studioIds: List<Int>?,
+        animeOrder: List<Int>?,
+        mangaOrder: List<Int>?,
+        characterOrder: List<Int>?,
+        staffOrder: List<Int>?,
+        studioOrder: List<Int>?
+    ): Completable {
+        val mutation = ReorderFavoritesMutation(
+            animeIds = Input.optional(animeIds),
+            mangaIds = Input.optional(mangaIds),
+            characterIds = Input.optional(characterIds),
+            staffIds = Input.optional(staffIds),
+            studioIds = Input.optional(studioIds),
+            animeOrder = Input.optional(animeOrder),
+            mangaOrder = Input.optional(mangaOrder),
+            characterOrder = Input.optional(characterOrder),
+            staffOrder = Input.optional(staffOrder),
+            studioOrder = Input.optional(studioOrder)
+        )
+        val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
+        return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

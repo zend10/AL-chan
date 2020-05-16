@@ -4,7 +4,8 @@ import com.zen.alchan.helper.enums.BrowsePage
 
 class FavoriteItem(
     val id: Int,
-    val content: String, // can be image or text
+    val name: String,
+    val image: String?,
     val favouriteOrder: Int,
     val browsePage: BrowsePage
 )

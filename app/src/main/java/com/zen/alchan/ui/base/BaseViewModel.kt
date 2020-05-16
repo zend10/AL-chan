@@ -5,6 +5,7 @@ import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.UserRepository
 
+// view model for BaseActivity
 class BaseViewModel(private val appSettingsRepository: AppSettingsRepository) : ViewModel() {
 
     val appColorThemeResource: Int

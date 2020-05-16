@@ -37,4 +37,8 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
     fun retrieveViewerData() {
         userRepository.retrieveViewerData()
     }
+
+    fun triggerRefreshChildFragments() {
+        userRepository.triggerRefreshFavorite()
+    }
 }

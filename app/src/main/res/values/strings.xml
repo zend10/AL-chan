@@ -252,4 +252,6 @@
     <string name="long_press_to_copy_link">Long press to copy link</string>
     <string name="reorder_favorites">Reorder Favorites</string>
     <string name="refresh">Refresh</string>
+    <string name="reorder_favorite">Reorder Favorite</string>
+    <string name="you_have_no_favorite_yet">You have no favorite yet. Please add some first.</string>
 </resources>

@@ -11,6 +11,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -64,6 +65,14 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     private val _favoriteStudiosResponse = SingleLiveEvent<Resource<FavoritesStudiosQuery.Data>>()
     override val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
         get() = _favoriteStudiosResponse
+
+    private val _triggerRefreshFavorite = SingleLiveEvent<Boolean>()
+    override val triggerRefreshFavorite: LiveData<Boolean>
+        get() = _triggerRefreshFavorite
+
+    private val _reorderFavoritesResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val reorderFavoritesResponse: LiveData<Resource<Boolean>>
+        get() = _reorderFavoritesResponse
 
     override val viewerDataLastRetrieved: Long?
         get() = userManager.viewerDataLastRetrieved
@@ -300,6 +309,39 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onComplete() { }
+        })
+    }
+
+    override fun triggerRefreshFavorite() {
+        _triggerRefreshFavorite.postValue(true)
+    }
+
+    @SuppressLint("CheckResult")
+    override fun reorderFavorites(
+        animeIds: List<Int>?,
+        mangaIds: List<Int>?,
+        characterIds: List<Int>?,
+        staffIds: List<Int>?,
+        studioIds: List<Int>?,
+        animeOrder: List<Int>?,
+        mangaOrder: List<Int>?,
+        characterOrder: List<Int>?,
+        staffOrder: List<Int>?,
+        studioOrder: List<Int>?
+    ) {
+        _reorderFavoritesResponse.postValue(Resource.Loading())
+
+        userDataSource.reorderFavorites(animeIds, mangaIds, characterIds, staffIds, studioIds, animeOrder, mangaOrder, characterOrder, staffOrder, studioOrder).subscribeWith(object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onError(e: Throwable) {
+                _reorderFavoritesResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() {
+                _reorderFavoritesResponse.postValue(Resource.Success(true))
+                _triggerRefreshFavorite.postValue(true)
+            }
         })
     }
 }

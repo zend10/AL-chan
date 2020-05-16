@@ -117,6 +117,7 @@ class ProfileFragment : BaseMainFragment() {
         profileRefreshLayout.setOnRefreshListener {
             profileRefreshLayout.isRefreshing = false
             viewModel.retrieveViewerData()
+            viewModel.triggerRefreshChildFragments()
         }
 
         GlideApp.with(this).load(user?.bannerImage).into(profileBannerImage)

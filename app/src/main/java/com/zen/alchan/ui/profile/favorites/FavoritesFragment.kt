@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
@@ -15,6 +16,7 @@ import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.FavoriteItem
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesActivity
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,7 +57,7 @@ class FavoritesFragment : Fragment() {
                     viewModel.animeIsInit = true
                     it.data?.viewer?.favourites?.anime?.edges?.forEach { edge ->
                         viewModel.animeList.add(
-                            FavoriteItem(edge?.node?.id!!, edge.node.coverImage?.large!!, edge.favouriteOrder!!, BrowsePage.ANIME)
+                            FavoriteItem(edge?.node?.id!!, edge.node.title?.userPreferred!!, edge.node.coverImage?.large!!, edge.favouriteOrder!!, BrowsePage.ANIME)
                         )
                     }
 
@@ -89,7 +91,7 @@ class FavoritesFragment : Fragment() {
                     viewModel.mangaIsInit = true
                     it.data?.viewer?.favourites?.manga?.edges?.forEach { edge ->
                         viewModel.mangaList.add(
-                            FavoriteItem(edge?.node?.id!!, edge.node.coverImage?.large!!, edge.favouriteOrder!!, BrowsePage.MANGA)
+                            FavoriteItem(edge?.node?.id!!, edge.node.title?.userPreferred!!, edge.node.coverImage?.large!!, edge.favouriteOrder!!, BrowsePage.MANGA)
                         )
                     }
 
@@ -123,7 +125,7 @@ class FavoritesFragment : Fragment() {
                     viewModel.charactersIsInit = true
                     it.data?.viewer?.favourites?.characters?.edges?.forEach { edge ->
                         viewModel.charactersList.add(
-                            FavoriteItem(edge?.node?.id!!, edge.node.image?.large!!, edge.favouriteOrder!!, BrowsePage.CHARACTER)
+                            FavoriteItem(edge?.node?.id!!, edge.node.name?.full!!, edge.node.image?.large!!, edge.favouriteOrder!!, BrowsePage.CHARACTER)
                         )
                     }
 
@@ -157,7 +159,7 @@ class FavoritesFragment : Fragment() {
                     viewModel.staffsIsInit = true
                     it.data?.viewer?.favourites?.staff?.edges?.forEach { edge ->
                         viewModel.staffsList.add(
-                            FavoriteItem(edge?.node?.id!!, edge.node.image?.large!!, edge.favouriteOrder!!, BrowsePage.STAFF)
+                            FavoriteItem(edge?.node?.id!!, edge.node.name?.full!!, edge.node.image?.large!!, edge.favouriteOrder!!, BrowsePage.STAFF)
                         )
                     }
 
@@ -191,7 +193,7 @@ class FavoritesFragment : Fragment() {
                     viewModel.studiosIsInit = true
                     it.data?.viewer?.favourites?.studios?.edges?.forEach { edge ->
                         viewModel.studiosList.add(
-                            FavoriteItem(edge?.node?.id!!, edge.node.name, edge.favouriteOrder!!, BrowsePage.STUDIO)
+                            FavoriteItem(edge?.node?.id!!, edge.node.name, null, edge.favouriteOrder!!, BrowsePage.STUDIO)
                         )
                     }
 
@@ -208,6 +210,10 @@ class FavoritesFragment : Fragment() {
                     favoriteStudiosLayout.visibility = if (viewModel.studiosList.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
             }
+        })
+
+        viewModel.triggerRefreshFavorite.observe(viewLifecycleOwner, Observer {
+            viewModel.refresh()
         })
 
         if (!viewModel.animeIsInit) {
@@ -248,7 +254,14 @@ class FavoritesFragment : Fragment() {
 
     private fun initLayout() {
         reorderFavoritesLayout.setOnClickListener {
-
+            MaterialAlertDialogBuilder(activity)
+                .setItems(viewModel.favoritePageArray) { _, which ->
+                    val intent = Intent(activity, ReorderFavoritesActivity::class.java)
+                    intent.putExtra(ReorderFavoritesActivity.FAVORITE_CATEGORY, viewModel.favoritePageArray[which])
+                    intent.putExtra(ReorderFavoritesActivity.FAVORITE_DATA, viewModel.getFavoriteData(BrowsePage.valueOf(viewModel.favoritePageArray[which])))
+                    startActivity(intent)
+                }
+                .show()
         }
     }
 

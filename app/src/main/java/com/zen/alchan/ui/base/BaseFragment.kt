@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
+// for fragments that need BaseListener
 abstract class BaseFragment : Fragment() {
 
     protected var listener: BaseListener? = null

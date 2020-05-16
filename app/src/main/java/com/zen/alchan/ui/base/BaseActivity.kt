@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+// for Activity so that theme color is applied
 abstract class BaseActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<BaseViewModel>()

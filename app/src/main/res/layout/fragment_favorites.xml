@@ -20,6 +20,7 @@
             android:gravity="center_vertical"
             android:layout_marginEnd="@dimen/marginPage"
             android:layout_marginStart="@dimen/marginPage"
+            android:foreground="?selectableItemBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
