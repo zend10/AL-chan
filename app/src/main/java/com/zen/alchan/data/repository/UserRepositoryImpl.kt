@@ -66,9 +66,17 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
         get() = _favoriteStudiosResponse
 
+    private val _viewerReviewsResponse = SingleLiveEvent<Resource<UserReviewsQuery.Data>>()
+    override val viewerReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
+        get() = _viewerReviewsResponse
+
     private val _triggerRefreshFavorite = SingleLiveEvent<Boolean>()
     override val triggerRefreshFavorite: LiveData<Boolean>
         get() = _triggerRefreshFavorite
+
+    private val _triggerRefreshReviews = SingleLiveEvent<Boolean>()
+    override val triggerRefreshReviews: LiveData<Boolean>
+        get() = _triggerRefreshReviews
 
     private val _reorderFavoritesResponse = SingleLiveEvent<Resource<Boolean>>()
     override val reorderFavoritesResponse: LiveData<Resource<Boolean>>
@@ -312,8 +320,9 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         })
     }
 
-    override fun triggerRefreshFavorite() {
+    override fun triggerRefreshProfilePageChild() {
         _triggerRefreshFavorite.postValue(true)
+        _triggerRefreshReviews.postValue(true)
     }
 
     @SuppressLint("CheckResult")
@@ -342,6 +351,33 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
                 _reorderFavoritesResponse.postValue(Resource.Success(true))
                 _triggerRefreshFavorite.postValue(true)
             }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getReviews(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        _viewerReviewsResponse.postValue(Resource.Loading())
+
+        userDataSource.getReviews(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<UserReviewsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserReviewsQuery.Data>) {
+                if (t.hasErrors()) {
+                    _viewerReviewsResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _viewerReviewsResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _viewerReviewsResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
         })
     }
 }

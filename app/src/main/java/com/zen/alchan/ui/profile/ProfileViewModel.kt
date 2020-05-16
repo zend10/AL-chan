@@ -39,6 +39,6 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
     }
 
     fun triggerRefreshChildFragments() {
-        userRepository.triggerRefreshFavorite()
+        userRepository.triggerRefreshProfilePageChild()
     }
 }

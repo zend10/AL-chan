@@ -51,4 +51,6 @@ interface UserDataSource {
         staffOrder: List<Int>?,
         studioOrder: List<Int>?
     ): Completable
+
+    fun getReviews(userId: Int, page: Int): Observable<Response<UserReviewsQuery.Data>>
 }

@@ -23,8 +23,10 @@ interface UserRepository {
     val favoriteStaffsResponse: LiveData<Resource<FavoritesStaffsQuery.Data>>
     val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
     val triggerRefreshFavorite: LiveData<Boolean>
-
+    val triggerRefreshReviews: LiveData<Boolean>
     val reorderFavoritesResponse: LiveData<Resource<Boolean>>
+
+    val viewerReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
 
     val viewerDataLastRetrieved: Long?
 
@@ -46,7 +48,8 @@ interface UserRepository {
     fun getFavoriteCharacters(page: Int)
     fun getFavoriteStaffs(page: Int)
     fun getFavoriteStudios(page: Int)
-    fun triggerRefreshFavorite()
+
+    fun triggerRefreshProfilePageChild()
 
     fun reorderFavorites(
         animeIds: List<Int>?,
@@ -60,4 +63,6 @@ interface UserRepository {
         staffOrder: List<Int>?,
         studioOrder: List<Int>?
     )
+
+    fun getReviews(page: Int)
 }

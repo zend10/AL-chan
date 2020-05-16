@@ -9,6 +9,7 @@ import FavoritesStudiosQuery
 import ListSettingsMutation
 import ReorderFavoritesMutation
 import ToggleFavouriteMutation
+import UserReviewsQuery
 import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -195,6 +196,17 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         )
         val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
         return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getReviews(userId: Int, page: Int): Observable<Response<UserReviewsQuery.Data>> {
+        val query = UserReviewsQuery(
+            userId = Input.fromNullable(userId),
+            page = Input.fromNullable(page)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
