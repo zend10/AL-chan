@@ -265,4 +265,7 @@
     <string name="anime_score_distribution">Anime Score Distribution</string>
     <string name="manga_score_distribution">Manga Score Distribution</string>
     <string name="view_detailed_statistics">View Detailed Statistics</string>
+    <string name="media">Media</string>
+    <string name="data">Data</string>
+    <string name="statistic_details">Statistic Details</string>
 </resources>

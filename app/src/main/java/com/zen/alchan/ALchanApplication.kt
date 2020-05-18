@@ -41,6 +41,8 @@ import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesActivity
 import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesViewModel
 import com.zen.alchan.ui.profile.reviews.ReviewsViewModel
 import com.zen.alchan.ui.profile.stats.StatsViewModel
+import com.zen.alchan.ui.profile.stats.details.StatsDetailActivity
+import com.zen.alchan.ui.profile.stats.details.StatsDetailViewModel
 import com.zen.alchan.ui.search.SearchListViewModel
 import com.zen.alchan.ui.search.SearchViewModel
 import com.zen.alchan.ui.seasonal.SeasonalDialogViewModel
@@ -74,6 +76,7 @@ class ALchanApplication : Application() {
         single<MediaDataSource> { MediaDataSourceImpl(get()) }
         single<BrowseDataSource> { BrowseDataSourceImpl(get()) }
         single<SearchDataSource> { SearchDataSourceImpl(get()) }
+        single<UserStatisticDataSource> { UserStatisticDataSourceImpl(get()) }
 
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
@@ -83,6 +86,7 @@ class ALchanApplication : Application() {
         single<ListStyleRepository> { ListStyleRepositoryImpl(get()) }
         single<BrowseRepository> { BrowseRepositoryImpl(get()) }
         single<SearchRepository> { SearchRepositoryImpl(get()) }
+        single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get()) }
 
         // common
         viewModel { BaseViewModel(get()) }
@@ -135,6 +139,7 @@ class ALchanApplication : Application() {
         viewModel { FavoritesViewModel(get(), gson) }
         viewModel { ReorderFavoritesViewModel(get(), gson) }
         viewModel { StatsViewModel(get()) }
+        viewModel { StatsDetailViewModel(get(), get()) }
         viewModel { ReviewsViewModel(get()) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
