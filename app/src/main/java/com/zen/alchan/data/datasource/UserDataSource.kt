@@ -53,4 +53,6 @@ interface UserDataSource {
     ): Completable
 
     fun getReviews(userId: Int, page: Int): Observable<Response<UserReviewsQuery.Data>>
+
+    fun getStatistics(userId: Int): Observable<Response<UserStatisticsQuery.Data>>
 }

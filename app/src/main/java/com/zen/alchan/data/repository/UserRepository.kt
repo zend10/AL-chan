@@ -28,6 +28,8 @@ interface UserRepository {
 
     val viewerReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
 
+    val userStatisticsResponse: LiveData<Resource<UserStatisticsQuery.Data>>
+
     val viewerDataLastRetrieved: Long?
 
     fun getViewerData()
@@ -65,4 +67,6 @@ interface UserRepository {
     )
 
     fun getReviews(page: Int)
+
+    fun getStatistics()
 }

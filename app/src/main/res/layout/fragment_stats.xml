@@ -1,14 +1,490 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.profile.stats.StatsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:paddingTop="@dimen/marginFar"
+        android:paddingBottom="@dimen/marginPage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/statsLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/marginPage"
+                android:layout_marginEnd="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/viewDetailLayout"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_brief"
+                        app:tint="?themePrimaryColor"
+                        android:layout_marginEnd="@dimen/marginClose"
+                        android:layout_width="@dimen/iconSmallSize"
+                        android:layout_height="@dimen/iconSmallSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/view_detailed_statistics"
+                        style="?themeSmallClickableFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/general"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsTotalAnimeText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/total_anime"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsEpisodesWatchedText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/episodes_watched"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsDaysWatchedText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/days_watched"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsAnimeMeanScoreText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/mean_score"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsTotalMangaText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/total_manga"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsChaptersReadText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/chapters_read"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsVolumesReadText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/volumes_read"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/marginClose"
+                        android:paddingEnd="@dimen/marginClose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statsMangaMeanScoreText"
+                            android:text="0"
+                            style="?themeTitleFont"
+                            android:textColor="?themeSecondaryColor"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:text="@string/mean_score"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:textAlignment="center"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical"
+                            android:lines="2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/animeStatsStatusLayout"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/anime_status_distribution"
+                        style="?themeRegularBoldFont"
+                        android:layout_marginBottom="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/animeStatsStatusPieChart"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintDimensionRatio="1:1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/animeStatsStatusRecyclerView"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginTop="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/mangaStatsStatusLayout"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/manga_status_distribution"
+                        style="?themeRegularBoldFont"
+                        android:layout_marginBottom="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/mangaStatsStatusPieChart"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintDimensionRatio="1:1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mangaStatsStatusRecyclerView"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginTop="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/animeStatsScoreLayout"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/anime_score_distribution"
+                        style="?themeRegularBoldFont"
+                        android:layout_marginBottom="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/animeStatsScoreBarChart"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintDimensionRatio="1:1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/mangaStatsScoreLayout"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/manga_score_distribution"
+                        style="?themeRegularBoldFont"
+                        android:layout_marginBottom="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/mangaStatsScoreBarChart"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintDimensionRatio="1:1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/layout_empty"/>
+
+        <include layout="@layout/layout_loading"/>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

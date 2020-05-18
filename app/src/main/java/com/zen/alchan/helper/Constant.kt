@@ -163,4 +163,25 @@ object Constant {
         Pair("weibo manhua (cn)", Pair(null, Color.parseColor("#E0172B"))),
         Pair("manman manhua (cn)", Pair(null, Color.parseColor("#FF5746")))
     )
+
+    val STATUS_COLOR_LIST = arrayListOf(
+        Color.parseColor("#f89963"),
+        Color.parseColor("#05a9ff"),
+        Color.parseColor("#69d83a"),
+        Color.parseColor("#9256f3"),
+        Color.parseColor("#f87aa5")
+    )
+
+    val SCORE_COLOR_LIST = arrayListOf(
+        Color.parseColor("#d2492d"),
+        Color.parseColor("#d2642c"),
+        Color.parseColor("#d2802e"),
+        Color.parseColor("#d29d2f"),
+        Color.parseColor("#d2b72e"),
+        Color.parseColor("#d3d22e"),
+        Color.parseColor("#b8d22c"),
+        Color.parseColor("#9cd42e"),
+        Color.parseColor("#81d12d"),
+        Color.parseColor("#63d42e")
+    )
 }

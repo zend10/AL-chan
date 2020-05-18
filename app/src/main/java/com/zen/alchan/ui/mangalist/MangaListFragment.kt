@@ -171,13 +171,8 @@ class MangaListFragment : Fragment() {
     private fun setupObserver() {
         viewModel.mangaListDataResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> {
-                    mangaListRefreshLayout.isRefreshing = false
-                    loadingLayout.visibility = View.VISIBLE
-                }
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                }
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> loadingLayout.visibility = View.GONE
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
@@ -215,12 +210,23 @@ class MangaListFragment : Fragment() {
             }
         })
 
+        viewModel.updateMangaListEntryResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> loadingLayout.visibility = View.GONE
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
         viewModel.initData()
     }
 
     private fun initLayout() {
         mangaListRefreshLayout.setOnRefreshListener {
-            loadingLayout.visibility = View.VISIBLE
+            mangaListRefreshLayout.isRefreshing = false
             viewModel.retrieveMangaListData()
         }
 

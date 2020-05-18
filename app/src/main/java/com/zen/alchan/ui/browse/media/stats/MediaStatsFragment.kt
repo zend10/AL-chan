@@ -15,7 +15,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.pojo.StatusDistributionItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
@@ -108,23 +110,15 @@ class MediaStatsFragment : BaseFragment() {
 
         val statusDistributionList = ArrayList<StatusDistributionItem>()
 
-        val colorList = arrayListOf(
-            Color.parseColor("#f89963"),
-            Color.parseColor("#05a9ff"),
-            Color.parseColor("#69d83a"),
-            Color.parseColor("#9256f3"),
-            Color.parseColor("#f87aa5")
-        )
-
         val pieEntries = ArrayList<PieEntry>()
         mediaData?.stats?.statusDistribution?.forEach {
             val pieEntry = PieEntry(it?.amount!!.toFloat(), it.status?.toString())
             pieEntries.add(pieEntry)
-            statusDistributionList.add(StatusDistributionItem(it.status?.name!!, it.amount, colorList[statusDistributionList.size]))
+            statusDistributionList.add(StatusDistributionItem(it.status?.name!!, it.amount, Constant.STATUS_COLOR_LIST[statusDistributionList.size]))
         }
 
         val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
-        pieDataSet.colors = colorList
+        pieDataSet.colors = Constant.STATUS_COLOR_LIST
 
         val pieData = PieData(pieDataSet)
         pieData.setDrawValues(false)
@@ -148,19 +142,6 @@ class MediaStatsFragment : BaseFragment() {
 
         mediaStatsScoreLayout.visibility = View.VISIBLE
 
-        val colorList = arrayListOf(
-            Color.parseColor("#d2492d"),
-            Color.parseColor("#d2642c"),
-            Color.parseColor("#d2802e"),
-            Color.parseColor("#d29d2f"),
-            Color.parseColor("#d2b72e"),
-            Color.parseColor("#d3d22e"),
-            Color.parseColor("#b8d22c"),
-            Color.parseColor("#9cd42e"),
-            Color.parseColor("#81d12d"),
-            Color.parseColor("#63d42e")
-        )
-
         val barEntries = ArrayList<BarEntry>()
         mediaData?.stats?.scoreDistribution?.forEach {
             val barEntry = BarEntry(it?.score?.toFloat()!!, it.amount?.toFloat()!!)
@@ -168,7 +149,7 @@ class MediaStatsFragment : BaseFragment() {
         }
 
         val barDataSet = BarDataSet(barEntries, "Score Distribution")
-        barDataSet.colors = colorList
+        barDataSet.colors = Constant.SCORE_COLOR_LIST
 
         val barData = BarData(barDataSet)
         barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
@@ -193,6 +174,4 @@ class MediaStatsFragment : BaseFragment() {
         mediaStatsScoreBarChart.data = barData
         mediaStatsScoreBarChart.invalidate()
     }
-
-    class StatusDistributionItem(val status: String, val amount: Int, val color: Int)
 }

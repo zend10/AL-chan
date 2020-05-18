@@ -70,6 +70,10 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val viewerReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
         get() = _viewerReviewsResponse
 
+    private val _userStatisticsResponse = SingleLiveEvent<Resource<UserStatisticsQuery.Data>>()
+    override val userStatisticsResponse: LiveData<Resource<UserStatisticsQuery.Data>>
+        get() = _userStatisticsResponse
+
     private val _triggerRefreshFavorite = SingleLiveEvent<Boolean>()
     override val triggerRefreshFavorite: LiveData<Boolean>
         get() = _triggerRefreshFavorite
@@ -323,6 +327,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override fun triggerRefreshProfilePageChild() {
         _triggerRefreshFavorite.postValue(true)
         _triggerRefreshReviews.postValue(true)
+        getStatistics()
     }
 
     @SuppressLint("CheckResult")
@@ -375,6 +380,33 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onError(e: Throwable) {
                 _viewerReviewsResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getStatistics() {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        _userStatisticsResponse.postValue(Resource.Loading())
+
+        userDataSource.getStatistics(userManager.viewerData?.id!!).subscribeWith(object : Observer<Response<UserStatisticsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserStatisticsQuery.Data>) {
+                if (t.hasErrors()) {
+                    _userStatisticsResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _userStatisticsResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _userStatisticsResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }

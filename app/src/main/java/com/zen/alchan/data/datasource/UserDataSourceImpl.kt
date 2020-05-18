@@ -10,6 +10,7 @@ import ListSettingsMutation
 import ReorderFavoritesMutation
 import ToggleFavouriteMutation
 import UserReviewsQuery
+import UserStatisticsQuery
 import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -205,6 +206,14 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             userId = Input.fromNullable(userId),
             page = Input.fromNullable(page)
         )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getStatistics(userId: Int): Observable<Response<UserStatisticsQuery.Data>> {
+        val query = UserStatisticsQuery(id = Input.fromNullable(userId))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

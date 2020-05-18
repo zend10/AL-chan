@@ -254,4 +254,15 @@
     <string name="refresh">Refresh</string>
     <string name="reorder_favorite">Reorder Favorite</string>
     <string name="you_have_no_favorite_yet">You have no favorite yet. Please add some first.</string>
+    <string name="total_anime">Total Anime</string>
+    <string name="episodes_watched">Episodes Watched</string>
+    <string name="days_watched">Days Watched</string>
+    <string name="total_manga">Total Manga</string>
+    <string name="chapters_read">Chapters Read</string>
+    <string name="volumes_read">Volumes Read</string>
+    <string name="anime_status_distribution">Anime Status Distribution</string>
+    <string name="manga_status_distribution">Manga Status Distribution</string>
+    <string name="anime_score_distribution">Anime Score Distribution</string>
+    <string name="manga_score_distribution">Manga Score Distribution</string>
+    <string name="view_detailed_statistics">View Detailed Statistics</string>
 </resources>

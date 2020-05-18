@@ -34,6 +34,11 @@ fun Double.removeTrailingZero(): String {
     return format.format(this)
 }
 
+fun Double.roundToTwoDecimal(): String {
+    val format = DecimalFormat("#.##")
+    return format.format(this)
+}
+
 fun Int.secondsToDateTime(): String {
     val dateFormat = SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.US)
     val date = Date(this * 1000L)

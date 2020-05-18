@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.pojo.StatusDistributionItem
 import kotlinx.android.synthetic.main.list_chart_legend.view.*
 
 class MediaStatsStatusRvAdapter(private val context: Context,
-                                private val list: List<MediaStatsFragment.StatusDistributionItem>
+                                private val list: List<StatusDistributionItem>
 ) : RecyclerView.Adapter<MediaStatsStatusRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -37,6 +37,10 @@ class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
         listStyleRepository.animeListStyleLiveData
     }
 
+    val updateAnimeListEntryResponse by lazy {
+        mediaListRepository.updateAnimeListEntryResponse
+    }
+
     val allowAdultContent: Boolean
         get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
 

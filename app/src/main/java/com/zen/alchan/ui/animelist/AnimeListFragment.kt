@@ -170,13 +170,8 @@ class AnimeListFragment : Fragment() {
     private fun setupObserver() {
         viewModel.animeListDataResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> {
-                    animeListRefreshLayout.isRefreshing = false
-                    loadingLayout.visibility = View.VISIBLE
-                }
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                }
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> loadingLayout.visibility = View.GONE
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
@@ -214,12 +209,23 @@ class AnimeListFragment : Fragment() {
             }
         })
 
+        viewModel.updateAnimeListEntryResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> loadingLayout.visibility = View.GONE
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
         viewModel.initData()
     }
 
     private fun initLayout() {
         animeListRefreshLayout.setOnRefreshListener {
-            loadingLayout.visibility = View.VISIBLE
+            animeListRefreshLayout.isRefreshing = false
             viewModel.retrieveAnimeListData()
         }
 
