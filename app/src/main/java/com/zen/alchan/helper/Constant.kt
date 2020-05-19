@@ -164,6 +164,7 @@ object Constant {
         Pair("manman manhua (cn)", Pair(null, Color.parseColor("#FF5746")))
     )
 
+    // current, planning, completed, dropped, paused
     val STATUS_COLOR_LIST = arrayListOf(
         Color.parseColor("#f89963"),
         Color.parseColor("#05a9ff"),
@@ -172,6 +173,15 @@ object Constant {
         Color.parseColor("#f87aa5")
     )
 
+    val STATUS_COLOR_MAP = hashMapOf(
+        Pair(MediaListStatus.CURRENT, STATUS_COLOR_LIST[0]),
+        Pair(MediaListStatus.PLANNING, STATUS_COLOR_LIST[1]),
+        Pair(MediaListStatus.COMPLETED, STATUS_COLOR_LIST[2]),
+        Pair(MediaListStatus.DROPPED, STATUS_COLOR_LIST[3]),
+        Pair(MediaListStatus.PAUSED, STATUS_COLOR_LIST[4])
+    )
+
+    // from 1 - 10
     val SCORE_COLOR_LIST = arrayListOf(
         Color.parseColor("#d2492d"),
         Color.parseColor("#d2642c"),
@@ -183,5 +193,20 @@ object Constant {
         Color.parseColor("#9cd42e"),
         Color.parseColor("#81d12d"),
         Color.parseColor("#63d42e")
+    )
+
+    val PIE_CHART_COLOR_LIST = arrayListOf(
+        Color.parseColor("#55e2cf"),
+        Color.parseColor("#57aee2"),
+        Color.parseColor("#5668e2"),
+        Color.parseColor("#8a56e2"),
+        Color.parseColor("#ce56e2"),
+        Color.parseColor("#e256ae"),
+        Color.parseColor("#e25768"),
+        Color.parseColor("#e28956"),
+        Color.parseColor("#e3cf56"),
+        Color.parseColor("#aee256"),
+        Color.parseColor("#68e257"),
+        Color.parseColor("#56e28a")
     )
 }

@@ -268,4 +268,6 @@
     <string name="media">Media</string>
     <string name="data">Data</string>
     <string name="statistic_details">Statistic Details</string>
+    <string name="count">Count</string>
+    <string name="time_watched">Time Watched</string>
 </resources>

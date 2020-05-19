@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.repository.UserStatisticRepository
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
+import com.zen.alchan.helper.replaceUnderscore
+import type.MediaListStatus
 import type.MediaType
 import type.UserStatisticsSort
 
@@ -17,7 +20,13 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
     var selectedMedia: MediaType? = null
     var selectedStatsSort: UserStatisticsSort? = null
 
-    var currentStats: UserStatsData? = null
+    var currentStats: ArrayList<UserStatsData>? = null
+
+    val sortDataList = arrayListOf(
+        UserStatisticsSort.COUNT_DESC,
+        UserStatisticsSort.PROGRESS_DESC,
+        UserStatisticsSort.MEAN_SCORE_DESC
+    )
 
     val formatStatisticResponse by lazy {
         userStatisticRepository.formatStatisticResponse
@@ -90,18 +99,36 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
         }
     }
 
-    fun getDataString(): String {
+    fun getSortString(): String {
         if (selectedStatsSort == UserStatisticsSort.COUNT_DESC) return "TITLE COUNT"
         if (selectedStatsSort == UserStatisticsSort.MEAN_SCORE_DESC) return "MEAN SCORE"
 
         if (selectedStatsSort == UserStatisticsSort.PROGRESS_DESC) {
             if (selectedMedia == MediaType.ANIME) {
-                return "HOURS WATCHED"
+                return "TIME WATCHED"
             } else if (selectedMedia == MediaType.MANGA) {
                 return "CHAPTERS READ"
             }
         }
 
         return ""
+    }
+
+    fun getStatsCategoryArray(): Array<String> {
+        return StatsCategory.values().map { it.name.replaceUnderscore() }.toTypedArray()
+    }
+
+    fun getMediaTypeArray(): Array<String> {
+        return MediaType.values().filter { it != MediaType.UNKNOWN__ }.map { it.name }.toTypedArray()
+    }
+
+    fun getSortDataArray(): Array<String> {
+        val progressLabel = if (selectedMedia == MediaType.ANIME) {
+            "TIME WATCHED"
+        } else {
+            "CHAPTERS READ"
+        }
+
+        return arrayOf("TITLE COUNT", progressLabel, "MEAN SCORE")
     }
 }

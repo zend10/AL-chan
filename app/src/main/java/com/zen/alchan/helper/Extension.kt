@@ -96,7 +96,9 @@ fun String?.setRegularPlural(count: Int?): String {
 
     // TODO: add more rules
 
-    return if (endsWith("y")) {
+    return if (endsWith("ay") || endsWith("ey") || endsWith("iy") || endsWith("oy") || endsWith("uy")) {
+        this + "s"
+    } else if (endsWith("y")) {
         replace(Regex("y$"), "ies")
     } else if (endsWith("s") || endsWith("x") || endsWith("z") || endsWith("ch") || endsWith("sh")) {
         this + "es"

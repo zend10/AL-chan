@@ -31,6 +31,7 @@
                     android:layout_marginBottom="@dimen/marginNormal"
                     android:gravity="center_vertical"
                     android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/marginClose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 

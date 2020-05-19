@@ -9,6 +9,7 @@
     <include layout="@layout/layout_toolbar"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/statsDetailsRefreshLayout"
         android:layout_below="@+id/toolbarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -89,7 +90,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/data"
+                        android:text="@string/sort"
                         style="?themeSmallFont"
                         android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_marginBottom="@dimen/marginClose"
@@ -97,7 +98,7 @@
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/statsDataText"
+                        android:id="@+id/statsSortText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
                         android:paddingTop="@dimen/marginClose"
@@ -121,7 +122,6 @@
                     android:layout_height="wrap_content">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:visibility="gone"
                         android:id="@+id/statsChartLayout"
                         android:layout_marginTop="@dimen/marginNormal"
                         android:layout_marginStart="@dimen/marginPage"
@@ -156,8 +156,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:visibility="gone"
                         android:id="@+id/statsRecyclerView"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_marginTop="@dimen/marginNormal"
                         android:nestedScrollingEnabled="false"
                         android:layout_width="match_parent"
