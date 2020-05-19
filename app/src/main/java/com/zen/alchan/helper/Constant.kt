@@ -195,6 +195,19 @@ object Constant {
         Color.parseColor("#63d42e")
     )
 
+    val SCORE_COLOR_MAP = hashMapOf(
+        Pair(10, SCORE_COLOR_LIST[0]),
+        Pair(20, SCORE_COLOR_LIST[1]),
+        Pair(30, SCORE_COLOR_LIST[2]),
+        Pair(40, SCORE_COLOR_LIST[3]),
+        Pair(50, SCORE_COLOR_LIST[4]),
+        Pair(60, SCORE_COLOR_LIST[5]),
+        Pair(70, SCORE_COLOR_LIST[6]),
+        Pair(80, SCORE_COLOR_LIST[7]),
+        Pair(90, SCORE_COLOR_LIST[8]),
+        Pair(100, SCORE_COLOR_LIST[9])
+    )
+
     val PIE_CHART_COLOR_LIST = arrayListOf(
         Color.parseColor("#55e2cf"),
         Color.parseColor("#57aee2"),

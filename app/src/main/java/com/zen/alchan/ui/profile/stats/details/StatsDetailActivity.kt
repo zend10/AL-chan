@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -14,6 +16,7 @@ import com.zen.alchan.helper.changeStatusBarColor
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
+import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -24,6 +27,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
 import type.UserStatisticsSort
+import kotlin.math.round
 
 class StatsDetailActivity : BaseActivity() {
 
@@ -64,8 +68,6 @@ class StatsDetailActivity : BaseActivity() {
                     if (viewModel.selectedMedia == MediaType.ANIME) {
                         it.data?.user?.statistics?.anime?.formats?.forEach { item ->
                             viewModel.currentStats?.add(UserStatsData(
-                                statsCategory = viewModel.selectedCategory!!,
-                                mediaType = viewModel.selectedMedia!!,
                                 color = pieColorList[viewModel.currentStats?.size!!],
                                 count = item?.count,
                                 meanScore = item?.meanScore,
@@ -77,8 +79,6 @@ class StatsDetailActivity : BaseActivity() {
                     } else {
                         it.data?.user?.statistics?.manga?.formats?.forEach { item ->
                             viewModel.currentStats?.add(UserStatsData(
-                                statsCategory = viewModel.selectedCategory!!,
-                                mediaType = viewModel.selectedMedia!!,
                                 color = pieColorList[viewModel.currentStats?.size!!],
                                 count = item?.count,
                                 meanScore = item?.meanScore,
@@ -107,8 +107,6 @@ class StatsDetailActivity : BaseActivity() {
                     if (viewModel.selectedMedia == MediaType.ANIME) {
                         it.data?.user?.statistics?.anime?.statuses?.forEach { item ->
                             viewModel.currentStats?.add(UserStatsData(
-                                statsCategory = viewModel.selectedCategory!!,
-                                mediaType = viewModel.selectedMedia!!,
                                 color = if (Constant.STATUS_COLOR_MAP.containsKey(item?.status)) Constant.STATUS_COLOR_MAP[item?.status] else null,
                                 count = item?.count,
                                 meanScore = item?.meanScore,
@@ -120,14 +118,90 @@ class StatsDetailActivity : BaseActivity() {
                     } else {
                         it.data?.user?.statistics?.manga?.statuses?.forEach { item ->
                             viewModel.currentStats?.add(UserStatsData(
-                                statsCategory = viewModel.selectedCategory!!,
-                                mediaType = viewModel.selectedMedia!!,
                                 color = if (Constant.STATUS_COLOR_MAP.containsKey(item?.status)) Constant.STATUS_COLOR_MAP[item?.status] else null,
                                 count = item?.count,
                                 meanScore = item?.meanScore,
                                 chaptersRead = item?.chaptersRead,
                                 mediaIds = item?.mediaIds,
                                 label = item?.status?.name.replaceUnderscore()
+                            ))
+                        }
+                    }
+                    setupStatistic()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.scoreStatisticResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.currentStats = ArrayList()
+
+                    if (viewModel.selectedMedia == MediaType.ANIME) {
+                        it.data?.user?.statistics?.anime?.scores?.forEach { item ->
+                            viewModel.currentStats?.add(UserStatsData(
+                                color = if (Constant.SCORE_COLOR_MAP.containsKey(item?.meanScore?.toInt())) Constant.SCORE_COLOR_MAP[item?.score?.toInt()] else null,
+                                count = item?.count,
+                                meanScore = item?.meanScore,
+                                minutesWatched = item?.minutesWatched,
+                                mediaIds = item?.mediaIds,
+                                label = item?.meanScore?.removeTrailingZero()
+                            ))
+                        }
+                    } else {
+                        it.data?.user?.statistics?.manga?.scores?.forEach { item ->
+                            viewModel.currentStats?.add(UserStatsData(
+                                color = if (Constant.SCORE_COLOR_MAP.containsKey(item?.score)) Constant.SCORE_COLOR_MAP[item?.score] else null,
+                                count = item?.count,
+                                meanScore = item?.meanScore,
+                                chaptersRead = item?.chaptersRead,
+                                mediaIds = item?.mediaIds,
+                                label = item?.meanScore?.removeTrailingZero()
+                            ))
+                        }
+                    }
+                    setupStatistic()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.lengthStatisticResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.currentStats = ArrayList()
+
+                    if (viewModel.selectedMedia == MediaType.ANIME) {
+                        it.data?.user?.statistics?.anime?.lengths?.forEach { item ->
+                            viewModel.currentStats?.add(UserStatsData(
+                                color = pieColorList[viewModel.currentStats?.size!!],
+                                count = item?.count,
+                                meanScore = item?.meanScore,
+                                minutesWatched = item?.minutesWatched,
+                                mediaIds = item?.mediaIds,
+                                label = item?.length
+                            ))
+                        }
+                    } else {
+                        it.data?.user?.statistics?.manga?.lengths?.forEach { item ->
+                            viewModel.currentStats?.add(UserStatsData(
+                                color = pieColorList[viewModel.currentStats?.size!!],
+                                count = item?.count,
+                                meanScore = item?.meanScore,
+                                chaptersRead = item?.chaptersRead,
+                                mediaIds = item?.mediaIds,
+                                label = item?.length
                             ))
                         }
                     }
@@ -157,9 +231,17 @@ class StatsDetailActivity : BaseActivity() {
         statsMediaText.text = viewModel.selectedMedia?.name
         statsSortText.text = viewModel.getSortString()
 
+        statsPieChart.visibility = View.GONE
+        statsBarChart.visibility = View.GONE
+        statsLineChart.visibility = View.GONE
+
         when (viewModel.selectedCategory) {
             StatsCategory.VOICE_ACTOR, StatsCategory.STUDIO -> statsMediaLayout.visibility = View.GONE
-            else -> statsMediaLayout.visibility = View.VISIBLE
+            StatsCategory.SCORE, StatsCategory.LENGTH -> statsSortLayout.visibility = View.GONE
+            else -> {
+                statsMediaLayout.visibility = View.VISIBLE
+                statsSortLayout.visibility = View.VISIBLE
+            }
         }
 
         statsCategoryText.setOnClickListener {
@@ -215,7 +297,7 @@ class StatsDetailActivity : BaseActivity() {
     }
 
     private fun assignAdapter(): StatsDetailRvAdapter {
-        return StatsDetailRvAdapter(this, viewModel.currentStats ?: ArrayList(), object : StatsDetailRvAdapter.StatsDetailListener {
+        return StatsDetailRvAdapter(this, viewModel.currentStats ?: ArrayList(), viewModel.selectedCategory!!, viewModel.selectedMedia!!, object : StatsDetailRvAdapter.StatsDetailListener {
             override fun passSelectedData(id: Int) {
 
             }
@@ -224,6 +306,12 @@ class StatsDetailActivity : BaseActivity() {
 
     private fun setupPieChart(pieDataSet: PieDataSet) {
         statsPieChart.visibility = View.VISIBLE
+        statsBarChart.visibility = View.GONE
+        statsLineChart.visibility = View.GONE
+
+        statsPieChart.clear()
+        statsPieChart.invalidate()
+        statsPieChart.clear()
 
         val pieData = PieData(pieDataSet)
         pieData.setDrawValues(false)
@@ -239,9 +327,69 @@ class StatsDetailActivity : BaseActivity() {
         }
     }
 
-    private fun handleFormatLayout() {
+    private fun setupBarChart(barDataSet: BarDataSet, xAxisLabel: List<String>? = null, barWidth: Float? = null) {
         statsPieChart.visibility = View.GONE
+        statsBarChart.visibility = View.VISIBLE
+        statsLineChart.visibility = View.GONE
 
+        statsBarChart.data?.clearValues()
+        statsBarChart.xAxis.valueFormatter = null
+        statsBarChart.notifyDataSetChanged()
+        statsBarChart.clear()
+        statsBarChart.invalidate()
+
+        val newValueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return value.toInt().toString()
+            }
+        }
+
+        val barData = BarData(barDataSet)
+        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeContentColor))
+        barData.barWidth = barWidth ?: 3F
+        barData.setValueFormatter(newValueFormatter)
+
+        statsBarChart.axisLeft.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        statsBarChart.axisRight.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        statsBarChart.xAxis.apply {
+            setDrawGridLines(false)
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(barDataSet.entryCount, true)
+            textColor = AndroidUtility.getResValueFromRefAttr(this@StatsDetailActivity, R.attr.themeContentColor)
+
+            if (!xAxisLabel.isNullOrEmpty()) {
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        val index = round(value / 10.0) - 1
+                        if (index < xAxisLabel.size) {
+                            return xAxisLabel[index.toInt()]
+                        }
+                        return ""
+                    }
+                }
+            }
+        }
+
+        statsBarChart.apply {
+            setTouchEnabled(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            data = barData
+            invalidate()
+        }
+    }
+
+    private fun handleFormatLayout() {
         if (viewModel.selectedStatsSort == UserStatisticsSort.MEAN_SCORE_DESC) {
             statsRecyclerView.adapter = assignAdapter()
             return
@@ -269,8 +417,6 @@ class StatsDetailActivity : BaseActivity() {
     }
 
     private fun handleStatusLayout() {
-        statsPieChart.visibility = View.GONE
-
         if (viewModel.selectedStatsSort == UserStatisticsSort.MEAN_SCORE_DESC) {
             statsRecyclerView.adapter = assignAdapter()
             return
@@ -299,9 +445,83 @@ class StatsDetailActivity : BaseActivity() {
         statsRecyclerView.adapter = assignAdapter()
     }
 
-    private fun handleScoreLayout() {}
+    private fun handleScoreLayout() {
+        val barEntries = ArrayList<BarEntry>()
+        val scoreList = arrayListOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+        val sortedStats = ArrayList<UserStatsData>()
 
-    private fun handleLengthLayout() {}
+        scoreList.forEach { score ->
+            val scoreDetail = viewModel.currentStats?.find { it.meanScore?.toInt() == score }
+            if (scoreDetail != null) {
+                barEntries.add(BarEntry(score.toFloat(), scoreDetail.count?.toFloat()!!))
+                sortedStats.add(scoreDetail)
+            } else {
+                barEntries.add(BarEntry(score.toFloat(), 0F))
+                sortedStats.add(UserStatsData(
+                    color = Constant.SCORE_COLOR_MAP[score],
+                    count = 0,
+                    meanScore = score.toDouble(),
+                    minutesWatched = 0,
+                    chaptersRead = 0,
+                    label = score.toString())
+                )
+            }
+        }
+
+        viewModel.currentStats = sortedStats
+
+        val barDataSet = BarDataSet(barEntries, "Score Distribution")
+        barDataSet.colors = Constant.SCORE_COLOR_LIST
+
+        setupBarChart(barDataSet)
+
+        statsRecyclerView.adapter = assignAdapter()
+    }
+
+    private fun handleLengthLayout() {
+        val barEntries = ArrayList<BarEntry>()
+        val lengthList = if (viewModel.selectedMedia == MediaType.ANIME) {
+            arrayListOf("1", "2-6", "7-16", "17-28", "29-55", "56-100", "101+", "Unknown")
+        } else {
+            arrayListOf("1", "2-10", "11-25", "26-50", "51-100", "101-200", "201+", "Unknown")
+        }
+        val sortedStats = ArrayList<UserStatsData>()
+
+        lengthList.forEachIndexed { index, length ->
+            val lengthDetail = if (index != lengthList.lastIndex) {
+                viewModel.currentStats?.find { it.label == length }
+            } else {
+                viewModel.currentStats?.find { it.label == null }
+            }
+            if (index == lengthList.lastIndex) {
+                lengthDetail?.label = length
+            }
+            if (lengthDetail != null) {
+                lengthDetail.color = Constant.SCORE_COLOR_LIST[index]
+                barEntries.add(BarEntry(index.toFloat() * 10 + 10, lengthDetail.count?.toFloat()!!))
+                sortedStats.add(lengthDetail)
+            } else {
+                barEntries.add(BarEntry(index.toFloat() * 10 + 10, 0F))
+                sortedStats.add(UserStatsData(
+                    color = Constant.PIE_CHART_COLOR_LIST[index],
+                    count = 0,
+                    meanScore = 0.0,
+                    minutesWatched = 0,
+                    chaptersRead = 0,
+                    label = length)
+                )
+            }
+        }
+
+        viewModel.currentStats = sortedStats
+
+        val barDataSet = BarDataSet(barEntries, "Length Distribution")
+        barDataSet.colors = Constant.SCORE_COLOR_LIST
+
+        setupBarChart(barDataSet, lengthList)
+
+        statsRecyclerView.adapter = assignAdapter()
+    }
 
     private fun handleReleaseYearLayout() {}
 

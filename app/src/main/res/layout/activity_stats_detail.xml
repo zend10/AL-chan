@@ -83,6 +83,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/statsSortLayout"
                     android:layout_marginStart="@dimen/marginNormal"
                     android:orientation="vertical"
                     android:layout_weight="1"

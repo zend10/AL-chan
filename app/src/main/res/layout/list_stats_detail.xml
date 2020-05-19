@@ -64,6 +64,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsCountPercentageText"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -83,6 +90,13 @@
                     android:id="@+id/statsProgressText"
                     android:text="0"
                     style="?themeTitleFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsProgressPercentageText"
+                    style="?themeSmallFont"
                     android:layout_marginTop="@dimen/marginClose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
