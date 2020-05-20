@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.profile.stats.details
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.repository.UserStatisticRepository
@@ -21,6 +22,7 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
     var selectedStatsSort: UserStatisticsSort? = null
 
     var currentStats: ArrayList<UserStatsData>? = null
+    var currentMediaList: ArrayList<MediaImageQuery.Medium?>? = null
 
     val sortDataList = arrayListOf(
         UserStatisticsSort.COUNT_DESC,
@@ -74,6 +76,10 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
 
     val studioStatisticResponse by lazy {
         userStatisticRepository.studioStatisticResponse
+    }
+
+    val searchMediaImageResponse by lazy {
+        userStatisticRepository.searchMediaImageResponse
     }
 
     fun getStatisticData() {
@@ -130,5 +136,27 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
         }
 
         return arrayOf("TITLE COUNT", progressLabel, "MEAN SCORE")
+    }
+
+    fun searchMediaImage(page: Int = 1) {
+        if (currentStats.isNullOrEmpty()) {
+            return
+        }
+
+        val idIn = HashSet<Int>()
+
+        // only take 6 from each entry
+        currentStats?.forEach {
+            if (it.mediaIds?.isNullOrEmpty() == false) {
+                val idNotNull = it.mediaIds.filterNotNull()
+                if (idNotNull.size < 6) {
+                    idIn.addAll(idNotNull)
+                } else {
+                    idIn.addAll(idNotNull.take(6))
+                }
+            }
+        }
+
+        userStatisticRepository.searchMediaImage(page, idIn.toList())
     }
 }

@@ -7,5 +7,6 @@ class UserStatsData(
     val minutesWatched: Int? = null,
     val chaptersRead: Int? = null,
     val mediaIds: List<Int?>? = null,
+    val id: Int? = null,
     var label: String? = null
 )

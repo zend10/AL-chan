@@ -4,7 +4,8 @@
     android:layout_marginStart="@dimen/marginNormal"
     android:layout_marginEnd="@dimen/marginNormal"
     android:layout_marginBottom="@dimen/marginNormal"
-    app:contentPadding="@dimen/marginNormal"
+    app:contentPaddingTop="@dimen/marginNormal"
+    app:contentPaddingBottom="@dimen/marginNormal"
     app:cardBackgroundColor="?themeCardColor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -18,16 +19,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:visibility="gone"
-                android:id="@+id/statsRankText"
-                style="?themeTitleFont"
+                android:id="@+id/statsRankLayout"
                 android:layout_marginEnd="@dimen/marginNormal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsRankText"
+                    style="?themeTitleFont"
+                    android:textColor="?themeCardColor"
+                    android:background="@drawable/shape_oval"
+                    android:backgroundTint="@color/yellowStar"
+                    android:padding="@dimen/marginSmall"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/statsLabelText"
@@ -41,6 +61,8 @@
             android:id="@+id/statsDataLayout"
             app:layout_constraintTop_toBottomOf="@id/statsLabelLayout"
             android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -133,12 +155,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="gone"
             android:id="@+id/statsMediaRecyclerView"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
             app:layout_constraintTop_toBottomOf="@id/statsDataLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/marginNormal"
+            android:paddingStart="@dimen/marginNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 

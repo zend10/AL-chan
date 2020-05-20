@@ -1,4 +1,4 @@
-query SeasonalAnime(
+query SeasonalAnimeQuery(
     $page: Int,
     $season: MediaSeason,
     $seasonYear: Int,

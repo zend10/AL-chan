@@ -86,7 +86,7 @@ class ALchanApplication : Application() {
         single<ListStyleRepository> { ListStyleRepositoryImpl(get()) }
         single<BrowseRepository> { BrowseRepositoryImpl(get()) }
         single<SearchRepository> { SearchRepositoryImpl(get()) }
-        single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get()) }
+        single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get(), get()) }
 
         // common
         viewModel { BaseViewModel(get()) }

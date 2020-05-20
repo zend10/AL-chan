@@ -52,4 +52,9 @@ interface SearchDataSource {
         onList: Boolean?,
         sort: List<MediaSort>
     ): Observable<Response<SeasonalAnimeQuery.Data>>
+
+    fun searchMediaImages(
+        page: Int,
+        idIn: List<Int>
+    ): Observable<Response<MediaImageQuery.Data>>
 }

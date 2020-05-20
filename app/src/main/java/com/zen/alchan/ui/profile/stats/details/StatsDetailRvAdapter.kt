@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.User
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
 import com.zen.alchan.helper.replaceUnderscore
@@ -20,13 +21,14 @@ import kotlin.math.roundToInt
 
 class StatsDetailRvAdapter(private val context: Context,
                            private val list: List<UserStatsData>,
+                           private val mediaList: List<MediaImageQuery.Medium?>?,
                            private val statsCategory: StatsCategory,
                            private val mediaType: MediaType,
                            private val listener: StatsDetailListener
 ): RecyclerView.Adapter<StatsDetailRvAdapter.ViewHolder>() {
 
     interface StatsDetailListener {
-        fun passSelectedData(id: Int)
+        fun passSelectedData(id: Int, browsePage: BrowsePage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,10 +38,9 @@ class StatsDetailRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (statsCategory) {
-            StatsCategory.FORMAT -> handleFormatLayout(holder, position)
-            StatsCategory.STATUS -> handleStatusLayout(holder, position)
             StatsCategory.SCORE -> handleScoreLayout(holder, position)
-            StatsCategory.LENGTH -> handleLengthLayout(holder, position)
+            StatsCategory.GENRE, StatsCategory.TAG, StatsCategory.VOICE_ACTOR, StatsCategory.STAFF, StatsCategory.STUDIO -> handleRankedLayout(holder, position)
+            else -> handleLayout(holder, position)
         }
     }
 
@@ -47,25 +48,9 @@ class StatsDetailRvAdapter(private val context: Context,
         return list.size
     }
 
-    private fun handleFormatLayout(holder: ViewHolder, position: Int) {
+    private fun handleLayout(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.statsRankText.visibility = View.GONE
-        holder.statsMeanScoreLayout.visibility = View.VISIBLE
-        holder.statsMediaRecyclerView.visibility = View.GONE
-
-        holder.statsLabelText.setTextColor(item.color ?: AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
-        holder.statsLabelText.text = item.label
-        holder.statsCountText.text = item.count?.toString() ?: "0"
-        holder.statsCountPercentageText.text = statsCountPercentageText(item)
-        holder.statsProgressLabel.text = getProgressLabel()
-        holder.statsProgressText.text = getProgressString(item)
-        holder.statsProgressPercentageText.text= getProgressPercentageString(item)
-        holder.statsScoreText.text = item.meanScore?.roundToTwoDecimal()
-    }
-
-    private fun handleStatusLayout(holder: ViewHolder, position: Int) {
-        val item = list[position]
-        holder.statsRankText.visibility = View.GONE
+        holder.statsRankLayout.visibility = View.GONE
         holder.statsMeanScoreLayout.visibility = View.VISIBLE
         holder.statsMediaRecyclerView.visibility = View.GONE
 
@@ -81,7 +66,7 @@ class StatsDetailRvAdapter(private val context: Context,
 
     private fun handleScoreLayout(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.statsRankText.visibility = View.GONE
+        holder.statsRankLayout.visibility = View.GONE
         holder.statsMeanScoreLayout.visibility = View.GONE
         holder.statsMediaRecyclerView.visibility = View.GONE
 
@@ -94,12 +79,13 @@ class StatsDetailRvAdapter(private val context: Context,
         holder.statsProgressPercentageText.text= getProgressPercentageString(item)
     }
 
-    private fun handleLengthLayout(holder: ViewHolder, position: Int) {
+    private fun handleRankedLayout(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.statsRankText.visibility = View.GONE
+        holder.statsRankLayout.visibility = View.VISIBLE
         holder.statsMeanScoreLayout.visibility = View.VISIBLE
         holder.statsMediaRecyclerView.visibility = View.GONE
 
+        holder.statsRankText.text = String.format("%02d.", position + 1)
         holder.statsLabelText.setTextColor(item.color ?: AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
         holder.statsLabelText.text = item.label
         holder.statsCountText.text = item.count?.toString() ?: "0"
@@ -108,6 +94,38 @@ class StatsDetailRvAdapter(private val context: Context,
         holder.statsProgressText.text = getProgressString(item)
         holder.statsProgressPercentageText.text= getProgressPercentageString(item)
         holder.statsScoreText.text = item.meanScore?.roundToTwoDecimal()
+
+        if (!item.mediaIds.isNullOrEmpty() && !mediaList.isNullOrEmpty()) {
+            // only take 6 from each entry
+            val mediaItemList = ArrayList<StatsDetailMediaItem>()
+            item.mediaIds.forEach { id ->
+                if (mediaItemList.size == 6) {
+                    return@forEach
+                }
+                val findMedia = mediaList.find { media -> media?.id == id }
+                if (findMedia != null) {
+                    mediaItemList.add(StatsDetailMediaItem(id!!, findMedia.coverImage?.large, findMedia.type!!))
+                }
+            }
+            holder.statsMediaRecyclerView.adapter = StatsDetailMediaRvAdapter(context, mediaItemList, object : StatsDetailMediaRvAdapter.StatsDetailMediaListener {
+                override fun passSelectedMedia(id: Int, mediaType: MediaType) {
+                    listener.passSelectedData(id, if (mediaType == MediaType.ANIME) BrowsePage.ANIME else BrowsePage.MANGA)
+                }
+            })
+            holder.statsMediaRecyclerView.visibility = View.VISIBLE
+        }
+
+        if (statsCategory == StatsCategory.STAFF || statsCategory == StatsCategory.VOICE_ACTOR || statsCategory == StatsCategory.STUDIO) {
+            holder.itemView.setOnClickListener {
+                val targetPage = when (statsCategory) {
+                    StatsCategory.STAFF, StatsCategory.VOICE_ACTOR -> BrowsePage.STAFF
+                    StatsCategory.STUDIO -> BrowsePage.STUDIO
+                    else -> null
+                } ?: return@setOnClickListener
+
+                listener.passSelectedData(item.id!!, targetPage)
+            }
+        }
     }
 
     private fun statsCountPercentageText(item: UserStatsData): String {
@@ -168,6 +186,7 @@ class StatsDetailRvAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        val statsRankLayout = view.statsRankLayout!!
         val statsRankText = view.statsRankText!!
         val statsLabelText = view.statsLabelText!!
         val statsCountText = view.statsCountText!!
@@ -179,4 +198,6 @@ class StatsDetailRvAdapter(private val context: Context,
         val statsScoreText = view.statsScoreText!!
         val statsMediaRecyclerView = view.statsMediaRecyclerView!!
     }
+
+    class StatsDetailMediaItem(val id: Int, val image: String?, val mediaType: MediaType)
 }

@@ -3,6 +3,7 @@ package com.zen.alchan.data.repository
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import com.apollographql.apollo.api.Response
+import com.zen.alchan.data.datasource.SearchDataSource
 import com.zen.alchan.data.datasource.UserStatisticDataSource
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Resource
@@ -12,6 +13,7 @@ import io.reactivex.disposables.Disposable
 import type.UserStatisticsSort
 
 class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStatisticDataSource,
+                                  private val searchDataSource: SearchDataSource,
                                   private val userManager: UserManager
 ) : UserStatisticRepository {
 
@@ -62,6 +64,10 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
     private val _studioStatisticResponse = SingleLiveEvent<Resource<UserStatisticsStudiosQuery.Data>>()
     override val studioStatisticResponse: LiveData<Resource<UserStatisticsStudiosQuery.Data>>
         get() = _studioStatisticResponse
+
+    private val _searchMediaImageResponse = SingleLiveEvent<Resource<MediaImageQuery.Data>>()
+    override val searchMediaImageResponse: LiveData<Resource<MediaImageQuery.Data>>
+        get() = _searchMediaImageResponse
 
     val userId: Int?
         get() = userManager.viewerData?.id
@@ -387,6 +393,27 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
             }
 
             override fun onComplete() {}
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun searchMediaImage(page: Int, idIn: List<Int>) {
+        searchDataSource.searchMediaImages(page, idIn).subscribeWith(object : Observer<Response<MediaImageQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<MediaImageQuery.Data>) {
+                if (t.hasErrors()) {
+                    _searchMediaImageResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _searchMediaImageResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _searchMediaImageResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
         })
     }
 }

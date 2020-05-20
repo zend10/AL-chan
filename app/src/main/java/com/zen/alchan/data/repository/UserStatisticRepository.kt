@@ -18,6 +18,8 @@ interface UserStatisticRepository {
     val staffStatisticResponse: LiveData<Resource<UserStatisticsStaffsQuery.Data>>
     val studioStatisticResponse: LiveData<Resource<UserStatisticsStudiosQuery.Data>>
 
+    val searchMediaImageResponse: LiveData<Resource<MediaImageQuery.Data>>
+
     fun getFormatStatistic(sort: List<UserStatisticsSort>)
     fun getStatusStatistic(sort: List<UserStatisticsSort>)
     fun getScoreStatistic(sort: List<UserStatisticsSort>)
@@ -30,4 +32,6 @@ interface UserStatisticRepository {
     fun getVoiceActorStatistic(sort: List<UserStatisticsSort>)
     fun getStaffStatistic(sort: List<UserStatisticsSort>)
     fun getStudioStatistic(sort: List<UserStatisticsSort>)
+
+    fun searchMediaImage(page: Int, idIn: List<Int>)
 }
