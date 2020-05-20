@@ -34,6 +34,14 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val listOrAniListSettingsChanged: LiveData<Boolean>
         get() = _listOrAniListSettingsChanged
 
+    private val _followersCount = MutableLiveData<Int>()
+    override val followersCount: LiveData<Int>
+        get() = _followersCount
+
+    private val _followingsCount = MutableLiveData<Int>()
+    override val followingsCount: LiveData<Int>
+        get() = _followingsCount
+
     private val _updateAniListSettingsResponse = SingleLiveEvent<Resource<Boolean>>()
     override val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
         get() = _updateAniListSettingsResponse
@@ -88,6 +96,12 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     override val viewerDataLastRetrieved: Long?
         get() = userManager.viewerDataLastRetrieved
+
+    override val followersCountLastRetrieved: Long?
+        get() = userManager.followersCountLastRetrieved
+
+    override val followingsCountLastRetrieved: Long?
+        get() = userManager.followingsCountLastRetrieved
 
     override fun getViewerData() {
         // used to trigger live data
@@ -408,6 +422,50 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             override fun onError(e: Throwable) {
                 _userStatisticsResponse.postValue(Resource.Error(e.localizedMessage))
             }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFollowersCount() {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        userDataSource.getFollowers(userManager.viewerData?.id!!, 1).subscribeWith(object : Observer<Response<UserFollowersQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserFollowersQuery.Data>) {
+                if (!t.hasErrors()) {
+                    userManager.setFollowersCount(t.data?.page?.pageInfo?.total ?: 0)
+                    _followersCount.postValue(userManager.followersCount)
+                }
+            }
+
+            override fun onError(e: Throwable) { }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getFollowingsCount() {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        userDataSource.getFollowings(userManager.viewerData?.id!!, 1).subscribeWith(object : Observer<Response<UserFollowingsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserFollowingsQuery.Data>) {
+                if (!t.hasErrors()) {
+                    userManager.setFollowingsCount(t.data?.page?.pageInfo?.total ?: 0)
+                    _followingsCount.postValue(userManager.followingsCount)
+                }
+            }
+
+            override fun onError(e: Throwable) { }
 
             override fun onComplete() { }
         })

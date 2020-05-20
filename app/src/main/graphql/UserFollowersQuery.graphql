@@ -1,0 +1,23 @@
+query UserFollowersQuery(
+    $page: Int,
+    $userId: Int!
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        followers(userId: $userId) {
+            id
+            name
+            avatar {
+                large
+            }
+            isFollower
+            isFollowing
+        }
+    }
+}

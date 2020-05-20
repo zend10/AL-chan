@@ -13,6 +13,9 @@ interface UserRepository {
     val viewerData: LiveData<User?>
     val listOrAniListSettingsChanged: LiveData<Boolean>
 
+    val followersCount: LiveData<Int>
+    val followingsCount: LiveData<Int>
+
     val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
     val updateListSettingsResponse: LiveData<Resource<Boolean>>
     val toggleFavouriteResponse: LiveData<Resource<Boolean>>
@@ -31,6 +34,8 @@ interface UserRepository {
     val userStatisticsResponse: LiveData<Resource<UserStatisticsQuery.Data>>
 
     val viewerDataLastRetrieved: Long?
+    val followersCountLastRetrieved: Long?
+    val followingsCountLastRetrieved: Long?
 
     fun getViewerData()
     fun retrieveViewerData()
@@ -69,4 +74,7 @@ interface UserRepository {
     fun getReviews(page: Int)
 
     fun getStatistics()
+
+    fun getFollowersCount()
+    fun getFollowingsCount()
 }

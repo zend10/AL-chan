@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.profile.stats.details.StatsDetailActivity"></activity>
+        <activity android:name=".ui.notification.NotificationActivity"></activity>
+        <activity android:name=".ui.profile.stats.details.StatsDetailActivity" />
         <activity android:name=".ui.profile.favorites.reorder.ReorderFavoritesActivity" />
         <activity android:name=".ui.seasonal.SeasonalActivity" />
         <activity android:name=".ui.explore.ExploreActivity" />

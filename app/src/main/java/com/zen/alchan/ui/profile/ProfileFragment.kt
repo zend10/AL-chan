@@ -26,6 +26,7 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseMainFragment
+import com.zen.alchan.ui.notification.NotificationActivity
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.reviews.ReviewsFragment
@@ -94,6 +95,14 @@ class ProfileFragment : BaseMainFragment() {
             }
         })
 
+        viewModel.followersCount.observe(viewLifecycleOwner, Observer {
+            profileFollowersCountText.text = it.toString()
+        })
+
+        viewModel.followingsCount.observe(viewLifecycleOwner, Observer {
+            profileFollowingCountText.text = it.toString()
+        })
+
         viewModel.viewerDataResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> {
@@ -125,7 +134,8 @@ class ProfileFragment : BaseMainFragment() {
         profileUsernameText.text = user?.name
         profileAnimeCountText.text = user?.statistics?.anime?.count.toString()
         profileMangaCountText.text = user?.statistics?.manga?.count.toString()
-        // TODO: set following and followers text
+        profileFollowersCountText.text = viewModel.followersCount.value?.toString() ?: "0"
+        profileFollowingCountText.text = viewModel.followingsCount.value?.toString() ?: "0"
 
         profileAnimeCountLayout.setOnClickListener {
             listener?.changeMenu(R.id.itemAnime)
@@ -172,7 +182,7 @@ class ProfileFragment : BaseMainFragment() {
         })
 
         itemNotifications.setOnMenuItemClickListener {
-            // TODO: open notification page
+            startActivity(Intent(activity, NotificationActivity::class.java))
             true
         }
 
@@ -182,7 +192,11 @@ class ProfileFragment : BaseMainFragment() {
         }
 
         itemShareProfile.setOnMenuItemClickListener {
-            // TODO: share profile
+            if (user?.siteUrl == null) {
+                DialogUtility.showToast(activity, "Some data has not been retrieved. Please refresh this page.")
+            } else {
+                AndroidUtility.copyToClipboard(activity, user.siteUrl)
+            }
             true
         }
     }

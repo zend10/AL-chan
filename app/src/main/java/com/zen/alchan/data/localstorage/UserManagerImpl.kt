@@ -14,6 +14,18 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
     override val viewerDataLastRetrieved: Long?
         get() = localStorage.viewerDataLastRetrieved
 
+    override val followersCount: Int
+        get() = localStorage.followersCount ?: 0
+
+    override val followersCountLastRetrieved: Long?
+        get() = localStorage.followersCountLastRetrieved
+
+    override val followingsCount: Int
+        get() = localStorage.followingsCount ?: 0
+
+    override val followingsCountLastRetrieved: Long?
+        get() = localStorage.followingsCountLastRetrieved
+
     override fun setBearerToken(token: String?) {
         localStorage.bearerToken = token
     }
@@ -21,5 +33,15 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
     override fun setViewerData(user: User?) {
         localStorage.viewerData = user
         localStorage.viewerDataLastRetrieved = Utility.getCurrentTimestamp()
+    }
+
+    override fun setFollowersCount(followers: Int) {
+        localStorage.followersCount = followers
+        localStorage.followersCountLastRetrieved = Utility.getCurrentTimestamp()
+    }
+
+    override fun setFollowingsCount(followings: Int) {
+        localStorage.followingsCount = followings
+        localStorage.followingsCountLastRetrieved = Utility.getCurrentTimestamp()
     }
 }

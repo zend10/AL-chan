@@ -25,6 +25,10 @@ class LocalStorageImpl(private val context: Context,
         private const val PUSH_NOTIFICATIONS_SETTINGS = "pushNotificationsSettings"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
+        private const val FOLLOWERS_COUNT = "followersCount"
+        private const val FOLLOWERS_COUNT_LAST_RETRIEVED = "followersCountLastRetrieved"
+        private const val FOLLOWINGS_COUNT = "followingsCount"
+        private const val FOLLOWINGS_COUNT_LAST_RETRIEVED = "followingsCountLastRetrieved"
         private const val GENRE_LIST = "genreList"
         private const val GENRE_LIST_LAST_RETRIEVED = "genreListLastRetrieved"
         private const val TAG_LIST = "tagList"
@@ -56,6 +60,22 @@ class LocalStorageImpl(private val context: Context,
     override var viewerDataLastRetrieved: Long?
         get() = getData(VIEWER_DATA_LAST_RETRIEVED)?.toLong()
         set(value) { setData(VIEWER_DATA_LAST_RETRIEVED, value.toString()) }
+
+    override var followersCount: Int?
+        get() = getData(FOLLOWERS_COUNT)?.toInt()
+        set(value) { setData(FOLLOWERS_COUNT, value.toString()) }
+
+    override var followersCountLastRetrieved: Long?
+        get() = getData(FOLLOWERS_COUNT_LAST_RETRIEVED)?.toLong()
+        set(value) { setData(FOLLOWERS_COUNT_LAST_RETRIEVED, value.toString()) }
+
+    override var followingsCount: Int?
+        get() = getData(FOLLOWINGS_COUNT)?.toInt()
+        set(value) { setData(FOLLOWINGS_COUNT, value.toString()) }
+
+    override var followingsCountLastRetrieved: Long?
+        get() = getData(FOLLOWINGS_COUNT_LAST_RETRIEVED)?.toLong()
+        set(value) { setData(FOLLOWINGS_COUNT_LAST_RETRIEVED, value.toString()) }
 
     override var genreList: List<String?>?
         get() = gson.fromJson(getData(GENRE_LIST), genericType<List<String>>())

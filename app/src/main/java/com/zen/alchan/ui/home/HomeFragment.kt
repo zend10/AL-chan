@@ -174,6 +174,11 @@ class HomeFragment : Fragment() {
         homeRefreshLayout.setOnRefreshListener {
             homeRefreshLayout.isRefreshing = false
             viewModel.initData()
+
+            viewModel.page = 1
+            viewModel.hasNextPage = true
+            viewModel.releasingTodayList.clear()
+            viewModel.getReleasingToday()
         }
 
         val user = viewModel.viewerData.value

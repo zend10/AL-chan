@@ -55,4 +55,7 @@ interface UserDataSource {
     fun getReviews(userId: Int, page: Int): Observable<Response<UserReviewsQuery.Data>>
 
     fun getStatistics(userId: Int): Observable<Response<UserStatisticsQuery.Data>>
+
+    fun getFollowers(userId: Int, page: Int): Observable<Response<UserFollowersQuery.Data>>
+    fun getFollowings(userId: Int, page: Int): Observable<Response<UserFollowingsQuery.Data>>
 }

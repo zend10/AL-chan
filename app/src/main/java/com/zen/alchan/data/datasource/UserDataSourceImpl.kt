@@ -9,6 +9,8 @@ import FavoritesStudiosQuery
 import ListSettingsMutation
 import ReorderFavoritesMutation
 import ToggleFavouriteMutation
+import UserFollowersQuery
+import UserFollowingsQuery
 import UserReviewsQuery
 import UserStatisticsQuery
 import ViewerQuery
@@ -214,6 +216,28 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
 
     override fun getStatistics(userId: Int): Observable<Response<UserStatisticsQuery.Data>> {
         val query = UserStatisticsQuery(id = Input.fromNullable(userId))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFollowers(
+        userId: Int,
+        page: Int
+    ): Observable<Response<UserFollowersQuery.Data>> {
+        val query = UserFollowersQuery(userId = userId, page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getFollowings(
+        userId: Int,
+        page: Int
+    ): Observable<Response<UserFollowingsQuery.Data>> {
+        val query = UserFollowingsQuery(userId = userId, page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

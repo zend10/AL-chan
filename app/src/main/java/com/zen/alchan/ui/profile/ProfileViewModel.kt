@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
+import com.zen.alchan.helper.utils.Utility
 
 class ProfileViewModel(private val userRepository: UserRepository) : ViewModel() {
 
@@ -20,6 +21,14 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
         userRepository.viewerData
     }
 
+    val followersCount by lazy {
+        userRepository.followersCount
+    }
+
+    val followingsCount by lazy {
+        userRepository.followingsCount
+    }
+
     fun initData() {
         userRepository.getViewerData()
 
@@ -27,7 +36,13 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
             _currentSection.postValue(ProfileSection.BIO)
         }
 
-        // TODO: get following and followers count
+        if (Utility.timeDiffMoreThanOneDay(userRepository.followersCountLastRetrieved)) {
+            userRepository.getFollowersCount()
+        }
+
+        if (Utility.timeDiffMoreThanOneDay(userRepository.followingsCountLastRetrieved)) {
+            userRepository.getFollowingsCount()
+        }
     }
 
     fun setProfileSection(section: ProfileSection) {
@@ -36,6 +51,8 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
 
     fun retrieveViewerData() {
         userRepository.retrieveViewerData()
+        userRepository.getFollowersCount()
+        userRepository.getFollowingsCount()
     }
 
     fun triggerRefreshChildFragments() {
