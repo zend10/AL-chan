@@ -7,19 +7,26 @@ import com.zen.alchan.helper.enums.AppColorTheme
 import type.*
 
 object Constant {
-    const val ANILIST_URL = "https://anilist.co/"
-    const val ANILIST_REGISTER_URL = "${ANILIST_URL}signup"
-
     const val ANILIST_API_URL = "https://graphql.anilist.co"
+    const val ANILIST_URL = "https://anilist.co/"
 
     private const val ANILIST_CLIENT_ID = 1988
     const val ANILIST_LOGIN_URL = "${ANILIST_URL}api/v2/oauth/authorize?client_id=${ANILIST_CLIENT_ID}&response_type=token"
 
+    const val ANILIST_REGISTER_URL = "${ANILIST_URL}signup"
     const val ANILIST_REVIEW_URL = "${ANILIST_URL}review/"
     const val ANILIST_NOTIFICATIONS_URL = "${ANILIST_URL}notifications"
     const val ANILIST_SETTINGS_URL = "${ANILIST_URL}settings/"
     const val ANILIST_ACCOUNT_URL = "${ANILIST_SETTINGS_URL}account"
     const val ANILIST_IMPORT_LISTS_URL = "${ANILIST_SETTINGS_URL}import"
+
+    // TODO: Update these links
+    const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+    const val EMAIL_ADDRESS = "alchanapp@gmail.com"
+    const val TWITTER_ACCOUNT = "@alchan_app"
+    const val TWITTER_URL = "https://twitter.com/alchan_app"
+    const val GITHUB_URL = "https://github.com/zend10/AL-chan"
+    const val PRIVACY_POLICY_URL = "https://github.com/zend10/AL-chan"
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
     const val ANIME_LIST_BACKGROUND_FILENAME = "anime_list_background.jpg"

@@ -183,7 +183,7 @@ class HomeFragment : Fragment() {
 
         val user = viewModel.viewerData.value
 
-        GlideApp.with(this).load(R.drawable.welcome_background).into(headerImage)
+        GlideApp.with(this).load(user?.bannerImage).into(headerImage)
         searchBar.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java)) }
 
         greetingsText.text = "Hello, ${user?.name}."

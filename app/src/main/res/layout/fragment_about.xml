@@ -1,12 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.settings.about.AboutFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/layout_toolbar"/>
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:padding="@dimen/marginPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeAppNameFont"
+                    android:text="@string/app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:text="@string/powered_by_anilist"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/versionText"
+                android:text="Version"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/al_chan_is_an_unofficial_app_for_anilist_this_app_exists_with_the_purpose_to_help_manage_your_anilist_account"
+                style="?themeRegularFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/important_links"
+                style="?themeRegularBoldFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linkAniListLayout"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_anilist"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/linkAniListText"
+                        android:text="AniList"
+                        style="?themeSmallFont"
+                        android:padding="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linkPlayStoreLayout"
+                    android:gravity="center_vertical"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_google_play"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/linkPlayStoreText"
+                        android:text="Play Store"
+                        style="?themeSmallFont"
+                        android:padding="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linkGitHubLayout"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_github"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/linkGitHubText"
+                        android:text="GitHub"
+                        style="?themeSmallFont"
+                        android:padding="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linkTwitterLayout"
+                    android:gravity="center_vertical"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_twitter_color"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/linkTwitterText"
+                        android:text="Twitter"
+                        style="?themeSmallFont"
+                        android:padding="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linkGmailLayout"
+                android:gravity="center_vertical"
+                android:foreground="?selectableItemBackground"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_gmail"
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/linkGmailText"
+                    android:text="Gmail"
+                    style="?themeSmallFont"
+                    android:padding="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/privacy_policy"
+                style="?themeRegularBoldFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/privacyPolicyText"
+                android:text="@string/the_privacy_policy_of_this_app_can_be_read_fully_here"
+                style="?themeRegularFont"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -289,7 +289,7 @@
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/know_more_about_al_chan_and_the_developer"
+                        android:text="@string/know_more_about_al_chan"
                         style="?themeSmallFont"
                         android:layout_marginTop="@dimen/marginClose"
                         android:layout_width="wrap_content"
