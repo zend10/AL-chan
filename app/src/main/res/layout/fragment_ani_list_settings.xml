@@ -77,7 +77,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?themeRegularFont"
-                    android:text="Airing anime notifications"
+                    android:text="@string/airing_anime_notifications"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_width="wrap_content"

@@ -4,12 +4,15 @@ import ViewerQuery
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.MediaListOptions
 import com.zen.alchan.data.response.MediaListTypeOptions
+import com.zen.alchan.data.response.NotificationOption
 import io.reactivex.Completable
 import io.reactivex.Observable
 import type.ScoreFormat
 import type.UserTitleLanguage
 
 interface UserDataSource {
+    fun checkSession(): Observable<Response<SessionQuery.Data>>
+
     fun getViewerData(): Observable<Response<ViewerQuery.Data>>
 
     fun updateAniListSettings(
@@ -24,6 +27,10 @@ interface UserDataSource {
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions
     ): Observable<Response<ListSettingsMutation.Data>>
+
+    fun updateNotificationsSettings(
+        notificationOptions: List<NotificationOption>
+    ): Observable<Response<AniListSettingsMutation.Data>>
 
     fun toggleFavourite(
         animeId: Int?,

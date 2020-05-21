@@ -87,7 +87,7 @@ class ReviewsFragment : Fragment() {
     private fun assignAdapter(): ReviewsRvAdapter {
         return ReviewsRvAdapter(activity!!, viewModel.userReviews, object : ReviewsRvAdapter.ReviewsListener {
             override fun passSelectedReview(reviewId: Int) {
-                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse("${Constant.ANILIST_URL}review/$reviewId"))
+                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse("${Constant.ANILIST_REVIEW_URL}$reviewId"))
             }
         })
     }

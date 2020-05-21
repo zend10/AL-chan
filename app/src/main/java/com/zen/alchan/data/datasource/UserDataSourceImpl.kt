@@ -8,6 +8,7 @@ import FavoritesStaffsQuery
 import FavoritesStudiosQuery
 import ListSettingsMutation
 import ReorderFavoritesMutation
+import SessionQuery
 import ToggleFavouriteMutation
 import UserFollowersQuery
 import UserFollowingsQuery
@@ -20,16 +21,26 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.apollographql.apollo.rx2.rxPrefetch
 import com.zen.alchan.data.network.ApolloHandler
 import com.zen.alchan.data.response.MediaListTypeOptions
+import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.helper.Constant
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import type.MediaListOptionsInput
+import type.NotificationOptionInput
 import type.ScoreFormat
 import type.UserTitleLanguage
 
 class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSource {
+
+    override fun checkSession(): Observable<Response<SessionQuery.Data>> {
+        val query = SessionQuery()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 
     override fun getViewerData(): Observable<Response<ViewerQuery.Data>> {
         val query = ViewerQuery()
@@ -106,6 +117,21 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             rowOrder = Input.fromNullable(rowOrder),
             animeListOptions = Input.fromNullable(animeListOptionsBuilder),
             mangaListOptions = Input.fromNullable(mangaListOptionsBuilder)
+        )
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>): Observable<Response<AniListSettingsMutation.Data>> {
+        val inputList = ArrayList<NotificationOptionInput>()
+        notificationOptions.forEach {
+            val input = NotificationOptionInput(type = Input.fromNullable(it.type), enabled = Input.fromNullable(it.enabled))
+            inputList.add(input)
+        }
+        val mutation = AniListSettingsMutation(
+            notificationOptions = Input.fromNullable(inputList)
         )
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
         return Rx2Apollo.from(mutationCall)

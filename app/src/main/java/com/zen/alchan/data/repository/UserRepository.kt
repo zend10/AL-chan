@@ -3,12 +3,15 @@ package com.zen.alchan.data.repository
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
+import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.data.response.User
 import io.reactivex.Completable
 import type.ScoreFormat
 import type.UserTitleLanguage
 
 interface UserRepository {
+    val sessionResponse: LiveData<Boolean>
+
     val viewerDataResponse: LiveData<Resource<Boolean>>
     val viewerData: LiveData<User?>
     val listOrAniListSettingsChanged: LiveData<Boolean>
@@ -37,11 +40,14 @@ interface UserRepository {
     val followersCountLastRetrieved: Long?
     val followingsCountLastRetrieved: Long?
 
+    fun checkSession()
+
     fun getViewerData()
     fun retrieveViewerData()
 
     fun updateAniListSettings(titleLanguage: UserTitleLanguage, adultContent: Boolean, airingNotifications: Boolean)
     fun updateListSettings(scoreFormat: ScoreFormat, rowOrder: String, animeListOptions: MediaListTypeOptions, mangaListOptions: MediaListTypeOptions)
+    fun updateNotificationsSettings(notificationOptions: List<NotificationOption>)
     fun toggleFavourite(
         animeId: Int?,
         mangaId: Int?,

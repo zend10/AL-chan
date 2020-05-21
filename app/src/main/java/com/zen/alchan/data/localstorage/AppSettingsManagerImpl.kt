@@ -1,9 +1,6 @@
 package com.zen.alchan.data.localstorage
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import type.StaffLanguage
 
 class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettingsManager {
@@ -14,9 +11,6 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
     override val voiceActorLanguage: StaffLanguage
         get() = localStorage.voiceActorLanguage
 
-    override val pushNotificationsSettings: PushNotificationsSettings
-        get() = localStorage.pushNotificationsSettings
-
     override fun setAppColorTheme(appColorTheme: AppColorTheme) {
         localStorage.appColorTheme = appColorTheme
     }
@@ -25,7 +19,7 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
         localStorage.voiceActorLanguage = staffLanguage
     }
 
-    override fun setPushNotificationsSettings(pushNotificationsSettings: PushNotificationsSettings) {
-        localStorage.pushNotificationsSettings = pushNotificationsSettings
+    override fun clearStorage() {
+        localStorage.clearStorage()
     }
 }

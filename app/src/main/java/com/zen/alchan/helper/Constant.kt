@@ -15,6 +15,12 @@ object Constant {
     private const val ANILIST_CLIENT_ID = 1988
     const val ANILIST_LOGIN_URL = "${ANILIST_URL}api/v2/oauth/authorize?client_id=${ANILIST_CLIENT_ID}&response_type=token"
 
+    const val ANILIST_REVIEW_URL = "${ANILIST_URL}review/"
+    const val ANILIST_NOTIFICATIONS_URL = "${ANILIST_URL}notifications"
+    const val ANILIST_SETTINGS_URL = "${ANILIST_URL}settings/"
+    const val ANILIST_ACCOUNT_URL = "${ANILIST_SETTINGS_URL}account"
+    const val ANILIST_IMPORT_LISTS_URL = "${ANILIST_SETTINGS_URL}import"
+
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
     const val ANIME_LIST_BACKGROUND_FILENAME = "anime_list_background.jpg"
     const val MANGA_LIST_BACKGROUND_FILENAME = "manga_list_background.jpg"

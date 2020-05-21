@@ -7,8 +7,7 @@ import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 
 class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
-                    private val userRepository: UserRepository,
-                    private val mediaListRepository: MediaListRepository
+                    private val userRepository: UserRepository
 ) : ViewModel() {
 
     val appColorThemeLiveData by lazy {
@@ -17,5 +16,21 @@ class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
 
     val listOrAniListSettingsChanged by lazy {
         userRepository.listOrAniListSettingsChanged
+    }
+
+    val viewerData by lazy {
+        userRepository.viewerData
+    }
+
+    val sessionResponse by lazy {
+        userRepository.sessionResponse
+    }
+
+    fun checkSession() {
+        userRepository.checkSession()
+    }
+
+    fun clearStorage() {
+        appSettingsRepository.clearStorage()
     }
 }

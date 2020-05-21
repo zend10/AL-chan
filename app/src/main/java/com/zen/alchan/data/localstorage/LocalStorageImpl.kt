@@ -8,7 +8,6 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.ListStyle
-import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import type.StaffLanguage
 
 class LocalStorageImpl(private val context: Context,
@@ -22,7 +21,6 @@ class LocalStorageImpl(private val context: Context,
         private const val BEARER_TOKEN = "bearerToken"
         private const val APP_COLOR_THEME = "appColorTheme"
         private const val VOICE_ACTOR_LANGUAGE = "voiceActorLanguage"
-        private const val PUSH_NOTIFICATIONS_SETTINGS = "pushNotificationsSettings"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
         private const val FOLLOWERS_COUNT = "followersCount"
@@ -48,10 +46,6 @@ class LocalStorageImpl(private val context: Context,
     override var voiceActorLanguage: StaffLanguage
         get() = if (getData(VOICE_ACTOR_LANGUAGE) == null) StaffLanguage.JAPANESE else StaffLanguage.valueOf(getData(VOICE_ACTOR_LANGUAGE)!!)
         set(value) { setData(VOICE_ACTOR_LANGUAGE, value.name) }
-
-    override var pushNotificationsSettings: PushNotificationsSettings
-        get() = if (getData(PUSH_NOTIFICATIONS_SETTINGS) == null ) PushNotificationsSettings(true, true, true, true) else gson.fromJson(getData(PUSH_NOTIFICATIONS_SETTINGS), PushNotificationsSettings::class.java)
-        set(value) { setData(PUSH_NOTIFICATIONS_SETTINGS, gson.toJson(value)) }
 
     override var viewerData: User?
         get() = gson.fromJson(getData(VIEWER_DATA), User::class.java)
@@ -107,5 +101,9 @@ class LocalStorageImpl(private val context: Context,
 
     private fun setData(key: String, value: String?) {
         sharedPreferences.edit().putString(key, value).apply()
+    }
+
+    override fun clearStorage() {
+        sharedPreferences.edit().clear().apply()
     }
 }

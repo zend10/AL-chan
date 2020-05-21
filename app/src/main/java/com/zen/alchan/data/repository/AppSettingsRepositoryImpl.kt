@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.zen.alchan.data.localstorage.AppSettingsManager
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.SingleLiveEvent
-import com.zen.alchan.helper.pojo.PushNotificationsSettings
 import com.zen.alchan.helper.utils.AndroidUtility
 import type.StaffLanguage
 
@@ -23,9 +22,6 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
     override val voiceActorLanguage: StaffLanguage
         get() = appSettingsManager.voiceActorLanguage
 
-    override val pushNotificationsSettings: PushNotificationsSettings
-        get() = appSettingsManager.pushNotificationsSettings
-
     override fun setAppSettings(
         appColorTheme: AppColorTheme,
         voiceActorLanguage: StaffLanguage
@@ -37,12 +33,7 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
         _appColorThemeLiveData.postValue(appColorThemeResource)
     }
 
-    override fun setPushNotificationsSettings(
-        pushNotifAiring: Boolean,
-        pushNotifActivity: Boolean,
-        pushNotifForum: Boolean,
-        pushNotifFollows: Boolean
-    ) {
-        appSettingsManager.setPushNotificationsSettings(PushNotificationsSettings(pushNotifAiring, pushNotifActivity, pushNotifForum, pushNotifFollows))
+    override fun clearStorage() {
+        appSettingsManager.clearStorage()
     }
 }

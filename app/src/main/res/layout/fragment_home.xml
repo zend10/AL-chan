@@ -116,26 +116,6 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/releaseCalendarMenu"
-                        app:contentPadding="@dimen/marginSmall"
-                        app:cardBackgroundColor="?themeCardColor"
-                        android:layout_marginBottom="@dimen/marginNormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:text="@string/release_calendar"
-                            style="?themeRegularFont"
-                            app:drawableStartCompat="@drawable/ic_schedule"
-                            app:drawableTint="?themeContentColor"
-                            android:drawablePadding="@dimen/marginSmall"
-                            android:gravity="center_vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/exploreMenu"
                         app:contentPadding="@dimen/marginSmall"
                         app:cardBackgroundColor="?themeCardColor"

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -20,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
@@ -182,7 +185,8 @@ class ProfileFragment : BaseMainFragment() {
         })
 
         itemNotifications.setOnMenuItemClickListener {
-            startActivity(Intent(activity, NotificationActivity::class.java))
+            // TODO: will handle notification later after social is up
+            CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
             true
         }
 

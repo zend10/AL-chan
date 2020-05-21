@@ -10,8 +10,6 @@
     <string name="important_to_know">Important to Know</string>
     <string name="you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password">You’ll be redirected to anilist.co to login/register. Make sure the URL is anilist.co before entering your email and password.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_wait">Please Wait</string>
     <string name="home">Home</string>
     <string name="anime">Anime</string>
@@ -270,4 +268,26 @@
     <string name="statistic_details">Statistic Details</string>
     <string name="count">Count</string>
     <string name="time_watched">Time Watched</string>
+    <string name="activity_subscriptions">Activity Subscriptions</string>
+    <string name="airing_anime_notifications">Airing anime notifications</string>
+    <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
+    <string name="when_someone_follows_me">When someone follows me</string>
+    <string name="when_i_receive_message">When I receive message</string>
+    <string name="when_i_am_mentioned_in_an_activity_or_activity_reply">When I am @ mentioned in an activity or activity reply</string>
+    <string name="when_someone_likes_my_activity">When someone likes my activity</string>
+    <string name="when_someone_likes_my_activity_reply">When someone likes my activity reply</string>
+    <string name="when_someone_replies_to_my_forum_comment">When someone replies to my forum comment</string>
+    <string name="when_i_am_mentioned_in_a_forum_comment">When I am @ mentioned in a forum comment</string>
+    <string name="when_someone_likes_my_forum_comment">When someone likes my forum comment</string>
+    <string name="when_someone_replies_to_a_forum_thread_i_m_subscribed_to">When someone replies to a forum thread I\'m subscribed to</string>
+    <string name="when_someone_likes_my_forum_thread">When someone likes my forum thread</string>
+    <string name="logout">Logout</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="update_account">Update Account</string>
+    <string name="import_lists">Import Lists</string>
+    <string name="logout_from_al_chan">Logout from AL-chan</string>
+    <string name="logging_out_from_al_chan">Logging out from AL-chan doesn\'t mean logging out from AniList. If you also want to logout from AniList, you have to logout from the web.</string>
+    <string name="you_are_logged_out">You Are Logged Out</string>
+    <string name="your_session_has_ended">Your session has ended. Please login again.</string>
 </resources>

@@ -47,6 +47,7 @@ import com.zen.alchan.ui.search.SearchListViewModel
 import com.zen.alchan.ui.search.SearchViewModel
 import com.zen.alchan.ui.seasonal.SeasonalDialogViewModel
 import com.zen.alchan.ui.seasonal.SeasonalViewModel
+import com.zen.alchan.ui.settings.account.AccountSettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
@@ -98,7 +99,7 @@ class ALchanApplication : Application() {
         viewModel { LoginViewModel(get()) }
 
         // main
-        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get()) }
 
         // home, search, explore, seasonal
         viewModel { HomeViewModel(get(), get(), get()) }
@@ -145,6 +146,7 @@ class ALchanApplication : Application() {
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }
         viewModel { NotificationsSettingsViewModel(get()) }
+        viewModel { AccountSettingsViewModel(get()) }
 
     }
 

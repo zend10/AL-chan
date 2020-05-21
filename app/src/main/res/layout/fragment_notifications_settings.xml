@@ -15,28 +15,15 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
+            android:padding="@dimen/marginPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:gravity="center_vertical"
+            <com.google.android.material.textview.MaterialTextView
+                style="?themeRegularBoldFont"
+                android:text="@string/activity_subscriptions"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularBoldFont"
-                    android:text="@string/push_notifications"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/pushNotificationsInfoIcon"
-                    app:srcCompat="@drawable/ic_info"
-                    android:layout_marginStart="@dimen/marginNormal"
-                    android:layout_width="@dimen/iconSmallSize"
-                    android:layout_height="@dimen/iconSmallSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_marginTop="@dimen/marginNormal"
@@ -46,14 +33,14 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?themeRegularFont"
-                    android:text="@string/send_airing_push_notifications"
+                    android:text="@string/automatically_subscribe_me_to_activity_i_create"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/notifAiringCheckBox"
+                    android:id="@+id/activityReplyCheckBox"
                     style="?themeRegularCheckBox"
                     android:layout_width="@dimen/iconSize"
                     android:layout_height="@dimen/iconSize"/>
@@ -68,14 +55,43 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?themeRegularFont"
-                    android:text="@string/send_activity_push_notifications"
+                    android:text="@string/automatically_subscribe_me_to_activity_i_reply_to"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/notifActivityCheckBox"
+                    android:id="@+id/activityReplySubscribedCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="?themeRegularBoldFont"
+                android:text="@string/notifications"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_follows_me"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/followingCheckBox"
                     style="?themeRegularCheckBox"
                     android:layout_width="@dimen/iconSize"
                     android:layout_height="@dimen/iconSize"/>
@@ -90,14 +106,14 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?themeRegularFont"
-                    android:text="@string/send_forum_push_notifications"
+                    android:text="@string/when_i_receive_message"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/notifForumCheckBox"
+                    android:id="@+id/activityMessageCheckBox"
                     style="?themeRegularCheckBox"
                     android:layout_width="@dimen/iconSize"
                     android:layout_height="@dimen/iconSize"/>
@@ -112,14 +128,168 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?themeRegularFont"
-                    android:text="@string/send_follows_push_notifications"
+                    android:text="@string/when_i_am_mentioned_in_an_activity_or_activity_reply"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/notifFollowsCheckBox"
+                    android:id="@+id/activityMentionCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_likes_my_activity"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/activityLikeCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_likes_my_activity_reply"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/activityReplyLikeCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_replies_to_my_forum_comment"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/threadCommentReplyCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_i_am_mentioned_in_a_forum_comment"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/threadCommentMentionCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_likes_my_forum_comment"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/threadCommentLikeCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_replies_to_a_forum_thread_i_m_subscribed_to"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/threadSubscribedCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/when_someone_likes_my_forum_thread"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/threadLikeCheckBox"
                     style="?themeRegularCheckBox"
                     android:layout_width="@dimen/iconSize"
                     android:layout_height="@dimen/iconSize"/>

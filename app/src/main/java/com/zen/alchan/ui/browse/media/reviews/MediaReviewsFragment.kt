@@ -55,7 +55,7 @@ class MediaReviewsFragment : BaseFragment() {
     private fun assignAdapter(): MediaReviewsRvAdapter {
         return MediaReviewsRvAdapter(activity!!, viewModel.mediaReviews, object : MediaReviewsRvAdapter.MediaReviewsListener {
             override fun passSelectedReview(reviewId: Int) {
-                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse("${Constant.ANILIST_URL}review/$reviewId"))
+                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse("${Constant.ANILIST_REVIEW_URL}$reviewId"))
             }
         })
     }

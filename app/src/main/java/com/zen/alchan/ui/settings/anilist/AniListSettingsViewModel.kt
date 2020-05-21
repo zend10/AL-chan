@@ -26,7 +26,7 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Vie
         }
     }
 
-    fun updateAniListSettings( adultContent: Boolean, airingNotifications: Boolean) {
+    fun updateAniListSettings(adultContent: Boolean, airingNotifications: Boolean) {
         if (selectedTitleLanguage == null) {
             return
         }

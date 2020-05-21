@@ -1,12 +1,15 @@
 package com.zen.alchan.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.zen.alchan.R
+import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.AnimeListFragment
+import com.zen.alchan.ui.auth.SplashActivity
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseMainFragmentListener
 import com.zen.alchan.ui.home.HomeFragment
@@ -38,6 +41,31 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         viewModel.listOrAniListSettingsChanged.observe(this, Observer {
             recreate()
         })
+
+        viewModel.viewerData.observe(this, Observer {
+            if (it?.unreadNotificationCount != null && it.unreadNotificationCount != 0) {
+                mainBottomNavigation.getOrCreateBadge(R.id.itemProfile).number = it.unreadNotificationCount!!
+            } else {
+                mainBottomNavigation.removeBadge(R.id.itemProfile)
+            }
+        })
+
+        viewModel.sessionResponse.observe(this, Observer {
+            if (!it) {
+                DialogUtility.showActionDialog(
+                    this,
+                    R.string.you_are_logged_out,
+                    R.string.your_session_has_ended,
+                    R.string.logout
+                ) {
+                    viewModel.clearStorage()
+                    startActivity(Intent(this, SplashActivity::class.java))
+                    finish()
+                }
+            }
+        })
+
+        viewModel.checkSession()
     }
 
     private fun initLayout() {

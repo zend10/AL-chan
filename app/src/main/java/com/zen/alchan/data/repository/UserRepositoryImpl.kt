@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
+import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Completable
@@ -21,6 +24,10 @@ import type.UserTitleLanguage
 class UserRepositoryImpl(private val userDataSource: UserDataSource,
                          private val userManager: UserManager
 ) : UserRepository {
+
+    private val _sessionResponse = SingleLiveEvent<Boolean>()
+    override val sessionResponse: LiveData<Boolean>
+        get() = _sessionResponse
 
     private val _viewerDataResponse = MutableLiveData<Resource<Boolean>>()
     override val viewerDataResponse: LiveData<Resource<Boolean>>
@@ -103,9 +110,30 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val followingsCountLastRetrieved: Long?
         get() = userManager.followingsCountLastRetrieved
 
+    @SuppressLint("CheckResult")
+    override fun checkSession() {
+        userDataSource.checkSession().subscribeWith(object : Observer<Response<SessionQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<SessionQuery.Data>) {
+                if (t.hasErrors()) {
+                    _sessionResponse.postValue(false)
+                } else {
+                    _sessionResponse.postValue(true)
+                }
+            }
+
+            override fun onError(e: Throwable) { }
+
+            override fun onComplete() { }
+        })
+    }
+
     override fun getViewerData() {
         // used to trigger live data
         _viewerData.postValue(userManager.viewerData)
+        _followersCount.postValue(userManager.followersCount)
+        _followingsCount.postValue(userManager.followingsCount)
     }
 
     @SuppressLint("CheckResult")
@@ -201,6 +229,34 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     }
 
     @SuppressLint("CheckResult")
+    override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>) {
+        _updateAniListSettingsResponse.postValue(Resource.Loading())
+
+        userDataSource.updateNotificationsSettings(notificationOptions).subscribeWith(object : Observer<Response<AniListSettingsMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<AniListSettingsMutation.Data>) {
+                if (t.hasErrors()) {
+                    _updateAniListSettingsResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    val savedUser = userManager.viewerData
+                    savedUser?.options = Converter.convertUserOptions(t.data?.updateUser?.options)
+                    userManager.setViewerData(savedUser)
+
+                    _updateAniListSettingsResponse.postValue(Resource.Success(true))
+                    _viewerData.postValue(userManager.viewerData)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _updateAniListSettingsResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
     override fun toggleFavourite(
         animeId: Int?,
         mangaId: Int?,
@@ -253,16 +309,14 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         userDataSource.getFavoriteManga(page).subscribeWith(object : Observer<Response<FavoritesMangaQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
-            override fun onNext(t: Response<FavoritesMangaQuery.Data>) {
-                if (t.hasErrors()) {
-                    _favoriteMangaResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _favoriteMangaResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
+            override fun onNext(t: Response<FavoritesMangaQuery.Data>) { }
 
             override fun onError(e: Throwable) {
-                _favoriteMangaResponse.postValue(Resource.Error(e.localizedMessage))
+                if (e is ApolloHttpException) {
+                    if (e.rawResponse()?.code == 401 || e.rawResponse()?.code == 400) {
+                        _sessionResponse.postValue(false)
+                    }
+                }
             }
 
             override fun onComplete() { }
