@@ -52,7 +52,7 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
         viewModel.sessionResponse.observe(this, Observer {
             if (!it) {
-                DialogUtility.showActionDialog(
+                DialogUtility.showForceActionDialog(
                     this,
                     R.string.you_are_logged_out,
                     R.string.your_session_has_ended,

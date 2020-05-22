@@ -25,6 +25,7 @@ import com.google.gson.internal.LinkedTreeMap
 import com.zen.alchan.R
 import com.zen.alchan.data.response.Media
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -122,7 +123,7 @@ class AnimeListFragment : Fragment() {
                     val currentTab = viewModel.tabItemList[viewModel.selectedTab]
                     toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-                    viewModel.currentList = ArrayList(viewModel.animeListData.value?.lists?.find { it.name == currentTab.status }?.entries)
+                    viewModel.currentList = ArrayList(viewModel.animeListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
 
                     adapter = assignAdapter()
                     animeListRecyclerView.adapter = adapter
@@ -183,11 +184,17 @@ class AnimeListFragment : Fragment() {
             viewModel.tabItemList.clear()
             it.lists?.forEach { list -> viewModel.tabItemList.add(MediaListTabItem(list.name!!, list.entries?.size!!)) }
 
+            if (viewModel.tabItemList.isNullOrEmpty()) {
+                Constant.DEFAULT_ANIME_LIST_ORDER.forEach { list ->
+                    viewModel.tabItemList.add(MediaListTabItem(list, 0))
+                }
+            }
+
             val currentTab = viewModel.tabItemList[viewModel.selectedTab]
             toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
             viewModel.currentList.clear()
-            viewModel.currentList.addAll(ArrayList(it.lists?.find { it.name == currentTab.status }?.entries))
+            viewModel.currentList.addAll(ArrayList(it.lists?.find { status -> status.name == currentTab.status }?.entries ?: listOf()))
             adapter.notifyDataSetChanged()
 
             if (viewModel.currentList.isNullOrEmpty()) {

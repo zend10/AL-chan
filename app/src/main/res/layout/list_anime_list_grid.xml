@@ -1,171 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/marginNormal"
     android:layout_marginEnd="@dimen/marginNormal"
-    android:background="@android:color/transparent"
+    android:id="@+id/listCardBackground"
+    app:cardBackgroundColor="?themeCardColor"
+    android:foreground="?selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/listCardBackground"
-        app:cardBackgroundColor="?themeCardColor"
-        android:foreground="?selectableItemBackground"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/animeCoverImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="2:3"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/animeTitleLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/animeCoverImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?themeCardTransparentColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/animeCoverImage"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintDimensionRatio="2:3"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/animeTitleText"
+                style="?themeSmallClickableFont"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:lines="1"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="wrap_content"/>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/animeTitleLayout"
-                app:layout_constraintBottom_toBottomOf="@+id/animeCoverImage"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:contentPadding="@dimen/marginClose"
-                android:layout_margin="2dp"
-                app:cardCornerRadius="@dimen/cornerNormal"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="?themeCardTransparentColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/animeTitleText"
-                    style="?themeSmallClickableFont"
-                    android:gravity="center_vertical"
-                    android:textAlignment="center"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/animeFormatLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_margin="2dp"
+            app:cardElevation="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/animeFormatLayout"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:cardCornerRadius="@dimen/cornerNormal"
-                app:cardBackgroundColor="?themeCardTransparentColor"
-                app:contentPadding="@dimen/marginClose"
-                android:layout_margin="2dp"
-                app:cardElevation="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/animeFormatText"
+                style="?themeSmallFont"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/animeFormatText"
-                    style="?themeSmallFont"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+        </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
+            android:id="@+id/animeAiringLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_margin="2dp"
+            app:cardElevation="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.card.MaterialCardView
-                android:visibility="gone"
-                android:id="@+id/animeAiringLayout"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:cardCornerRadius="@dimen/cornerNormal"
-                app:cardBackgroundColor="?themeCardTransparentColor"
-                app:contentPadding="@dimen/marginClose"
-                android:layout_margin="2dp"
-                app:cardElevation="0dp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/animeAiringIcon"
+                app:srcCompat="@drawable/ic_filled_circle"
+                app:tint="?themeSecondaryColor"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/animeScoreLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/animeTitleLayout"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="@dimen/marginClose"
+            app:cardElevation="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/animeAiringIcon"
-                    app:srcCompat="@drawable/ic_filled_circle"
-                    app:tint="?themeSecondaryColor"
-                    android:layout_width="@dimen/iconSmallSize"
-                    android:layout_height="@dimen/iconSmallSize"/>
+                    android:id="@+id/animeStarIcon"
+                    app:srcCompat="@drawable/ic_star_filled"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"/>
 
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/animeRatingText"
+                    style="?themeSmallClickableFont"
+                    android:layout_marginStart="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/animeScoreLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/animeTitleLayout"
-                app:cardCornerRadius="@dimen/cornerNormal"
-                app:cardBackgroundColor="?themeCardTransparentColor"
-                app:contentPadding="@dimen/marginClose"
-                android:layout_marginStart="2dp"
-                android:layout_marginBottom="@dimen/marginClose"
-                app:cardElevation="0dp"
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/animeProgressLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/animeTitleLayout"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="@dimen/marginClose"
+            app:cardElevation="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/animeProgressText"
+                    style="?themeSmallClickableFont"
+                    android:text="0/?"
+                    android:gravity="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/animeStarIcon"
-                        app:srcCompat="@drawable/ic_star_filled"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/animeRatingText"
-                        style="?themeSmallClickableFont"
-                        android:layout_marginStart="@dimen/marginClose"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+        </com.google.android.material.card.MaterialCardView>
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/animeProgressLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/animeTitleLayout"
-                app:cardCornerRadius="@dimen/cornerNormal"
-                app:cardBackgroundColor="?themeCardTransparentColor"
-                app:contentPadding="@dimen/marginClose"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="@dimen/marginClose"
-                app:cardElevation="0dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/animeProgressText"
-                        style="?themeSmallClickableFont"
-                        android:text="0/?"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

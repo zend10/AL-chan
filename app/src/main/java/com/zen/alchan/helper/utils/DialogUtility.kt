@@ -91,4 +91,19 @@ object DialogUtility {
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
             .show()
     }
+
+    fun showForceActionDialog(
+        context: Context?,
+        title: Int,
+        message: Int,
+        positiveButton: Int,
+        positiveAction: () -> Unit
+    ) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            .show()
+    }
 }

@@ -72,6 +72,7 @@
                             android:id="@+id/searchBar"
                             app:cardBackgroundColor="?themeContentColor"
                             app:contentPadding="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
                             android:layout_marginTop="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">

@@ -115,15 +115,15 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         userDataSource.checkSession().subscribeWith(object : Observer<Response<SessionQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
-            override fun onNext(t: Response<SessionQuery.Data>) {
-                if (t.hasErrors()) {
-                    _sessionResponse.postValue(false)
-                } else {
-                    _sessionResponse.postValue(true)
+            override fun onNext(t: Response<SessionQuery.Data>) { }
+
+            override fun onError(e: Throwable) {
+                if (e is ApolloHttpException) {
+                    if (e.rawResponse()?.code == 401 || e.rawResponse()?.code == 400) {
+                        _sessionResponse.postValue(false)
+                    }
                 }
             }
-
-            override fun onError(e: Throwable) { }
 
             override fun onComplete() { }
         })
@@ -309,14 +309,16 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         userDataSource.getFavoriteManga(page).subscribeWith(object : Observer<Response<FavoritesMangaQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
-            override fun onNext(t: Response<FavoritesMangaQuery.Data>) { }
+            override fun onNext(t: Response<FavoritesMangaQuery.Data>) {
+                if (t.hasErrors()) {
+                    _favoriteMangaResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _favoriteMangaResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
 
             override fun onError(e: Throwable) {
-                if (e is ApolloHttpException) {
-                    if (e.rawResponse()?.code == 401 || e.rawResponse()?.code == 400) {
-                        _sessionResponse.postValue(false)
-                    }
-                }
+                _favoriteMangaResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }

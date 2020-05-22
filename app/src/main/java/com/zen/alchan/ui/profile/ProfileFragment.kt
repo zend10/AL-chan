@@ -200,6 +200,7 @@ class ProfileFragment : BaseMainFragment() {
                 DialogUtility.showToast(activity, "Some data has not been retrieved. Please refresh this page.")
             } else {
                 AndroidUtility.copyToClipboard(activity, user.siteUrl)
+                DialogUtility.showToast(activity, R.string.link_copied)
             }
             true
         }
