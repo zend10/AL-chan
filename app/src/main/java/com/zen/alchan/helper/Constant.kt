@@ -20,13 +20,12 @@ object Constant {
     const val ANILIST_ACCOUNT_URL = "${ANILIST_SETTINGS_URL}account"
     const val ANILIST_IMPORT_LISTS_URL = "${ANILIST_SETTINGS_URL}import"
 
-    // TODO: Update these links
     const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
     const val EMAIL_ADDRESS = "alchanapp@gmail.com"
     const val TWITTER_ACCOUNT = "@alchan_app"
     const val TWITTER_URL = "https://twitter.com/alchan_app"
     const val GITHUB_URL = "https://github.com/zend10/AL-chan"
-    const val PRIVACY_POLICY_URL = "https://github.com/zend10/AL-chan"
+    const val PRIVACY_POLICY_URL = "https://zend10.github.io/AL-chan/privacy.html"
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
     const val ANIME_LIST_BACKGROUND_FILENAME = "anime_list_background.jpg"
