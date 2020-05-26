@@ -2,7 +2,7 @@ query ViewerQuery {
   Viewer {
     id
     name
-    about(asHtml: true)
+    about(asHtml: false)
     avatar {
       large
       medium

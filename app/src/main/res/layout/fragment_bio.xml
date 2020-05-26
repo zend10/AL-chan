@@ -23,10 +23,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:contentPadding="@dimen/marginNormal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <WebView
-                android:id="@+id/bioWebView"
+<!--            <WebView-->
+<!--                android:id="@+id/bioWebView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/bioTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
