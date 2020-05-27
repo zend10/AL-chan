@@ -99,7 +99,7 @@ class BioFragment : Fragment() {
         val width = metrics.widthPixels
 
         var aboutString = viewModel.viewerData.value?.about
-            ?.replace(webmRegex, "[![webm](${Constant.VIDEO_THUMBNAIL_URL}]")
+            ?.replace(webmRegex, "[![webm](${Constant.VIDEO_THUMBNAIL_URL})]")
             ?.replace(youtubeRegex, "[![youtube](${Constant.YOUTUBE_THUMBNAIL_URL})]")
             ?.replace(imageUrlRegex, "IMAGE_URL")
             ?.replace(rogueUrlRegex, "ROGUE_URL")
