@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -133,7 +134,21 @@ class ProfileFragment : BaseMainFragment() {
         }
 
         GlideApp.with(this).load(user?.bannerImage).into(profileBannerImage)
-        GlideApp.with(this).load(user?.avatar?.large).apply(RequestOptions.circleCropTransform()).into(profileAvatarImage)
+
+        if (viewModel.circularAvatar) {
+            profileAvatarImage.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_oval_transparent)
+            if (viewModel.whiteBackgroundAvatar) {
+                profileAvatarImage.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, R.color.white))
+            } else {
+                profileAvatarImage.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
+            }
+            GlideApp.with(this).load(user?.avatar?.large).apply(RequestOptions.circleCropTransform()).into(profileAvatarImage)
+        } else {
+            profileAvatarImage.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_rectangle_transparent)
+            profileAvatarImage.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
+            GlideApp.with(this).load(user?.avatar?.large).into(profileAvatarImage)
+        }
+
         profileUsernameText.text = user?.name
         profileAnimeCountText.text = user?.statistics?.anime?.count.toString()
         profileMangaCountText.text = user?.statistics?.manga?.count.toString()

@@ -3,6 +3,7 @@ package com.zen.alchan.ui.settings.app
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.AppSettings
 import type.StaffLanguage
 
 class AppSettingsViewModel(private val appSettingsRepository: AppSettingsRepository) : ViewModel() {
@@ -11,11 +12,8 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
     var selectedAppTheme: AppColorTheme? = null
     var selectedLanguage: StaffLanguage? = null
 
-    val appColorTheme: AppColorTheme
-        get() = appSettingsRepository.appColorTheme
-
-    val voiceActorLanguage: StaffLanguage
-        get() = appSettingsRepository.voiceActorLanguage
+    val appSettings: AppSettings
+        get() = appSettingsRepository.appSettings
 
     val staffLanguageArray = arrayOf(
         StaffLanguage.JAPANESE.name,
@@ -30,7 +28,12 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         StaffLanguage.HUNGARIAN.name
     )
 
-    fun setAppSettings(appColorTheme: AppColorTheme, voiceActorLanguage: StaffLanguage) {
-        appSettingsRepository.setAppSettings(appColorTheme, voiceActorLanguage)
+    fun setAppSettings(circularAvatar: Boolean = true, whiteBackgroundAvatar: Boolean = true) {
+        appSettingsRepository.setAppSettings(AppSettings(
+            appTheme = selectedAppTheme,
+            circularAvatar = circularAvatar,
+            whiteBackgroundAvatar = whiteBackgroundAvatar,
+            voiceActorLanguage = selectedLanguage
+        ))
     }
 }

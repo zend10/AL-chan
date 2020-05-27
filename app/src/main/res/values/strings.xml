@@ -295,4 +295,6 @@
     <string name="the_privacy_policy_of_this_app_can_be_read_fully_here">The privacy policy of this app can be read fully here.</string>
     <string name="important_links">Important Links</string>
     <string name="appearance">Appearance</string>
+    <string name="use_circular_avatar">Use circular avatar</string>
+    <string name="add_white_background_to_circular_avatar">Add white background to circular avatar</string>
 </resources>

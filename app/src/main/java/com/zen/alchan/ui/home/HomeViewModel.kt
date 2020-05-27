@@ -44,6 +44,12 @@ class HomeViewModel(private val userRepository: UserRepository,
         mediaRepository.releasingTodayData
     }
 
+    val circularAvatar
+        get() = appSettingsRepository.appSettings.circularAvatar == true
+
+    val whiteBackgroundAvatar
+        get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
+
     fun initData() {
         userRepository.getViewerData()
         mediaRepository.getTrendingAnime()

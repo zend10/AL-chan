@@ -135,7 +135,7 @@ class ALchanApplication : Application() {
         viewModel { StudioViewModel(get(), get()) }
 
         // profile and settings
-        viewModel { ProfileViewModel(get()) }
+        viewModel { ProfileViewModel(get(), get()) }
         viewModel { BioViewModel(get()) }
         viewModel { FavoritesViewModel(get(), gson) }
         viewModel { ReorderFavoritesViewModel(get(), gson) }

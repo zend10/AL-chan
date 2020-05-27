@@ -60,7 +60,7 @@ class MediaCharactersFragment : BaseFragment() {
     }
 
     private fun assignAdapter(): MediaCharactersRvAdapter {
-        return MediaCharactersRvAdapter(activity!!, viewModel.mediaCharacters, viewModel.staffLanguage, object : MediaCharactersRvAdapter.MediaCharactersListener {
+        return MediaCharactersRvAdapter(activity!!, viewModel.mediaCharacters, viewModel.staffLanguage ?: StaffLanguage.JAPANESE, object : MediaCharactersRvAdapter.MediaCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
                 val fragment = CharacterFragment()
                 val bundle = Bundle()
@@ -150,7 +150,7 @@ class MediaCharactersFragment : BaseFragment() {
             voiceActorLanguageLayout.visibility = View.GONE
         }
 
-        voiceActorLanguageText.text = viewModel.staffLanguage.name
+        voiceActorLanguageText.text = viewModel.staffLanguage?.name
 
         voiceActorLanguageText.setOnClickListener {
             MaterialAlertDialogBuilder(activity)

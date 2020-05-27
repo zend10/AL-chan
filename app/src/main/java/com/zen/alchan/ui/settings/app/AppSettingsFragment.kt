@@ -54,8 +54,10 @@ class AppSettingsFragment : Fragment() {
 
     private fun initLayout() {
         if (!viewModel.isInit) {
-            viewModel.selectedAppTheme = viewModel.appColorTheme
-            viewModel.selectedLanguage = viewModel.voiceActorLanguage
+            viewModel.selectedAppTheme = viewModel.appSettings.appTheme
+            viewModel.selectedLanguage = viewModel.appSettings.voiceActorLanguage
+            circularAvatarCheckBox.isChecked = viewModel.appSettings.circularAvatar == true
+            whiteBackgroundAvatarCheckBox.isChecked = viewModel.appSettings.whiteBackgroundAvatar == true
             viewModel.isInit = true
         }
 
@@ -66,10 +68,7 @@ class AppSettingsFragment : Fragment() {
                 R.string.are_you_sure_you_want_to_save_this_configuration,
                 R.string.save,
                 {
-                    viewModel.setAppSettings(
-                        appColorTheme = viewModel.selectedAppTheme!!,
-                        voiceActorLanguage = viewModel.selectedLanguage!!
-                    )
+                    viewModel.setAppSettings(circularAvatarCheckBox.isChecked, whiteBackgroundAvatarCheckBox.isChecked)
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
                 },
@@ -92,10 +91,7 @@ class AppSettingsFragment : Fragment() {
                 R.string.this_will_reset_your_app_settings_to_default_configuration,
                 R.string.reset,
                 {
-                    viewModel.setAppSettings(
-                        appColorTheme = Constant.DEFAULT_THEME,
-                        voiceActorLanguage = StaffLanguage.JAPANESE
-                    )
+                    viewModel.setAppSettings()
                     viewModel.isInit = false
                     initLayout()
                     activity?.recreate()

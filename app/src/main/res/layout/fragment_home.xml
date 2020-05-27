@@ -62,7 +62,7 @@
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/userAvatar"
-                                android:background="@drawable/shape_oval"
+                                android:background="@drawable/shape_oval_transparent"
                                 android:layout_width="@dimen/imageCircleSize"
                                 android:layout_height="@dimen/imageCircleSize"/>
 

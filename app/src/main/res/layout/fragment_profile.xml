@@ -67,7 +67,6 @@
                             android:id="@+id/profileAvatarImage"
                             android:layout_marginTop="@dimen/marginFar"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/shape_oval"
                             android:adjustViewBounds="true"
                             android:layout_width="@dimen/imageCircleSize"
                             android:layout_height="@dimen/imageCircleSize"/>

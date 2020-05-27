@@ -7,6 +7,7 @@ import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.genericType
+import com.zen.alchan.helper.pojo.AppSettings
 import com.zen.alchan.helper.pojo.ListStyle
 import type.StaffLanguage
 
@@ -19,8 +20,7 @@ class LocalStorageImpl(private val context: Context,
 
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
-        private const val APP_COLOR_THEME = "appColorTheme"
-        private const val VOICE_ACTOR_LANGUAGE = "voiceActorLanguage"
+        private const val APP_SETTINGS = "appSettings"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
         private const val FOLLOWERS_COUNT = "followersCount"
@@ -39,13 +39,9 @@ class LocalStorageImpl(private val context: Context,
         get() = getData(BEARER_TOKEN)
         set(value) { setData(BEARER_TOKEN, value) }
 
-    override var appColorTheme: AppColorTheme
-        get() = AppColorTheme.valueOf(getData(APP_COLOR_THEME) ?: Constant.DEFAULT_THEME.name)
-        set(value) { setData(APP_COLOR_THEME, value.name) }
-
-    override var voiceActorLanguage: StaffLanguage
-        get() = if (getData(VOICE_ACTOR_LANGUAGE) == null) StaffLanguage.JAPANESE else StaffLanguage.valueOf(getData(VOICE_ACTOR_LANGUAGE)!!)
-        set(value) { setData(VOICE_ACTOR_LANGUAGE, value.name) }
+    override var appSettings: AppSettings
+        get() = if (getData(APP_SETTINGS) == null) AppSettings() else gson.fromJson(getData(APP_SETTINGS), AppSettings::class.java)
+        set(value) { setData(APP_SETTINGS, gson.toJson(value)) }
 
     override var viewerData: User?
         get() = gson.fromJson(getData(VIEWER_DATA), User::class.java)
