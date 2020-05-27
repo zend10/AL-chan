@@ -26,6 +26,7 @@ object Constant {
     const val TWITTER_URL = "https://twitter.com/alchan_app"
     const val GITHUB_URL = "https://github.com/zend10/AL-chan"
     const val PRIVACY_POLICY_URL = "https://zend10.github.io/AL-chan/privacy.html"
+    const val ALCHAN_THREAD_URL = "${ANILIST_URL}forum/thread/12889"
 
     const val VIDEO_THUMBNAIL_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/docs/video_thumbnail.png"
     const val YOUTUBE_THUMBNAIL_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/docs/youtube_thumbnail.png)"

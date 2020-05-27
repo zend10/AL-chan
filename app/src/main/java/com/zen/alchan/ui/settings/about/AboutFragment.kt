@@ -47,7 +47,7 @@ class AboutFragment : Fragment() {
         linkGmailText.text = Constant.EMAIL_ADDRESS
         linkTwitterText.text = Constant.TWITTER_ACCOUNT
 
-        linkAniListLayout.setOnClickListener { openLink(Constant.ANILIST_URL) }
+        linkAniListLayout.setOnClickListener { openLink(Constant.ALCHAN_THREAD_URL) }
         linkPlayStoreLayout.setOnClickListener { openLink(Constant.PLAY_STORE_URL) }
         linkGmailLayout.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", Constant.EMAIL_ADDRESS, null))
