@@ -11,12 +11,9 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.textview.MaterialTextView
@@ -81,7 +78,7 @@ class MediaFragment : BaseFragment() {
         mediaSectionMap = hashMapOf(
             Pair(MediaPage.OVERVIEW, Pair(mediaOverviewIcon, mediaOverviewText)),
             Pair(MediaPage.CHARACTERS, Pair(mediaCharactersIcon, mediaCharactersText)),
-            Pair(MediaPage.STAFFS, Pair(mediaStaffsIcon, mediaStaffsText)),
+            Pair(MediaPage.STAFF, Pair(mediaStaffsIcon, mediaStaffsText)),
             Pair(MediaPage.STATS, Pair(mediaStatsIcon, mediaStatsText)),
             Pair(MediaPage.REVIEWS, Pair(mediaReviewsIcon, mediaReviewsText)),
             Pair(MediaPage.SOCIAL, Pair(mediaSocialIcon, mediaSocialText))
@@ -282,7 +279,7 @@ class MediaFragment : BaseFragment() {
 
         mediaOverviewLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.OVERVIEW) }
         mediaCharactersLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.CHARACTERS) }
-        mediaStaffsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STAFFS) }
+        mediaStaffsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STAFF) }
         mediaStatsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.STATS) }
         mediaReviewsLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.REVIEWS) }
         mediaSocialLayout.setOnClickListener { viewModel.setMediaSection(MediaPage.SOCIAL) }
@@ -311,7 +308,7 @@ class MediaFragment : BaseFragment() {
         mediaViewPager.currentItem = when (viewModel.currentSection.value) {
             MediaPage.OVERVIEW -> 0
             MediaPage.CHARACTERS -> 1
-            MediaPage.STAFFS -> 2
+            MediaPage.STAFF -> 2
             MediaPage.STATS -> 3
             MediaPage.REVIEWS -> 4
             MediaPage.SOCIAL -> 5

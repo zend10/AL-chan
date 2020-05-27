@@ -12,8 +12,8 @@ android {
         applicationId "com.zen.alchan"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 100000
-        versionName "1.0.0"
+        versionCode 100001
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -87,6 +87,16 @@ dependencies {
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    def markwon_version = "4.4.0"
+    implementation "io.noties.markwon:core:$markwon_version"
+    implementation "io.noties.markwon:image:$markwon_version"
+    implementation "io.noties.markwon:image-glide:$markwon_version"
+    implementation "io.noties.markwon:html:$markwon_version"
+    implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
+    implementation "io.noties.markwon:inline-parser:$markwon_version"
+
 }
 
 apollo {

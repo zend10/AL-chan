@@ -1,14 +1,13 @@
 package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.AppSettings
 import type.StaffLanguage
 
 interface AppSettingsManager {
-    val appColorTheme: AppColorTheme
-    val voiceActorLanguage: StaffLanguage
+    val appSettings: AppSettings
 
-    fun setAppColorTheme(appColorTheme: AppColorTheme)
-    fun setVoiceActorLanguage(staffLanguage: StaffLanguage)
+    fun setAppSettings(value: AppSettings)
 
     fun clearStorage()
 }

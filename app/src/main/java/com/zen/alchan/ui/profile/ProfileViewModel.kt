@@ -3,11 +3,14 @@ package com.zen.alchan.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.utils.Utility
 
-class ProfileViewModel(private val userRepository: UserRepository) : ViewModel() {
+class ProfileViewModel(private val userRepository: UserRepository,
+                       private val appSettingsRepository: AppSettingsRepository
+) : ViewModel() {
 
     private val _currentSection = MutableLiveData<ProfileSection>()
     val currentSection: LiveData<ProfileSection>
@@ -28,6 +31,12 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
     val followingsCount by lazy {
         userRepository.followingsCount
     }
+
+    val circularAvatar
+        get() = appSettingsRepository.appSettings.circularAvatar == true
+
+    val whiteBackgroundAvatar
+        get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
 
     fun initData() {
         userRepository.getViewerData()

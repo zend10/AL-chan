@@ -2,6 +2,7 @@ package com.zen.alchan.ui.home
 
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
@@ -187,7 +189,20 @@ class HomeFragment : Fragment() {
         searchBar.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java)) }
 
         greetingsText.text = "Hello, ${user?.name}."
-        GlideApp.with(this).load(user?.avatar?.large).apply(RequestOptions.circleCropTransform()).into(userAvatar)
+        
+        if (viewModel.circularAvatar) {
+            userAvatar.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_oval_transparent)
+            if (viewModel.whiteBackgroundAvatar) {
+                userAvatar.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, R.color.white))
+            } else {
+                userAvatar.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
+            }
+            GlideApp.with(this).load(user?.avatar?.large).apply(RequestOptions.circleCropTransform()).into(userAvatar)
+        } else {
+            userAvatar.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_rectangle_transparent)
+            userAvatar.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
+            GlideApp.with(this).load(user?.avatar?.large).into(userAvatar)
+        }
 
         exploreMenu.setOnClickListener {
             MaterialAlertDialogBuilder(activity)

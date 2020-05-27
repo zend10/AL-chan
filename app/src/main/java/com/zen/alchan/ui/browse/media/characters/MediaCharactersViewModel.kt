@@ -15,7 +15,7 @@ class MediaCharactersViewModel(private val mediaRepository: MediaRepository,
     var mediaType: MediaType? = null
     var page = 1
     var hasNextPage = true
-    var staffLanguage = appSettingsRepository.voiceActorLanguage
+    var staffLanguage = appSettingsRepository.appSettings.voiceActorLanguage
 
     var isInit = false
     var mediaCharacters = ArrayList<MediaCharacters?>()
