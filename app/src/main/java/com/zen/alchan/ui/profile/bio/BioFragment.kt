@@ -17,6 +17,7 @@ import androidx.core.text.toSpanned
 import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.*
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -46,7 +47,7 @@ class BioFragment : Fragment() {
 
     private val viewModel by viewModel<BioViewModel>()
 
-    private val youtubeIdRegex = "(?<=(\\?v=)).+(?=\\))".toRegex()
+//    private val youtubeIdRegex = "(?<=(\\?v=)).+(?=\\))".toRegex()
     private val youtubeRegex = "youtube(?=\\()".toRegex()
     private val imageUrlRegex = "img[0-9]?.+?\\)".toRegex()
     private val spoilerRegex = "(~!|!~)".toRegex()
@@ -86,18 +87,16 @@ class BioFragment : Fragment() {
 
         val aboutText = viewModel.viewerData.value?.about ?: getString(R.string.no_description)
         val imageUrls = imageUrlRegex.findAll(aboutText).toList()
-        val youtubeIds = youtubeIdRegex.findAll(aboutText).toList()
+//        val youtubeIds = youtubeIdRegex.findAll(aboutText).toList()
         val rogueUrls = rogueUrl.findAll(aboutText).toList()
 
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         val width = metrics.widthPixels
 
-        // TODO: use default thumbnail for youtube and webm
-
         var aboutString = viewModel.viewerData.value?.about
-            ?.replace(webmRegex, "[![webm](https://toppng.com/uploads/preview/lay-icon-play-icon-11563266312mklxafh8gy.png)]")
-            ?.replace(youtubeRegex, "[![youtube](YOUTUBE_THUMBNAIL)]")
+            ?.replace(webmRegex, "[![webm](${Constant.VIDEO_THUMBNAIL_URL}]")
+            ?.replace(youtubeRegex, "[![youtube](${Constant.YOUTUBE_THUMBNAIL_URL})]")
             ?.replace(imageUrlRegex, "IMAGE_URL")
             ?.replace(rogueUrl, "ROGUE_URL")
             ?.replace(spoilerRegex, "")
@@ -123,10 +122,11 @@ class BioFragment : Fragment() {
             }
         }
 
+        // TODO: create a service to overlay youtube video thumbnail with play button and such
         // handle youtube thumbnail
-        youtubeIds.forEach {
-            aboutString = aboutString?.replaceFirst("YOUTUBE_THUMBNAIL", "http://img.youtube.com/vi/${it.value}/0.jpg")
-        }
+//        youtubeIds.forEach {
+//            aboutString = aboutString?.replaceFirst("YOUTUBE_THUMBNAIL", "http://img.youtube.com/vi/${it.value}/0.jpg")
+//        }
 
         // handle rogue url
         rogueUrls.forEach {
