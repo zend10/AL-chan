@@ -52,7 +52,9 @@ class BioFragment : Fragment() {
     private val spoilerRegex = "(~!|!~)".toRegex()
     private val webmRegex = "webm(?=\\()".toRegex()
     private val centerAlignRegex = "(~{3})[\\s\\S]+?(~{3})".toRegex()
-    private val rogueUrl = "(<a href=.+?>|<\\/a>)".toRegex()
+
+    private val rogueUrl = "((?<=\\s)|^)(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])?".toRegex()
+    private val rogueUrlTag = "(<a href=.+?>|<\\/a>)".toRegex()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +87,7 @@ class BioFragment : Fragment() {
         val aboutText = viewModel.viewerData.value?.about ?: getString(R.string.no_description)
         val imageUrls = imageUrlRegex.findAll(aboutText).toList()
         val youtubeIds = youtubeIdRegex.findAll(aboutText).toList()
+        val rogueUrls = rogueUrl.findAll(aboutText).toList()
 
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
@@ -93,11 +96,12 @@ class BioFragment : Fragment() {
         // TODO: use default thumbnail for youtube and webm
 
         var aboutString = viewModel.viewerData.value?.about
-            ?.replace(imageUrlRegex, "IMAGE_URL")
             ?.replace(webmRegex, "[![webm](https://toppng.com/uploads/preview/lay-icon-play-icon-11563266312mklxafh8gy.png)]")
             ?.replace(youtubeRegex, "[![youtube](YOUTUBE_THUMBNAIL)]")
+            ?.replace(imageUrlRegex, "IMAGE_URL")
+            ?.replace(rogueUrl, "ROGUE_URL")
             ?.replace(spoilerRegex, "")
-            ?.replace(rogueUrl, "")
+            ?.replace(rogueUrlTag, "")
 
         // handle image size
         imageUrls.forEach {
@@ -122,6 +126,11 @@ class BioFragment : Fragment() {
         // handle youtube thumbnail
         youtubeIds.forEach {
             aboutString = aboutString?.replaceFirst("YOUTUBE_THUMBNAIL", "http://img.youtube.com/vi/${it.value}/0.jpg")
+        }
+
+        // handle rogue url
+        rogueUrls.forEach {
+            aboutString = aboutString?.replaceFirst("ROGUE_URL", "[${it.value}](${it.value})")
         }
 
         // handle center align
