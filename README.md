@@ -1,10 +1,12 @@
+<a href='https://play.google.com/store/apps/details?id=com.zen.alchan&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="20%" ></a>
+
 # AL-chan
+AL-chan is an unofficial Android client for AniList, a place where you can track, share, discover, and experience Anime and Manga.
 
-<a href='https://play.google.com/store/apps/details?id=com.zen.alchan&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="150px"/></a>
+## Screenshots:
+<img alt="Anime List" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/1.png" width="24%" ></a> <img alt="Custom Anime List" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/2.png" width="24%" ></a> <img alt="List Editor" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/3.png" width="24%" ></a> <img alt="Anime Page" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/4.png" width="24%" ></a>
 
-AL-chan is an unofficial client for AniList, a place where you can track, share, discover, and experience Anime and Manga.
-
-Features so far:
+## Features so far:
 - Manage your anime and manga lists.
 - Support various types of scoring method and custom lists.
 - Customise your anime and manga lists.
@@ -15,8 +17,3 @@ Features so far:
 - View detailed info of anime, manga, characters, staffs, and studios.
 - Robust stats based on your anime and manga lists.
 - View recommendations and read reviews.
-
-For any feedback, you can find express it at:
-- The provided GitHub link.
-- The provided Email address.
-- Twitter at @alchan_app.
