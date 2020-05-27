@@ -3,10 +3,10 @@
 # AL-chan
 AL-chan is an unofficial Android client for AniList, a place where you can track, share, discover, and experience Anime and Manga.
 
-## Screenshots:
+## Screenshots
 <img alt="Anime List" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/1.png" width="24%" ></a> <img alt="Custom Anime List" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/2.png" width="24%" ></a> <img alt="List Editor" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/3.png" width="24%" ></a> <img alt="Anime Page" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/4.png" width="24%" ></a>
 
-## Features so far:
+## Features so far
 - Manage your anime and manga lists.
 - Support various types of scoring method and custom lists.
 - Customise your anime and manga lists.
