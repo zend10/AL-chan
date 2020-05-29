@@ -1,8 +1,6 @@
 /* Skeleton */
 html {
-    --color-black: #212121;
     --color-black-light: #2F2F2F;
-    --color-yellow: #FCF1C2;
 
     background-color: var(--color-black-light);
 }
@@ -43,7 +41,7 @@ nav ul {
 nav li {
     width: 100%;
     list-style-type: none;
-    background-color: var(--color-black-light);
+    border: 1px white solid;
     border-radius: 0.3rem;
     margin-bottom: 1vh;
     transition: 0.3s;

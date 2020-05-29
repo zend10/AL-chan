@@ -10,12 +10,6 @@
 }
 
 /* Skeleton */
-html {
-    --color-black: #212121;
-    --color-black-light: #2F2F2F;
-    --color-yellow: #FCF1C2;
-}
-
 body {
     font-family: 'Source Sans Pro', sans-serif;
     padding: 0;
