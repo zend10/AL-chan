@@ -68,7 +68,21 @@ nav li img {
 }
 
 /* Right side */
+@keyframes slidein {
+    0% {
+        transform: translateY(30%);
+    }
+    50% {
+        transform: translateY(-5%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
 #right-side figure {
+    animation-duration: 1s;
+    animation-name: slidein;
     padding: 0;
     margin: 0;
     margin-right: 1vw;
