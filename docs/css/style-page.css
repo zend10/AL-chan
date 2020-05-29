@@ -2,6 +2,7 @@ html {
     --color-black: #212121;
     --color-black-light: #2F2F2F;
     --color-yellow: #FCF1C2;
+    --color-cyan: #DCFDF9; 
 
     background-color: var(--color-black);
 }
@@ -13,7 +14,7 @@ main {
     padding-top: 5vh;
     padding-bottom: 5vh;
     margin-top: 6vh;
-    color: #FFF;
+    color: #CCC;
     background-color: var(--color-black);
 }
 
@@ -26,6 +27,7 @@ main h2, main h6 {
     margin: 0;
 }
 
+/* TOC */
 main summary {
     margin-bottom: 2vh;
 }
@@ -52,6 +54,10 @@ main summary {
 
 .version-list:hover {
     cursor: pointer;
+}
+
+summary {
+    color: var(--color-cyan);
 }
 
 /* Header */

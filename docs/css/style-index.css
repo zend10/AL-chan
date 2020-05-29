@@ -10,21 +10,20 @@ html {
 body {
     display: flex;
     color: white;
-    background-color: var(--color-black-light);
+    background-image: url("../images/wallpaper.jpg");
+    background-repeat: no-repeat;
 }
 
-.left-side {
-    flex-direction: row;
+#left-side {
     width: 25%;
     height: 96vh;
     padding: 2vh;
-    background-color: var(--color-black);
 }
 
-.right-side {
+#right-side {
     width: 75%;
     height: auto;
-    background-color: var(--color-black-light);
+    display: flex;
 }
 
 /* Left side */
@@ -63,4 +62,45 @@ nav li img {
     margin-right: 1vw;
 }
 
+.badge {
+    width: 30%;
+    margin-bottom: 2vh;
+}
+
 /* Right side */
+#right-side figure {
+    padding: 0;
+    margin: 0;
+    margin-right: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+#right-side >*:first-child {
+    margin-left: 1vw;
+    padding-bottom: 10vh;
+}
+
+#right-side >*:nth-child(2) {
+    padding-top: 14vh;
+}
+
+#right-side >*:nth-child(3) {
+    padding-bottom: 12vh;
+}
+
+#right-side >*:nth-child(4) {
+    padding-top: 8vh;
+}
+
+#right-side img {
+    width: 100%;
+    border: gray 1px solid;
+}
+
+figcaption {
+    margin: 1vw;
+    font-size: 0.9em;
+    text-align: center;
+}
