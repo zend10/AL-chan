@@ -20,61 +20,9 @@ body {
     font-family: 'Source Sans Pro', cursive;
     padding: 0;
     margin: 0;
-    display: flex;
-    color: white;
 }
 
-.left-side {
-    flex-direction: row;
-    width: 25%;
-    padding: 1em;
-    background-color: var(--color-black);
-    box-shadow: 20px;
-}
-
-.right-side {
-    width: 75%;
-    background-color: var(--color-black-light);
-}
-
-/* Left side */
-header img {
-    width: 40%;
-}
-
-nav {
-    width: 100%;
-}
-
-ul {
-    padding: 0;
-    margin: 0;
-}
-
-nav li {
-    width: 100%;
-    list-style-type: none;
-    background-color: var(--color-black-light);
-    border-radius: 0.3rem;
-    margin-bottom: 1vh;
-    transition: 0.3s;
-}
-
+/* Navigation Item */
 nav li:hover {
     background-color: gray;
 }
-
-nav li a {
-    display: flex;
-    color: white;
-    text-decoration: none;
-    padding: 1vw;
-    align-items: center;
-}
-
-nav li img {
-    width: 2rem;
-    margin-right: 1vw;
-}
-
-/* Right side */

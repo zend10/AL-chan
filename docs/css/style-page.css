@@ -1,0 +1,105 @@
+html {
+    --color-black: #212121;
+    --color-black-light: #2F2F2F;
+    --color-yellow: #FCF1C2;
+
+    background-color: var(--color-black);
+}
+
+/* Main */
+main {
+    padding-right: 10vw;
+    padding-left: 10vw;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    margin-top: 6vh;
+    color: #FFF;
+    background-color: var(--color-black);
+}
+
+main a {
+    color: var(--color-yellow);
+}
+
+main h2, main h6 {
+    padding: 0;
+    margin: 0;
+}
+
+main summary {
+    margin-bottom: 2vh;
+}
+
+.detail-summary-page {
+    display: flex;
+}
+
+#toc-section {
+    width: 25%;
+    border-right: 1px solid white;
+}
+
+#detail-section {
+    width: 75%;
+}
+
+.version-list {
+    list-style-type: none;
+    margin-bottom: 4vh;
+    padding-bottom: 4vh;
+    border-bottom: 1px solid white;
+}
+
+.version-list:hover {
+    cursor: pointer;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 6vh;
+    background: var(--color-black-light);
+    display: flex;
+    justify-content: center;
+}
+
+.app-logo {
+    height: 4vh;
+    align-self: center;
+    margin-right: auto;
+    margin-left: 1vh;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    height: 100%;
+}
+
+nav li {
+    list-style-type: none;
+    transition: 0.3s;
+    display: flex;
+}
+
+nav li a {
+    display: flex;
+    color: white;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    text-decoration: none;
+    align-items: center;
+}
+
+nav li img {
+    width: 1rem;
+    height: auto;
+    margin-right: 1vh;
+}
+
+.selected-nav {
+    background-color: gray;
+}
