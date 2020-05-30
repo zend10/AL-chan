@@ -9,7 +9,9 @@ body {
     display: flex;
     color: white;
     background-image: url("../images/wallpaper.jpg");
+    background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #left-side {
@@ -20,7 +22,6 @@ body {
 
 #right-side {
     width: 75%;
-    height: auto;
     display: flex;
 }
 
@@ -79,8 +80,8 @@ nav li img {
 }
 
 #right-side figure {
-    animation-duration: 1s;
-    animation-name: slidein;
+    /* animation-duration: 1s; */
+    /* animation-name: slidein; */
     padding: 0;
     margin: 0;
     margin-right: 1vw;
@@ -115,4 +116,35 @@ figcaption {
     margin: 1vw;
     font-size: 0.9em;
     text-align: center;
+}
+
+#right-side h2 {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+    }
+
+    #left-side {
+        width: auto;
+        height: auto;
+    }
+
+    #right-side {
+        width: auto;
+        flex-direction: column;
+        padding: 2vh;
+    }
+
+    #right-side >*:first-child, #right-side >*:nth-child(2), #right-side >*:nth-child(3), #right-side >*:nth-child(4) {
+        margin: 0;
+        padding: 0;
+        margin-bottom: 4vh;
+    }
+
+    #right-side h2 {
+        display: block;
+    }
 }

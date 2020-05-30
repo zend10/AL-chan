@@ -45,14 +45,14 @@ main summary {
     width: 75%;
 }
 
-.version-list {
+.version-list-item {
     list-style-type: none;
     margin-bottom: 4vh;
     padding-bottom: 4vh;
     border-bottom: 1px solid white;
 }
 
-.version-list:hover {
+.version-list-item:hover {
     cursor: pointer;
 }
 
@@ -108,4 +108,42 @@ nav li img {
 
 .selected-nav {
     background-color: gray;
+}
+
+@media (max-width: 767px) {
+    nav li {
+        font-size: 0.6rem;
+    }
+
+    nav li img {
+        display: none;
+        margin-right: 0;
+    }
+
+    .detail-summary-page {
+        flex-direction: column;
+    }
+
+    #toc-section {
+        width: auto;
+        border-right: none;
+        border-bottom: 1px solid white;
+    }
+
+    #detail-section {
+        width: auto;
+    }
+
+    .version-list {
+        margin-top: 4vh;
+        margin-left: 0;
+        padding: 0;
+    }
+    
+    .version-list-item {
+        list-style-type: none;
+        margin-bottom: 4vh;
+        padding-bottom: 4vh;
+        border-bottom: 1px solid white;
+    }
 }
