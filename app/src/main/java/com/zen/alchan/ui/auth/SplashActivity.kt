@@ -33,7 +33,7 @@ class SplashActivity : BaseActivity() {
         viewModel.announcementResponse.observe(this, Observer {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
                 try {
-                    if (it.data == null) {
+                    if (it.data == null || it.data.id.isBlank()) {
                         moveToNextPage()
                         return@Observer
                     }
