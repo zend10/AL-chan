@@ -61,11 +61,11 @@ object Utility {
     }
 
     fun isBetweenTwoDates(fromDateString: String, untilDateString: String): Boolean {
-        val dateFormat = SimpleDateFormat(Constant.ISO_DATE_FORMAT, Locale.US)
+        val dateFormat = SimpleDateFormat(Constant.ISO_DATE_TIME_FORMAT, Locale.US)
 
         return try {
-            val fromDate  = dateFormat.parse(fromDateString).time
-            val untilDate = dateFormat.parse(untilDateString).time
+            val fromDate  = dateFormat.parse(fromDateString.substring(0..9) + " 00:00:00").time
+            val untilDate = dateFormat.parse(untilDateString.substring(0..9) + " 23:59:59").time
             val today = Calendar.getInstance().timeInMillis
             today in fromDate..untilDate
         } catch (e: Exception) {

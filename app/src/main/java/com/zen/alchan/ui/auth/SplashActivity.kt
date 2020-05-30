@@ -26,18 +26,6 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // TODO: implement feature to remind people to update app or even force them to update if needed
-
-//        val handler = Handler()
-//        handler.postDelayed({
-//            if (viewModel.isLoggedIn) {
-//                startActivity(Intent(this, MainActivity::class.java))
-//            } else {
-//                startActivity(Intent(this, LoginActivity::class.java))
-//            }
-//            finish()
-//        }, 500)
-
         setupObserver()
     }
 
@@ -56,6 +44,7 @@ class SplashActivity : BaseActivity() {
                         MaterialAlertDialogBuilder(this).apply {
                             setTitle(R.string.new_update_is_available)
                             setMessage(it.data.message)
+                            setCancelable(false)
                             setPositiveButton(R.string.go_to_play_store) { _, _ ->
                                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constant.PLAY_STORE_URL)))
                                 finish()
@@ -84,6 +73,7 @@ class SplashActivity : BaseActivity() {
                     ) {
                         MaterialAlertDialogBuilder(this).apply {
                             setMessage(it.data.message)
+                            setCancelable(false)
                             setPositiveButton(R.string.ok) { _, _ ->
                                 moveToNextPage()
                             }
