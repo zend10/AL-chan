@@ -3,7 +3,6 @@ package com.zen.alchan.data.network
 import com.apollographql.apollo.ApolloClient
 import com.zen.alchan.helper.Constant
 import okhttp3.OkHttpClient
-import org.koin.android.ext.android.get
 import type.CustomType
 import java.util.concurrent.TimeUnit
 

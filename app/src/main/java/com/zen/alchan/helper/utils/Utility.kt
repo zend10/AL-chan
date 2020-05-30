@@ -59,4 +59,17 @@ object Utility {
         calendar.set(Calendar.DAY_OF_MONTH, day)
         return dateFormat.format(calendar.time)
     }
+
+    fun isBetweenTwoDates(fromDateString: String, untilDateString: String): Boolean {
+        val dateFormat = SimpleDateFormat(Constant.ISO_DATE_FORMAT, Locale.US)
+
+        return try {
+            val fromDate  = dateFormat.parse(fromDateString).time
+            val untilDate = dateFormat.parse(untilDateString).time
+            val today = Calendar.getInstance().timeInMillis
+            today in fromDate..untilDate
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

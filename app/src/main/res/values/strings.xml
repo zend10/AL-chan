@@ -297,4 +297,9 @@
     <string name="appearance">Appearance</string>
     <string name="use_circular_avatar">Use circular avatar</string>
     <string name="add_white_background_to_circular_avatar">Add white background to circular avatar</string>
+    <string name="new_update_is_available">New Update is Available</string>
+    <string name="go_to_play_store">Go to Play Store</string>
+    <string name="later">Later</string>
+    <string name="ok">OK</string>
+    <string name="dont_show_again">Don\'t Show Again</string>
 </resources>

@@ -30,5 +30,7 @@ interface LocalStorage {
     var animeListStyle: ListStyle?
     var mangaListStyle: ListStyle?
 
+    var lastAnnouncemendId: Int?
+
     fun clearStorage()
 }

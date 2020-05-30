@@ -65,6 +65,7 @@
                     android:id="@+id/mediaDescriptionArrow"
                     app:srcCompat="@drawable/ic_chevron_down"
                     android:padding="@dimen/iconPadding"
+                    android:foreground="?selectableItemBackground"
                     android:layout_alignBottom="@id/mediaDescriptionText"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"

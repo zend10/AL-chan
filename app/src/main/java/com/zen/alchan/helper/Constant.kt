@@ -28,8 +28,10 @@ object Constant {
     const val PRIVACY_POLICY_URL = "https://zend10.github.io/AL-chan/privacy.html"
     const val ALCHAN_THREAD_URL = "${ANILIST_URL}forum/thread/12889"
 
-    const val VIDEO_THUMBNAIL_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/video_thumbnail.png"
-    const val YOUTUBE_THUMBNAIL_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/youtube_thumbnail.png"
+//    const val RAW_GITHUB_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/"
+    const val RAW_GITHUB_URL = "https://raw.githubusercontent.com/zend10/AL-chan/dev/"
+    const val VIDEO_THUMBNAIL_URL = "${RAW_GITHUB_URL}docs/images/video_thumbnail.png"
+    const val YOUTUBE_THUMBNAIL_URL = "${RAW_GITHUB_URL}docs/images/youtube_thumbnail.png"
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
     const val ANIME_LIST_BACKGROUND_FILENAME = "anime_list_background.jpg"
@@ -39,6 +41,7 @@ object Constant {
 
     const val DEFAULT_DATE_FORMAT = "dd MMM yyyy"
     const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
+    const val ISO_DATE_FORMAT = "yyyy-MM-dd"
 
     val DEFAULT_THEME = AppColorTheme.YELLOW
     val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(

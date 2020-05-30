@@ -1,8 +1,8 @@
 {
-    "id": "1",
+    "id": "3",
     "from_date": "2020-05-30",
-    "until_date": "2020-06-01",
-    "message": "Hello there",
+    "until_date": "2020-05-30",
+    "message": "Hello there 3",
     "app_version": "",
     "required_update": ""
 }

@@ -13,9 +13,14 @@ import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.text.HtmlCompat
 import com.zen.alchan.R
+import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.ColorPalette
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import type.MediaSeason
 import type.MediaType
 import java.io.File
@@ -147,6 +152,20 @@ object AndroidUtility {
             in Calendar.JUNE..Calendar.AUGUST -> MediaSeason.SUMMER
             in Calendar.SEPTEMBER..Calendar.NOVEMBER -> MediaSeason.FALL
             else -> MediaSeason.WINTER
+        }
+    }
+
+    fun <T> apiCallback(observer: SingleLiveEvent<Resource<T>>) = object : Callback<T> {
+        override fun onResponse(call: Call<T>, response: Response<T>) {
+            try {
+                observer.postValue(Resource.Success(response.body()!!))
+            } catch (e: Exception) {
+                observer.postValue(Resource.Error(e.localizedMessage ?: ""))
+            }
+        }
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
+            observer.postValue(Resource.Error(t.localizedMessage ?: ""))
         }
     }
 }

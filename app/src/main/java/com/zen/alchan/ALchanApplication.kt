@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.network.ApolloHandler
+import com.zen.alchan.data.network.GithubRestService
 import com.zen.alchan.data.network.HeaderInterceptor
 import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
@@ -37,11 +38,9 @@ import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.profile.favorites.FavoritesViewModel
-import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesActivity
 import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesViewModel
 import com.zen.alchan.ui.profile.reviews.ReviewsViewModel
 import com.zen.alchan.ui.profile.stats.StatsViewModel
-import com.zen.alchan.ui.profile.stats.details.StatsDetailActivity
 import com.zen.alchan.ui.profile.stats.details.StatsDetailViewModel
 import com.zen.alchan.ui.search.SearchListViewModel
 import com.zen.alchan.ui.search.SearchViewModel
@@ -68,10 +67,13 @@ class ALchanApplication : Application() {
         single<UserManager> { UserManagerImpl(get()) }
         single<MediaManager> { MediaManagerImpl(get()) }
         single<ListStyleManager> { ListStyleManagerImpl(get()) }
+        single<InfoManager> { InfoManagerImpl(get()) }
 
         single<HeaderInterceptor> { HeaderInterceptorImpl(get()) }
         single { ApolloHandler(get()) }
+        single { GithubRestService() }
 
+        // AniList GraphQL data source
         single<UserDataSource> { UserDataSourceImpl(get()) }
         single<MediaListDataSource> { MediaListDataSourceImpl(get()) }
         single<MediaDataSource> { MediaDataSourceImpl(get()) }
@@ -79,6 +81,10 @@ class ALchanApplication : Application() {
         single<SearchDataSource> { SearchDataSourceImpl(get()) }
         single<UserStatisticDataSource> { UserStatisticDataSourceImpl(get()) }
 
+        // REST API data source
+        single<InfoDataSource> { InfoDataSourceImpl(get()) }
+
+        // AniList GraphQL repository
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
         single<AppSettingsRepository> { AppSettingsRepositoryImpl(get())}
@@ -89,13 +95,16 @@ class ALchanApplication : Application() {
         single<SearchRepository> { SearchRepositoryImpl(get()) }
         single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get(), get()) }
 
+        // REST API repository
+        single<InfoRepository> { InfoRepositoryImpl(get(), get()) }
+
         // common
         viewModel { BaseViewModel(get()) }
         viewModel { MediaFilterViewModel(get(), get(), gson) }
         viewModel { CustomiseListViewModel(get()) }
 
         // auth
-        viewModel { SplashViewModel(get()) }
+        viewModel { SplashViewModel(get(), get()) }
         viewModel { LoginViewModel(get()) }
 
         // main
