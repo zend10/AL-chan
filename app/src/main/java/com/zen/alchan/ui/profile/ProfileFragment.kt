@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.textview.MaterialTextView
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -53,6 +54,7 @@ class ProfileFragment : BaseMainFragment() {
 
     private lateinit var itemNotifications: MenuItem
     private lateinit var itemSettings: MenuItem
+    private lateinit var itemViewInAniList: MenuItem
     private lateinit var itemShareProfile: MenuItem
 
     override fun onCreateView(
@@ -81,6 +83,7 @@ class ProfileFragment : BaseMainFragment() {
         profileToolbar.menu.apply {
             itemNotifications = findItem(R.id.itemNotifications)
             itemSettings = findItem(R.id.itemSettings)
+            itemViewInAniList = findItem(R.id.itemViewInAniList)
             itemShareProfile = findItem(R.id.itemShareProfile)
         }
 
@@ -199,6 +202,22 @@ class ProfileFragment : BaseMainFragment() {
             }
         })
 
+        val notificationActionView = itemNotifications.actionView
+        val badgeCount = notificationActionView.findViewById<MaterialTextView>(R.id.notification_badge)
+        if (user?.unreadNotificationCount != null && user.unreadNotificationCount != 0) {
+            if (user.unreadNotificationCount!! > 99) {
+                badgeCount.text = "99+"
+            } else {
+                badgeCount.text = user.unreadNotificationCount?.toString()
+            }
+            badgeCount.visibility = View.VISIBLE
+            notificationActionView.setOnClickListener {
+                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
+            }
+        } else {
+            badgeCount.visibility = View.GONE
+        }
+
         itemNotifications.setOnMenuItemClickListener {
             // TODO: will handle notification later after social is up
             CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
@@ -210,9 +229,18 @@ class ProfileFragment : BaseMainFragment() {
             true
         }
 
+        itemViewInAniList.setOnMenuItemClickListener {
+            if (user?.siteUrl == null) {
+                DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+            } else {
+                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(user.siteUrl))
+            }
+            true
+        }
+
         itemShareProfile.setOnMenuItemClickListener {
             if (user?.siteUrl == null) {
-                DialogUtility.showToast(activity, "Some data has not been retrieved. Please refresh this page.")
+                DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {
                 AndroidUtility.copyToClipboard(activity, user.siteUrl)
                 DialogUtility.showToast(activity, R.string.link_copied)

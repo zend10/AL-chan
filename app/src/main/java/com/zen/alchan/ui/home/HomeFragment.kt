@@ -29,6 +29,7 @@ import com.zen.alchan.ui.seasonal.SeasonalActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaListStatus
 import type.MediaType
 import kotlin.math.abs
 
@@ -138,19 +139,21 @@ class HomeFragment : Fragment() {
                 viewModel.isInit = true
 
                 it.data?.page?.media?.forEach { media ->
-                    var currentEpisode = 0
-                    if (media?.nextAiringEpisode != null) {
-                        if (media.nextAiringEpisode.timeUntilAiring < 3600 * 24) {
-                            viewModel.releasingTodayList.add(ReleasingTodayItem(media, media.nextAiringEpisode.timeUntilAiring))
-                        } else {
-                            currentEpisode = media.nextAiringEpisode.episode - 1
+                    if (media?.mediaListEntry?.status != MediaListStatus.DROPPED) {
+                        var currentEpisode = 0
+                        if (media?.nextAiringEpisode != null) {
+                            if (media.nextAiringEpisode.timeUntilAiring < 3600 * 24) {
+                                viewModel.releasingTodayList.add(ReleasingTodayItem(media, media.nextAiringEpisode.timeUntilAiring))
+                            } else {
+                                currentEpisode = media.nextAiringEpisode.episode - 1
+                            }
                         }
-                    }
 
-                    if (media?.airingSchedule != null && media?.airingSchedule.edges?.isNullOrEmpty() == false) {
-                        val currentEpisodeSchedule = media.airingSchedule.edges.find { edge -> edge?.node?.episode == currentEpisode }
-                        if (currentEpisodeSchedule != null && abs(currentEpisodeSchedule.node?.timeUntilAiring!!) < 3600 * 24) {
-                            viewModel.releasingTodayList.add(ReleasingTodayItem(media, currentEpisodeSchedule.node.timeUntilAiring))
+                        if (media?.airingSchedule != null && media?.airingSchedule.edges?.isNullOrEmpty() == false) {
+                            val currentEpisodeSchedule = media.airingSchedule.edges.find { edge -> edge?.node?.episode == currentEpisode }
+                            if (currentEpisodeSchedule != null && abs(currentEpisodeSchedule.node?.timeUntilAiring!!) < 3600 * 24) {
+                                viewModel.releasingTodayList.add(ReleasingTodayItem(media, currentEpisodeSchedule.node.timeUntilAiring))
+                            }
                         }
                     }
                 }

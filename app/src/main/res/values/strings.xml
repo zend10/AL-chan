@@ -302,4 +302,6 @@
     <string name="later">Later</string>
     <string name="ok">OK</string>
     <string name="dont_show_again">Don\'t Show Again</string>
+    <string name="view_in_anilist">View in AniList</string>
+    <string name="some_data_has_not_been_retrieved">Some data has not been retrieved. Please refresh this page.</string>
 </resources>

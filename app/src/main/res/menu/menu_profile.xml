@@ -4,9 +4,13 @@
     <item android:id="@+id/itemNotifications"
         android:title="@string/notifications"
         android:icon="@drawable/ic_notification"
+        app:actionLayout="@layout/layout_custom_notification"
         app:showAsAction="always"/>
     <item android:id="@+id/itemSettings"
         android:title="@string/settings"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemViewInAniList"
+        android:title="@string/view_in_anilist"
         app:showAsAction="never"/>
     <item android:id="@+id/itemShareProfile"
         android:title="@string/share_profile"

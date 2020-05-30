@@ -35,6 +35,9 @@ query ReleasingTodayQuery($page: Int) {
                     }
                 }
             }
+            mediaListEntry {
+                status
+            }
         }
     }
 }
