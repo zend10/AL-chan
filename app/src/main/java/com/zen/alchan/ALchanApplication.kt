@@ -39,6 +39,7 @@ import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.profile.favorites.FavoritesViewModel
 import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesViewModel
+import com.zen.alchan.ui.profile.follows.FollowsViewModel
 import com.zen.alchan.ui.profile.reviews.ReviewsViewModel
 import com.zen.alchan.ui.profile.stats.StatsViewModel
 import com.zen.alchan.ui.profile.stats.details.StatsDetailViewModel
@@ -151,6 +152,7 @@ class ALchanApplication : Application() {
         viewModel { StatsViewModel(get()) }
         viewModel { StatsDetailViewModel(get(), get()) }
         viewModel { ReviewsViewModel(get()) }
+        viewModel { FollowsViewModel(get()) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }

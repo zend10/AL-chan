@@ -65,4 +65,6 @@ interface UserDataSource {
 
     fun getFollowers(userId: Int, page: Int): Observable<Response<UserFollowersQuery.Data>>
     fun getFollowings(userId: Int, page: Int): Observable<Response<UserFollowingsQuery.Data>>
+
+    fun toggleFollow(userId: Int): Observable<Response<ToggleFollowMutation.Data>>
 }

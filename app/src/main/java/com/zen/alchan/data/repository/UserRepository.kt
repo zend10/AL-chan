@@ -5,6 +5,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.data.response.User
+import com.zen.alchan.helper.enums.FollowPage
 import io.reactivex.Completable
 import type.ScoreFormat
 import type.UserTitleLanguage
@@ -35,6 +36,11 @@ interface UserRepository {
     val viewerReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
 
     val userStatisticsResponse: LiveData<Resource<UserStatisticsQuery.Data>>
+
+    val userFollowersResponse: LiveData<Resource<UserFollowersQuery.Data>>
+    val userFollowingsResponse: LiveData<Resource<UserFollowingsQuery.Data>>
+    val toggleFollowingResponse: LiveData<Resource<ToggleFollowMutation.Data>>
+    val toggleFollowerResponse: LiveData<Resource<ToggleFollowMutation.Data>>
 
     val viewerDataLastRetrieved: Long?
     val followersCountLastRetrieved: Long?
@@ -83,4 +89,8 @@ interface UserRepository {
 
     fun getFollowersCount()
     fun getFollowingsCount()
+
+    fun getUserFollowers(page: Int)
+    fun getUserFollowings(page: Int)
+    fun toggleFollow(userId: Int, fromPage: FollowPage)
 }

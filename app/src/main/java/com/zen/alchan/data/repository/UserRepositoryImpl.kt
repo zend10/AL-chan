@@ -13,6 +13,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.data.response.User
+import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
@@ -100,6 +101,22 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     private val _reorderFavoritesResponse = SingleLiveEvent<Resource<Boolean>>()
     override val reorderFavoritesResponse: LiveData<Resource<Boolean>>
         get() = _reorderFavoritesResponse
+
+    private val _userFollowersResponse = SingleLiveEvent<Resource<UserFollowersQuery.Data>>()
+    override val userFollowersResponse: LiveData<Resource<UserFollowersQuery.Data>>
+        get() = _userFollowersResponse
+
+    private val _userFollowingsResponse = SingleLiveEvent<Resource<UserFollowingsQuery.Data>>()
+    override val userFollowingsResponse: LiveData<Resource<UserFollowingsQuery.Data>>
+        get() = _userFollowingsResponse
+
+    private val _toggleFollowingResponse = SingleLiveEvent<Resource<ToggleFollowMutation.Data>>()
+    override val toggleFollowingResponse: LiveData<Resource<ToggleFollowMutation.Data>>
+        get() = _toggleFollowingResponse
+
+    private val _toggleFollowerResponse = SingleLiveEvent<Resource<ToggleFollowMutation.Data>>()
+    override val toggleFollowerResponse: LiveData<Resource<ToggleFollowMutation.Data>>
+        get() = _toggleFollowerResponse
 
     override val viewerDataLastRetrieved: Long?
         get() = userManager.viewerDataLastRetrieved
@@ -522,6 +539,98 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) { }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getUserFollowers(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        userDataSource.getFollowers(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<UserFollowersQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserFollowersQuery.Data>) {
+                if (!t.hasErrors()) {
+                    userManager.setFollowersCount(t.data?.page?.pageInfo?.total ?: 0)
+                    _followersCount.postValue(userManager.followersCount)
+                    _userFollowersResponse.postValue(Resource.Success(t.data!!))
+                } else {
+                    _userFollowersResponse.postValue(Resource.Error(t.errors!![0].message))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _userFollowersResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getUserFollowings(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
+        userDataSource.getFollowings(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<UserFollowingsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserFollowingsQuery.Data>) {
+                if (!t.hasErrors()) {
+                    userManager.setFollowingsCount(t.data?.page?.pageInfo?.total ?: 0)
+                    _followingsCount.postValue(userManager.followingsCount)
+                    _userFollowingsResponse.postValue(Resource.Success(t.data!!))
+                } else {
+                    _userFollowingsResponse.postValue(Resource.Error(t.errors!![0].message))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _userFollowingsResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun toggleFollow(userId: Int, fromPage: FollowPage) {
+        if (fromPage == FollowPage.FOLLOWING) {
+            _toggleFollowingResponse.postValue(Resource.Loading())
+        } else {
+            _toggleFollowerResponse.postValue(Resource.Loading())
+        }
+
+        userDataSource.toggleFollow(userId).subscribeWith(object : Observer<Response<ToggleFollowMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<ToggleFollowMutation.Data>) {
+                if (t.hasErrors()) {
+                    if (fromPage == FollowPage.FOLLOWING) {
+                        _toggleFollowingResponse.postValue(Resource.Error(t.errors!![0].message))
+                    } else {
+                        _toggleFollowerResponse.postValue(Resource.Error(t.errors!![0].message))
+                    }
+                } else {
+                    _toggleFollowingResponse.postValue(Resource.Success(t.data!!))
+                    _toggleFollowerResponse.postValue(Resource.Success(t.data!!))
+                    getFollowingsCount()
+                    getFollowersCount()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                if (fromPage == FollowPage.FOLLOWING) {
+                    _toggleFollowingResponse.postValue(Resource.Error(e.localizedMessage))
+                } else {
+                    _toggleFollowerResponse.postValue(Resource.Error(e.localizedMessage))
+                }
+            }
 
             override fun onComplete() { }
         })

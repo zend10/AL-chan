@@ -1,13 +1,10 @@
 package com.zen.alchan.ui.profile
 
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -17,7 +14,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
@@ -25,15 +21,16 @@ import com.google.android.material.textview.MaterialTextView
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseMainFragment
-import com.zen.alchan.ui.notification.NotificationActivity
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
+import com.zen.alchan.ui.profile.follows.FollowsActivity
 import com.zen.alchan.ui.profile.reviews.ReviewsFragment
 import com.zen.alchan.ui.settings.SettingsActivity
 import com.zen.alchan.ui.profile.stats.StatsFragment
@@ -83,7 +80,7 @@ class ProfileFragment : BaseMainFragment() {
         profileToolbar.menu.apply {
             itemNotifications = findItem(R.id.itemNotifications)
             itemSettings = findItem(R.id.itemSettings)
-            itemViewInAniList = findItem(R.id.itemViewInAniList)
+            itemViewInAniList = findItem(R.id.itemViewOnAniList)
             itemShareProfile = findItem(R.id.itemShareProfile)
         }
 
@@ -165,10 +162,14 @@ class ProfileFragment : BaseMainFragment() {
             listener?.changeMenu(R.id.itemManga)
         }
         profileFollowingCountLayout.setOnClickListener {
-            listener?.changeMenu(R.id.itemSocial)
+            val intent = Intent(activity, FollowsActivity::class.java)
+            intent.putExtra(FollowsActivity.START_POSITION, FollowPage.FOLLOWING.ordinal)
+            startActivity(intent)
         }
         profileFollowersCountLayout.setOnClickListener {
-            listener?.changeMenu(R.id.itemSocial)
+            val intent = Intent(activity, FollowsActivity::class.java)
+            intent.putExtra(FollowsActivity.START_POSITION, FollowPage.FOLLOWERS.ordinal)
+            startActivity(intent)
         }
 
         profileBioLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.BIO) }

@@ -10,6 +10,7 @@ import ListSettingsMutation
 import ReorderFavoritesMutation
 import SessionQuery
 import ToggleFavouriteMutation
+import ToggleFollowMutation
 import UserFollowersQuery
 import UserFollowingsQuery
 import UserReviewsQuery
@@ -266,6 +267,14 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         val query = UserFollowingsQuery(userId = userId, page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun toggleFollow(userId: Int): Observable<Response<ToggleFollowMutation.Data>> {
+        val mutation = ToggleFollowMutation(userId = Input.fromNullable(userId))
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

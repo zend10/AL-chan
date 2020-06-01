@@ -10,7 +10,7 @@ query UserFollowingsQuery(
             lastPage
             hasNextPage
         }
-        following(userId: $userId) {
+        following(userId: $userId, sort: [USERNAME]) {
             id
             name
             avatar {
@@ -18,6 +18,7 @@ query UserFollowingsQuery(
             }
             isFollower
             isFollowing
+            siteUrl
         }
     }
 }

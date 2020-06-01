@@ -22,7 +22,7 @@
             <com.google.android.material.textview.MaterialTextView
                 style="?themeRegularBoldFont"
                 android:text="@string/list_type"
-                android:layout_marginBottom="@dimen/marginClose"
+                android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -37,7 +37,7 @@
             <com.google.android.material.textview.MaterialTextView
                 style="?themeRegularBoldFont"
                 android:text="@string/theme"
-                android:layout_marginBottom="@dimen/cornerNormal"
+                android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

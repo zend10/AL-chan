@@ -12,6 +12,7 @@ import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.staff.StaffFragment
 import com.zen.alchan.ui.browse.studio.StudioFragment
+import com.zen.alchan.ui.browse.user.UserFragment
 import kotlinx.android.synthetic.main.activity_browse.*
 import type.MediaType
 
@@ -67,6 +68,10 @@ class BrowseActivity : BaseActivity(), BaseListener {
             BrowsePage.STUDIO -> {
                 targetFragment = StudioFragment()
                 bundle.putInt(StudioFragment.STUDIO_ID, id)
+            }
+            BrowsePage.USER -> {
+                targetFragment = UserFragment()
+                bundle.putInt(UserFragment.USER_ID, id)
             }
         }
 
