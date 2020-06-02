@@ -6,5 +6,9 @@ enum class BrowsePage {
     CHARACTER,
     STAFF,
     STUDIO,
-    USER
+    USER,
+    USER_STATS_DETAIL,
+    USER_ANIME_LIST,
+    USER_MANGA_LIST,
+    USER_FOLLOW_LIST
 }

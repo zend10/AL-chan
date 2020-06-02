@@ -285,34 +285,7 @@ class FavoritesFragment : BaseFragment() {
     private fun handleListenerAction() = object : FavoritesListener {
         override fun passSelectedItem(id: Int, browsePage: BrowsePage) {
             if (viewModel.otherUserId != null) {
-                lateinit var fragment: Fragment
-                val bundle = Bundle()
-                when (browsePage) {
-                    BrowsePage.ANIME -> {
-                        fragment = MediaFragment()
-                        bundle.putInt(MediaFragment.MEDIA_ID, id)
-                        bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.ANIME.name)
-                    }
-                    BrowsePage.MANGA -> {
-                        fragment = MediaFragment()
-                        bundle.putInt(MediaFragment.MEDIA_ID, id)
-                        bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.MANGA.name)
-                    }
-                    BrowsePage.CHARACTER -> {
-                        fragment = CharacterFragment()
-                        bundle.putInt(CharacterFragment.CHARACTER_ID, id)
-                    }
-                    BrowsePage.STAFF -> {
-                        fragment = StaffFragment()
-                        bundle.putInt(StaffFragment.STAFF_ID, id)
-                    }
-                    BrowsePage.STUDIO -> {
-                        fragment = StudioFragment()
-                        bundle.putInt(StudioFragment.STUDIO_ID, id)
-                    }
-                }
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(browsePage, id)
             } else {
                 val intent = Intent(activity, BrowseActivity::class.java)
                 intent.putExtra(BrowseActivity.TARGET_PAGE, browsePage.name)

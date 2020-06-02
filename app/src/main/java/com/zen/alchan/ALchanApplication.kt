@@ -34,6 +34,7 @@ import com.zen.alchan.ui.browse.staff.bio.StaffBioViewModel
 import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
 import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
+import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
@@ -97,6 +98,7 @@ class ALchanApplication : Application() {
         single<SearchRepository> { SearchRepositoryImpl(get()) }
         single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get(), get()) }
         single<OtherUserRepository> { OtherUserRepositoryImpl(get()) }
+        single<OtherUserStatisticRepository> { OtherUserStatisticRepositoryImpl(get(), get()) }
 
         // REST API repository
         single<InfoRepository> { InfoRepositoryImpl(get(), get()) }
@@ -148,6 +150,11 @@ class ALchanApplication : Application() {
 
         // browse user
         viewModel { UserViewModel(get(), get(), get()) }
+        viewModel {
+            UserStatsDetailViewModel(
+                get()
+            )
+        }
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }
@@ -155,7 +162,7 @@ class ALchanApplication : Application() {
         viewModel { FavoritesViewModel(get(), get(), gson) }
         viewModel { ReorderFavoritesViewModel(get(), gson) }
         viewModel { StatsViewModel(get(), get()) }
-        viewModel { StatsDetailViewModel(get(), get()) }
+        viewModel { StatsDetailViewModel(get()) }
         viewModel { ReviewsViewModel(get(), get()) }
         viewModel { FollowsViewModel(get()) }
         viewModel { AppSettingsViewModel(get()) }

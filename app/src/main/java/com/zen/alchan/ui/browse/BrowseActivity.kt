@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
@@ -13,6 +12,7 @@ import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.staff.StaffFragment
 import com.zen.alchan.ui.browse.studio.StudioFragment
 import com.zen.alchan.ui.browse.user.UserFragment
+import com.zen.alchan.ui.browse.user.stats.UserStatsDetailFragment
 import kotlinx.android.synthetic.main.activity_browse.*
 import type.MediaType
 
@@ -72,6 +72,11 @@ class BrowseActivity : BaseActivity(), BaseListener {
             BrowsePage.USER -> {
                 targetFragment = UserFragment()
                 bundle.putInt(UserFragment.USER_ID, id)
+            }
+            BrowsePage.USER_STATS_DETAIL -> {
+                targetFragment =
+                    UserStatsDetailFragment()
+                bundle.putInt(UserStatsDetailFragment.USER_ID, id)
             }
         }
 

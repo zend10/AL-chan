@@ -16,12 +16,14 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.StatusDistributionItem
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.roundToTwoDecimal
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.stats.MediaStatsFragment
 import com.zen.alchan.ui.browse.media.stats.MediaStatsStatusRvAdapter
 import com.zen.alchan.ui.browse.user.UserFragment
@@ -38,7 +40,7 @@ import kotlin.math.round
 /**
  * A simple [Fragment] subclass.
  */
-class StatsFragment : Fragment() {
+class StatsFragment : BaseFragment() {
 
     private val viewModel by viewModel<StatsViewModel>()
 
@@ -95,7 +97,11 @@ class StatsFragment : Fragment() {
         statsLayout.visibility = View.VISIBLE
 
         viewDetailLayout.setOnClickListener {
-            startActivity(Intent(activity, StatsDetailActivity::class.java))
+            if (viewModel.otherUserId != null) {
+                listener?.changeFragment(BrowsePage.USER_STATS_DETAIL, viewModel.otherUserId!!)
+            } else {
+                startActivity(Intent(activity, StatsDetailActivity::class.java))
+            }
         }
 
         handleGeneralStats()

@@ -1,19 +1,17 @@
-package com.zen.alchan.ui.profile.stats.details
+package com.zen.alchan.ui.browse.user.stats
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.zen.alchan.data.repository.SearchRepository
-import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.repository.UserStatisticRepository
-import com.zen.alchan.helper.Constant
+import com.zen.alchan.data.repository.OtherUserStatisticRepository
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
 import com.zen.alchan.helper.replaceUnderscore
-import type.MediaListStatus
 import type.MediaType
 import type.UserStatisticsSort
 
-class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRepository): ViewModel() {
+class UserStatsDetailViewModel(private val otherUserStatisticRepository: OtherUserStatisticRepository) : ViewModel() {
+
+    var otherUserId: Int? = null
+    var username: String? = null
 
     var selectedCategory: StatsCategory? = null
     var selectedMedia: MediaType? = null
@@ -29,77 +27,77 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
     )
 
     val formatStatisticResponse by lazy {
-        userStatisticRepository.formatStatisticResponse
+        otherUserStatisticRepository.formatStatisticResponse
     }
 
     val statusStatisticResponse by lazy {
-        userStatisticRepository.statusStatisticResponse
+        otherUserStatisticRepository.statusStatisticResponse
     }
 
     val scoreStatisticResponse by lazy {
-        userStatisticRepository.scoreStatisticResponse
+        otherUserStatisticRepository.scoreStatisticResponse
     }
 
     val lengthStatisticResponse by lazy {
-        userStatisticRepository.lengthStatisticResponse
+        otherUserStatisticRepository.lengthStatisticResponse
     }
 
     val releaseYearStatisticResponse by lazy {
-        userStatisticRepository.releaseYearStatisticResponse
+        otherUserStatisticRepository.releaseYearStatisticResponse
     }
 
     val startYearStatisticResponse by lazy {
-        userStatisticRepository.startYearStatisticResponse
+        otherUserStatisticRepository.startYearStatisticResponse
     }
 
     val genreStatisticResponse by lazy {
-        userStatisticRepository.genreStatisticResponse
+        otherUserStatisticRepository.genreStatisticResponse
     }
 
     val tagStatisticResponse by lazy {
-        userStatisticRepository.tagStatisticResponse
+        otherUserStatisticRepository.tagStatisticResponse
     }
 
     val countryStatisticResponse by lazy {
-        userStatisticRepository.countryStatisticResponse
+        otherUserStatisticRepository.countryStatisticResponse
     }
 
     val voiceActorStatisticResponse by lazy {
-        userStatisticRepository.voiceActorStatisticResponse
+        otherUserStatisticRepository.voiceActorStatisticResponse
     }
 
     val staffStatisticResponse by lazy {
-        userStatisticRepository.staffStatisticResponse
+        otherUserStatisticRepository.staffStatisticResponse
     }
 
     val studioStatisticResponse by lazy {
-        userStatisticRepository.studioStatisticResponse
+        otherUserStatisticRepository.studioStatisticResponse
     }
 
     val searchMediaImageResponse by lazy {
-        userStatisticRepository.searchMediaImageResponse
+        otherUserStatisticRepository.searchMediaImageResponse
     }
 
     fun getStatisticData() {
-        if (selectedCategory == null || selectedStatsSort == null) {
+        if (otherUserId == null || selectedCategory == null || selectedStatsSort == null) {
             return
         }
 
         val sort = listOf(selectedStatsSort!!)
 
         when (selectedCategory) {
-            StatsCategory.FORMAT -> userStatisticRepository.getFormatStatistic(sort)
-            StatsCategory.STATUS -> userStatisticRepository.getStatusStatistic(sort)
-            StatsCategory.SCORE -> userStatisticRepository.getScoreStatistic(sort)
-            StatsCategory.LENGTH -> userStatisticRepository.getLengthStatistic(sort)
-            StatsCategory.RELEASE_YEAR -> userStatisticRepository.getReleaseYearStatistic(sort)
-            StatsCategory.START_YEAR -> userStatisticRepository.getStartYearStatistic(sort)
-            StatsCategory.GENRE -> userStatisticRepository.getGenreStatistic(sort)
-            StatsCategory.TAG -> userStatisticRepository.getTagStatistic(sort)
-            StatsCategory.COUNTRY -> userStatisticRepository.getCountryStatistic(sort)
-            StatsCategory.VOICE_ACTOR -> userStatisticRepository.getVoiceActorStatistic(sort)
-            StatsCategory.STAFF -> userStatisticRepository.getStaffStatistic(sort)
-            StatsCategory.STUDIO -> userStatisticRepository.getStudioStatistic(sort)
+            StatsCategory.FORMAT -> otherUserStatisticRepository.getFormatStatistic(otherUserId!!, sort)
+            StatsCategory.STATUS -> otherUserStatisticRepository.getStatusStatistic(otherUserId!!, sort)
+            StatsCategory.SCORE -> otherUserStatisticRepository.getScoreStatistic(otherUserId!!, sort)
+            StatsCategory.LENGTH -> otherUserStatisticRepository.getLengthStatistic(otherUserId!!, sort)
+            StatsCategory.RELEASE_YEAR -> otherUserStatisticRepository.getReleaseYearStatistic(otherUserId!!, sort)
+            StatsCategory.START_YEAR -> otherUserStatisticRepository.getStartYearStatistic(otherUserId!!, sort)
+            StatsCategory.GENRE -> otherUserStatisticRepository.getGenreStatistic(otherUserId!!, sort)
+            StatsCategory.TAG -> otherUserStatisticRepository.getTagStatistic(otherUserId!!, sort)
+            StatsCategory.COUNTRY -> otherUserStatisticRepository.getCountryStatistic(otherUserId!!, sort)
+            StatsCategory.VOICE_ACTOR -> otherUserStatisticRepository.getVoiceActorStatistic(otherUserId!!, sort)
+            StatsCategory.STAFF -> otherUserStatisticRepository.getStaffStatistic(otherUserId!!, sort)
+            StatsCategory.STUDIO -> otherUserStatisticRepository.getStudioStatistic(otherUserId!!, sort)
         }
     }
 
@@ -155,6 +153,6 @@ class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRep
             }
         }
 
-        userStatisticRepository.searchMediaImage(page, idIn.toList())
+        otherUserStatisticRepository.searchMediaImage(page, idIn.toList())
     }
 }
