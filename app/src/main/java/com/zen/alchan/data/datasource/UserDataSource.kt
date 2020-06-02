@@ -40,11 +40,11 @@ interface UserDataSource {
         studioId: Int?
     ): Completable
 
-    fun getFavoriteAnime(page: Int): Observable<Response<FavoritesAnimeQuery.Data>>
-    fun getFavoriteManga(page: Int): Observable<Response<FavoritesMangaQuery.Data>>
-    fun getFavoriteCharacters(page: Int): Observable<Response<FavoritesCharactersQuery.Data>>
-    fun getFavoriteStaffs(page: Int): Observable<Response<FavoritesStaffsQuery.Data>>
-    fun getFavoriteStudios(page: Int): Observable<Response<FavoritesStudiosQuery.Data>>
+    fun getFavoriteAnime(id: Int, page: Int): Observable<Response<FavoritesAnimeQuery.Data>>
+    fun getFavoriteManga(id: Int, page: Int): Observable<Response<FavoritesMangaQuery.Data>>
+    fun getFavoriteCharacters(id: Int, page: Int): Observable<Response<FavoritesCharactersQuery.Data>>
+    fun getFavoriteStaffs(id: Int, page: Int): Observable<Response<FavoritesStaffsQuery.Data>>
+    fun getFavoriteStudios(id: Int, page: Int): Observable<Response<FavoritesStudiosQuery.Data>>
 
     fun reorderFavorites(
         animeIds: List<Int>?,
@@ -67,4 +67,6 @@ interface UserDataSource {
     fun getFollowings(userId: Int, page: Int): Observable<Response<UserFollowingsQuery.Data>>
 
     fun toggleFollow(userId: Int): Observable<Response<ToggleFollowMutation.Data>>
+
+    fun getUserData(id: Int): Observable<Response<UserQuery.Data>>
 }

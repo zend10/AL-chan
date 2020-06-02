@@ -1,5 +1,5 @@
-query FavoritesAnimeQuery($page: Int) {
-    Viewer {
+query FavoritesAnimeQuery($id: Int, $page: Int) {
+    User(id: $id) {
         id
         name
         favourites {

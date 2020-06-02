@@ -149,9 +149,9 @@ class ProfileFragment : BaseMainFragment() {
             GlideApp.with(this).load(user?.avatar?.large).into(profileAvatarImage)
         }
 
-        profileUsernameText.text = user?.name
-        profileAnimeCountText.text = user?.statistics?.anime?.count.toString()
-        profileMangaCountText.text = user?.statistics?.manga?.count.toString()
+        profileUsernameText.text = user?.name ?: ""
+        profileAnimeCountText.text = user?.statistics?.anime?.count?.toString() ?: "0"
+        profileMangaCountText.text = user?.statistics?.manga?.count?.toString() ?: "0"
         profileFollowersCountText.text = viewModel.followersCount.value?.toString() ?: "0"
         profileFollowingCountText.text = viewModel.followingsCount.value?.toString() ?: "0"
 

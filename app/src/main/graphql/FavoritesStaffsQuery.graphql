@@ -1,5 +1,5 @@
-query FavoritesStaffsQuery($page: Int) {
-    Viewer {
+query FavoritesStaffsQuery($id: Int, $page: Int) {
+    User(id: $id) {
         id
         name
         favourites {

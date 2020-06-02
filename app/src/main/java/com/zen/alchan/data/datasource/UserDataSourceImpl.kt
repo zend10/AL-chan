@@ -13,6 +13,7 @@ import ToggleFavouriteMutation
 import ToggleFollowMutation
 import UserFollowersQuery
 import UserFollowingsQuery
+import UserQuery
 import UserReviewsQuery
 import UserStatisticsQuery
 import ViewerQuery
@@ -160,40 +161,40 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getFavoriteAnime(page: Int): Observable<Response<FavoritesAnimeQuery.Data>> {
-        val query = FavoritesAnimeQuery(page = Input.fromNullable(page))
+    override fun getFavoriteAnime(id: Int, page: Int): Observable<Response<FavoritesAnimeQuery.Data>> {
+        val query = FavoritesAnimeQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getFavoriteManga(page: Int): Observable<Response<FavoritesMangaQuery.Data>> {
-        val query = FavoritesMangaQuery(page = Input.fromNullable(page))
+    override fun getFavoriteManga(id: Int, page: Int): Observable<Response<FavoritesMangaQuery.Data>> {
+        val query = FavoritesMangaQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getFavoriteCharacters(page: Int): Observable<Response<FavoritesCharactersQuery.Data>> {
-        val query = FavoritesCharactersQuery(page = Input.fromNullable(page))
+    override fun getFavoriteCharacters(id: Int, page: Int): Observable<Response<FavoritesCharactersQuery.Data>> {
+        val query = FavoritesCharactersQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getFavoriteStaffs(page: Int): Observable<Response<FavoritesStaffsQuery.Data>> {
-        val query = FavoritesStaffsQuery(page = Input.fromNullable(page))
+    override fun getFavoriteStaffs(id: Int, page: Int): Observable<Response<FavoritesStaffsQuery.Data>> {
+        val query = FavoritesStaffsQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getFavoriteStudios(page: Int): Observable<Response<FavoritesStudiosQuery.Data>> {
-        val query = FavoritesStudiosQuery(page = Input.fromNullable(page))
+    override fun getFavoriteStudios(id: Int, page: Int): Observable<Response<FavoritesStudiosQuery.Data>> {
+        val query = FavoritesStudiosQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
@@ -275,6 +276,14 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         val mutation = ToggleFollowMutation(userId = Input.fromNullable(userId))
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
         return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getUserData(id: Int): Observable<Response<UserQuery.Data>> {
+        val query = UserQuery(id = Input.fromNullable(id))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -1,5 +1,5 @@
-query FavoritesCharactersQuery($page: Int) {
-    Viewer {
+query FavoritesCharactersQuery($id: Int, $page: Int) {
+    User(id: $id) {
         id
         name
         favourites {

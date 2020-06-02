@@ -1,13 +1,19 @@
 package com.zen.alchan.ui.profile.favorites
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.pojo.FavoriteItem
 
 class FavoritesViewModel(private val userRepository: UserRepository,
+                         private val otherUserRepository: OtherUserRepository,
                          val gson: Gson) : ViewModel() {
+
+    var otherUserId: Int? = null
 
     var animePage = 1
     var animeHasNextPage = true
@@ -58,6 +64,30 @@ class FavoritesViewModel(private val userRepository: UserRepository,
         userRepository.triggerRefreshFavorite
     }
 
+    val otherUserFavoriteAnimeResponse by lazy {
+        otherUserRepository.favoriteAnimeResponse
+    }
+
+    val otherUserFavoriteMangaResponse by lazy {
+        otherUserRepository.favoriteMangaResponse
+    }
+
+    val otherUserFavoriteCharactersResponse by lazy {
+        otherUserRepository.favoriteCharactersResponse
+    }
+
+    val otherUserFavoriteStaffsResponse by lazy {
+        otherUserRepository.favoriteStaffsResponse
+    }
+
+    val otherUserFavoriteStudiosResponse by lazy {
+        otherUserRepository.favoriteStudiosResponse
+    }
+
+    val otherUserTriggerRefreshFavorite by lazy {
+        otherUserRepository.triggerRefreshFavorite
+    }
+
     var favoritePageArray = arrayOf(
         BrowsePage.ANIME.name, BrowsePage.MANGA.name, BrowsePage.CHARACTER.name, BrowsePage.STAFF.name, BrowsePage.STUDIO.name
     )
@@ -74,12 +104,22 @@ class FavoritesViewModel(private val userRepository: UserRepository,
     }
 
     fun getFavorites(browsePage: BrowsePage) {
-        when (browsePage) {
-            BrowsePage.ANIME -> userRepository.getFavoriteAnime(animePage)
-            BrowsePage.MANGA -> userRepository.getFavoriteManga(mangaPage)
-            BrowsePage.CHARACTER -> userRepository.getFavoriteCharacters(charactersPage)
-            BrowsePage.STAFF -> userRepository.getFavoriteStaffs(staffsPage)
-            BrowsePage.STUDIO -> userRepository.getFavoriteStudios(studiosPage)
+        if (otherUserId != null) {
+            when (browsePage) {
+                BrowsePage.ANIME -> otherUserRepository.getFavoriteAnime(otherUserId!!, animePage)
+                BrowsePage.MANGA -> otherUserRepository.getFavoriteManga(otherUserId!!, mangaPage)
+                BrowsePage.CHARACTER -> otherUserRepository.getFavoriteCharacters(otherUserId!!, charactersPage)
+                BrowsePage.STAFF -> otherUserRepository.getFavoriteStaffs(otherUserId!!, staffsPage)
+                BrowsePage.STUDIO -> otherUserRepository.getFavoriteStudios(otherUserId!!, studiosPage)
+            }
+        } else {
+            when (browsePage) {
+                BrowsePage.ANIME -> userRepository.getFavoriteAnime(animePage)
+                BrowsePage.MANGA -> userRepository.getFavoriteManga(mangaPage)
+                BrowsePage.CHARACTER -> userRepository.getFavoriteCharacters(charactersPage)
+                BrowsePage.STAFF -> userRepository.getFavoriteStaffs(staffsPage)
+                BrowsePage.STUDIO -> userRepository.getFavoriteStudios(studiosPage)
+            }
         }
     }
 
@@ -108,5 +148,53 @@ class FavoritesViewModel(private val userRepository: UserRepository,
         studiosList.clear()
         studiosHasNextPage = true
         getFavorites(BrowsePage.STUDIO)
+    }
+
+    fun getAnimeObserver(): LiveData<Resource<FavoritesAnimeQuery.Data>> {
+        return if (otherUserId != null) {
+            otherUserFavoriteAnimeResponse
+        } else {
+            favoriteAnimeResponse
+        }
+    }
+
+    fun getMangaObserver(): LiveData<Resource<FavoritesMangaQuery.Data>> {
+        return if (otherUserId != null) {
+            otherUserFavoriteMangaResponse
+        } else {
+            favoriteMangaResponse
+        }
+    }
+
+    fun getCharactersObserver(): LiveData<Resource<FavoritesCharactersQuery.Data>> {
+        return if (otherUserId != null) {
+            otherUserFavoriteCharactersResponse
+        } else {
+            favoriteCharactersResponse
+        }
+    }
+
+    fun getStaffObserver(): LiveData<Resource<FavoritesStaffsQuery.Data>> {
+        return if (otherUserId != null) {
+            otherUserFavoriteStaffsResponse
+        } else {
+            favoriteStaffsResponse
+        }
+    }
+
+    fun getStudiosObserver(): LiveData<Resource<FavoritesStudiosQuery.Data>> {
+        return if (otherUserId != null) {
+            otherUserFavoriteStudiosResponse
+        } else {
+            favoriteStudiosResponse
+        }
+    }
+
+    fun getTriggerRefreshObserver(): LiveData<Boolean> {
+        return if (otherUserId != null) {
+            otherUserTriggerRefreshFavorite
+        } else {
+            triggerRefreshFavorite
+        }
     }
 }

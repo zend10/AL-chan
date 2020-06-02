@@ -43,6 +43,7 @@ import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.media.characters.MediaCharactersRvAdapter
 import com.zen.alchan.ui.browse.staff.StaffFragment
+import com.zen.alchan.ui.browse.user.UserFragment
 import kotlinx.android.synthetic.main.fragment_character.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

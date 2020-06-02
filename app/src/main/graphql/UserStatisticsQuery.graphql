@@ -2,6 +2,9 @@ query UserStatisticsQuery($id: Int) {
     User(id: $id) {
         id
         name
+        mediaListOptions {
+            scoreFormat
+        }
         statistics {
             anime {
                 count

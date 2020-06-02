@@ -1,9 +1,16 @@
 package com.zen.alchan.ui.profile.reviews
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 
-class ReviewsViewModel(private val userRepository: UserRepository) : ViewModel() {
+class ReviewsViewModel(private val userRepository: UserRepository,
+                       private val otherUserRepository: OtherUserRepository
+) : ViewModel() {
+
+    var otherUserId: Int? = null
 
     var page = 1
     var hasNextPage = true
@@ -18,8 +25,22 @@ class ReviewsViewModel(private val userRepository: UserRepository) : ViewModel()
         userRepository.triggerRefreshReviews
     }
 
+    val userReviewsResponse by lazy {
+        otherUserRepository.userReviewsResponse
+    }
+
+    val otherUserTriggerRefreshReviews by lazy {
+        otherUserRepository.triggerRefreshReviews
+    }
+
     fun getReviews() {
-        if (hasNextPage) userRepository.getReviews(page)
+        if (hasNextPage) {
+            if (otherUserId != null) {
+                otherUserRepository.getReviews(otherUserId!!, page)
+            } else {
+                userRepository.getReviews(page)
+            }
+        }
     }
 
     fun refresh() {
@@ -27,5 +48,21 @@ class ReviewsViewModel(private val userRepository: UserRepository) : ViewModel()
         hasNextPage = true
         userReviews.clear()
         getReviews()
+    }
+
+    fun getReviewsObserver(): LiveData<Resource<UserReviewsQuery.Data>> {
+        return if (otherUserId != null) {
+            userReviewsResponse
+        } else {
+            viewerReviewsResponse
+        }
+    }
+
+    fun getTriggerRefreshObserver(): LiveData<Boolean> {
+        return if (otherUserId != null) {
+            otherUserTriggerRefreshReviews
+        } else {
+            triggerRefreshReviews
+        }
     }
 }

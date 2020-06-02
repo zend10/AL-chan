@@ -191,7 +191,7 @@ class HomeFragment : Fragment() {
         GlideApp.with(this).load(user?.bannerImage).into(headerImage)
         searchBar.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java)) }
 
-        greetingsText.text = "Hello, ${user?.name}."
+        greetingsText.text = "Hello, ${user?.name ?: ""}."
         
         if (viewModel.circularAvatar) {
             userAvatar.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_oval_transparent)

@@ -15,15 +15,22 @@ import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.FavoriteItem
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.browse.character.CharacterFragment
+import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.staff.StaffFragment
+import com.zen.alchan.ui.browse.studio.StudioFragment
+import com.zen.alchan.ui.browse.user.UserFragment
 import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesActivity
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaType
 
 /**
  * A simple [Fragment] subclass.
  */
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : BaseFragment() {
 
     private val viewModel by viewModel<FavoritesViewModel>()
 
@@ -37,12 +44,17 @@ class FavoritesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (arguments != null && arguments?.getInt(UserFragment.USER_ID) != null) {
+            viewModel.otherUserId = arguments?.getInt(UserFragment.USER_ID)
+        }
+
         initLayout()
         setupObserver()
     }
 
     private fun setupObserver() {
-        viewModel.favoriteAnimeResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.getAnimeObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> favoriteAnimeLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
@@ -52,10 +64,10 @@ class FavoritesFragment : Fragment() {
                         return@Observer
                     }
 
-                    viewModel.animeHasNextPage = it.data?.viewer?.favourites?.anime?.pageInfo?.hasNextPage ?: false
+                    viewModel.animeHasNextPage = it.data?.user?.favourites?.anime?.pageInfo?.hasNextPage ?: false
                     viewModel.animePage += 1
                     viewModel.animeIsInit = true
-                    it.data?.viewer?.favourites?.anime?.edges?.forEach { edge ->
+                    it.data?.user?.favourites?.anime?.edges?.forEach { edge ->
                         viewModel.animeList.add(
                             FavoriteItem(edge?.node?.id!!, edge.node.title?.userPreferred!!, edge.node.coverImage?.large!!, edge.favouriteOrder!!, BrowsePage.ANIME)
                         )
@@ -76,7 +88,7 @@ class FavoritesFragment : Fragment() {
             }
         })
 
-        viewModel.favoriteMangaResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.getMangaObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> favoriteMangaLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
@@ -86,10 +98,10 @@ class FavoritesFragment : Fragment() {
                         return@Observer
                     }
 
-                    viewModel.mangaHasNextPage = it.data?.viewer?.favourites?.manga?.pageInfo?.hasNextPage ?: false
+                    viewModel.mangaHasNextPage = it.data?.user?.favourites?.manga?.pageInfo?.hasNextPage ?: false
                     viewModel.mangaPage += 1
                     viewModel.mangaIsInit = true
-                    it.data?.viewer?.favourites?.manga?.edges?.forEach { edge ->
+                    it.data?.user?.favourites?.manga?.edges?.forEach { edge ->
                         viewModel.mangaList.add(
                             FavoriteItem(edge?.node?.id!!, edge.node.title?.userPreferred!!, edge.node.coverImage?.large!!, edge.favouriteOrder!!, BrowsePage.MANGA)
                         )
@@ -110,7 +122,7 @@ class FavoritesFragment : Fragment() {
             }
         })
 
-        viewModel.favoriteCharactersResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.getCharactersObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> favoriteCharactersLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
@@ -120,10 +132,10 @@ class FavoritesFragment : Fragment() {
                         return@Observer
                     }
 
-                    viewModel.charactersHasNextPage = it.data?.viewer?.favourites?.characters?.pageInfo?.hasNextPage ?: false
+                    viewModel.charactersHasNextPage = it.data?.user?.favourites?.characters?.pageInfo?.hasNextPage ?: false
                     viewModel.charactersPage += 1
                     viewModel.charactersIsInit = true
-                    it.data?.viewer?.favourites?.characters?.edges?.forEach { edge ->
+                    it.data?.user?.favourites?.characters?.edges?.forEach { edge ->
                         viewModel.charactersList.add(
                             FavoriteItem(edge?.node?.id!!, edge.node.name?.full!!, edge.node.image?.large!!, edge.favouriteOrder!!, BrowsePage.CHARACTER)
                         )
@@ -144,7 +156,7 @@ class FavoritesFragment : Fragment() {
             }
         })
 
-        viewModel.favoriteStaffsResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.getStaffObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> favoriteStaffsLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
@@ -154,10 +166,10 @@ class FavoritesFragment : Fragment() {
                         return@Observer
                     }
 
-                    viewModel.staffsHasNextPage = it.data?.viewer?.favourites?.staff?.pageInfo?.hasNextPage ?: false
+                    viewModel.staffsHasNextPage = it.data?.user?.favourites?.staff?.pageInfo?.hasNextPage ?: false
                     viewModel.staffsPage += 1
                     viewModel.staffsIsInit = true
-                    it.data?.viewer?.favourites?.staff?.edges?.forEach { edge ->
+                    it.data?.user?.favourites?.staff?.edges?.forEach { edge ->
                         viewModel.staffsList.add(
                             FavoriteItem(edge?.node?.id!!, edge.node.name?.full!!, edge.node.image?.large!!, edge.favouriteOrder!!, BrowsePage.STAFF)
                         )
@@ -178,7 +190,7 @@ class FavoritesFragment : Fragment() {
             }
         })
 
-        viewModel.favoriteStudiosResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.getStudiosObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> favoriteStudiosLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
@@ -188,10 +200,10 @@ class FavoritesFragment : Fragment() {
                         return@Observer
                     }
 
-                    viewModel.studiosHasNextPage = it.data?.viewer?.favourites?.studios?.pageInfo?.hasNextPage ?: false
+                    viewModel.studiosHasNextPage = it.data?.user?.favourites?.studios?.pageInfo?.hasNextPage ?: false
                     viewModel.studiosPage += 1
                     viewModel.studiosIsInit = true
-                    it.data?.viewer?.favourites?.studios?.edges?.forEach { edge ->
+                    it.data?.user?.favourites?.studios?.edges?.forEach { edge ->
                         viewModel.studiosList.add(
                             FavoriteItem(edge?.node?.id!!, edge.node.name, null, edge.favouriteOrder!!, BrowsePage.STUDIO)
                         )
@@ -212,7 +224,7 @@ class FavoritesFragment : Fragment() {
             }
         })
 
-        viewModel.triggerRefreshFavorite.observe(viewLifecycleOwner, Observer {
+        viewModel.getTriggerRefreshObserver().observe(viewLifecycleOwner, Observer {
             viewModel.refresh()
         })
 
@@ -253,6 +265,11 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initLayout() {
+        if (viewModel.otherUserId != null) {
+            reorderFavoritesLayout.visibility = View.GONE
+            reorderFavoritesLayout.isEnabled = false
+        }
+
         reorderFavoritesLayout.setOnClickListener {
             MaterialAlertDialogBuilder(activity)
                 .setItems(viewModel.favoritePageArray) { _, which ->
@@ -267,10 +284,41 @@ class FavoritesFragment : Fragment() {
 
     private fun handleListenerAction() = object : FavoritesListener {
         override fun passSelectedItem(id: Int, browsePage: BrowsePage) {
-            val intent = Intent(activity, BrowseActivity::class.java)
-            intent.putExtra(BrowseActivity.TARGET_PAGE, browsePage.name)
-            intent.putExtra(BrowseActivity.LOAD_ID, id)
-            startActivity(intent)
+            if (viewModel.otherUserId != null) {
+                lateinit var fragment: Fragment
+                val bundle = Bundle()
+                when (browsePage) {
+                    BrowsePage.ANIME -> {
+                        fragment = MediaFragment()
+                        bundle.putInt(MediaFragment.MEDIA_ID, id)
+                        bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.ANIME.name)
+                    }
+                    BrowsePage.MANGA -> {
+                        fragment = MediaFragment()
+                        bundle.putInt(MediaFragment.MEDIA_ID, id)
+                        bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.MANGA.name)
+                    }
+                    BrowsePage.CHARACTER -> {
+                        fragment = CharacterFragment()
+                        bundle.putInt(CharacterFragment.CHARACTER_ID, id)
+                    }
+                    BrowsePage.STAFF -> {
+                        fragment = StaffFragment()
+                        bundle.putInt(StaffFragment.STAFF_ID, id)
+                    }
+                    BrowsePage.STUDIO -> {
+                        fragment = StudioFragment()
+                        bundle.putInt(StudioFragment.STUDIO_ID, id)
+                    }
+                }
+                fragment.arguments = bundle
+                listener?.changeFragment(fragment)
+            } else {
+                val intent = Intent(activity, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, browsePage.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, id)
+                startActivity(intent)
+            }
         }
     }
 }

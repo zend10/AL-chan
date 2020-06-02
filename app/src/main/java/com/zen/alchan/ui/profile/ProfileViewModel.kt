@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository
+import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.utils.Utility

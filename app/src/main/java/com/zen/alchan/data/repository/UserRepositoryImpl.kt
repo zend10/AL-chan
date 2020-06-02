@@ -298,9 +298,13 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     @SuppressLint("CheckResult")
     override fun getFavoriteAnime(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
         _favoriteAnimeResponse.postValue(Resource.Loading())
 
-        userDataSource.getFavoriteAnime(page).subscribeWith(object : Observer<Response<FavoritesAnimeQuery.Data>> {
+        userDataSource.getFavoriteAnime(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesAnimeQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<FavoritesAnimeQuery.Data>) {
@@ -321,9 +325,13 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     @SuppressLint("CheckResult")
     override fun getFavoriteManga(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
         _favoriteMangaResponse.postValue(Resource.Loading())
 
-        userDataSource.getFavoriteManga(page).subscribeWith(object : Observer<Response<FavoritesMangaQuery.Data>> {
+        userDataSource.getFavoriteManga(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesMangaQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<FavoritesMangaQuery.Data>) {
@@ -344,9 +352,13 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     @SuppressLint("CheckResult")
     override fun getFavoriteCharacters(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
         _favoriteCharactersResponse.postValue(Resource.Loading())
 
-        userDataSource.getFavoriteCharacters(page).subscribeWith(object : Observer<Response<FavoritesCharactersQuery.Data>> {
+        userDataSource.getFavoriteCharacters(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesCharactersQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<FavoritesCharactersQuery.Data>) {
@@ -367,9 +379,13 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     @SuppressLint("CheckResult")
     override fun getFavoriteStaffs(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
         _favoriteStaffsResponse.postValue(Resource.Loading())
 
-        userDataSource.getFavoriteStaffs(page).subscribeWith(object : Observer<Response<FavoritesStaffsQuery.Data>> {
+        userDataSource.getFavoriteStaffs(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesStaffsQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<FavoritesStaffsQuery.Data>) {
@@ -390,9 +406,13 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     @SuppressLint("CheckResult")
     override fun getFavoriteStudios(page: Int) {
+        if (userManager.viewerData?.id == null) {
+            return
+        }
+
         _favoriteStudiosResponse.postValue(Resource.Loading())
 
-        userDataSource.getFavoriteStudios(page).subscribeWith(object : Observer<Response<FavoritesStudiosQuery.Data>> {
+        userDataSource.getFavoriteStudios(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesStudiosQuery.Data>> {
             override fun onSubscribe(d: Disposable) { }
 
             override fun onNext(t: Response<FavoritesStudiosQuery.Data>) {
