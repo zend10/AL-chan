@@ -41,6 +41,7 @@ interface UserRepository {
     val userFollowingsResponse: LiveData<Resource<UserFollowingsQuery.Data>>
     val toggleFollowingResponse: LiveData<Resource<ToggleFollowMutation.Data>>
     val toggleFollowerResponse: LiveData<Resource<ToggleFollowMutation.Data>>
+    val toggleFollowResponse: LiveData<Resource<ToggleFollowMutation.Data>>
 
     val viewerDataLastRetrieved: Long?
     val followersCountLastRetrieved: Long?
@@ -93,4 +94,5 @@ interface UserRepository {
     fun getUserFollowers(page: Int)
     fun getUserFollowings(page: Int)
     fun toggleFollow(userId: Int, fromPage: FollowPage)
+    fun toggleFollow(userId: Int)
 }

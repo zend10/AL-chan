@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.textview.MaterialTextView
+import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -134,6 +135,13 @@ class ProfileFragment : BaseMainFragment() {
         }
 
         GlideApp.with(this).load(user?.bannerImage).into(profileBannerImage)
+        if (user?.bannerImage != null) {
+            profileBannerImage.setOnClickListener {
+                StfalconImageViewer.Builder<String>(context, arrayOf(user.bannerImage)) { view, image ->
+                    GlideApp.with(context!!).load(image).into(view)
+                }.withTransitionFrom(profileBannerImage).show(true)
+            }
+        }
 
         if (viewModel.circularAvatar) {
             profileAvatarImage.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_oval_transparent)
@@ -147,6 +155,14 @@ class ProfileFragment : BaseMainFragment() {
             profileAvatarImage.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_rectangle_transparent)
             profileAvatarImage.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
             GlideApp.with(this).load(user?.avatar?.large).into(profileAvatarImage)
+        }
+
+        if (user?.avatar?.large != null) {
+            profileAvatarImage.setOnClickListener {
+                StfalconImageViewer.Builder<String>(context, arrayOf(user.avatar.large)) { view, image ->
+                    GlideApp.with(context!!).load(image).into(view)
+                }.withTransitionFrom(profileAvatarImage).show(true)
+            }
         }
 
         profileUsernameText.text = user?.name ?: ""

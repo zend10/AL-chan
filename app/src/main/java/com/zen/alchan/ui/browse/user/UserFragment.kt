@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.ProfileSection
@@ -106,6 +107,7 @@ class UserFragment : BaseFragment() {
 
         viewModel.userData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                viewModel.currentIsFollowing = it.user?.isFollowing
                 initLayout()
             }
         })
@@ -132,6 +134,22 @@ class UserFragment : BaseFragment() {
             }
         })
 
+        viewModel.toggleFollowingResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.refreshFollowingCount()
+                    viewModel.currentIsFollowing = it.data?.toggleFollow?.isFollowing
+                    handleFollowButton()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
         viewModel.initData()
     }
 
@@ -145,6 +163,13 @@ class UserFragment : BaseFragment() {
         }
 
         GlideApp.with(this).load(user?.bannerImage).into(userBannerImage)
+        if (user?.bannerImage != null) {
+            userBannerImage.setOnClickListener {
+                StfalconImageViewer.Builder<String>(context, arrayOf(user.bannerImage)) { view, image ->
+                    GlideApp.with(context!!).load(image).into(view)
+                }.withTransitionFrom(userBannerImage).show(true)
+            }
+        }
 
         if (viewModel.circularAvatar) {
             userAvatarImage.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_oval_transparent)
@@ -158,6 +183,14 @@ class UserFragment : BaseFragment() {
             userAvatarImage.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_rectangle_transparent)
             userAvatarImage.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, android.R.color.transparent))
             GlideApp.with(this).load(user?.avatar?.large).into(userAvatarImage)
+        }
+
+        if (user?.avatar?.large != null) {
+            userAvatarImage.setOnClickListener {
+                StfalconImageViewer.Builder<String>(context, arrayOf(user.avatar.large)) { view, image ->
+                    GlideApp.with(context!!).load(image).into(view)
+                }.withTransitionFrom(userAvatarImage).show(true)
+            }
         }
 
         userUsernameText.text = user?.name ?: ""
@@ -181,6 +214,22 @@ class UserFragment : BaseFragment() {
 //            val intent = Intent(activity, FollowsActivity::class.java)
 //            intent.putExtra(FollowsActivity.START_POSITION, FollowPage.FOLLOWERS.ordinal)
 //            startActivity(intent)
+        }
+
+        handleFollowButton()
+
+        userFollowButton.setOnClickListener {
+            DialogUtility.showOptionDialog(
+                activity,
+                if (viewModel.currentIsFollowing != true) R.string.follow_this_user else R.string.unfollow_this_user,
+                if (viewModel.currentIsFollowing != true) R.string.are_you_sure_you_want_to_follow_this_user else R.string.are_you_sure_you_want_to_shatter_this_friendship,
+                if (viewModel.currentIsFollowing != true) R.string.follow else R.string.unfollow,
+                {
+                    viewModel.toggleFollow()
+                },
+                R.string.cancel,
+                { }
+            )
         }
 
         userBioLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.BIO) }
@@ -251,6 +300,20 @@ class UserFragment : BaseFragment() {
             ProfileSection.STATS -> 2
             ProfileSection.REVIEWS -> 3
             else -> 0
+        }
+    }
+
+    private fun handleFollowButton() {
+        val user = viewModel.userData.value?.user
+
+        if (viewModel.currentIsFollowing == true && user?.isFollower == true) {
+            userFollowButton.text = getString(R.string.mutual)
+        } else if (viewModel.currentIsFollowing == true && user?.isFollower == false) {
+            userFollowButton.text = getString(R.string.following)
+        } else if (viewModel.currentIsFollowing == false && user?.isFollower == true) {
+            userFollowButton.text = getString(R.string.follows_you)
+        } else {
+            userFollowButton.text = getString(R.string.follow)
         }
     }
 }

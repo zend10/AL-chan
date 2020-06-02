@@ -191,13 +191,10 @@ class StatsFragment : Fragment() {
 
     private fun handleScoreDistribution() {
         val stats = viewModel.userStats!!
-        val scoreList = when (viewModel.scoreFormat) {
-            ScoreFormat.POINT_100 -> (1..100).toList()
-            else -> (1..10).toList()
-        }
+        val scoreList = (10..100 step 10).toList()
         val valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return round(value).toString()
+                return value.toInt().toString()
             }
         }
 
@@ -205,21 +202,13 @@ class StatsFragment : Fragment() {
             animeStatsScoreLayout.visibility = View.VISIBLE
 
             val barEntries = ArrayList<BarEntry>()
-//            scoreList.forEach {  score ->
-//                val scoreDetail = stats.anime.scores.find { it?.score == score }
-//                if (scoreDetail != null) {
-//                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
-//                } else {
-//                    if (viewModel.scoreFormat == ScoreFormat.POINT_100) {
-//                        return@forEach
-//                    } else {
-//                        barEntries.add(BarEntry(score.toFloat(), 0F))
-//                    }
-//                }
-//            }
-
-            stats.anime.scores.forEach {
-                barEntries.add(BarEntry(it?.score?.toFloat()!!, it.count.toFloat()))
+            scoreList.forEach {  score ->
+                val scoreDetail = stats.anime.scores.find { it?.score == score }
+                if (scoreDetail != null) {
+                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
+                } else {
+                    barEntries.add(BarEntry(score.toFloat(), 0F))
+                }
             }
 
             val barDataSet = BarDataSet(barEntries, "Score Distribution")
@@ -227,7 +216,7 @@ class StatsFragment : Fragment() {
 
             val barData = BarData(barDataSet)
             barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
-//            barData.barWidth = 3F
+            barData.barWidth = 3F
             barData.setValueFormatter(valueFormatter)
 
             animeStatsScoreBarChart.axisLeft.apply {
@@ -264,26 +253,13 @@ class StatsFragment : Fragment() {
             mangaStatsScoreLayout.visibility = View.VISIBLE
 
             val barEntries = ArrayList<BarEntry>()
-//            scoreList.forEach {  score ->
-//                val scoreDetail = stats.manga.scores.find { it?.score == score }
-//                if (scoreDetail != null) {
-//                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
-//                } else {
-//                    if (viewModel.scoreFormat == ScoreFormat.POINT_100) {
-//                        return@forEach
-//                    } else {
-//                        barEntries.add(BarEntry(score.toFloat(), 0F))
-//                    }
-//                }
-////                if (scoreDetail != null) {
-////                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
-////                } else {
-////                    barEntries.add(BarEntry(score.toFloat(), 0F))
-////                }
-//            }
-
-            stats.manga.scores.forEach {
-                barEntries.add(BarEntry(it?.score?.toFloat()!!, it.count.toFloat()))
+            scoreList.forEach {  score ->
+                val scoreDetail = stats.manga.scores.find { it?.score == score }
+                if (scoreDetail != null) {
+                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
+                } else {
+                    barEntries.add(BarEntry(score.toFloat(), 0F))
+                }
             }
 
             val barDataSet = BarDataSet(barEntries, "Score Distribution")

@@ -118,6 +118,11 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val toggleFollowerResponse: LiveData<Resource<ToggleFollowMutation.Data>>
         get() = _toggleFollowerResponse
 
+    // For UserFragment
+    private val _toggleFollowResponse = SingleLiveEvent<Resource<ToggleFollowMutation.Data>>()
+    override val toggleFollowResponse: LiveData<Resource<ToggleFollowMutation.Data>>
+        get() = _toggleFollowResponse
+
     override val viewerDataLastRetrieved: Long?
         get() = userManager.viewerDataLastRetrieved
 
@@ -650,6 +655,33 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
                 } else {
                     _toggleFollowerResponse.postValue(Resource.Error(e.localizedMessage))
                 }
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun toggleFollow(userId: Int) {
+        _toggleFollowResponse.postValue(Resource.Loading())
+
+        userDataSource.toggleFollow(userId).subscribeWith(object : Observer<Response<ToggleFollowMutation.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<ToggleFollowMutation.Data>) {
+                if (t.hasErrors()) {
+                    _toggleFollowResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _toggleFollowResponse.postValue(Resource.Success(t.data!!))
+                    _toggleFollowingResponse.postValue(Resource.Success(t.data!!))
+                    _toggleFollowerResponse.postValue(Resource.Success(t.data!!))
+                    getFollowingsCount()
+                    getFollowersCount()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _toggleFollowResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }

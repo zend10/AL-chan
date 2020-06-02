@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
 
 class UserViewModel(private val otherUserRepository: OtherUserRepository,
+                    private val userRepository: UserRepository,
                     private val appSettingsRepository: AppSettingsRepository
 ) : ViewModel() {
 
@@ -16,6 +18,7 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
         get() = _currentSection
 
     var userId: Int? = null
+    var currentIsFollowing: Boolean? = null
 
     val userDataResponse by lazy {
         otherUserRepository.userDataResponse
@@ -31,6 +34,10 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
 
     val followingsCount by lazy {
         otherUserRepository.followingsCount
+    }
+
+    val toggleFollowingResponse by lazy {
+        userRepository.toggleFollowResponse
     }
 
     val circularAvatar
@@ -73,5 +80,22 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
         }
 
         otherUserRepository.triggerRefreshProfilePageChild(userId!!)
+    }
+
+    fun toggleFollow() {
+        if (userId == null) {
+            return
+        }
+
+        userRepository.toggleFollow(userId!!)
+    }
+
+    fun refreshFollowingCount() {
+        if (userId == null) {
+            return
+        }
+
+        otherUserRepository.getFollowingsCount(userId!!)
+        otherUserRepository.getFollowersCount(userId!!)
     }
 }

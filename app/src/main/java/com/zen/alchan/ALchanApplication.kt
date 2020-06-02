@@ -147,7 +147,7 @@ class ALchanApplication : Application() {
         viewModel { StudioViewModel(get(), get()) }
 
         // browse user
-        viewModel { UserViewModel(get(), get()) }
+        viewModel { UserViewModel(get(), get(), get()) }
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }

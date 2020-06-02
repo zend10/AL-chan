@@ -79,9 +79,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
+                        <com.google.android.material.button.MaterialButton
+                            android:visibility="visible"
+                            android:id="@+id/userFollowButton"
+                            style="?themeButtonPrimary"
+                            android:text="@string/follow"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/marginNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/userNumberLayout"
-                            android:layout_marginTop="@dimen/marginPage"
+                            android:layout_marginTop="@dimen/marginNormal"
                             android:layout_marginStart="@dimen/marginPage"
                             android:layout_marginEnd="@dimen/marginPage"
                             android:layout_width="match_parent"
@@ -200,16 +210,6 @@
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:visibility="visible"
-                            android:id="@+id/userFollowButton"
-                            style="?themeButtonPrimary"
-                            android:text="@string/follow"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/marginPage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
