@@ -13,6 +13,7 @@ import ToggleFavouriteMutation
 import ToggleFollowMutation
 import UserFollowersQuery
 import UserFollowingsQuery
+import UserMediaListCollectionQuery
 import UserQuery
 import UserReviewsQuery
 import UserStatisticsQuery
@@ -29,10 +30,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import type.MediaListOptionsInput
-import type.NotificationOptionInput
-import type.ScoreFormat
-import type.UserTitleLanguage
+import type.*
 
 class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSource {
 
@@ -282,6 +280,17 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
 
     override fun getUserData(id: Int): Observable<Response<UserQuery.Data>> {
         val query = UserQuery(id = Input.fromNullable(id))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getUserMediaCollection(
+        userId: Int,
+        type: MediaType
+    ): Observable<Response<UserMediaListCollectionQuery.Data>> {
+        val query = UserMediaListCollectionQuery(userId = Input.fromNullable(userId), type = Input.fromNullable(type))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

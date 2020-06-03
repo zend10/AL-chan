@@ -9,6 +9,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.MediaType
 
 class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : OtherUserRepository {
 
@@ -27,6 +28,10 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
     private val _followingsCount = MutableLiveData<Int>()
     override val followingsCount: LiveData<Int>
         get() = _followingsCount
+
+    private val _userMediaListCollection = SingleLiveEvent<Resource<UserMediaListCollectionQuery.Data>>()
+    override val userMediaListCollection: LiveData<Resource<UserMediaListCollectionQuery.Data>>
+        get() = _userMediaListCollection
 
     private val _triggerRefreshFavorite = SingleLiveEvent<Boolean>()
     override val triggerRefreshFavorite: LiveData<Boolean>
@@ -117,6 +122,29 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
             }
 
             override fun onError(e: Throwable) { }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getUserMediaListCollection(userId: Int, type: MediaType) {
+        _userMediaListCollection.postValue(Resource.Loading())
+
+        userDataSource.getUserMediaCollection(userId, type).subscribeWith(object : Observer<Response<UserMediaListCollectionQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserMediaListCollectionQuery.Data>) {
+                if (t.hasErrors()) {
+                    _userMediaListCollection.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _userMediaListCollection.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _userMediaListCollection.postValue(Resource.Error(e.localizedMessage))
+            }
 
             override fun onComplete() { }
         })

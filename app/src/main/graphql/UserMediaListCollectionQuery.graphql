@@ -1,10 +1,33 @@
-query AnimeListCollectionQuery(
-    $userId: Int
+query UserMediaListCollectionQuery(
+    $userId: Int,
+    $type: MediaType
 ) {
     MediaListCollection(
         userId: $userId,
-        type: ANIME
+        type: $type
     ) {
+        user {
+            id
+            name
+            mediaListOptions {
+                scoreFormat
+                rowOrder
+                animeList {
+                    sectionOrder
+                    splitCompletedSectionByFormat
+                    customLists
+                    advancedScoring
+                    advancedScoringEnabled
+                }
+                mangaList {
+                    sectionOrder
+                    splitCompletedSectionByFormat
+                    customLists
+                    advancedScoring
+                    advancedScoringEnabled
+                }
+            }
+        }
         lists {
             entries {
                 id
@@ -12,6 +35,7 @@ query AnimeListCollectionQuery(
                 score
                 repeat
                 progress
+                progressVolumes
                 priority
                 advancedScores
                 startedAt {
@@ -41,6 +65,8 @@ query AnimeListCollectionQuery(
                     season
                     seasonYear
                     episodes
+                    chapters
+                    volumes
                     countryOfOrigin
                     source
                     isFavourite

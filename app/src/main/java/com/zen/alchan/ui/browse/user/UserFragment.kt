@@ -23,6 +23,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
@@ -200,10 +201,10 @@ class UserFragment : BaseFragment() {
         userFollowingCountText.text = viewModel.followingsCount.value?.toString() ?: "0"
 
         userAnimeCountLayout.setOnClickListener {
-//            listener?.changeMenu(R.id.itemAnime)
+            if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_ANIME_LIST, viewModel.userId!!)
         }
         userMangaCountLayout.setOnClickListener {
-//            listener?.changeMenu(R.id.itemManga)
+            if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_MANGA_LIST, viewModel.userId!!)
         }
         userFollowingCountLayout.setOnClickListener {
 //            val intent = Intent(activity, FollowsActivity::class.java)

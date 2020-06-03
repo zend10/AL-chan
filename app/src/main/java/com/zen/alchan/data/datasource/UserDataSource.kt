@@ -7,6 +7,7 @@ import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.NotificationOption
 import io.reactivex.Completable
 import io.reactivex.Observable
+import type.MediaType
 import type.ScoreFormat
 import type.UserTitleLanguage
 
@@ -69,4 +70,5 @@ interface UserDataSource {
     fun toggleFollow(userId: Int): Observable<Response<ToggleFollowMutation.Data>>
 
     fun getUserData(id: Int): Observable<Response<UserQuery.Data>>
+    fun getUserMediaCollection(userId: Int, type: MediaType): Observable<Response<UserMediaListCollectionQuery.Data>>
 }

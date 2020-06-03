@@ -2,12 +2,15 @@ package com.zen.alchan.data.repository
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
+import type.MediaType
 
 interface OtherUserRepository {
     val userDataResponse: LiveData<Resource<Boolean>>
     val userData: LiveData<UserQuery.Data>
     val followersCount: LiveData<Int>
     val followingsCount: LiveData<Int>
+
+    val userMediaListCollection: LiveData<Resource<UserMediaListCollectionQuery.Data>>
 
     val triggerRefreshFavorite: LiveData<Boolean>
     val favoriteAnimeResponse: LiveData<Resource<FavoritesAnimeQuery.Data>>
@@ -24,6 +27,8 @@ interface OtherUserRepository {
     fun retrieveUserData(userId: Int)
     fun getFollowersCount(userId: Int)
     fun getFollowingsCount(userId: Int)
+
+    fun getUserMediaListCollection(userId: Int, type: MediaType)
 
     fun triggerRefreshProfilePageChild(userId: Int)
 

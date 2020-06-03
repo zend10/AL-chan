@@ -223,7 +223,7 @@ object Converter {
                     advancedScores = it.advancedScores,
                     startedAt = if (it.startedAt != null) convertFuzzyDate(it.startedAt) else null,
                     completedAt = if (it.completedAt != null) convertFuzzyDate(it.completedAt) else null,
-                    updatedAt = null,
+                    updatedAt = it.updatedAt,
                     createdAt = null,
                     media = convertMedia(it.media!!)
                 )
@@ -251,7 +251,7 @@ object Converter {
                     advancedScores = it.advancedScores,
                     startedAt = if (it.startedAt != null) convertFuzzyDate(it.startedAt) else null,
                     completedAt = if (it.completedAt != null) convertFuzzyDate(it.completedAt) else null,
-                    updatedAt = null,
+                    updatedAt = it.updatedAt,
                     createdAt = null,
                     media = convertMedia(it.media!!)
                 )
@@ -723,6 +723,30 @@ object Converter {
     }
 
     private fun convertFuzzyDate(fuzzyDate: SeasonalAnimeQuery.StartDate): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year,
+            fuzzyDate.month,
+            fuzzyDate.day
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: UserMediaListCollectionQuery.StartedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year,
+            fuzzyDate.month,
+            fuzzyDate.day
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: UserMediaListCollectionQuery.CompletedAt): FuzzyDate {
+        return FuzzyDate(
+            fuzzyDate.year,
+            fuzzyDate.month,
+            fuzzyDate.day
+        )
+    }
+
+    fun convertFuzzyDate(fuzzyDate: UserMediaListCollectionQuery.StartDate): FuzzyDate {
         return FuzzyDate(
             fuzzyDate.year,
             fuzzyDate.month,

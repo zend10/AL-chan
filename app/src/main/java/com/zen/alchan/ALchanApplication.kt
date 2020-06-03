@@ -36,6 +36,7 @@ import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
+import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
@@ -150,11 +151,8 @@ class ALchanApplication : Application() {
 
         // browse user
         viewModel { UserViewModel(get(), get(), get()) }
-        viewModel {
-            UserStatsDetailViewModel(
-                get()
-            )
-        }
+        viewModel { UserStatsDetailViewModel(get()) }
+        viewModel { UserMediaListViewModel(get(), get(), gson) }
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }
