@@ -24,6 +24,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
 
+        <View
+            android:visibility="gone"
+            android:id="@+id/animePriorityIndicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/shape_triangle"
+            android:layout_width="36dp"
+            android:layout_height="72dp"/>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/animeTitleLayout"
             app:layout_constraintBottom_toBottomOf="@+id/animeCoverImage"
@@ -70,27 +79,55 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:visibility="gone"
-            android:id="@+id/animeAiringLayout"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="@dimen/cornerNormal"
-            app:cardBackgroundColor="?themeCardTransparentColor"
-            app:contentPadding="@dimen/marginClose"
             android:layout_margin="2dp"
-            app:cardElevation="0dp"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/animeAiringIcon"
-                app:srcCompat="@drawable/ic_filled_circle"
-                app:tint="?themeSecondaryColor"
-                android:layout_width="@dimen/iconSmallSize"
-                android:layout_height="@dimen/iconSmallSize"/>
+            <com.google.android.material.card.MaterialCardView
+                android:visibility="gone"
+                android:id="@+id/animeAiringLayout"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardBackgroundColor="?themeCardTransparentColor"
+                app:contentPadding="@dimen/marginClose"
+                android:layout_marginBottom="@dimen/marginClose"
+                app:cardElevation="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        </com.google.android.material.card.MaterialCardView>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/animeAiringIcon"
+                    app:srcCompat="@drawable/ic_filled_circle"
+                    app:tint="?themeSecondaryColor"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:visibility="gone"
+                android:id="@+id/animeNotesLayout"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardBackgroundColor="?themeCardTransparentColor"
+                app:contentPadding="@dimen/marginClose"
+                app:cardElevation="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/animeNotesIcon"
+                    app:srcCompat="@drawable/ic_speaker_notes"
+                    app:tint="?themeContentColor"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/animeScoreLayout"

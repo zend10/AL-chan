@@ -11,6 +11,7 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.utils.AndroidUtility
+import kotlinx.android.synthetic.main.activity_customise_list.view.*
 import kotlinx.android.synthetic.main.list_manga_list_grid.view.*
 import type.ScoreFormat
 
@@ -21,7 +22,7 @@ class UserMangaListGridRvAdapter(private val context: Context,
 ): RecyclerView.Adapter<UserMangaListGridRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_manga_list_linear, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_manga_list_grid, parent, false)
         return ViewHolder(view)
     }
 
@@ -50,11 +51,12 @@ class UserMangaListGridRvAdapter(private val context: Context,
         holder.mangaScoreLayout.isEnabled = false
 
         holder.mangaCoverImage.setOnClickListener {
-            listener.viewMediaListDetail(mediaList.id)
+            listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
         }
 
-        holder.mangaTitleLayout.setOnClickListener {
-            listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
+        holder.mangaCoverImage.setOnLongClickListener {
+            listener.viewMediaListDetail(mediaList.id)
+            true
         }
     }
 

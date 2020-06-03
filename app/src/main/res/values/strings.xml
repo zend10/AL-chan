@@ -316,4 +316,13 @@
     <string name="failed_to_render_bio">Failed to render bio. Are you not using the formatting provided by AniList?</string>
     <string name="follows_you">Follows You</string>
     <string name="change_list_type">Change List Type</string>
+    <string name="experience">Experience</string>
+    <string name="long_press_to_quick_view_list_detail">Long press to quick view list detail</string>
+    <string name="show_notes_indicator">Show Notes indicator</string>
+    <string name="show_priority_indicator">Show Priority indicator</string>
+    <string name="hide_volume_progress_for_manga">Hide volume progress for Manga</string>
+    <string name="hide_chapter_progress_for_manga">Hide chapter progress for Manga</string>
+    <string name="hide_volume_progress_for_novel">Hide volume progress for Novel</string>
+    <string name="hide_chapter_progress_for_novel">Hide chapter progress for Novel</string>
+    <string name="friends">Friends</string>
 </resources>

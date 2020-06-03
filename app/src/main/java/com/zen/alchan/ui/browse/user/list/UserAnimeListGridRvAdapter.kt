@@ -66,11 +66,12 @@ class UserAnimeListGridRvAdapter(private val context: Context,
         holder.animeScoreLayout.isEnabled = false
 
         holder.animeCoverImage.setOnClickListener {
-            listener.viewMediaListDetail(mediaList.id)
+            listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
         }
 
-        holder.animeTitleLayout.setOnClickListener {
-            listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
+        holder.animeCoverImage.setOnLongClickListener {
+            listener.viewMediaListDetail(mediaList.id)
+            true
         }
     }
 

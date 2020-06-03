@@ -13,6 +13,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/followsToolbar"
+            app:titleTextAppearance="?themeTitleFont"
             android:background="?themeCardColor"
             android:elevation="0dp"
             android:layout_width="match_parent"
@@ -26,6 +27,8 @@
             app:tabTextColor="?themeContentColor"
             app:tabSelectedTextColor="?themePrimaryColor"
             app:tabBackground="?themeCardColor"
+            android:backgroundTint="?themeCardColor"
+            android:background="?themeCardColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

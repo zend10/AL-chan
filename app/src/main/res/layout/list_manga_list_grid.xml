@@ -24,6 +24,37 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
 
+        <View
+            android:visibility="gone"
+            android:id="@+id/mangaPriorityIndicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/shape_triangle"
+            android:layout_width="36dp"
+            android:layout_height="72dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
+            android:id="@+id/mangaNotesLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            app:cardElevation="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mangaNotesIcon"
+                app:srcCompat="@drawable/ic_speaker_notes"
+                app:tint="?themeContentColor"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mangaTitleLayout"
             app:layout_constraintBottom_toBottomOf="@+id/mangaCoverImage"
@@ -106,67 +137,74 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mangaProgressLayout"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/mangaTitleLayout"
-            app:cardCornerRadius="@dimen/cornerNormal"
-            app:cardBackgroundColor="?themeCardTransparentColor"
-            app:contentPadding="@dimen/marginClose"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="@dimen/marginClose"
-            app:cardElevation="0dp"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mangaProgressVolumesLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/mangaProgressLayout"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardBackgroundColor="?themeCardTransparentColor"
+                app:contentPadding="@dimen/marginClose"
+                app:cardElevation="0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mangaProgressText"
-                    style="?themeSmallClickableFont"
-                    android:text="Ch. 0/?"
-                    android:gravity="end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mangaProgressVolumesText"
+                        style="?themeSmallClickableFont"
+                        android:text="Vo. 0/?"
+                        android:gravity="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        </com.google.android.material.card.MaterialCardView>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mangaProgressVolumesLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/mangaProgressLayout"
-            app:cardCornerRadius="@dimen/cornerNormal"
-            app:cardBackgroundColor="?themeCardTransparentColor"
-            app:contentPadding="@dimen/marginClose"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="@dimen/marginClose"
-            app:cardElevation="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mangaProgressLayout"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardBackgroundColor="?themeCardTransparentColor"
+                app:contentPadding="@dimen/marginClose"
+                app:cardElevation="0dp"
+                android:layout_marginTop="@dimen/marginClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mangaProgressVolumesText"
-                    style="?themeSmallClickableFont"
-                    android:text="Vo. 0/?"
-                    android:gravity="end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mangaProgressText"
+                        style="?themeSmallClickableFont"
+                        android:text="Ch. 0/?"
+                        android:gravity="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        </com.google.android.material.card.MaterialCardView>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

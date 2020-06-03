@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.removeTrailingZero
@@ -89,16 +90,42 @@ class AnimeListGridRvAdapter(private val context: Context,
             listener.openBrowsePage(mediaList.media!!)
         }
 
+        holder.animeCoverImage.setOnLongClickListener {
+            if (listStyle?.longPressViewDetail == true) {
+                listener.showDetail(mediaList.id)
+                true
+            } else {
+                false
+            }
+        }
+
+        if (listStyle?.showNotesIndicator == true && !mediaList.notes.isNullOrBlank()) {
+            holder.animeNotesLayout.visibility = View.VISIBLE
+            holder.animeNotesLayout.setOnClickListener {
+                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+            }
+        } else {
+            holder.animeNotesLayout.visibility = View.GONE
+        }
+
+        if (listStyle?.showPriorityIndicator == true && mediaList.priority != null && mediaList.priority != 0) {
+            holder.animePriorityIndicator.visibility = View.VISIBLE
+            holder.animePriorityIndicator.backgroundTintList = ColorStateList.valueOf(Constant.PRIORITY_COLOR_MAP[mediaList.priority!!]!!)
+        } else {
+            holder.animePriorityIndicator.visibility = View.GONE
+        }
+
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
 
             // 6 is color hex code length without the alpha
-            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6)
-            holder.animeTitleLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
-            holder.animeFormatLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
-            holder.animeAiringLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
-            holder.animeScoreLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
-            holder.animeProgressLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
+            val transparentCardColor =  Color.parseColor("#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6))
+            holder.animeTitleLayout.setCardBackgroundColor(transparentCardColor)
+            holder.animeFormatLayout.setCardBackgroundColor(transparentCardColor)
+            holder.animeAiringLayout.setCardBackgroundColor(transparentCardColor)
+            holder.animeScoreLayout.setCardBackgroundColor(transparentCardColor)
+            holder.animeProgressLayout.setCardBackgroundColor(transparentCardColor)
+            holder.animeNotesLayout.setCardBackgroundColor(transparentCardColor)
         }
 
         if (listStyle?.primaryColor != null) {
@@ -117,6 +144,7 @@ class AnimeListGridRvAdapter(private val context: Context,
 
         if (listStyle?.textColor != null) {
             holder.animeFormatText.setTextColor(Color.parseColor(listStyle.textColor))
+            holder.animeNotesIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.textColor))
         }
     }
 
@@ -138,5 +166,8 @@ class AnimeListGridRvAdapter(private val context: Context,
         val animeProgressLayout = view.animeProgressLayout!!
         val animeAiringLayout = view.animeAiringLayout!!
         val animeAiringIcon = view.animeAiringIcon!!
+        val animePriorityIndicator = view.animePriorityIndicator!!
+        val animeNotesLayout = view.animeNotesLayout!!
+        val animeNotesIcon = view.animeNotesIcon!!
     }
 }

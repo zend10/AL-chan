@@ -306,6 +306,8 @@
                     android:layout_marginStart="-8dp"
                     android:layout_marginEnd="-8dp"
                     android:layout_marginBottom="@dimen/marginPage"
+                    android:paddingTop="@dimen/iconPadding"
+                    android:paddingBottom="@dimen/iconPadding"
                     android:min="0"
                     android:max="5"
                     android:layout_width="match_parent"

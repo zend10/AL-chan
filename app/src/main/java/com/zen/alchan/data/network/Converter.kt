@@ -216,15 +216,15 @@ object Converter {
                     progressVolumes = null,
                     repeat = it.repeat,
                     priority = it.priority,
-                    private = null,
-                    notes = null,
-                    hiddenFromStatusList = null,
-                    customLists = null,
+                    private = it.private_,
+                    notes = it.notes,
+                    hiddenFromStatusList = it.hiddenFromStatusLists,
+                    customLists = it.customLists,
                     advancedScores = it.advancedScores,
                     startedAt = if (it.startedAt != null) convertFuzzyDate(it.startedAt) else null,
                     completedAt = if (it.completedAt != null) convertFuzzyDate(it.completedAt) else null,
                     updatedAt = it.updatedAt,
-                    createdAt = null,
+                    createdAt = it.createdAt,
                     media = convertMedia(it.media!!)
                 )
             )
@@ -244,15 +244,15 @@ object Converter {
                     progressVolumes = it.progressVolumes,
                     repeat = it.repeat,
                     priority = it.priority,
-                    private = null,
-                    notes = null,
-                    hiddenFromStatusList = null,
-                    customLists = null,
+                    private = it.private_,
+                    notes = it.notes,
+                    hiddenFromStatusList = it.hiddenFromStatusLists,
+                    customLists = it.customLists,
                     advancedScores = it.advancedScores,
                     startedAt = if (it.startedAt != null) convertFuzzyDate(it.startedAt) else null,
                     completedAt = if (it.completedAt != null) convertFuzzyDate(it.completedAt) else null,
                     updatedAt = it.updatedAt,
-                    createdAt = null,
+                    createdAt = it.createdAt,
                     media = convertMedia(it.media!!)
                 )
             )

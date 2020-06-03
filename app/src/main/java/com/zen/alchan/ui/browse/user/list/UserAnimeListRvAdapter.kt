@@ -68,11 +68,12 @@ class UserAnimeListRvAdapter(private val context: Context,
         holder.animeProgressText.isEnabled = false
 
         holder.itemView.setOnClickListener {
-            listener.viewMediaListDetail(mediaList.id)
+            listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
         }
 
-        holder.animeTitleText.setOnClickListener {
-            listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
+        holder.itemView.setOnLongClickListener {
+            listener.viewMediaListDetail(mediaList.id)
+            true
         }
     }
 

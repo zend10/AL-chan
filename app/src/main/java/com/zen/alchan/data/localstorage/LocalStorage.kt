@@ -27,8 +27,8 @@ interface LocalStorage {
     var tagList: List<MediaTagCollection>?
     var tagListLastRetrieved: Long?
 
-    var animeListStyle: ListStyle?
-    var mangaListStyle: ListStyle?
+    var animeListStyle: ListStyle
+    var mangaListStyle: ListStyle
 
     var lastAnnouncemendId: Int?
 

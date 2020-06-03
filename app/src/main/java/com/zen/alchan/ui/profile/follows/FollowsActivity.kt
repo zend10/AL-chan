@@ -20,7 +20,7 @@ class FollowsActivity : BaseActivity() {
 
         setSupportActionBar(followsToolbar)
         supportActionBar?.apply {
-            title = ""
+            title = getString(R.string.friends)
             setDisplayHomeAsUpEnabled(true)
         }
 

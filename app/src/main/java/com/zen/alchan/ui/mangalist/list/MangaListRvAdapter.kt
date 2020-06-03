@@ -6,15 +6,18 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.list_manga_list_linear.view.*
 import type.MediaFormat
 import type.ScoreFormat
@@ -56,11 +59,19 @@ class MangaListRvAdapter(private val context: Context,
             0
         }
 
+        holder.mangaProgressVolumesText.text = "${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
+        holder.mangaIncrementProgressVolumesButton.visibility = if ((mediaList.media?.volumes == null || mediaList.media?.volumes!! > mediaList.progressVolumes!!) && mediaList.progressVolumes!! < UShort.MAX_VALUE.toInt()) View.VISIBLE else View.GONE
+
         holder.mangaProgressText.text = "${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
         holder.mangaIncrementProgressButton.visibility = if ((mediaList.media?.chapters == null || mediaList.media?.chapters!! > mediaList.progress!!) && mediaList.progress!! < UShort.MAX_VALUE.toInt()) View.VISIBLE else View.GONE
 
-        holder.mangaProgressVolumesText.text = "${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
-        holder.mangaIncrementProgressVolumesButton.visibility = if ((mediaList.media?.volumes == null || mediaList.media?.volumes!! > mediaList.progressVolumes!!) && mediaList.progressVolumes!! < UShort.MAX_VALUE.toInt()) View.VISIBLE else View.GONE
+        if (mediaList.media?.format == MediaFormat.MANGA || mediaList.media?.format == MediaFormat.ONE_SHOT) {
+            holder.mangaProgressVolumesLayout.visibility = if (listStyle?.hideMangaVolume == true) View.GONE else View.VISIBLE
+            holder.mangaProgressLayout.visibility = if (listStyle?.hideMangaChapter == true) View.GONE else View.VISIBLE
+        } else if (mediaList.media?.format == MediaFormat.NOVEL) {
+            holder.mangaProgressVolumesLayout.visibility = if (listStyle?.hideNovelVolume == true) View.GONE else View.VISIBLE
+            holder.mangaProgressLayout.visibility = if (listStyle?.hideNovelChapter == true) View.GONE else View.VISIBLE
+        }
 
         holder.itemView.setOnClickListener {
             listener.openEditor(mediaList.id)
@@ -94,8 +105,37 @@ class MangaListRvAdapter(private val context: Context,
             listener.openBrowsePage(mediaList.media!!)
         }
 
+        holder.itemView.setOnLongClickListener {
+            if (listStyle?.longPressViewDetail == true) {
+                listener.showDetail(mediaList.id)
+                true
+            } else {
+                false
+            }
+        }
+
+        if (listStyle?.showNotesIndicator == true && !mediaList.notes.isNullOrBlank()) {
+            holder.mangaNotesLayout.visibility = View.VISIBLE
+            holder.mangaNotesLayout.setOnClickListener {
+                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+            }
+        } else {
+            holder.mangaNotesLayout.visibility = View.GONE
+        }
+
+        if (listStyle?.showPriorityIndicator == true && mediaList.priority != null && mediaList.priority != 0) {
+            holder.mangaPriorityIndicator.visibility = View.VISIBLE
+            holder.mangaPriorityIndicator.setBackgroundColor(Constant.PRIORITY_COLOR_MAP[mediaList.priority!!]!!)
+        } else {
+            holder.mangaPriorityIndicator.visibility = View.GONE
+        }
+
         if (listStyle?.cardColor != null) {
             holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
+
+            // 6 is color hex code length without the alpha
+            val transparentCardColor =  "#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6)
+            holder.mangaNotesLayout.setCardBackgroundColor(Color.parseColor(transparentCardColor))
         }
 
         if (listStyle?.primaryColor != null) {
@@ -124,6 +164,7 @@ class MangaListRvAdapter(private val context: Context,
 
         if (listStyle?.textColor != null) {
             holder.mangaFormatText.setTextColor(Color.parseColor(listStyle.textColor))
+            holder.mangaNotesIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.textColor))
         }
     }
 
@@ -139,9 +180,14 @@ class MangaListRvAdapter(private val context: Context,
         val mangaStarIcon = view.mangaStarIcon!!
         val mangaRatingText = view.mangaRatingText!!
         val mangaProgressBar = view.mangaProgressBar!!
+        val mangaProgressLayout = view.mangaProgressLayout!!
         val mangaProgressText = view.mangaProgressText!!
         val mangaIncrementProgressButton = view.mangaIncrementProgressButton!!
+        val mangaProgressVolumesLayout = view.mangaProgressVolumesLayout!!
         val mangaProgressVolumesText = view.mangaProgressVolumesText!!
         val mangaIncrementProgressVolumesButton = view.mangaIncrementProgressVolumesButton!!
+        val mangaNotesLayout = view.mangaNotesLayout!!
+        val mangaNotesIcon = view.mangaNotesIcon!!
+        val mangaPriorityIndicator = view.mangaPriorityIndicator!!
     }
 }

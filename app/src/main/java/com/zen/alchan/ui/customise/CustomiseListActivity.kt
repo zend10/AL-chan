@@ -77,14 +77,45 @@ class CustomiseListActivity : BaseActivity() {
         if (!viewModel.isInit) {
             viewModel.isInit = true
             viewModel.selectedListStyle = if (viewModel.mediaType == MediaType.ANIME) viewModel.animeListStyle else viewModel.mangaListStyle
-            if (viewModel.selectedListStyle.backgroundImage) {
+            if (viewModel.selectedListStyle.backgroundImage == true) {
                 viewModel.selectedImageUri = AndroidUtility.getImageFileFromFolder(this, viewModel.mediaType!!).toUri()
             }
         }
 
+        // handle list type
         adapter = assignAdapter()
         listTypeRecyclerView.adapter = adapter
 
+        // handle experience
+        longPressViewDetailCheckBox.isChecked = viewModel.selectedListStyle.longPressViewDetail == true
+        hideMangaVolumeCheckBox.isChecked = viewModel.selectedListStyle.hideMangaVolume == true
+        hideMangaChapterCheckBox.isChecked = viewModel.selectedListStyle.hideMangaChapter == true
+        hideNovelVolumeCheckBox.isChecked = viewModel.selectedListStyle.hideNovelVolume == true
+        hideNovelChapterCheckBox.isChecked = viewModel.selectedListStyle.hideNovelChapter == true
+        showNotesIndicatorCheckBox.isChecked = viewModel.selectedListStyle.showNotesIndicator == true
+        showPriorityIndicatorCheckBox.isChecked = viewModel.selectedListStyle.showPriorityIndicator == true
+
+        if (viewModel.mediaType == MediaType.MANGA) {
+            hideMangaVolumeLayout.visibility = View.VISIBLE
+            hideMangaChapterLayout.visibility = View.VISIBLE
+            hideNovelVolumeLayout.visibility = View.VISIBLE
+            hideNovelChapterLayout.visibility = View.VISIBLE
+        } else {
+            hideMangaVolumeLayout.visibility = View.GONE
+            hideMangaChapterLayout.visibility = View.GONE
+            hideNovelVolumeLayout.visibility = View.GONE
+            hideNovelChapterLayout.visibility = View.GONE
+        }
+
+        longPressViewDetailCheckBox.setOnClickListener { viewModel.selectedListStyle.longPressViewDetail = longPressViewDetailCheckBox.isChecked }
+        hideMangaVolumeCheckBox.setOnClickListener { viewModel.selectedListStyle.hideMangaVolume = hideMangaVolumeCheckBox.isChecked }
+        hideMangaChapterCheckBox.setOnClickListener { viewModel.selectedListStyle.hideMangaChapter = hideMangaChapterCheckBox.isChecked }
+        hideNovelVolumeCheckBox.setOnClickListener { viewModel.selectedListStyle.hideNovelVolume = hideNovelVolumeCheckBox.isChecked }
+        hideNovelChapterCheckBox.setOnClickListener { viewModel.selectedListStyle.hideNovelChapter = hideNovelChapterCheckBox.isChecked }
+        showNotesIndicatorCheckBox.setOnClickListener { viewModel.selectedListStyle.showNotesIndicator = showNotesIndicatorCheckBox.isChecked }
+        showPriorityIndicatorCheckBox.setOnClickListener { viewModel.selectedListStyle.showPriorityIndicator = showPriorityIndicatorCheckBox.isChecked }
+
+        // handle theme
         val listStyle = viewModel.selectedListStyle
         if (listStyle.primaryColor != null) primaryColorItem.setCardBackgroundColor(Color.parseColor(listStyle.primaryColor))
         if (listStyle.secondaryColor != null) secondaryColorItem.setCardBackgroundColor(Color.parseColor(listStyle.secondaryColor))
@@ -93,7 +124,8 @@ class CustomiseListActivity : BaseActivity() {
         if (listStyle.toolbarColor != null) toolbarColorItem.setCardBackgroundColor(Color.parseColor(listStyle.toolbarColor))
         if (listStyle.backgroundColor != null) backgroundColorItem.setCardBackgroundColor(Color.parseColor(listStyle.backgroundColor))
 
-        if (viewModel.selectedListStyle.backgroundImage) {
+        // handle background image
+        if (viewModel.selectedListStyle.backgroundImage == true) {
             listBackgroundImage.visibility = View.VISIBLE
             noImageSelectedText.visibility = View.GONE
             addImageText.text = getString(R.string.remove_image)
@@ -169,6 +201,14 @@ class CustomiseListActivity : BaseActivity() {
                     viewModel.selectedListStyle.backgroundImage = false
                     viewModel.selectedImageUri = null
 
+                    viewModel.selectedListStyle.longPressViewDetail = true
+                    viewModel.selectedListStyle.hideMangaVolume = false
+                    viewModel.selectedListStyle.hideMangaChapter = false
+                    viewModel.selectedListStyle.hideNovelVolume = false
+                    viewModel.selectedListStyle.hideNovelChapter = false
+                    viewModel.selectedListStyle.showNotesIndicator = false
+                    viewModel.selectedListStyle.showPriorityIndicator = false
+
                     primaryColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themePrimaryColor))
                     secondaryColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor))
                     textColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeContentColor))
@@ -189,7 +229,7 @@ class CustomiseListActivity : BaseActivity() {
     }
 
     private fun assignAdapter(): ListTypeRvAdapter {
-        return ListTypeRvAdapter(this, viewModel.listTypeList, viewModel.selectedListStyle.listType, object : ListTypeRvAdapter.ListTypeListener {
+        return ListTypeRvAdapter(this, viewModel.listTypeList, viewModel.selectedListStyle.listType ?: ListType.LINEAR, object : ListTypeRvAdapter.ListTypeListener {
             override fun passSelectedList(newListType: ListType) {
                 viewModel.selectedListStyle.listType = newListType
                 adapter = assignAdapter()

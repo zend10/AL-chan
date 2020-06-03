@@ -9,4 +9,5 @@ interface AnimeListListener {
     fun openProgressDialog(mediaList: MediaList)
     fun incrementProgress(mediaList: MediaList)
     fun openBrowsePage(media: Media)
+    fun showDetail(entryId: Int)
 }

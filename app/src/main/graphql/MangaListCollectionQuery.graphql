@@ -14,6 +14,10 @@ query MangaListCollectionQuery(
                 progressVolumes
                 repeat
                 priority
+                private
+                notes
+                hiddenFromStatusLists
+                customLists
                 advancedScores
                 startedAt {
                     year
@@ -26,6 +30,7 @@ query MangaListCollectionQuery(
                     day
                 }
                 updatedAt
+                createdAt
                 media {
                     id
                     title {

@@ -152,7 +152,7 @@ class ALchanApplication : Application() {
         // browse user
         viewModel { UserViewModel(get(), get(), get()) }
         viewModel { UserStatsDetailViewModel(get()) }
-        viewModel { UserMediaListViewModel(get(), get(), gson) }
+        viewModel { UserMediaListViewModel(get(), gson) }
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }

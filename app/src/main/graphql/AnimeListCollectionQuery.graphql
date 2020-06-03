@@ -10,9 +10,13 @@ query AnimeListCollectionQuery(
                 id
                 status
                 score
-                repeat
                 progress
+                repeat
                 priority
+                private
+                notes
+                hiddenFromStatusLists
+                customLists
                 advancedScores
                 startedAt {
                     year
@@ -25,6 +29,7 @@ query AnimeListCollectionQuery(
                     day
                 }
                 updatedAt
+                createdAt
                 media {
                     id
                     title {

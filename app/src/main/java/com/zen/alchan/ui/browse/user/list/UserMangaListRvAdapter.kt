@@ -62,12 +62,13 @@ class UserMangaListRvAdapter(private val context: Context,
         holder.mangaRatingText.isEnabled = false
         holder.mangaStarIcon.isEnabled = false
 
-        holder.mangaTitleText.setOnClickListener {
+        holder.itemView.setOnClickListener {
             listener.openSelectedMedia(mediaList.media?.id!!, mediaList.media.type!!)
         }
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnLongClickListener {
             listener.viewMediaListDetail(mediaList.id)
+            true
         }
     }
 

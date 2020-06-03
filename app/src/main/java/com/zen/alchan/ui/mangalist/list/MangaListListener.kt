@@ -9,4 +9,5 @@ interface MangaListListener {
     fun openProgressDialog(mediaList: MediaList, isVolume: Boolean = false)
     fun incrementProgress(mediaList: MediaList, isVolume: Boolean = false)
     fun openBrowsePage(media: Media)
+    fun showDetail(entryId: Int)
 }

@@ -20,6 +20,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/sortLayout"
+            android:foreground="?selectableItemBackground"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -53,6 +54,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/filterFormatLayout"
+                android:foreground="?selectableItemBackground"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -76,6 +78,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/filterCountryLayout"
+                android:foreground="?selectableItemBackground"
                 android:orientation="vertical"
                 android:layout_marginStart="@dimen/marginNormal"
                 android:layout_marginEnd="@dimen/marginNormal"
@@ -101,6 +104,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/filterSourceLayout"
+                android:foreground="?selectableItemBackground"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -131,6 +135,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/filterStatusLayout"
+                android:foreground="?selectableItemBackground"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -154,6 +159,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/filterSeasonLayout"
+                android:foreground="?selectableItemBackground"
                 android:orientation="vertical"
                 android:layout_marginStart="@dimen/marginNormal"
                 android:layout_marginEnd="@dimen/marginNormal"
@@ -217,6 +223,8 @@
             android:progressTint="?themeSecondaryColor"
             android:layout_marginStart="-8dp"
             android:layout_marginEnd="-8dp"
+            android:paddingTop="@dimen/iconPadding"
+            android:paddingBottom="@dimen/iconPadding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -239,6 +247,7 @@
                 style="?themeSmallClickableFont"
                 android:padding="@dimen/iconPadding"
                 android:layout_marginStart="@dimen/marginPage"
+                android:foreground="?selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -295,6 +304,7 @@
                     style="?themeSmallClickableFont"
                     android:padding="@dimen/iconPadding"
                     android:layout_marginStart="@dimen/marginPage"
+                    android:foreground="?selectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

@@ -379,6 +379,11 @@ class MangaListFragment : Fragment() {
                 { }
             )
         }
+
+        override fun showDetail(entryId: Int) {
+            // TODO: show detail dialog
+            DialogUtility.showToast(activity, entryId.toString())
+        }
     }
 
     private fun handleUpdateProgressBehavior(mediaList: MediaList, newProgress: Int, isVolume: Boolean) {

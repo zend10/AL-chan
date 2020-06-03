@@ -24,6 +24,38 @@
             android:layout_width="0dp"
             android:layout_height="0dp"/>
 
+        <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
+            android:id="@+id/animeNotesLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardCornerRadius="@dimen/cornerNormal"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_margin="2dp"
+            app:cardElevation="0dp"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/animeNotesIcon"
+                app:srcCompat="@drawable/ic_speaker_notes"
+                app:tint="?themeContentColor"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/animePriorityIndicator"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="4dp"
+            android:layout_height="0dp"/>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/animeImageGuideline"
             app:layout_constraintGuide_percent="0.25"

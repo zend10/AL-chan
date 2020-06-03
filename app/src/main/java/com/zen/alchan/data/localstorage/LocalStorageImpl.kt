@@ -84,12 +84,12 @@ class LocalStorageImpl(private val context: Context,
         get() = getData(TAG_LIST_LAST_RETRIEVED)?.toLong()
         set(value) { setData(TAG_LIST_LAST_RETRIEVED, value.toString()) }
 
-    override var animeListStyle: ListStyle?
-        get() = gson.fromJson(getData(ANIME_LIST_STYLE), ListStyle::class.java)
+    override var animeListStyle: ListStyle
+        get() = if (getData(ANIME_LIST_STYLE) == null) ListStyle() else gson.fromJson(getData(ANIME_LIST_STYLE), ListStyle::class.java)
         set(value) { setData(ANIME_LIST_STYLE, gson.toJson(value)) }
 
-    override var mangaListStyle: ListStyle?
-        get() = gson.fromJson(getData(MANGA_LIST_STYLE), ListStyle::class.java)
+    override var mangaListStyle: ListStyle
+        get() =  if (getData(MANGA_LIST_STYLE) == null) ListStyle() else gson.fromJson(getData(MANGA_LIST_STYLE), ListStyle::class.java)
         set(value) { setData(MANGA_LIST_STYLE, gson.toJson(value)) }
 
     override var lastAnnouncemendId: Int?

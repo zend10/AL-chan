@@ -14,7 +14,6 @@ import com.zen.alchan.helper.toMillis
 import type.MediaType
 
 class UserMediaListViewModel(private val otherUserRepository: OtherUserRepository,
-                             private val userRepository: UserRepository,
                              val gson: Gson) : ViewModel() {
 
     var userId: Int? = null
@@ -81,7 +80,7 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
             return ArrayList()
         }
 
-        var rowOrderEnum = when(userRepository.viewerData.value?.mediaListOptions?.rowOrder) {
+        var rowOrderEnum = when(userData?.mediaListOptions?.rowOrder) {
             "title" -> MediaListSort.TITLE
             "score" -> MediaListSort.SCORE
             "updatedAt" -> MediaListSort.LAST_UPDATED
@@ -165,11 +164,11 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
         var customList: List<String?>? = null
 
         if (mediaType == MediaType.ANIME) {
-            sectionOrder = userRepository.viewerData.value?.mediaListOptions?.animeList?.sectionOrder
-            customList = userRepository.viewerData.value?.mediaListOptions?.animeList?.customLists
+            sectionOrder = userData?.mediaListOptions?.animeList?.sectionOrder
+            customList = userData?.mediaListOptions?.animeList?.customLists
         } else if (mediaType == MediaType.MANGA) {
-            sectionOrder = userRepository.viewerData.value?.mediaListOptions?.mangaList?.sectionOrder
-            customList = userRepository.viewerData.value?.mediaListOptions?.mangaList?.customLists
+            sectionOrder = userData?.mediaListOptions?.mangaList?.sectionOrder
+            customList = userData?.mediaListOptions?.mangaList?.customLists
         }
 
         sectionOrder?.forEach { section ->
