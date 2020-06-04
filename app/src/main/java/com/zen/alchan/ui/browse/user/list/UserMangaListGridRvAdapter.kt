@@ -5,12 +5,15 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.activity_customise_list.view.*
 import kotlinx.android.synthetic.main.list_manga_list_grid.view.*
 import type.ScoreFormat
@@ -46,6 +49,22 @@ class UserMangaListGridRvAdapter(private val context: Context,
         holder.mangaProgressText.text = "Ch. ${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
         holder.mangaProgressVolumesText.text = "Vo ${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
 
+        if (!mediaList.notes.isNullOrBlank()) {
+            holder.mangaNotesLayout.visibility = View.VISIBLE
+            holder.mangaNotesLayout.setOnClickListener {
+                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+            }
+        } else {
+            holder.mangaNotesLayout.visibility = View.GONE
+        }
+
+        if (mediaList.priority != null && mediaList.priority != 0) {
+            holder.mangaPriorityIndicator.visibility = View.VISIBLE
+            holder.mangaPriorityIndicator.backgroundTintList = ColorStateList.valueOf(Constant.PRIORITY_COLOR_MAP[mediaList.priority]!!)
+        } else {
+            holder.mangaPriorityIndicator.visibility = View.GONE
+        }
+
         holder.mangaProgressLayout.isEnabled = false
         holder.mangaProgressVolumesLayout.isEnabled = false
         holder.mangaScoreLayout.isEnabled = false
@@ -78,5 +97,8 @@ class UserMangaListGridRvAdapter(private val context: Context,
         val mangaRatingText = view.mangaRatingText!!
         val mangaProgressLayout = view.mangaProgressLayout!!
         val mangaProgressVolumesLayout = view.mangaProgressVolumesLayout!!
+        val mangaPriorityIndicator = view.mangaPriorityIndicator!!
+        val mangaNotesLayout = view.mangaNotesLayout!!
+        val mangaNotesIcon = view.mangaNotesIcon!!
     }
 }

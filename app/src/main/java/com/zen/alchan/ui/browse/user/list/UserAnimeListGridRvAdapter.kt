@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
@@ -62,6 +63,22 @@ class UserAnimeListGridRvAdapter(private val context: Context,
             )
         }
 
+        if (!mediaList.notes.isNullOrBlank()) {
+            holder.animeNotesLayout.visibility = View.VISIBLE
+            holder.animeNotesLayout.setOnClickListener {
+                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+            }
+        } else {
+            holder.animeNotesLayout.visibility = View.GONE
+        }
+
+        if (mediaList.priority != null && mediaList.priority != 0) {
+            holder.animePriorityIndicator.visibility = View.VISIBLE
+            holder.animePriorityIndicator.backgroundTintList = ColorStateList.valueOf(Constant.PRIORITY_COLOR_MAP[mediaList.priority]!!)
+        } else {
+            holder.animePriorityIndicator.visibility = View.GONE
+        }
+
         holder.animeProgressLayout.isEnabled = false
         holder.animeScoreLayout.isEnabled = false
 
@@ -91,5 +108,8 @@ class UserAnimeListGridRvAdapter(private val context: Context,
         val animeProgressLayout = view.animeProgressLayout!!
         val animeAiringLayout = view.animeAiringLayout!!
         val animeAiringIcon = view.animeAiringIcon!!
+        val animePriorityIndicator = view.animePriorityIndicator!!
+        val animeNotesLayout = view.animeNotesLayout!!
+        val animeNotesIcon = view.animeNotesIcon!!
     }
 }

@@ -11,7 +11,8 @@ import com.zen.alchan.helper.removeTrailingZero
 import kotlinx.android.synthetic.main.list_advanced_scoring_input.view.*
 
 class AdvancedScoringRvAdapter(private val list: List<AdvancedScoresItem>,
-                               private val listener: AdvancedScoringListener
+                               private val listener: AdvancedScoringListener?,
+                               private val isClickable: Boolean? = true
 ) : RecyclerView.Adapter<AdvancedScoringRvAdapter.ViewHolder>() {
 
     interface AdvancedScoringListener {
@@ -27,17 +28,21 @@ class AdvancedScoringRvAdapter(private val list: List<AdvancedScoresItem>,
         val item = list[position]
         holder.criteriaLabel.text = item.criteria
         holder.criteriaScoreField.setText(item.score.removeTrailingZero())
-        holder.criteriaScoreField.addTextChangedListener {
-            try {
-                if (it.isNullOrBlank()) {
-                    listener.passScores(position, 0.0)
-                } else {
-                    var newScore = it.toString().toDouble()
-                    listener.passScores(position, newScore)
+        if (isClickable == true) {
+            holder.criteriaScoreField.addTextChangedListener {
+                try {
+                    if (it.isNullOrBlank()) {
+                        listener?.passScores(position, 0.0)
+                    } else {
+                        var newScore = it.toString().toDouble()
+                        listener?.passScores(position, newScore)
+                    }
+                } catch (e: Exception) {
+                    // do nothing
                 }
-            } catch (e: Exception) {
-                // do nothing
             }
+        } else {
+            holder.criteriaScoreField.isEnabled = false
         }
     }
 

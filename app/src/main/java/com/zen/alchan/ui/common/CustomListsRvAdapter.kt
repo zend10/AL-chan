@@ -9,7 +9,8 @@ import com.zen.alchan.helper.pojo.CustomListsItem
 import kotlinx.android.synthetic.main.list_checkbox.view.*
 
 class CustomListsRvAdapter(private val list: List<CustomListsItem>,
-                           private val listener: CustomListsListener
+                           private val listener: CustomListsListener?,
+                           private val isClickable: Boolean? = true
 ) : RecyclerView.Adapter<CustomListsRvAdapter.ViewHolder>() {
 
     interface CustomListsListener {
@@ -25,11 +26,16 @@ class CustomListsRvAdapter(private val list: List<CustomListsItem>,
         val item = list[position]
         holder.checkBoxLabel.text = item.customList
         holder.checkBoxField.isChecked = item.isChecked
-        holder.checkBoxField.setOnClickListener {
-            listener.passSelected(position, !item.isChecked)
-        }
-        holder.checkBoxLabel.setOnClickListener {
-            holder.checkBoxField.performClick()
+        if (isClickable == true) {
+            holder.checkBoxField.setOnClickListener {
+                listener?.passSelected(position, !item.isChecked)
+            }
+            holder.checkBoxLabel.setOnClickListener {
+                holder.checkBoxField.performClick()
+            }
+        } else {
+            holder.checkBoxField.isEnabled = false
+            holder.checkBoxLabel.isEnabled = false
         }
     }
 

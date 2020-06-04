@@ -241,12 +241,20 @@ object Constant {
         Color.parseColor("#56e28a")
     )
 
-    // current, planning, completed, dropped, paused
     val PRIORITY_COLOR_MAP = hashMapOf(
         Pair(1, Color.parseColor("#FF0000")),
         Pair(2, Color.parseColor("#FFFF00")),
         Pair(3, Color.parseColor("#00FF00")),
         Pair(4, Color.parseColor("#00FFFF")),
         Pair(5, Color.parseColor("#0000FF"))
+    )
+
+    val PRIORITY_LABEL_MAP = hashMapOf(
+        Pair(0, "No Priority"),
+        Pair(1, "Very Low"),
+        Pair(2, "Low"),
+        Pair(3, "Medium"),
+        Pair(4, "High"),
+        Pair(5, "Very High")
     )
 }

@@ -16,7 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
+import com.zen.alchan.data.network.Converter
+import com.zen.alchan.data.response.Media
+import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.data.response.MediaListGroup
+import com.zen.alchan.data.response.MediaTitle
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
@@ -25,6 +29,7 @@ import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.common.MediaListDetailDialog
 import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
 import kotlinx.android.synthetic.main.fragment_user_media_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -268,7 +273,40 @@ class UserMediaListFragment : BaseFragment() {
         }
 
         override fun viewMediaListDetail(mediaListId: Int) {
+            val entry = viewModel.currentList.find { it?.id == mediaListId } ?: return
+            val mediaList = MediaList(
+                id = entry.id,
+                status = entry.status,
+                score = entry.score,
+                progress = entry.progress,
+                progressVolumes = entry.progressVolumes,
+                repeat = entry.repeat,
+                priority = entry.priority,
+                private = entry.private_,
+                notes = entry.notes,
+                hiddenFromStatusList = entry.hiddenFromStatusLists,
+                customLists = entry.customLists,
+                advancedScores = entry.customLists,
+                startedAt = if (entry.startedAt != null) Converter.convertFuzzyDate(entry.startedAt) else null,
+                completedAt = if (entry.completedAt != null) Converter.convertFuzzyDate(entry.completedAt) else null,
+                updatedAt = entry.updatedAt,
+                createdAt = entry.createdAt,
+                media = Media(
+                    id = entry.media?.id!!,
+                    title = MediaTitle(userPreferred = entry.media.title?.userPreferred!!),
+                    type = entry.media.type,
+                    format = entry.media.format
+                )
+            )
 
+            val dialog = MediaListDetailDialog()
+            val bundle = Bundle()
+            bundle.putString(MediaListDetailDialog.MEDIA_LIST_ITEM, viewModel.gson.toJson(mediaList))
+            bundle.putString(MediaListDetailDialog.SCORE_FORMAT, viewModel.userData?.mediaListOptions?.scoreFormat?.name)
+            // advancedScoringEnabled is the same in animeList and mangaList
+            bundle.putBoolean(MediaListDetailDialog.USE_ADVANCED_SCORES, viewModel.userData?.mediaListOptions?.animeList?.advancedScoringEnabled == true)
+            dialog.arguments = bundle
+            dialog.show(childFragmentManager, null)
         }
     }
 }

@@ -5,13 +5,16 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.list_anime_list_linear.view.*
 import type.ScoreFormat
 
@@ -63,6 +66,23 @@ class UserAnimeListRvAdapter(private val context: Context,
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
         holder.animeIncrementProgressButton.visibility = View.GONE
 
+        if (!mediaList.notes.isNullOrBlank()) {
+            holder.animeNotesLayout.visibility = View.VISIBLE
+            holder.animeNotesLayout.setOnClickListener {
+                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+            }
+        } else {
+            holder.animeNotesLayout.visibility = View.GONE
+        }
+
+        if (mediaList.priority != null && mediaList.priority != 0) {
+            holder.animePriorityIndicator.visibility = View.VISIBLE
+            holder.animePriorityIndicator.setBackgroundColor(Constant.PRIORITY_COLOR_MAP[mediaList.priority]!!)
+        } else {
+            holder.animePriorityIndicator.visibility = View.GONE
+        }
+
+        holder.animeTitleText.isEnabled = false
         holder.animeStarIcon.isEnabled = false
         holder.animeRatingText.isEnabled = false
         holder.animeProgressText.isEnabled = false
@@ -92,5 +112,8 @@ class UserAnimeListRvAdapter(private val context: Context,
         val animeProgressBar = view.animeProgressBar!!
         val animeProgressText = view.animeProgressText!!
         val animeIncrementProgressButton = view.animeIncrementProgressButton!!
+        val animeNotesLayout = view.animeNotesLayout!!
+        val animeNotesIcon = view.animeNotesIcon!!
+        val animePriorityIndicator = view.animePriorityIndicator!!
     }
 }

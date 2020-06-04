@@ -38,6 +38,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.common.MediaListDetailDialog
 import com.zen.alchan.ui.common.SetProgressDialog
 import com.zen.alchan.ui.common.SetScoreDialog
 import com.zen.alchan.ui.common.customise.CustomiseListActivity
@@ -381,8 +382,14 @@ class MangaListFragment : Fragment() {
         }
 
         override fun showDetail(entryId: Int) {
-            // TODO: show detail dialog
-            DialogUtility.showToast(activity, entryId.toString())
+            val mediaList = viewModel.currentList.find { it.id == entryId } ?: return
+            val dialog = MediaListDetailDialog()
+            val bundle = Bundle()
+            bundle.putString(MediaListDetailDialog.MEDIA_LIST_ITEM, viewModel.gson.toJson(mediaList))
+            bundle.putString(MediaListDetailDialog.SCORE_FORMAT, viewModel.scoreFormat.name)
+            bundle.putBoolean(MediaListDetailDialog.USE_ADVANCED_SCORES, viewModel.advancedScoringEnabled)
+            dialog.arguments = bundle
+            dialog.show(childFragmentManager, null)
         }
     }
 

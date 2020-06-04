@@ -37,6 +37,10 @@ query UserMediaListCollectionQuery(
                 progress
                 progressVolumes
                 priority
+                private
+                notes
+                hiddenFromStatusLists
+                customLists
                 advancedScores
                 startedAt {
                     year
@@ -49,6 +53,7 @@ query UserMediaListCollectionQuery(
                     day
                 }
                 updatedAt
+                createdAt
                 media {
                     id
                     title {
