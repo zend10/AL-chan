@@ -79,6 +79,56 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:visibility="gone"
+                            android:id="@+id/modCard"
+                            android:layout_marginTop="@dimen/marginNormal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.card.MaterialCardView
+                                app:cardElevation="0dp"
+                                app:contentPadding="@dimen/marginClose"
+                                app:cardBackgroundColor="?themeSecondaryColor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/modText"
+                                    style="?themeSmallFont"
+                                    android:textColor="?themeBackgroundColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <View
+                                android:visibility="gone"
+                                android:id="@+id/badgeSpace"
+                                android:layout_width="@dimen/marginNormal"
+                                android:layout_height="0dp"/>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:visibility="gone"
+                                android:id="@+id/donatorCard"
+                                app:cardElevation="0dp"
+                                app:contentPadding="@dimen/marginClose"
+                                app:cardBackgroundColor="?themeSecondaryColor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/donatorText"
+                                    style="?themeSmallFont"
+                                    android:textColor="?themeBackgroundColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
                         <com.google.android.material.button.MaterialButton
                             android:visibility="visible"
                             android:id="@+id/userFollowButton"

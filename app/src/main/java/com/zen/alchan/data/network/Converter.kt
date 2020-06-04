@@ -15,6 +15,9 @@ object Converter {
             mediaListOptions = convertMediaListOptions(viewer.mediaListOptions),
             statistics = convertUserStatisticTypes(viewer.statistics),
             unreadNotificationCount = viewer.unreadNotificationCount,
+            donatorTier = viewer.donatorTier,
+            donatorBadge = viewer.donatorBadge,
+            moderatorStatus = viewer.moderatorStatus,
             siteUrl = viewer.siteUrl
         )
     }

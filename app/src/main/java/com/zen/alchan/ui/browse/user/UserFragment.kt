@@ -195,6 +195,27 @@ class UserFragment : BaseFragment() {
         }
 
         userUsernameText.text = user?.name ?: ""
+
+        if (!user?.moderatorStatus.isNullOrBlank()) {
+            modCard.visibility = View.VISIBLE
+            modText.text = user?.moderatorStatus?.split(" ")?.map { it.toLowerCase().capitalize() }?.joinToString(" ")
+        } else {
+            modCard.visibility = View.GONE
+        }
+
+        if (user?.donatorTier != null && user.donatorTier != 0) {
+            donatorCard.visibility = View.VISIBLE
+            donatorText.text = user.donatorBadge
+        } else {
+            donatorCard.visibility = View.GONE
+        }
+
+        if (!user?.moderatorStatus.isNullOrBlank() && user?.donatorTier != null && user.donatorTier != 0) {
+            badgeSpace.visibility = View.VISIBLE
+        } else {
+            badgeSpace.visibility = View.GONE
+        }
+
         userAnimeCountText.text = user?.statistics?.anime?.count?.toString() ?: "0"
         userMangaCountText.text = user?.statistics?.manga?.count?.toString() ?: "0"
         userFollowersCountText.text = viewModel.followersCount.value?.toString() ?: "0"

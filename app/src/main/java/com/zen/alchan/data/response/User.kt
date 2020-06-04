@@ -10,5 +10,8 @@ class User(
     var mediaListOptions: MediaListOptions?,
     val statistics: UserStatisticTypes?,
     var unreadNotificationCount: Int?,
+    val donatorTier: Int?,
+    val donatorBadge: String?,
+    val moderatorStatus: String?,
     val siteUrl: String?
 )

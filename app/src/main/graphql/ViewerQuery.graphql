@@ -56,6 +56,9 @@ query ViewerQuery {
       }
     }
     unreadNotificationCount
+    donatorTier
+    donatorBadge
+    moderatorStatus
     siteUrl
   }
 }
