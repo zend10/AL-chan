@@ -12,6 +12,7 @@ interface SearchRepository {
     val searchCharactersResponse: LiveData<Resource<SearchCharactersQuery.Data>>
     val searchStaffsResponse: LiveData<Resource<SearchStaffsQuery.Data>>
     val searchStudiosResponse: LiveData<Resource<SearchStudiosQuery.Data>>
+    val searchUsersResponse: LiveData<Resource<SearchUsersQuery.Data>>
 
     val seasonalAnimeTvResponse: LiveData<Resource<SeasonalAnimeQuery.Data>>
     val seasonalAnimeTvData: LiveData<List<SeasonalAnime>>
@@ -57,6 +58,7 @@ interface SearchRepository {
     fun searchCharacters(page: Int, search: String?, sort: List<CharacterSort>? = null)
     fun searchStaffs(page: Int, search: String?, sort: List<StaffSort>? = null)
     fun searchStudios(page: Int, search: String?, sort: List<StudioSort>? = null)
+    fun searchUsers(page: Int, search: String?, sort: List<UserSort>? = null)
 
     fun getSeasonalAnime(
         page: Int,

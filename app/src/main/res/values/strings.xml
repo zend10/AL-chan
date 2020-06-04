@@ -325,4 +325,5 @@
     <string name="hide_volume_progress_for_novel">Hide volume progress for Novel</string>
     <string name="hide_chapter_progress_for_novel">Hide chapter progress for Novel</string>
     <string name="friends">Friends</string>
+    <string name="users">Users</string>
 </resources>

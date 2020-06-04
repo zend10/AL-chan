@@ -38,6 +38,10 @@ class SearchListViewModel(private val searchRepository: SearchRepository) : View
         searchRepository.searchStudiosResponse
     }
 
+    val searchUsersResponse by lazy {
+        searchRepository.searchUsersResponse
+    }
+
     fun getObserver(): LiveData<*>? {
         return when (searchPage) {
             BrowsePage.ANIME -> searchAnimeResponse
@@ -45,6 +49,7 @@ class SearchListViewModel(private val searchRepository: SearchRepository) : View
             BrowsePage.CHARACTER -> searchCharactersResponse
             BrowsePage.STAFF -> searchStaffsResponse
             BrowsePage.STUDIO -> searchStudiosResponse
+            BrowsePage.USER -> searchUsersResponse
             else -> null
         }
     }
@@ -56,6 +61,7 @@ class SearchListViewModel(private val searchRepository: SearchRepository) : View
             BrowsePage.CHARACTER -> searchRepository.searchCharacters(page, query)
             BrowsePage.STAFF -> searchRepository.searchStaffs(page, query)
             BrowsePage.STUDIO -> searchRepository.searchStudios(page, query)
+            BrowsePage.USER -> searchRepository.searchUsers(page, query)
         }
     }
 }

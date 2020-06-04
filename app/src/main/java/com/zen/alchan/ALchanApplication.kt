@@ -164,7 +164,7 @@ class ALchanApplication : Application() {
         viewModel { StatsViewModel(get(), get()) }
         viewModel { StatsDetailViewModel(get()) }
         viewModel { ReviewsViewModel(get(), get()) }
-        viewModel { FollowsViewModel(get()) }
+        viewModel { FollowsViewModel(get(), get()) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }

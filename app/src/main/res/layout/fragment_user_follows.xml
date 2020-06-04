@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.browse.user.follows.UserFollowsFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:background="?themeCardColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/followsToolbar"
+            app:titleTextAppearance="?themeTitleFont"
+            android:background="?themeCardColor"
+            android:elevation="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/followsTabLayout"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabTextAppearance="?themeRegularFont"
+            app:tabTextColor="?themeContentColor"
+            app:tabSelectedTextColor="?themePrimaryColor"
+            app:tabBackground="?themeCardColor"
+            android:backgroundTint="?themeCardColor"
+            android:background="?themeCardColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/followsViewPager"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

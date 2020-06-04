@@ -18,7 +18,9 @@ import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.FollowsItem
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.browse.user.follows.UserFollowsFragment
 import kotlinx.android.synthetic.main.fragment_follows.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -27,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * A simple [Fragment] subclass.
  */
-class FollowsFragment : Fragment() {
+class FollowsFragment : BaseFragment() {
 
     private val viewModel by viewModel<FollowsViewModel>()
 
@@ -49,6 +51,10 @@ class FollowsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        if (arguments != null && arguments?.getInt(UserFollowsFragment.USER_ID) != null && arguments?.getInt(UserFollowsFragment.USER_ID) != 0) {
+            viewModel.otherUserId = arguments?.getInt(UserFollowsFragment.USER_ID)
+        }
+
         viewModel.followPage = FollowPage.valueOf(arguments?.getString(FOLLOW_PAGE)!!)
         adapter = assignAdapter()
         followsRecyclerView.adapter = adapter
@@ -59,7 +65,7 @@ class FollowsFragment : Fragment() {
 
     private fun setupObserver() {
         if (viewModel.followPage == FollowPage.FOLLOWING) {
-            viewModel.userFollowingsResponse.observe(viewLifecycleOwner, Observer {
+            viewModel.getFollowingsObserver().observe(viewLifecycleOwner, Observer {
                 if (viewModel.followPage != FollowPage.FOLLOWING) return@Observer
                 when (it.responseStatus) {
                     ResponseStatus.SUCCESS -> {
@@ -135,7 +141,7 @@ class FollowsFragment : Fragment() {
                 }
             })
         } else if (viewModel.followPage == FollowPage.FOLLOWERS) {
-            viewModel.userFollowersResponse.observe(viewLifecycleOwner, Observer {
+            viewModel.getFollowersObserver().observe(viewLifecycleOwner, Observer {
                 if (viewModel.followPage != FollowPage.FOLLOWERS) return@Observer
                 when (it.responseStatus) {
                     ResponseStatus.SUCCESS -> {
@@ -244,7 +250,7 @@ class FollowsFragment : Fragment() {
     }
 
     private fun assignAdapter(): FollowsRvAdapter {
-        return FollowsRvAdapter(activity!!, viewModel.followsList, object : FollowsRvAdapter.FollowsListener {
+        return FollowsRvAdapter(activity!!, viewModel.followsList, viewModel.otherUserId != null, object : FollowsRvAdapter.FollowsListener {
             override fun toggleFollow(id: Int, isFollowing: Boolean) {
                 DialogUtility.showOptionDialog(
                     activity,
@@ -260,10 +266,14 @@ class FollowsFragment : Fragment() {
             }
 
             override fun openUserPage(id: Int) {
-                val intent = Intent(activity, BrowseActivity::class.java)
-                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
-                intent.putExtra(BrowseActivity.LOAD_ID, id)
-                startActivity(intent)
+                if (viewModel.otherUserId != null) {
+                    listener?.changeFragment(BrowsePage.USER, id)
+                } else {
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, id)
+                    startActivity(intent)
+                }
             }
 
             override fun openAniListPage(url: String) {

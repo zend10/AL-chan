@@ -55,7 +55,7 @@ class StatsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (arguments != null && arguments?.getInt(UserFragment.USER_ID) != null) {
+        if (arguments != null && arguments?.getInt(UserFragment.USER_ID) != null && arguments?.getInt(UserFragment.USER_ID) != 0) {
             viewModel.otherUserId = arguments?.getInt(UserFragment.USER_ID)
         }
 

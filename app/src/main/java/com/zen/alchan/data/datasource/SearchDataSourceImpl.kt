@@ -6,6 +6,7 @@ import SearchCharactersQuery
 import SearchMangaQuery
 import SearchStaffsQuery
 import SearchStudiosQuery
+import SearchUsersQuery
 import SeasonalAnimeQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -142,6 +143,24 @@ class SearchDataSourceImpl(private val apolloHandler: ApolloHandler) : SearchDat
         val checkSearch = if (search.isNullOrBlank()) null else search
         val checkSort = if (sort.isNullOrEmpty()) null else sort
         val query = SearchStudiosQuery(
+            page = Input.fromNullable(page),
+            search = Input.optional(checkSearch),
+            sort = Input.optional(checkSort)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun searchUsers(
+        page: Int,
+        search: String?,
+        sort: List<UserSort>?
+    ): Observable<Response<SearchUsersQuery.Data>> {
+        val checkSearch = if (search.isNullOrBlank()) null else search
+        val checkSort = if (sort.isNullOrEmpty()) null else sort
+        val query = SearchUsersQuery(
             page = Input.fromNullable(page),
             search = Input.optional(checkSearch),
             sort = Input.optional(checkSort)

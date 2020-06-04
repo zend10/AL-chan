@@ -35,6 +35,10 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
     override val searchStudiosResponse: LiveData<Resource<SearchStudiosQuery.Data>>
         get() = _searchStudiosResponse
 
+    private val _searchUsersResponse = SingleLiveEvent<Resource<SearchUsersQuery.Data>>()
+    override val searchUsersResponse: LiveData<Resource<SearchUsersQuery.Data>>
+        get() = _searchUsersResponse
+
     private val _seasonalAnimeTvResponse = SingleLiveEvent<Resource<SeasonalAnimeQuery.Data>>()
     override val seasonalAnimeTvResponse: LiveData<Resource<SeasonalAnimeQuery.Data>>
         get() = _seasonalAnimeTvResponse
@@ -212,6 +216,30 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
 
             override fun onError(e: Throwable) {
                 _searchStudiosResponse.postValue(Resource.Error(e.localizedMessage))
+                e.printStackTrace()
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun searchUsers(page: Int, search: String?, sort: List<UserSort>?) {
+        _searchUsersResponse.postValue(Resource.Loading())
+
+        searchDataSource.searchUsers(page, search, sort).subscribeWith(object : Observer<Response<SearchUsersQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<SearchUsersQuery.Data>) {
+                if (t.hasErrors()) {
+                    _searchUsersResponse.postValue(Resource.Error(t.errors!![0].message))
+                } else {
+                    _searchUsersResponse.postValue(Resource.Success(t.data!!))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _searchUsersResponse.postValue(Resource.Error(e.localizedMessage))
                 e.printStackTrace()
             }
 

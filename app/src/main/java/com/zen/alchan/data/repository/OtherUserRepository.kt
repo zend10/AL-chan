@@ -11,6 +11,8 @@ interface OtherUserRepository {
     val followingsCount: LiveData<Int>
 
     val userMediaListCollection: LiveData<Resource<UserMediaListCollectionQuery.Data>>
+    val userFollowersResponse: LiveData<Resource<UserFollowersQuery.Data>>
+    val userFollowingsResponse: LiveData<Resource<UserFollowingsQuery.Data>>
 
     val triggerRefreshFavorite: LiveData<Boolean>
     val favoriteAnimeResponse: LiveData<Resource<FavoritesAnimeQuery.Data>>
@@ -29,6 +31,8 @@ interface OtherUserRepository {
     fun getFollowingsCount(userId: Int)
 
     fun getUserMediaListCollection(userId: Int, type: MediaType)
+    fun getUserFollowers(userId: Int, page: Int)
+    fun getUserFollowings(userId: Int, page: Int)
 
     fun triggerRefreshProfilePageChild(userId: Int)
 

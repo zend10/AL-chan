@@ -228,30 +228,32 @@ class UserFragment : BaseFragment() {
             if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_MANGA_LIST, viewModel.userId!!)
         }
         userFollowingCountLayout.setOnClickListener {
-//            val intent = Intent(activity, FollowsActivity::class.java)
-//            intent.putExtra(FollowsActivity.START_POSITION, FollowPage.FOLLOWING.ordinal)
-//            startActivity(intent)
+            if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_FOLLOWING_LIST, viewModel.userId!!)
         }
         userFollowersCountLayout.setOnClickListener {
-//            val intent = Intent(activity, FollowsActivity::class.java)
-//            intent.putExtra(FollowsActivity.START_POSITION, FollowPage.FOLLOWERS.ordinal)
-//            startActivity(intent)
+            if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_FOLLOWING_LIST, viewModel.userId!!)
         }
 
-        handleFollowButton()
+        if (viewModel.userId != viewModel.currentUserId) {
+            userFollowButton.visibility = View.VISIBLE
 
-        userFollowButton.setOnClickListener {
-            DialogUtility.showOptionDialog(
-                activity,
-                if (viewModel.currentIsFollowing != true) R.string.follow_this_user else R.string.unfollow_this_user,
-                if (viewModel.currentIsFollowing != true) R.string.are_you_sure_you_want_to_follow_this_user else R.string.are_you_sure_you_want_to_shatter_this_friendship,
-                if (viewModel.currentIsFollowing != true) R.string.follow else R.string.unfollow,
-                {
-                    viewModel.toggleFollow()
-                },
-                R.string.cancel,
-                { }
-            )
+            handleFollowButton()
+
+            userFollowButton.setOnClickListener {
+                DialogUtility.showOptionDialog(
+                    activity,
+                    if (viewModel.currentIsFollowing != true) R.string.follow_this_user else R.string.unfollow_this_user,
+                    if (viewModel.currentIsFollowing != true) R.string.are_you_sure_you_want_to_follow_this_user else R.string.are_you_sure_you_want_to_shatter_this_friendship,
+                    if (viewModel.currentIsFollowing != true) R.string.follow else R.string.unfollow,
+                    {
+                        viewModel.toggleFollow()
+                    },
+                    R.string.cancel,
+                    { }
+                )
+            }
+        } else {
+            userFollowButton.visibility = View.GONE
         }
 
         userBioLayout.setOnClickListener { viewModel.setProfileSection(ProfileSection.BIO) }

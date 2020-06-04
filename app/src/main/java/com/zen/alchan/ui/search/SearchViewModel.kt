@@ -8,6 +8,6 @@ class SearchViewModel : ViewModel() {
     var selectedPage = BrowsePage.ANIME
 
     val searchPageList = listOf(
-        BrowsePage.ANIME, BrowsePage.MANGA, BrowsePage.CHARACTER, BrowsePage.STAFF, BrowsePage.STUDIO
+        BrowsePage.ANIME, BrowsePage.MANGA, BrowsePage.CHARACTER, BrowsePage.STAFF, BrowsePage.STUDIO, BrowsePage.USER
     )
 }

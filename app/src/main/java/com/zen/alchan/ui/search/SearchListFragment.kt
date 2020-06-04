@@ -117,6 +117,13 @@ class SearchListFragment : Fragment() {
                                 viewModel.searchResultList.add(SearchResult(studiosSearchResult =  studio))
                             }
                         }
+                        BrowsePage.USER -> {
+                            val searchUsersResponse = it as Resource<SearchUsersQuery.Data>
+                            viewModel.hasNextPage = searchUsersResponse.data?.page?.pageInfo?.hasNextPage ?: false
+                            searchUsersResponse.data?.page?.users?.forEach { user ->
+                                viewModel.searchResultList.add(SearchResult(usersSearchResult = user))
+                            }
+                        }
                     }
 
                     adapter.notifyDataSetChanged()
@@ -210,6 +217,7 @@ class SearchListFragment : Fragment() {
             BrowsePage.CHARACTER -> SearchCharactersRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.CHARACTER))
             BrowsePage.STAFF -> SearchStaffsRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.STAFF))
             BrowsePage.STUDIO -> SearchStudioRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.STUDIO))
+            BrowsePage.USER -> SearchUsersRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.USER))
             else -> SearchAnimeRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.ANIME))
         }
 

@@ -20,6 +20,9 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
     var userId: Int? = null
     var currentIsFollowing: Boolean? = null
 
+    val currentUserId: Int
+        get() = userRepository.viewerData.value?.id!!
+
     val userDataResponse by lazy {
         otherUserRepository.userDataResponse
     }

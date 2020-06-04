@@ -33,6 +33,14 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
     override val userMediaListCollection: LiveData<Resource<UserMediaListCollectionQuery.Data>>
         get() = _userMediaListCollection
 
+    private val _userFollowersResponse = SingleLiveEvent<Resource<UserFollowersQuery.Data>>()
+    override val userFollowersResponse: LiveData<Resource<UserFollowersQuery.Data>>
+        get() = _userFollowersResponse
+
+    private val _userFollowingsResponse = SingleLiveEvent<Resource<UserFollowingsQuery.Data>>()
+    override val userFollowingsResponse: LiveData<Resource<UserFollowingsQuery.Data>>
+        get() = _userFollowingsResponse
+
     private val _triggerRefreshFavorite = SingleLiveEvent<Boolean>()
     override val triggerRefreshFavorite: LiveData<Boolean>
         get() = _triggerRefreshFavorite
@@ -144,6 +152,48 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
 
             override fun onError(e: Throwable) {
                 _userMediaListCollection.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getUserFollowers(userId: Int, page: Int) {
+        userDataSource.getFollowers(userId, page).subscribeWith(object : Observer<Response<UserFollowersQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserFollowersQuery.Data>) {
+                if (!t.hasErrors()) {
+                    _userFollowersResponse.postValue(Resource.Success(t.data!!))
+                } else {
+                    _userFollowersResponse.postValue(Resource.Error(t.errors!![0].message))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _userFollowersResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+
+            override fun onComplete() { }
+        })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getUserFollowings(userId: Int, page: Int) {
+        userDataSource.getFollowings(userId, page).subscribeWith(object : Observer<Response<UserFollowingsQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<UserFollowingsQuery.Data>) {
+                if (!t.hasErrors()) {
+                    _userFollowingsResponse.postValue(Resource.Success(t.data!!))
+                } else {
+                    _userFollowingsResponse.postValue(Resource.Error(t.errors!![0].message))
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                _userFollowingsResponse.postValue(Resource.Error(e.localizedMessage))
             }
 
             override fun onComplete() { }

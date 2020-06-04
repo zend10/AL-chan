@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
 import com.zen.alchan.ui.browse.character.CharacterFragment
@@ -12,6 +13,7 @@ import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.staff.StaffFragment
 import com.zen.alchan.ui.browse.studio.StudioFragment
 import com.zen.alchan.ui.browse.user.UserFragment
+import com.zen.alchan.ui.browse.user.follows.UserFollowsFragment
 import com.zen.alchan.ui.browse.user.list.UserMediaListFragment
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailFragment
 import kotlinx.android.synthetic.main.activity_browse.*
@@ -87,6 +89,16 @@ class BrowseActivity : BaseActivity(), BaseListener {
                 targetFragment = UserMediaListFragment()
                 bundle.putInt(UserMediaListFragment.USER_ID, id)
                 bundle.putString(UserMediaListFragment.MEDIA_TYPE, MediaType.MANGA.name)
+            }
+            BrowsePage.USER_FOLLOWING_LIST -> {
+                targetFragment = UserFollowsFragment()
+                bundle.putInt(UserFollowsFragment.USER_ID, id)
+                bundle.putInt(UserFollowsFragment.START_POSITION, FollowPage.FOLLOWING.ordinal)
+            }
+            BrowsePage.USER_FOLLOWERS_LIST -> {
+                targetFragment = UserFollowsFragment()
+                bundle.putInt(UserFollowsFragment.USER_ID, id)
+                bundle.putInt(UserFollowsFragment.START_POSITION, FollowPage.FOLLOWERS.ordinal)
             }
         }
 

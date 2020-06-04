@@ -33,7 +33,7 @@ class SearchActivity : BaseActivity() {
         setContentView(R.layout.activity_search)
 
         searchCategoryButtonList = listOf(
-            searchAnimeButton, searchMangaButton, searchCharactersButton, searchStaffsButton, searchStudiosButton
+            searchAnimeButton, searchMangaButton, searchCharactersButton, searchStaffsButton, searchStudiosButton, searchUsersButton
         )
 
         initLayout()
@@ -52,6 +52,7 @@ class SearchActivity : BaseActivity() {
         searchCharactersButton.setOnClickListener { handleSearchCategoryButton(BrowsePage.CHARACTER) }
         searchStaffsButton.setOnClickListener { handleSearchCategoryButton(BrowsePage.STAFF) }
         searchStudiosButton.setOnClickListener { handleSearchCategoryButton(BrowsePage.STUDIO) }
+        searchUsersButton.setOnClickListener { handleSearchCategoryButton(BrowsePage.USER) }
 
         viewPagerAdapter = SearchViewPagerAdapter(supportFragmentManager, viewModel.searchPageList)
         searchViewPager.adapter = viewPagerAdapter

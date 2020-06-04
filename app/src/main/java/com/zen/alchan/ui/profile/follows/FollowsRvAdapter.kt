@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.list_follows.view.*
 
 class FollowsRvAdapter(private val context: Context,
                        private val list: List<FollowsItem?>,
+                       private val fromOtherUser: Boolean,
                        private val listener: FollowsListener
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -47,23 +48,44 @@ class FollowsRvAdapter(private val context: Context,
             GlideApp.with(context).load(item?.image).apply(RequestOptions.circleCropTransform()).into(holder.followAvatar)
             holder.followNameText.text = item?.name
 
-            if (item?.isFollowing == true && item.isFollower) {
-                holder.followStatusText.text = context.getString(R.string.mutual)
-                holder.followStatusLayout.visibility = View.VISIBLE
+            if (fromOtherUser) {
+                if (item?.isFollowing == true && item.isFollower) {
+                    holder.followStatusText.text = context.getString(R.string.mutual)
+                    holder.followStatusLayout.visibility = View.VISIBLE
+                } else if (item?.isFollowing == true && !item.isFollower) {
+                    holder.followStatusText.text = context.getString(R.string.following)
+                    holder.followStatusLayout.visibility = View.VISIBLE
+                } else if (item?.isFollowing == false && item.isFollower) {
+                    holder.followStatusText.text = context.getString(R.string.follows_you)
+                    holder.followStatusLayout.visibility = View.VISIBLE
+                } else {
+                    holder.followStatusText.text = ""
+                    holder.followStatusLayout.visibility = View.GONE
+                }
             } else {
-                holder.followStatusText.text = ""
-                holder.followStatusLayout.visibility = View.GONE
+                if (item?.isFollowing == true && item.isFollower) {
+                    holder.followStatusText.text = context.getString(R.string.mutual)
+                    holder.followStatusLayout.visibility = View.VISIBLE
+                } else {
+                    holder.followStatusText.text = ""
+                    holder.followStatusLayout.visibility = View.GONE
+                }
             }
 
             holder.followMoreIcon.setOnClickListener {
                 val popupMenu = PopupMenu(context, it)
                 popupMenu.menuInflater.inflate(R.menu.menu_follows, popupMenu.menu)
-                if (item?.isFollowing == true) {
-                    popupMenu.menu.findItem(R.id.itemUnfollow).isVisible = true
+                if (fromOtherUser) {
+                    popupMenu.menu.findItem(R.id.itemUnfollow).isVisible = false
                     popupMenu.menu.findItem(R.id.itemFollow).isVisible = false
                 } else {
-                    popupMenu.menu.findItem(R.id.itemUnfollow).isVisible = false
-                    popupMenu.menu.findItem(R.id.itemFollow).isVisible = true
+                    if (item?.isFollowing == true) {
+                        popupMenu.menu.findItem(R.id.itemUnfollow).isVisible = true
+                        popupMenu.menu.findItem(R.id.itemFollow).isVisible = false
+                    } else {
+                        popupMenu.menu.findItem(R.id.itemUnfollow).isVisible = false
+                        popupMenu.menu.findItem(R.id.itemFollow).isVisible = true
+                    }
                 }
                 popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
                     when (menuItem?.itemId) {
