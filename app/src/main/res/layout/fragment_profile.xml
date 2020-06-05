@@ -81,13 +81,15 @@
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:visibility="gone"
-                            android:id="@+id/modCard"
+                            android:id="@+id/badgeLayout"
                             android:layout_marginTop="@dimen/marginNormal"
                             android:layout_gravity="center_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <com.google.android.material.card.MaterialCardView
+                                android:visibility="gone"
+                                android:id="@+id/modCard"
                                 app:cardElevation="0dp"
                                 app:contentPadding="@dimen/marginClose"
                                 app:cardBackgroundColor="?themeSecondaryColor"

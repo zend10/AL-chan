@@ -834,20 +834,49 @@ class StatsDetailActivity : BaseActivity() {
         val scoreList = arrayListOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
         val sortedStats = ArrayList<UserStatsData>()
 
+        val userScoreList = HashMap<Int, ArrayList<UserStatsData>>()
+        viewModel.currentStats?.forEach {
+            val score = (round(it.meanScore!! / 10.0) * 10).toInt()
+            if (userScoreList.containsKey(score)) {
+                userScoreList[score]!!.add(it)
+            } else {
+                userScoreList[score] = arrayListOf(it)
+            }
+        }
+
         scoreList.forEach { score ->
-            val scoreDetail = viewModel.currentStats?.find { it.meanScore?.toInt() == score }
-            if (scoreDetail != null) {
-                barEntries.add(BarEntry(score.toFloat(), scoreDetail.count?.toFloat()!!))
-                sortedStats.add(scoreDetail)
+            if (userScoreList.containsKey(score)) {
+                var totalCount = 0
+                var totalMinutes = 0
+                var totalChapters = 0
+                userScoreList[score]!!.forEach { data ->
+                    totalCount += data.count ?: 0
+                    totalMinutes += data.minutesWatched ?: 0
+                    totalChapters += data.chaptersRead ?: 0
+                }
+
+                barEntries.add(BarEntry(score.toFloat(), totalCount.toFloat()))
+                sortedStats.add(
+                    UserStatsData(
+                        color = Constant.SCORE_COLOR_MAP[score],
+                        count = totalCount,
+                        meanScore = score.toDouble(),
+                        minutesWatched = totalMinutes,
+                        chaptersRead = totalChapters,
+                        label = score.toString()
+                    )
+                )
             } else {
                 barEntries.add(BarEntry(score.toFloat(), 0F))
-                sortedStats.add(UserStatsData(
-                    color = Constant.SCORE_COLOR_MAP[score],
-                    count = 0,
-                    meanScore = score.toDouble(),
-                    minutesWatched = 0,
-                    chaptersRead = 0,
-                    label = score.toString())
+                sortedStats.add(
+                    UserStatsData(
+                        color = Constant.SCORE_COLOR_MAP[score],
+                        count = 0,
+                        meanScore = score.toDouble(),
+                        minutesWatched = 0,
+                        chaptersRead = 0,
+                        label = score.toString()
+                    )
                 )
             }
         }

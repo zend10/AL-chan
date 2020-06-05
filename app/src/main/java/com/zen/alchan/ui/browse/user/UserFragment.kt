@@ -196,7 +196,10 @@ class UserFragment : BaseFragment() {
 
         userUsernameText.text = user?.name ?: ""
 
+        badgeLayout.visibility = View.GONE
+
         if (!user?.moderatorStatus.isNullOrBlank()) {
+            badgeLayout.visibility = View.VISIBLE
             modCard.visibility = View.VISIBLE
             modText.text = user?.moderatorStatus?.split(" ")?.map { it.toLowerCase().capitalize() }?.joinToString(" ")
         } else {
@@ -204,6 +207,7 @@ class UserFragment : BaseFragment() {
         }
 
         if (user?.donatorTier != null && user.donatorTier != 0) {
+            badgeLayout.visibility = View.VISIBLE
             donatorCard.visibility = View.VISIBLE
             donatorText.text = user.donatorBadge
         } else {

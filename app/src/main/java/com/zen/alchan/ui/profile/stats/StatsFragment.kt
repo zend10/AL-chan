@@ -207,11 +207,20 @@ class StatsFragment : BaseFragment() {
         if (stats.anime?.scores?.isNullOrEmpty() == false) {
             animeStatsScoreLayout.visibility = View.VISIBLE
 
+            val userScoreList = HashMap<Int, Int>()
+            stats.anime.scores.forEach {
+                val score = (round(it?.meanScore!! / 10.0) * 10).toInt()
+                if (userScoreList.containsKey(score)) {
+                    userScoreList[score] = userScoreList[score]!! + it.count
+                } else {
+                    userScoreList[score] = it.count
+                }
+            }
+
             val barEntries = ArrayList<BarEntry>()
             scoreList.forEach {  score ->
-                val scoreDetail = stats.anime.scores.find { it?.score == score }
-                if (scoreDetail != null) {
-                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
+                if (userScoreList.containsKey(score)) {
+                    barEntries.add(BarEntry(score.toFloat(), userScoreList[score]!!.toFloat()))
                 } else {
                     barEntries.add(BarEntry(score.toFloat(), 0F))
                 }
@@ -258,11 +267,20 @@ class StatsFragment : BaseFragment() {
         if (stats.manga?.scores?.isNullOrEmpty() == false) {
             mangaStatsScoreLayout.visibility = View.VISIBLE
 
+            val userScoreList = HashMap<Int, Int>()
+            stats.manga.scores.forEach {
+                val score = (round(it?.meanScore!! / 10.0) * 10).toInt()
+                if (userScoreList.containsKey(score)) {
+                    userScoreList[score] = userScoreList[score]!! + it.count
+                } else {
+                    userScoreList[score] = it.count
+                }
+            }
+
             val barEntries = ArrayList<BarEntry>()
             scoreList.forEach {  score ->
-                val scoreDetail = stats.manga.scores.find { it?.score == score }
-                if (scoreDetail != null) {
-                    barEntries.add(BarEntry(score.toFloat(), scoreDetail.count.toFloat()))
+                if (userScoreList.containsKey(score)) {
+                    barEntries.add(BarEntry(score.toFloat(), userScoreList[score]!!.toFloat()))
                 } else {
                     barEntries.add(BarEntry(score.toFloat(), 0F))
                 }
