@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.FollowPage
+import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
 import com.zen.alchan.ui.browse.character.CharacterFragment
@@ -30,8 +31,28 @@ class BrowseActivity : BaseActivity(), BaseListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
 
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE)), intent.getIntExtra(LOAD_ID, 0), false)
+        if (intent?.data != null) {
+            try {
+                val appLinkData = intent?.data.toString()
+                val splitLink = appLinkData.substring(appLinkData.indexOf("anilist.co")).split("/")
+                val target = splitLink[1]
+                val id = splitLink[2]
+                changeFragment(BrowsePage.valueOf(target.toUpperCase()), id.toInt(), supportFragmentManager.backStackEntryCount != 0)
+            } catch (e: Exception) {
+                DialogUtility.showToast(this, R.string.invalid_link)
+                finish()
+            } finally {
+                return
+            }
+        }
+
+        try {
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE)), intent.getIntExtra(LOAD_ID, 0), false)
+            }
+        } catch (e: Exception) {
+            DialogUtility.showToast(this, R.string.invalid_link)
+            finish()
         }
     }
 
