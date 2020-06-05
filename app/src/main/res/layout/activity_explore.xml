@@ -119,10 +119,10 @@
 
             <include layout="@layout/layout_empty"/>
 
+            <include layout="@layout/layout_loading"/>
+
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include layout="@layout/layout_loading"/>
 
 </RelativeLayout>

@@ -42,6 +42,8 @@ object Constant {
     const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
     const val ISO_DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss"
 
+    const val EVA_ID = 103770
+
     val DEFAULT_THEME = AppColorTheme.YELLOW
     val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(
         "Watching",

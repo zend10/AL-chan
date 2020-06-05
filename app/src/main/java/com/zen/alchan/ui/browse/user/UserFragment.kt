@@ -23,6 +23,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.enums.ResponseStatus

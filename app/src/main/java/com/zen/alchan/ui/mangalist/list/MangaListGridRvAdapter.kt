@@ -47,7 +47,11 @@ class MangaListGridRvAdapter(private val context: Context,
         } else {
             GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.mangaStarIcon)
             holder.mangaStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-            holder.mangaRatingText.text = mediaList.score?.removeTrailingZero()
+            holder.mangaRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
+                "?"
+            } else {
+                mediaList.score?.removeTrailingZero()
+            }
         }
 
         holder.mangaProgressText.text = "Ch. ${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"

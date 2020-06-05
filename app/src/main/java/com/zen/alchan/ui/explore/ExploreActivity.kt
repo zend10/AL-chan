@@ -63,6 +63,7 @@ class ExploreActivity : BaseActivity() {
         viewModel.searchAnimeResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.ANIME) return@Observer
             when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
@@ -80,6 +81,7 @@ class ExploreActivity : BaseActivity() {
         viewModel.searchMangaResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.MANGA) return@Observer
             when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
@@ -97,6 +99,7 @@ class ExploreActivity : BaseActivity() {
         viewModel.searchCharactersResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.CHARACTER) return@Observer
             when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
@@ -114,6 +117,7 @@ class ExploreActivity : BaseActivity() {
         viewModel.searchStaffsResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.STAFF) return@Observer
             when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
@@ -131,6 +135,7 @@ class ExploreActivity : BaseActivity() {
         viewModel.searchStudiosResponse.observe(this, Observer {
             if (viewModel.selectedExplorePage != BrowsePage.STUDIO) return@Observer
             when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     if (!handleSearchResult(it.data?.page?.pageInfo?.hasNextPage == true)) return@Observer
@@ -195,7 +200,6 @@ class ExploreActivity : BaseActivity() {
                     viewModel.selectedExplorePage = BrowsePage.valueOf(viewModel.explorePageArray[which])
                     exploreTypeText.text = viewModel.selectedExplorePage?.name
                     assignAdapter()
-                    loadingLayout.visibility = View.VISIBLE
                     handleSearch(searchKeyWord)
 
                     searchSettingButton.visibility = if (viewModel.selectedExplorePage == BrowsePage.ANIME || viewModel.selectedExplorePage == BrowsePage.MANGA) {
@@ -228,6 +232,8 @@ class ExploreActivity : BaseActivity() {
     }
 
     private fun handleSearch(newKeyWord: String?) {
+        loadingLayout.visibility = View.VISIBLE
+
         searchKeyWord = newKeyWord ?: ""
         isLoading = false
 

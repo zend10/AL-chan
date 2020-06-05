@@ -25,6 +25,7 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaFilteredData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.utils.DialogUtility
@@ -239,6 +240,12 @@ class UserMediaListFragment : BaseFragment() {
             mediaListRefreshLayout.isRefreshing = false
             viewModel.retrieveMediaListCollection()
         }
+
+        if (viewModel.userId == Constant.EVA_ID) {
+            GlideApp.with(this).load(R.drawable.eva_bg).into(mediaListBackgroundImage)
+        } else {
+            GlideApp.with(this).load(0).into(mediaListBackgroundImage)
+        }
     }
 
     private fun assignAdapter(): RecyclerView.Adapter<*> {
@@ -246,23 +253,23 @@ class UserMediaListFragment : BaseFragment() {
         return when {
             viewModel.mediaType == MediaType.ANIME && viewModel.listType == ListType.LINEAR -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, handleListAction())
+                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
             }
             viewModel.mediaType == MediaType.ANIME && viewModel.listType == ListType.GRID -> {
                 mediaListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
-                UserAnimeListGridRvAdapter(activity!!, viewModel.currentList, scoreFormat, handleListAction())
+                UserAnimeListGridRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
             }
             viewModel.mediaType == MediaType.MANGA && viewModel.listType == ListType.LINEAR -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                UserMangaListRvAdapter(activity!!, viewModel.currentList, scoreFormat, handleListAction())
+                UserMangaListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
             }
             viewModel.mediaType == MediaType.MANGA && viewModel.listType == ListType.GRID -> {
                 mediaListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
-                UserMangaListGridRvAdapter(activity!!, viewModel.currentList, scoreFormat, handleListAction())
+                UserMangaListGridRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
             }
             else -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, handleListAction())
+                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
             }
         }
     }

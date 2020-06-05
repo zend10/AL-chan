@@ -2,6 +2,7 @@ package com.zen.alchan.ui.browse.user.list
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import type.ScoreFormat
 class UserAnimeListGridRvAdapter(private val context: Context,
                                  private val list: List<UserMediaListCollectionQuery.Entry?>,
                                  private val scoreFormat: ScoreFormat,
+                                 private val userId: Int?,
                                  private val listener: UserMediaListener
 ): RecyclerView.Adapter<UserAnimeListGridRvAdapter.ViewHolder>() {
 
@@ -50,7 +52,11 @@ class UserAnimeListGridRvAdapter(private val context: Context,
         } else {
             GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.animeStarIcon)
             holder.animeStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-            holder.animeRatingText.text = mediaList.score?.removeTrailingZero()
+            holder.animeRatingText.text = if (mediaList.score == null || mediaList.score.toInt() == 0) {
+                "?"
+            } else {
+                mediaList.score.removeTrailingZero()
+            }
         }
 
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
@@ -90,6 +96,12 @@ class UserAnimeListGridRvAdapter(private val context: Context,
             listener.viewMediaListDetail(mediaList.id)
             true
         }
+
+        if (userId == Constant.EVA_ID) {
+            holder.listCardBackground.setCardBackgroundColor(Color.parseColor("#80000000"))
+        } else {
+            holder.listCardBackground.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
+        }
     }
 
     override fun getItemCount(): Int {
@@ -97,6 +109,7 @@ class UserAnimeListGridRvAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val listCardBackground = view.listCardBackground!!
         val animeTitleText = view.animeTitleText!!
         val animeTitleLayout = view.animeTitleLayout!!
         val animeCoverImage = view.animeCoverImage!!

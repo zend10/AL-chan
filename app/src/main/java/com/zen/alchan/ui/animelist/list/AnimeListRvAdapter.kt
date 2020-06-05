@@ -63,7 +63,11 @@ class AnimeListRvAdapter(private val context: Context,
         } else {
             GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.animeStarIcon)
             holder.animeStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-            holder.animeRatingText.text = mediaList.score?.removeTrailingZero()
+            holder.animeRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
+                "?"
+            } else {
+                mediaList.score?.removeTrailingZero()
+            }
         }
 
         holder.animeProgressBar.progress = if (mediaList.media?.episodes == null && mediaList.progress!! > 0) {

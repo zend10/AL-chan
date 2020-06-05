@@ -2,6 +2,7 @@ package com.zen.alchan.ui.browse.user.list
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import type.ScoreFormat
 class UserMangaListGridRvAdapter(private val context: Context,
                                  private val list: List<UserMediaListCollectionQuery.Entry?>,
                                  private val scoreFormat: ScoreFormat,
+                                 private val userId: Int?,
                                  private val listener: UserMediaListener
 ): RecyclerView.Adapter<UserMangaListGridRvAdapter.ViewHolder>() {
 
@@ -43,7 +45,11 @@ class UserMangaListGridRvAdapter(private val context: Context,
         } else {
             GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.mangaStarIcon)
             holder.mangaStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-            holder.mangaRatingText.text = mediaList.score?.removeTrailingZero()
+            holder.mangaRatingText.text = if (mediaList.score == null || mediaList.score.toInt() == 0) {
+                "?"
+            } else {
+                mediaList.score.removeTrailingZero()
+            }
         }
 
         holder.mangaProgressText.text = "Ch. ${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
@@ -76,6 +82,12 @@ class UserMangaListGridRvAdapter(private val context: Context,
         holder.mangaCoverImage.setOnLongClickListener {
             listener.viewMediaListDetail(mediaList.id)
             true
+        }
+
+        if (userId == Constant.EVA_ID) {
+            holder.listCardBackground.setCardBackgroundColor(Color.parseColor("#80000000"))
+        } else {
+            holder.listCardBackground.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
         }
     }
 
