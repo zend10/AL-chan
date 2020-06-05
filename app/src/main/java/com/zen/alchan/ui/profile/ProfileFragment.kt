@@ -249,11 +249,12 @@ class ProfileFragment : BaseMainFragment() {
                 badgeCount.text = user.unreadNotificationCount?.toString()
             }
             badgeCount.visibility = View.VISIBLE
-            notificationActionView.setOnClickListener {
-                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
-            }
         } else {
             badgeCount.visibility = View.GONE
+        }
+
+        notificationActionView.setOnClickListener {
+            CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
         }
 
         itemNotifications.setOnMenuItemClickListener {
