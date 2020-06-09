@@ -30,9 +30,9 @@ class OverviewRelationsRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         GlideApp.with(context).load(item.coverImage).into(holder.mediaImage)
-        holder.mediaFormatText.text = item.format.name.replace("_", " ")
+        holder.mediaFormatText.text = item.format?.name?.replace("_", " ") ?: "TBA"
         holder.mediaTitleText.text = item.title
-        holder.mediaRelationText.text = item.relationType.name.replace("_", " ")
+        holder.mediaRelationText.text = item.relationType?.name?.replace("_", " ") ?: "TBA"
         holder.itemView.setOnClickListener { listener.passSelectedRelations(item.mediaId, item.mediaType) }
     }
 

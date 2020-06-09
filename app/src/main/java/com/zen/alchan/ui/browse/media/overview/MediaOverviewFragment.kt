@@ -314,8 +314,8 @@ class MediaOverviewFragment : BaseFragment() {
                         it.node.title?.userPreferred!!,
                         it.node.coverImage?.extraLarge,
                         it.node.type!!,
-                        it.node.format!!,
-                        it.relationType!!
+                        it.node.format,
+                        it.relationType
                     )
                 )
             }

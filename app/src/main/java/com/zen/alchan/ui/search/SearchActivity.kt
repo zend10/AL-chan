@@ -42,6 +42,8 @@ class SearchActivity : BaseActivity() {
     private fun initLayout() {
         searchBackButton.setOnClickListener { finish() }
 
+        searchBarEditText.requestFocus()
+
         disposable = RxTextView.textChanges(searchBarEditText)
             .debounce(800, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())

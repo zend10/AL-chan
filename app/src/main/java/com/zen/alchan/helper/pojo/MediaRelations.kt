@@ -9,6 +9,6 @@ class MediaRelations(
     val title: String,
     val coverImage: String?,
     val mediaType: MediaType,
-    val format: MediaFormat,
-    val relationType: MediaRelation
+    val format: MediaFormat?,
+    val relationType: MediaRelation?
 )
