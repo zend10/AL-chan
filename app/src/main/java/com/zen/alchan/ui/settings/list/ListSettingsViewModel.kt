@@ -30,6 +30,9 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : ViewMo
     var customAnimeLists = ArrayList<String?>()
     var customMangaLists = ArrayList<String?>()
 
+    var animeSectionOrder = ArrayList<String?>()
+    var mangaSectionOrder = ArrayList<String?>()
+
     var isInit = false
 
     val viewerData by lazy {
@@ -66,6 +69,16 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : ViewMo
             if (!savedCustomMangaList.isNullOrEmpty()) {
                 customMangaLists.addAll(savedCustomMangaList)
             }
+
+            val savedAnimeSectionOrder = userRepository.viewerData.value?.mediaListOptions?.animeList?.sectionOrder
+            if (!savedAnimeSectionOrder.isNullOrEmpty()) {
+                animeSectionOrder.addAll(savedAnimeSectionOrder)
+            }
+
+            val savedMangaSectionOrder = userRepository.viewerData.value?.mediaListOptions?.mangaList?.sectionOrder
+            if (!savedMangaSectionOrder.isNullOrEmpty()) {
+                mangaSectionOrder.addAll(savedMangaSectionOrder)
+            }
         }
     }
 
@@ -75,7 +88,7 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : ViewMo
         }
 
         val animeListOptions = MediaListTypeOptions(
-            null,
+            animeSectionOrder,
             splitAnimeList,
             customAnimeLists,
             advancedScoringLists,
@@ -83,7 +96,7 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : ViewMo
         )
 
         val mangaListOptions = MediaListTypeOptions(
-            null,
+            mangaSectionOrder,
             splitMangaList,
             customMangaLists,
             advancedScoringLists,

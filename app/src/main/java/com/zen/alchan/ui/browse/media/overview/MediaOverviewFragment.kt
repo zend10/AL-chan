@@ -334,17 +334,19 @@ class MediaOverviewFragment : BaseFragment() {
     private fun handleRecommendations() {
         if (viewModel.recommendationsList.isNullOrEmpty()) {
             mediaData?.recommendations?.edges?.forEach {
-                viewModel.recommendationsList.add(
-                    MediaRecommendations(
-                        it?.node?.mediaRecommendation?.id!!,
-                        it.node.rating,
-                        it.node.mediaRecommendation.title?.userPreferred,
-                        it.node.mediaRecommendation.format,
-                        it.node.mediaRecommendation.averageScore,
-                        it.node.mediaRecommendation.favourites,
-                        it.node.mediaRecommendation.coverImage?.extraLarge
+                if (it?.node?.mediaRecommendation?.id != null) {
+                    viewModel.recommendationsList.add(
+                        MediaRecommendations(
+                            it.node.mediaRecommendation.id,
+                            it.node.rating,
+                            it.node.mediaRecommendation.title?.userPreferred,
+                            it.node.mediaRecommendation.format,
+                            it.node.mediaRecommendation.averageScore,
+                            it.node.mediaRecommendation.favourites,
+                            it.node.mediaRecommendation.coverImage?.extraLarge
+                        )
                     )
-                )
+                }
             }
         }
 

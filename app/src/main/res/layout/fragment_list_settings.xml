@@ -300,6 +300,90 @@
 
             </RelativeLayout>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginFar"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularBoldFont"
+                    android:text="@string/anime_section_order"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/resetAnimeSectionText"
+                    style="?themeRegularClickableFont"
+                    android:text="@string/reset_to_default"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reorderAnimeSectionText"
+                    style="?themeRegularClickableFont"
+                    android:text="@string/start_reorder"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/animeSectionOrderRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginFar"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularBoldFont"
+                    android:text="@string/manga_section_order"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/resetMangaSectionText"
+                    style="?themeRegularClickableFont"
+                    android:text="@string/reset_to_default"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reorderMangaSectionText"
+                    style="?themeRegularClickableFont"
+                    android:text="@string/start_reorder"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mangaSectionOrderRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>

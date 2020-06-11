@@ -456,7 +456,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         }
 
         sectionOrder?.forEach { section ->
-            val groupList = mediaListGroup.find { group -> group.name == section && group.isCustomList == false }
+            val groupList = mediaListGroup.find { group -> group.name == section }
             if (groupList != null) {
                 sortedList.add(groupList)
             }
@@ -464,7 +464,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
         customList?.forEach { custom ->
             val groupList = mediaListGroup.find { group -> group.name == custom && group.isCustomList == true }
-            if (groupList != null) {
+            if (groupList != null && !sortedList.contains(groupList)) {
                 sortedList.add(groupList)
             }
         }

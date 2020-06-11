@@ -11,10 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.libs.DragListener
+import com.zen.alchan.helper.libs.ItemMoveCallback
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import kotlinx.android.synthetic.main.dialog_input.*
@@ -37,12 +42,23 @@ class ListSettingsFragment : Fragment() {
     private lateinit var customAnimeListsAdapter: ListSettingsRvAdapter
     private lateinit var customMangaListsAdapter: ListSettingsRvAdapter
 
+    private var reorderingAnime = false
+    private lateinit var animeSectionOrderAdapter: ListSettingsReorderRvAdapter
+    private lateinit var animeTouchHelper: ItemTouchHelper
+
+    private var reorderingManga = false
+    private lateinit var mangaSectionOrderAdapter: ListSettingsReorderRvAdapter
+    private lateinit var mangaTouchHelper: ItemTouchHelper
+
     companion object {
         private const val LIST_ADVANCED = 1
         private const val LIST_CUSTOM_ANIME = 2
         private const val LIST_CUSTOM_MANGA = 3
 
         private const val CHARACTER_LIMIT = 30
+
+        private const val REORDER_ANIME = 4
+        private const val REORDER_MANGA = 5
     }
 
     override fun onCreateView(
@@ -150,6 +166,41 @@ class ListSettingsFragment : Fragment() {
             )
         }
 
+        // Handle Split
+        splitAnimeCheckBox.setOnClickListener {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.reset_anime_section_order,
+                R.string.by_changing_this_setting_your_anime_section_order_will_be_reset,
+                R.string.proceed,
+                {
+                    resetOrder(REORDER_ANIME)
+                },
+                R.string.cancel,
+                {
+                    splitAnimeCheckBox.isChecked = !splitAnimeCheckBox.isChecked
+                },
+                false
+            )
+        }
+
+        splitMangaCheckBox.setOnClickListener {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.reset_manga_section_order,
+                R.string.by_changing_this_setting_your_manga_section_order_will_be_reset,
+                R.string.proceed,
+                {
+                    resetOrder(REORDER_MANGA)
+                },
+                R.string.cancel,
+                {
+                    splitMangaCheckBox.isChecked = !splitMangaCheckBox.isChecked
+                },
+                false
+            )
+        }
+
         // List
         defaultListOrderText.text = Utility.getMediaListOrderByString(viewModel.selectedDefaultListOrder)
 
@@ -180,7 +231,9 @@ class ListSettingsFragment : Fragment() {
                     val newEntry = inputDialogView.inputField.text.toString().trim()
                     if (newEntry.isNotBlank()) {
                         viewModel.customAnimeLists.add(newEntry)
+                        viewModel.animeSectionOrder.add(newEntry)
                         customAnimeListsAdapter.notifyDataSetChanged()
+                        animeSectionOrderAdapter.notifyDataSetChanged()
                         checkRecyclerViews()
                     }
                 },
@@ -207,7 +260,9 @@ class ListSettingsFragment : Fragment() {
                     val newEntry = inputDialogView.inputField.text.toString().trim()
                     if (newEntry.isNotBlank()) {
                         viewModel.customMangaLists.add(newEntry)
+                        viewModel.mangaSectionOrder.add(newEntry)
                         customMangaListsAdapter.notifyDataSetChanged()
+                        mangaSectionOrderAdapter.notifyDataSetChanged()
                         checkRecyclerViews()
                     }
                 },
@@ -215,6 +270,75 @@ class ListSettingsFragment : Fragment() {
                 { }
             )
         }
+
+        // Handle List Order
+        if (reorderingAnime) {
+            reorderAnimeSectionText.text = getString(R.string.stop_reorder)
+        } else {
+            reorderAnimeSectionText.text = getString(R.string.start_reorder)
+        }
+
+        reorderAnimeSectionText.setOnClickListener {
+            reorderingAnime = !reorderingAnime
+
+            if (reorderingAnime) {
+                reorderAnimeSectionText.text = getString(R.string.stop_reorder)
+            } else {
+                reorderAnimeSectionText.text = getString(R.string.start_reorder)
+            }
+
+            assignReorderAdapter(REORDER_ANIME)
+        }
+
+        resetAnimeSectionText.setOnClickListener {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.reset_order,
+                R.string.are_you_sure_you_want_to_reset_your_anime_section_order,
+                R.string.reset,
+                {
+                    resetOrder(REORDER_ANIME)
+                },
+                R.string.cancel,
+                {}
+            )
+        }
+
+        assignReorderAdapter(REORDER_ANIME)
+
+        if (reorderingManga) {
+            reorderMangaSectionText.text = getString(R.string.stop_reorder)
+        } else {
+            reorderMangaSectionText.text = getString(R.string.start_reorder)
+        }
+
+        reorderMangaSectionText.setOnClickListener {
+            reorderingManga = !reorderingManga
+
+            if (reorderingManga) {
+                reorderMangaSectionText.text = getString(R.string.stop_reorder)
+            } else {
+                reorderMangaSectionText.text = getString(R.string.start_reorder)
+            }
+
+            assignReorderAdapter(REORDER_MANGA)
+        }
+
+        resetMangaSectionText.setOnClickListener {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.reset_order,
+                R.string.are_you_sure_you_want_to_reset_your_manga_section_order,
+                R.string.reset,
+                {
+                    resetOrder(REORDER_MANGA)
+                },
+                R.string.cancel,
+                {}
+            )
+        }
+
+        assignReorderAdapter(REORDER_MANGA)
 
         checkRecyclerViews()
 
@@ -227,6 +351,29 @@ class ListSettingsFragment : Fragment() {
                 splitMangaList = splitMangaCheckBox.isChecked
             )
             true
+        }
+    }
+
+    private fun resetOrder(code: Int) {
+        when (code) {
+            REORDER_ANIME -> {
+                viewModel.animeSectionOrder = if (splitAnimeCheckBox.isChecked) {
+                    ArrayList(Constant.DEFAULT_SPLIT_ANIME_LIST_ORDER)
+                } else {
+                    ArrayList(Constant.DEFAULT_ANIME_LIST_ORDER)
+                }
+                viewModel.animeSectionOrder.addAll(viewModel.customAnimeLists)
+                assignReorderAdapter(REORDER_ANIME)
+            }
+            REORDER_MANGA -> {
+                viewModel.mangaSectionOrder = if (splitMangaCheckBox.isChecked) {
+                    ArrayList(Constant.DEFAULT_SPLIT_MANGA_LIST_ORDER)
+                } else {
+                    ArrayList(Constant.DEFAULT_MANGA_LIST_ORDER)
+                }
+                viewModel.mangaSectionOrder.addAll(viewModel.customMangaLists)
+                assignReorderAdapter(REORDER_MANGA)
+            }
         }
     }
 
@@ -264,10 +411,21 @@ class ListSettingsFragment : Fragment() {
                                     advancedScoringAdapter.notifyDataSetChanged()
                                 }
                                 LIST_CUSTOM_ANIME -> {
+                                    if (viewModel.animeSectionOrder.indexOf(list[position]) != -1) {
+                                        viewModel.animeSectionOrder[viewModel.animeSectionOrder.indexOf(list[position])] = newEntry
+                                        animeSectionOrderAdapter.notifyDataSetChanged()
+                                    }
+
                                     viewModel.customAnimeLists[position] = newEntry
                                     customAnimeListsAdapter.notifyDataSetChanged()
+
                                 }
                                 LIST_CUSTOM_MANGA -> {
+                                    if (viewModel.mangaSectionOrder.indexOf(list[position]) != -1) {
+                                        viewModel.mangaSectionOrder[viewModel.mangaSectionOrder.indexOf(list[position])] = newEntry
+                                        mangaSectionOrderAdapter.notifyDataSetChanged()
+                                    }
+
                                     viewModel.customMangaLists[position] = newEntry
                                     customMangaListsAdapter.notifyDataSetChanged()
                                 }
@@ -286,10 +444,21 @@ class ListSettingsFragment : Fragment() {
                         advancedScoringAdapter.notifyDataSetChanged()
                     }
                     LIST_CUSTOM_ANIME -> {
+                        if (viewModel.animeSectionOrder.indexOf(list[position]) != -1) {
+                            viewModel.animeSectionOrder.removeAt(viewModel.animeSectionOrder.indexOf(list[position]))
+                            animeSectionOrderAdapter.notifyDataSetChanged()
+                        }
+
                         viewModel.customAnimeLists.removeAt(position)
                         customAnimeListsAdapter.notifyDataSetChanged()
+
                     }
                     LIST_CUSTOM_MANGA -> {
+                        if (viewModel.mangaSectionOrder.indexOf(list[position]) != -1) {
+                            viewModel.mangaSectionOrder.removeAt(viewModel.mangaSectionOrder.indexOf(list[position]))
+                            mangaSectionOrderAdapter.notifyDataSetChanged()
+                        }
+
                         viewModel.customMangaLists.removeAt(position)
                         customMangaListsAdapter.notifyDataSetChanged()
                     }
@@ -332,6 +501,31 @@ class ListSettingsFragment : Fragment() {
             customMangaListsNoItemText.visibility = View.VISIBLE
         } else {
             customMangaListsNoItemText.visibility = View.GONE
+        }
+    }
+
+    private fun assignReorderAdapter(code: Int) {
+        when (code) {
+            REORDER_ANIME -> {
+                animeSectionOrderAdapter = ListSettingsReorderRvAdapter(viewModel.animeSectionOrder, reorderingAnime, object : DragListener {
+                    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+                        animeTouchHelper.startDrag(viewHolder)
+                    }
+                })
+                animeTouchHelper = ItemTouchHelper(ItemMoveCallback(animeSectionOrderAdapter))
+                animeTouchHelper.attachToRecyclerView(animeSectionOrderRecyclerView)
+                animeSectionOrderRecyclerView.adapter = animeSectionOrderAdapter
+            }
+            REORDER_MANGA -> {
+                mangaSectionOrderAdapter = ListSettingsReorderRvAdapter(viewModel.mangaSectionOrder, reorderingManga, object : DragListener {
+                    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+                        mangaTouchHelper.startDrag(viewHolder)
+                    }
+                })
+                mangaTouchHelper = ItemTouchHelper(ItemMoveCallback(mangaSectionOrderAdapter))
+                mangaTouchHelper.attachToRecyclerView(mangaSectionOrderRecyclerView)
+                mangaSectionOrderRecyclerView.adapter = mangaSectionOrderAdapter
+            }
         }
     }
 }

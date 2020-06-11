@@ -327,4 +327,16 @@
     <string name="friends">Friends</string>
     <string name="users">Users</string>
     <string name="invalid_link">Invalid Link</string>
+    <string name="anime_section_order">Anime Section Order</string>
+    <string name="manga_section_order">Manga Section Order</string>
+    <string name="start_reorder">Start Reorder</string>
+    <string name="reset_order">Reset Order</string>
+    <string name="are_you_sure_you_want_to_reset_your_anime_section_order">Are you sure you want to reset your anime section order?</string>
+    <string name="are_you_sure_you_want_to_reset_your_manga_section_order">Are you sure you want to reset your manga section order?</string>
+    <string name="stop_reorder">Stop Reorder</string>
+    <string name="reset_anime_section_order">Reset Anime Section Order</string>
+    <string name="by_changing_this_setting_your_anime_section_order_will_be_reset">By changing this setting, your anime section order will be reset.</string>
+    <string name="proceed">Proceed</string>
+    <string name="reset_manga_section_order">Reset Manga Section Order</string>
+    <string name="by_changing_this_setting_your_manga_section_order_will_be_reset">By changing this setting, your manga section order will be reset.</string>
 </resources>

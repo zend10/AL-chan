@@ -192,6 +192,10 @@ class AnimeListFragment : Fragment() {
                 }
             }
 
+            if (viewModel.selectedTab >= viewModel.tabItemList.size) {
+                viewModel.selectedTab = viewModel.tabItemList.size - 1
+            }
+
             val currentTab = viewModel.tabItemList[viewModel.selectedTab]
             toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 

@@ -17,6 +17,8 @@
             android:id="@+id/reorderFavoritesRecyclerView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:paddingTop="@dimen/marginNormal"
+            android:paddingStart="@dimen/marginNormal"
+            android:paddingEnd="@dimen/marginFar"
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
