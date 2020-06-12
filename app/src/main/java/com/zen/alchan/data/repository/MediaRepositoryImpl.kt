@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.datasource.MediaDataSource
 import com.zen.alchan.data.localstorage.MediaManager
@@ -35,6 +36,11 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
     override val tagListLastRetrieved: Long?
         get() = mediaManager.tagListLastRetrieved
+
+    // Used for banner in Social tab, for aesthetic purpose
+    private val _mostTrendingAnimeBannerLiveData = MutableLiveData<String?>()
+    override val mostTrendingAnimeBannerLivaData: LiveData<String?>
+        get() = _mostTrendingAnimeBannerLiveData
 
     private val _mediaData = SingleLiveEvent<Resource<MediaQuery.Data>>()
     override val mediaData: LiveData<Resource<MediaQuery.Data>>
@@ -116,7 +122,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaData.postValue(Resource.Success(t.data()!!))
+                    _mediaData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -138,7 +144,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaStatus.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaStatus.postValue(Resource.Success(t.data()!!))
+                    _mediaStatus.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -162,7 +168,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaOverviewData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaOverviewData.postValue(Resource.Success(t.data()!!))
+                    _mediaOverviewData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -184,7 +190,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaCharactersData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaCharactersData.postValue(Resource.Success(t.data()!!))
+                    _mediaCharactersData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -206,7 +212,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaStaffsData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaStaffsData.postValue(Resource.Success(t.data()!!))
+                    _mediaStaffsData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -230,7 +236,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaStatsData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaStatsData.postValue(Resource.Success(t.data()!!))
+                    _mediaStatsData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -254,7 +260,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _mediaReviewsData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _mediaReviewsData.postValue(Resource.Success(t.data()!!))
+                    _mediaReviewsData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -270,6 +276,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     @SuppressLint("CheckResult")
     override fun getTrendingAnime() {
         _trendingAnimeData.postValue(Resource.Loading())
+        _mostTrendingAnimeBannerLiveData.postValue(mediaManager.mostTrendingAnimeBanner)
 
         mediaDataSource.getTrendingMedia(MediaType.ANIME).subscribeWith(object : Observer<Response<TrendingMediaQuery.Data>> {
             override fun onSubscribe(d: Disposable) {}
@@ -278,7 +285,12 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _trendingAnimeData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _trendingAnimeData.postValue(Resource.Success(t.data()!!))
+                    _trendingAnimeData.postValue(Resource.Success(t.data!!))
+
+                    if (t.data?.page?.media?.get(0)?.bannerImage != null) {
+                        mediaManager.setMostTrendingAnimeBanner(t.data?.page?.media?.get(0)?.bannerImage)
+                        _mostTrendingAnimeBannerLiveData.postValue(mediaManager.mostTrendingAnimeBanner)
+                    }
                 }
             }
 
@@ -302,7 +314,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _trendingMangaData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _trendingMangaData.postValue(Resource.Success(t.data()!!))
+                    _trendingMangaData.postValue(Resource.Success(t.data!!))
                 }
             }
 
@@ -326,7 +338,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 if (t.hasErrors()) {
                     _releasingTodayData.postValue(Resource.Error(t.errors!![0].message))
                 } else {
-                    _releasingTodayData.postValue(Resource.Success(t.data()!!))
+                    _releasingTodayData.postValue(Resource.Success(t.data!!))
                 }
             }
 

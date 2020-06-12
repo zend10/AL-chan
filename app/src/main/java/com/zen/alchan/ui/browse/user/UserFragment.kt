@@ -51,8 +51,7 @@ class UserFragment : BaseFragment() {
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
 
-    private lateinit var itemNotifications: MenuItem
-    private lateinit var itemSettings: MenuItem
+    private lateinit var itemBestFriend: MenuItem
     private lateinit var itemViewInAniList: MenuItem
     private lateinit var itemShareProfile: MenuItem
 
@@ -89,14 +88,10 @@ class UserFragment : BaseFragment() {
         userToolbar.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
 
         userToolbar.menu.apply {
-            itemNotifications = findItem(R.id.itemNotifications)
-            itemSettings = findItem(R.id.itemSettings)
+            itemBestFriend = findItem(R.id.itemBestFriend)
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
             itemShareProfile = findItem(R.id.itemShareProfile)
         }
-
-        itemNotifications.isVisible = false
-        itemSettings.isVisible = false
 
         setupObserver()
         initLayout()
@@ -110,6 +105,9 @@ class UserFragment : BaseFragment() {
         viewModel.userData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 viewModel.currentIsFollowing = it.user?.isFollowing
+                if (viewModel.isBestFriend) {
+                    viewModel.handleBestFriend(true)
+                }
                 initLayout()
             }
         })
@@ -291,6 +289,36 @@ class UserFragment : BaseFragment() {
                 }
             }
         })
+
+        itemBestFriend.setOnMenuItemClickListener {
+            val title: Int
+            val message: Int
+            val positiveButton: Int
+
+            if (viewModel.isBestFriend) {
+                title = R.string.remove_from_best_friend
+                message = R.string.are_you_sure_you_want_to_remove_this_user_from_your_best_friend
+                positiveButton = R.string.remove
+            } else {
+                title = R.string.add_as_best_friend
+                message = R.string.are_you_sure_you_want_to_add_this_user_as_your_best_friend
+                positiveButton = R.string.add
+            }
+
+            DialogUtility.showOptionDialog(
+                activity,
+                title,
+                message,
+                positiveButton,
+                {
+                    viewModel.handleBestFriend()
+                    DialogUtility.showToast(activity, R.string.change_saved)
+                },
+                R.string.cancel,
+                { }
+            )
+            true
+        }
 
         itemViewInAniList.setOnMenuItemClickListener {
             if (user?.siteUrl == null) {

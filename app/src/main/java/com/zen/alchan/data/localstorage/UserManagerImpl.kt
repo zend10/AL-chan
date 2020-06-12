@@ -1,6 +1,7 @@
 package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.data.response.User
+import com.zen.alchan.helper.pojo.BestFriend
 import com.zen.alchan.helper.utils.Utility
 
 class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
@@ -26,6 +27,9 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
     override val followingsCountLastRetrieved: Long?
         get() = localStorage.followingsCountLastRetrieved
 
+    override val bestFriends: List<BestFriend>?
+        get() = localStorage.bestFriends
+
     override fun setBearerToken(token: String?) {
         localStorage.bearerToken = token
     }
@@ -43,5 +47,9 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
     override fun setFollowingsCount(followings: Int) {
         localStorage.followingsCount = followings
         localStorage.followingsCountLastRetrieved = Utility.getCurrentTimestamp()
+    }
+
+    override fun setBestFriends(list: List<BestFriend>?) {
+        localStorage.bestFriends = list
     }
 }

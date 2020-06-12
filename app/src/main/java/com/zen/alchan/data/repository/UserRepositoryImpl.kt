@@ -15,6 +15,7 @@ import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import com.zen.alchan.helper.pojo.BestFriend
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
@@ -131,6 +132,14 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     override val followingsCountLastRetrieved: Long?
         get() = userManager.followingsCountLastRetrieved
+
+    override val bestFriends: List<BestFriend>?
+        get() = userManager.bestFriends
+
+    // To notify SocialFragment when best friend data changed
+    private val _bestFriendChangedNotifier = SingleLiveEvent<List<BestFriend>>()
+    override val bestFriendChangedNotifier: LiveData<List<BestFriend>>
+        get() = _bestFriendChangedNotifier
 
     @SuppressLint("CheckResult")
     override fun checkSession() {
@@ -686,5 +695,31 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onComplete() { }
         })
+    }
+
+    override fun handleBestFriend(bestFriend: BestFriend, isEdit: Boolean) {
+        if (bestFriend.id == null) {
+            return
+        }
+
+        val savedBestFriends = ArrayList(userManager.bestFriends ?: listOf())
+        val findBestFriend = savedBestFriends.find { it.id == bestFriend.id }
+
+        if (findBestFriend == null && isEdit) {
+            return
+        }
+
+        if (findBestFriend != null) {
+            if (isEdit) {
+                savedBestFriends[savedBestFriends.indexOf(findBestFriend)] = bestFriend
+            } else {
+                savedBestFriends.remove(findBestFriend)
+            }
+        } else {
+            savedBestFriends.add(bestFriend)
+        }
+
+        userManager.setBestFriends(savedBestFriends)
+        _bestFriendChangedNotifier.postValue(userManager.bestFriends)
     }
 }

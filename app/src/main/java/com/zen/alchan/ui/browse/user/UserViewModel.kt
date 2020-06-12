@@ -7,6 +7,7 @@ import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
+import com.zen.alchan.helper.pojo.BestFriend
 
 class UserViewModel(private val otherUserRepository: OtherUserRepository,
                     private val userRepository: UserRepository,
@@ -48,6 +49,9 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
 
     val whiteBackgroundAvatar
         get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
+
+    val isBestFriend: Boolean
+        get() = userRepository.bestFriends?.find { it.id == userId } != null
 
     fun initData() {
         if (userId == null) {
@@ -100,5 +104,11 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
 
         otherUserRepository.getFollowingsCount(userId!!)
         otherUserRepository.getFollowersCount(userId!!)
+    }
+
+    fun handleBestFriend(isEdit: Boolean = false) {
+        if (userId != null) {
+            userRepository.handleBestFriend(BestFriend(userId, userData.value?.user?.name, userData.value?.user?.avatar?.medium), isEdit)
+        }
     }
 }

@@ -7,6 +7,11 @@ interface MediaManager {
     val genreListLastRetrieved: Long?
     val tagList: List<MediaTagCollection>
     val tagListLastRetrieved: Long?
+
+    val mostTrendingAnimeBanner: String?
+
     fun setGenreList(genres: List<String?>)
     fun setTagList(tags: List<MediaTagCollection>)
+
+    fun setMostTrendingAnimeBanner(url: String?)
 }

@@ -339,4 +339,16 @@
     <string name="proceed">Proceed</string>
     <string name="reset_manga_section_order">Reset Manga Section Order</string>
     <string name="by_changing_this_setting_your_manga_section_order_will_be_reset">By changing this setting, your manga section order will be reset.</string>
+    <string name="best_friends">Best Friends</string>
+    <string name="manage">Manage</string>
+    <string name="friends_activity">Friends\' Activity</string>
+    <string name="visit_global_activity">Visit Global Activity</string>
+    <string name="see_what_s_everyone_up_to_get_yourself_involved_with_the_community">See what\'s everyone up to. Get yourself involved with the community.</string>
+    <string name="all_friends">All Friends</string>
+    <string name="all_best_friends">All Best Friends</string>
+    <string name="add_as_best_friend">Add as Best Friend</string>
+    <string name="remove_from_best_friend">Remove from Best Friend</string>
+    <string name="are_you_sure_you_want_to_remove_this_user_from_your_best_friend">Are you sure you want to remove this user from your best friend?</string>
+    <string name="are_you_sure_you_want_to_add_this_user_as_your_best_friend">Are you sure you want to add this user as your best friend?</string>
+    <string name="best_friend_instruction">Best Friend feature is only available on AL-chan. Meaning, it has nothing to do with AniList, and the data is saved locally on your phone.\n\nWith this feature, you can add users to your Best Friend list so that you can quickly access their activity and their profile.\n\nTo add someone as Best Friend, go to their profile page and click on the icon at the toolbar. Once you\'ve added them as best friends, it will appear here.\n\nClick once at their avatar to view only their activity, click once again to disable the filter.\nLong press their avatar to go to their profile.\n\nP.S. The other person will not know you\'ve added them as your best friends.</string>
 </resources>

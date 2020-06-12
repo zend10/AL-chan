@@ -6,6 +6,7 @@ import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.NotificationOption
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.FollowPage
+import com.zen.alchan.helper.pojo.BestFriend
 import io.reactivex.Completable
 import type.ScoreFormat
 import type.UserTitleLanguage
@@ -46,6 +47,9 @@ interface UserRepository {
     val viewerDataLastRetrieved: Long?
     val followersCountLastRetrieved: Long?
     val followingsCountLastRetrieved: Long?
+
+    val bestFriends: List<BestFriend>?
+    val bestFriendChangedNotifier: LiveData<List<BestFriend>>
 
     fun checkSession()
 
@@ -95,4 +99,6 @@ interface UserRepository {
     fun getUserFollowings(page: Int)
     fun toggleFollow(userId: Int, fromPage: FollowPage)
     fun toggleFollow(userId: Int)
+
+    fun handleBestFriend(bestFriend: BestFriend, isEdit: Boolean = false)
 }

@@ -1,6 +1,7 @@
 package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.data.response.User
+import com.zen.alchan.helper.pojo.BestFriend
 
 interface UserManager {
     val bearerToken: String?
@@ -10,9 +11,11 @@ interface UserManager {
     val followersCountLastRetrieved: Long?
     val followingsCount: Int
     val followingsCountLastRetrieved: Long?
+    val bestFriends: List<BestFriend>?
 
     fun setBearerToken(token: String?)
     fun setViewerData(user: User?)
     fun setFollowersCount(followers: Int)
     fun setFollowingsCount(followings: Int)
+    fun setBestFriends(list: List<BestFriend>?)
 }

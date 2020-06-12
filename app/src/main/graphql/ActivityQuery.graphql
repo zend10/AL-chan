@@ -1,0 +1,194 @@
+query ActivityQuery(
+    $page: Int,
+    $perPage: Int,
+    $type_in: [ActivityType],
+    $userId_in: [Int],
+    $userId_not_in: [Int],
+    $isFollowing: Boolean
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        activities(
+            type_in: $type_in,
+            userId_in: $userId_in,
+            userId_not_in: $userId_not_in,
+            isFollowing: $isFollowing,
+            sort: [ID_DESC]
+        ) {
+            __typename
+            ... on TextActivity {
+                id
+                userId
+                type
+                replyCount
+                text
+                siteUrl
+                isSubscribed
+                likeCount
+                isLiked
+                createdAt
+                user {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+                replies {
+                    id
+                    userId
+                    activityId
+                    text
+                    likeCount
+                    isLiked
+                    createdAt
+                    user {
+                        id
+                        name
+                        avatar {
+                            medium
+                        }
+                    }
+                    likes {
+                        id
+                        name
+                        avatar {
+                            medium
+                        }
+                    }
+                }
+                likes {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+            }
+            ... on ListActivity {
+                id
+                userId
+                type
+                replyCount
+                status
+                progress
+                isSubscribed
+                likeCount
+                isLiked
+                siteUrl
+                createdAt
+                user {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+                media {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    type
+                    coverImage {
+                        medium
+                    }
+                }
+                replies {
+                    id
+                    userId
+                    activityId
+                    text
+                    likeCount
+                    isLiked
+                    createdAt
+                    user {
+                        id
+                        name
+                        avatar {
+                            medium
+                        }
+                    }
+                    likes {
+                        id
+                        name
+                        avatar {
+                            medium
+                        }
+                    }
+                }
+                likes {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+            }
+            ... on MessageActivity {
+                id
+                recipientId
+                messengerId
+                type
+                replyCount
+                message
+                isSubscribed
+                likeCount
+                isLiked
+                isPrivate
+                siteUrl
+                createdAt
+                recipient {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+                messenger {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+                replies {
+                    id
+                    userId
+                    activityId
+                    text
+                    likeCount
+                    isLiked
+                    createdAt
+                    user {
+                        id
+                        name
+                        avatar {
+                            medium
+                        }
+                    }
+                    likes {
+                        id
+                        name
+                        avatar {
+                            medium
+                        }
+                    }
+                }
+                likes {
+                    id
+                    name
+                    avatar {
+                        medium
+                    }
+                }
+            }
+        }
+    }
+}

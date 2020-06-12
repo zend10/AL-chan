@@ -4,6 +4,7 @@ import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.pojo.AppSettings
+import com.zen.alchan.helper.pojo.BestFriend
 import com.zen.alchan.helper.pojo.ListStyle
 import type.StaffLanguage
 
@@ -27,10 +28,14 @@ interface LocalStorage {
     var tagList: List<MediaTagCollection>?
     var tagListLastRetrieved: Long?
 
+    var mostTrendingAnimeBanner: String?
+
     var animeListStyle: ListStyle
     var mangaListStyle: ListStyle
 
-    var lastAnnouncemendId: Int?
+    var lastAnnouncementId: Int?
+
+    var bestFriends: List<BestFriend>?
 
     fun clearStorage()
 }

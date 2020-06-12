@@ -6,29 +6,176 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.social.SocialFragment">
 
-    <include layout="@layout/layout_toolbar"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:orientation="vertical"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/socialRefreshLayout"
         android:layout_below="@+id/toolbarLayout"
-        android:layout_margin="@dimen/marginPage"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            app:srcCompat="@drawable/ic_taxi_programming"
-            android:adjustViewBounds="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:text="Under Development.\nPlease look forward to it."
-            style="?themeTitleFont"
-            android:textAlignment="center"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:background="?themeSecondaryColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/globalActivityImage"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="3:2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/dark_gradient_three_background"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:padding="@dimen/marginPage"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            style="?themeRegularBoldFont"
+                            android:text="@string/see_what_s_everyone_up_to_get_yourself_involved_with_the_community"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/visitGlobalActivityButton"
+                            style="?themeButtonBorderPrimary"
+                            android:text="@string/visit_global_activity"
+                            android:layout_marginTop="@dimen/marginNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/best_friends"
+                        style="?themeRegularBoldFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/bestFriendInfo"
+                        app:srcCompat="@drawable/ic_info"
+                        app:tint="?themePrimaryColor"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/bestFriendsRecyclerView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:paddingStart="@dimen/marginPage"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingTop="@dimen/marginNormal"
+                    android:paddingBottom="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <include layout="@layout/layout_divider"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/friends_activity"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/friendsActivityFilterText"
+                        style="?themeRegularClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/friendsActivityRecyclerView"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingStart="@dimen/marginPage"
+                        android:paddingEnd="@dimen/marginPage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:id="@+id/friendsActivityLoading"
+                        android:indeterminateTint="?themeContentColor"
+                        android:layout_centerInParent="true"
+                        android:padding="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/friendsActivityViewMore"
+                    style="?themeButtonPrimary"
+                    android:text="@string/view_more"
+                    app:backgroundTint="?themeCardColor"
+                    android:textColor="?themePrimaryColor"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

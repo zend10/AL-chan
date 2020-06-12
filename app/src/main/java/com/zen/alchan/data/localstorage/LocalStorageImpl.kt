@@ -8,6 +8,7 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.AppSettings
+import com.zen.alchan.helper.pojo.BestFriend
 import com.zen.alchan.helper.pojo.ListStyle
 import type.StaffLanguage
 
@@ -31,9 +32,11 @@ class LocalStorageImpl(private val context: Context,
         private const val GENRE_LIST_LAST_RETRIEVED = "genreListLastRetrieved"
         private const val TAG_LIST = "tagList"
         private const val TAG_LIST_LAST_RETRIEVED = "tagListLastRetrieved"
+        private const val MOST_TRENDING_ANIME_BANNER = "mostTrendingAnimeBanner"
         private const val ANIME_LIST_STYLE = "animeListStyle"
         private const val MANGA_LIST_STYLE = "mangaListStyle"
         private const val LAST_ANNOUNCEMENT_ID = "lastAnnouncementId"
+        private const val BEST_FRIENDS = "bestFriends"
     }
 
     override var bearerToken: String?
@@ -84,6 +87,10 @@ class LocalStorageImpl(private val context: Context,
         get() = getData(TAG_LIST_LAST_RETRIEVED)?.toLong()
         set(value) { setData(TAG_LIST_LAST_RETRIEVED, value.toString()) }
 
+    override var mostTrendingAnimeBanner: String?
+        get() = getData(MOST_TRENDING_ANIME_BANNER)
+        set(value) { setData(MOST_TRENDING_ANIME_BANNER, value) }
+
     override var animeListStyle: ListStyle
         get() = if (getData(ANIME_LIST_STYLE) == null) ListStyle() else gson.fromJson(getData(ANIME_LIST_STYLE), ListStyle::class.java)
         set(value) { setData(ANIME_LIST_STYLE, gson.toJson(value)) }
@@ -92,9 +99,13 @@ class LocalStorageImpl(private val context: Context,
         get() =  if (getData(MANGA_LIST_STYLE) == null) ListStyle() else gson.fromJson(getData(MANGA_LIST_STYLE), ListStyle::class.java)
         set(value) { setData(MANGA_LIST_STYLE, gson.toJson(value)) }
 
-    override var lastAnnouncemendId: Int?
+    override var lastAnnouncementId: Int?
         get() = getData(LAST_ANNOUNCEMENT_ID)?.toInt()
         set(value) { setData(LAST_ANNOUNCEMENT_ID, value.toString()) }
+
+    override var bestFriends: List<BestFriend>?
+        get() = gson.fromJson(getData(BEST_FRIENDS), genericType<List<BestFriend>>())
+        set(value) { setData(BEST_FRIENDS, gson.toJson(value)) }
 
     private fun getData(key: String): String? {
         return sharedPreferences.getString(key, null)

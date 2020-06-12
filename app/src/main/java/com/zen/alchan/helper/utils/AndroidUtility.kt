@@ -1,5 +1,6 @@
 package com.zen.alchan.helper.utils
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -8,6 +9,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.ClickableSpan
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
@@ -167,5 +169,11 @@ object AndroidUtility {
         override fun onFailure(call: Call<T>, t: Throwable) {
             observer.postValue(Resource.Error(t.localizedMessage ?: ""))
         }
+    }
+
+    fun getScreenWidth(activity: Activity?): Int {
+        val metrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        return metrics.widthPixels
     }
 }

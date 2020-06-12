@@ -6,11 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.search.SearchListFragment">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/testxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResultRecyclerView"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

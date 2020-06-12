@@ -27,6 +27,7 @@
                 app:srcCompat="@drawable/ic_long_arrow_left"
                 android:padding="@dimen/iconPadding"
                 app:tint="?themeBackgroundColor"
+                android:foreground="?selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

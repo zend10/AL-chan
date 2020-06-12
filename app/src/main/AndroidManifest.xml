@@ -16,25 +16,44 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.profile.follows.FollowsActivity"></activity>
+        <activity android:name=".ui.profile.follows.FollowsActivity" />
         <activity android:name=".ui.notification.NotificationActivity" />
         <activity android:name=".ui.profile.stats.details.StatsDetailActivity" />
         <activity android:name=".ui.profile.favorites.reorder.ReorderFavoritesActivity" />
         <activity android:name=".ui.seasonal.SeasonalActivity" />
         <activity android:name=".ui.explore.ExploreActivity" />
         <activity android:name=".ui.browse.BrowseActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-             <intent-filter>
-                 <action android:name="android.intent.action.VIEW" />
-                 <category android:name="android.intent.category.DEFAULT" />
-                 <category android:name="android.intent.category.BROWSABLE" />
-                 <data android:scheme="https" android:host="anilist.co" android:pathPattern="/anime/.*" />
-                 <data android:scheme="https" android:host="anilist.co" android:pathPattern="/manga/.*" />
-                 <data android:scheme="https" android:host="anilist.co" android:pathPattern="/character/.*" />
-                 <data android:scheme="https" android:host="anilist.co" android:pathPattern="/staff/.*" />
-                 <data android:scheme="https" android:host="anilist.co" android:pathPattern="/studio/.*" />
-                 <data android:scheme="https" android:host="anilist.co" android:pathPattern="/user/.*" />
-             </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/anime/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/manga/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/character/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/staff/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/studio/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/user/.*"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
         <activity android:name=".ui.common.customise.CustomiseListActivity" />

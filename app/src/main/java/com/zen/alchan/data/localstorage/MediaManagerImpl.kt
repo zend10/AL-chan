@@ -17,6 +17,9 @@ class MediaManagerImpl(private val localStorage: LocalStorage) : MediaManager {
     override val tagListLastRetrieved: Long?
         get() = localStorage.tagListLastRetrieved
 
+    override val mostTrendingAnimeBanner: String?
+        get() = localStorage.mostTrendingAnimeBanner
+
     override fun setGenreList(genres: List<String?>) {
         localStorage.genreList = genres
         localStorage.genreListLastRetrieved = Utility.getCurrentTimestamp()
@@ -25,5 +28,9 @@ class MediaManagerImpl(private val localStorage: LocalStorage) : MediaManager {
     override fun setTagList(tags: List<MediaTagCollection>) {
         localStorage.tagList = tags
         localStorage.tagListLastRetrieved = Utility.getCurrentTimestamp()
+    }
+
+    override fun setMostTrendingAnimeBanner(url: String?) {
+        localStorage.mostTrendingAnimeBanner = url
     }
 }

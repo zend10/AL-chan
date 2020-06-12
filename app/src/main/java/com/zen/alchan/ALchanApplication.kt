@@ -56,6 +56,7 @@ import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
+import com.zen.alchan.ui.social.SocialViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -170,6 +171,9 @@ class ALchanApplication : Application() {
         viewModel { ListSettingsViewModel(get()) }
         viewModel { NotificationsSettingsViewModel(get()) }
         viewModel { AccountSettingsViewModel(get()) }
+
+        // social
+        viewModel { SocialViewModel(get(), get()) }
 
     }
 

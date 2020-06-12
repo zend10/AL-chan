@@ -28,6 +28,10 @@ class SearchActivity : BaseActivity() {
     val source = PublishSubject.create<String>() // to send search query to SearchListFragment
     private lateinit var disposable: Disposable
 
+    companion object {
+        const val SEARCH_USER = "searchUser"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -35,6 +39,11 @@ class SearchActivity : BaseActivity() {
         searchCategoryButtonList = listOf(
             searchAnimeButton, searchMangaButton, searchCharactersButton, searchStaffsButton, searchStudiosButton, searchUsersButton
         )
+
+        if (intent.getBooleanExtra(SEARCH_USER, false)) {
+            viewModel.selectedPage = BrowsePage.USER
+            searchUsersButton.parent.requestChildFocus(searchUsersButton, searchUsersButton)
+        }
 
         initLayout()
     }

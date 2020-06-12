@@ -270,7 +270,7 @@
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/userToolbar"
-                    app:menu="@menu/menu_profile"
+                    app:menu="@menu/menu_other_profile"
                     app:layout_collapseMode="pin"
                     android:elevation="0dp"
                     android:fitsSystemWindows="false"
