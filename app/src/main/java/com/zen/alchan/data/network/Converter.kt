@@ -578,23 +578,23 @@ object Converter {
     }
 
     private fun convertMediaCoverImage(coverImage: AnimeListCollectionQuery.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large)
+        return MediaCoverImage(coverImage.large, null)
     }
 
     private fun convertMediaCoverImage(coverImage: AnimeListEntryMutation.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large)
+        return MediaCoverImage(coverImage.large, null)
     }
 
     private fun convertMediaCoverImage(coverImage: MangaListCollectionQuery.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large)
+        return MediaCoverImage(coverImage.large, null)
     }
 
     private fun convertMediaCoverImage(coverImage: MangaListEntryMutation.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large)
+        return MediaCoverImage(coverImage.large, null)
     }
 
     private fun convertMediaCoverImage(coverImage: SeasonalAnimeQuery.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large)
+        return MediaCoverImage(coverImage.large, null)
     }
 
     private fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.StartedAt): FuzzyDate {

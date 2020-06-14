@@ -22,173 +22,188 @@ query ActivityQuery(
             sort: [ID_DESC]
         ) {
             __typename
-            ... on TextActivity {
-                id
-                userId
-                type
-                replyCount
-                text
-                siteUrl
-                isSubscribed
-                likeCount
-                isLiked
-                createdAt
-                user {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
-                replies {
-                    id
-                    userId
-                    activityId
-                    text
-                    likeCount
-                    isLiked
-                    createdAt
-                    user {
-                        id
-                        name
-                        avatar {
-                            medium
-                        }
-                    }
-                    likes {
-                        id
-                        name
-                        avatar {
-                            medium
-                        }
-                    }
-                }
-                likes {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
+            ... onTextActivity
+            ... onListActivity
+            ... onMessageActivity
+        }
+    }
+}
+
+fragment onTextActivity on TextActivity {
+    id
+    userId
+    type
+    replyCount
+    text
+    siteUrl
+    isSubscribed
+    likeCount
+    isLiked
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+    replies {
+        id
+        userId
+        activityId
+        text
+        likeCount
+        isLiked
+        createdAt
+        user {
+            id
+            name
+            avatar {
+                medium
             }
-            ... on ListActivity {
-                id
-                userId
-                type
-                replyCount
-                status
-                progress
-                isSubscribed
-                likeCount
-                isLiked
-                siteUrl
-                createdAt
-                user {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
-                media {
-                    id
-                    title {
-                        userPreferred
-                    }
-                    type
-                    coverImage {
-                        medium
-                    }
-                }
-                replies {
-                    id
-                    userId
-                    activityId
-                    text
-                    likeCount
-                    isLiked
-                    createdAt
-                    user {
-                        id
-                        name
-                        avatar {
-                            medium
-                        }
-                    }
-                    likes {
-                        id
-                        name
-                        avatar {
-                            medium
-                        }
-                    }
-                }
-                likes {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
+        }
+        likes {
+            id
+            name
+            avatar {
+                medium
             }
-            ... on MessageActivity {
-                id
-                recipientId
-                messengerId
-                type
-                replyCount
-                message
-                isSubscribed
-                likeCount
-                isLiked
-                isPrivate
-                siteUrl
-                createdAt
-                recipient {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
-                messenger {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
-                replies {
-                    id
-                    userId
-                    activityId
-                    text
-                    likeCount
-                    isLiked
-                    createdAt
-                    user {
-                        id
-                        name
-                        avatar {
-                            medium
-                        }
-                    }
-                    likes {
-                        id
-                        name
-                        avatar {
-                            medium
-                        }
-                    }
-                }
-                likes {
-                    id
-                    name
-                    avatar {
-                        medium
-                    }
-                }
+        }
+    }
+    likes {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+}
+
+fragment onListActivity on ListActivity {
+    id
+    userId
+    type
+    replyCount
+    status
+    progress
+    isSubscribed
+    likeCount
+    isLiked
+    siteUrl
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+    media {
+        id
+        title {
+            userPreferred
+        }
+        type
+        format
+        startDate {
+            year
+            month
+            day
+        }
+        episodes
+        chapters
+        volumes
+        coverImage {
+            medium
+        }
+    }
+    replies {
+        id
+        userId
+        activityId
+        text
+        likeCount
+        isLiked
+        createdAt
+        user {
+            id
+            name
+            avatar {
+                medium
             }
+        }
+        likes {
+            id
+            name
+            avatar {
+                medium
+            }
+        }
+    }
+    likes {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+}
+
+fragment onMessageActivity on MessageActivity {
+    id
+    recipientId
+    messengerId
+    type
+    replyCount
+    message
+    isSubscribed
+    likeCount
+    isLiked
+    isPrivate
+    siteUrl
+    createdAt
+    recipient {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+    messenger {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+    replies {
+        id
+        userId
+        activityId
+        text
+        likeCount
+        isLiked
+        createdAt
+        user {
+            id
+            name
+            avatar {
+                medium
+            }
+        }
+        likes {
+            id
+            name
+            avatar {
+                medium
+            }
+        }
+    }
+    likes {
+        id
+        name
+        avatar {
+            medium
         }
     }
 }

@@ -3,20 +3,29 @@ package com.zen.alchan.ui.social
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
+import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.helper.pojo.ActivityReply
+import com.zen.alchan.helper.pojo.ListActivity
+import com.zen.alchan.helper.pojo.MessageActivity
+import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_social.*
+import kotlinx.android.synthetic.main.layout_empty.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -27,6 +36,7 @@ class SocialFragment : Fragment() {
     private val viewModel by viewModel<SocialViewModel>()
 
     private lateinit var bestFriendAdapter: BestFriendRvAdapter
+    private lateinit var friendsActivityAdapter: FriendsActivityRvAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +52,9 @@ class SocialFragment : Fragment() {
         bestFriendAdapter = assignBestFriendAdapter()
         bestFriendsRecyclerView.adapter = bestFriendAdapter
 
+        friendsActivityAdapter = assignAdapter()
+        friendsActivityRecyclerView.adapter= friendsActivityAdapter
+
         initLayout()
         setupObserver()
     }
@@ -55,9 +68,64 @@ class SocialFragment : Fragment() {
             }
         })
 
-        viewModel.bestFriendChangedNotfier.observe(viewLifecycleOwner, Observer {
+        viewModel.bestFriendChangedNotifier.observe(viewLifecycleOwner, Observer {
             viewModel.reinitBestFriends()
             bestFriendAdapter.notifyDataSetChanged()
+            viewModel.selectedBestFriend = null
+            viewModel.retrieveFriendsActivity()
+        })
+
+        viewModel.friendsActivityResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> friendsActivityLoading.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    friendsActivityLoading.visibility = View.GONE
+                    viewModel.activityList.clear()
+                    it.data?.page?.activities?.forEach { act ->
+                        val activityItem = when (act?.__typename) {
+                            viewModel.TEXT_ACTIVITY -> {
+                                val item = act.fragments.onTextActivity
+                                val replies = viewModel.getReplies(act.__typename, act.fragments)
+                                val likes = viewModel.getLikes(act.__typename, act.fragments)
+                                val user = User(id = item?.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
+                                TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.userId, item.text, user)
+                            }
+                            viewModel.LIST_ACTIVITY -> {
+                                val item = act.fragments.onListActivity!!
+                                val replies = viewModel.getReplies(viewModel.LIST_ACTIVITY, act.fragments)
+                                val likes = viewModel.getLikes(viewModel.LIST_ACTIVITY, act.fragments)
+                                val media = Media(id = item.media?.id!!, title = MediaTitle(item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
+                                val user = User(id = item.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
+                                ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.userId, item.status, item.progress, media, user)
+                            }
+                            viewModel.MESSAGE_ACTIVITY -> {
+                                val item = act.fragments.onMessageActivity!!
+                                val replies = viewModel.getReplies(viewModel.MESSAGE_ACTIVITY, act.fragments)
+                                val likes = viewModel.getLikes(viewModel.MESSAGE_ACTIVITY, act.fragments)
+                                val recipient = User(id = item.recipient?.id!!, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
+                                val messenger = User(id = item.messenger?.id!!, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
+                                MessageActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.recipientId, item.messengerId, item.message, item.isPrivate, recipient, messenger)
+                            }
+                            else -> null
+                        }
+
+                        if (activityItem != null) {
+                            viewModel.activityList.add(activityItem)
+                        }
+                    }
+
+                    friendsActivityAdapter.notifyDataSetChanged()
+
+                    if (viewModel.activityList.size == 0) {
+                        emptyLayout.visibility = View.VISIBLE
+                        friendsActivityRecyclerView.visibility = View.GONE
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    friendsActivityLoading.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
         })
 
         viewModel.initData()
@@ -66,7 +134,7 @@ class SocialFragment : Fragment() {
     private fun initLayout() {
         socialRefreshLayout.setOnRefreshListener {
             socialRefreshLayout.isRefreshing = false
-            // reload friends activity
+            viewModel.retrieveFriendsActivity()
         }
 
         visitGlobalActivityButton.setOnClickListener {
@@ -76,14 +144,21 @@ class SocialFragment : Fragment() {
         bestFriendInfo.setOnClickListener {
             DialogUtility.showInfoDialog(
                 activity,
-                "Best Friend feature is only available on AL-chan. Meaning, it has nothing to do with AniList, and the data is saved locally on your phone.\n\nWith this feature, you can add users to your Best Friend list so that you can quickly access their activity and their profile.\n\nTo add someone as Best Friend, go to their profile page and click on the icon at the toolbar. Once you've added them as best friends, it will appear here.\n\nClick once at their avatar to view only their activity, click once again to disable the filter.\nLong press their avatar to go to their profile.\n\nP.S. The other person will not know you've added them as your best friends."
+                R.string.best_friend_instruction
             )
         }
 
-        // set filter text
+        friendsActivityFilterText.text = getString(viewModel.activityTypeArray[viewModel.activityTypeList.indexOf(viewModel.selectedActivityType)])
 
         friendsActivityFilterText.setOnClickListener {
-            // open filter dialog
+            val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
+            MaterialAlertDialogBuilder(activity)
+                .setItems(activityTypeStringArray) { _, which ->
+                    viewModel.selectedActivityType = viewModel.activityTypeList[which]
+                    friendsActivityFilterText.text = getString(viewModel.activityTypeArray[which])
+                    viewModel.retrieveFriendsActivity()
+                }
+                .show()
         }
     }
 
@@ -92,15 +167,21 @@ class SocialFragment : Fragment() {
             object : BestFriendRvAdapter.BestFriendListener {
                 override fun passSelectedBestFriend(position: Int, id: Int?) {
                     if (position != 0) {
+                        viewModel.selectedBestFriend = null
+
                         viewModel.bestFriends.forEachIndexed { index, bestFriend ->
                             if (index == position) {
                                 viewModel.bestFriends[index].isSelected = !viewModel.bestFriends[index].isSelected
+                                if (viewModel.bestFriends[index].isSelected) {
+                                    viewModel.selectedBestFriend = viewModel.bestFriends[index]
+                                }
                             } else {
                                 viewModel.bestFriends[index].isSelected = false
                             }
                         }
+
                         bestFriendAdapter.notifyDataSetChanged()
-                        // retrieve best friend activity
+                        viewModel.retrieveFriendsActivity()
                     } else {
                         val intent = Intent(activity, SearchActivity::class.java)
                         intent.putExtra(SearchActivity.SEARCH_USER, true)
@@ -115,5 +196,11 @@ class SocialFragment : Fragment() {
                     startActivity(intent)
                 }
             })
+    }
+
+    private fun assignAdapter(): FriendsActivityRvAdapter {
+        return FriendsActivityRvAdapter(activity!!, viewModel.activityList, object : ActivityListener {
+
+        })
     }
 }

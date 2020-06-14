@@ -72,18 +72,6 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions
     ): Observable<Response<ListSettingsMutation.Data>> {
-//        val animeSectionOrder = ArrayList<String?>()
-//
-//        if (animeListOptions.splitCompletedSectionByFormat == true) {
-//            animeSectionOrder.addAll(Constant.DEFAULT_SPLIT_ANIME_LIST_ORDER)
-//        } else {
-//            animeSectionOrder.addAll(Constant.DEFAULT_ANIME_LIST_ORDER)
-//        }
-//
-//        if (!animeListOptions.customLists.isNullOrEmpty()) {
-//            animeSectionOrder.addAll(ArrayList(animeListOptions.customLists))
-//        }
-
         val animeListOptionsBuilder = MediaListOptionsInput(
             sectionOrder = Input.fromNullable(animeListOptions.sectionOrder),
             splitCompletedSectionByFormat = Input.fromNullable(animeListOptions.splitCompletedSectionByFormat),
@@ -91,18 +79,6 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             advancedScoring = Input.fromNullable(animeListOptions.advancedScoring),
             advancedScoringEnabled = Input.fromNullable(animeListOptions.advancedScoringEnabled)
         )
-
-//        val mangaSectionOrder = ArrayList<String?>()
-//
-//        if (mangaListOptions.splitCompletedSectionByFormat == true) {
-//            mangaSectionOrder.addAll(Constant.DEFAULT_SPLIT_MANGA_LIST_ORDER)
-//        } else {
-//            mangaSectionOrder.addAll(Constant.DEFAULT_MANGA_LIST_ORDER)
-//        }
-//
-//        if (!mangaListOptions.customLists.isNullOrEmpty()) {
-//            mangaSectionOrder.addAll(ArrayList(mangaListOptions.customLists))
-//        }
 
         val mangaListOptionsBuilder = MediaListOptionsInput(
             sectionOrder = Input.fromNullable(mangaListOptions.sectionOrder),

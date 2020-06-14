@@ -86,6 +86,7 @@ class ALchanApplication : Application() {
         single<BrowseDataSource> { BrowseDataSourceImpl(get()) }
         single<SearchDataSource> { SearchDataSourceImpl(get()) }
         single<UserStatisticDataSource> { UserStatisticDataSourceImpl(get()) }
+        single<SocialDataSource> { SocialDataSourceImpl(get()) }
 
         // REST API data source
         single<InfoDataSource> { InfoDataSourceImpl(get()) }
@@ -102,6 +103,7 @@ class ALchanApplication : Application() {
         single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get(), get()) }
         single<OtherUserRepository> { OtherUserRepositoryImpl(get()) }
         single<OtherUserStatisticRepository> { OtherUserStatisticRepositoryImpl(get(), get()) }
+        single<SocialRepository> { SocialRepositoryImpl(get()) }
 
         // REST API repository
         single<InfoRepository> { InfoRepositoryImpl(get(), get()) }
@@ -173,7 +175,7 @@ class ALchanApplication : Application() {
         viewModel { AccountSettingsViewModel(get()) }
 
         // social
-        viewModel { SocialViewModel(get(), get()) }
+        viewModel { SocialViewModel(get(), get(), get()) }
 
     }
 

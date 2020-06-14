@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    app:contentPadding="@dimen/marginNormal"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/avatarImageGuideline"
+            app:layout_constraintGuide_percent="0.15"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/avatarLayout"
+            android:background="@drawable/shape_oval"
+            android:padding="@dimen/lineWidth"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/avatarImageGuideline"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="0dp"
+            android:layout_height="0dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/avatarImage"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@id/avatarImageGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/avatarLayout"
+            app:layout_constraintBottom_toBottomOf="@id/avatarLayout"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nameText"
+                android:text="Name"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/timeText"
+                android:text="Time"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <RelativeLayout
+            android:id="@+id/activityContentLayout"
+            app:layout_constraintTop_toBottomOf="@id/avatarLayout"
+            android:layout_marginTop="@dimen/marginPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="visible"
+                android:id="@+id/activityListLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/listActivityText"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mediaLayout"
+                    app:strokeWidth="@dimen/lineWidth"
+                    app:strokeColor="@color/white"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/mediaImageGuideline"
+                            app:layout_constraintGuide_percent="0.20"
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/mediaImage"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/mediaImageGuideline"
+                            app:layout_constraintDimensionRatio="2:3"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toEndOf="@id/mediaImageGuideline"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/mediaTitleText"
+                                style="?themeRegularClickableFont"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/mediaYearText"
+                                style="?themeSmallFont"
+                                android:text="Year"
+                                android:layout_marginTop="@dimen/marginClose"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_marginTop="@dimen/marginClose"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/mediaTypeText"
+                                    style="?themeSmallFont"
+                                    android:text="Type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/mediaFormatDivider"
+                                    app:srcCompat="@drawable/ic_filled_circle"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/marginClose"
+                                    android:layout_marginEnd="@dimen/marginClose"
+                                    android:layout_width="@dimen/iconPadding"
+                                    android:layout_height="@dimen/iconPadding"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/mediaFormatText"
+                                    style="?themeSmallFont"
+                                    android:text="Format"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:visibility="gone"
+                android:id="@+id/activityTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            app:layout_constraintTop_toBottomOf="@id/activityContentLayout"
+            android:layout_marginTop="@dimen/marginPage"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/activityReplyLayout"
+                android:padding="@dimen/iconPadding"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_chat_bubble"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/activityReplyText"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginStart="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/activityLikeLayout"
+                android:padding="@dimen/iconPadding"
+                android:foreground="?selectableItemBackground"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_heart_outline"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/activityLikeText"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginStart="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/activitySubscribeLayout"
+                android:padding="@dimen/marginSmall"
+                android:gravity="center_vertical"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activitySubscribeIcon"
+                    app:srcCompat="@drawable/ic_notification"
+                    app:tint="?themeContentColor"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/activityMoreLayout"
+                android:padding="@dimen/marginSmall"
+                android:gravity="center_vertical"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/ic_more_horiz"
+                    app:tint="?themeContentColor"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

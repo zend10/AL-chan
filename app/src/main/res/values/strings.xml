@@ -351,4 +351,7 @@
     <string name="are_you_sure_you_want_to_remove_this_user_from_your_best_friend">Are you sure you want to remove this user from your best friend?</string>
     <string name="are_you_sure_you_want_to_add_this_user_as_your_best_friend">Are you sure you want to add this user as your best friend?</string>
     <string name="best_friend_instruction">Best Friend feature is only available on AL-chan. Meaning, it has nothing to do with AniList, and the data is saved locally on your phone.\n\nWith this feature, you can add users to your Best Friend list so that you can quickly access their activity and their profile.\n\nTo add someone as Best Friend, go to their profile page and click on the icon at the toolbar. Once you\'ve added them as best friends, it will appear here.\n\nClick once at their avatar to view only their activity, click once again to disable the filter.\nLong press their avatar to go to their profile.\n\nP.S. The other person will not know you\'ve added them as your best friends.</string>
+    <string name="all">All</string>
+    <string name="text_status">Text Status</string>
+    <string name="list_status">List Status</string>
 </resources>

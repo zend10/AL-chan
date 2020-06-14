@@ -154,7 +154,7 @@
                         android:visibility="gone"
                         android:id="@+id/friendsActivityLoading"
                         android:indeterminateTint="?themeContentColor"
-                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:padding="@dimen/marginNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -169,6 +169,7 @@
                     android:textColor="?themePrimaryColor"
                     android:layout_marginStart="@dimen/marginPage"
                     android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginPage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
