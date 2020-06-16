@@ -10,6 +10,8 @@ import com.zen.alchan.data.network.HeaderInterceptor
 import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.libs.AlignTagHandler
+import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.animelist.AnimeListViewModel
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
@@ -57,6 +59,16 @@ import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
 import com.zen.alchan.ui.social.SocialViewModel
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonPlugin
+import io.noties.markwon.SoftBreakAddsNewLinePlugin
+import io.noties.markwon.core.MarkwonTheme
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.image.ImagesPlugin
+import io.noties.markwon.image.gif.GifMediaDecoder
+import io.noties.markwon.image.glide.GlideImagesPlugin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel

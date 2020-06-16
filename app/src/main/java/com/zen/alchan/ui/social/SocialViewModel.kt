@@ -54,6 +54,9 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
         socialRepository.friendsActivityResponse
     }
 
+    val currentUserId: Int?
+        get() = userRepository.viewerData.value?.id
+
     fun initData() {
         if (!isInit) {
             isInit = true

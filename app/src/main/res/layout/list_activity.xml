@@ -53,18 +53,51 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/nameText"
-                android:text="Name"
-                style="?themeRegularBoldFont"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/nameText"
+                    android:text="Name"
+                    style="?themeRegularClickableBoldFont"
+                    android:padding="@dimen/iconPadding"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/recipientLayout"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        android:layout_width="@dimen/iconSmallSize"
+                        android:layout_height="@dimen/iconSmallSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/recipientNameText"
+                        android:text="Recipient"
+                        style="?themeRegularClickableBoldFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/timeText"
                 android:text="Time"
                 style="?themeSmallFont"
                 android:layout_marginTop="@dimen/marginClose"
+                android:layout_marginStart="@dimen/marginClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

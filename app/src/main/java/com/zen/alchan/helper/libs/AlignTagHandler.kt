@@ -1,5 +1,6 @@
 package com.zen.alchan.helper.libs
 
+import android.content.res.ColorStateList
 import android.text.Layout
 import android.text.style.AlignmentSpan
 import io.noties.markwon.MarkwonConfiguration

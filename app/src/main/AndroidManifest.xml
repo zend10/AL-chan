@@ -16,6 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.common.SpoilerActivity"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="spoiler"
+                    android:pathPattern=".*"
+                    android:scheme="alchan" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.profile.follows.FollowsActivity" />
         <activity android:name=".ui.notification.NotificationActivity" />
         <activity android:name=".ui.profile.stats.details.StatsDetailActivity" />
@@ -80,7 +94,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity" />
+        <activity android:name=".ui.main.MainActivity"/>
     </application>
 
 </manifest>

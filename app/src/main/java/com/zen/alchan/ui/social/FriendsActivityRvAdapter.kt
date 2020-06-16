@@ -1,10 +1,13 @@
 package com.zen.alchan.ui.social
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.zen.alchan.R
@@ -16,12 +19,16 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
+import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity.view.*
 import org.koin.core.logger.MESSAGE
 import type.ActivityType
 
 class FriendsActivityRvAdapter(private val context: Context,
                                private val list: List<ActivityItem>,
+                               private val currentUserId: Int?,
+                               private val maxWidth: Int,
+                               private val markwon: Markwon,
                                private val listener: ActivityListener
 ): RecyclerView.Adapter<FriendsActivityRvAdapter.ViewHolder>() {
 
@@ -37,24 +44,21 @@ class FriendsActivityRvAdapter(private val context: Context,
 
     private fun handleLayout(act: ActivityItem, holder: ViewHolder) {
         holder.itemView.setOnClickListener {
-            // open activity page
+            listener.openActivityPage(act.id)
         }
 
         holder.activityListLayout.visibility = View.GONE
         holder.activityTextLayout.visibility = View.GONE
 
-        holder.avatarImage.setOnClickListener {
-            // open user page
-        }
         holder.timeText.text = act.createdAt.secondsToDateTime()
 
         holder.activityReplyText.text = if (act.replyCount != 0) act.replyCount.toString() else ""
         holder.activityReplyLayout.setOnClickListener {
-            // view all replies
+            listener.openActivityPage(act.id)
         }
         holder.activityLikeText.text = if (act.likeCount != 0) act.likeCount.toString() else ""
         holder.activityLikeLayout.setOnClickListener {
-            // toggle like
+            listener.toggleLike(act.id)
         }
         holder.activitySubscribeIcon.imageTintList = if (act.isSubscribed == true) {
             ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
@@ -62,31 +66,65 @@ class FriendsActivityRvAdapter(private val context: Context,
             ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
         }
         holder.activitySubscribeLayout.setOnClickListener {
-            // toggle subscribe
+            listener.toggleSubscribe(act.id)
         }
         holder.activityMoreLayout.setOnClickListener {
             // view pop up menu (edit, delete, view in anilist, copy link, view all likes
+            val popupMenu = PopupMenu(context, it)
+            popupMenu.menuInflater.inflate(R.menu.menu_activity, popupMenu.menu)
+
+            popupMenu.menu.apply {
+                findItem(R.id.itemEdit).isVisible = act is TextActivity && act.userId == currentUserId
+                findItem(R.id.itemDelete).isVisible = (act is TextActivity && act.userId == currentUserId) ||
+                        (act is ListActivity && act.userId == currentUserId) ||
+                        (act is MessageActivity && act.recipientId == currentUserId)
+            }
+
+            popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
+                when (menuItem?.itemId) {
+                    R.id.itemEdit -> listener.editActivity(act.id)
+                    R.id.itemDelete -> listener.deleteActivity(act.id)
+                    R.id.itemViewOnAniList -> listener.viewOnAniList(act.siteUrl)
+                    R.id.itemCopyLink -> listener.copyLink(act.siteUrl)
+                }
+                true
+            }
+            popupMenu.show()
         }
 
         when (act) {
             is TextActivity -> handleTextActivityLayout(act, holder)
             is ListActivity -> handleListActivityLayout(act, holder)
-            is MessageActivity -> { }
+            is MessageActivity -> handleMessageActivityLayout(act, holder)
         }
     }
 
     private fun handleTextActivityLayout(act: TextActivity, holder: ViewHolder) {
         holder.nameText.text = act.user?.name
+        holder.nameText.setOnClickListener {
+            listener.openUserPage(act.userId!!)
+        }
         GlideApp.with(context).load(act.user?.avatar?.medium).apply(RequestOptions.circleCropTransform()).into(holder.avatarImage)
-        holder.activityTextLayout.text = act.text ?: ""
+        holder.avatarImage.setOnClickListener {
+            listener.openUserPage(act.userId!!)
+        }
+
+        AndroidUtility.convertMarkdown(context, holder.activityTextLayout, act.text, maxWidth, markwon)
 
         holder.activityListLayout.visibility = View.GONE
         holder.activityTextLayout.visibility = View.VISIBLE
+        holder.recipientLayout.visibility = View.GONE
     }
 
     private fun handleListActivityLayout(act: ListActivity, holder: ViewHolder) {
         holder.nameText.text = act.user?.name
+        holder.nameText.setOnClickListener {
+            listener.openUserPage(act.userId!!)
+        }
         GlideApp.with(context).load(act.user?.avatar?.medium).apply(RequestOptions.circleCropTransform()).into(holder.avatarImage)
+        holder.avatarImage.setOnClickListener {
+            listener.openUserPage(act.userId!!)
+        }
 
         holder.listActivityText.text = "${act.status?.capitalize()}${if (act.progress != null) " ${act.progress} of " else " "}${act.media?.title?.userPreferred}"
         holder.mediaTitleText.text = act.media?.title?.userPreferred
@@ -105,11 +143,35 @@ class FriendsActivityRvAdapter(private val context: Context,
             holder.mediaFormatText.text = ""
         }
         holder.mediaLayout.setOnClickListener {
-            // visit media page
+            listener.openMediaPage(act.media?.id!!, act.media.type)
         }
 
         holder.activityListLayout.visibility = View.VISIBLE
         holder.activityTextLayout.visibility = View.GONE
+        holder.recipientLayout.visibility = View.GONE
+    }
+
+    private fun handleMessageActivityLayout(act: MessageActivity, holder: ViewHolder) {
+        holder.nameText.text = act.messenger?.name ?: ""
+        holder.nameText.setOnClickListener {
+            listener.openUserPage(act.messengerId!!)
+        }
+        GlideApp.with(context).load(act.messenger?.avatar?.medium).apply(RequestOptions.circleCropTransform()).into(holder.avatarImage)
+        holder.avatarImage.setOnClickListener {
+            listener.openUserPage(act.messengerId!!)
+        }
+
+        holder.recipientLayout.visibility = View.VISIBLE
+        holder.recipientNameText.text = act.recipient?.name ?: ""
+        holder.recipientNameText.setOnClickListener {
+            listener.openUserPage(act.recipientId!!)
+        }
+
+        AndroidUtility.convertMarkdown(context, holder.activityTextLayout, act.message, maxWidth, markwon)
+
+        holder.activityListLayout.visibility = View.GONE
+        holder.activityTextLayout.visibility = View.VISIBLE
+        holder.recipientLayout.visibility = View.VISIBLE
     }
 
     override fun getItemCount(): Int {
@@ -140,5 +202,8 @@ class FriendsActivityRvAdapter(private val context: Context,
         val activitySubscribeLayout = view.activitySubscribeLayout!!
         val activitySubscribeIcon = view.activitySubscribeIcon!!
         val activityMoreLayout = view.activityMoreLayout!!
+
+        val recipientLayout = view.recipientLayout!!
+        val recipientNameText = view.recipientNameText!!
     }
 }

@@ -145,8 +145,8 @@
                         android:id="@+id/friendsActivityRecyclerView"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:nestedScrollingEnabled="false"
-                        android:paddingStart="@dimen/marginPage"
-                        android:paddingEnd="@dimen/marginPage"
+                        android:paddingStart="@dimen/marginNormal"
+                        android:paddingEnd="@dimen/marginNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -167,8 +167,8 @@
                     android:text="@string/view_more"
                     app:backgroundTint="?themeCardColor"
                     android:textColor="?themePrimaryColor"
-                    android:layout_marginStart="@dimen/marginPage"
-                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_marginBottom="@dimen/marginPage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

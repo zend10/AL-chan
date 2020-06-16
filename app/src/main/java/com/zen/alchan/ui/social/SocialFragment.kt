@@ -2,12 +2,14 @@ package com.zen.alchan.ui.social
 
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -24,9 +26,11 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.search.SearchActivity
+import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_social.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaType
 
 /**
  * A simple [Fragment] subclass.
@@ -38,6 +42,9 @@ class SocialFragment : Fragment() {
     private lateinit var bestFriendAdapter: BestFriendRvAdapter
     private lateinit var friendsActivityAdapter: FriendsActivityRvAdapter
 
+    private var maxWidth = 0
+    private lateinit var markwon: Markwon
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +55,9 @@ class SocialFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        maxWidth = AndroidUtility.getScreenWidth(activity)
+        markwon = AndroidUtility.initMarkwon(activity!!)
 
         bestFriendAdapter = assignBestFriendAdapter()
         bestFriendsRecyclerView.adapter = bestFriendAdapter
@@ -199,8 +209,61 @@ class SocialFragment : Fragment() {
     }
 
     private fun assignAdapter(): FriendsActivityRvAdapter {
-        return FriendsActivityRvAdapter(activity!!, viewModel.activityList, object : ActivityListener {
+        return FriendsActivityRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon,
+            object : ActivityListener {
+                override fun openActivityPage(activityId: Int) {
+                    // open browse
+                }
 
-        })
+                override fun openUserPage(userId: Int) {
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, userId)
+                    startActivity(intent)
+                }
+
+                override fun toggleLike(activityId: Int) {
+                    // call api
+                }
+
+                override fun toggleSubscribe(activityId: Int) {
+                    // call api
+                }
+
+                override fun editActivity(activityId: Int) {
+                    // open new activity
+                }
+
+                override fun deleteActivity(activityId: Int) {
+                    // call api
+                }
+
+                override fun viewOnAniList(siteUrl: String?) {
+                    if (siteUrl.isNullOrBlank()) {
+                        DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+                        return
+                    }
+
+                    CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(siteUrl))
+                }
+
+                override fun copyLink(siteUrl: String?) {
+                    if (siteUrl.isNullOrBlank()) {
+                        DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+                        return
+                    }
+
+                    AndroidUtility.copyToClipboard(activity, siteUrl)
+                    DialogUtility.showToast(activity, R.string.link_copied)
+                }
+
+                override fun openMediaPage(mediaId: Int, mediaType: MediaType?) {
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, mediaType?.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
+                    startActivity(intent)
+                }
+            }
+        )
     }
 }

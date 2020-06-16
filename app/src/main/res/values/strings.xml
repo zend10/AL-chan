@@ -313,7 +313,7 @@
     <string name="unfollow_this_user">Unfollow This User</string>
     <string name="are_you_sure_you_want_to_follow_this_user">Are you sure you want to follow this user?</string>
     <string name="are_you_sure_you_want_to_shatter_this_friendship">Are you sure you want to shatter this friendship?</string>
-    <string name="failed_to_render_bio">Failed to render bio. Are you not using the formatting provided by AniList?</string>
+    <string name="failed_to_render">Failed to render. Are you not using the formatting provided by AniList?</string>
     <string name="follows_you">Follows You</string>
     <string name="change_list_type">Change List Type</string>
     <string name="experience">Experience</string>
@@ -354,4 +354,5 @@
     <string name="all">All</string>
     <string name="text_status">Text Status</string>
     <string name="list_status">List Status</string>
+    <string name="view_likes">View Likes</string>
 </resources>
