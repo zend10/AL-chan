@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.pojo.MediaVoiceActors
@@ -62,19 +63,11 @@ class MediaCharactersFragment : BaseFragment() {
     private fun assignAdapter(): MediaCharactersRvAdapter {
         return MediaCharactersRvAdapter(activity!!, viewModel.mediaCharacters, viewModel.staffLanguage ?: StaffLanguage.JAPANESE, object : MediaCharactersRvAdapter.MediaCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
-                val fragment = CharacterFragment()
-                val bundle = Bundle()
-                bundle.putInt(CharacterFragment.CHARACTER_ID, characterId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.CHARACTER, characterId)
             }
 
             override fun passSelectedVoiceActor(voiceActorId: Int) {
-                val fragment = StaffFragment()
-                val bundle = Bundle()
-                bundle.putInt(StaffFragment.STAFF_ID, voiceActorId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.STAFF, voiceActorId)
             }
         })
     }

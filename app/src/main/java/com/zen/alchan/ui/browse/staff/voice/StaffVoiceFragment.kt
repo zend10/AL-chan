@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.StaffCharacter
 import com.zen.alchan.helper.pojo.StaffCharacterMedia
@@ -56,20 +57,11 @@ class StaffVoiceFragment : BaseFragment() {
     private fun assignAdapter(): StaffVoiceRvAdapter {
         return StaffVoiceRvAdapter(activity!!, viewModel.staffCharacters, object : StaffVoiceRvAdapter.StaffVoiceListener {
             override fun passSelectedCharacter(characterId: Int) {
-                val fragment = CharacterFragment()
-                val bundle = Bundle()
-                bundle.putInt(CharacterFragment.CHARACTER_ID, characterId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.CHARACTER, characterId)
             }
 
             override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }
         })
     }

@@ -318,12 +318,7 @@ class CharacterFragment : BaseFragment() {
     private fun assignAdapter(): CharacterMediaRvAdapter {
         return CharacterMediaRvAdapter(activity!!, viewModel.characterMedia, object : CharacterMediaRvAdapter.CharacterMediaListener {
             override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }
         })
     }
@@ -334,11 +329,7 @@ class CharacterFragment : BaseFragment() {
         val width = metrics.widthPixels / 5
         return CharacterVoiceActorRvAdapter(activity!!, viewModel.characterVoiceActors, width, object : CharacterVoiceActorRvAdapter.CharacterVoiceActorListener {
             override fun passSelectedVoiceActor(voiceActorId: Int) {
-                val fragment = StaffFragment()
-                val bundle = Bundle()
-                bundle.putInt(StaffFragment.STAFF_ID, voiceActorId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.STAFF, voiceActorId)
             }
 
             override fun showMediaList(list: List<CharacterMedia>) {
@@ -348,13 +339,7 @@ class CharacterFragment : BaseFragment() {
                 }
                 MaterialAlertDialogBuilder(activity)
                     .setItems(titleList.toTypedArray()) { _, which ->
-                        val selectedMedia = list[which]
-                        val fragment = MediaFragment()
-                        val bundle = Bundle()
-                        bundle.putInt(MediaFragment.MEDIA_ID, selectedMedia.mediaId!!)
-                        bundle.putString(MediaFragment.MEDIA_TYPE, selectedMedia.mediaType?.name)
-                        fragment.arguments = bundle
-                        listener?.changeFragment(fragment)
+                        listener?.changeFragment(BrowsePage.valueOf(list[which].mediaType?.name!!), list[which].mediaId!!)
                     }
                     .show()
             }

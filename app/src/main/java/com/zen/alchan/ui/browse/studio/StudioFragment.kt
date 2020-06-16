@@ -21,6 +21,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.StudioMedia
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -90,12 +91,7 @@ class StudioFragment : BaseFragment() {
     private fun assignAdapter(): StudioMediaRvAdapter {
         return StudioMediaRvAdapter(activity!!, viewModel.studioMediaList, object : StudioMediaRvAdapter.StudioMediaListener {
             override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }
         })
     }

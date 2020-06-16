@@ -142,6 +142,7 @@ query MediaOverviewQuery(
                         }
                         seasonYear
                         format
+                        type
                         averageScore
                         favourites
                         coverImage {

@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.MediaStaffs
 import com.zen.alchan.helper.utils.DialogUtility
@@ -55,11 +56,7 @@ class MediaStaffsFragment : BaseFragment() {
     private fun assignAdapter(): MediaStaffsRvAdapter {
         return MediaStaffsRvAdapter(activity!!, viewModel.mediaStaffs, object : MediaStaffsRvAdapter.MediaStaffsListener {
             override fun passSelectedStaff(staffId: Int) {
-                val fragment = StaffFragment()
-                val bundle = Bundle()
-                bundle.putInt(StaffFragment.STAFF_ID, staffId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.STAFF, staffId)
             }
         })
     }

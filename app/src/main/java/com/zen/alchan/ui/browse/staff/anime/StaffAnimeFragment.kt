@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.StaffMedia
 import com.zen.alchan.helper.utils.DialogUtility
@@ -54,12 +55,7 @@ class StaffAnimeFragment : BaseFragment() {
     private fun assignAdapter(): StaffAnimeRvAdapter {
         return StaffAnimeRvAdapter(activity!!, viewModel.staffMedia, object : StaffAnimeRvAdapter.StaffAnimeListener {
             override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }
         })
     }

@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.MediaPage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
@@ -341,6 +342,7 @@ class MediaOverviewFragment : BaseFragment() {
                             it.node.rating,
                             it.node.mediaRecommendation.title?.userPreferred,
                             it.node.mediaRecommendation.format,
+                            it.node.mediaRecommendation.type,
                             it.node.mediaRecommendation.averageScore,
                             it.node.mediaRecommendation.favourites,
                             it.node.mediaRecommendation.coverImage?.extraLarge
@@ -375,11 +377,7 @@ class MediaOverviewFragment : BaseFragment() {
         val width = metrics.widthPixels / 5
         return OverviewCharactersRvAdapter(activity!!, viewModel.charactersList, width, object : OverviewCharactersRvAdapter.OverviewCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
-                val fragment = CharacterFragment()
-                val bundle = Bundle()
-                bundle.putInt(CharacterFragment.CHARACTER_ID, characterId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.CHARACTER, characterId)
             }
         })
     }
@@ -388,11 +386,7 @@ class MediaOverviewFragment : BaseFragment() {
         return OverviewStudiosRvAdapter(activity, list, object : OverviewStudiosRvAdapter.OverviewStudioListener {
             override fun passSelectedStudio(studioId: Int?) {
                 if (studioId == null) return
-                val fragment = StudioFragment()
-                val bundle = Bundle()
-                bundle.putInt(StudioFragment.STUDIO_ID, studioId)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.STUDIO, studioId)
             }
         })
     }
@@ -411,12 +405,7 @@ class MediaOverviewFragment : BaseFragment() {
         val width = metrics.widthPixels / 3
         return OverviewRelationsRvAdapter(activity!!, viewModel.relationsList, width, object : OverviewRelationsRvAdapter.OverviewRelationsListener {
             override fun passSelectedRelations(mediaId: Int, mediaType: MediaType) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, mediaType.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+                listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }
         })
     }
@@ -426,13 +415,8 @@ class MediaOverviewFragment : BaseFragment() {
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         val width = (metrics.widthPixels / 1.3).toInt()
         return OverviewRecommendationsRvAdapter(activity!!, viewModel.recommendationsList, width, object : OverviewRecommendationsRvAdapter.OverviewRecommendationsListener {
-            override fun passSelectedRecommendations(mediaId: Int) {
-                val fragment = MediaFragment()
-                val bundle = Bundle()
-                bundle.putInt(MediaFragment.MEDIA_ID, mediaId)
-                bundle.putString(MediaFragment.MEDIA_TYPE, MediaType.ANIME.name)
-                fragment.arguments = bundle
-                listener?.changeFragment(fragment)
+            override fun passSelectedRecommendations(mediaId: Int, mediaType: MediaType) {
+                listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }
         })
     }

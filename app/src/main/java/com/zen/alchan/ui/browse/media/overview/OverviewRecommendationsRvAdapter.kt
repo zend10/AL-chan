@@ -9,6 +9,7 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaRecommendations
 import kotlinx.android.synthetic.main.list_media_recommendations.view.*
+import type.MediaType
 
 class OverviewRecommendationsRvAdapter(private val context: Context,
                                        private val list: List<MediaRecommendations>,
@@ -17,7 +18,7 @@ class OverviewRecommendationsRvAdapter(private val context: Context,
 ) : RecyclerView.Adapter<OverviewRecommendationsRvAdapter.ViewHolder>() {
 
     interface OverviewRecommendationsListener {
-        fun passSelectedRecommendations(mediaId: Int)
+        fun passSelectedRecommendations(mediaId: Int, mediaType: MediaType)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +36,7 @@ class OverviewRecommendationsRvAdapter(private val context: Context,
         holder.mediaRatingText.text = item.averageScore?.toString() ?: "0"
         holder.mediaFavText.text = item.favourites?.toString() ?: "0"
 
-        holder.itemView.setOnClickListener { listener.passSelectedRecommendations(item.mediaId) }
+        holder.itemView.setOnClickListener { listener.passSelectedRecommendations(item.mediaId, item.type ?: MediaType.ANIME) }
     }
 
     override fun getItemCount(): Int {
