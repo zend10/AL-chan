@@ -114,163 +114,40 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     @SuppressLint("CheckResult")
     override fun getMedia(id: Int) {
         _mediaData.postValue(Resource.Loading())
-
-        mediaDataSource.getMedia(id).subscribeWith(object : Observer<Response<MediaQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<MediaQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() { }
-        })
+        mediaDataSource.getMedia(id).subscribeWith(AndroidUtility.rxApolloCallback(_mediaData))
     }
 
     @SuppressLint("CheckResult")
     override fun checkMediaStatus(mediaId: Int) {
-        mediaDataSource.checkMediaStatus(userManager.viewerData?.id!!,  mediaId).subscribeWith(object : Observer<Response<MediaStatusQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<MediaStatusQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaStatus.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaStatus.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaStatus.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.checkMediaStatus(userManager.viewerData?.id!!,  mediaId).subscribeWith(AndroidUtility.rxApolloCallback(_mediaStatus))
     }
 
     @SuppressLint("CheckResult")
     override fun getMediaOverview(id: Int) {
         _mediaOverviewData.postValue(Resource.Loading())
-
-        mediaDataSource.getMediaOverview(id).subscribeWith(object : Observer<Response<MediaOverviewQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<MediaOverviewQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaOverviewData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaOverviewData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaOverviewData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() { }
-        })
+        mediaDataSource.getMediaOverview(id).subscribeWith(AndroidUtility.rxApolloCallback(_mediaOverviewData))
     }
 
     @SuppressLint("CheckResult")
     override fun getMediaCharacters(id: Int, page: Int) {
-        mediaDataSource.getMediaCharacters(id, page).subscribeWith(object : Observer<Response<MediaCharactersQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<MediaCharactersQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaCharactersData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaCharactersData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaCharactersData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.getMediaCharacters(id, page).subscribeWith(AndroidUtility.rxApolloCallback(_mediaCharactersData))
     }
 
     @SuppressLint("CheckResult")
     override fun getMediaStaffs(id: Int, page: Int) {
-        mediaDataSource.getMediaStaffs(id, page).subscribeWith(object : Observer<Response<MediaStaffsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<MediaStaffsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaStaffsData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaStaffsData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaStaffsData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.getMediaStaffs(id, page).subscribeWith(AndroidUtility.rxApolloCallback(_mediaStaffsData))
     }
 
     @SuppressLint("CheckResult")
     override fun getMediaStats(id: Int) {
         _mediaStatsData.postValue(Resource.Loading())
-
-        mediaDataSource.getMediaStats(id).subscribeWith(object : Observer<Response<MediaStatsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<MediaStatsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaStatsData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaStatsData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaStatsData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.getMediaStats(id).subscribeWith(AndroidUtility.rxApolloCallback(_mediaStatsData))
     }
 
     @SuppressLint("CheckResult")
     override fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>) {
         _mediaReviewsData.postValue(Resource.Loading())
-
-        mediaDataSource.getMediaReviews(id, page, sort).subscribeWith(object : Observer<Response<MediaReviewsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<MediaReviewsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _mediaReviewsData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _mediaReviewsData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _mediaReviewsData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.getMediaReviews(id, page, sort).subscribeWith(AndroidUtility.rxApolloCallback(_mediaReviewsData))
     }
 
     @SuppressLint("CheckResult")
@@ -306,48 +183,12 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     @SuppressLint("CheckResult")
     override fun getTrendingManga() {
         _trendingMangaData.postValue(Resource.Loading())
-
-        mediaDataSource.getTrendingMedia(MediaType.MANGA).subscribeWith(object : Observer<Response<TrendingMediaQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<TrendingMediaQuery.Data>) {
-                if (t.hasErrors()) {
-                    _trendingMangaData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _trendingMangaData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _trendingMangaData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.getTrendingMedia(MediaType.MANGA).subscribeWith(AndroidUtility.rxApolloCallback(_trendingMangaData))
     }
 
     @SuppressLint("CheckResult")
     override fun getReleasingToday(page: Int) {
         _releasingTodayData.postValue(Resource.Loading())
-
-        mediaDataSource.getReleasingToday(page).subscribeWith(object : Observer<Response<ReleasingTodayQuery.Data>> {
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: Response<ReleasingTodayQuery.Data>) {
-                if (t.hasErrors()) {
-                    _releasingTodayData.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _releasingTodayData.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _releasingTodayData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
-            }
-
-            override fun onComplete() {}
-        })
+        mediaDataSource.getReleasingToday(page).subscribeWith(AndroidUtility.rxApolloCallback(_releasingTodayData))
     }
 }

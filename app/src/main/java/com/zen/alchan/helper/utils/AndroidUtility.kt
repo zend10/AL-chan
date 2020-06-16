@@ -26,6 +26,8 @@ import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.gif.GifMediaDecoder
 import io.noties.markwon.image.glide.GlideImagesPlugin
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -175,6 +177,24 @@ object AndroidUtility {
         override fun onFailure(call: Call<T>, t: Throwable) {
             observer.postValue(Resource.Error(t.localizedMessage ?: ""))
         }
+    }
+
+    fun <T> rxApolloCallback(observer: SingleLiveEvent<Resource<T>>) = object : Observer<com.apollographql.apollo.api.Response<T>> {
+        override fun onSubscribe(d: Disposable) { }
+
+        override fun onNext(t: com.apollographql.apollo.api.Response<T>) {
+            if (t.hasErrors()) {
+                observer.postValue(Resource.Error(t.errors!![0].message))
+            } else {
+                observer.postValue(Resource.Success(t.data!!))
+            }
+        }
+
+        override fun onError(e: Throwable) {
+            observer.postValue(Resource.Error(e.localizedMessage))
+        }
+
+        override fun onComplete() { }
     }
 
     fun getScreenWidth(activity: Activity?): Int {

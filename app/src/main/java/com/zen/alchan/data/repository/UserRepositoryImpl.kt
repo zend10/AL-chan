@@ -16,6 +16,7 @@ import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.BestFriend
+import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
@@ -317,24 +318,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _favoriteAnimeResponse.postValue(Resource.Loading())
-
-        userDataSource.getFavoriteAnime(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesAnimeQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<FavoritesAnimeQuery.Data>) {
-                if (t.hasErrors()) {
-                    _favoriteAnimeResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _favoriteAnimeResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _favoriteAnimeResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getFavoriteAnime(userManager.viewerData?.id!!, page).subscribeWith(AndroidUtility.rxApolloCallback(_favoriteAnimeResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -344,24 +328,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _favoriteMangaResponse.postValue(Resource.Loading())
-
-        userDataSource.getFavoriteManga(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesMangaQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<FavoritesMangaQuery.Data>) {
-                if (t.hasErrors()) {
-                    _favoriteMangaResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _favoriteMangaResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _favoriteMangaResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getFavoriteManga(userManager.viewerData?.id!!, page).subscribeWith(AndroidUtility.rxApolloCallback(_favoriteMangaResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -371,24 +338,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _favoriteCharactersResponse.postValue(Resource.Loading())
-
-        userDataSource.getFavoriteCharacters(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesCharactersQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<FavoritesCharactersQuery.Data>) {
-                if (t.hasErrors()) {
-                    _favoriteCharactersResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _favoriteCharactersResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _favoriteCharactersResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getFavoriteCharacters(userManager.viewerData?.id!!, page).subscribeWith(AndroidUtility.rxApolloCallback(_favoriteCharactersResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -398,24 +348,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _favoriteStaffsResponse.postValue(Resource.Loading())
-
-        userDataSource.getFavoriteStaffs(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesStaffsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<FavoritesStaffsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _favoriteStaffsResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _favoriteStaffsResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _favoriteStaffsResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getFavoriteStaffs(userManager.viewerData?.id!!, page).subscribeWith(AndroidUtility.rxApolloCallback(_favoriteStaffsResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -425,24 +358,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _favoriteStudiosResponse.postValue(Resource.Loading())
-
-        userDataSource.getFavoriteStudios(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<FavoritesStudiosQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<FavoritesStudiosQuery.Data>) {
-                if (t.hasErrors()) {
-                    _favoriteStudiosResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _favoriteStudiosResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _favoriteStudiosResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getFavoriteStudios(userManager.viewerData?.id!!, page).subscribeWith(AndroidUtility.rxApolloCallback(_favoriteStudiosResponse))
     }
 
     override fun triggerRefreshProfilePageChild() {
@@ -487,24 +403,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _viewerReviewsResponse.postValue(Resource.Loading())
-
-        userDataSource.getReviews(userManager.viewerData?.id!!, page).subscribeWith(object : Observer<Response<UserReviewsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserReviewsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _viewerReviewsResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _viewerReviewsResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _viewerReviewsResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getReviews(userManager.viewerData?.id!!, page).subscribeWith(AndroidUtility.rxApolloCallback(_viewerReviewsResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -514,24 +413,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
         }
 
         _userStatisticsResponse.postValue(Resource.Loading())
-
-        userDataSource.getStatistics(userManager.viewerData?.id!!).subscribeWith(object : Observer<Response<UserStatisticsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _userStatisticsResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _userStatisticsResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _userStatisticsResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        userDataSource.getStatistics(userManager.viewerData?.id!!).subscribeWith(AndroidUtility.rxApolloCallback(_userStatisticsResponse))
     }
 
     @SuppressLint("CheckResult")

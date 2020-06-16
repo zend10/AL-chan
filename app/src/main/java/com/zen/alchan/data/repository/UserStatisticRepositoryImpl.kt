@@ -8,6 +8,7 @@ import com.zen.alchan.data.datasource.UserStatisticDataSource
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.UserStatisticsSort
@@ -79,24 +80,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _formatStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getFormatStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsFormatsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsFormatsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _formatStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _formatStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _formatStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getFormatStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_formatStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -106,24 +90,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _statusStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getStatusStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsStatusesQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsStatusesQuery.Data>) {
-                if (t.hasErrors()) {
-                    _statusStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _statusStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _statusStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getStatusStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_statusStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -133,24 +100,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _scoreStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getScoreStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsScoresQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsScoresQuery.Data>) {
-                if (t.hasErrors()) {
-                    _scoreStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _scoreStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _scoreStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getScoreStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_scoreStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -160,24 +110,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _lengthStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getLengthStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsLengthsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsLengthsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _lengthStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _lengthStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _lengthStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getLengthStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_lengthStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -187,24 +120,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _releaseYearStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getReleaseYearStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsReleaseYearsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsReleaseYearsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _releaseYearStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _releaseYearStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _releaseYearStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getReleaseYearStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_releaseYearStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -214,24 +130,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _startYearStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getStartYearStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsStartYearsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsStartYearsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _startYearStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _startYearStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _startYearStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getStartYearStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_startYearStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -241,24 +140,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _genreStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getGenreStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsGenresQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsGenresQuery.Data>) {
-                if (t.hasErrors()) {
-                    _genreStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _genreStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _genreStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getGenreStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_genreStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -268,24 +150,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _tagStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getTagStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsTagsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsTagsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _tagStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _tagStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _tagStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getTagStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_tagStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -295,24 +160,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _countryStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getCountryStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsCountriesQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsCountriesQuery.Data>) {
-                if (t.hasErrors()) {
-                    _countryStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _countryStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _countryStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getCountryStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_countryStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -322,24 +170,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _voiceActorStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getVoiceActorStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsVoiceActorsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsVoiceActorsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _voiceActorStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _voiceActorStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _voiceActorStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getVoiceActorStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_voiceActorStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -349,24 +180,7 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _staffStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getStaffStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsStaffsQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsStaffsQuery.Data>) {
-                if (t.hasErrors()) {
-                    _staffStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _staffStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _staffStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getStaffStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_staffStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
@@ -376,44 +190,11 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
         }
 
         _studioStatisticResponse.postValue(Resource.Loading())
-
-        userStatisticDataSource.getStudioStatistic(userId!!, sort).subscribeWith(object : Observer<Response<UserStatisticsStudiosQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<UserStatisticsStudiosQuery.Data>) {
-                if (t.hasErrors()) {
-                    _studioStatisticResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _studioStatisticResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _studioStatisticResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {}
-        })
+        userStatisticDataSource.getStudioStatistic(userId!!, sort).subscribeWith(AndroidUtility.rxApolloCallback(_studioStatisticResponse))
     }
 
     @SuppressLint("CheckResult")
     override fun searchMediaImage(page: Int, idIn: List<Int>) {
-        searchDataSource.searchMediaImages(page, idIn).subscribeWith(object : Observer<Response<MediaImageQuery.Data>> {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onNext(t: Response<MediaImageQuery.Data>) {
-                if (t.hasErrors()) {
-                    _searchMediaImageResponse.postValue(Resource.Error(t.errors!![0].message))
-                } else {
-                    _searchMediaImageResponse.postValue(Resource.Success(t.data!!))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                _searchMediaImageResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() { }
-        })
+        searchDataSource.searchMediaImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchMediaImageResponse))
     }
 }

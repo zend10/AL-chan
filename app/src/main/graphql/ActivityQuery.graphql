@@ -110,9 +110,6 @@ fragment onListActivity on ListActivity {
             month
             day
         }
-        episodes
-        chapters
-        volumes
         coverImage {
             medium
         }

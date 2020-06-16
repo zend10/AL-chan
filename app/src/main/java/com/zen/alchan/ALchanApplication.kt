@@ -115,7 +115,7 @@ class ALchanApplication : Application() {
         single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get(), get()) }
         single<OtherUserRepository> { OtherUserRepositoryImpl(get()) }
         single<OtherUserStatisticRepository> { OtherUserStatisticRepositoryImpl(get(), get()) }
-        single<SocialRepository> { SocialRepositoryImpl(get()) }
+        single<SocialRepository> { SocialRepositoryImpl(get(), get()) }
 
         // REST API repository
         single<InfoRepository> { InfoRepositoryImpl(get(), get()) }
