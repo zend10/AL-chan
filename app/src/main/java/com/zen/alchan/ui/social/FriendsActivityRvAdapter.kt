@@ -56,10 +56,17 @@ class FriendsActivityRvAdapter(private val context: Context,
         holder.activityReplyLayout.setOnClickListener {
             listener.openActivityPage(act.id)
         }
+
+        holder.activityLikeIcon.imageTintList = if (act.isLiked == true) {
+            ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+        } else {
+            ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
+        }
         holder.activityLikeText.text = if (act.likeCount != 0) act.likeCount.toString() else ""
         holder.activityLikeLayout.setOnClickListener {
             listener.toggleLike(act.id)
         }
+
         holder.activitySubscribeIcon.imageTintList = if (act.isSubscribed == true) {
             ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
         } else {
@@ -69,15 +76,16 @@ class FriendsActivityRvAdapter(private val context: Context,
             listener.toggleSubscribe(act.id)
         }
         holder.activityMoreLayout.setOnClickListener {
-            // view pop up menu (edit, delete, view in anilist, copy link, view all likes
+            // view pop up menu (edit, delete, view in anilist, copy link)
             val popupMenu = PopupMenu(context, it)
             popupMenu.menuInflater.inflate(R.menu.menu_activity, popupMenu.menu)
 
             popupMenu.menu.apply {
-                findItem(R.id.itemEdit).isVisible = act is TextActivity && act.userId == currentUserId
+                findItem(R.id.itemEdit).isVisible = (act is TextActivity && act.userId == currentUserId) ||
+                        (act is MessageActivity && act.messengerId == currentUserId)
                 findItem(R.id.itemDelete).isVisible = (act is TextActivity && act.userId == currentUserId) ||
                         (act is ListActivity && act.userId == currentUserId) ||
-                        (act is MessageActivity && act.recipientId == currentUserId)
+                        (act is MessageActivity && (act.recipientId == currentUserId || act.messengerId == currentUserId))
             }
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
@@ -198,6 +206,7 @@ class FriendsActivityRvAdapter(private val context: Context,
         val activityReplyLayout = view.activityReplyLayout!!
         val activityReplyText = view.activityReplyText!!
         val activityLikeLayout = view.activityLikeLayout!!
+        val activityLikeIcon = view.activityLikeIcon!!
         val activityLikeText = view.activityLikeText!!
         val activitySubscribeLayout = view.activitySubscribeLayout!!
         val activitySubscribeIcon = view.activitySubscribeIcon!!

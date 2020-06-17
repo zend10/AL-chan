@@ -95,26 +95,20 @@ class SocialFragment : Fragment() {
                         val activityItem = when (act?.__typename) {
                             viewModel.TEXT_ACTIVITY -> {
                                 val item = act.fragments.onTextActivity
-                                val replies = viewModel.getReplies(act.__typename, act.fragments)
-                                val likes = viewModel.getLikes(act.__typename, act.fragments)
                                 val user = User(id = item?.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
-                                TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.userId, item.text, user)
+                                TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.text, user)
                             }
                             viewModel.LIST_ACTIVITY -> {
                                 val item = act.fragments.onListActivity!!
-                                val replies = viewModel.getReplies(viewModel.LIST_ACTIVITY, act.fragments)
-                                val likes = viewModel.getLikes(viewModel.LIST_ACTIVITY, act.fragments)
                                 val media = Media(id = item.media?.id!!, title = MediaTitle(item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
                                 val user = User(id = item.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
-                                ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.userId, item.status, item.progress, media, user)
+                                ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.status, item.progress, media, user)
                             }
                             viewModel.MESSAGE_ACTIVITY -> {
                                 val item = act.fragments.onMessageActivity!!
-                                val replies = viewModel.getReplies(viewModel.MESSAGE_ACTIVITY, act.fragments)
-                                val likes = viewModel.getLikes(viewModel.MESSAGE_ACTIVITY, act.fragments)
                                 val recipient = User(id = item.recipient?.id!!, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
                                 val messenger = User(id = item.messenger?.id!!, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
-                                MessageActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.recipientId, item.messengerId, item.message, item.isPrivate, recipient, messenger)
+                                MessageActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.recipientId, item.messengerId, item.message, item.isPrivate, recipient, messenger)
                             }
                             else -> null
                         }
@@ -124,7 +118,8 @@ class SocialFragment : Fragment() {
                         }
                     }
 
-                    friendsActivityAdapter.notifyDataSetChanged()
+                    friendsActivityAdapter = assignAdapter()
+                    friendsActivityRecyclerView.adapter= friendsActivityAdapter
 
                     if (viewModel.activityList.size == 0) {
                         emptyLayout.visibility = View.VISIBLE
@@ -212,7 +207,10 @@ class SocialFragment : Fragment() {
         return FriendsActivityRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon,
             object : ActivityListener {
                 override fun openActivityPage(activityId: Int) {
-                    // open browse
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ACTIVITY_DETAIL.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, activityId)
+                    startActivity(intent)
                 }
 
                 override fun openUserPage(userId: Int) {

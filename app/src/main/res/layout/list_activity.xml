@@ -267,6 +267,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/activityLikeIcon"
                     app:srcCompat="@drawable/ic_heart_outline"
                     android:layout_width="@dimen/iconSmallSize"
                     android:layout_height="@dimen/iconSmallSize"/>
