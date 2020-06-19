@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.common.TextEditorActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <ScrollView
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_above="@id/editorFormatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editorEditText"
+            style="?themeRegularFont"
+            android:inputType="textCapSentences|textMultiLine"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/previewButton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:text="@string/preview"
+        android:textColor="?themeBackgroundColor"
+        app:backgroundTint="?themeSecondaryColor"
+        android:layout_above="@id/editorFormatLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/marginNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <HorizontalScrollView
+        android:id="@+id/editorFormatLayout"
+        android:layout_alignParentBottom="true"
+        android:background="?themeCardColor"
+        android:elevation="@dimen/elevationNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:src="@drawable/ic_numbered_list"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </HorizontalScrollView>
+
+</RelativeLayout>

@@ -355,4 +355,9 @@
     <string name="text_status">Text Status</string>
     <string name="list_status">List Status</string>
     <string name="view_likes">View Likes</string>
+    <string name="reply">Reply</string>
+    <string name="delete_activity">Delete Activity</string>
+    <string name="are_you_sure_you_want_to_delete_this_activity">Are you sure you want to delete this activity?</string>
+    <string name="text_editor">Text Editor</string>
+    <string name="preview">Preview</string>
 </resources>

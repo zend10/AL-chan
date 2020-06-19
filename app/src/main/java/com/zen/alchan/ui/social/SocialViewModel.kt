@@ -12,6 +12,7 @@ import com.zen.alchan.helper.pojo.ActivityItem
 import com.zen.alchan.helper.pojo.ActivityReply
 import com.zen.alchan.helper.pojo.BestFriend
 import type.ActivityType
+import type.LikeableType
 
 class SocialViewModel(private val mediaRepository: MediaRepository,
                       private val userRepository: UserRepository,
@@ -54,6 +55,18 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
         socialRepository.friendsActivityResponse
     }
 
+    val toggleLikeResponse by lazy {
+        socialRepository.toggleLikeResponse
+    }
+
+    val toggleActivitySubscriptionResponse by lazy {
+        socialRepository.toggleActivitySubscriptionResponse
+    }
+
+    val deleteActivityResponse by lazy {
+        socialRepository.deleteActivityResponse
+    }
+
     val currentUserId: Int?
         get() = userRepository.viewerData.value?.id
 
@@ -61,12 +74,12 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
         if (!isInit) {
             isInit = true
             reinitBestFriends()
-            socialRepository.getFriendsActivity(selectedActivityType, if (selectedBestFriend != null) listOf(selectedBestFriend?.id!!) else null)
+            socialRepository.getFriendsActivity(selectedActivityType, if (selectedBestFriend != null) selectedBestFriend?.id!! else null)
         }
     }
 
     fun retrieveFriendsActivity() {
-        socialRepository.getFriendsActivity(selectedActivityType, if (selectedBestFriend != null) listOf(selectedBestFriend?.id!!) else null)
+        socialRepository.getFriendsActivity(selectedActivityType, if (selectedBestFriend != null) selectedBestFriend?.id!! else null)
     }
 
     fun reinitBestFriends() {
@@ -75,5 +88,17 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
         savedBestFriends?.forEach {
             bestFriends.add(it)
         }
+    }
+
+    fun toggleLike(id: Int) {
+        socialRepository.toggleLike(id, LikeableType.ACTIVITY)
+    }
+
+    fun toggleSubscription(id: Int, subscribe: Boolean) {
+        socialRepository.toggleActivitySubscription(id, subscribe)
+    }
+
+    fun deleteActivity(id: Int) {
+        socialRepository.deleteActivity(id)
     }
 }

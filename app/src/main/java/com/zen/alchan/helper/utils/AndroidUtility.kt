@@ -26,6 +26,7 @@ import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.gif.GifMediaDecoder
 import io.noties.markwon.image.glide.GlideImagesPlugin
+import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import retrofit2.Call
@@ -195,6 +196,18 @@ object AndroidUtility {
         }
 
         override fun onComplete() { }
+    }
+
+    fun rxApolloCompletable(observer: SingleLiveEvent<Resource<Boolean>>) = object : CompletableObserver {
+        override fun onSubscribe(d: Disposable) { }
+
+        override fun onError(e: Throwable) {
+            observer.postValue(Resource.Error(e.localizedMessage))
+        }
+
+        override fun onComplete() {
+            observer.postValue(Resource.Success(true))
+        }
     }
 
     fun getScreenWidth(activity: Activity?): Int {

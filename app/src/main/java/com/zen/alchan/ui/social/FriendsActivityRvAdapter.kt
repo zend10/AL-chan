@@ -73,7 +73,7 @@ class FriendsActivityRvAdapter(private val context: Context,
             ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
         }
         holder.activitySubscribeLayout.setOnClickListener {
-            listener.toggleSubscribe(act.id)
+            listener.toggleSubscribe(act.id, act.isSubscribed != true)
         }
         holder.activityMoreLayout.setOnClickListener {
             // view pop up menu (edit, delete, view in anilist, copy link)
@@ -122,6 +122,7 @@ class FriendsActivityRvAdapter(private val context: Context,
         holder.activityListLayout.visibility = View.GONE
         holder.activityTextLayout.visibility = View.VISIBLE
         holder.recipientLayout.visibility = View.GONE
+        holder.privateLayout.visibility = View.GONE
     }
 
     private fun handleListActivityLayout(act: ListActivity, holder: ViewHolder) {
@@ -157,6 +158,7 @@ class FriendsActivityRvAdapter(private val context: Context,
         holder.activityListLayout.visibility = View.VISIBLE
         holder.activityTextLayout.visibility = View.GONE
         holder.recipientLayout.visibility = View.GONE
+        holder.privateLayout.visibility = View.GONE
     }
 
     private fun handleMessageActivityLayout(act: MessageActivity, holder: ViewHolder) {
@@ -174,6 +176,8 @@ class FriendsActivityRvAdapter(private val context: Context,
         holder.recipientNameText.setOnClickListener {
             listener.openUserPage(act.recipientId!!)
         }
+
+        holder.privateLayout.visibility = if (act.isPrivate == true) View.VISIBLE else View.GONE
 
         AndroidUtility.convertMarkdown(context, holder.activityTextLayout, act.message, maxWidth, markwon)
 
@@ -214,5 +218,6 @@ class FriendsActivityRvAdapter(private val context: Context,
 
         val recipientLayout = view.recipientLayout!!
         val recipientNameText = view.recipientNameText!!
+        val privateLayout = view.privateLayout!!
     }
 }

@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.common.SpoilerActivity"
+        <activity android:name=".ui.common.TextEditorActivity"></activity>
+        <activity
+            android:name=".ui.common.SpoilerActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -94,7 +96,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.main.MainActivity" />
     </application>
 
 </manifest>

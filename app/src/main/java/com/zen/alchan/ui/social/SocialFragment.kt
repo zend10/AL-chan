@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ActivityReply
@@ -25,10 +26,12 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.common.TextEditorActivity
 import com.zen.alchan.ui.search.SearchActivity
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_social.*
 import kotlinx.android.synthetic.main.layout_empty.*
+import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
 
@@ -44,6 +47,9 @@ class SocialFragment : Fragment() {
 
     private var maxWidth = 0
     private lateinit var markwon: Markwon
+
+    // to temporary store currently liked/subscribed activity
+    private var toggledActivityId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,6 +139,64 @@ class SocialFragment : Fragment() {
             }
         })
 
+        viewModel.toggleLikeResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findCurrentUser = it.data?.toggleLike?.find { item -> item?.id == viewModel.currentUserId }
+                    val findActivity = viewModel.activityList.find { item -> item.id == toggledActivityId }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList[activityIndex].isLiked = findCurrentUser != null
+                        viewModel.activityList[activityIndex].likeCount = it.data?.toggleLike?.size ?: 0
+                        friendsActivityAdapter.notifyItemChanged(activityIndex)
+                    }
+                    toggledActivityId = null
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                    toggledActivityId = null
+                }
+            }
+        })
+
+        viewModel.toggleActivitySubscriptionResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item.id == toggledActivityId }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList[activityIndex].isSubscribed = viewModel.activityList[activityIndex].isSubscribed != true
+                        friendsActivityAdapter.notifyItemChanged(activityIndex)
+                    }
+                    toggledActivityId = null
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                    toggledActivityId = null
+                }
+            }
+        })
+
+        viewModel.deleteActivityResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.retrieveFriendsActivity()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
         viewModel.initData()
     }
 
@@ -143,7 +207,7 @@ class SocialFragment : Fragment() {
         }
 
         visitGlobalActivityButton.setOnClickListener {
-            // open browse type activity
+            // TODO: open browse type activity
         }
 
         bestFriendInfo.setOnClickListener {
@@ -221,19 +285,33 @@ class SocialFragment : Fragment() {
                 }
 
                 override fun toggleLike(activityId: Int) {
-                    // call api
+                    toggledActivityId = activityId
+                    viewModel.toggleLike(activityId)
                 }
 
-                override fun toggleSubscribe(activityId: Int) {
-                    // call api
+                override fun toggleSubscribe(activityId: Int, subscribe: Boolean) {
+                    toggledActivityId = activityId
+                    viewModel.toggleSubscription(activityId, subscribe)
                 }
 
                 override fun editActivity(activityId: Int) {
-                    // open new activity
+                    val intent = Intent(activity, TextEditorActivity::class.java)
+                    intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.EDIT_ACTIVITY.name)
+                    startActivity(intent)
                 }
 
                 override fun deleteActivity(activityId: Int) {
-                    // call api
+                    DialogUtility.showOptionDialog(
+                        activity,
+                        R.string.delete_activity,
+                        R.string.are_you_sure_you_want_to_delete_this_activity,
+                        R.string.delete,
+                        {
+                            viewModel.deleteActivity(activityId)
+                        },
+                        R.string.cancel,
+                        { }
+                    )
                 }
 
                 override fun viewOnAniList(siteUrl: String?) {

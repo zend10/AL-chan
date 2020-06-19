@@ -41,6 +41,7 @@ import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
 import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
 import com.zen.alchan.ui.common.MediaListDetailDialogViewModel
+import com.zen.alchan.ui.common.TextEditorViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
@@ -126,6 +127,7 @@ class ALchanApplication : Application() {
         viewModel { MediaFilterViewModel(get(), get(), gson) }
         viewModel { CustomiseListViewModel(get()) }
         viewModel { MediaListDetailDialogViewModel(gson) }
+        viewModel { TextEditorViewModel() }
 
         // auth
         viewModel { SplashViewModel(get(), get()) }

@@ -69,6 +69,11 @@ class ActivityDetailFragment : BaseFragment() {
 
         toolbarLayout.setNavigationOnClickListener { activity?.finish() }
         toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+        toolbarLayout.inflateMenu(R.menu.menu_activity_detail)
+        toolbarLayout.menu.findItem(R.id.itemReply).setOnMenuItemClickListener {
+            // open editor
+            true
+        }
 
         setupObserver()
         initLayout()
@@ -227,6 +232,7 @@ class ActivityDetailFragment : BaseFragment() {
         activityListLayout.visibility = View.GONE
         activityTextLayout.visibility = View.VISIBLE
         recipientLayout.visibility = View.GONE
+        privateLayout.visibility = View.GONE
     }
 
     private fun handleListActivityLayout(act: ListActivity) {
@@ -269,6 +275,7 @@ class ActivityDetailFragment : BaseFragment() {
         activityListLayout.visibility = View.VISIBLE
         activityTextLayout.visibility = View.GONE
         recipientLayout.visibility = View.GONE
+        privateLayout.visibility = View.GONE
     }
 
     private fun handleMessageActivityLayout(act: MessageActivity) {
@@ -286,6 +293,8 @@ class ActivityDetailFragment : BaseFragment() {
         recipientNameText.setOnClickListener {
             listener?.changeFragment(BrowsePage.USER, act.recipientId!!)
         }
+
+        privateLayout.visibility = if (act.isPrivate == true) View.VISIBLE else View.GONE
 
         AndroidUtility.convertMarkdown(activity!!, activityTextLayout, act.message, maxWidth, markwon)
 

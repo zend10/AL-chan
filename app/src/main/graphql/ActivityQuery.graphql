@@ -2,6 +2,7 @@ query ActivityQuery(
     $page: Int,
     $perPage: Int,
     $type_in: [ActivityType],
+    $userId: Int,
     $userId_in: [Int],
     $userId_not_in: [Int],
     $isFollowing: Boolean
@@ -16,6 +17,7 @@ query ActivityQuery(
         }
         activities(
             type_in: $type_in,
+            userId: $userId,
             userId_in: $userId_in,
             userId_not_in: $userId_not_in,
             isFollowing: $isFollowing,

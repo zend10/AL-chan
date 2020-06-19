@@ -106,6 +106,25 @@
 
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
+                            <com.google.android.material.card.MaterialCardView
+                                android:visibility="gone"
+                                android:id="@+id/privateLayout"
+                                app:cardBackgroundColor="?themeSecondaryColor"
+                                android:layout_marginStart="@dimen/marginNormal"
+                                app:contentPadding="@dimen/iconPadding"
+                                app:cardElevation="0dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:text="@string/private_"
+                                    style="?themeSmallFont"
+                                    android:textColor="?themeBackgroundColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </com.google.android.material.card.MaterialCardView>
+
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <com.google.android.material.textview.MaterialTextView
@@ -135,6 +154,7 @@
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/listActivityText"
                                 style="?themeRegularFont"
+                                android:textIsSelectable="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -238,6 +258,8 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:visibility="gone"
                             android:id="@+id/activityTextLayout"
+                            style="?themeRegularFont"
+                            android:textIsSelectable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 

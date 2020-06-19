@@ -83,6 +83,8 @@
             <com.google.android.material.textview.MaterialTextView
                 android:visibility="visible"
                 android:id="@+id/activityTextLayout"
+                style="?themeRegularFont"
+                android:textIsSelectable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -120,7 +122,16 @@
                     android:layout_height="wrap_content"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-            
+
+            <com.zen.overlapimagelistview.OverlapImageListView
+                android:visibility="visible"
+                android:id="@+id/likesOverlapImages"
+                app:fillColor="@color/white"
+                app:strokeColor="?themeBackgroundColor"
+                app:strokeWidth="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/iconSize"/>
+
             <View
                 android:layout_weight="1"
                 android:layout_width="0dp"

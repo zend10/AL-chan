@@ -298,17 +298,9 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     ) {
         _toggleFavouriteResponse.postValue(Resource.Loading())
 
-        userDataSource.toggleFavourite(animeId, mangaId, characterId, staffId, studioId).subscribeWith(object : CompletableObserver {
-            override fun onSubscribe(d: Disposable) { }
-
-            override fun onError(e: Throwable) {
-                _toggleFavouriteResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-
-            override fun onComplete() {
-                _toggleFavouriteResponse.postValue(Resource.Success(true))
-            }
-        })
+        userDataSource.toggleFavourite(
+            animeId, mangaId, characterId, staffId, studioId
+        ).subscribeWith(AndroidUtility.rxApolloCompletable(_toggleFavouriteResponse))
     }
 
     @SuppressLint("CheckResult")

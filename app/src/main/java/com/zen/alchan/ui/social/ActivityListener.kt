@@ -6,7 +6,7 @@ interface ActivityListener {
     fun openActivityPage(activityId: Int)
     fun openUserPage(userId: Int)
     fun toggleLike(activityId: Int)
-    fun toggleSubscribe(activityId: Int)
+    fun toggleSubscribe(activityId: Int, subscribe: Boolean)
     fun editActivity(activityId: Int)
     fun deleteActivity(activityId: Int)
     fun viewOnAniList(siteUrl: String?)

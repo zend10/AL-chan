@@ -2,6 +2,8 @@ package com.zen.alchan.ui.browse.activity
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -9,13 +11,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.zen.alchan.R
-import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ActivityReply
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.helper.utils.DialogUtility
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity_replies.view.*
 
@@ -65,6 +67,38 @@ class ActivityRepliesRvAdapter(private val context: Context,
             // toggle like
         }
 
+        if (item.likeCount > 0) {
+            holder.likesOverlapImages.visibility = View.VISIBLE
+            val imageList = ArrayList<Bitmap>()
+            item.likes?.forEachIndexed { index, it ->
+                if (index == 3) {
+                    return@forEachIndexed
+                }
+
+                GlideApp.with(context)
+                    .asBitmap()
+                    .load(it.avatar?.medium)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            imageList.add(resource)
+
+                            if (index == item.likes.lastIndex || imageList.size == 3) {
+                                holder.likesOverlapImages.circleCount = imageList.size
+                                holder.likesOverlapImages.imageList = imageList
+                            }
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) { }
+                    })
+            }
+        } else {
+            holder.likesOverlapImages.visibility = View.GONE
+        }
+
         if (item.userId != currentUserId) {
             holder.activityMoreLayout.visibility = View.GONE
         } else {
@@ -107,5 +141,6 @@ class ActivityRepliesRvAdapter(private val context: Context,
         val activityLikeIcon = view.activityLikeIcon!!
         val activityLikeText = view.activityLikeText!!
         val activityMoreLayout = view.activityMoreLayout!!
+        val likesOverlapImages = view.likesOverlapImages!!
     }
 }
