@@ -27,6 +27,8 @@ interface SocialRepository {
     val deleteActivityDetailResponse: LiveData<Resource<Boolean>>
     val deleteActivityReplyResponse: LiveData<Resource<Int>>
 
+    val activityListResponse: LiveData<Resource<ActivityQuery.Data>>
+
     fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?)
     fun getActivityDetail(id: Int)
 
@@ -34,4 +36,6 @@ interface SocialRepository {
     fun toggleActivitySubscription(activityId: Int, subscribe: Boolean, fromDetail: Boolean = false)
     fun deleteActivity(id: Int, fromDetail: Boolean = false)
     fun deleteActivityReply(id: Int)
+
+    fun getActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int)
 }

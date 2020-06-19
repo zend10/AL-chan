@@ -34,4 +34,10 @@ interface SocialDataSource {
     fun deleteActivityReply(
         id: Int
     ): Completable
+
+    fun getActivities(
+        page: Int,
+        typeIn: List<ActivityType>?,
+        userId: Int?
+    ): Observable<Response<ActivityQuery.Data>>
 }

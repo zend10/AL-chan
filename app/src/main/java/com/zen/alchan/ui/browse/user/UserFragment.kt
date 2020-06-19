@@ -51,6 +51,7 @@ class UserFragment : BaseFragment() {
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
 
+    private lateinit var itemActivity: MenuItem
     private lateinit var itemBestFriend: MenuItem
     private lateinit var itemViewInAniList: MenuItem
     private lateinit var itemShareProfile: MenuItem
@@ -88,6 +89,7 @@ class UserFragment : BaseFragment() {
         userToolbar.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
 
         userToolbar.menu.apply {
+            itemActivity = findItem(R.id.itemActivity)
             itemBestFriend = findItem(R.id.itemBestFriend)
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
             itemShareProfile = findItem(R.id.itemShareProfile)
@@ -289,6 +291,11 @@ class UserFragment : BaseFragment() {
                 }
             }
         })
+
+        itemActivity.setOnMenuItemClickListener {
+            if (user?.id != null) listener?.changeFragment(BrowsePage.ACTIVITY_LIST, user.id)
+            true
+        }
 
         itemBestFriend.setOnMenuItemClickListener {
             val title: Int

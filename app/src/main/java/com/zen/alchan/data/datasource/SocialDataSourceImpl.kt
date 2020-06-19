@@ -83,4 +83,20 @@ class SocialDataSourceImpl(private val apolloHandler: ApolloHandler) : SocialDat
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun getActivities(
+        page: Int,
+        typeIn: List<ActivityType>?,
+        userId: Int?
+    ): Observable<Response<ActivityQuery.Data>> {
+        val query = ActivityQuery(
+            page = Input.optional(page),
+            type_in = Input.optional(typeIn),
+            userId = Input.optional(userId)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

@@ -40,7 +40,7 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
     )
 
     val activityTypeArray = arrayOf(
-        R.string.all, R.string.text_status, R.string.list_status
+        R.string.all, R.string.status, R.string.list
     )
 
     val savedBestFriends: List<BestFriend>?

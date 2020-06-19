@@ -10,6 +10,7 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
 import com.zen.alchan.ui.browse.activity.ActivityDetailFragment
+import com.zen.alchan.ui.browse.activity.ActivityListFragment
 import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.staff.StaffFragment
@@ -121,6 +122,10 @@ class BrowseActivity : BaseActivity(), BaseListener {
                 targetFragment = UserFollowsFragment()
                 bundle.putInt(UserFollowsFragment.USER_ID, id)
                 bundle.putInt(UserFollowsFragment.START_POSITION, FollowPage.FOLLOWERS.ordinal)
+            }
+            BrowsePage.ACTIVITY_LIST -> {
+                targetFragment = ActivityListFragment()
+                bundle.putInt(ActivityListFragment.USER_ID, id)
             }
             BrowsePage.ACTIVITY_DETAIL -> {
                 targetFragment = ActivityDetailFragment()

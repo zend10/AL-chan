@@ -37,6 +37,10 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     override val messageActivityText: String
         get() = MESSAGE_ACTIVITY
 
+    private val _notifyFriendsActivity = SingleLiveEvent<Boolean>()
+    override val notifyFriendsActivity: LiveData<Boolean>
+        get() = _notifyFriendsActivity
+
     private val _friendsActivityResponse = SingleLiveEvent<Resource<ActivityQuery.Data>>()
     override val friendsActivityResponse: LiveData<Resource<ActivityQuery.Data>>
         get() = _friendsActivityResponse
@@ -73,9 +77,9 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     override val deleteActivityReplyResponse: LiveData<Resource<Int>>
         get() = _deleteActivityReplyResponse
 
-    private val _notifyFriendsActivity = SingleLiveEvent<Boolean>()
-    override val notifyFriendsActivity: LiveData<Boolean>
-        get() = _notifyFriendsActivity
+    private val _activityListResponse = SingleLiveEvent<Resource<ActivityQuery.Data>>()
+    override val activityListResponse: LiveData<Resource<ActivityQuery.Data>>
+        get() = _activityListResponse
 
     @SuppressLint("CheckResult")
     override fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?) {
@@ -228,5 +232,10 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
                 _notifyFriendsActivity.postValue(true)
             }
         })
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int) {
+        socialDataSource.getActivities(page, typeIn, userId).subscribeWith(AndroidUtility.rxApolloCallback(_activityListResponse))
     }
 }

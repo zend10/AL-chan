@@ -19,6 +19,7 @@ import com.zen.alchan.ui.auth.LoginViewModel
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.auth.SplashViewModel
 import com.zen.alchan.ui.browse.activity.ActivityDetailViewModel
+import com.zen.alchan.ui.browse.activity.ActivityListViewModel
 import com.zen.alchan.ui.browse.character.CharacterViewModel
 import com.zen.alchan.ui.common.customise.CustomiseListViewModel
 import com.zen.alchan.ui.common.filter.MediaFilterViewModel
@@ -176,6 +177,7 @@ class ALchanApplication : Application() {
 
         // browse activity
         viewModel { ActivityDetailViewModel(get(), get()) }
+        viewModel { ActivityListViewModel(get(), get()) }
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }

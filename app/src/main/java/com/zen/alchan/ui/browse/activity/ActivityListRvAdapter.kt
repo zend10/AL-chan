@@ -1,6 +1,5 @@
-package com.zen.alchan.ui.social
+package com.zen.alchan.ui.browse.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
@@ -19,33 +18,51 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.ui.social.ActivityListener
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity.view.*
-import org.koin.core.logger.MESSAGE
-import type.ActivityType
 
-class FriendsActivityRvAdapter(private val context: Context,
-                               private val list: List<ActivityItem>,
-                               private val currentUserId: Int?,
-                               private val maxWidth: Int,
-                               private val markwon: Markwon,
-                               private val listener: ActivityListener
-): RecyclerView.Adapter<FriendsActivityRvAdapter.ViewHolder>() {
+class ActivityListRvAdapter(
+    private val context: Context,
+    private val list: List<ActivityItem?>,
+    private val currentUserId: Int?,
+    private val maxWidth: Int,
+    private val markwon: Markwon,
+    private val listener: ActivityListener
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    // TODO: delete this class
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
-        return ViewHolder(view)
+    companion object {
+        const val VIEW_TYPE_ITEM = 0
+        const val VIEW_TYPE_LOADING = 1
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
-        handleLayout(item, holder)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_ITEM) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
+            ItemViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
+            LoadingViewHolder(view)
+        }
     }
 
-    private fun handleLayout(act: ActivityItem, holder: ViewHolder) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is ItemViewHolder) {
+            val item = list[position]
+            handleLayout(item!!, holder)
+        }
+    }
+
+    private fun handleLayout(act: ActivityItem, holder: ItemViewHolder) {
         holder.itemView.setOnClickListener {
+            listener.openActivityPage(act.id)
+        }
+
+        holder.activityListLayout.setOnClickListener {
+            listener.openActivityPage(act.id)
+        }
+
+        holder.activityTextLayout.setOnClickListener {
             listener.openActivityPage(act.id)
         }
 
@@ -109,7 +126,7 @@ class FriendsActivityRvAdapter(private val context: Context,
         }
     }
 
-    private fun handleTextActivityLayout(act: TextActivity, holder: ViewHolder) {
+    private fun handleTextActivityLayout(act: TextActivity, holder: ItemViewHolder) {
         holder.nameText.text = act.user?.name
         holder.nameText.setOnClickListener {
             listener.openUserPage(act.userId!!)
@@ -127,7 +144,7 @@ class FriendsActivityRvAdapter(private val context: Context,
         holder.privateLayout.visibility = View.GONE
     }
 
-    private fun handleListActivityLayout(act: ListActivity, holder: ViewHolder) {
+    private fun handleListActivityLayout(act: ListActivity, holder: ItemViewHolder) {
         holder.nameText.text = act.user?.name
         holder.nameText.setOnClickListener {
             listener.openUserPage(act.userId!!)
@@ -163,7 +180,7 @@ class FriendsActivityRvAdapter(private val context: Context,
         holder.privateLayout.visibility = View.GONE
     }
 
-    private fun handleMessageActivityLayout(act: MessageActivity, holder: ViewHolder) {
+    private fun handleMessageActivityLayout(act: MessageActivity, holder: ItemViewHolder) {
         holder.nameText.text = act.messenger?.name ?: ""
         holder.nameText.setOnClickListener {
             listener.openUserPage(act.messengerId!!)
@@ -192,7 +209,11 @@ class FriendsActivityRvAdapter(private val context: Context,
         return list.size
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun getItemViewType(position: Int): Int {
+        return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+    }
+
+    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val avatarImage = view.avatarImage!!
         val nameText = view.nameText!!
         val timeText = view.timeText!!
@@ -222,4 +243,6 @@ class FriendsActivityRvAdapter(private val context: Context,
         val recipientNameText = view.recipientNameText!!
         val privateLayout = view.privateLayout!!
     }
+
+    class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

@@ -22,6 +22,7 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -29,6 +30,7 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseMainFragment
+import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.follows.FollowsActivity
@@ -50,6 +52,7 @@ class ProfileFragment : BaseMainFragment() {
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
 
+    private lateinit var itemActivity: MenuItem
     private lateinit var itemNotifications: MenuItem
     private lateinit var itemSettings: MenuItem
     private lateinit var itemViewInAniList: MenuItem
@@ -79,6 +82,7 @@ class ProfileFragment : BaseMainFragment() {
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
 
         profileToolbar.menu.apply {
+            itemActivity = findItem(R.id.itemActivity)
             itemNotifications = findItem(R.id.itemNotifications)
             itemSettings = findItem(R.id.itemSettings)
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
@@ -239,6 +243,14 @@ class ProfileFragment : BaseMainFragment() {
                 }
             }
         })
+
+        itemActivity.setOnMenuItemClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ACTIVITY_LIST.name)
+            intent.putExtra(BrowseActivity.LOAD_ID, user?.id)
+            startActivity(intent)
+            true
+        }
 
         val notificationActionView = itemNotifications.actionView
         val badgeCount = notificationActionView.findViewById<MaterialTextView>(R.id.notification_badge)

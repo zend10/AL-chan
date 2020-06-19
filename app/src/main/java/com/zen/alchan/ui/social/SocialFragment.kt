@@ -26,6 +26,7 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.browse.activity.ActivityListRvAdapter
 import com.zen.alchan.ui.common.TextEditorActivity
 import com.zen.alchan.ui.search.SearchActivity
 import io.noties.markwon.Markwon
@@ -43,7 +44,7 @@ class SocialFragment : Fragment() {
     private val viewModel by viewModel<SocialViewModel>()
 
     private lateinit var bestFriendAdapter: BestFriendRvAdapter
-    private lateinit var friendsActivityAdapter: FriendsActivityRvAdapter
+    private lateinit var friendsActivityAdapter: ActivityListRvAdapter
 
     private var maxWidth = 0
     private lateinit var markwon: Markwon
@@ -265,8 +266,8 @@ class SocialFragment : Fragment() {
             })
     }
 
-    private fun assignAdapter(): FriendsActivityRvAdapter {
-        return FriendsActivityRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon,
+    private fun assignAdapter(): ActivityListRvAdapter {
+        return ActivityListRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon,
             object : ActivityListener {
                 override fun openActivityPage(activityId: Int) {
                     val intent = Intent(activity, BrowseActivity::class.java)

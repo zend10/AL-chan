@@ -360,4 +360,6 @@
     <string name="are_you_sure_you_want_to_delete_this_activity">Are you sure you want to delete this activity?</string>
     <string name="text_editor">Text Editor</string>
     <string name="preview">Preview</string>
+    <string name="activity">Activity</string>
+    <string name="messages">Messages</string>
 </resources>
