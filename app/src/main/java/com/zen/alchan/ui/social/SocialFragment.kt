@@ -48,9 +48,6 @@ class SocialFragment : Fragment() {
     private var maxWidth = 0
     private lateinit var markwon: Markwon
 
-    // to temporary store currently liked/subscribed activity
-    private var toggledActivityId: Int? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,6 +88,12 @@ class SocialFragment : Fragment() {
             viewModel.retrieveFriendsActivity()
         })
 
+        viewModel.notifyFriendsActivity.observe(viewLifecycleOwner, Observer {
+            if (true) {
+                viewModel.retrieveFriendsActivity()
+            }
+        })
+
         viewModel.friendsActivityResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> friendsActivityLoading.visibility = View.VISIBLE
@@ -99,18 +102,18 @@ class SocialFragment : Fragment() {
                     viewModel.activityList.clear()
                     it.data?.page?.activities?.forEach { act ->
                         val activityItem = when (act?.__typename) {
-                            viewModel.TEXT_ACTIVITY -> {
+                            viewModel.textActivityText -> {
                                 val item = act.fragments.onTextActivity
                                 val user = User(id = item?.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
                                 TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.text, user)
                             }
-                            viewModel.LIST_ACTIVITY -> {
+                            viewModel.listActivityText -> {
                                 val item = act.fragments.onListActivity!!
                                 val media = Media(id = item.media?.id!!, title = MediaTitle(item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
                                 val user = User(id = item.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
                                 ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.status, item.progress, media, user)
                             }
-                            viewModel.MESSAGE_ACTIVITY -> {
+                            viewModel.messageActivityText -> {
                                 val item = act.fragments.onMessageActivity!!
                                 val recipient = User(id = item.recipient?.id!!, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
                                 val messenger = User(id = item.messenger?.id!!, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
@@ -144,20 +147,17 @@ class SocialFragment : Fragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    val findCurrentUser = it.data?.toggleLike?.find { item -> item?.id == viewModel.currentUserId }
-                    val findActivity = viewModel.activityList.find { item -> item.id == toggledActivityId }
+                    val findActivity = viewModel.activityList.find { item -> item.id == it.data?.id }
                     val activityIndex = viewModel.activityList.indexOf(findActivity)
                     if (activityIndex != -1) {
-                        viewModel.activityList[activityIndex].isLiked = findCurrentUser != null
-                        viewModel.activityList[activityIndex].likeCount = it.data?.toggleLike?.size ?: 0
+                        viewModel.activityList[activityIndex].isLiked = it.data?.isLiked
+                        viewModel.activityList[activityIndex].likeCount = it.data?.likeCount ?: 0
                         friendsActivityAdapter.notifyItemChanged(activityIndex)
                     }
-                    toggledActivityId = null
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                    toggledActivityId = null
                 }
             }
         })
@@ -167,18 +167,16 @@ class SocialFragment : Fragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    val findActivity = viewModel.activityList.find { item -> item.id == toggledActivityId }
+                    val findActivity = viewModel.activityList.find { item -> item.id == it.data?.id }
                     val activityIndex = viewModel.activityList.indexOf(findActivity)
                     if (activityIndex != -1) {
-                        viewModel.activityList[activityIndex].isSubscribed = viewModel.activityList[activityIndex].isSubscribed != true
+                        viewModel.activityList[activityIndex].isSubscribed = it.data?.isSubscribed
                         friendsActivityAdapter.notifyItemChanged(activityIndex)
                     }
-                    toggledActivityId = null
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                    toggledActivityId = null
                 }
             }
         })
@@ -207,7 +205,7 @@ class SocialFragment : Fragment() {
         }
 
         visitGlobalActivityButton.setOnClickListener {
-            // TODO: open browse type activity
+            // TODO: open global activity
         }
 
         bestFriendInfo.setOnClickListener {
@@ -285,12 +283,10 @@ class SocialFragment : Fragment() {
                 }
 
                 override fun toggleLike(activityId: Int) {
-                    toggledActivityId = activityId
                     viewModel.toggleLike(activityId)
                 }
 
                 override fun toggleSubscribe(activityId: Int, subscribe: Boolean) {
-                    toggledActivityId = activityId
                     viewModel.toggleSubscription(activityId, subscribe)
                 }
 

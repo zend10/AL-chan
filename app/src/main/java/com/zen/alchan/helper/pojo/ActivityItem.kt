@@ -3,15 +3,15 @@ package com.zen.alchan.helper.pojo
 import com.zen.alchan.data.response.User
 import type.ActivityType
 
-abstract class ActivityItem(
+open class ActivityItem(
     val id: Int,
-    val type: ActivityType?,
-    var replyCount: Int,
-    val siteUrl: String?,
-    var isSubscribed: Boolean?,
-    var likeCount: Int,
-    var isLiked: Boolean?,
-    val createdAt: Int,
-    var replies: List<ActivityReply>?,
-    var likes: List<User>?
+    val type: ActivityType? = null,
+    var replyCount: Int = 0,
+    val siteUrl: String? = null,
+    var isSubscribed: Boolean? = null,
+    var likeCount: Int = 0,
+    var isLiked: Boolean? = null,
+    val createdAt: Int = 0,
+    var replies: ArrayList<ActivityReply>? = null,
+    var likes: List<User>? = null
 )

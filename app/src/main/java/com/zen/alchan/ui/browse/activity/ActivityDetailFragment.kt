@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_activity_detail.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.LikeableType
 
 /**
  * A simple [Fragment] subclass.
@@ -71,7 +72,7 @@ class ActivityDetailFragment : BaseFragment() {
         toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
         toolbarLayout.inflateMenu(R.menu.menu_activity_detail)
         toolbarLayout.menu.findItem(R.id.itemReply).setOnMenuItemClickListener {
-            // open editor
+            // TODO: open editor
             true
         }
 
@@ -91,18 +92,18 @@ class ActivityDetailFragment : BaseFragment() {
                     val likes = viewModel.getLikes(act?.__typename, act?.fragments)
 
                     viewModel.activityDetail = when (act?.__typename) {
-                        viewModel.TEXT_ACTIVITY -> {
+                        viewModel.textActivityText -> {
                             val item = act.fragments.onTextActivity
                             val user = User(id = item?.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
                             TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.userId, item.text, user)
                         }
-                        viewModel.LIST_ACTIVITY -> {
+                        viewModel.listActivityText -> {
                             val item = act.fragments.onListActivity!!
                             val media = Media(id = item.media?.id!!, title = MediaTitle(item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
                             val user = User(id = item.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
                             ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, replies, likes, item.userId, item.status, item.progress, media, user)
                         }
-                        viewModel.MESSAGE_ACTIVITY -> {
+                        viewModel.messageActivityText -> {
                             val item = act.fragments.onMessageActivity!!
                             val recipient = User(id = item.recipient?.id!!, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
                             val messenger = User(id = item.messenger?.id!!, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
@@ -112,6 +113,100 @@ class ActivityDetailFragment : BaseFragment() {
                     }
 
                     initLayout()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.toggleLikeDetailResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+
+                    if (it.data?.id == viewModel.activityId) {
+                        viewModel.activityDetail?.isLiked = it.data?.isLiked
+                        viewModel.activityDetail?.likeCount = it.data?.likeCount ?: 0
+                        viewModel.activityDetail?.likes = it.data?.likes
+
+                        activityLikeIcon.imageTintList = if (viewModel.activityDetail?.isLiked == true) {
+                            ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+                        } else {
+                            ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
+                        }
+                        activityLikeText.text = if (viewModel.activityDetail?.likeCount != 0) viewModel.activityDetail?.likeCount.toString() else ""
+
+                        likesRvAdapter = assignLikesAdapter()
+                        likesRecyclerView.adapter = likesRvAdapter
+                    } else {
+                        val findActivity = viewModel.activityDetail?.replies?.find { item -> item.id == it.data?.id }
+                        val activityIndex = viewModel.activityDetail?.replies?.indexOf(findActivity)
+                        if (activityIndex != null && activityIndex != -1) {
+                            viewModel.activityDetail?.replies!![activityIndex].isLiked = it.data?.isLiked
+                            viewModel.activityDetail?.replies!![activityIndex].likeCount = it.data?.likeCount ?: 0
+                            viewModel.activityDetail?.replies!![activityIndex].likes = it.data?.likes
+                            repliesRvAdapter.notifyItemChanged(activityIndex)
+                        }
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.toggleActivitySubscriptionDetailResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.activityDetail?.isSubscribed = it.data?.isSubscribed
+                    activitySubscribeIcon.imageTintList = if (viewModel.activityDetail?.isSubscribed == true) {
+                        ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+                    } else {
+                        ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.deleteActivityDetailResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    activity?.onBackPressed()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.deleteActivityReplyResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+
+                    val findReply = viewModel.activityDetail?.replies?.find { reply -> reply.id == it.data }
+                    val findIndex = viewModel.activityDetail?.replies?.indexOf(findReply)
+
+                    if (findIndex != null && findIndex != -1) {
+                        viewModel.activityDetail?.replies?.removeAt(findIndex)
+                        viewModel.activityDetail?.replyCount = viewModel.activityDetail?.replies?.size ?: 0
+                        activityReplyText.text = if (viewModel.activityDetail?.replyCount != 0) viewModel.activityDetail?.replyCount.toString() else ""
+                        repliesRvAdapter.notifyItemRemoved(findIndex)
+                    }
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
@@ -144,7 +239,7 @@ class ActivityDetailFragment : BaseFragment() {
 
         activityReplyText.text = if (act.replyCount != 0) act.replyCount.toString() else ""
         activityReplyLayout.setOnClickListener {
-            // open editor
+            // TODO: open editor
         }
 
         activityLikeIcon.imageTintList = if (act.isLiked == true) {
@@ -154,7 +249,9 @@ class ActivityDetailFragment : BaseFragment() {
         }
         activityLikeText.text = if (act.likeCount != 0) act.likeCount.toString() else ""
         activityLikeLayout.setOnClickListener {
-            // toggle like
+            if (viewModel.activityId != null) {
+                viewModel.toggleLike(viewModel.activityId!!, LikeableType.ACTIVITY)
+            }
         }
 
         activitySubscribeIcon.imageTintList = if (act.isSubscribed == true) {
@@ -163,7 +260,9 @@ class ActivityDetailFragment : BaseFragment() {
             ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
         }
         activitySubscribeLayout.setOnClickListener {
-            // toggle subscribe
+            if (viewModel.activityId != null) {
+                viewModel.toggleSubscription(viewModel.activityId!!, viewModel.activityDetail?.isSubscribed != true)
+            }
         }
 
         activityMoreLayout.setOnClickListener {
@@ -304,11 +403,13 @@ class ActivityDetailFragment : BaseFragment() {
     }
 
     private fun editActivity(activityId: Int) {
-
+        // TODO: open editor
     }
 
     private fun deleteActivity(activityId: Int) {
-
+        if (viewModel.activityId != null) {
+            viewModel.deleteActivity(activityId)
+        }
     }
 
     private fun viewOnAniList(siteUrl: String?) {
@@ -360,11 +461,15 @@ class ActivityDetailFragment : BaseFragment() {
                 }
 
                 override fun editReply(replyId: Int) {
-                    // open editor
+                    // TODO: open editor
                 }
 
                 override fun deleteReply(replyId: Int) {
-                    // delete
+                    viewModel.deleteActivityReply(replyId)
+                }
+
+                override fun likeReply(replyId: Int) {
+                    viewModel.toggleLike(replyId, LikeableType.ACTIVITY_REPLY)
                 }
             }
         )

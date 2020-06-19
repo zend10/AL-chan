@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.common.TextEditorActivity"></activity>
+        <activity android:name=".ui.social.global.GlobalFeedActivity"></activity>
+        <activity android:name=".ui.common.TextEditorActivity" />
         <activity
             android:name=".ui.common.SpoilerActivity"
             android:theme="@style/Theme.MaterialComponents.NoActionBar.Translucent">

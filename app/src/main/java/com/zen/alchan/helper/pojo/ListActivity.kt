@@ -13,7 +13,7 @@ class ListActivity(
     likeCount: Int,
     isLiked: Boolean?,
     createdAt: Int,
-    replies: List<ActivityReply>?,
+    replies: ArrayList<ActivityReply>?,
     likes: List<User>?,
     val userId: Int?,
     val status: String?,

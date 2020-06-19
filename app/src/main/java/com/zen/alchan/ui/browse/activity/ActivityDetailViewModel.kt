@@ -7,13 +7,19 @@ import com.zen.alchan.data.response.User
 import com.zen.alchan.data.response.UserAvatar
 import com.zen.alchan.helper.pojo.ActivityItem
 import com.zen.alchan.helper.pojo.ActivityReply
+import type.LikeableType
 
 class ActivityDetailViewModel(private val socialRepository: SocialRepository,
                               private val userRepository: UserRepository) : ViewModel() {
 
-    val TEXT_ACTIVITY = "TextActivity"
-    val LIST_ACTIVITY = "ListActivity"
-    val MESSAGE_ACTIVITY = "MessageActivity"
+    val textActivityText: String
+        get() = socialRepository.textActivityText
+
+    val listActivityText: String
+        get() = socialRepository.listActivityText
+
+    val messageActivityText: String
+        get() = socialRepository.messageActivityText
 
     var activityId: Int? = null
     var activityDetail: ActivityItem? = null
@@ -25,17 +31,33 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
         socialRepository.activityDetailResponse
     }
 
+    val toggleLikeDetailResponse by lazy {
+        socialRepository.toggleLikeDetailResponse
+    }
+
+    val toggleActivitySubscriptionDetailResponse by lazy {
+        socialRepository.toggleActivitySubscriptionDetailResponse
+    }
+
+    val deleteActivityDetailResponse by lazy {
+        socialRepository.deleteActivityDetailResponse
+    }
+
+    val deleteActivityReplyResponse by lazy {
+        socialRepository.deleteActivityReplyResponse
+    }
+
     fun getActivityDetail() {
         if (activityId != null) {
             socialRepository.getActivityDetail(activityId!!)
         }
     }
 
-    fun getReplies(activityType: String?, item: ActivityDetailQuery.Activity.Fragments?): List<ActivityReply> {
+    fun getReplies(activityType: String?, item: ActivityDetailQuery.Activity.Fragments?): ArrayList<ActivityReply> {
         val list = ArrayList<ActivityReply>()
 
         when (activityType) {
-            TEXT_ACTIVITY -> {
+            textActivityText -> {
                 item?.onTextActivity?.replies?.forEach { reply ->
                     val likeUser = User(
                         id = reply?.user?.id!!,
@@ -69,7 +91,7 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
                     )
                 }
             }
-            LIST_ACTIVITY -> {
+            listActivityText -> {
                 item?.onListActivity?.replies?.forEach { reply ->
                     val likeUser = User(
                         id = reply?.user?.id!!,
@@ -103,7 +125,7 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
                     )
                 }
             }
-            MESSAGE_ACTIVITY -> {
+            messageActivityText -> {
                 item?.onMessageActivity?.replies?.forEach { reply ->
                     val likeUser = User(
                         id = reply?.user?.id!!,
@@ -146,7 +168,7 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
         val list = ArrayList<User>()
 
         when (activityType) {
-            TEXT_ACTIVITY -> {
+            textActivityText -> {
                 item?.onTextActivity?.likes?.forEach { like ->
                     list.add(
                         User(
@@ -157,7 +179,7 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
                     )
                 }
             }
-            LIST_ACTIVITY -> {
+            listActivityText -> {
                 item?.onListActivity?.likes?.forEach { like ->
                     list.add(
                         User(
@@ -168,7 +190,7 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
                     )
                 }
             }
-            MESSAGE_ACTIVITY -> {
+            messageActivityText -> {
                 item?.onMessageActivity?.likes?.forEach { like ->
                     list.add(
                         User(
@@ -182,5 +204,21 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
         }
 
         return list
+    }
+
+    fun toggleLike(id: Int, type: LikeableType) {
+        socialRepository.toggleLike(id, type, true)
+    }
+
+    fun toggleSubscription(id: Int, subscribe: Boolean) {
+        socialRepository.toggleActivitySubscription(id, subscribe, true)
+    }
+
+    fun deleteActivity(id: Int) {
+        socialRepository.deleteActivity(id, true)
+    }
+
+    fun deleteActivityReply(id: Int) {
+        socialRepository.deleteActivityReply(id)
     }
 }

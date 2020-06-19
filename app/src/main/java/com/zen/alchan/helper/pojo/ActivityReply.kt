@@ -7,9 +7,9 @@ class ActivityReply(
     val userId: Int?,
     val activityId: Int?,
     var text: String?,
-    val likeCount: Int,
+    var likeCount: Int,
     var isLiked: Boolean?,
     val createdAt: Int,
     val user: User?,
-    val likes: List<User>?
+    var likes: List<User>?
 )

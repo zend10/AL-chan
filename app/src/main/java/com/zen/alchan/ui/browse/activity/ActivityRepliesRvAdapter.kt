@@ -33,6 +33,7 @@ class ActivityRepliesRvAdapter(private val context: Context,
         fun openUserPage(userId: Int)
         fun editReply(replyId: Int)
         fun deleteReply(replyId: Int)
+        fun likeReply(replyId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,7 +65,7 @@ class ActivityRepliesRvAdapter(private val context: Context,
         }
         holder.activityLikeText.text = if (item.likeCount != 0) item.likeCount.toString() else ""
         holder.activityLikeLayout.setOnClickListener {
-            // toggle like
+            listener.likeReply(item.id)
         }
 
         if (item.likeCount > 0) {
@@ -86,7 +87,7 @@ class ActivityRepliesRvAdapter(private val context: Context,
                         ) {
                             imageList.add(resource)
 
-                            if (index == item.likes.lastIndex || imageList.size == 3) {
+                            if (index == item.likes?.lastIndex || imageList.size == 3) {
                                 holder.likesOverlapImages.circleCount = imageList.size
                                 holder.likesOverlapImages.imageList = imageList
                             }

@@ -12,7 +12,7 @@ class MessageActivity(
     likeCount: Int,
     isLiked: Boolean?,
     createdAt: Int,
-    replies: List<ActivityReply>?,
+    replies: ArrayList<ActivityReply>?,
     likes: List<User>?,
     val recipientId: Int?,
     val messengerId: Int?,

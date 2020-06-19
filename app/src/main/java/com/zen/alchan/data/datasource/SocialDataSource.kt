@@ -30,4 +30,8 @@ interface SocialDataSource {
     fun deleteActivity(
         id: Int
     ): Completable
+
+    fun deleteActivityReply(
+        id: Int
+    ): Completable
 }

@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import ActivityDetailQuery
 import ActivityQuery
 import DeleteActivityMutation
+import DeleteActivityReplyMutation
 import ToggleActivitySubsriptionMutation
 import ToggleLikeMutation
 import com.apollographql.apollo.api.Input
@@ -69,6 +70,14 @@ class SocialDataSourceImpl(private val apolloHandler: ApolloHandler) : SocialDat
 
     override fun deleteActivity(id: Int): Completable {
         val mutation = DeleteActivityMutation(id = Input.fromNullable(id))
+        val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun deleteActivityReply(id: Int): Completable {
+        val mutation = DeleteActivityReplyMutation(id = Input.fromNullable(id))
         val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())

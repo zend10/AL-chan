@@ -12,7 +12,7 @@ class TextActivity(
     likeCount: Int,
     isLiked: Boolean?,
     createdAt: Int,
-    replies: List<ActivityReply>?,
+    replies: ArrayList<ActivityReply>?,
     likes: List<User>?,
     val userId: Int?,
     var text: String?,

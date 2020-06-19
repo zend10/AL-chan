@@ -19,9 +19,14 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
                       private val socialRepository: SocialRepository
 ) : ViewModel() {
 
-    val TEXT_ACTIVITY = "TextActivity"
-    val LIST_ACTIVITY = "ListActivity"
-    val MESSAGE_ACTIVITY = "MessageActivity"
+    val textActivityText: String
+        get() = socialRepository.textActivityText
+
+    val listActivityText: String
+        get() = socialRepository.listActivityText
+
+    val messageActivityText: String
+        get() = socialRepository.messageActivityText
 
     var isInit = false
 
@@ -49,6 +54,10 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
 
     val bestFriendChangedNotifier by lazy {
         userRepository.bestFriendChangedNotifier
+    }
+
+    val notifyFriendsActivity by lazy {
+        socialRepository.notifyFriendsActivity
     }
 
     val friendsActivityResponse by lazy {
