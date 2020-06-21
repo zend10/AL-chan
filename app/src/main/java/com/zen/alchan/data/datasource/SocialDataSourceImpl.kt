@@ -87,12 +87,14 @@ class SocialDataSourceImpl(private val apolloHandler: ApolloHandler) : SocialDat
     override fun getActivities(
         page: Int,
         typeIn: List<ActivityType>?,
-        userId: Int?
+        userId: Int?,
+        following: Boolean?
     ): Observable<Response<ActivityQuery.Data>> {
         val query = ActivityQuery(
             page = Input.optional(page),
             type_in = Input.optional(typeIn),
-            userId = Input.optional(userId)
+            userId = Input.optional(userId),
+            isFollowing = Input.optional(following)
         )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)

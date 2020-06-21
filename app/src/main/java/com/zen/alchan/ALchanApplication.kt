@@ -62,6 +62,8 @@ import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
 import com.zen.alchan.ui.social.SocialViewModel
+import com.zen.alchan.ui.social.global.GlobalFeedFilterViewModel
+import com.zen.alchan.ui.social.global.GlobalFeedViewModel
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonPlugin
@@ -196,6 +198,8 @@ class ALchanApplication : Application() {
 
         // social
         viewModel { SocialViewModel(get(), get(), get()) }
+        viewModel { GlobalFeedViewModel(get(), get()) }
+        viewModel { GlobalFeedFilterViewModel(get()) }
 
     }
 

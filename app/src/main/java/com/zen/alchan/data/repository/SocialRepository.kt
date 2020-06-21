@@ -19,7 +19,7 @@ interface SocialRepository {
     val friendsActivityResponse: LiveData<Resource<ActivityQuery.Data>>
     val toggleLikeResponse: LiveData<Resource<ActivityItem>>
     val toggleActivitySubscriptionResponse: LiveData<Resource<ActivityItem>>
-    val deleteActivityResponse: LiveData<Resource<Boolean>>
+    val deleteActivityResponse: LiveData<Resource<Int>>
 
     val activityDetailResponse: LiveData<Resource<ActivityDetailQuery.Data>>
     val toggleLikeDetailResponse: LiveData<Resource<ActivityItem>>
@@ -28,6 +28,7 @@ interface SocialRepository {
     val deleteActivityReplyResponse: LiveData<Resource<Int>>
 
     val activityListResponse: LiveData<Resource<ActivityQuery.Data>>
+    val globalActivityListResponse: LiveData<Resource<ActivityQuery.Data>>
 
     fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?)
     fun getActivityDetail(id: Int)
@@ -38,4 +39,5 @@ interface SocialRepository {
     fun deleteActivityReply(id: Int)
 
     fun getActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int)
+    fun getGlobalActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int?, following: Boolean?)
 }

@@ -4,7 +4,6 @@ package com.zen.alchan.ui.social
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.pojo.ActivityReply
 import com.zen.alchan.helper.pojo.ListActivity
 import com.zen.alchan.helper.pojo.MessageActivity
 import com.zen.alchan.helper.pojo.TextActivity
@@ -27,8 +25,10 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.activity.ActivityListRvAdapter
+import com.zen.alchan.ui.browse.activity.ActivityListener
 import com.zen.alchan.ui.common.TextEditorActivity
 import com.zen.alchan.ui.search.SearchActivity
+import com.zen.alchan.ui.social.global.GlobalFeedActivity
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_social.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -206,7 +206,21 @@ class SocialFragment : Fragment() {
         }
 
         visitGlobalActivityButton.setOnClickListener {
-            // TODO: open global activity
+            val intent = Intent(activity, GlobalFeedActivity::class.java)
+            intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_GLOBAL)
+            startActivity(intent)
+        }
+
+        friendsActivityViewMore.setOnClickListener {
+            val intent = Intent(activity, GlobalFeedActivity::class.java)
+            if (viewModel.selectedBestFriend != null) {
+                intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_BEST_FRIEND)
+                intent.putExtra(GlobalFeedActivity.SELECTED_BEST_FRIEND, viewModel.selectedBestFriend?.id)
+            } else {
+                intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_FOLLOWING)
+            }
+            intent.putExtra(GlobalFeedActivity.SELECTED_ACTIVITY_TYPE, viewModel.activityTypeList.indexOf(viewModel.selectedActivityType))
+            startActivity(intent)
         }
 
         bestFriendInfo.setOnClickListener {
@@ -292,6 +306,7 @@ class SocialFragment : Fragment() {
                 }
 
                 override fun editActivity(activityId: Int) {
+                    // TODO: open editor
                     val intent = Intent(activity, TextEditorActivity::class.java)
                     intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.EDIT_ACTIVITY.name)
                     startActivity(intent)

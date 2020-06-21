@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.social
+package com.zen.alchan.ui.browse.activity
 
 import type.MediaType
 

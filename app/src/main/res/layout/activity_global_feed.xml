@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.social.global.GlobalFeedActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/layout_toolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/globalFeedRefreshLayout"
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/globalFeedRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:paddingStart="@dimen/marginNormal"
+                android:paddingEnd="@dimen/marginNormal"
+                android:paddingTop="@dimen/marginNormal"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/layout_empty"/>
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_loading"/>
+
+</RelativeLayout>

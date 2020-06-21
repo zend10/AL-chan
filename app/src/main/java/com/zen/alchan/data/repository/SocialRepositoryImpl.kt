@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.datasource.SocialDataSource
 import com.zen.alchan.data.localstorage.UserManager
@@ -45,16 +46,16 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     override val friendsActivityResponse: LiveData<Resource<ActivityQuery.Data>>
         get() = _friendsActivityResponse
 
-    private val _toggleLikeResponse = SingleLiveEvent<Resource<ActivityItem>>()
+    private val _toggleLikeResponse = MutableLiveData<Resource<ActivityItem>>()
     override val toggleLikeResponse: LiveData<Resource<ActivityItem>>
         get() = _toggleLikeResponse
 
-    private val _toggleActivitySubscriptionResponse = SingleLiveEvent<Resource<ActivityItem>>()
+    private val _toggleActivitySubscriptionResponse = MutableLiveData<Resource<ActivityItem>>()
     override val toggleActivitySubscriptionResponse: LiveData<Resource<ActivityItem>>
         get() = _toggleActivitySubscriptionResponse
 
-    private val _deleteActivityResponse = SingleLiveEvent<Resource<Boolean>>()
-    override val deleteActivityResponse: LiveData<Resource<Boolean>>
+    private val _deleteActivityResponse = MutableLiveData<Resource<Int>>()
+    override val deleteActivityResponse: LiveData<Resource<Int>>
         get() = _deleteActivityResponse
 
     private val _activityDetailResponse = SingleLiveEvent<Resource<ActivityDetailQuery.Data>>()
@@ -80,6 +81,10 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     private val _activityListResponse = SingleLiveEvent<Resource<ActivityQuery.Data>>()
     override val activityListResponse: LiveData<Resource<ActivityQuery.Data>>
         get() = _activityListResponse
+
+    private val _globalActivityListResponse = SingleLiveEvent<Resource<ActivityQuery.Data>>()
+    override val globalActivityListResponse: LiveData<Resource<ActivityQuery.Data>>
+        get() = _globalActivityListResponse
 
     @SuppressLint("CheckResult")
     override fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?) {
@@ -210,7 +215,7 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
                     _deleteActivityDetailResponse.postValue(Resource.Success(true))
                 }
 
-                _deleteActivityResponse.postValue(Resource.Success(true))
+                _deleteActivityResponse.postValue(Resource.Success(id))
             }
         })
     }
@@ -236,6 +241,16 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
 
     @SuppressLint("CheckResult")
     override fun getActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int) {
-        socialDataSource.getActivities(page, typeIn, userId).subscribeWith(AndroidUtility.rxApolloCallback(_activityListResponse))
+        socialDataSource.getActivities(page, typeIn, userId, null).subscribeWith(AndroidUtility.rxApolloCallback(_activityListResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getGlobalActivityList(
+        page: Int,
+        typeIn: List<ActivityType>?,
+        userId: Int?,
+        following: Boolean?
+    ) {
+        socialDataSource.getActivities(page, typeIn, userId, following).subscribeWith(AndroidUtility.rxApolloCallback(_globalActivityListResponse))
     }
 }

@@ -6,6 +6,7 @@ import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.pojo.ActivityItem
 import type.ActivityType
+import type.LikeableType
 
 class ActivityListViewModel(private val socialRepository: SocialRepository,
                             private val userRepository: UserRepository) : ViewModel() {
@@ -43,6 +44,18 @@ class ActivityListViewModel(private val socialRepository: SocialRepository,
         socialRepository.activityListResponse
     }
 
+    val toggleLikeResponse by lazy {
+        socialRepository.toggleLikeResponse
+    }
+
+    val toggleActivitySubscriptionResponse by lazy {
+        socialRepository.toggleActivitySubscriptionResponse
+    }
+
+    val deleteActivityResponse by lazy {
+        socialRepository.deleteActivityResponse
+    }
+
     fun getActivities() {
         if (userId != null && hasNextPage) socialRepository.getActivityList(page, selectedActivityType, userId!!)
     }
@@ -52,5 +65,17 @@ class ActivityListViewModel(private val socialRepository: SocialRepository,
         hasNextPage = true
         activityList.clear()
         getActivities()
+    }
+
+    fun toggleLike(id: Int) {
+        socialRepository.toggleLike(id, LikeableType.ACTIVITY)
+    }
+
+    fun toggleSubscription(id: Int, subscribe: Boolean) {
+        socialRepository.toggleActivitySubscription(id, subscribe)
+    }
+
+    fun deleteActivity(id: Int) {
+        socialRepository.deleteActivity(id)
     }
 }

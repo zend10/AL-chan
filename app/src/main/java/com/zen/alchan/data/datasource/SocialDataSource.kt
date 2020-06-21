@@ -38,6 +38,7 @@ interface SocialDataSource {
     fun getActivities(
         page: Int,
         typeIn: List<ActivityType>?,
-        userId: Int?
+        userId: Int?,
+        following: Boolean?
     ): Observable<Response<ActivityQuery.Data>>
 }

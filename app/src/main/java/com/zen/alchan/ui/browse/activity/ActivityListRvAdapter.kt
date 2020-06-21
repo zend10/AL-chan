@@ -18,7 +18,6 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.ui.social.ActivityListener
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity.view.*
 

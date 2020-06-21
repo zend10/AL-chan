@@ -1,12 +1,14 @@
 package com.zen.alchan.ui.browse.activity
 
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.ListActivity
 import com.zen.alchan.helper.pojo.MessageActivity
@@ -21,7 +24,6 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.social.ActivityListener
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_activity_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -140,6 +142,64 @@ class ActivityListFragment : BaseFragment() {
             }
         })
 
+        viewModel.toggleLikeResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item?.id == it.data?.id }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList[activityIndex]?.isLiked = it.data?.isLiked
+                        viewModel.activityList[activityIndex]?.likeCount = it.data?.likeCount ?: 0
+                        adapter.notifyItemChanged(activityIndex)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.toggleActivitySubscriptionResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item?.id == it.data?.id }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList[activityIndex]?.isSubscribed = it.data?.isSubscribed
+                        adapter.notifyItemChanged(activityIndex)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.deleteActivityResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item?.id == it.data }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList.removeAt(activityIndex)
+                        adapter.notifyItemRemoved(activityIndex)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
         if (!viewModel.isInit) {
             viewModel.getActivities()
             loadingLayout.visibility = View.VISIBLE
@@ -152,7 +212,6 @@ class ActivityListFragment : BaseFragment() {
             loadingLayout.visibility = View.VISIBLE
             isLoading = false
             viewModel.refresh()
-            // refresh
         }
 
         itemFilter.setOnMenuItemClickListener {
@@ -181,7 +240,7 @@ class ActivityListFragment : BaseFragment() {
         })
 
         newActivityButton.setOnClickListener {
-            // open editor
+            // TODO: open editor
         }
     }
 
@@ -202,39 +261,60 @@ class ActivityListFragment : BaseFragment() {
             markwon,
             object : ActivityListener {
                 override fun openActivityPage(activityId: Int) {
-
+                    listener?.changeFragment(BrowsePage.ACTIVITY_DETAIL, activityId)
                 }
 
                 override fun openUserPage(userId: Int) {
-
+                    listener?.changeFragment(BrowsePage.USER, userId)
                 }
 
                 override fun toggleLike(activityId: Int) {
-
+                    viewModel.toggleLike(activityId)
                 }
 
                 override fun toggleSubscribe(activityId: Int, subscribe: Boolean) {
-
+                    viewModel.toggleSubscription(activityId, subscribe)
                 }
 
                 override fun editActivity(activityId: Int) {
-
+                    // TODO: open editor
                 }
 
                 override fun deleteActivity(activityId: Int) {
-
+                    DialogUtility.showOptionDialog(
+                        activity,
+                        R.string.delete_activity,
+                        R.string.are_you_sure_you_want_to_delete_this_activity,
+                        R.string.delete,
+                        {
+                            viewModel.deleteActivity(activityId)
+                        },
+                        R.string.cancel,
+                        { }
+                    )
                 }
 
                 override fun viewOnAniList(siteUrl: String?) {
+                    if (siteUrl.isNullOrBlank()) {
+                        DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+                        return
+                    }
 
+                    CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(siteUrl))
                 }
 
                 override fun copyLink(siteUrl: String?) {
+                    if (siteUrl.isNullOrBlank()) {
+                        DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+                        return
+                    }
 
+                    AndroidUtility.copyToClipboard(activity, siteUrl)
+                    DialogUtility.showToast(activity, R.string.link_copied)
                 }
 
                 override fun openMediaPage(mediaId: Int, mediaType: MediaType?) {
-
+                    listener?.changeFragment(BrowsePage.valueOf(mediaType?.name!!), mediaId)
                 }
             }
         )

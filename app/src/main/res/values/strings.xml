@@ -362,4 +362,7 @@
     <string name="preview">Preview</string>
     <string name="activity">Activity</string>
     <string name="messages">Messages</string>
+    <string name="global_activity">Global Activity</string>
+    <string name="global">Global</string>
+    <string name="activity_type">Activity Type</string>
 </resources>
