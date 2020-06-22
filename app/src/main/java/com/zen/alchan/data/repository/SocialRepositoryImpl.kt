@@ -86,6 +86,10 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     override val globalActivityListResponse: LiveData<Resource<ActivityQuery.Data>>
         get() = _globalActivityListResponse
 
+    private val _postTextActivityResponse = SingleLiveEvent<Resource<SaveTextActivityMutation.Data>>()
+    override val postTextActivityResponse: LiveData<Resource<SaveTextActivityMutation.Data>>
+        get() = _postTextActivityResponse
+
     @SuppressLint("CheckResult")
     override fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?) {
         _friendsActivityResponse.postValue(Resource.Loading())
@@ -252,5 +256,11 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
         following: Boolean?
     ) {
         socialDataSource.getActivities(page, typeIn, userId, following).subscribeWith(AndroidUtility.rxApolloCallback(_globalActivityListResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun postTextActivity(id: Int?, text: String) {
+        _postTextActivityResponse.postValue(Resource.Loading())
+        socialDataSource.saveTextActivity(id, text).subscribeWith(AndroidUtility.rxApolloCallback(_postTextActivityResponse))
     }
 }

@@ -4,6 +4,7 @@ import ActivityDetailQuery
 import ActivityQuery
 import DeleteActivityMutation
 import DeleteActivityReplyMutation
+import SaveTextActivityMutation
 import ToggleActivitySubsriptionMutation
 import ToggleLikeMutation
 import com.apollographql.apollo.api.Input
@@ -98,6 +99,17 @@ class SocialDataSourceImpl(private val apolloHandler: ApolloHandler) : SocialDat
         )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun saveTextActivity(
+        id: Int?,
+        text: String
+    ): Observable<Response<SaveTextActivityMutation.Data>> {
+        val mutation = SaveTextActivityMutation(id = Input.optional(id), text = Input.fromNullable(text))
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

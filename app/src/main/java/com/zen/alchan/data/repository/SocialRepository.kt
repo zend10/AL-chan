@@ -30,6 +30,8 @@ interface SocialRepository {
     val activityListResponse: LiveData<Resource<ActivityQuery.Data>>
     val globalActivityListResponse: LiveData<Resource<ActivityQuery.Data>>
 
+    val postTextActivityResponse: LiveData<Resource<SaveTextActivityMutation.Data>>
+
     fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?)
     fun getActivityDetail(id: Int)
 
@@ -40,4 +42,6 @@ interface SocialRepository {
 
     fun getActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int)
     fun getGlobalActivityList(page: Int, typeIn: List<ActivityType>?, userId: Int?, following: Boolean?)
+
+    fun postTextActivity(id: Int?, text: String)
 }

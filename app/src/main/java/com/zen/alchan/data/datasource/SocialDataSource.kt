@@ -41,4 +41,9 @@ interface SocialDataSource {
         userId: Int?,
         following: Boolean?
     ): Observable<Response<ActivityQuery.Data>>
+
+    fun saveTextActivity(
+        id: Int?,
+        text: String
+    ): Observable<Response<SaveTextActivityMutation.Data>>
 }

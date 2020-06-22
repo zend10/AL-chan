@@ -130,7 +130,7 @@ class ALchanApplication : Application() {
         viewModel { MediaFilterViewModel(get(), get(), gson) }
         viewModel { CustomiseListViewModel(get()) }
         viewModel { MediaListDetailDialogViewModel(gson) }
-        viewModel { TextEditorViewModel() }
+        viewModel { TextEditorViewModel(get()) }
 
         // auth
         viewModel { SplashViewModel(get(), get()) }

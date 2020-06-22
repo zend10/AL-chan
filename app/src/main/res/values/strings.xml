@@ -365,4 +365,13 @@
     <string name="global_activity">Global Activity</string>
     <string name="global">Global</string>
     <string name="activity_type">Activity Type</string>
+    <string name="post">Post</string>
+    <string name="please_write_something">Please write something.</string>
+    <string name="post_this_message">Post this Message</string>
+    <string name="are_you_sure_you_want_to_post_this_message">Are you sure you want to post this message?</string>
+    <string name="message_posted">Message posted.</string>
+    <string name="please_input_a_url">Please input a URL</string>
+    <string name="please_input_an_image_url">Please input an image URL</string>
+    <string name="please_input_a_youtube_video_url">Please input a YouTube video URL</string>
+    <string name="please_input_a_webm_video_url">Please input a WebM video URL</string>
 </resources>

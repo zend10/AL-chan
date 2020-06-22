@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.browse.activity
 
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.ListActivity
 import com.zen.alchan.helper.pojo.MessageActivity
@@ -24,6 +26,8 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.common.TextEditorActivity
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_activity_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -240,6 +244,9 @@ class ActivityListFragment : BaseFragment() {
         })
 
         newActivityButton.setOnClickListener {
+            val intent = Intent(activity, TextEditorActivity::class.java)
+            intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.NEW_ACTIVITY.name)
+            startActivity(intent)
             // TODO: open editor
         }
     }
