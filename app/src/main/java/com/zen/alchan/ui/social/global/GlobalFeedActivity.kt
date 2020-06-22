@@ -1,10 +1,12 @@
 package com.zen.alchan.ui.social.global
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
@@ -150,6 +152,63 @@ class GlobalFeedActivity : BaseActivity() {
             }
         })
 
+        viewModel.toggleLikeResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item?.id == it.data?.id }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList[activityIndex]?.isLiked = it.data?.isLiked
+                        viewModel.activityList[activityIndex]?.likeCount = it.data?.likeCount ?: 0
+                        adapter.notifyItemChanged(activityIndex)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.toggleActivitySubscriptionResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item?.id == it.data?.id }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList[activityIndex]?.isSubscribed = it.data?.isSubscribed
+                        adapter.notifyItemChanged(activityIndex)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.deleteActivityResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val findActivity = viewModel.activityList.find { item -> item?.id == it.data }
+                    val activityIndex = viewModel.activityList.indexOf(findActivity)
+                    if (activityIndex != -1) {
+                        viewModel.activityList.removeAt(activityIndex)
+                        adapter.notifyItemRemoved(activityIndex)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
 
         if (!viewModel.isInit) {
             loadingLayout.visibility = View.VISIBLE
@@ -188,39 +247,69 @@ class GlobalFeedActivity : BaseActivity() {
     private fun assignAdapter(): ActivityListRvAdapter {
         return ActivityListRvAdapter(this, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon, object : ActivityListener {
             override fun openActivityPage(activityId: Int) {
-
+                val intent = Intent(this@GlobalFeedActivity, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ACTIVITY_DETAIL.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, activityId)
+                startActivity(intent)
             }
 
             override fun openUserPage(userId: Int) {
-
+                val intent = Intent(this@GlobalFeedActivity, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, userId)
+                startActivity(intent)
             }
 
             override fun toggleLike(activityId: Int) {
-
+                viewModel.toggleLike(activityId)
             }
 
             override fun toggleSubscribe(activityId: Int, subscribe: Boolean) {
-
+                viewModel.toggleSubscription(activityId, subscribe)
             }
 
             override fun editActivity(activityId: Int) {
-
+                // TODO: open editor
             }
 
             override fun deleteActivity(activityId: Int) {
-
+                DialogUtility.showOptionDialog(
+                    this@GlobalFeedActivity,
+                    R.string.delete_activity,
+                    R.string.are_you_sure_you_want_to_delete_this_activity,
+                    R.string.delete,
+                    {
+                        viewModel.deleteActivity(activityId)
+                    },
+                    R.string.cancel,
+                    { }
+                )
             }
 
             override fun viewOnAniList(siteUrl: String?) {
+                if (siteUrl.isNullOrBlank()) {
+                    DialogUtility.showToast(this@GlobalFeedActivity, R.string.some_data_has_not_been_retrieved)
+                    return
+                }
 
+                CustomTabsIntent.Builder().build().launchUrl(this@GlobalFeedActivity, Uri.parse(siteUrl))
             }
 
             override fun copyLink(siteUrl: String?) {
+                if (siteUrl.isNullOrBlank()) {
+                    DialogUtility.showToast(this@GlobalFeedActivity, R.string.some_data_has_not_been_retrieved)
+                    return
+                }
 
+                AndroidUtility.copyToClipboard(this@GlobalFeedActivity, siteUrl)
+                DialogUtility.showToast(this@GlobalFeedActivity, R.string.link_copied)
             }
 
             override fun openMediaPage(mediaId: Int, mediaType: MediaType?) {
-
+                val intent = Intent(this@GlobalFeedActivity, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.valueOf(mediaType?.name!!))
+                intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
+                startActivity(intent)
             }
         })
     }

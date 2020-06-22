@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
@@ -416,6 +417,8 @@ object AndroidUtility {
             val node = markwon.parse(aboutString)
             val markdown = markwon.render(node)
             markwon.setParsedMarkdown(textView, markdown)
+
+            textView.movementMethod = LinkMovementMethod.getInstance()
         } catch (e: Exception) {
             textView.text = context.getString(R.string.failed_to_render)
         }

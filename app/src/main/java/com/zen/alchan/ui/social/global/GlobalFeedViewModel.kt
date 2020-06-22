@@ -8,6 +8,7 @@ import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.pojo.ActivityItem
 import com.zen.alchan.helper.pojo.BestFriend
 import type.ActivityType
+import type.LikeableType
 
 class GlobalFeedViewModel(private val userRepository: UserRepository,
                           private val socialRepository: SocialRepository
@@ -83,5 +84,17 @@ class GlobalFeedViewModel(private val userRepository: UserRepository,
         hasNextPage = true
         activityList.clear()
         getActivities()
+    }
+
+    fun toggleLike(id: Int) {
+        socialRepository.toggleLike(id, LikeableType.ACTIVITY)
+    }
+
+    fun toggleSubscription(id: Int, subscribe: Boolean) {
+        socialRepository.toggleActivitySubscription(id, subscribe)
+    }
+
+    fun deleteActivity(id: Int) {
+        socialRepository.deleteActivity(id)
     }
 }
