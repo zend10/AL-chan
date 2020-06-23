@@ -404,10 +404,34 @@ class MangaListEditorActivity : BaseActivity() {
             startDatePickerDialog.show()
         }
 
+        if (viewModel.selectedStartDate?.year == null) {
+            startDateRemoveIcon.visibility = View.GONE
+        } else {
+            startDateRemoveIcon.visibility = View.VISIBLE
+        }
+
+        startDateRemoveIcon.setOnClickListener {
+            viewModel.selectedStartDate = null
+            startDateText.text = viewModel.selectedStartDate.toStringDateFormat()
+            startDateRemoveIcon.visibility = View.GONE
+        }
+
         // handle finish date
         finishDateText.text = viewModel.selectedFinishDate.toStringDateFormat()
         finishDateText.setOnClickListener {
             finishDatePickerDialog.show()
+        }
+
+        if (viewModel.selectedFinishDate?.year == null) {
+            finishDateRemoveIcon.visibility = View.GONE
+        } else {
+            finishDateRemoveIcon.visibility = View.VISIBLE
+        }
+
+        finishDateRemoveIcon.setOnClickListener {
+            viewModel.selectedFinishDate = null
+            finishDateText.text = viewModel.selectedFinishDate.toStringDateFormat()
+            finishDateRemoveIcon.visibility = View.GONE
         }
 
         // handle total rewatches
@@ -536,6 +560,7 @@ class MangaListEditorActivity : BaseActivity() {
                 viewModel.selectedStartDate?.day = dayOfMonth
             }
             startDateText.text = viewModel.selectedStartDate.toStringDateFormat()
+            startDateRemoveIcon.visibility = View.VISIBLE
         }
 
         finishDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -547,6 +572,7 @@ class MangaListEditorActivity : BaseActivity() {
                 viewModel.selectedFinishDate?.day = dayOfMonth
             }
             finishDateText.text = viewModel.selectedFinishDate.toStringDateFormat()
+            finishDateRemoveIcon.visibility = View.VISIBLE
         }
 
         val today = Calendar.getInstance()
