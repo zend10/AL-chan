@@ -154,20 +154,46 @@
                         android:text="@string/start_date"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/startDateText"
-                        style="?themeRegularClickableFont"
-                        android:text="-"
-                        android:paddingTop="@dimen/marginSmall"
-                        android:paddingBottom="@dimen/marginSmall"
-                        android:foreground="?selectableItemBackground"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="2"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/startDateText"
+                            style="?themeRegularClickableFont"
+                            android:text="-"
+                            android:paddingTop="@dimen/marginSmall"
+                            android:paddingBottom="@dimen/marginSmall"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <RelativeLayout
+                            android:visibility="gone"
+                            android:id="@+id/startDateRemoveIcon"
+                            android:layout_gravity="center_vertical"
+                            android:foreground="?selectableItemBackground"
+                            android:padding="@dimen/iconPadding"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                app:srcCompat="@drawable/ic_cancel"
+                                app:tint="?themeNegativeColor"
+                                android:layout_width="@dimen/iconSmallSize"
+                                android:layout_height="@dimen/iconSmallSize"/>
+
+                        </RelativeLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -180,20 +206,46 @@
                         android:text="@string/finish_date"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/finishDateText"
-                        style="?themeRegularClickableFont"
-                        android:text="-"
-                        android:paddingTop="@dimen/marginSmall"
-                        android:paddingBottom="@dimen/marginSmall"
-                        android:foreground="?selectableItemBackground"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="2"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/finishDateText"
+                            style="?themeRegularClickableFont"
+                            android:text="-"
+                            android:paddingTop="@dimen/marginSmall"
+                            android:paddingBottom="@dimen/marginSmall"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <RelativeLayout
+                            android:visibility="gone"
+                            android:id="@+id/finishDateRemoveIcon"
+                            android:layout_gravity="center_vertical"
+                            android:foreground="?selectableItemBackground"
+                            android:padding="@dimen/iconPadding"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                app:srcCompat="@drawable/ic_cancel"
+                                app:tint="?themeNegativeColor"
+                                android:layout_width="@dimen/iconSmallSize"
+                                android:layout_height="@dimen/iconSmallSize"/>
+
+                        </RelativeLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
