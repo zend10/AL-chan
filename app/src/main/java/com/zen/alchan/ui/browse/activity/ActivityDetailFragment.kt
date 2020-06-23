@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.browse.activity
 
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListActivity
@@ -28,6 +31,8 @@ import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.common.LikesDialog
+import com.zen.alchan.ui.common.TextEditorActivity
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_activity_detail.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -72,7 +77,10 @@ class ActivityDetailFragment : BaseFragment() {
         toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
         toolbarLayout.inflateMenu(R.menu.menu_activity_detail)
         toolbarLayout.menu.findItem(R.id.itemReply).setOnMenuItemClickListener {
-            // TODO: open editor
+            val intent = Intent(activity, TextEditorActivity::class.java)
+            intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.ACTIVITY_REPLY.name)
+            intent.putExtra(TextEditorActivity.ACTIVITY_ID, viewModel.activityId)
+            startActivityForResult(intent, EditorType.ACTIVITY_REPLY.ordinal)
             true
         }
 
@@ -206,6 +214,7 @@ class ActivityDetailFragment : BaseFragment() {
                         viewModel.activityDetail?.replyCount = viewModel.activityDetail?.replies?.size ?: 0
                         activityReplyText.text = if (viewModel.activityDetail?.replyCount != 0) viewModel.activityDetail?.replyCount.toString() else ""
                         repliesRvAdapter.notifyItemRemoved(findIndex)
+                        viewModel.notifyAllActivityList()
                     }
                 }
                 ResponseStatus.ERROR -> {
@@ -239,7 +248,10 @@ class ActivityDetailFragment : BaseFragment() {
 
         activityReplyText.text = if (act.replyCount != 0) act.replyCount.toString() else ""
         activityReplyLayout.setOnClickListener {
-            // TODO: open editor
+            val intent = Intent(activity, TextEditorActivity::class.java)
+            intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.ACTIVITY_REPLY.name)
+            intent.putExtra(TextEditorActivity.ACTIVITY_ID, viewModel.activityId)
+            startActivityForResult(intent, EditorType.ACTIVITY_REPLY.ordinal)
         }
 
         activityLikeIcon.imageTintList = if (act.isLiked == true) {
@@ -280,7 +292,18 @@ class ActivityDetailFragment : BaseFragment() {
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
                 when (menuItem?.itemId) {
-                    R.id.itemEdit -> editActivity(act.id)
+                    R.id.itemEdit -> {
+                        editActivity(
+                            act.id,
+                            when (act) {
+                                is TextActivity -> act.text ?: ""
+                                is MessageActivity -> act.message ?: ""
+                                else -> ""
+                            },
+                            if (act is MessageActivity) act.recipientId else null,
+                            if (act is MessageActivity) act.recipient?.name else null
+                        )
+                    }
                     R.id.itemDelete -> deleteActivity(act.id)
                     R.id.itemViewOnAniList -> viewOnAniList(act.siteUrl)
                     R.id.itemCopyLink -> copyLink(act.siteUrl)
@@ -402,8 +425,13 @@ class ActivityDetailFragment : BaseFragment() {
         recipientLayout.visibility = View.VISIBLE
     }
 
-    private fun editActivity(activityId: Int) {
-        // TODO: open editor
+    private fun editActivity(activityId: Int, text: String, recipientId: Int?, recipientName: String?) {
+        val intent = Intent(activity, TextEditorActivity::class.java)
+        intent.putExtra(TextEditorActivity.ACTIVITY_ID, activityId)
+        intent.putExtra(TextEditorActivity.TEXT_CONTENT, text)
+        intent.putExtra(TextEditorActivity.RECIPIENT_ID, recipientId)
+        intent.putExtra(TextEditorActivity.RECIPIENT_NAME, recipientName)
+        startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
     }
 
     private fun deleteActivity(activityId: Int) {
@@ -470,8 +498,13 @@ class ActivityDetailFragment : BaseFragment() {
                     listener?.changeFragment(BrowsePage.USER, userId)
                 }
 
-                override fun editReply(replyId: Int) {
-                    // TODO: open editor
+                override fun editReply(replyId: Int, text: String) {
+                    val intent = Intent(activity, TextEditorActivity::class.java)
+                    intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.ACTIVITY_REPLY.name)
+                    intent.putExtra(TextEditorActivity.REPLY_ID, replyId)
+                    intent.putExtra(TextEditorActivity.ACTIVITY_ID, viewModel.activityId)
+                    intent.putExtra(TextEditorActivity.TEXT_CONTENT, text)
+                    startActivityForResult(intent, EditorType.ACTIVITY_REPLY.ordinal)
                 }
 
                 override fun deleteReply(replyId: Int) {
@@ -481,7 +514,28 @@ class ActivityDetailFragment : BaseFragment() {
                 override fun likeReply(replyId: Int) {
                     viewModel.toggleLike(replyId, LikeableType.ACTIVITY_REPLY)
                 }
+
+                override fun showLikes(likes: List<User>) {
+                    val dialog = LikesDialog()
+                    dialog.setListener(object : LikesDialog.LikesDialogListener {
+                        override fun passSelectedUser(userId: Int) {
+                            listener?.changeFragment(BrowsePage.USER, userId)
+                        }
+                    })
+                    val bundle = Bundle()
+                    bundle.putString(LikesDialog.USER_LIST, viewModel.gson.toJson(likes))
+                    dialog.arguments = bundle
+                    dialog.show(childFragmentManager, null)
+                }
             }
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == EditorType.ACTIVITY.ordinal || requestCode == EditorType.ACTIVITY_REPLY.ordinal) && resultCode == Activity.RESULT_OK) {
+            viewModel.getActivityDetail()
+            viewModel.notifyAllActivityList()
+        }
     }
 }

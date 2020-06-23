@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,11 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.gson.Gson
 import com.zen.alchan.R
+import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ActivityReply
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.common.LikesDialog
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity_replies.view.*
 
@@ -31,9 +36,10 @@ class ActivityRepliesRvAdapter(private val context: Context,
 
     interface ActivityRepliesListener {
         fun openUserPage(userId: Int)
-        fun editReply(replyId: Int)
+        fun editReply(replyId: Int, text: String)
         fun deleteReply(replyId: Int)
         fun likeReply(replyId: Int)
+        fun showLikes(likes: List<User>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -100,6 +106,14 @@ class ActivityRepliesRvAdapter(private val context: Context,
             holder.likesOverlapImages.visibility = View.GONE
         }
 
+        holder.likesOverlapImages.setOnClickListener {
+            if (item.likes.isNullOrEmpty()) {
+                return@setOnClickListener
+            }
+
+            listener.showLikes(item.likes!!)
+        }
+
         if (item.userId != currentUserId) {
             holder.activityMoreLayout.visibility = View.GONE
         } else {
@@ -120,7 +134,7 @@ class ActivityRepliesRvAdapter(private val context: Context,
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
                 when (menuItem?.itemId) {
-                    R.id.itemEdit -> listener.editReply(item.id)
+                    R.id.itemEdit -> listener.editReply(item.id, item.text ?: "")
                     R.id.itemDelete -> listener.deleteReply(item.id)
                 }
                 true

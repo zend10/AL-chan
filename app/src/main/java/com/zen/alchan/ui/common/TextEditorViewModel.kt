@@ -12,6 +12,7 @@ class TextEditorViewModel(private val socialRepository: SocialRepository) : View
     var originalText: String? = null
     var recipientId: Int? = null
     var recipientName: String? = null
+    var replyId: Int? = null
     var isInit = false
 
     val postTextActivityResponse by lazy {
@@ -22,11 +23,19 @@ class TextEditorViewModel(private val socialRepository: SocialRepository) : View
         socialRepository.postMessageActivityResponse
     }
 
+    val postActivityReplyResponse by lazy {
+        socialRepository.postActivityReplyResponse
+    }
+
     fun post(text: String, private: Boolean? = null) {
-        if (recipientId != null) {
-            socialRepository.postMessageActivity(activityId, text, recipientId!!, private ?: false)
+        if (editorType == EditorType.ACTIVITY_REPLY) {
+            socialRepository.postActivityReply(replyId, activityId!!, text)
         } else {
-            socialRepository.postTextActivity(activityId, text)
+            if (recipientId != null) {
+                socialRepository.postMessageActivity(activityId, text, recipientId!!, private ?: false)
+            } else {
+                socialRepository.postTextActivity(activityId, text)
+            }
         }
     }
 }

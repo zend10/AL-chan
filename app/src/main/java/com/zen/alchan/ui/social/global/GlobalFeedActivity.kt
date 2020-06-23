@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.social.global
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.ListActivity
 import com.zen.alchan.helper.pojo.MessageActivity
@@ -22,6 +24,7 @@ import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.activity.ActivityListRvAdapter
 import com.zen.alchan.ui.browse.activity.ActivityListener
+import com.zen.alchan.ui.common.TextEditorActivity
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.activity_global_feed.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -91,6 +94,14 @@ class GlobalFeedActivity : BaseActivity() {
     }
 
     private fun setupObserver() {
+        viewModel.notifyGlobalActivity.observe(this, Observer {
+            if (true) {
+                loadingLayout.visibility = View.VISIBLE
+                isLoading = false
+                viewModel.refresh()
+            }
+        })
+
         viewModel.globalActivityListResponse.observe(this, Observer {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
@@ -234,6 +245,11 @@ class GlobalFeedActivity : BaseActivity() {
                 }
             }
         })
+
+        newActivityButton.setOnClickListener {
+            val intent = Intent(this, TextEditorActivity::class.java)
+            startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
+        }
     }
 
     private fun loadMore() {
@@ -274,7 +290,12 @@ class GlobalFeedActivity : BaseActivity() {
                 recipientId: Int?,
                 recipientName: String?
             ) {
-                // TODO: open editor
+                val intent = Intent(this@GlobalFeedActivity, TextEditorActivity::class.java)
+                intent.putExtra(TextEditorActivity.ACTIVITY_ID, activityId)
+                intent.putExtra(TextEditorActivity.TEXT_CONTENT, text)
+                intent.putExtra(TextEditorActivity.RECIPIENT_ID, recipientId)
+                intent.putExtra(TextEditorActivity.RECIPIENT_NAME, recipientName)
+                startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
             }
 
             override fun deleteActivity(activityId: Int) {
@@ -352,5 +373,14 @@ class GlobalFeedActivity : BaseActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == EditorType.ACTIVITY.ordinal && resultCode == Activity.RESULT_OK) {
+            loadingLayout.visibility = View.VISIBLE
+            isLoading = false
+            viewModel.refresh()
+        }
     }
 }

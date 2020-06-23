@@ -54,30 +54,55 @@ class TextEditorActivity : BaseActivity() {
 
         const val ACTIVITY_ID = "activityId"
         const val TEXT_CONTENT = "textContent"
+
+        const val REPLY_ID = "replyId"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_text_editor)
 
-        viewModel.editorType = EditorType.valueOf(intent.getStringExtra(EDITOR_TYPE))
+        viewModel.editorType = EditorType.valueOf(intent.getStringExtra(EDITOR_TYPE) ?: EditorType.ACTIVITY.name)
 
-        if (intent.getIntExtra(ACTIVITY_ID, 0) != 0) {
+        if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
             viewModel.activityId = intent.getIntExtra(ACTIVITY_ID, 0)
-            viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
-        }
 
-        if (intent.getIntExtra(RECIPIENT_ID, 0) != 0) {
-            viewModel.recipientId = intent.getIntExtra(RECIPIENT_ID, 0)
-            viewModel.recipientName = intent.getStringExtra(RECIPIENT_NAME)
+            if (intent.getIntExtra(REPLY_ID, 0) != 0) {
+                viewModel.replyId = intent.getIntExtra(REPLY_ID, 0)
+                viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
+            }
+        } else {
+            if (intent.getIntExtra(ACTIVITY_ID, 0) != 0) {
+                viewModel.activityId = intent.getIntExtra(ACTIVITY_ID, 0)
+                viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
+            }
+
+            if (intent.getIntExtra(RECIPIENT_ID, 0) != 0) {
+                viewModel.recipientId = intent.getIntExtra(RECIPIENT_ID, 0)
+                viewModel.recipientName = intent.getStringExtra(RECIPIENT_NAME)
+            }
         }
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_delete)
-        supportActionBar?.title = when {
-            viewModel.activityId != null -> getString(R.string.edit_message)
-            viewModel.recipientId != null -> getString(R.string.send_message)
+        supportActionBar?.title = when (viewModel.editorType) {
+            EditorType.ACTIVITY -> {
+                if (viewModel.activityId != null) {
+                    getString(R.string.edit_message)
+                } else if (viewModel.recipientId != null) {
+                    getString(R.string.send_message)
+                } else {
+                    getString(R.string.post_new_message)
+                }
+            }
+            EditorType.ACTIVITY_REPLY -> {
+                if (viewModel.replyId != null) {
+                    getString(R.string.edit_message)
+                } else {
+                    getString(R.string.reply_message)
+                }
+            }
             else -> getString(R.string.post_new_message)
         }
 
@@ -122,6 +147,24 @@ class TextEditorActivity : BaseActivity() {
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(this, R.string.message_sent)
+
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.postActivityReplyResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, R.string.reply_sent)
 
                     val intent = Intent()
                     setResult(Activity.RESULT_OK, intent)
@@ -217,14 +260,26 @@ class TextEditorActivity : BaseActivity() {
             var message = getString(R.string.are_you_sure_you_want_to_post_this_message)
             var positiveText = R.string.post
 
-            if (viewModel.activityId != null) {
-                title = R.string.edit_this_message
-                message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
-                positiveText = R.string.edit
-            } else if (viewModel.recipientId != null) {
-                title = R.string.send_this_message
-                message = getString(R.string.are_you_sure_you_want_to_send_this_message, viewModel.recipientName)
-                positiveText = R.string.send
+            if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
+                if (viewModel.replyId != null) {
+                    title = R.string.edit_this_message
+                    message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
+                    positiveText = R.string.edit
+                } else {
+                    title = R.string.send_this_reply
+                    message = getString(R.string.are_you_sure_you_want_to_send_this_reply)
+                    positiveText = R.string.send
+                }
+            } else {
+                if (viewModel.activityId != null) {
+                    title = R.string.edit_this_message
+                    message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
+                    positiveText = R.string.edit
+                } else if (viewModel.recipientId != null) {
+                    title = R.string.send_this_message
+                    message = getString(R.string.are_you_sure_you_want_to_send_this_message, viewModel.recipientName)
+                    positiveText = R.string.send
+                }
             }
 
             val builder = MaterialAlertDialogBuilder(this)

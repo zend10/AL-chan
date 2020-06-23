@@ -88,6 +88,14 @@ class ActivityListFragment : BaseFragment() {
     }
 
     private fun setupObserver() {
+        viewModel.notifyActivityList.observe(this, Observer {
+            if (true) {
+                loadingLayout.visibility = View.VISIBLE
+                isLoading = false
+                viewModel.refresh()
+            }
+        })
+
         viewModel.activityListResponse.observe(viewLifecycleOwner, Observer {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
@@ -248,12 +256,11 @@ class ActivityListFragment : BaseFragment() {
 
         newActivityButton.setOnClickListener {
             val intent = Intent(activity, TextEditorActivity::class.java)
-            intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.NEW_ACTIVITY.name)
             if (viewModel.userId != null && viewModel.currentUserId != viewModel.userId) {
                 intent.putExtra(TextEditorActivity.RECIPIENT_ID, viewModel.userId!!)
                 intent.putExtra(TextEditorActivity.RECIPIENT_NAME, viewModel.userName)
             }
-            startActivityForResult(intent, EditorType.NEW_ACTIVITY.ordinal)
+            startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
         }
     }
 
@@ -291,12 +298,11 @@ class ActivityListFragment : BaseFragment() {
 
                 override fun editActivity(activityId: Int, text: String, recipientId: Int?, recipientName: String?) {
                     val intent = Intent(activity, TextEditorActivity::class.java)
-                    intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.EDIT_ACTIVITY.name)
                     intent.putExtra(TextEditorActivity.ACTIVITY_ID, activityId)
                     intent.putExtra(TextEditorActivity.TEXT_CONTENT, text)
                     intent.putExtra(TextEditorActivity.RECIPIENT_ID, recipientId)
                     intent.putExtra(TextEditorActivity.RECIPIENT_NAME, recipientName)
-                    startActivityForResult(intent, EditorType.NEW_ACTIVITY.ordinal)
+                    startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
                 }
 
                 override fun deleteActivity(activityId: Int) {
@@ -341,7 +347,7 @@ class ActivityListFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == EditorType.NEW_ACTIVITY.ordinal && resultCode == Activity.RESULT_OK) {
+        if (requestCode == EditorType.ACTIVITY.ordinal && resultCode == Activity.RESULT_OK) {
             loadingLayout.visibility = View.VISIBLE
             isLoading = false
             viewModel.refresh()

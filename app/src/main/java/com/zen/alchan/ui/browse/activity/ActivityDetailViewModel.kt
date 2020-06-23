@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.browse.activity
 
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.User
@@ -10,7 +11,8 @@ import com.zen.alchan.helper.pojo.ActivityReply
 import type.LikeableType
 
 class ActivityDetailViewModel(private val socialRepository: SocialRepository,
-                              private val userRepository: UserRepository) : ViewModel() {
+                              private val userRepository: UserRepository,
+                              val gson: Gson) : ViewModel() {
 
     val textActivityText: String
         get() = socialRepository.textActivityText
@@ -220,5 +222,9 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
 
     fun deleteActivityReply(id: Int) {
         socialRepository.deleteActivityReply(id)
+    }
+
+    fun notifyAllActivityList() {
+        socialRepository.notifyAllActivityList()
     }
 }

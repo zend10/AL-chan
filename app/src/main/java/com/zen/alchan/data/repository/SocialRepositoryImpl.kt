@@ -42,6 +42,14 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     override val notifyFriendsActivity: LiveData<Boolean>
         get() = _notifyFriendsActivity
 
+    private val _notifyActivityList = SingleLiveEvent<Boolean>()
+    override val notifyActivityList: LiveData<Boolean>
+        get() = _notifyActivityList
+
+    private val _notifyGlobalActivity = SingleLiveEvent<Boolean>()
+    override val notifyGlobalActivity: LiveData<Boolean>
+        get() = _notifyGlobalActivity
+
     private val _friendsActivityResponse = SingleLiveEvent<Resource<ActivityQuery.Data>>()
     override val friendsActivityResponse: LiveData<Resource<ActivityQuery.Data>>
         get() = _friendsActivityResponse
@@ -93,6 +101,10 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     private val _postMessageActivityResponse = SingleLiveEvent<Resource<SaveMessageActivityMutation.Data>>()
     override val postMessageActivityResponse: LiveData<Resource<SaveMessageActivityMutation.Data>>
         get() = _postMessageActivityResponse
+
+    private val _postActivityReplyResponse = SingleLiveEvent<Resource<SaveActivityReplyMutation.Data>>()
+    override val postActivityReplyResponse: LiveData<Resource<SaveActivityReplyMutation.Data>>
+        get() = _postActivityReplyResponse
 
     @SuppressLint("CheckResult")
     override fun getFriendsActivity(typeIn: List<ActivityType>?, userId: Int?) {
@@ -272,5 +284,17 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
     override fun postMessageActivity(id: Int?, message: String, recipientId: Int, private: Boolean) {
         _postMessageActivityResponse.postValue(Resource.Loading())
         socialDataSource.saveMessageActivity(id, message, recipientId, private).subscribeWith(AndroidUtility.rxApolloCallback(_postMessageActivityResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun postActivityReply(id: Int?, activityId: Int, text: String) {
+        _postActivityReplyResponse.postValue(Resource.Loading())
+        socialDataSource.saveActivityReply(id, activityId, text).subscribeWith(AndroidUtility.rxApolloCallback(_postActivityReplyResponse))
+    }
+
+    override fun notifyAllActivityList() {
+        _notifyFriendsActivity.postValue(true)
+        _notifyActivityList.postValue(true)
+        _notifyGlobalActivity.postValue(true)
     }
 }

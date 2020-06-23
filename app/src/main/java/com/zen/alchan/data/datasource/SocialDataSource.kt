@@ -53,4 +53,10 @@ interface SocialDataSource {
         recipientId: Int,
         private: Boolean
     ): Observable<Response<SaveMessageActivityMutation.Data>>
+
+    fun saveActivityReply(
+        id: Int?,
+        activityId: Int,
+        text: String
+    ): Observable<Response<SaveActivityReplyMutation.Data>>
 }

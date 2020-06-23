@@ -384,4 +384,9 @@
     <string name="send">Send</string>
     <string name="send_private">Send Private</string>
     <string name="message_sent">Message sent.</string>
+    <string name="reply_sent">Reply sent.</string>
+    <string name="send_this_reply">Send this Reply</string>
+    <string name="are_you_sure_you_want_to_send_this_reply">Are you sure you want to send this reply?</string>
+    <string name="reply_message">Reply Message</string>
+    <string name="likes">Likes</string>
 </resources>

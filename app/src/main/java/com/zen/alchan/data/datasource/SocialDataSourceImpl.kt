@@ -4,6 +4,7 @@ import ActivityDetailQuery
 import ActivityQuery
 import DeleteActivityMutation
 import DeleteActivityReplyMutation
+import SaveActivityReplyMutation
 import SaveMessageActivityMutation
 import SaveTextActivityMutation
 import ToggleActivitySubsriptionMutation
@@ -126,6 +127,22 @@ class SocialDataSourceImpl(private val apolloHandler: ApolloHandler) : SocialDat
             message = Input.fromNullable(message),
             recipientId = Input.fromNullable(recipientId),
             private_ = Input.fromNullable(private)
+        )
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun saveActivityReply(
+        id: Int?,
+        activityId: Int,
+        text: String
+    ): Observable<Response<SaveActivityReplyMutation.Data>> {
+        val mutation = SaveActivityReplyMutation(
+            id = Input.optional(id),
+            activityId = Input.fromNullable(activityId),
+            text = Input.fromNullable(text)
         )
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
         return Rx2Apollo.from(mutationCall)

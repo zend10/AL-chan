@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.social
 
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -312,8 +313,11 @@ class SocialFragment : Fragment() {
                     recipientName: String?
                 ) {
                     val intent = Intent(activity, TextEditorActivity::class.java)
-                    intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.EDIT_ACTIVITY.name)
-                    startActivity(intent)
+                    intent.putExtra(TextEditorActivity.ACTIVITY_ID, activityId)
+                    intent.putExtra(TextEditorActivity.TEXT_CONTENT, text)
+                    intent.putExtra(TextEditorActivity.RECIPIENT_ID, recipientId)
+                    intent.putExtra(TextEditorActivity.RECIPIENT_NAME, recipientName)
+                    startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
                 }
 
                 override fun deleteActivity(activityId: Int) {
@@ -357,5 +361,12 @@ class SocialFragment : Fragment() {
                 }
             }
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == EditorType.ACTIVITY.ordinal && resultCode == Activity.RESULT_OK) {
+            viewModel.retrieveFriendsActivity()
+        }
     }
 }

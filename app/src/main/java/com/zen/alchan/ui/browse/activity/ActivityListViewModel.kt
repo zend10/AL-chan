@@ -57,6 +57,10 @@ class ActivityListViewModel(private val socialRepository: SocialRepository,
         socialRepository.deleteActivityResponse
     }
 
+    val notifyActivityList by lazy {
+        socialRepository.notifyActivityList
+    }
+
     fun getActivities() {
         if (userId != null && hasNextPage) socialRepository.getActivityList(page, selectedActivityType, userId!!)
     }

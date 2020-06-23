@@ -59,6 +59,10 @@ class GlobalFeedViewModel(private val userRepository: UserRepository,
         socialRepository.deleteActivityResponse
     }
 
+    val notifyGlobalActivity by lazy {
+        socialRepository.notifyGlobalActivity
+    }
+
     fun reinitBestFriends() {
         bestFriends.clear()
         bestFriends.add(BestFriend(null, "Global", null))
