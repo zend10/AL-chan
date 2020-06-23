@@ -268,7 +268,12 @@ class GlobalFeedActivity : BaseActivity() {
                 viewModel.toggleSubscription(activityId, subscribe)
             }
 
-            override fun editActivity(activityId: Int) {
+            override fun editActivity(
+                activityId: Int,
+                text: String,
+                recipientId: Int?,
+                recipientName: String?
+            ) {
                 // TODO: open editor
             }
 

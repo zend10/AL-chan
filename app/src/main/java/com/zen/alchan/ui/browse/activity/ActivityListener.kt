@@ -7,7 +7,7 @@ interface ActivityListener {
     fun openUserPage(userId: Int)
     fun toggleLike(activityId: Int)
     fun toggleSubscribe(activityId: Int, subscribe: Boolean)
-    fun editActivity(activityId: Int)
+    fun editActivity(activityId: Int, text: String, recipientId: Int?, recipientName: String?)
     fun deleteActivity(activityId: Int)
     fun viewOnAniList(siteUrl: String?)
     fun copyLink(siteUrl: String?)

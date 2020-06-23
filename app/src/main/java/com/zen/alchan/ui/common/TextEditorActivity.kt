@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.common
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -46,6 +48,12 @@ class TextEditorActivity : BaseActivity() {
 
     companion object {
         const val EDITOR_TYPE = "editorType"
+
+        const val RECIPIENT_ID = "recipientId"
+        const val RECIPIENT_NAME = "recipientName"
+
+        const val ACTIVITY_ID = "activityId"
+        const val TEXT_CONTENT = "textContent"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +62,24 @@ class TextEditorActivity : BaseActivity() {
 
         viewModel.editorType = EditorType.valueOf(intent.getStringExtra(EDITOR_TYPE))
 
+        if (intent.getIntExtra(ACTIVITY_ID, 0) != 0) {
+            viewModel.activityId = intent.getIntExtra(ACTIVITY_ID, 0)
+            viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
+        }
+
+        if (intent.getIntExtra(RECIPIENT_ID, 0) != 0) {
+            viewModel.recipientId = intent.getIntExtra(RECIPIENT_ID, 0)
+            viewModel.recipientName = intent.getStringExtra(RECIPIENT_NAME)
+        }
+
         setSupportActionBar(toolbarLayout)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_delete)
-        supportActionBar?.title = getString(R.string.text_editor)
+        supportActionBar?.title = when {
+            viewModel.activityId != null -> getString(R.string.edit_message)
+            viewModel.recipientId != null -> getString(R.string.send_message)
+            else -> getString(R.string.post_new_message)
+        }
 
         rangeMarkdownLayout = arrayListOf(
             formatBoldIcon, formatItalicIcon, formatStrikeThroughIcon, formatSpoilerIcon, formatCenterIcon, formatCodeIcon
@@ -82,6 +104,27 @@ class TextEditorActivity : BaseActivity() {
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(this, R.string.message_posted)
+
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.postMessageActivityResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, R.string.message_sent)
+
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
                 ResponseStatus.ERROR -> {
@@ -95,6 +138,11 @@ class TextEditorActivity : BaseActivity() {
     private fun initLayout() {
         editorEditText.requestFocus()
 
+        if (!viewModel.originalText.isNullOrBlank() && !viewModel.isInit) {
+            editorEditText.setText(viewModel.originalText)
+            viewModel.isInit = true
+        }
+
         rangeMarkdownLayout.forEachIndexed { index, appCompatImageView ->
             appCompatImageView.setOnClickListener {
                 val start = editorEditText.selectionStart
@@ -103,8 +151,8 @@ class TextEditorActivity : BaseActivity() {
                 if (start == end) {
                     editorEditText.text?.insert(start, markdown)
                 } else {
-                    editorEditText.text?.insert(end, markdown.substring(0, markdown.length / 2))
-                    editorEditText.text?.insert(start, markdown.substring(markdown.length / 2))
+                    editorEditText.text?.insert(end, markdown.substring(markdown.length / 2))
+                    editorEditText.text?.insert(start, markdown.substring(0, markdown.length / 2))
                 }
             }
         }
@@ -165,17 +213,34 @@ class TextEditorActivity : BaseActivity() {
                 return false
             }
 
-            DialogUtility.showOptionDialog(
-                this,
-                R.string.post_this_message,
-                R.string.are_you_sure_you_want_to_post_this_message,
-                R.string.post,
-                {
-                    viewModel.post(editorEditText.text?.trim().toString())
-                },
-                R.string.cancel,
-                {}
-            )
+            var title = R.string.post_this_message
+            var message = getString(R.string.are_you_sure_you_want_to_post_this_message)
+            var positiveText = R.string.post
+
+            if (viewModel.activityId != null) {
+                title = R.string.edit_this_message
+                message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
+                positiveText = R.string.edit
+            } else if (viewModel.recipientId != null) {
+                title = R.string.send_this_message
+                message = getString(R.string.are_you_sure_you_want_to_send_this_message, viewModel.recipientName)
+                positiveText = R.string.send
+            }
+
+            val builder = MaterialAlertDialogBuilder(this)
+
+            val text = editorEditText.text?.trim().toString()
+
+            builder.apply {
+                setTitle(title)
+                setMessage(message)
+                setPositiveButton(positiveText) { _, _ -> viewModel.post(text) }
+                if (viewModel.activityId == null && viewModel.recipientId != null) {
+                    setNeutralButton(R.string.send_private) { _, _ -> viewModel.post(text, true) }
+                }
+                setNegativeButton(R.string.cancel) { _, _ -> }
+                show()
+            }
 
             return true
         }

@@ -20,6 +20,7 @@ import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity.view.*
+import type.ActivityType
 
 class ActivityListRvAdapter(
     private val context: Context,
@@ -108,7 +109,18 @@ class ActivityListRvAdapter(
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
                 when (menuItem?.itemId) {
-                    R.id.itemEdit -> listener.editActivity(act.id)
+                    R.id.itemEdit -> {
+                        listener.editActivity(
+                            act.id,
+                            when (act) {
+                                is TextActivity -> act.text ?: ""
+                                is MessageActivity -> act.message ?: ""
+                                else -> ""
+                            },
+                            if (act is MessageActivity) act.recipientId else null,
+                            if (act is MessageActivity) act.recipient?.name else null
+                        )
+                    }
                     R.id.itemDelete -> listener.deleteActivity(act.id)
                     R.id.itemViewOnAniList -> listener.viewOnAniList(act.siteUrl)
                     R.id.itemCopyLink -> listener.copyLink(act.siteUrl)

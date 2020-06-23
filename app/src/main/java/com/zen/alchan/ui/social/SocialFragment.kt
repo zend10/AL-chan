@@ -305,8 +305,12 @@ class SocialFragment : Fragment() {
                     viewModel.toggleSubscription(activityId, subscribe)
                 }
 
-                override fun editActivity(activityId: Int) {
-                    // TODO: open editor
+                override fun editActivity(
+                    activityId: Int,
+                    text: String,
+                    recipientId: Int?,
+                    recipientName: String?
+                ) {
                     val intent = Intent(activity, TextEditorActivity::class.java)
                     intent.putExtra(TextEditorActivity.EDITOR_TYPE, EditorType.EDIT_ACTIVITY.name)
                     startActivity(intent)

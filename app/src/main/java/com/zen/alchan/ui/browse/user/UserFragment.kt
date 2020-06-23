@@ -293,7 +293,7 @@ class UserFragment : BaseFragment() {
         })
 
         itemActivity.setOnMenuItemClickListener {
-            if (user?.id != null) listener?.changeFragment(BrowsePage.ACTIVITY_LIST, user.id)
+            if (user?.id != null) listener?.changeFragment(BrowsePage.ACTIVITY_LIST, user.id, user.name)
             true
         }
 

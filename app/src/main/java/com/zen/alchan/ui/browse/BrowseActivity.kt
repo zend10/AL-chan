@@ -27,6 +27,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
     companion object {
         const val TARGET_PAGE = "targetPage"
         const val LOAD_ID = "loadId"
+        const val EXTRA_LOAD = "extraLoad"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
                 val splitLink = appLinkData.substring(appLinkData.indexOf("anilist.co")).split("/")
                 val target = splitLink[1]
                 val id = splitLink[2]
-                changeFragment(BrowsePage.valueOf(target.toUpperCase()), id.toInt(), supportFragmentManager.backStackEntryCount != 0)
+                changeFragment(BrowsePage.valueOf(target.toUpperCase()), id.toInt(), null, supportFragmentManager.backStackEntryCount != 0)
             } catch (e: Exception) {
                 DialogUtility.showToast(this, R.string.invalid_link)
                 finish()
@@ -50,7 +51,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
 
         try {
             if (supportFragmentManager.backStackEntryCount == 0) {
-                changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE)), intent.getIntExtra(LOAD_ID, 0), false)
+                changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE)), intent.getIntExtra(LOAD_ID, 0), intent.getStringExtra(EXTRA_LOAD) ,false)
             }
         } catch (e: Exception) {
             DialogUtility.showToast(this, R.string.invalid_link)
@@ -68,7 +69,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
         fragmentTransaction.commit()
     }
 
-    override fun changeFragment(browsePage: BrowsePage, id: Int, addToBackStack: Boolean) {
+    override fun changeFragment(browsePage: BrowsePage, id: Int, extraLoad: String?, addToBackStack: Boolean) {
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
 
@@ -126,6 +127,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
             BrowsePage.ACTIVITY_LIST -> {
                 targetFragment = ActivityListFragment()
                 bundle.putInt(ActivityListFragment.USER_ID, id)
+                bundle.putString(ActivityListFragment.USER_NAME, extraLoad)
             }
             BrowsePage.ACTIVITY_DETAIL -> {
                 targetFragment = ActivityDetailFragment()

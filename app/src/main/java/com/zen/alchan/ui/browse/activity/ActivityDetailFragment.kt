@@ -68,8 +68,8 @@ class ActivityDetailFragment : BaseFragment() {
         maxWidth = AndroidUtility.getScreenWidth(activity)
         markwon = AndroidUtility.initMarkwon(activity!!)
 
-        toolbarLayout.setNavigationOnClickListener { activity?.finish() }
-        toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+        toolbarLayout.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
         toolbarLayout.inflateMenu(R.menu.menu_activity_detail)
         toolbarLayout.menu.findItem(R.id.itemReply).setOnMenuItemClickListener {
             // TODO: open editor

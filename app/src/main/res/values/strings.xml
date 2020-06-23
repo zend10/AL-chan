@@ -374,4 +374,14 @@
     <string name="please_input_an_image_url">Please input an image URL</string>
     <string name="please_input_a_youtube_video_url">Please input a YouTube video URL</string>
     <string name="please_input_a_webm_video_url">Please input a WebM video URL</string>
+    <string name="edit_this_message">Edit this Message</string>
+    <string name="are_you_sure_you_want_to_edit_this_message">Are you sure you want to edit this message?</string>
+    <string name="post_new_message">Post New Message</string>
+    <string name="edit_message">Edit Message</string>
+    <string name="send_message">Send Message</string>
+    <string name="send_this_message">Send this Message</string>
+    <string name="are_you_sure_you_want_to_send_this_message">Are you sure you want to send this message to %1$s?</string>
+    <string name="send">Send</string>
+    <string name="send_private">Send Private</string>
+    <string name="message_sent">Message sent.</string>
 </resources>

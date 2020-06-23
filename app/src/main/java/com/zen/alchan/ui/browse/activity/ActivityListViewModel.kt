@@ -12,6 +12,7 @@ class ActivityListViewModel(private val socialRepository: SocialRepository,
                             private val userRepository: UserRepository) : ViewModel() {
 
     var userId: Int? = null
+    var userName: String? = null
 
     var page = 1
     var hasNextPage = true
