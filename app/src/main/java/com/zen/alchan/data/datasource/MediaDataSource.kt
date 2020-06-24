@@ -14,6 +14,8 @@ interface MediaDataSource {
     fun getMediaStaffs(id: Int, page: Int): Observable<Response<MediaStaffsQuery.Data>>
     fun getMediaStats(id: Int): Observable<Response<MediaStatsQuery.Data>>
     fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>): Observable<Response<MediaReviewsQuery.Data>>
+    fun getMediaFriendsMediaList(mediaId: Int, page: Int): Observable<Response<MediaSocialQuery.Data>>
+    fun getMediaActivity(mediaId: Int, page: Int): Observable<Response<MediaActivityQuery.Data>>
 
     fun getTrendingMedia(type: MediaType): Observable<Response<TrendingMediaQuery.Data>>
     fun getReleasingToday(page: Int): Observable<Response<ReleasingTodayQuery.Data>>

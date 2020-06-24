@@ -389,4 +389,6 @@
     <string name="are_you_sure_you_want_to_send_this_reply">Are you sure you want to send this reply?</string>
     <string name="reply_message">Reply Message</string>
     <string name="likes">Likes</string>
+    <string name="friends_list">Friends\' List</string>
+    <string name="recent_activity">Recent Activity</string>
 </resources>

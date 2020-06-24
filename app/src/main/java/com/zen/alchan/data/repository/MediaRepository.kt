@@ -27,6 +27,8 @@ interface MediaRepository {
     val mediaStaffsData: LiveData<Resource<MediaStaffsQuery.Data>>
     val mediaStatsData: LiveData<Resource<MediaStatsQuery.Data>>
     val mediaReviewsData: LiveData<Resource<MediaReviewsQuery.Data>>
+    val mediaFriendsMediaListData: LiveData<Resource<MediaSocialQuery.Data>>
+    val mediaActivityData: LiveData<Resource<MediaActivityQuery.Data>>
 
     val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
     val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
@@ -41,6 +43,8 @@ interface MediaRepository {
     fun getMediaStaffs(id: Int, page: Int)
     fun getMediaStats(id: Int)
     fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>)
+    fun getMediaFriendsMediaList(mediaId: Int, page: Int)
+    fun getMediaActivity(mediaId: Int, page: Int)
 
     fun getTrendingAnime()
     fun getTrendingManga()

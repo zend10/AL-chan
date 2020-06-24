@@ -70,6 +70,14 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val mediaReviewsData: LiveData<Resource<MediaReviewsQuery.Data>>
         get() = _mediaReviewsData
 
+    private val _mediaFriendsMediaListData = SingleLiveEvent<Resource<MediaSocialQuery.Data>>()
+    override val mediaFriendsMediaListData: LiveData<Resource<MediaSocialQuery.Data>>
+        get() = _mediaFriendsMediaListData
+
+    private val _mediaActivityData = SingleLiveEvent<Resource<MediaActivityQuery.Data>>()
+    override val mediaActivityData: LiveData<Resource<MediaActivityQuery.Data>>
+        get() = _mediaActivityData
+
     private val _trendingAnimeData = SingleLiveEvent<Resource<TrendingMediaQuery.Data>>()
     override val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
         get() = _trendingAnimeData
@@ -148,6 +156,17 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override fun getMediaReviews(id: Int, page: Int, sort: List<ReviewSort>) {
         _mediaReviewsData.postValue(Resource.Loading())
         mediaDataSource.getMediaReviews(id, page, sort).subscribeWith(AndroidUtility.rxApolloCallback(_mediaReviewsData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaFriendsMediaList(mediaId: Int, page: Int) {
+        mediaDataSource.getMediaFriendsMediaList(mediaId, page).subscribeWith(AndroidUtility.rxApolloCallback(_mediaFriendsMediaListData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMediaActivity(mediaId: Int, page: Int) {
+        _mediaActivityData.postValue(Resource.Loading())
+        mediaDataSource.getMediaActivity(mediaId, page).subscribeWith(AndroidUtility.rxApolloCallback(_mediaActivityData))
     }
 
     @SuppressLint("CheckResult")

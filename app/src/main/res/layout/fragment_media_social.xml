@@ -8,28 +8,76 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="vertical"
-        android:layout_marginStart="@dimen/marginPage"
-        android:layout_marginEnd="@dimen/marginPage"
         android:paddingTop="@dimen/marginFar"
         android:paddingBottom="@dimen/marginPage"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            app:srcCompat="@drawable/ic_taxi_programming"
-            android:adjustViewBounds="true"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="gone"
+            android:id="@+id/friendsListLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/friends_list"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginPage"
+                android:layout_marginEnd="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/friendsListRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:paddingStart="@dimen/marginNormal"
+                android:paddingEnd="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/recent_activity"
+            style="?themeRegularBoldFont"
+            android:layout_marginStart="@dimen/marginPage"
+            android:layout_marginEnd="@dimen/marginPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:text="Under Development.\nPlease look forward to it."
-            style="?themeTitleFont"
-            android:textAlignment="center"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentActivityRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:paddingStart="@dimen/marginNormal"
+                android:paddingEnd="@dimen/marginNormal"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/recentActivityViewMore"
+                style="?themeButtonPrimary"
+                android:text="@string/view_more"
+                app:backgroundTint="?themeCardColor"
+                android:textColor="?themePrimaryColor"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginNormal"
+                android:layout_below="@id/recentActivityRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/layout_loading"/>
+
+        </RelativeLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 </androidx.core.widget.NestedScrollView>

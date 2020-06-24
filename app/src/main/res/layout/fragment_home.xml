@@ -91,49 +91,90 @@
                 </RelativeLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_margin="@dimen/marginPage"
-                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_marginEnd="@dimen/marginNormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/seasonalChartMenu"
-                        app:contentPadding="@dimen/marginSmall"
-                        app:cardBackgroundColor="?themeCardColor"
-                        android:layout_marginBottom="@dimen/marginNormal"
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:text="@string/seasonal_chart"
-                            style="?themeRegularFont"
-                            app:drawableStartCompat="@drawable/ic_calendar"
-                            app:drawableTint="?themeContentColor"
-                            android:drawablePadding="@dimen/marginSmall"
-                            android:gravity="center_vertical"
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/seasonalChartMenu"
+                            app:contentPadding="@dimen/marginSmall"
+                            app:cardBackgroundColor="?themeCardColor"
+                            app:layout_constraintDimensionRatio="2:1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="0dp">
 
-                    </com.google.android.material.card.MaterialCardView>
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/exploreMenu"
-                        app:contentPadding="@dimen/marginSmall"
-                        app:cardBackgroundColor="?themeCardColor"
-                        android:layout_width="match_parent"
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_calendar"
+                                    app:tint="?themeDividerColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:text="@string/seasonal_chart"
+                                    style="?themeTitleFont"
+                                    android:layout_centerInParent="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginStart="@dimen/marginSmall"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:text="@string/explore"
-                            style="?themeRegularFont"
-                            app:drawableStartCompat="@drawable/ic_compass"
-                            app:drawableTint="?themeContentColor"
-                            android:drawablePadding="@dimen/marginSmall"
-                            android:gravity="center_vertical"
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/exploreMenu"
+                            app:contentPadding="@dimen/marginSmall"
+                            app:cardBackgroundColor="?themeCardColor"
+                            app:layout_constraintDimensionRatio="2:1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="0dp">
 
-                    </com.google.android.material.card.MaterialCardView>
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_compass"
+                                    app:tint="?themeDividerColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:text="@string/explore"
+                                    style="?themeTitleFont"
+                                    android:layout_centerInParent="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

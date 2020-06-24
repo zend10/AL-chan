@@ -1,10 +1,12 @@
 package com.zen.alchan.data.datasource
 
 import GenreQuery
+import MediaActivityQuery
 import MediaCharactersQuery
 import MediaOverviewQuery
 import MediaQuery
 import MediaReviewsQuery
+import MediaSocialQuery
 import MediaStaffsQuery
 import MediaStatsQuery
 import MediaStatusQuery
@@ -103,6 +105,34 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
             id = Input.fromNullable(id),
             page = Input.fromNullable(page),
             sort = Input.fromNullable(sort)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMediaFriendsMediaList(
+        mediaId: Int,
+        page: Int
+    ): Observable<Response<MediaSocialQuery.Data>> {
+        val query = MediaSocialQuery(
+            mediaId = Input.fromNullable(mediaId),
+            page = Input.fromNullable(page)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMediaActivity(
+        mediaId: Int,
+        page: Int
+    ): Observable<Response<MediaActivityQuery.Data>> {
+        val query = MediaActivityQuery(
+            mediaId = Input.fromNullable(mediaId),
+            page = Input.fromNullable(page)
         )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
