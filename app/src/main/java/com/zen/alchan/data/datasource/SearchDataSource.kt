@@ -58,4 +58,9 @@ interface SearchDataSource {
         page: Int,
         idIn: List<Int>
     ): Observable<Response<MediaImageQuery.Data>>
+
+    fun searchCharacterImages(
+        page: Int,
+        idIn: List<Int>
+    ): Observable<Response<CharacterImageQuery.Data>>
 }

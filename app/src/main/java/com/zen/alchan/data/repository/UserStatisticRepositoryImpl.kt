@@ -70,6 +70,10 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
     override val searchMediaImageResponse: LiveData<Resource<MediaImageQuery.Data>>
         get() = _searchMediaImageResponse
 
+    private val _searchCharacterImageResponse = SingleLiveEvent<Resource<CharacterImageQuery.Data>>()
+    override val searchCharacterImageResponse: LiveData<Resource<CharacterImageQuery.Data>>
+        get() = _searchCharacterImageResponse
+
     val userId: Int?
         get() = userManager.viewerData?.id
 
@@ -196,5 +200,10 @@ class UserStatisticRepositoryImpl(private val userStatisticDataSource: UserStati
     @SuppressLint("CheckResult")
     override fun searchMediaImage(page: Int, idIn: List<Int>) {
         searchDataSource.searchMediaImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchMediaImageResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun searchCharacterImage(page: Int, idIn: List<Int>) {
+        searchDataSource.searchCharacterImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchCharacterImageResponse))
     }
 }

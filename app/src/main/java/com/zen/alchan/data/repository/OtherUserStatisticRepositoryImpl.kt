@@ -68,6 +68,10 @@ class OtherUserStatisticRepositoryImpl(private val userStatisticDataSource: User
     override val searchMediaImageResponse: LiveData<Resource<MediaImageQuery.Data>>
         get() = _searchMediaImageResponse
 
+    private val _searchCharacterImageResponse = SingleLiveEvent<Resource<CharacterImageQuery.Data>>()
+    override val searchCharacterImageResponse: LiveData<Resource<CharacterImageQuery.Data>>
+        get() = _searchCharacterImageResponse
+
     @SuppressLint("CheckResult")
     override fun getFormatStatistic(userId: Int, sort: List<UserStatisticsSort>) {
         _formatStatisticResponse.postValue(Resource.Loading())
@@ -143,5 +147,10 @@ class OtherUserStatisticRepositoryImpl(private val userStatisticDataSource: User
     @SuppressLint("CheckResult")
     override fun searchMediaImage(page: Int, idIn: List<Int>) {
         searchDataSource.searchMediaImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchMediaImageResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun searchCharacterImage(page: Int, idIn: List<Int>) {
+        searchDataSource.searchCharacterImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchCharacterImageResponse))
     }
 }

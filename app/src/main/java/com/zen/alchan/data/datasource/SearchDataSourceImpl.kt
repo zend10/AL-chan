@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import CharacterImageQuery
 import MediaImageQuery
 import SearchAnimeQuery
 import SearchCharactersQuery
@@ -199,6 +200,17 @@ class SearchDataSourceImpl(private val apolloHandler: ApolloHandler) : SearchDat
 
     override fun searchMediaImages(page:Int, idIn: List<Int>): Observable<Response<MediaImageQuery.Data>> {
         val query = MediaImageQuery(page = Input.fromNullable(page), id_in = Input.fromNullable(idIn))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun searchCharacterImages(
+        page: Int,
+        idIn: List<Int>
+    ): Observable<Response<CharacterImageQuery.Data>> {
+        val query = CharacterImageQuery(page = Input.fromNullable(page), id_in = Input.fromNullable(idIn))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

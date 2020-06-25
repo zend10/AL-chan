@@ -22,8 +22,10 @@ import kotlin.math.roundToInt
 class StatsDetailRvAdapter(private val context: Context,
                            private val list: List<UserStatsData>,
                            private val mediaList: List<MediaImageQuery.Medium?>?,
+                           private val characterList: List<CharacterImageQuery.Character?>?,
                            private val statsCategory: StatsCategory,
                            private val mediaType: MediaType,
+                           private val showCharacter: Boolean,
                            private val listener: StatsDetailListener
 ): RecyclerView.Adapter<StatsDetailRvAdapter.ViewHolder>() {
 
@@ -95,24 +97,46 @@ class StatsDetailRvAdapter(private val context: Context,
         holder.statsProgressPercentageText.text= getProgressPercentageString(item)
         holder.statsScoreText.text = item.meanScore?.roundToTwoDecimal()
 
-        if (!item.mediaIds.isNullOrEmpty() && !mediaList.isNullOrEmpty()) {
-            // only take 6 from each entry
-            val mediaItemList = ArrayList<StatsDetailMediaItem>()
-            item.mediaIds.forEach { id ->
-                if (mediaItemList.size == 6) {
-                    return@forEach
+        if (statsCategory == StatsCategory.VOICE_ACTOR && showCharacter) {
+            if (!item.characterIds.isNullOrEmpty() && !characterList.isNullOrEmpty()) {
+                // only take 6 from each entry
+                val characterItemList = ArrayList<StatsDetailCharacterItem>()
+                item.characterIds.forEach { id ->
+                    if (characterItemList.size == 6) {
+                        return@forEach
+                    }
+                    val findCharacter = characterList.find { character -> character?.id == id }
+                    if (findCharacter != null) {
+                        characterItemList.add(StatsDetailCharacterItem(id!!, findCharacter.image?.large))
+                    }
                 }
-                val findMedia = mediaList.find { media -> media?.id == id }
-                if (findMedia != null) {
-                    mediaItemList.add(StatsDetailMediaItem(id!!, findMedia.coverImage?.large, findMedia.type!!))
-                }
+                holder.statsMediaRecyclerView.adapter = StatsDetailCharacterRvAdapter(context, characterItemList, object : StatsDetailCharacterRvAdapter.StatsDetailCharacterListener {
+                    override fun passSelectedCharacter(id: Int) {
+                        listener.passSelectedData(id, BrowsePage.CHARACTER)
+                    }
+                })
+                holder.statsMediaRecyclerView.visibility = View.VISIBLE
             }
-            holder.statsMediaRecyclerView.adapter = StatsDetailMediaRvAdapter(context, mediaItemList, object : StatsDetailMediaRvAdapter.StatsDetailMediaListener {
-                override fun passSelectedMedia(id: Int, mediaType: MediaType) {
-                    listener.passSelectedData(id, if (mediaType == MediaType.ANIME) BrowsePage.ANIME else BrowsePage.MANGA)
+        } else {
+            if (!item.mediaIds.isNullOrEmpty() && !mediaList.isNullOrEmpty()) {
+                // only take 6 from each entry
+                val mediaItemList = ArrayList<StatsDetailMediaItem>()
+                item.mediaIds.forEach { id ->
+                    if (mediaItemList.size == 6) {
+                        return@forEach
+                    }
+                    val findMedia = mediaList.find { media -> media?.id == id }
+                    if (findMedia != null) {
+                        mediaItemList.add(StatsDetailMediaItem(id!!, findMedia.coverImage?.large, findMedia.type!!))
+                    }
                 }
-            })
-            holder.statsMediaRecyclerView.visibility = View.VISIBLE
+                holder.statsMediaRecyclerView.adapter = StatsDetailMediaRvAdapter(context, mediaItemList, object : StatsDetailMediaRvAdapter.StatsDetailMediaListener {
+                    override fun passSelectedMedia(id: Int, mediaType: MediaType) {
+                        listener.passSelectedData(id, if (mediaType == MediaType.ANIME) BrowsePage.ANIME else BrowsePage.MANGA)
+                    }
+                })
+                holder.statsMediaRecyclerView.visibility = View.VISIBLE
+            }
         }
 
         if (statsCategory == StatsCategory.STAFF || statsCategory == StatsCategory.VOICE_ACTOR || statsCategory == StatsCategory.STUDIO) {
@@ -200,4 +224,6 @@ class StatsDetailRvAdapter(private val context: Context,
     }
 
     class StatsDetailMediaItem(val id: Int, val image: String?, val mediaType: MediaType)
+
+    class StatsDetailCharacterItem(val id: Int, val image: String?)
 }

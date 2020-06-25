@@ -451,12 +451,21 @@ class UserStatsDetailFragment : BaseFragment() {
                             meanScore = item?.meanScore,
                             minutesWatched = item?.minutesWatched,
                             mediaIds = item?.mediaIds,
+                            characterIds = item?.characterIds,
                             id = item?.voiceActor?.id,
                             label = item?.voiceActor?.name?.full
                         ))
                     }
                     viewModel.currentMediaList = ArrayList()
-                    viewModel.searchMediaImage()
+                    viewModel.currentCharacterList = ArrayList()
+
+                    // excuse the magic number
+                    if (viewModel.selectedImage == 1) {
+                        viewModel.searchCharacterImage()
+                    } else {
+                        viewModel.searchMediaImage()
+                    }
+
                     setupStatistic()
                 }
                 ResponseStatus.ERROR -> {
@@ -552,6 +561,18 @@ class UserStatsDetailFragment : BaseFragment() {
             }
         })
 
+        viewModel.searchCharacterImageResponse.observe(viewLifecycleOwner, Observer {
+            if (it.responseStatus == ResponseStatus.SUCCESS) {
+                val pageInfo = it.data?.page?.pageInfo
+                viewModel.currentCharacterList?.addAll(ArrayList(it.data?.page?.characters))
+                if (pageInfo?.hasNextPage == true) {
+                    viewModel.searchCharacterImage(pageInfo.currentPage!! + 1)
+                } else {
+                    statsRecyclerView.adapter = assignAdapter()
+                }
+            }
+        })
+
         if (viewModel.currentStats == null) {
             viewModel.getStatisticData()
         } else {
@@ -568,23 +589,32 @@ class UserStatsDetailFragment : BaseFragment() {
         statsCategoryText.text = viewModel.selectedCategory?.name.replaceUnderscore()
         statsMediaText.text = viewModel.selectedMedia?.name
         statsSortText.text = viewModel.getSortString()
+        statsImageText.text = viewModel.imageDataList[viewModel.selectedImage]
 
         statsPieChart.visibility = View.GONE
         statsBarChart.visibility = View.GONE
         statsLineChart.visibility = View.GONE
 
         when (viewModel.selectedCategory) {
-            StatsCategory.VOICE_ACTOR, StatsCategory.STUDIO -> {
+            StatsCategory.VOICE_ACTOR -> {
                 statsMediaLayout.visibility = View.GONE
                 statsSortLayout.visibility = View.VISIBLE
+                statsImageLayout.visibility = View.VISIBLE
+            }
+            StatsCategory.STUDIO -> {
+                statsMediaLayout.visibility = View.GONE
+                statsSortLayout.visibility = View.VISIBLE
+                statsImageLayout.visibility = View.GONE
             }
             StatsCategory.SCORE, StatsCategory.LENGTH, StatsCategory.RELEASE_YEAR, StatsCategory.START_YEAR -> {
                 statsMediaLayout.visibility = View.VISIBLE
                 statsSortLayout.visibility = View.GONE
+                statsImageLayout.visibility = View.GONE
             }
             else -> {
                 statsMediaLayout.visibility = View.VISIBLE
                 statsSortLayout.visibility = View.VISIBLE
+                statsImageLayout.visibility = View.GONE
             }
         }
 
@@ -621,6 +651,16 @@ class UserStatsDetailFragment : BaseFragment() {
                 }
                 .show()
         }
+
+        statsImageText.setOnClickListener {
+            MaterialAlertDialogBuilder(activity)
+                .setItems(viewModel.imageDataList.toTypedArray()) { _, which ->
+                    viewModel.selectedImage = which
+                    initLayout()
+                    viewModel.getStatisticData()
+                }
+                .show()
+        }
     }
 
     private fun setupStatistic() {
@@ -646,8 +686,10 @@ class UserStatsDetailFragment : BaseFragment() {
         return StatsDetailRvAdapter(activity!!,
             viewModel.currentStats ?: ArrayList(),
             viewModel.currentMediaList,
+            viewModel.currentCharacterList,
             viewModel.selectedCategory!!,
             viewModel.selectedMedia!!,
+            viewModel.selectedImage == 1,
             object : StatsDetailRvAdapter.StatsDetailListener {
                 override fun passSelectedData(id: Int, browsePage: BrowsePage) {
                     listener?.changeFragment(browsePage, id)

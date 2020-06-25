@@ -16,14 +16,21 @@ class UserStatsDetailViewModel(private val otherUserStatisticRepository: OtherUs
     var selectedCategory: StatsCategory? = null
     var selectedMedia: MediaType? = null
     var selectedStatsSort: UserStatisticsSort? = null
+    var selectedImage = 0
 
     var currentStats: ArrayList<UserStatsData>? = null
     var currentMediaList: ArrayList<MediaImageQuery.Medium?>? = null
+    var currentCharacterList: ArrayList<CharacterImageQuery.Character?>? = null
 
     val sortDataList = arrayListOf(
         UserStatisticsSort.COUNT_DESC,
         UserStatisticsSort.PROGRESS_DESC,
         UserStatisticsSort.MEAN_SCORE_DESC
+    )
+
+    val imageDataList = arrayListOf(
+        "ANIME",
+        "CHARACTER"
     )
 
     val formatStatisticResponse by lazy {
@@ -76,6 +83,10 @@ class UserStatsDetailViewModel(private val otherUserStatisticRepository: OtherUs
 
     val searchMediaImageResponse by lazy {
         otherUserStatisticRepository.searchMediaImageResponse
+    }
+
+    val searchCharacterImageResponse by lazy {
+        otherUserStatisticRepository.searchCharacterImageResponse
     }
 
     fun getStatisticData() {
@@ -154,5 +165,27 @@ class UserStatsDetailViewModel(private val otherUserStatisticRepository: OtherUs
         }
 
         otherUserStatisticRepository.searchMediaImage(page, idIn.toList())
+    }
+
+    fun searchCharacterImage(page: Int = 1) {
+        if (selectedCategory != StatsCategory.VOICE_ACTOR || currentStats.isNullOrEmpty()) {
+            return
+        }
+
+        val idIn = HashSet<Int>()
+
+        // only take 6 from each entry
+        currentStats?.forEach {
+            if (it.characterIds?.isNullOrEmpty() == false) {
+                val idNotNull = it.characterIds.filterNotNull()
+                if (idNotNull.size < 6) {
+                    idIn.addAll(idNotNull)
+                } else {
+                    idIn.addAll(idNotNull.take(6))
+                }
+            }
+        }
+
+        otherUserStatisticRepository.searchCharacterImage(page, idIn.toList())
     }
 }
