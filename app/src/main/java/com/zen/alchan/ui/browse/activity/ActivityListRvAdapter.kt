@@ -41,7 +41,7 @@ class ActivityListRvAdapter(
             val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
             ItemViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_loading, parent, false)
             LoadingViewHolder(view)
         }
     }

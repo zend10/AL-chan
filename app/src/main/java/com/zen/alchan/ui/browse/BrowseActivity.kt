@@ -13,6 +13,7 @@ import com.zen.alchan.ui.browse.activity.ActivityDetailFragment
 import com.zen.alchan.ui.browse.activity.ActivityListFragment
 import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.reviews.ReviewsReaderFragment
 import com.zen.alchan.ui.browse.staff.StaffFragment
 import com.zen.alchan.ui.browse.studio.StudioFragment
 import com.zen.alchan.ui.browse.user.UserFragment
@@ -132,6 +133,10 @@ class BrowseActivity : BaseActivity(), BaseListener {
             BrowsePage.ACTIVITY_DETAIL -> {
                 targetFragment = ActivityDetailFragment()
                 bundle.putInt(ActivityDetailFragment.ACTIVITY_ID, id)
+            }
+            BrowsePage.REVIEW -> {
+                targetFragment = ReviewsReaderFragment()
+                bundle.putInt(ReviewsReaderFragment.REVIEW_ID, id)
             }
         }
 

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginBottom="@dimen/marginNormal"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/bannerImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="2:1"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <View
+            android:background="@drawable/dark_gradient_two_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="2:1"
+            android:scaleY="-1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reviewDetailLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/reviewRatingLayout"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/avatarImageGuideline"
+                app:layout_constraintGuide_percent="0.25"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/avatarLayout"
+                android:background="@drawable/shape_oval"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/avatarImageGuideline"
+                app:layout_constraintDimensionRatio="1:1"
+                android:padding="@dimen/lineWidth"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/avatarImage"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/avatarImageGuideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reviewNameText"
+                    style="?themeRegularBoldFont"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reviewDateText"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_thumbs_up"
+                        app:tint="@color/greenCalculator"
+                        android:layout_width="@dimen/iconSmallSize"
+                        android:layout_height="@dimen/iconSmallSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/reviewThumbsUpText"
+                        style="?themeSmallFont"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_thumbs_down"
+                        app:tint="@color/redHeart"
+                        android:layout_width="@dimen/iconSmallSize"
+                        android:layout_height="@dimen/iconSmallSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/reviewThumbsDownText"
+                        style="?themeSmallFont"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewSummaryText"
+            style="?themeRegularFont"
+            app:layout_constraintTop_toBottomOf="@id/reviewDetailLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/reviewRatingLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardBackgroundColor="@color/cyan"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginNormal"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="invisible"
+                    android:text="100"
+                    style="?themeTitleFont"
+                    android:textColor="?themeBackgroundColor"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reviewRatingText"
+                    style="?themeTitleFont"
+                    android:textColor="?themeBackgroundColor"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

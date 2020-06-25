@@ -108,7 +108,7 @@
                             android:id="@+id/seasonalChartMenu"
                             app:contentPadding="@dimen/marginSmall"
                             app:cardBackgroundColor="?themeCardColor"
-                            app:layout_constraintDimensionRatio="2:1"
+                            app:layout_constraintDimensionRatio="1:1"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_width="match_parent"
@@ -127,7 +127,9 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:text="@string/seasonal_chart"
                                     style="?themeTitleFont"
+                                    android:textColor="?themePrimaryColor"
                                     android:layout_centerInParent="true"
+                                    android:textAlignment="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
 
@@ -139,6 +141,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_marginStart="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginSmall"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
@@ -147,7 +150,7 @@
                             android:id="@+id/exploreMenu"
                             app:contentPadding="@dimen/marginSmall"
                             app:cardBackgroundColor="?themeCardColor"
-                            app:layout_constraintDimensionRatio="2:1"
+                            app:layout_constraintDimensionRatio="1:1"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_width="match_parent"
@@ -166,7 +169,50 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:text="@string/explore"
                                     style="?themeTitleFont"
+                                    android:textColor="?themePrimaryColor"
                                     android:layout_centerInParent="true"
+                                    android:textAlignment="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginStart="@dimen/marginSmall"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/reviewsMenu"
+                            app:contentPadding="@dimen/marginSmall"
+                            app:cardBackgroundColor="?themeCardColor"
+                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_inscription"
+                                    app:tint="?themeDividerColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:text="@string/reviews"
+                                    style="?themeTitleFont"
+                                    android:textColor="?themePrimaryColor"
+                                    android:layout_centerInParent="true"
+                                    android:textAlignment="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
 
@@ -391,7 +437,6 @@
                     android:layout_height="wrap_content"/>
 
                 <RelativeLayout
-                    android:layout_marginBottom="@dimen/marginPage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -545,6 +590,42 @@
                     <ProgressBar
                         android:visibility="gone"
                         android:id="@+id/trendingMangaLoading"
+                        android:indeterminateTint="?themeContentColor"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/recent_reviews"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_marginBottom="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recentReviewsRecyclerView"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingStart="@dimen/marginNormal"
+                        android:paddingEnd="@dimen/marginNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <include layout="@layout/layout_empty"
+                        android:id="@+id/recentReviewsEmptyLayout" />
+
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:id="@+id/recentReviewsLoading"
                         android:indeterminateTint="?themeContentColor"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"

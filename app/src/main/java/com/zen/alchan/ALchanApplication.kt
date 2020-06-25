@@ -10,8 +10,6 @@ import com.zen.alchan.data.network.HeaderInterceptor
 import com.zen.alchan.data.network.HeaderInterceptorImpl
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.libs.AlignTagHandler
-import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.animelist.AnimeListViewModel
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
@@ -33,6 +31,7 @@ import com.zen.alchan.ui.browse.media.reviews.MediaReviewsViewModel
 import com.zen.alchan.ui.browse.media.social.MediaSocialViewModel
 import com.zen.alchan.ui.browse.media.staffs.MediaStaffsViewModel
 import com.zen.alchan.ui.browse.media.stats.MediaStatsViewModel
+import com.zen.alchan.ui.browse.reviews.ReviewsReaderViewModel
 import com.zen.alchan.ui.browse.staff.StaffViewModel
 import com.zen.alchan.ui.browse.staff.anime.StaffAnimeViewModel
 import com.zen.alchan.ui.browse.staff.bio.StaffBioViewModel
@@ -51,9 +50,10 @@ import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.profile.favorites.FavoritesViewModel
 import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesViewModel
 import com.zen.alchan.ui.profile.follows.FollowsViewModel
-import com.zen.alchan.ui.profile.reviews.ReviewsViewModel
+import com.zen.alchan.ui.profile.reviews.UserReviewsViewModel
 import com.zen.alchan.ui.profile.stats.StatsViewModel
 import com.zen.alchan.ui.profile.stats.details.StatsDetailViewModel
+import com.zen.alchan.ui.reviews.ReviewsViewModel
 import com.zen.alchan.ui.search.SearchListViewModel
 import com.zen.alchan.ui.search.SearchViewModel
 import com.zen.alchan.ui.seasonal.SeasonalDialogViewModel
@@ -66,16 +66,6 @@ import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
 import com.zen.alchan.ui.social.SocialViewModel
 import com.zen.alchan.ui.social.global.GlobalFeedFilterViewModel
 import com.zen.alchan.ui.social.global.GlobalFeedViewModel
-import io.noties.markwon.AbstractMarkwonPlugin
-import io.noties.markwon.Markwon
-import io.noties.markwon.MarkwonPlugin
-import io.noties.markwon.SoftBreakAddsNewLinePlugin
-import io.noties.markwon.core.MarkwonTheme
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
-import io.noties.markwon.html.HtmlPlugin
-import io.noties.markwon.image.ImagesPlugin
-import io.noties.markwon.image.gif.GifMediaDecoder
-import io.noties.markwon.image.glide.GlideImagesPlugin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -142,13 +132,14 @@ class ALchanApplication : Application() {
         // main
         viewModel { MainViewModel(get(), get()) }
 
-        // home, search, explore, seasonal
+        // home, search, explore, seasonal, reviews
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
         viewModel { ExploreViewModel(get(), gson) }
         viewModel { SeasonalViewModel(get(), get(), get(), gson) }
         viewModel { SeasonalDialogViewModel(gson) }
+        viewModel { ReviewsViewModel(get()) }
 
         // anime list
         viewModel { AnimeListViewModel(get(), get(), get(), gson) }
@@ -185,6 +176,9 @@ class ALchanApplication : Application() {
         viewModel { ActivityDetailViewModel(get(), get(), gson) }
         viewModel { ActivityListViewModel(get(), get()) }
 
+        // browse review
+        viewModel { ReviewsReaderViewModel(get()) }
+
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }
         viewModel { BioViewModel(get(), get()) }
@@ -192,7 +186,7 @@ class ALchanApplication : Application() {
         viewModel { ReorderFavoritesViewModel(get(), gson) }
         viewModel { StatsViewModel(get(), get()) }
         viewModel { StatsDetailViewModel(get()) }
-        viewModel { ReviewsViewModel(get(), get()) }
+        viewModel { UserReviewsViewModel(get(), get()) }
         viewModel { FollowsViewModel(get(), get()) }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }

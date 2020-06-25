@@ -6,8 +6,8 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 
-class ReviewsViewModel(private val userRepository: UserRepository,
-                       private val otherUserRepository: OtherUserRepository
+class UserReviewsViewModel(private val userRepository: UserRepository,
+                           private val otherUserRepository: OtherUserRepository
 ) : ViewModel() {
 
     var otherUserId: Int? = null

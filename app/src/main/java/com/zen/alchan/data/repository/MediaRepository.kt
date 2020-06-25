@@ -6,10 +6,7 @@ import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.SeasonalAnime
 import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.pojo.MediaCharacters
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSort
-import type.ReviewSort
+import type.*
 
 interface MediaRepository {
     val genreList: List<String?>
@@ -33,6 +30,11 @@ interface MediaRepository {
     val trendingAnimeData: LiveData<Resource<TrendingMediaQuery.Data>>
     val trendingMangaData: LiveData<Resource<TrendingMediaQuery.Data>>
     val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
+    val recentReviewsData: LiveData<Resource<ReviewsQuery.Data>>
+
+    val reviewsData: LiveData<Resource<ReviewsQuery.Data>>
+    val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
+    val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
 
     fun getGenre()
     fun getTag()
@@ -49,4 +51,8 @@ interface MediaRepository {
     fun getTrendingAnime()
     fun getTrendingManga()
     fun getReleasingToday(page: Int)
+    fun getReviews(page: Int, perPage: Int, mediaType: MediaType?, sort: List<ReviewSort>, isRecent: Boolean = false)
+
+    fun getReviewDetail(reviewId: Int)
+    fun rateReview(reviewId: Int, rating: ReviewRating)
 }

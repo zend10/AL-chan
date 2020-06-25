@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +16,17 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
+import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
 import com.zen.alchan.ui.explore.ExploreActivity
+import com.zen.alchan.ui.reviews.ReviewsActivity
+import com.zen.alchan.ui.reviews.ReviewsRvAdapter
 import com.zen.alchan.ui.search.SearchActivity
 import com.zen.alchan.ui.seasonal.SeasonalActivity
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -43,6 +46,7 @@ class HomeFragment : Fragment() {
     private lateinit var releasingTodayAdapter: ReleasingTodayRvAdapter
     private lateinit var trendingAnimeAdapter: TrendingMediaRvAdapter
     private lateinit var trendingMangaAdapter: TrendingMediaRvAdapter
+    private lateinit var recentReviewsAdapter: ReviewsRvAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +67,9 @@ class HomeFragment : Fragment() {
 
         trendingMangaAdapter = assignTrendingRvAdapter(viewModel.trendingMangaList, MediaType.MANGA)
         trendingMangaListRecyclerView.adapter = trendingMangaAdapter
+
+        recentReviewsAdapter = assignReviewsRvAdapter()
+        recentReviewsRecyclerView.adapter = recentReviewsAdapter
 
         setupObserver()
         initLayout()
@@ -169,6 +176,69 @@ class HomeFragment : Fragment() {
             }
         })
 
+        viewModel.recentReviewsData.observe(viewLifecycleOwner, Observer {
+            recentReviewsLoading.visibility = View.GONE
+            when (it.responseStatus) {
+                ResponseStatus.SUCCESS -> {
+                    viewModel.recentReviewsList.clear()
+                    it.data?.page?.reviews?.forEach { review ->
+                        if (review?.user != null && review.media != null) {
+                            val user = User(
+                                id = review.user.id,
+                                name = review.user.name,
+                                avatar = UserAvatar(medium = review.user.avatar?.medium, large = null)
+                            )
+                            val media = Media(
+                                id = review.media.id,
+                                title = MediaTitle(userPreferred = review.media.title?.userPreferred ?: ""),
+                                coverImage = MediaCoverImage(medium = review.media.coverImage?.medium, large = null),
+                                bannerImage = review.media.bannerImage
+                            )
+                            viewModel.recentReviewsList.add(
+                                Review(
+                                    id = review.id,
+                                    userId = review.userId,
+                                    mediaId = review.mediaId,
+                                    mediaType = review.mediaType,
+                                    summary = review.summary,
+                                    rating = review.rating,
+                                    ratingAmount = review.ratingAmount,
+                                    userRating = review.userRating,
+                                    score = review.score,
+                                    siteUrl = review.siteUrl,
+                                    createdAt = review.createdAt,
+                                    updatedAt = review.updatedAt,
+                                    user = user,
+                                    media = media
+                                )
+                            )
+                        }
+                    }
+
+                    recentReviewsAdapter.notifyDataSetChanged()
+
+                    if (viewModel.recentReviewsList.isNullOrEmpty()) {
+                        recentReviewsEmptyLayout.visibility = View.VISIBLE
+                        recentReviewsRecyclerView.visibility = View.GONE
+                    } else {
+                        recentReviewsEmptyLayout.visibility = View.GONE
+                        recentReviewsRecyclerView.visibility = View.VISIBLE
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    DialogUtility.showToast(activity, it.message)
+
+                    if (viewModel.recentReviewsList.isNullOrEmpty()) {
+                        recentReviewsEmptyLayout.visibility = View.VISIBLE
+                        recentReviewsRecyclerView.visibility = View.GONE
+                    } else {
+                        recentReviewsEmptyLayout.visibility = View.GONE
+                        recentReviewsRecyclerView.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+
         viewModel.initData()
         if (!viewModel.isInit) {
             viewModel.getReleasingToday()
@@ -219,6 +289,10 @@ class HomeFragment : Fragment() {
 
         seasonalChartMenu.setOnClickListener {
             startActivity(Intent(activity, SeasonalActivity::class.java))
+        }
+
+        reviewsMenu.setOnClickListener {
+            startActivity(Intent(activity, ReviewsActivity::class.java))
         }
     }
 
@@ -321,6 +395,24 @@ class HomeFragment : Fragment() {
                 val intent = Intent(activity, BrowseActivity::class.java)
                 intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ANIME.name)
                 intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun assignReviewsRvAdapter(): ReviewsRvAdapter {
+        return ReviewsRvAdapter(activity!!, viewModel.recentReviewsList, object : ReviewsRvAdapter.ReviewsListener {
+            override fun openReview(id: Int) {
+                val intent = Intent(activity, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.REVIEW.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, id)
+                startActivity(intent)
+            }
+
+            override fun openUser(userId: Int) {
+                val intent = Intent(activity, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, userId)
                 startActivity(intent)
             }
         })

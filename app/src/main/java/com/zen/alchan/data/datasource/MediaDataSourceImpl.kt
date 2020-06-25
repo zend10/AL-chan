@@ -10,7 +10,10 @@ import MediaSocialQuery
 import MediaStaffsQuery
 import MediaStatsQuery
 import MediaStatusQuery
+import RateReviewMutation
 import ReleasingTodayQuery
+import ReviewDetailQuery
+import ReviewsQuery
 import SeasonalAnimeQuery
 import TagQuery
 import TrendingMediaQuery
@@ -152,6 +155,43 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
         val query = ReleasingTodayQuery(page = Input.fromNullable(page))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getReviews(
+        page: Int,
+        perPage: Int,
+        mediaType: MediaType?,
+        sort: List<ReviewSort>
+    ): Observable<Response<ReviewsQuery.Data>> {
+        val query = ReviewsQuery(
+            page = Input.fromNullable(page),
+            perPage = Input.fromNullable(perPage),
+            mediaType = Input.optional(mediaType),
+            sort = Input.fromNullable(sort)
+        )
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getReviewDetail(reviewId: Int): Observable<Response<ReviewDetailQuery.Data>> {
+        val query = ReviewDetailQuery(id = Input.fromNullable(reviewId))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun rateReview(
+        reviewId: Int,
+        rating: ReviewRating
+    ): Observable<Response<RateReviewMutation.Data>> {
+        val mutation = RateReviewMutation(reviewId = Input.fromNullable(reviewId), rating = Input.fromNullable(rating))
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

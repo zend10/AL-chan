@@ -34,7 +34,7 @@ import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.follows.FollowsActivity
-import com.zen.alchan.ui.profile.reviews.ReviewsFragment
+import com.zen.alchan.ui.profile.reviews.UserReviewsFragment
 import com.zen.alchan.ui.settings.SettingsActivity
 import com.zen.alchan.ui.profile.stats.StatsFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -76,7 +76,7 @@ class ProfileFragment : BaseMainFragment() {
             Pair(ProfileSection.REVIEWS, Pair(profileReviewsIcon, profileReviewsText))
         )
 
-        profileFragmentList = arrayListOf(BioFragment(), FavoritesFragment(), StatsFragment(), ReviewsFragment())
+        profileFragmentList = arrayListOf(BioFragment(), FavoritesFragment(), StatsFragment(), UserReviewsFragment())
 
         scaleUpAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up)
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)

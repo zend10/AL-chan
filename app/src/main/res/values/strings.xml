@@ -391,4 +391,11 @@
     <string name="likes">Likes</string>
     <string name="friends_list">Friends\' List</string>
     <string name="recent_activity">Recent Activity</string>
+    <string name="recent_reviews">Recent Reviews</string>
+    <string name="review_of_by">Review of %1$s by %2$s?</string>
+    <string name="like_this_review">Like this review?</string>
+    <string name="out_of_user_liked_this_review">%1$d out of %2$d user liked this review</string>
+    <string name="out_of_users_liked_this_review">%1$d out of %2$d users liked this review</string>
+    <string name="a_review">%1$s Review</string>
+    <string name="do_you_want_to_open_a_page">Do you want to open %1$s page?</string>
 </resources>

@@ -19,4 +19,8 @@ interface MediaDataSource {
 
     fun getTrendingMedia(type: MediaType): Observable<Response<TrendingMediaQuery.Data>>
     fun getReleasingToday(page: Int): Observable<Response<ReleasingTodayQuery.Data>>
+    fun getReviews(page:Int, perPage: Int, mediaType: MediaType?, sort: List<ReviewSort>): Observable<Response<ReviewsQuery.Data>>
+
+    fun getReviewDetail(reviewId: Int): Observable<Response<ReviewDetailQuery.Data>>
+    fun rateReview(reviewId: Int, rating: ReviewRating): Observable<Response<RateReviewMutation.Data>>
 }

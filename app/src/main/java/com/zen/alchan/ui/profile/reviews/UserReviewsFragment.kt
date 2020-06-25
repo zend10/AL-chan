@@ -1,23 +1,23 @@
 package com.zen.alchan.ui.profile.reviews
 
 
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
 import com.zen.alchan.data.network.Resource
-import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.user.UserFragment
-import com.zen.alchan.ui.profile.favorites.FavoritesRvAdapter
-import kotlinx.android.synthetic.main.fragment_reviews.*
+import kotlinx.android.synthetic.main.fragment_user_reviews.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,16 +25,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * A simple [Fragment] subclass.
  */
-class ReviewsFragment : Fragment() {
+class UserReviewsFragment : BaseFragment() {
 
-    private val viewModel by viewModel<ReviewsViewModel>()
+    private val viewModel by viewModel<UserReviewsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reviews, container, false)
+        return inflater.inflate(R.layout.fragment_user_reviews, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -95,10 +95,17 @@ class ReviewsFragment : Fragment() {
         }
     }
 
-    private fun assignAdapter(): ReviewsRvAdapter {
-        return ReviewsRvAdapter(activity!!, viewModel.userReviews, object : ReviewsRvAdapter.ReviewsListener {
+    private fun assignAdapter(): UserReviewsRvAdapter {
+        return UserReviewsRvAdapter(activity!!, viewModel.userReviews, object : UserReviewsRvAdapter.ReviewsListener {
             override fun passSelectedReview(reviewId: Int) {
-                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse("${Constant.ANILIST_REVIEW_URL}$reviewId"))
+                if (viewModel.otherUserId != null) {
+                    listener?.changeFragment(BrowsePage.REVIEW, reviewId)
+                } else {
+                    val intent = Intent(activity, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.REVIEW.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, reviewId)
+                    startActivity(intent)
+                }
             }
         })
     }

@@ -18,6 +18,7 @@ class Media(
     val source: MediaSource? = null,
     var isFavourite: Boolean? = null,
     val coverImage: MediaCoverImage? = null,
+    val bannerImage: String? = null,
     val genres: List<String?>? = null,
     val averageScore: Int? = null,
     val popularity: Int? = null,

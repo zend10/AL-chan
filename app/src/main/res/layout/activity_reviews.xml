@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.reviews.ReviewsActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/reviewsRefreshLayout"
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/filterReviewLayout"
+                android:paddingStart="@dimen/marginPage"
+                android:paddingEnd="@dimen/marginPage"
+                android:paddingTop="@dimen/marginSmall"
+                android:paddingBottom="@dimen/marginSmall"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/media"
+                    style="?themeRegularFont"
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mediaTypeText"
+                    style="?themeRegularClickableFont"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/marginSmall"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/sort"
+                    style="?themeRegularFont"
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/sortText"
+                    style="?themeRegularClickableFont"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/marginSmall"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reviewsRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:paddingStart="@dimen/marginNormal"
+                android:paddingEnd="@dimen/marginNormal"
+                android:layout_below="@+id/filterReviewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/layout_empty"
+                android:layout_below="@id/filterReviewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_loading"/>
+
+</RelativeLayout>

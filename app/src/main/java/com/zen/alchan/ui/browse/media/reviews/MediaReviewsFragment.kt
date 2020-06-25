@@ -1,22 +1,22 @@
 package com.zen.alchan.ui.browse.media.reviews
 
 
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.MediaFragment
 import kotlinx.android.synthetic.main.fragment_media_reviews.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -55,7 +55,7 @@ class MediaReviewsFragment : BaseFragment() {
     private fun assignAdapter(): MediaReviewsRvAdapter {
         return MediaReviewsRvAdapter(activity!!, viewModel.mediaReviews, object : MediaReviewsRvAdapter.MediaReviewsListener {
             override fun passSelectedReview(reviewId: Int) {
-                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse("${Constant.ANILIST_REVIEW_URL}$reviewId"))
+                listener?.changeFragment(BrowsePage.REVIEW, reviewId)
             }
         })
     }

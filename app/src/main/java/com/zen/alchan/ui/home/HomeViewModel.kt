@@ -5,7 +5,9 @@ import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.MediaRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.Utility
+import type.ReviewSort
 
 class HomeViewModel(private val userRepository: UserRepository,
                     private val appSettingsRepository: AppSettingsRepository,
@@ -19,6 +21,7 @@ class HomeViewModel(private val userRepository: UserRepository,
 
     var trendingAnimeList = ArrayList<HomeFragment.TrendingMediaItem>()
     var trendingMangaList = ArrayList<HomeFragment.TrendingMediaItem>()
+    var recentReviewsList = ArrayList<Review>()
 
     var explorePageArray = arrayOf(
         BrowsePage.ANIME.name, BrowsePage.MANGA.name, BrowsePage.CHARACTER.name, BrowsePage.STAFF.name, BrowsePage.STUDIO.name
@@ -44,6 +47,10 @@ class HomeViewModel(private val userRepository: UserRepository,
         mediaRepository.releasingTodayData
     }
 
+    val recentReviewsData by lazy {
+        mediaRepository.recentReviewsData
+    }
+
     val circularAvatar
         get() = appSettingsRepository.appSettings.circularAvatar == true
 
@@ -62,6 +69,8 @@ class HomeViewModel(private val userRepository: UserRepository,
         if (Utility.timeDiffMoreThanOneDay(mediaRepository.genreListLastRetrieved) || mediaRepository.genreList.isNullOrEmpty()) {
             mediaRepository.getGenre()
         }
+
+        mediaRepository.getReviews(1, 10, null, listOf(ReviewSort.CREATED_AT_DESC), true)
 
         // TODO: uncomment later after search by tag is implemented
 //        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {

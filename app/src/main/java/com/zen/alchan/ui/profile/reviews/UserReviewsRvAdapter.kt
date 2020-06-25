@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.secondsToDate
 import kotlinx.android.synthetic.main.list_user_review.view.*
 
-class ReviewsRvAdapter(private val context: Context,
-                       private val list: List<UserReviewsQuery.Review>,
-                       private val listener: ReviewsListener
-) : RecyclerView.Adapter<ReviewsRvAdapter.ViewHolder>() {
+class UserReviewsRvAdapter(private val context: Context,
+                           private val list: List<UserReviewsQuery.Review>,
+                           private val listener: ReviewsListener
+) : RecyclerView.Adapter<UserReviewsRvAdapter.ViewHolder>() {
 
     interface ReviewsListener {
         fun passSelectedReview(reviewId: Int)

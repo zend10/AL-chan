@@ -90,6 +90,22 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val releasingTodayData: LiveData<Resource<ReleasingTodayQuery.Data>>
         get() = _releasingTodayData
 
+    private val _recentReviewsData = SingleLiveEvent<Resource<ReviewsQuery.Data>>()
+    override val recentReviewsData: LiveData<Resource<ReviewsQuery.Data>>
+        get() = _recentReviewsData
+
+    private val _reviewsData = SingleLiveEvent<Resource<ReviewsQuery.Data>>()
+    override val reviewsData: LiveData<Resource<ReviewsQuery.Data>>
+        get() = _reviewsData
+
+    private val _reviewDetailData = SingleLiveEvent<Resource<ReviewDetailQuery.Data>>()
+    override val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
+        get() = _reviewDetailData
+
+    private val _rateReviewResponse = SingleLiveEvent<Resource<RateReviewMutation.Data>>()
+    override val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
+        get() = _rateReviewResponse
+
     @SuppressLint("CheckResult")
     override fun getGenre() {
         mediaDataSource.getGenre().subscribeWith(object : Observer<Response<GenreQuery.Data>> {
@@ -209,5 +225,28 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override fun getReleasingToday(page: Int) {
         _releasingTodayData.postValue(Resource.Loading())
         mediaDataSource.getReleasingToday(page).subscribeWith(AndroidUtility.rxApolloCallback(_releasingTodayData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getReviews(
+        page: Int,
+        perPage: Int,
+        mediaType: MediaType?,
+        sort: List<ReviewSort>,
+        isRecent: Boolean
+    ) {
+        mediaDataSource.getReviews(page, perPage, mediaType, sort).subscribeWith(AndroidUtility.rxApolloCallback(if (isRecent) _recentReviewsData else _reviewsData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getReviewDetail(reviewId: Int) {
+        _reviewDetailData.postValue(Resource.Loading())
+        mediaDataSource.getReviewDetail(reviewId).subscribeWith(AndroidUtility.rxApolloCallback(_reviewDetailData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun rateReview(reviewId: Int, rating: ReviewRating) {
+        _rateReviewResponse.postValue(Resource.Loading())
+        mediaDataSource.rateReview(reviewId, rating).subscribeWith(AndroidUtility.rxApolloCallback(_rateReviewResponse))
     }
 }

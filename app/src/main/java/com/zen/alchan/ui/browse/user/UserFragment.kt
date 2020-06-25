@@ -23,7 +23,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -34,7 +33,7 @@ import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.profile.ProfileViewPagerAdapter
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
-import com.zen.alchan.ui.profile.reviews.ReviewsFragment
+import com.zen.alchan.ui.profile.reviews.UserReviewsFragment
 import com.zen.alchan.ui.profile.stats.StatsFragment
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -80,7 +79,7 @@ class UserFragment : BaseFragment() {
             Pair(ProfileSection.REVIEWS, Pair(userReviewsIcon, userReviewsText))
         )
 
-        profileFragmentList = arrayListOf(BioFragment(), FavoritesFragment(), StatsFragment(), ReviewsFragment())
+        profileFragmentList = arrayListOf(BioFragment(), FavoritesFragment(), StatsFragment(), UserReviewsFragment())
 
         scaleUpAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_up)
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
