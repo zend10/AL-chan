@@ -333,7 +333,7 @@ class GlobalFeedActivity : BaseActivity() {
 
             override fun openMediaPage(mediaId: Int, mediaType: MediaType?) {
                 val intent = Intent(this@GlobalFeedActivity, BrowseActivity::class.java)
-                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.valueOf(mediaType?.name!!))
+                intent.putExtra(BrowseActivity.TARGET_PAGE, mediaType?.name)
                 intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
                 startActivity(intent)
             }

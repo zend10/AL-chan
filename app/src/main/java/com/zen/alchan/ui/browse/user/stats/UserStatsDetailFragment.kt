@@ -680,7 +680,7 @@ class UserStatsDetailFragment : BaseFragment() {
     }
 
     private fun setupStatistic() {
-        toolbarLayout.title = "${viewModel.username} ${getString(R.string.statistic_details)}"
+        toolbarLayout.title = "${viewModel.username} ${getString(R.string.detailed_statistics)}"
 
         when (viewModel.selectedCategory) {
             StatsCategory.FORMAT -> handleFormatLayout()

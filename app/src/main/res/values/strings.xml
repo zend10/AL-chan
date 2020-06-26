@@ -406,4 +406,5 @@
     <string name="today_s_notifications">Today\'s Notifications</string>
     <string name="past_day_s_notifications">Past Day\'s Notifications</string>
     <string name="episode_n_of_x_aired">Episode %1$d of %2$s aired.</string>
+    <string name="detailed_statistics">Detailed Statistics</string>
 </resources>

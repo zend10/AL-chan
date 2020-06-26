@@ -151,6 +151,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
+                    <include layout="@layout/layout_empty"/>
+
                     <ProgressBar
                         android:visibility="gone"
                         android:id="@+id/friendsActivityLoading"

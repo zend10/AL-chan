@@ -48,7 +48,7 @@ class StatsDetailActivity : BaseActivity() {
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {
-            title = getString(R.string.statistic_details)
+            title = getString(R.string.detailed_statistics)
             setDisplayHomeAsUpEnabled(true)
         }
 
