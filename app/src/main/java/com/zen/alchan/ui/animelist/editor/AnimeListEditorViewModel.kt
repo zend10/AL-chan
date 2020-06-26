@@ -60,23 +60,23 @@ class AnimeListEditorViewModel(private val mediaListRepository: MediaListReposit
     }
 
     val viewerData: User?
-        get() = userRepository.viewerData.value
+        get() = userRepository.currentUser
 
     val scoreFormat: ScoreFormat
-        get() = userRepository.viewerData.value?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
+        get() = userRepository.currentUser?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
 
     val advancedScoringList: ArrayList<String?>
-        get() = if (userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoringEnabled == true) {
-            ArrayList(userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoring!!)
+        get() = if (userRepository.currentUser?.mediaListOptions?.animeList?.advancedScoringEnabled == true) {
+            ArrayList(userRepository.currentUser?.mediaListOptions?.animeList?.advancedScoring!!)
         } else {
             ArrayList()
         }
 
     val savedCustomListsList: ArrayList<String?>
-        get() = if (userRepository.viewerData.value?.mediaListOptions?.animeList?.customLists.isNullOrEmpty()) {
+        get() = if (userRepository.currentUser?.mediaListOptions?.animeList?.customLists.isNullOrEmpty()) {
             ArrayList()
         } else {
-            ArrayList(userRepository.viewerData.value?.mediaListOptions?.animeList?.customLists!!)
+            ArrayList(userRepository.currentUser?.mediaListOptions?.animeList?.customLists!!)
         }
 
     val mediaListStatusList = listOf(

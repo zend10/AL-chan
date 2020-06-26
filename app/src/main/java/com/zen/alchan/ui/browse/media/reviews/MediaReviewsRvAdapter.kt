@@ -41,7 +41,7 @@ class MediaReviewsRvAdapter(private val context: Context,
             val item = list[position]
 
             holder.reviewUsernameText.text = item?.user?.name
-            holder.reviewCreatedDateText.text = "${item?.createdAt?.secondsToDate()}${if (item?.updatedAt != null) " (Last Updated on ${item?.updatedAt?.secondsToDate()})" else ""}"
+            holder.reviewCreatedDateText.text = item?.createdAt?.secondsToDate()
             GlideApp.with(context).load(item?.user?.avatar?.medium).apply(RequestOptions.circleCropTransform()).into(holder.reviewUserAvatar)
 
             holder.reviewSummaryText.text = item?.summary

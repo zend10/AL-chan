@@ -30,7 +30,7 @@ class ActivityListViewModel(private val socialRepository: SocialRepository,
     )
 
     val currentUserId: Int
-        get() = userRepository.viewerData.value?.id!!
+        get() = userRepository.currentUser?.id!!
 
     val textActivityText: String
         get() = socialRepository.textActivityText

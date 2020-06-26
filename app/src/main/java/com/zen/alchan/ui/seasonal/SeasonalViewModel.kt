@@ -24,7 +24,7 @@ class SeasonalViewModel(private val searchRepository: SearchRepository,
     var selectedOnList: Boolean? = null
 
     val showAdultContent: Boolean
-        get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
+        get() = userRepository.currentUser?.options?.displayAdultContent ?: false
 
     val mediaSortArray = arrayOf(
         "NEWEST",

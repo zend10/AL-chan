@@ -550,25 +550,41 @@ class UserStatsDetailFragment : BaseFragment() {
         })
 
         viewModel.searchMediaImageResponse.observe(viewLifecycleOwner, Observer {
-            if (it.responseStatus == ResponseStatus.SUCCESS) {
-                val pageInfo = it.data?.page?.pageInfo
-                viewModel.currentMediaList?.addAll(ArrayList(it.data?.page?.media))
-                if (pageInfo?.hasNextPage == true) {
-                    viewModel.searchMediaImage(pageInfo.currentPage!! + 1)
-                } else {
-                    statsRecyclerView.adapter = assignAdapter()
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    val pageInfo = it.data?.page?.pageInfo
+                    viewModel.currentMediaList?.addAll(ArrayList(it.data?.page?.media))
+                    if (pageInfo?.hasNextPage == true) {
+                        viewModel.searchMediaImage(pageInfo.currentPage!! + 1)
+                    } else {
+                        loadingLayout.visibility = View.GONE
+                        statsRecyclerView.adapter = assignAdapter()
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    DialogUtility.showToast(activity, it.message)
+                    loadingLayout.visibility = View.GONE
                 }
             }
         })
 
         viewModel.searchCharacterImageResponse.observe(viewLifecycleOwner, Observer {
-            if (it.responseStatus == ResponseStatus.SUCCESS) {
-                val pageInfo = it.data?.page?.pageInfo
-                viewModel.currentCharacterList?.addAll(ArrayList(it.data?.page?.characters))
-                if (pageInfo?.hasNextPage == true) {
-                    viewModel.searchCharacterImage(pageInfo.currentPage!! + 1)
-                } else {
-                    statsRecyclerView.adapter = assignAdapter()
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    val pageInfo = it.data?.page?.pageInfo
+                    viewModel.currentCharacterList?.addAll(ArrayList(it.data?.page?.characters))
+                    if (pageInfo?.hasNextPage == true) {
+                        viewModel.searchCharacterImage(pageInfo.currentPage!! + 1)
+                    } else {
+                        loadingLayout.visibility = View.GONE
+                        statsRecyclerView.adapter = assignAdapter()
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    DialogUtility.showToast(activity, it.message)
+                    loadingLayout.visibility = View.GONE
                 }
             }
         })

@@ -32,7 +32,7 @@ class GlobalFeedViewModel(private val userRepository: UserRepository,
     var activityList = ArrayList<ActivityItem?>()
 
     val currentUserId: Int
-        get() = userRepository.viewerData.value?.id!!
+        get() = userRepository.currentUser?.id!!
 
     val textActivityText: String
         get() = socialRepository.textActivityText

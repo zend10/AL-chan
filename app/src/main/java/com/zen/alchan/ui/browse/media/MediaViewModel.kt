@@ -29,7 +29,7 @@ class MediaViewModel(private val mediaRepository: MediaRepository,
     }
 
     val showAdultContent: Boolean
-        get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
+        get() = userRepository.currentUser?.options?.displayAdultContent ?: false
 
     fun initData() {
         getMedia()

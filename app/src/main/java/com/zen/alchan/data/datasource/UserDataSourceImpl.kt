@@ -7,6 +7,7 @@ import FavoritesMangaQuery
 import FavoritesStaffsQuery
 import FavoritesStudiosQuery
 import ListSettingsMutation
+import NotificationsQuery
 import ReorderFavoritesMutation
 import SessionQuery
 import ToggleFavouriteMutation
@@ -267,6 +268,14 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
         type: MediaType
     ): Observable<Response<UserMediaListCollectionQuery.Data>> {
         val query = UserMediaListCollectionQuery(userId = Input.fromNullable(userId), type = Input.fromNullable(type))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getNotification(page: Int, typeIn: List<NotificationType>?, reset: Boolean): Observable<Response<NotificationsQuery.Data>> {
+        val query = NotificationsQuery(page = Input.fromNullable(page), type_in = Input.optional(typeIn), reset = Input.optional(reset))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

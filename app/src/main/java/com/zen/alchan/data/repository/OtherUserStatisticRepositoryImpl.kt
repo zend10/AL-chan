@@ -146,11 +146,13 @@ class OtherUserStatisticRepositoryImpl(private val userStatisticDataSource: User
 
     @SuppressLint("CheckResult")
     override fun searchMediaImage(page: Int, idIn: List<Int>) {
+        _searchMediaImageResponse.postValue(Resource.Loading())
         searchDataSource.searchMediaImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchMediaImageResponse))
     }
 
     @SuppressLint("CheckResult")
     override fun searchCharacterImage(page: Int, idIn: List<Int>) {
+        _searchCharacterImageResponse.postValue(Resource.Loading())
         searchDataSource.searchCharacterImages(page, idIn).subscribeWith(AndroidUtility.rxApolloCallback(_searchCharacterImageResponse))
     }
 }

@@ -42,17 +42,17 @@ class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
     }
 
     val allowAdultContent: Boolean
-        get() = userRepository.viewerData.value?.options?.displayAdultContent ?: false
+        get() = userRepository.currentUser?.options?.displayAdultContent ?: false
 
     val scoreFormat: ScoreFormat
-        get() = userRepository.viewerData.value?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
+        get() = userRepository.currentUser?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
 
     val advancedScoringEnabled: Boolean
-        get() = userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoringEnabled == true
+        get() = userRepository.currentUser?.mediaListOptions?.animeList?.advancedScoringEnabled == true
 
     val advancedScoringList: ArrayList<String?>
-        get() = if (userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoringEnabled == true) {
-            ArrayList(userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoring!!)
+        get() = if (userRepository.currentUser?.mediaListOptions?.animeList?.advancedScoringEnabled == true) {
+            ArrayList(userRepository.currentUser?.mediaListOptions?.animeList?.advancedScoring!!)
         } else {
             ArrayList()
         }

@@ -8,6 +8,7 @@ import com.zen.alchan.data.response.NotificationOption
 import io.reactivex.Completable
 import io.reactivex.Observable
 import type.MediaType
+import type.NotificationType
 import type.ScoreFormat
 import type.UserTitleLanguage
 
@@ -71,4 +72,6 @@ interface UserDataSource {
 
     fun getUserData(id: Int): Observable<Response<UserQuery.Data>>
     fun getUserMediaCollection(userId: Int, type: MediaType): Observable<Response<UserMediaListCollectionQuery.Data>>
+
+    fun getNotification(page: Int, typeIn: List<NotificationType>?, reset: Boolean): Observable<Response<NotificationsQuery.Data>>
 }

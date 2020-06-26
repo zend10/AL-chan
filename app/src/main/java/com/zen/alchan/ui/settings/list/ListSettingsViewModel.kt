@@ -47,35 +47,35 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : ViewMo
         userRepository.getViewerData()
 
         if (selectedScoringSystem == null) {
-            selectedScoringSystem = userRepository.viewerData.value?.mediaListOptions?.scoreFormat
+            selectedScoringSystem = userRepository.currentUser?.mediaListOptions?.scoreFormat
         }
 
         if (selectedDefaultListOrder == null) {
-            selectedDefaultListOrder = userRepository.viewerData.value?.mediaListOptions?.rowOrder
+            selectedDefaultListOrder = userRepository.currentUser?.mediaListOptions?.rowOrder
         }
 
         if (!isInit) {
-            val savedAdvancedScoringList = userRepository.viewerData.value?.mediaListOptions?.animeList?.advancedScoring
+            val savedAdvancedScoringList = userRepository.currentUser?.mediaListOptions?.animeList?.advancedScoring
             if (!savedAdvancedScoringList.isNullOrEmpty()) {
                 advancedScoringLists.addAll(savedAdvancedScoringList)
             }
 
-            val savedCustomAnimeList = userRepository.viewerData.value?.mediaListOptions?.animeList?.customLists
+            val savedCustomAnimeList = userRepository.currentUser?.mediaListOptions?.animeList?.customLists
             if (!savedCustomAnimeList.isNullOrEmpty()) {
                 customAnimeLists.addAll(savedCustomAnimeList)
             }
 
-            val savedCustomMangaList = userRepository.viewerData.value?.mediaListOptions?.mangaList?.customLists
+            val savedCustomMangaList = userRepository.currentUser?.mediaListOptions?.mangaList?.customLists
             if (!savedCustomMangaList.isNullOrEmpty()) {
                 customMangaLists.addAll(savedCustomMangaList)
             }
 
-            val savedAnimeSectionOrder = userRepository.viewerData.value?.mediaListOptions?.animeList?.sectionOrder
+            val savedAnimeSectionOrder = userRepository.currentUser?.mediaListOptions?.animeList?.sectionOrder
             if (!savedAnimeSectionOrder.isNullOrEmpty()) {
                 animeSectionOrder.addAll(savedAnimeSectionOrder)
             }
 
-            val savedMangaSectionOrder = userRepository.viewerData.value?.mediaListOptions?.mangaList?.sectionOrder
+            val savedMangaSectionOrder = userRepository.currentUser?.mediaListOptions?.mangaList?.sectionOrder
             if (!savedMangaSectionOrder.isNullOrEmpty()) {
                 mangaSectionOrder.addAll(savedMangaSectionOrder)
             }

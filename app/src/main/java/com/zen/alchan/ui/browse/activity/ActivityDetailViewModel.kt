@@ -27,7 +27,7 @@ class ActivityDetailViewModel(private val socialRepository: SocialRepository,
     var activityDetail: ActivityItem? = null
 
     val userId: Int
-        get() = userRepository.viewerData.value?.id!!
+        get() = userRepository.currentUser?.id!!
 
     val activityDetailResponse by lazy {
         socialRepository.activityDetailResponse

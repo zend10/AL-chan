@@ -22,7 +22,7 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Vie
         userRepository.getViewerData()
 
         if (selectedTitleLanguage == null) {
-            selectedTitleLanguage = userRepository.viewerData.value?.options?.titleLanguage
+            selectedTitleLanguage = userRepository.currentUser?.options?.titleLanguage
         }
     }
 

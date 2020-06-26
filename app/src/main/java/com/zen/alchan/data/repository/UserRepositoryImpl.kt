@@ -21,12 +21,16 @@ import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import type.NotificationType
 import type.ScoreFormat
 import type.UserTitleLanguage
 
 class UserRepositoryImpl(private val userDataSource: UserDataSource,
                          private val userManager: UserManager
 ) : UserRepository {
+
+    override val currentUser: User?
+        get() = userManager.viewerData
 
     private val _sessionResponse = SingleLiveEvent<Boolean>()
     override val sessionResponse: LiveData<Boolean>
@@ -136,6 +140,10 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
     override val bestFriends: List<BestFriend>?
         get() = userManager.bestFriends
+
+    private val _notificationsResponse = SingleLiveEvent<Resource<NotificationsQuery.Data>>()
+    override val notificationsResponse: LiveData<Resource<NotificationsQuery.Data>>
+        get() = _notificationsResponse
 
     // To notify SocialFragment when best friend data changed
     private val _bestFriendChangedNotifier = SingleLiveEvent<List<BestFriend>>()
@@ -595,5 +603,11 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
         userManager.setBestFriends(savedBestFriends)
         _bestFriendChangedNotifier.postValue(userManager.bestFriends)
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getNotifications(page: Int, typeIn: List<NotificationType>?, reset: Boolean) {
+        _notificationsResponse.postValue(Resource.Loading())
+        userDataSource.getNotification(page, typeIn, reset).subscribeWith(AndroidUtility.rxApolloCallback(_notificationsResponse))
     }
 }

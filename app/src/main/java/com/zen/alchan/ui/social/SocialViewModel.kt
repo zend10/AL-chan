@@ -77,7 +77,7 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
     }
 
     val currentUserId: Int?
-        get() = userRepository.viewerData.value?.id
+        get() = userRepository.currentUser?.id
 
     fun initData() {
         if (!isInit) {

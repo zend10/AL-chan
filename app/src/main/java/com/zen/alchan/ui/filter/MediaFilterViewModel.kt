@@ -23,7 +23,7 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
     var currentData = MediaFilteredData()
 
     val defaultSort: MediaListSort
-        get() = when(userRepository.viewerData.value?.mediaListOptions?.rowOrder) {
+        get() = when(userRepository.currentUser?.mediaListOptions?.rowOrder) {
             "title" -> MediaListSort.TITLE
             "score" -> MediaListSort.SCORE
             "updatedAt" -> MediaListSort.LAST_UPDATED

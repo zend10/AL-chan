@@ -8,10 +8,13 @@ import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.pojo.BestFriend
 import io.reactivex.Completable
+import type.NotificationType
 import type.ScoreFormat
 import type.UserTitleLanguage
 
 interface UserRepository {
+    val currentUser: User?
+
     val sessionResponse: LiveData<Boolean>
 
     val viewerDataResponse: LiveData<Resource<Boolean>>
@@ -50,6 +53,8 @@ interface UserRepository {
 
     val bestFriends: List<BestFriend>?
     val bestFriendChangedNotifier: LiveData<List<BestFriend>>
+
+    val notificationsResponse: LiveData<Resource<NotificationsQuery.Data>>
 
     fun checkSession()
 
@@ -101,4 +106,6 @@ interface UserRepository {
     fun toggleFollow(userId: Int)
 
     fun handleBestFriend(bestFriend: BestFriend, isEdit: Boolean = false)
+
+    fun getNotifications(page: Int, typeIn: List<NotificationType>?, reset: Boolean)
 }

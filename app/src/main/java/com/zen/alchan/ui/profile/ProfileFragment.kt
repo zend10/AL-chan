@@ -31,6 +31,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseMainFragment
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.notification.NotificationActivity
 import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.follows.FollowsActivity
@@ -266,12 +267,11 @@ class ProfileFragment : BaseMainFragment() {
         }
 
         notificationActionView.setOnClickListener {
-            CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
+            startActivity(Intent(activity, NotificationActivity::class.java))
         }
 
         itemNotifications.setOnMenuItemClickListener {
-            // TODO: will handle notification later after social is up
-            CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(Constant.ANILIST_NOTIFICATIONS_URL))
+            startActivity(Intent(activity, NotificationActivity::class.java))
             true
         }
 

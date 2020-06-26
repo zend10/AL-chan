@@ -45,6 +45,7 @@ import com.zen.alchan.ui.common.LikesViewModel
 import com.zen.alchan.ui.common.MediaListDetailDialogViewModel
 import com.zen.alchan.ui.common.TextEditorViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
+import com.zen.alchan.ui.notification.NotificationViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
 import com.zen.alchan.ui.profile.favorites.FavoritesViewModel
@@ -193,6 +194,7 @@ class ALchanApplication : Application() {
         viewModel { ListSettingsViewModel(get()) }
         viewModel { NotificationsSettingsViewModel(get()) }
         viewModel { AccountSettingsViewModel(get()) }
+        viewModel { NotificationViewModel(get()) }
 
         // social
         viewModel { SocialViewModel(get(), get(), get()) }

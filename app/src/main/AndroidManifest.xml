@@ -71,6 +71,10 @@
                     android:host="anilist.co"
                     android:pathPattern="/user/.*"
                     android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/review/.*"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
