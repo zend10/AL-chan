@@ -162,13 +162,16 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
 
         var sectionOrder: List<String?>? = null
         var customList: List<String?>? = null
+        var defaultList: List<String?>? = null
 
         if (mediaType == MediaType.ANIME) {
             sectionOrder = userData?.mediaListOptions?.animeList?.sectionOrder
             customList = userData?.mediaListOptions?.animeList?.customLists
+            defaultList = if (userData?.mediaListOptions?.animeList?.splitCompletedSectionByFormat == true) Constant.DEFAULT_SPLIT_ANIME_LIST_ORDER else Constant.DEFAULT_ANIME_LIST_ORDER
         } else if (mediaType == MediaType.MANGA) {
             sectionOrder = userData?.mediaListOptions?.mangaList?.sectionOrder
             customList = userData?.mediaListOptions?.mangaList?.customLists
+            defaultList = if (userData?.mediaListOptions?.mangaList?.splitCompletedSectionByFormat == true) Constant.DEFAULT_SPLIT_MANGA_LIST_ORDER else Constant.DEFAULT_MANGA_LIST_ORDER
         }
 
         sectionOrder?.forEach { section ->
@@ -180,6 +183,13 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
 
         customList?.forEach { custom ->
             val groupList = mediaListGroup.find { group -> group?.name == custom && group?.isCustomList == true }
+            if (groupList != null && !sortedList.contains(groupList)) {
+                sortedList.add(groupList)
+            }
+        }
+
+        defaultList?.forEach { default ->
+            val groupList = mediaListGroup.find { group -> group?.name == default && group?.isCustomList == false }
             if (groupList != null && !sortedList.contains(groupList)) {
                 sortedList.add(groupList)
             }

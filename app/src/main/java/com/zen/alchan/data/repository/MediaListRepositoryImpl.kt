@@ -14,6 +14,7 @@ import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.data.response.MediaListCollection
 import com.zen.alchan.data.response.MediaListGroup
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.MediaListSort
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaFilteredData
@@ -446,13 +447,16 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
         var sectionOrder: List<String?>? = null
         var customList: List<String?>? = null
+        var defaultList: List<String?>? = null
 
         if (mediaType == MediaType.ANIME) {
             sectionOrder = userManager.viewerData?.mediaListOptions?.animeList?.sectionOrder
             customList = userManager.viewerData?.mediaListOptions?.animeList?.customLists
+            defaultList = if (userManager.viewerData?.mediaListOptions?.animeList?.splitCompletedSectionByFormat == true) Constant.DEFAULT_SPLIT_ANIME_LIST_ORDER else Constant.DEFAULT_ANIME_LIST_ORDER
         } else if (mediaType == MediaType.MANGA) {
             sectionOrder = userManager.viewerData?.mediaListOptions?.mangaList?.sectionOrder
             customList = userManager.viewerData?.mediaListOptions?.mangaList?.customLists
+            defaultList = if (userManager.viewerData?.mediaListOptions?.mangaList?.splitCompletedSectionByFormat == true) Constant.DEFAULT_SPLIT_MANGA_LIST_ORDER else Constant.DEFAULT_MANGA_LIST_ORDER
         }
 
         sectionOrder?.forEach { section ->
@@ -464,6 +468,13 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
 
         customList?.forEach { custom ->
             val groupList = mediaListGroup.find { group -> group.name == custom && group.isCustomList == true }
+            if (groupList != null && !sortedList.contains(groupList)) {
+                sortedList.add(groupList)
+            }
+        }
+
+        defaultList?.forEach { default ->
+            val groupList = mediaListGroup.find { group -> group?.name == default && group.isCustomList == false }
             if (groupList != null && !sortedList.contains(groupList)) {
                 sortedList.add(groupList)
             }
