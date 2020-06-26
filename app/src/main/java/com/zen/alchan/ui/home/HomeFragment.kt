@@ -254,6 +254,8 @@ class HomeFragment : Fragment() {
             viewModel.hasNextPage = true
             viewModel.releasingTodayList.clear()
             viewModel.getReleasingToday()
+
+            viewModel.getNotificationCount()
         }
 
         val user = viewModel.viewerData.value

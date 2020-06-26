@@ -42,7 +42,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/notificationDateText"
-            style="?themeSmallFont"
+            android:textSize="@dimen/fontSmall"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/marginNormal"

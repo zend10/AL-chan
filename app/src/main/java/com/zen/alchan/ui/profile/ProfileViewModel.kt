@@ -33,6 +33,10 @@ class ProfileViewModel(private val userRepository: UserRepository,
         userRepository.followingsCount
     }
 
+    val notificationCount by lazy {
+        userRepository.notificationCount
+    }
+
     val circularAvatar
         get() = appSettingsRepository.appSettings.circularAvatar == true
 
@@ -63,6 +67,7 @@ class ProfileViewModel(private val userRepository: UserRepository,
         userRepository.retrieveViewerData()
         userRepository.getFollowersCount()
         userRepository.getFollowingsCount()
+        userRepository.getNotificationCount()
     }
 
     fun triggerRefreshChildFragments() {

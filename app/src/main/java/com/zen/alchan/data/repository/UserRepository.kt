@@ -55,6 +55,7 @@ interface UserRepository {
     val bestFriendChangedNotifier: LiveData<List<BestFriend>>
 
     val notificationsResponse: LiveData<Resource<NotificationsQuery.Data>>
+    val notificationCount: LiveData<Int>
 
     fun checkSession()
 
@@ -108,4 +109,5 @@ interface UserRepository {
     fun handleBestFriend(bestFriend: BestFriend, isEdit: Boolean = false)
 
     fun getNotifications(page: Int, typeIn: List<NotificationType>?, reset: Boolean)
+    fun getNotificationCount()
 }

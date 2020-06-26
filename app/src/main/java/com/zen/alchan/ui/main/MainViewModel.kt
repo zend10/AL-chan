@@ -18,16 +18,20 @@ class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
         userRepository.listOrAniListSettingsChanged
     }
 
-    val viewerData by lazy {
-        userRepository.viewerData
-    }
-
     val sessionResponse by lazy {
         userRepository.sessionResponse
     }
 
+    val notificationCount by lazy {
+        userRepository.notificationCount
+    }
+
     fun checkSession() {
         userRepository.checkSession()
+    }
+
+    fun getNotificationCount() {
+        userRepository.getNotificationCount()
     }
 
     fun clearStorage() {

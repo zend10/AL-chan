@@ -42,9 +42,9 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
             recreate()
         })
 
-        viewModel.viewerData.observe(this, Observer {
-            if (it?.unreadNotificationCount != null && it.unreadNotificationCount != 0) {
-                mainBottomNavigation.getOrCreateBadge(R.id.itemProfile).number = it.unreadNotificationCount!!
+        viewModel.notificationCount.observe(this, Observer {
+            if (it != 0) {
+                mainBottomNavigation.getOrCreateBadge(R.id.itemProfile).number = it
             } else {
                 mainBottomNavigation.removeBadge(R.id.itemProfile)
             }
@@ -66,6 +66,7 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         })
 
         viewModel.checkSession()
+        viewModel.getNotificationCount()
     }
 
     private fun initLayout() {

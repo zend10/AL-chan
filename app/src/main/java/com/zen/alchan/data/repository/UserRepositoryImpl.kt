@@ -145,6 +145,10 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override val notificationsResponse: LiveData<Resource<NotificationsQuery.Data>>
         get() = _notificationsResponse
 
+    private val _notificationCount = MutableLiveData<Int>()
+    override val notificationCount: LiveData<Int>
+        get() = _notificationCount
+
     // To notify SocialFragment when best friend data changed
     private val _bestFriendChangedNotifier = SingleLiveEvent<List<BestFriend>>()
     override val bestFriendChangedNotifier: LiveData<List<BestFriend>>
@@ -609,5 +613,22 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     override fun getNotifications(page: Int, typeIn: List<NotificationType>?, reset: Boolean) {
         _notificationsResponse.postValue(Resource.Loading())
         userDataSource.getNotification(page, typeIn, reset).subscribeWith(AndroidUtility.rxApolloCallback(_notificationsResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getNotificationCount() {
+        userDataSource.getNotificationCount().subscribeWith(object : Observer<Response<ViewerNotificationCountQuery.Data>> {
+            override fun onSubscribe(d: Disposable) { }
+
+            override fun onNext(t: Response<ViewerNotificationCountQuery.Data>) {
+                if (!t.hasErrors()) {
+                    _notificationCount.postValue(t.data?.viewer?.unreadNotificationCount ?: 0)
+                }
+            }
+
+            override fun onError(e: Throwable) { }
+
+            override fun onComplete() { }
+        })
     }
 }

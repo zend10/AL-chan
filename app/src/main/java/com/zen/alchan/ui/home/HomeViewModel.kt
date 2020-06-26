@@ -81,4 +81,8 @@ class HomeViewModel(private val userRepository: UserRepository,
     fun getReleasingToday() {
         if (hasNextPage) mediaRepository.getReleasingToday(page)
     }
+
+    fun getNotificationCount() {
+        userRepository.getNotificationCount()
+    }
 }

@@ -18,6 +18,7 @@ import UserMediaListCollectionQuery
 import UserQuery
 import UserReviewsQuery
 import UserStatisticsQuery
+import ViewerNotificationCountQuery
 import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -276,6 +277,14 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
 
     override fun getNotification(page: Int, typeIn: List<NotificationType>?, reset: Boolean): Observable<Response<NotificationsQuery.Data>> {
         val query = NotificationsQuery(page = Input.fromNullable(page), type_in = Input.optional(typeIn), reset = Input.optional(reset))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getNotificationCount(): Observable<Response<ViewerNotificationCountQuery.Data>> {
+        val query = ViewerNotificationCountQuery()
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

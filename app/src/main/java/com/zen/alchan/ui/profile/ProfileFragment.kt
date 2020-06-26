@@ -59,6 +59,9 @@ class ProfileFragment : BaseMainFragment() {
     private lateinit var itemViewInAniList: MenuItem
     private lateinit var itemShareProfile: MenuItem
 
+    private lateinit var notificationActionView: View
+    private lateinit var badgeCount: MaterialTextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,6 +92,9 @@ class ProfileFragment : BaseMainFragment() {
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
             itemShareProfile = findItem(R.id.itemShareProfile)
         }
+
+        notificationActionView = itemNotifications.actionView
+        badgeCount = notificationActionView.findViewById(R.id.notification_badge)
 
         setupObserver()
         initLayout()
@@ -124,6 +130,19 @@ class ProfileFragment : BaseMainFragment() {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
                 }
+            }
+        })
+
+        viewModel.notificationCount.observe(viewLifecycleOwner, Observer {
+            if (it != 0) {
+                if (it > 99) {
+                    badgeCount.text = "99+"
+                } else {
+                    badgeCount.text = it.toString()
+                }
+                badgeCount.visibility = View.VISIBLE
+            } else {
+                badgeCount.visibility = View.GONE
             }
         })
 
@@ -253,8 +272,6 @@ class ProfileFragment : BaseMainFragment() {
             true
         }
 
-        val notificationActionView = itemNotifications.actionView
-        val badgeCount = notificationActionView.findViewById<MaterialTextView>(R.id.notification_badge)
         if (user?.unreadNotificationCount != null && user.unreadNotificationCount != 0) {
             if (user.unreadNotificationCount!! > 99) {
                 badgeCount.text = "99+"

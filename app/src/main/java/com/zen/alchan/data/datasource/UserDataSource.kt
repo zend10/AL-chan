@@ -74,4 +74,5 @@ interface UserDataSource {
     fun getUserMediaCollection(userId: Int, type: MediaType): Observable<Response<UserMediaListCollectionQuery.Data>>
 
     fun getNotification(page: Int, typeIn: List<NotificationType>?, reset: Boolean): Observable<Response<NotificationsQuery.Data>>
+    fun getNotificationCount(): Observable<Response<ViewerNotificationCountQuery.Data>>
 }
