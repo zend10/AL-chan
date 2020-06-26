@@ -24,3 +24,4 @@
 - View detailed info of anime, manga, characters, staffs, and studios.
 - Robust stats based on your anime and manga lists.
 - View recommendations and read reviews.
+- Interact with the community.
