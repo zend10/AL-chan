@@ -1,26 +1,26 @@
 package com.zen.alchan.ui.settings.list
 
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.R
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.MediaListTypeOptions
 import type.ScoreFormat
 
 class ListSettingsViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    val scoringFormatStringArray = arrayOf(
-        "100 Point (55/100)", "10 Point Decimal (5.5/10)", "10 Point (5/10)", "5 Star (3/5)", "3 Point Smiley :)"
+    val scoreFormatMap = hashMapOf(
+        Pair(ScoreFormat.POINT_100, R.string.hundred_point),
+        Pair(ScoreFormat.POINT_10_DECIMAL, R.string.ten_point_decimal),
+        Pair(ScoreFormat.POINT_10, R.string.ten_point),
+        Pair(ScoreFormat.POINT_5, R.string.five_star),
+        Pair(ScoreFormat.POINT_3, R.string.three_point_smiley)
     )
 
-    val scoringFormatList = listOf(
-        ScoreFormat.POINT_100, ScoreFormat.POINT_10_DECIMAL, ScoreFormat.POINT_10, ScoreFormat.POINT_5, ScoreFormat.POINT_3
-    )
-
-    val defaultListOrderStringArray = arrayOf(
-        "Title", "Score", "Last Updated", "Last Added"
-    )
-
-    val defaultListOrderList = listOf(
-        "title", "score", "updatedAt", "id"
+    val defaultListOrderMap = hashMapOf(
+        Pair("title", R.string.title),
+        Pair("score", R.string.score),
+        Pair("updatedAt", R.string.last_updated),
+        Pair("id", R.string.last_added)
     )
 
     var selectedScoringSystem: ScoreFormat? = null

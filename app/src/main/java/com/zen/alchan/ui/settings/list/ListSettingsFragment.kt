@@ -124,13 +124,19 @@ class ListSettingsFragment : Fragment() {
         // Scoring
         checkAdvancedScoringLayout()
 
-        scoringSystemText.text = Utility.getScoreFormatString(viewModel.selectedScoringSystem)
+        scoringSystemText.text = if (viewModel.scoreFormatMap.containsKey(viewModel.selectedScoringSystem)) {
+            getString(viewModel.scoreFormatMap[viewModel.selectedScoringSystem]!!)
+        } else {
+            ""
+        }
 
         scoringSystemText.setOnClickListener {
+            val scoringFormatKeysArray = viewModel.scoreFormatMap.map { it.key }.toTypedArray()
+            val scoringFormatValuesArray = viewModel.scoreFormatMap.map { getString(it.value) }.toTypedArray()
             MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.scoringFormatStringArray) { _, which ->
-                    viewModel.selectedScoringSystem = viewModel.scoringFormatList[which]
-                    scoringSystemText.text = viewModel.scoringFormatStringArray[which]
+                .setItems(scoringFormatValuesArray) { _, which ->
+                    viewModel.selectedScoringSystem = scoringFormatKeysArray[which]
+                    scoringSystemText.text = scoringFormatValuesArray[which]
                     checkAdvancedScoringLayout()
                 }
                 .show()
@@ -202,13 +208,19 @@ class ListSettingsFragment : Fragment() {
         }
 
         // List
-        defaultListOrderText.text = Utility.getMediaListOrderByString(viewModel.selectedDefaultListOrder)
+        defaultListOrderText.text = if (viewModel.defaultListOrderMap.containsKey(viewModel.selectedDefaultListOrder)) {
+            getString(viewModel.defaultListOrderMap[viewModel.selectedDefaultListOrder]!!)
+        } else {
+            ""
+        }
 
         defaultListOrderText.setOnClickListener {
+            val defaultListOrderKeysArray = viewModel.defaultListOrderMap.map { it.key }.toTypedArray()
+            val defaultListOrderValuesArray = viewModel.defaultListOrderMap.map { getString(it.value) }.toTypedArray()
             MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.defaultListOrderStringArray) { _, which ->
-                    viewModel.selectedDefaultListOrder = viewModel.defaultListOrderList[which]
-                    defaultListOrderText.text = viewModel.defaultListOrderStringArray[which]
+                .setItems(defaultListOrderValuesArray) { _, which ->
+                    viewModel.selectedDefaultListOrder = defaultListOrderKeysArray[which]
+                    defaultListOrderText.text = defaultListOrderValuesArray[which]
                 }
                 .show()
         }

@@ -22,16 +22,20 @@ object Converter {
         )
     }
 
-    private fun convertUserAvatar(avatar: ViewerQuery.Avatar?): UserAvatar {
+    private fun convertUserAvatar(avatar: ViewerQuery.Avatar?): UserAvatar? {
+        if (avatar == null) return null
+
         return UserAvatar(
-            large = avatar?.large,
-            medium = avatar?.medium
+            large = avatar.large,
+            medium = avatar.medium
         )
     }
 
-    private fun convertNotificationOptionList(notificationOption: List<ViewerQuery.NotificationOption?>?): List<NotificationOption> {
+    private fun convertNotificationOptionList(notificationOption: List<ViewerQuery.NotificationOption?>?): List<NotificationOption>? {
+        if (notificationOption == null) return null
+
         val notificationOptionList = ArrayList<NotificationOption>()
-        notificationOption?.forEach {
+        notificationOption.forEach {
             notificationOptionList.add(
                 NotificationOption(
                     type = it?.type,
@@ -56,12 +60,14 @@ object Converter {
         return notificationOptionList
     }
 
-    fun convertUserOptions(options: ViewerQuery.Options?): UserOptions {
+    private fun convertUserOptions(options: ViewerQuery.Options?): UserOptions? {
+        if (options == null) return null
+
         return UserOptions(
-            titleLanguage = options?.titleLanguage,
-            displayAdultContent = options?.displayAdultContent,
-            airingNotifications = options?.airingNotifications,
-            notificationOptions = convertNotificationOptionList(options?.notificationOptions)
+            titleLanguage = options.titleLanguage,
+            displayAdultContent = options.displayAdultContent,
+            airingNotifications = options.airingNotifications,
+            notificationOptions = convertNotificationOptionList(options.notificationOptions)
         )
     }
 
@@ -74,13 +80,15 @@ object Converter {
         )
     }
 
-    private fun convertAnimeListMediaListTypeOptions(animeList: ViewerQuery.AnimeList?): MediaListTypeOptions {
+    private fun convertAnimeListMediaListTypeOptions(animeList: ViewerQuery.AnimeList?): MediaListTypeOptions? {
+        if (animeList == null) return null
+
         return MediaListTypeOptions(
-            sectionOrder = animeList?.sectionOrder,
-            splitCompletedSectionByFormat = animeList?.splitCompletedSectionByFormat,
-            customLists = animeList?.customLists,
-            advancedScoring = animeList?.advancedScoring,
-            advancedScoringEnabled = animeList?.advancedScoringEnabled
+            sectionOrder = animeList.sectionOrder,
+            splitCompletedSectionByFormat = animeList.splitCompletedSectionByFormat,
+            customLists = animeList.customLists,
+            advancedScoring = animeList.advancedScoring,
+            advancedScoringEnabled = animeList.advancedScoringEnabled
         )
     }
 
@@ -94,13 +102,15 @@ object Converter {
         )
     }
 
-    private fun convertMangaListMediaListTypeOptions(mangaList: ViewerQuery.MangaList?): MediaListTypeOptions {
+    private fun convertMangaListMediaListTypeOptions(mangaList: ViewerQuery.MangaList?): MediaListTypeOptions? {
+        if (mangaList == null) return null
+
         return MediaListTypeOptions(
-            sectionOrder = mangaList?.sectionOrder,
-            splitCompletedSectionByFormat = mangaList?.splitCompletedSectionByFormat,
-            customLists = mangaList?.customLists,
-            advancedScoring = mangaList?.advancedScoring,
-            advancedScoringEnabled = mangaList?.advancedScoringEnabled
+            sectionOrder = mangaList.sectionOrder,
+            splitCompletedSectionByFormat = mangaList.splitCompletedSectionByFormat,
+            customLists = mangaList.customLists,
+            advancedScoring = mangaList.advancedScoring,
+            advancedScoringEnabled = mangaList.advancedScoringEnabled
         )
     }
 
@@ -114,12 +124,14 @@ object Converter {
         )
     }
 
-    fun convertMediaListOptions(mediaListOptions: ViewerQuery.MediaListOptions?): MediaListOptions {
+    private fun convertMediaListOptions(mediaListOptions: ViewerQuery.MediaListOptions?): MediaListOptions? {
+        if (mediaListOptions == null) return null
+
         return MediaListOptions(
-            scoreFormat = mediaListOptions?.scoreFormat,
-            rowOrder = mediaListOptions?.rowOrder,
-            animeList = convertAnimeListMediaListTypeOptions(mediaListOptions?.animeList),
-            mangaList = convertMangaListMediaListTypeOptions(mediaListOptions?.mangaList)
+            scoreFormat = mediaListOptions.scoreFormat,
+            rowOrder = mediaListOptions.rowOrder,
+            animeList = convertAnimeListMediaListTypeOptions(mediaListOptions.animeList),
+            mangaList = convertMangaListMediaListTypeOptions(mediaListOptions.mangaList)
         )
     }
 
@@ -132,9 +144,11 @@ object Converter {
         )
     }
 
-    private fun convertAnimeUserStatistics(anime: ViewerQuery.Anime?): UserStatistics {
+    private fun convertAnimeUserStatistics(anime: ViewerQuery.Anime?): UserStatistics? {
+        if (anime == null) return null
+
         return UserStatistics(
-            count = anime?.count!!,
+            count = anime.count,
             meanScore = anime.meanScore,
             standardDeviation = anime.standardDeviation,
             minutesWatched = anime.minutesWatched,
@@ -144,9 +158,11 @@ object Converter {
         )
     }
 
-    private fun convertMangaUserStatistics(manga: ViewerQuery.Manga?): UserStatistics {
+    private fun convertMangaUserStatistics(manga: ViewerQuery.Manga?): UserStatistics? {
+        if (manga == null) return null
+
         return UserStatistics(
-            count = manga?.count!!,
+            count = manga.count,
             meanScore = manga.meanScore,
             standardDeviation = manga.standardDeviation,
             minutesWatched = manga.minutesWatched,
@@ -156,10 +172,12 @@ object Converter {
         )
     }
 
-    private fun convertUserStatisticTypes(statistics: ViewerQuery.Statistics?): UserStatisticTypes {
+    private fun convertUserStatisticTypes(statistics: ViewerQuery.Statistics?): UserStatisticTypes? {
+        if (statistics == null) return null
+
         return UserStatisticTypes(
-            anime = convertAnimeUserStatistics(statistics?.anime),
-            manga = convertMangaUserStatistics(statistics?.manga)
+            anime = convertAnimeUserStatistics(statistics.anime),
+            manga = convertMangaUserStatistics(statistics.manga)
         )
     }
 

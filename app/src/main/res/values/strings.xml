@@ -407,4 +407,12 @@
     <string name="past_day_s_notifications">Past Day\'s Notifications</string>
     <string name="episode_n_of_x_aired">Episode %1$d of %2$s aired.</string>
     <string name="detailed_statistics">Detailed Statistics</string>
+    <string name="hundred_point">100 Point (55/100)</string>
+    <string name="ten_point_decimal">10 Point Decimal (5.5/10)</string>
+    <string name="ten_point">10 Point (5/10)</string>
+    <string name="five_star">5 Star (3/5)</string>
+    <string name="three_point_smiley">3 Point Smiley :)</string>
+    <string name="title">Title</string>
+    <string name="last_updated">Last Updated</string>
+    <string name="last_added">Last Added</string>
 </resources>
