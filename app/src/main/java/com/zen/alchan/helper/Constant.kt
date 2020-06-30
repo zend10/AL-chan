@@ -4,6 +4,7 @@ import android.graphics.Color
 import com.zen.alchan.BuildConfig
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.ColorPalette
 import type.*
 
 object Constant {
@@ -14,8 +15,6 @@ object Constant {
     const val ANILIST_LOGIN_URL = "${ANILIST_URL}api/v2/oauth/authorize?client_id=${ANILIST_CLIENT_ID}&response_type=token"
 
     const val ANILIST_REGISTER_URL = "${ANILIST_URL}signup"
-    const val ANILIST_REVIEW_URL = "${ANILIST_URL}review/"
-    const val ANILIST_NOTIFICATIONS_URL = "${ANILIST_URL}notifications"
     const val ANILIST_SETTINGS_URL = "${ANILIST_URL}settings/"
     const val ANILIST_ACCOUNT_URL = "${ANILIST_SETTINGS_URL}account"
     const val ANILIST_IMPORT_LISTS_URL = "${ANILIST_SETTINGS_URL}import"
@@ -45,6 +44,7 @@ object Constant {
     const val EVA_ID = 103770
 
     val DEFAULT_THEME = AppColorTheme.YELLOW
+
     val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(
         "Watching",
         "Rewatching",
@@ -182,6 +182,30 @@ object Constant {
         Pair("dajiaochong manhua (cn)", Pair(null, Color.parseColor("#E9CE0E"))),
         Pair("weibo manhua (cn)", Pair(null, Color.parseColor("#E0172B"))),
         Pair("manman manhua (cn)", Pair(null, Color.parseColor("#FF5746")))
+    )
+
+    val DEFAULT_GENRE_COLOR = "#727272"
+
+    val GENRE_COLOR = hashMapOf(
+        Pair("Action", "#24687B"),
+        Pair("Adventure", "#014037"),
+        Pair("Comedy", "#E6977E"),
+        Pair("Drama", "#7E1416"),
+        Pair("Ecchi", "#7E174A"),
+        Pair("Fantasy", "#989D60"),
+        Pair("Hentai", "#37286B"),
+        Pair("Horror", "#5B1765"),
+        Pair("Mahou Shoujo", "#BF5264"),
+        Pair("Mecha", "#542437"),
+        Pair("Music", "#329669"),
+        Pair("Mystery", "#3D3251"),
+        Pair("Psychological", "#D85C43"),
+        Pair("Romance", "#C02944"),
+        Pair("Sci-Fi", "#85B14B"),
+        Pair("Slice of Life", "#D3B042"),
+        Pair("Sports", "#6B9145"),
+        Pair("Supernatural", "#338074"),
+        Pair("Thriller", "#224C80")
     )
 
     // current, planning, completed, dropped, paused

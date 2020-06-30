@@ -45,32 +45,15 @@ import kotlin.math.max
 
 object AndroidUtility {
 
+    // TODO: need to confirm if this needs UI test
+    // Get the current resource value by providing the attribute id
     fun getResValueFromRefAttr(context: Context?, attrResId: Int): Int {
         val typedValue = TypedValue()
         context?.theme?.resolveAttribute(attrResId, typedValue, true)
         return typedValue.data
     }
 
-    fun getAppColorThemeRes(appColorTheme: AppColorTheme?): Int {
-        return when (appColorTheme ?: Constant.DEFAULT_THEME) {
-            AppColorTheme.YELLOW -> R.style.AppTheme_ThemeYellow
-            AppColorTheme.GREEN -> R.style.AppTheme_ThemeGreen
-            AppColorTheme.BLUE -> R.style.AppTheme_ThemeBlue
-            AppColorTheme.PINK -> R.style.AppTheme_ThemePink
-            AppColorTheme.RED -> R.style.AppTheme_ThemeRed
-        }
-    }
-
-    fun getColorPalette(appColorTheme: AppColorTheme?): ColorPalette {
-        return when (appColorTheme ?: Constant.DEFAULT_THEME) {
-            AppColorTheme.YELLOW -> ColorPalette(R.color.yellow, R.color.cyan, R.color.magentaDark)
-            AppColorTheme.GREEN -> ColorPalette(R.color.green, R.color.lavender, R.color.brown)
-            AppColorTheme.BLUE -> ColorPalette(R.color.blue, R.color.cream, R.color.gold)
-            AppColorTheme.PINK -> ColorPalette(R.color.pink, R.color.sunshine, R.color.jade)
-            AppColorTheme.RED -> ColorPalette(R.color.red, R.color.aloevera, R.color.purple)
-        }
-    }
-
+    // Get smiley icon from the score
     fun getSmileyFromScore(score: Double?): Int? {
         return when (score) {
             1.0 -> R.drawable.ic_sad
@@ -80,6 +63,7 @@ object AndroidUtility {
         }
     }
 
+    // Save image that will be used for list background into app folder
     fun saveUriToFolder(context: Context?, uri: Uri, mediaType: MediaType, action: () -> Unit) {
         var inputStream: InputStream? = null
         var outputStream: FileOutputStream? = null
@@ -119,6 +103,7 @@ object AndroidUtility {
         }
     }
 
+    // Retrieve image from app folder
     fun getImageFileFromFolder(context: Context?, mediaType: MediaType): File {
         return File(
             context?.getExternalFilesDir(null),
@@ -126,47 +111,14 @@ object AndroidUtility {
         )
     }
 
+    // Copy image to clipboard
     fun copyToClipboard(context: Context?, textToCopy: String) {
         val clipboardManager = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboardManager.primaryClip = ClipData.newPlainText(textToCopy, textToCopy)
     }
 
-    fun getGenreHexColor(genre: String): String {
-        return when (genre) {
-            "Action" -> "#24687B"
-            "Adventure" -> "#014037"
-            "Comedy" -> "#E6977E"
-            "Drama" -> "#7E1416"
-            "Ecchi" -> "#7E174A"
-            "Fantasy" -> "#989D60"
-            "Hentai" -> "#37286B"
-            "Horror" -> "#5B1765"
-            "Mahou Shoujo" -> "#BF5264"
-            "Mecha" -> "#542437"
-            "Music" -> "#329669"
-            "Mystery" -> "#3D3251"
-            "Psychological" -> "#D85C43"
-            "Romance" -> "#C02944"
-            "Sci-Fi" -> "#85B14B"
-            "Slice of Life" -> "#D3B042"
-            "Sports" -> "#6B9145"
-            "Supernatural" -> "#338074"
-            "Thriller" -> "#224C80"
-            else -> "#727272"
-        }
-    }
-
-    fun getCurrentSeason(): MediaSeason {
-        val calendar = Calendar.getInstance()
-        return when(calendar.get(Calendar.MONTH)) {
-            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> MediaSeason.WINTER
-            in Calendar.MARCH..Calendar.MAY -> MediaSeason.SPRING
-            in Calendar.JUNE..Calendar.AUGUST -> MediaSeason.SUMMER
-            in Calendar.SEPTEMBER..Calendar.NOVEMBER -> MediaSeason.FALL
-            else -> MediaSeason.WINTER
-        }
-    }
-
+    // TODO: need to know how to test this
+    // Generic function to pass retrofit response to live data (single live event)
     fun <T> apiCallback(observer: SingleLiveEvent<Resource<T>>) = object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
             try {
@@ -181,6 +133,8 @@ object AndroidUtility {
         }
     }
 
+    // TODO: need to know how to test this
+    // Generic function to pass rx2apollo observable response to live data (single live event)
     fun <T> rxApolloCallback(observer: SingleLiveEvent<Resource<T>>) = object : Observer<com.apollographql.apollo.api.Response<T>> {
         override fun onSubscribe(d: Disposable) { }
 
@@ -199,6 +153,8 @@ object AndroidUtility {
         override fun onComplete() { }
     }
 
+    // TODO: need to know how to test this
+    // Generic function to pass rx2apollo completable response to live data (single live event)
     fun rxApolloCompletable(observer: SingleLiveEvent<Resource<Boolean>>) = object : CompletableObserver {
         override fun onSubscribe(d: Disposable) { }
 
@@ -211,12 +167,16 @@ object AndroidUtility {
         }
     }
 
+    // TODO: need UI test
+    // Get the screen width in px
     fun getScreenWidth(activity: Activity?): Int {
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         return metrics.widthPixels
     }
 
+    // Not testable
+    // Help initializing markwon throughout the app for more consistent markdown parsing
     fun initMarkwon(context: Context): Markwon {
         return Markwon.builder(context)
             .usePlugin(GlideImagesPlugin.create(GlideApp.with(context)))
@@ -239,6 +199,8 @@ object AndroidUtility {
             .build()
     }
 
+    // TODO: need UI test
+    // Convert anilist markdown to android renderable markdown and render it into text view provided in parameter
     fun convertMarkdown(context: Context, textView: AppCompatTextView, aboutText: String?, maxWidth: Int, markwon: Markwon) {
         if (aboutText.isNullOrBlank()) {
             textView.text = context.getString(R.string.no_description)

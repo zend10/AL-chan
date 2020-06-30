@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.Constant
 import kotlinx.android.synthetic.main.list_flexbox_genre.view.*
 
 class OverviewGenreRvAdapter(private val list: List<String?>,
@@ -25,7 +25,7 @@ class OverviewGenreRvAdapter(private val list: List<String?>,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]!!
 
-        val genreColor = Color.parseColor(AndroidUtility.getGenreHexColor(item))
+        val genreColor = Color.parseColor(if (Constant.GENRE_COLOR.containsKey(item)) Constant.GENRE_COLOR[item] else Constant.DEFAULT_GENRE_COLOR)
         holder.genreCard.setCardBackgroundColor(genreColor)
         holder.genreText.setTextColor(Color.parseColor("#FFFFFF"))
         holder.genreText.text = item

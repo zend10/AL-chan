@@ -46,7 +46,7 @@ class SeasonalActivity : BaseActivity() {
 
         if (viewModel.selectedSort == null) {
             viewModel.selectedYear = Utility.getCurrentYear()
-            viewModel.selectedSeason = AndroidUtility.getCurrentSeason()
+            viewModel.selectedSeason = Utility.getCurrentSeason()
             viewModel.selectedSort = MediaSort.POPULARITY_DESC
             viewModel.selectedOnList = null
             viewModel.selectedIsAdult = false

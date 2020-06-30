@@ -57,7 +57,7 @@ class AppThemeDialog : DialogFragment() {
     }
 
     private fun setPaletteColor() {
-        val palette = AndroidUtility.getColorPalette(selectedTheme)
+        val palette = selectedTheme.value
         dialogView.primaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.primaryColor))
         dialogView.secondaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.secondaryColor))
         dialogView.negativeColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.negativeColor))

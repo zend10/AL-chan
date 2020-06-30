@@ -1,21 +1,24 @@
-package com.zen.alchan.helper
+package com.zen.alchan.helper.utils
 
-import com.zen.alchan.helper.utils.Utility
+import com.zen.alchan.helper.Constant
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import type.MediaSeason
 import java.text.SimpleDateFormat
 import java.util.*
 
 class UtilityTest {
 
     companion object {
-        private const val CURRENT_YEAR= 2020
+        private const val CURRENT_YEAR = 2020
+        private const val CURRENT_SEASON = "SUMMER"
     }
 
     @Test
     internal fun getCurrentYear_returnCorrectYear() {
         val currentYear = Utility.getCurrentYear()
-        val expectedYear = CURRENT_YEAR
+        val expectedYear =
+            CURRENT_YEAR
 
         assertEquals(expectedYear, currentYear)
         println("Year is generated correctly.")
@@ -85,5 +88,14 @@ class UtilityTest {
 
         assertEquals(false, Utility.isBetweenTwoDates(tomorrow, nextWeek))
         println("$today is not between $tomorrow and $nextWeek.")
+    }
+
+    @Test
+    internal fun getCurrentSeason_returnTheCorrectSeason() {
+        val currentSeason = Utility.getCurrentSeason()
+        val expectedSeason = MediaSeason.safeValueOf(CURRENT_SEASON)
+
+        assertEquals(expectedSeason, currentSeason)
+        println("Current season is $CURRENT_SEASON")
     }
 }

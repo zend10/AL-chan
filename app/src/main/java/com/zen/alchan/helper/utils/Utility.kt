@@ -1,6 +1,7 @@
 package com.zen.alchan.helper.utils
 
 import com.zen.alchan.helper.Constant
+import type.MediaSeason
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,6 +53,18 @@ object Utility {
             today in fromDate..untilDate
         } catch (e: Exception) {
             false
+        }
+    }
+
+    // Get the season current month in
+    fun getCurrentSeason(): MediaSeason {
+        val calendar = Calendar.getInstance()
+        return when(calendar.get(Calendar.MONTH)) {
+            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> MediaSeason.WINTER
+            in Calendar.MARCH..Calendar.MAY -> MediaSeason.SPRING
+            in Calendar.JUNE..Calendar.AUGUST -> MediaSeason.SUMMER
+            in Calendar.SEPTEMBER..Calendar.NOVEMBER -> MediaSeason.FALL
+            else -> MediaSeason.WINTER
         }
     }
 }

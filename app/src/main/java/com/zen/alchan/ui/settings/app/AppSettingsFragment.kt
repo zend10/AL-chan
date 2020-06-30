@@ -110,7 +110,7 @@ class AppSettingsFragment : Fragment() {
                 viewModel.selectedAppTheme = theme
                 selectedThemeText.text = theme.name
 
-                val palette = AndroidUtility.getColorPalette(viewModel.selectedAppTheme)
+                val palette = viewModel.selectedAppTheme?.value ?: Constant.DEFAULT_THEME.value
                 primaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.primaryColor))
                 secondaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.secondaryColor))
                 negativeColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.negativeColor))
