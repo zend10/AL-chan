@@ -57,13 +57,13 @@ class StaffFragment : BaseFragment() {
     private val viewModel by viewModel<StaffViewModel>()
 
     private lateinit var staffSectionMap: HashMap<StaffPage, Pair<ImageView, MaterialTextView>>
-    private lateinit var staffFragmentList: List<Fragment>
+    private lateinit var staffFragmentList: ArrayList<Fragment>
 
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
 
-    private lateinit var itemOpenAniList: MenuItem
-    private lateinit var itemCopyLink: MenuItem
+    private var itemOpenAniList: MenuItem? = null
+    private var itemCopyLink: MenuItem? = null
 
     companion object {
         const val STAFF_ID = "staffId"
@@ -214,17 +214,17 @@ class StaffFragment : BaseFragment() {
 
         staffFavoriteCountText.text = viewModel.currentStaffData?.favourites?.toString()
 
-        itemOpenAniList.isVisible = true
-        itemCopyLink.isVisible = true
+        itemOpenAniList?.isVisible = true
+        itemCopyLink?.isVisible = true
 
-        itemOpenAniList.setOnMenuItemClickListener {
+        itemOpenAniList?.setOnMenuItemClickListener {
             CustomTabsIntent.Builder()
                 .build()
                 .launchUrl(activity!!, Uri.parse(viewModel.currentStaffData?.siteUrl))
             true
         }
 
-        itemCopyLink.setOnMenuItemClickListener {
+        itemCopyLink?.setOnMenuItemClickListener {
             AndroidUtility.copyToClipboard(activity, viewModel.currentStaffData?.siteUrl!!)
             DialogUtility.showToast(activity, R.string.link_copied)
             true
@@ -263,5 +263,14 @@ class StaffFragment : BaseFragment() {
             StaffPage.MANGA -> 3
             else -> 0
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        staffViewPager.adapter = null
+        staffSectionMap.clear()
+        staffFragmentList.clear()
+        itemOpenAniList = null
+        itemCopyLink = null
     }
 }

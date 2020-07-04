@@ -135,6 +135,9 @@ class SocialFragment : Fragment() {
                     if (viewModel.activityList.size == 0) {
                         emptyLayout.visibility = View.VISIBLE
                         friendsActivityRecyclerView.visibility = View.GONE
+                    } else {
+                        emptyLayout.visibility = View.GONE
+                        friendsActivityRecyclerView.visibility = View.VISIBLE
                     }
                 }
                 ResponseStatus.ERROR -> {

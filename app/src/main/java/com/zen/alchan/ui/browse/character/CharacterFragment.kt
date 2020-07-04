@@ -63,8 +63,8 @@ class CharacterFragment : BaseFragment() {
 
     private lateinit var adapter: CharacterMediaRvAdapter
     private lateinit var voiceActorAdapter: CharacterVoiceActorRvAdapter
-    private lateinit var itemOpenAniList: MenuItem
-    private lateinit var itemCopyLink: MenuItem
+    private var itemOpenAniList: MenuItem? = null
+    private var itemCopyLink: MenuItem? = null
 
     companion object {
         const val CHARACTER_ID = "charactedId"
@@ -246,17 +246,17 @@ class CharacterFragment : BaseFragment() {
 
         characterFavoriteCountText.text = viewModel.currentCharacterData?.favourites?.toString()
 
-        itemOpenAniList.isVisible = true
-        itemCopyLink.isVisible = true
+        itemOpenAniList?.isVisible = true
+        itemCopyLink?.isVisible = true
 
-        itemOpenAniList.setOnMenuItemClickListener {
+        itemOpenAniList?.setOnMenuItemClickListener {
             CustomTabsIntent.Builder()
                 .build()
                 .launchUrl(activity!!, Uri.parse(viewModel.currentCharacterData?.siteUrl))
             true
         }
 
-        itemCopyLink.setOnMenuItemClickListener {
+        itemCopyLink?.setOnMenuItemClickListener {
             AndroidUtility.copyToClipboard(activity, viewModel.currentCharacterData?.siteUrl!!)
             DialogUtility.showToast(activity, R.string.link_copied)
             true
@@ -344,5 +344,13 @@ class CharacterFragment : BaseFragment() {
                     .show()
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        characterMediaRecyclerView.adapter = null
+        characterVoiceActorsRecyclerView.adapter = null
+        itemOpenAniList = null
+        itemCopyLink = null
     }
 }

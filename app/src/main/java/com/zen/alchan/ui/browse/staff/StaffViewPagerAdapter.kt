@@ -3,12 +3,13 @@ package com.zen.alchan.ui.browse.staff
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 
 class StaffViewPagerAdapter(fm: FragmentManager,
                             private val staffId: Int,
                             private val list: List<Fragment>
-) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         val fragment = list[position]

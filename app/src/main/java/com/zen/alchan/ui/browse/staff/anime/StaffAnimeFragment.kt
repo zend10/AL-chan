@@ -137,4 +137,9 @@ class StaffAnimeFragment : BaseFragment() {
             viewModel.getStaffMedia()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        staffAnimeRecyclerView.adapter = null
+    }
 }

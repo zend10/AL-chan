@@ -174,4 +174,10 @@ class MediaStatsFragment : BaseFragment() {
         mediaStatsScoreBarChart.data = barData
         mediaStatsScoreBarChart.invalidate()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediaStatsRankingRecyclerView.adapter = null
+        mediaStatsStatusRecyclerView.adapter = null
+    }
 }

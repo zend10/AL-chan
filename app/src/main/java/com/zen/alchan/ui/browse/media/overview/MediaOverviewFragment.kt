@@ -435,4 +435,16 @@ class MediaOverviewFragment : BaseFragment() {
             }
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediaGenreRecyclerView.adapter = null
+        mediaCharactersRecyclerView.adapter = null
+        mediaStudiosRecyclerView.adapter = null
+        mediaProducersRecyclerView.adapter = null
+        mediaTagsRecyclerView.adapter = null
+        mediaRelationsRecyclerView.adapter = null
+        mediaRecommendationsRecyclerView.adapter = null
+        mediaLinksRecyclerView.adapter = null
+    }
 }

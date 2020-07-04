@@ -50,7 +50,7 @@ class ActivityListFragment : BaseFragment() {
     private var maxWidth = 0
     private lateinit var markwon: Markwon
 
-    private lateinit var itemFilter: MenuItem
+    private var itemFilter: MenuItem? = null
 
     companion object {
         const val USER_ID = "userId"
@@ -229,7 +229,7 @@ class ActivityListFragment : BaseFragment() {
             viewModel.refresh()
         }
 
-        itemFilter.setOnMenuItemClickListener {
+        itemFilter?.setOnMenuItemClickListener {
             val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
             MaterialAlertDialogBuilder(activity)
                 .setItems(activityTypeStringArray) { _, which ->
@@ -352,5 +352,11 @@ class ActivityListFragment : BaseFragment() {
             isLoading = false
             viewModel.refresh()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activityRecyclerView.adapter = null
+        itemFilter = null
     }
 }

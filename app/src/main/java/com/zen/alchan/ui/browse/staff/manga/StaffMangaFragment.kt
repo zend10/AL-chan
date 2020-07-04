@@ -137,4 +137,9 @@ class StaffMangaFragment : BaseFragment() {
             viewModel.getStaffMedia()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        staffMangaRecyclerView.adapter = null
+    }
 }

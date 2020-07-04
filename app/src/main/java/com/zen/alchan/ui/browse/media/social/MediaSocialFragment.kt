@@ -146,4 +146,10 @@ class MediaSocialFragment : BaseFragment() {
             }
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        friendsListRecyclerView.adapter = null
+        recentActivityRecyclerView.adapter = null
+    }
 }

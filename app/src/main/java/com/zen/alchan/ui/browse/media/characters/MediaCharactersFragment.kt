@@ -175,4 +175,9 @@ class MediaCharactersFragment : BaseFragment() {
             viewModel.getMediaCharacters()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        charactersRecyclerView.adapter = null
+    }
 }

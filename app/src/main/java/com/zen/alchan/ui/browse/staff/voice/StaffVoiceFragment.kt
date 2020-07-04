@@ -157,4 +157,9 @@ class StaffVoiceFragment : BaseFragment() {
             viewModel.getStaffCharacters()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        staffVoiceRecyclerView.adapter = null
+    }
 }

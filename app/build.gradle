@@ -13,8 +13,8 @@ android {
         applicationId "com.zen.alchan"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 100006
-        versionName "1.0.6"
+        versionCode 100007
+        versionName "1.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -119,6 +119,7 @@ dependencies {
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
 
+    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }
 
 apollo {

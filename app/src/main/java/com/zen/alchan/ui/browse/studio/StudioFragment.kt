@@ -48,8 +48,8 @@ class StudioFragment : BaseFragment() {
     private lateinit var adapter: StudioMediaRvAdapter
     private var isLoading = false
 
-    private lateinit var itemOpenAniList: MenuItem
-    private lateinit var itemCopyLink: MenuItem
+    private var itemOpenAniList: MenuItem? = null
+    private var itemCopyLink: MenuItem? = null
 
     companion object {
         const val STUDIO_ID = "studioId"
@@ -207,17 +207,17 @@ class StudioFragment : BaseFragment() {
         studioNameText.text = viewModel.currentStudioData?.name
         studioFavoriteCountText.text = viewModel.currentStudioData?.favourites?.toString()
 
-        itemOpenAniList.isVisible = true
-        itemCopyLink.isVisible = true
+        itemOpenAniList?.isVisible = true
+        itemCopyLink?.isVisible = true
 
-        itemOpenAniList.setOnMenuItemClickListener {
+        itemOpenAniList?.setOnMenuItemClickListener {
             CustomTabsIntent.Builder()
                 .build()
                 .launchUrl(activity!!, Uri.parse(viewModel.currentStudioData?.siteUrl))
             true
         }
 
-        itemCopyLink.setOnMenuItemClickListener {
+        itemCopyLink?.setOnMenuItemClickListener {
             AndroidUtility.copyToClipboard(activity, viewModel.currentStudioData?.siteUrl!!)
             DialogUtility.showToast(activity, R.string.link_copied)
             true
@@ -290,5 +290,12 @@ class StudioFragment : BaseFragment() {
             adapter.notifyItemInserted(viewModel.studioMediaList.lastIndex)
             viewModel.getStudioMedia()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        studioRecyclerView.adapter = null
+        itemOpenAniList = null
+        itemCopyLink = null
     }
 }

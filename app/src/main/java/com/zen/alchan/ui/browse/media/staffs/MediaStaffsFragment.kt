@@ -131,4 +131,9 @@ class MediaStaffsFragment : BaseFragment() {
             viewModel.getMediaStaffs()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        staffsRecyclerView.adapter = null
+    }
 }

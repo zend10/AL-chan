@@ -48,12 +48,12 @@ class UserMediaListFragment : BaseFragment() {
     private val viewModel by viewModel<UserMediaListViewModel>()
 
     private lateinit var adapter: RecyclerView.Adapter<*>
-    private lateinit var itemSearch: MenuItem
-    private lateinit var itemList: MenuItem
-    private lateinit var itemCustomiseList: MenuItem
-    private lateinit var itemFilter: MenuItem
+    private var itemSearch: MenuItem? = null
+    private var itemList: MenuItem? = null
+    private var itemCustomiseList: MenuItem? = null
+    private var itemFilter: MenuItem? = null
 
-    private lateinit var searchView: SearchView
+    private var searchView: SearchView? = null
 
     companion object {
         const val USER_ID = "userId"
@@ -90,9 +90,9 @@ class UserMediaListFragment : BaseFragment() {
             itemFilter = menu.findItem(R.id.itemFilter)
         }
 
-        searchView = itemSearch.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView = itemSearch?.actionView as SearchView
+        searchView?.queryHint = getString(R.string.search)
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
             }
@@ -115,7 +115,7 @@ class UserMediaListFragment : BaseFragment() {
             }
         })
 
-        itemList.setOnMenuItemClickListener {
+        itemList?.setOnMenuItemClickListener {
             MaterialAlertDialogBuilder(activity)
                 .setItems(viewModel.getTabItemArray()) { _, which ->
                     viewModel.selectedTab = which
@@ -138,7 +138,7 @@ class UserMediaListFragment : BaseFragment() {
             true
         }
 
-        itemFilter.setOnMenuItemClickListener {
+        itemFilter?.setOnMenuItemClickListener {
             val filterDialog = MediaFilterBottomSheet()
             filterDialog.setListener(object : MediaFilterBottomSheet.MediaFilterListener {
                 override fun passFilterData(filterData: MediaFilteredData?) {
@@ -155,8 +155,8 @@ class UserMediaListFragment : BaseFragment() {
             true
         }
 
-        itemCustomiseList.title = getString(R.string.change_list_type)
-        itemCustomiseList.setOnMenuItemClickListener {
+        itemCustomiseList?.title = getString(R.string.change_list_type)
+        itemCustomiseList?.setOnMenuItemClickListener {
             if (viewModel.listType == ListType.LINEAR) {
                 viewModel.listType = ListType.GRID
             } else {
@@ -315,5 +315,15 @@ class UserMediaListFragment : BaseFragment() {
             dialog.arguments = bundle
             dialog.show(childFragmentManager, null)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediaListRecyclerView.adapter = null
+        itemCustomiseList = null
+        itemFilter = null
+        itemList = null
+        itemSearch = null
+        searchView = null
     }
 }

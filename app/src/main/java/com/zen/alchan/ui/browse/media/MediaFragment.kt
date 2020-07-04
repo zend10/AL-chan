@@ -51,7 +51,7 @@ class MediaFragment : BaseFragment() {
     private val viewModel by viewModel<MediaViewModel>()
 
     private lateinit var mediaSectionMap: HashMap<MediaPage, Pair<ImageView, MaterialTextView>>
-    private lateinit var mediaFragmentList: List<Fragment>
+    private lateinit var mediaFragmentList: ArrayList<Fragment>
 
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
@@ -314,5 +314,12 @@ class MediaFragment : BaseFragment() {
             MediaPage.SOCIAL -> 5
             else -> 0
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediaViewPager.adapter = null
+        mediaSectionMap.clear()
+        mediaFragmentList.clear()
     }
 }

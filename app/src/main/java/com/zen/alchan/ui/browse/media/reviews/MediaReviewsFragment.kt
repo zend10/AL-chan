@@ -144,4 +144,9 @@ class MediaReviewsFragment : BaseFragment() {
             viewModel.getMediaReviews()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        reviewsRecyclerView.adapter = null
+    }
 }

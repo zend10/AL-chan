@@ -538,4 +538,10 @@ class ActivityDetailFragment : BaseFragment() {
             viewModel.notifyAllActivityList()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        likesRecyclerView.adapter = null
+        activityRepliesRecyclerView.adapter = null
+    }
 }

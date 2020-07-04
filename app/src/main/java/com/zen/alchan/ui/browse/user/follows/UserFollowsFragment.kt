@@ -42,4 +42,9 @@ class UserFollowsFragment : BaseFragment() {
         followsTabLayout.setupWithViewPager(followsViewPager)
         followsViewPager.currentItem = arguments?.getInt(START_POSITION, 0)!!
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        followsViewPager.adapter = null
+    }
 }

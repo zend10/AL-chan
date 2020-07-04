@@ -45,15 +45,15 @@ class UserFragment : BaseFragment() {
     private val viewModel by viewModel<UserViewModel>()
 
     private lateinit var profileSectionMap: HashMap<ProfileSection, Pair<ImageView, TextView>>
-    private lateinit var profileFragmentList: List<Fragment>
+    private lateinit var profileFragmentList: ArrayList<Fragment>
 
     private lateinit var scaleUpAnim: Animation
     private lateinit var scaleDownAnim: Animation
 
-    private lateinit var itemActivity: MenuItem
-    private lateinit var itemBestFriend: MenuItem
-    private lateinit var itemViewInAniList: MenuItem
-    private lateinit var itemShareProfile: MenuItem
+    private var itemActivity: MenuItem? = null
+    private var itemBestFriend: MenuItem? = null
+    private var itemViewInAniList: MenuItem? = null
+    private var itemShareProfile: MenuItem? = null
 
     companion object {
         const val USER_ID = "userId"
@@ -291,12 +291,12 @@ class UserFragment : BaseFragment() {
             }
         })
 
-        itemActivity.setOnMenuItemClickListener {
+        itemActivity?.setOnMenuItemClickListener {
             if (user?.id != null) listener?.changeFragment(BrowsePage.ACTIVITY_LIST, user.id, user.name)
             true
         }
 
-        itemBestFriend.setOnMenuItemClickListener {
+        itemBestFriend?.setOnMenuItemClickListener {
             val title: Int
             val message: Int
             val positiveButton: Int
@@ -326,7 +326,7 @@ class UserFragment : BaseFragment() {
             true
         }
 
-        itemViewInAniList.setOnMenuItemClickListener {
+        itemViewInAniList?.setOnMenuItemClickListener {
             if (user?.siteUrl == null) {
                 DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {
@@ -335,7 +335,7 @@ class UserFragment : BaseFragment() {
             true
         }
 
-        itemShareProfile.setOnMenuItemClickListener {
+        itemShareProfile?.setOnMenuItemClickListener {
             if (user?.siteUrl == null) {
                 DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {
@@ -378,5 +378,15 @@ class UserFragment : BaseFragment() {
         } else {
             userFollowButton.text = getString(R.string.follow)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        profileSectionMap.clear()
+        profileFragmentList.clear()
+        itemActivity = null
+        itemBestFriend = null
+        itemViewInAniList = null
+        itemShareProfile = null
     }
 }

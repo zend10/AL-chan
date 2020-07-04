@@ -42,8 +42,8 @@ class ReviewsReaderFragment : BaseFragment() {
     private lateinit var markwon: Markwon
     private var maxWidth = 0
 
-    private lateinit var itemOpenAniList: MenuItem
-    private lateinit var itemCopyLink: MenuItem
+    private var itemOpenAniList: MenuItem? = null
+    private var itemCopyLink: MenuItem? = null
 
     companion object {
         const val REVIEW_ID = "reviewId"
@@ -197,10 +197,10 @@ class ReviewsReaderFragment : BaseFragment() {
 
         handleLike()
 
-        itemCopyLink.isVisible = true
-        itemOpenAniList.isVisible = true
+        itemCopyLink?.isVisible = true
+        itemOpenAniList?.isVisible = true
 
-        itemCopyLink.setOnMenuItemClickListener {
+        itemCopyLink?.setOnMenuItemClickListener {
             if (viewModel.reviewDetail?.siteUrl == null) {
                 DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {
@@ -210,7 +210,7 @@ class ReviewsReaderFragment : BaseFragment() {
             true
         }
 
-        itemOpenAniList.setOnMenuItemClickListener {
+        itemOpenAniList?.setOnMenuItemClickListener {
             if (viewModel.reviewDetail?.siteUrl == null) {
                 DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {
@@ -238,5 +238,11 @@ class ReviewsReaderFragment : BaseFragment() {
         } else {
             getString(R.string.out_of_users_liked_this_review, viewModel.currentRating ?: 0, viewModel.currentRatingAmount ?: 0)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        itemOpenAniList = null
+        itemCopyLink = null
     }
 }

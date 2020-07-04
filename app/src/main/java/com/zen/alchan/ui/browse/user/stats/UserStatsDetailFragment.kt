@@ -1100,4 +1100,9 @@ class UserStatsDetailFragment : BaseFragment() {
     private fun handleStudioLayout() {
         statsRecyclerView.adapter = assignAdapter()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        statsRecyclerView.adapter = null
+    }
 }
