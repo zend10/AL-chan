@@ -330,7 +330,7 @@ class AnimeListEditorActivity : BaseActivity() {
         } else {
             scoreText.visibility = View.VISIBLE
             scoreSmileyIcon.visibility = View.GONE
-            scoreText.text = viewModel.selectedScore?.removeTrailingZero() ?: "0"
+            scoreText.text = viewModel.selectedScore?.roundToOneDecimal() ?: "0"
         }
 
         scoreSmileyIcon.setOnClickListener {
@@ -583,7 +583,7 @@ class AnimeListEditorActivity : BaseActivity() {
                 if (viewModel.scoreFormat == ScoreFormat.POINT_3) {
                     GlideApp.with(this@AnimeListEditorActivity).load(AndroidUtility.getSmileyFromScore(newScore)).into(scoreSmileyIcon)
                 } else {
-                    scoreText.text = newScore.removeTrailingZero()
+                    scoreText.text = newScore.roundToOneDecimal()
                 }
             }
         })

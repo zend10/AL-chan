@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
-import kotlinx.android.synthetic.main.activity_customise_list.view.*
 import kotlinx.android.synthetic.main.list_manga_list_grid.view.*
 import type.ScoreFormat
 
@@ -48,7 +47,7 @@ class UserMangaListGridRvAdapter(private val context: Context,
             holder.mangaRatingText.text = if (mediaList.score == null || mediaList.score.toInt() == 0) {
                 "?"
             } else {
-                mediaList.score.removeTrailingZero()
+                mediaList.score.roundToOneDecimal()
             }
         }
 

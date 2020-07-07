@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.apollographql.apollo.api.CustomTypeValue
 import com.google.gson.internal.LinkedTreeMap
 import com.zen.alchan.R
 import com.zen.alchan.data.response.MediaList
@@ -79,7 +78,7 @@ class MediaListDetailDialog : DialogFragment() {
         } else {
             GlideApp.with(activity!!).load(R.drawable.ic_star_filled).into(dialogView.mediaListScoreIcon)
             dialogView.mediaListScoreIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(activity!!, R.color.yellowStar))
-            dialogView.mediaListScoreText.text = mediaList.score?.removeTrailingZero()
+            dialogView.mediaListScoreText.text = mediaList.score?.roundToOneDecimal()
         }
 
         if (useAdvancedScores && mediaList.advancedScores != null) {

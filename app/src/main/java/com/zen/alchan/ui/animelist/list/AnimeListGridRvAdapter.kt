@@ -14,7 +14,7 @@ import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListStyle
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.setRegularPlural
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -62,7 +62,7 @@ class AnimeListGridRvAdapter(private val context: Context,
             holder.animeRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
                 "?"
             } else {
-                mediaList.score?.removeTrailingZero()
+                mediaList.score?.roundToOneDecimal()
             }
         }
 

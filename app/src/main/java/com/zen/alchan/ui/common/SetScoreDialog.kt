@@ -11,12 +11,13 @@ import com.google.gson.Gson
 import com.zen.alchan.R
 import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.dialog_set_score.*
 import kotlinx.android.synthetic.main.dialog_set_score.view.*
 import type.ScoreFormat
+import java.math.BigDecimal
 
 class SetScoreDialog : DialogFragment() {
 
@@ -107,7 +108,7 @@ class SetScoreDialog : DialogFragment() {
             }
             ScoreFormat.POINT_10_DECIMAL -> {
                 dialogView.scoreDecimalLayout.visibility = View.VISIBLE
-                dialogView.setScoreDecimalField.setText(if (currentScore == null || currentScore == 0.0) "" else currentScore?.removeTrailingZero())
+                dialogView.setScoreDecimalField.setText(if (currentScore == null || currentScore == 0.0) "" else currentScore?.roundToOneDecimal())
 
                 if (!advancedScoring.isNullOrEmpty()) {
                     dialogView.scoreDecimalAdvancedScoringLayout.visibility = View.VISIBLE
@@ -176,7 +177,7 @@ class SetScoreDialog : DialogFragment() {
                     } else {
                         0.0
                     }
-                    dialogView.setScore100Field.setText(currentScore?.removeTrailingZero())
+                    dialogView.setScore100Field.setText(BigDecimal(currentScore.toString()).setScale(1, BigDecimal.ROUND_HALF_UP).toDouble().roundToOneDecimal())
                 } else if (scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
                     currentAdvancedScores!![index] = if (newScore > 10) {
                         10.0
@@ -196,7 +197,7 @@ class SetScoreDialog : DialogFragment() {
                     } else {
                         0.0
                     }
-                    dialogView.setScoreDecimalField.setText(currentScore?.removeTrailingZero())
+                    dialogView.setScoreDecimalField.setText(BigDecimal(currentScore.toString()).setScale(1, BigDecimal.ROUND_HALF_UP).toDouble().roundToOneDecimal())
                 }
             }
         })

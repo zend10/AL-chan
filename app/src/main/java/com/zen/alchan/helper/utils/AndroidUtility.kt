@@ -245,10 +245,10 @@ object AndroidUtility {
             var aboutString = aboutText.replace(spoilerRegex, "SPOILER_CONTENT")
 
             // store images, plain urls, unicode into list
-            // val youtubeIds = youtubeIdRegex.findAll(aboutText).toList()
-            val imageUrls = imageUrlRegex.findAll(aboutText).toList()
-            val rogueUrls = rogueUrlRegex.findAll(aboutText).toList()
-            val unicodeText = unicodeRegex.findAll(aboutText).toList()
+            // val youtubeIds = youtubeIdRegex.findAll(aboutString).toList()
+            val imageUrls = imageUrlRegex.findAll(aboutString).toList()
+            val rogueUrls = rogueUrlRegex.findAll(aboutString).toList()
+            val unicodeText = unicodeRegex.findAll(aboutString).toList()
 
             // replace youtube, webm, image, plain url, unicode all at once because they won't overlap with other markdown
             aboutString = aboutString

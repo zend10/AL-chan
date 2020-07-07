@@ -2,7 +2,6 @@ package com.zen.alchan.ui.profile.stats
 
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,22 +18,18 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.StatusDistributionItem
-import com.zen.alchan.helper.removeTrailingZero
 import com.zen.alchan.helper.roundToTwoDecimal
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.browse.media.stats.MediaStatsFragment
 import com.zen.alchan.ui.browse.media.stats.MediaStatsStatusRvAdapter
 import com.zen.alchan.ui.browse.user.UserFragment
 import com.zen.alchan.ui.profile.stats.details.StatsDetailActivity
-import kotlinx.android.synthetic.main.dialog_set_progress.*
 import kotlinx.android.synthetic.main.fragment_stats.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
-import type.ScoreFormat
 import kotlin.math.round
 
 /**

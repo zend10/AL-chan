@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.zen.alchan.R
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_friends_media_list.view.*
 import type.MediaListStatus
 import type.MediaType
 import type.ScoreFormat
-import kotlin.math.max
 
 class FriendsMediaListRvAdapter(private val context: Context,
                                 private val list: List<MediaSocialQuery.MediaList?>,
@@ -56,7 +55,7 @@ class FriendsMediaListRvAdapter(private val context: Context,
                 ScoreFormat.POINT_5 -> {
                     holder.scoreIcon.visibility = View.VISIBLE
                     GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.scoreIcon)
-                    holder.scoreText.text = item.score.removeTrailingZero()
+                    holder.scoreText.text = item.score.roundToOneDecimal()
                 }
                 else -> {
                     holder.scoreIcon.visibility = View.INVISIBLE
@@ -64,7 +63,7 @@ class FriendsMediaListRvAdapter(private val context: Context,
                         ScoreFormat.POINT_100 -> "100"
                         else -> "10"
                     }
-                    holder.scoreText.text = "${item.score.removeTrailingZero()}/${maxScore}"
+                    holder.scoreText.text = "${item.score.roundToOneDecimal()}/${maxScore}"
                 }
             }
         } else {

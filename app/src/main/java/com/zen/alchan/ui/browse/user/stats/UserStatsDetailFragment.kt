@@ -19,7 +19,7 @@ import com.zen.alchan.helper.enums.CountryCode
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -168,7 +168,7 @@ class UserStatsDetailFragment : BaseFragment() {
                                 meanScore = item?.meanScore,
                                 minutesWatched = item?.minutesWatched,
                                 mediaIds = item?.mediaIds,
-                                label = item?.meanScore?.removeTrailingZero()
+                                label = item?.meanScore?.roundToOneDecimal()
                             ))
                         }
                     } else {
@@ -179,7 +179,7 @@ class UserStatsDetailFragment : BaseFragment() {
                                 meanScore = item?.meanScore,
                                 chaptersRead = item?.chaptersRead,
                                 mediaIds = item?.mediaIds,
-                                label = item?.meanScore?.removeTrailingZero()
+                                label = item?.meanScore?.roundToOneDecimal()
                             ))
                         }
                     }

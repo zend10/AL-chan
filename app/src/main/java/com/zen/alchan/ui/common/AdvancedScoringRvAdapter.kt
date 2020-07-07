@@ -7,8 +7,10 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
+import com.zen.alchan.helper.trimTrailingZero
 import kotlinx.android.synthetic.main.list_advanced_scoring_input.view.*
+import java.math.BigDecimal
 
 class AdvancedScoringRvAdapter(private val list: List<AdvancedScoresItem>,
                                private val listener: AdvancedScoringListener?,
@@ -27,7 +29,7 @@ class AdvancedScoringRvAdapter(private val list: List<AdvancedScoresItem>,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.criteriaLabel.text = item.criteria
-        holder.criteriaScoreField.setText(item.score.removeTrailingZero())
+        holder.criteriaScoreField.setText(item.score.trimTrailingZero())
         if (isClickable == true) {
             holder.criteriaScoreField.addTextChangedListener {
                 try {

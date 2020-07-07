@@ -17,6 +17,7 @@ import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,7 +30,16 @@ fun Activity.changeStatusBarColor(color: Int) {
     window.statusBarColor = color
 }
 
-fun Double.removeTrailingZero(): String {
+fun Double.trimTrailingZero(): String {
+    val bigDecimal = BigDecimal(this.toString()).stripTrailingZeros().toPlainString()
+    return if (bigDecimal == "0.0") {
+        "0"
+    } else {
+        bigDecimal
+    }
+}
+
+fun Double.roundToOneDecimal(): String {
     val format = DecimalFormat("#.#")
     return format.format(this)
 }

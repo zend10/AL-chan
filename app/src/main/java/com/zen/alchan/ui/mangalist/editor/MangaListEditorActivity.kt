@@ -24,7 +24,7 @@ import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.pojo.CustomListsItem
-import com.zen.alchan.helper.removeTrailingZero
+import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.toStringDateFormat
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -345,7 +345,7 @@ class MangaListEditorActivity : BaseActivity() {
         } else {
             scoreText.visibility = View.VISIBLE
             scoreSmileyIcon.visibility = View.GONE
-            scoreText.text = viewModel.selectedScore?.removeTrailingZero() ?: "0"
+            scoreText.text = viewModel.selectedScore?.roundToOneDecimal() ?: "0"
         }
 
         scoreSmileyIcon.setOnClickListener {
@@ -619,7 +619,7 @@ class MangaListEditorActivity : BaseActivity() {
                 if (viewModel.scoreFormat == ScoreFormat.POINT_3) {
                     GlideApp.with(this@MangaListEditorActivity).load(AndroidUtility.getSmileyFromScore(newScore)).into(scoreSmileyIcon)
                 } else {
-                    scoreText.text = newScore.removeTrailingZero()
+                    scoreText.text = newScore.roundToOneDecimal()
                 }
             }
         })
