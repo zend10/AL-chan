@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -136,15 +137,18 @@ class StatsFragment : BaseFragment() {
                 animeStatusDistributionList.add(StatusDistributionItem(status.name, count.toInt(), Constant.STATUS_COLOR_LIST[animeStatusDistributionList.size]))
             }
 
+            val pieDataSet = PieDataSet(pieEntries, "Status Distribution")
+            pieDataSet.colors = Constant.STATUS_COLOR_LIST
+
             if (!viewModel.showStatsAutomatically) {
                 animeStatsStatusShowButton.visibility = View.VISIBLE
                 animeStatsStatusChartLayout.visibility = View.GONE
 
                 animeStatsStatusShowButton.setOnClickListener {
-                    openPieChartDialog(pieEntries)
+                    openPieChartDialog(pieDataSet)
                 }
             } else {
-                showAnimeStatsStatusChart(pieEntries)
+                showAnimeStatsStatusChart(pieDataSet)
             }
 
             animeStatsStatusRecyclerView.adapter = MediaStatsStatusRvAdapter(activity!!, animeStatusDistributionList)
@@ -165,15 +169,18 @@ class StatsFragment : BaseFragment() {
                 mangaStatusDistributionList.add(StatusDistributionItem(status.name, count.toInt(), Constant.STATUS_COLOR_LIST[mangaStatusDistributionList.size]))
             }
 
+            val pieDataSet = PieDataSet(pieEntries, "Status Distribution")
+            pieDataSet.colors = Constant.STATUS_COLOR_LIST
+
             if (!viewModel.showStatsAutomatically) {
                 mangaStatsStatusShowButton.visibility = View.VISIBLE
                 mangaStatsStatusChartLayout.visibility = View.GONE
 
                 mangaStatsStatusShowButton.setOnClickListener {
-                    openPieChartDialog(pieEntries)
+                    openPieChartDialog(pieDataSet)
                 }
             } else {
-                showMangaStatsStatusChart(pieEntries)
+                showMangaStatsStatusChart(pieDataSet)
             }
 
             mangaStatsStatusRecyclerView.adapter = MediaStatsStatusRvAdapter(activity!!, mangaStatusDistributionList)
@@ -182,14 +189,11 @@ class StatsFragment : BaseFragment() {
         }
     }
 
-    private fun showAnimeStatsStatusChart(pieEntries: List<PieEntry>) {
+    private fun showAnimeStatsStatusChart(pieDataSet: PieDataSet) {
         animeStatsStatusShowButton.visibility = View.GONE
         animeStatsStatusChartLayout.visibility = View.VISIBLE
 
         try {
-            val pieDataSet = PieDataSet(pieEntries, "Status Distribution")
-            pieDataSet.colors = Constant.STATUS_COLOR_LIST
-
             val pieData = PieData(pieDataSet)
             pieData.setDrawValues(false)
 
@@ -207,14 +211,11 @@ class StatsFragment : BaseFragment() {
         }
     }
 
-    private fun showMangaStatsStatusChart(pieEntries: List<PieEntry>) {
+    private fun showMangaStatsStatusChart(pieDataSet: PieDataSet) {
         mangaStatsStatusShowButton.visibility = View.GONE
         mangaStatsStatusChartLayout.visibility = View.VISIBLE
 
         try {
-            val pieDataSet = PieDataSet(pieEntries, "Status Distribution")
-            pieDataSet.colors = Constant.STATUS_COLOR_LIST
-
             val pieData = PieData(pieDataSet)
             pieData.setDrawValues(false)
 
@@ -232,10 +233,10 @@ class StatsFragment : BaseFragment() {
         }
     }
 
-    private fun openPieChartDialog(pieEntries: List<PieEntry>) {
+    private fun openPieChartDialog(pieDataSet: PieDataSet) {
         val dialog = ChartDialog()
         val bundle = Bundle()
-        bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieEntries))
+        bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieDataSet))
         dialog.arguments = bundle
         dialog.show(childFragmentManager, null)
     }
@@ -271,15 +272,18 @@ class StatsFragment : BaseFragment() {
                 }
             }
 
+            val barDataSet = BarDataSet(barEntries, "Score Distribution")
+            barDataSet.colors = Constant.SCORE_COLOR_LIST
+
             if (!viewModel.showStatsAutomatically) {
                 animeStatsScoreShowButton.visibility = View.VISIBLE
                 animeStatsScoreChartLayout.visibility = View.GONE
 
                 animeStatsScoreShowButton.setOnClickListener {
-                    openBarChartDialog(barEntries)
+                    openBarChartDialog(barDataSet)
                 }
             } else {
-                showAnimeStatsScoreChart(valueFormatter, barEntries)
+                showAnimeStatsScoreChart(valueFormatter, barDataSet)
             }
         } else {
             animeStatsScoreLayout.visibility = View.GONE
@@ -307,29 +311,29 @@ class StatsFragment : BaseFragment() {
                 }
             }
 
+            val barDataSet = BarDataSet(barEntries, "Score Distribution")
+            barDataSet.colors = Constant.SCORE_COLOR_LIST
+
             if (!viewModel.showStatsAutomatically) {
                 mangaStatsScoreShowButton.visibility = View.VISIBLE
                 mangaStatsScoreChartLayout.visibility = View.GONE
 
                 mangaStatsScoreShowButton.setOnClickListener {
-                    openBarChartDialog(barEntries)
+                    openBarChartDialog(barDataSet)
                 }
             } else {
-                showMangaStatsScoreChart(valueFormatter, barEntries)
+                showMangaStatsScoreChart(valueFormatter, barDataSet)
             }
         } else {
             mangaStatsScoreLayout.visibility = View.GONE
         }
     }
 
-    private fun showAnimeStatsScoreChart(valueFormatter: ValueFormatter, barEntries: List<BarEntry>) {
+    private fun showAnimeStatsScoreChart(valueFormatter: ValueFormatter, barDataSet: BarDataSet) {
         animeStatsScoreShowButton.visibility = View.GONE
         animeStatsScoreChartLayout.visibility = View.VISIBLE
 
         try {
-            val barDataSet = BarDataSet(barEntries, "Score Distribution")
-            barDataSet.colors = Constant.SCORE_COLOR_LIST
-
             val barData = BarData(barDataSet)
             barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
             barData.barWidth = 3F
@@ -350,7 +354,7 @@ class StatsFragment : BaseFragment() {
             animeStatsScoreBarChart.xAxis.apply {
                 setDrawGridLines(false)
                 position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(barEntries.size, true)
+                setLabelCount(barDataSet.entryCount, true)
                 textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
             }
 
@@ -366,14 +370,11 @@ class StatsFragment : BaseFragment() {
         }
     }
 
-    private fun showMangaStatsScoreChart(valueFormatter: ValueFormatter, barEntries: List<BarEntry>) {
+    private fun showMangaStatsScoreChart(valueFormatter: ValueFormatter, barDataSet: BarDataSet) {
         mangaStatsScoreShowButton.visibility = View.GONE
         mangaStatsScoreChartLayout.visibility = View.VISIBLE
 
         try {
-            val barDataSet = BarDataSet(barEntries, "Score Distribution")
-            barDataSet.colors = Constant.SCORE_COLOR_LIST
-
             val barData = BarData(barDataSet)
             barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
             barData.barWidth = 3F
@@ -394,7 +395,7 @@ class StatsFragment : BaseFragment() {
             mangaStatsScoreBarChart.xAxis.apply {
                 setDrawGridLines(false)
                 position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(barEntries.size, true)
+                setLabelCount(barDataSet.entryCount, true)
                 textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
             }
 
@@ -410,10 +411,10 @@ class StatsFragment : BaseFragment() {
         }
     }
 
-    private fun openBarChartDialog(barEntries: List<BarEntry>) {
+    private fun openBarChartDialog(barDataSet: BarDataSet) {
         val dialog = ChartDialog()
         val bundle = Bundle()
-        bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barEntries))
+        bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barDataSet))
         dialog.arguments = bundle
         dialog.show(childFragmentManager, null)
     }

@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.browse.user.stats
 
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserStatisticRepository
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
@@ -8,7 +10,13 @@ import com.zen.alchan.helper.replaceUnderscore
 import type.MediaType
 import type.UserStatisticsSort
 
-class UserStatsDetailViewModel(private val otherUserStatisticRepository: OtherUserStatisticRepository) : ViewModel() {
+class UserStatsDetailViewModel(private val otherUserStatisticRepository: OtherUserStatisticRepository,
+                               private val appSettingsRepository: AppSettingsRepository,
+                               val gson: Gson
+) : ViewModel() {
+
+    val showStatsAutomatically: Boolean
+        get() = appSettingsRepository.appSettings.showStatsAutomatically != false
 
     var otherUserId: Int? = null
     var username: String? = null

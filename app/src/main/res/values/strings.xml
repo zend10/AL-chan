@@ -424,4 +424,5 @@
     <string name="these_features_are_not_suitable_for_devices_with_limited_memory_it_is_recommended_to_uncheck_all_for_better_performance_and_stability">These features are not suitable for devices with limited memory. It is recommended to uncheck all for better performance and stability. Sorry for the inconvenience.</string>
     <string name="social_feature_is_turned_off_however_if_you_want_to_use_it_you_can_enable_social_feature_by_n_ngo_to_profile_settings_app_settings_toggle_on_enable_social_feature"><![CDATA[Social feature is turned off. If you want to use it, you can enable Social feature by:\n\nGo to Profile > Settings > App Settings > Toggle on Enable Social feature]]></string>
     <string name="click_to_view_bio">Click to view Bio</string>
+    <string name="show_chart">Show Chart</string>
 </resources>

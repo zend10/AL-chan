@@ -23,6 +23,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.common.ChartDialog
 import kotlinx.android.synthetic.main.activity_stats_detail.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -586,6 +587,7 @@ class StatsDetailActivity : BaseActivity() {
         statsPieChart.visibility = View.GONE
         statsBarChart.visibility = View.GONE
         statsLineChart.visibility = View.GONE
+        detailStatsShowButton.visibility = View.GONE
 
         when (viewModel.selectedCategory) {
             StatsCategory.VOICE_ACTOR -> {
@@ -695,21 +697,39 @@ class StatsDetailActivity : BaseActivity() {
         statsPieChart.visibility = View.VISIBLE
         statsBarChart.visibility = View.GONE
         statsLineChart.visibility = View.GONE
+        detailStatsShowButton.visibility = View.GONE
 
         statsPieChart.clear()
         statsPieChart.invalidate()
 
-        val pieData = PieData(pieDataSet)
-        pieData.setDrawValues(false)
+        if (!viewModel.showStatsAutomatically) {
+            statsPieChart.visibility = View.GONE
+            detailStatsShowButton.visibility = View.VISIBLE
 
-        statsPieChart.apply {
-            setHoleColor(ContextCompat.getColor(this@StatsDetailActivity, android.R.color.transparent))
-            setDrawEntryLabels(false)
-            setTouchEnabled(false)
-            description.isEnabled = false
-            legend.isEnabled = false
-            data = pieData
-            invalidate()
+            detailStatsShowButton.setOnClickListener {
+                val dialog = ChartDialog()
+                val bundle = Bundle()
+                bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieDataSet))
+                dialog.arguments = bundle
+                dialog.show(supportFragmentManager, null)
+            }
+        } else {
+            try {
+                val pieData = PieData(pieDataSet)
+                pieData.setDrawValues(false)
+
+                statsPieChart.apply {
+                    setHoleColor(ContextCompat.getColor(this@StatsDetailActivity, android.R.color.transparent))
+                    setDrawEntryLabels(false)
+                    setTouchEnabled(false)
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    data = pieData
+                    invalidate()
+                }
+            } catch (e: Exception) {
+                DialogUtility.showToast(this, e.localizedMessage)
+            }
         }
     }
 
@@ -717,6 +737,7 @@ class StatsDetailActivity : BaseActivity() {
         statsPieChart.visibility = View.GONE
         statsBarChart.visibility = View.VISIBLE
         statsLineChart.visibility = View.GONE
+        detailStatsShowButton.visibility = View.GONE
 
         statsBarChart.data?.clearValues()
         statsBarChart.xAxis.valueFormatter = null
@@ -724,107 +745,143 @@ class StatsDetailActivity : BaseActivity() {
         statsBarChart.clear()
         statsBarChart.invalidate()
 
-        val newValueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return value.toInt().toString()
+        if (!viewModel.showStatsAutomatically) {
+            statsBarChart.visibility = View.GONE
+            detailStatsShowButton.visibility = View.VISIBLE
+
+            detailStatsShowButton.setOnClickListener {
+                val dialog = ChartDialog()
+                val bundle = Bundle()
+                bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barDataSet))
+                if (!xAxisLabel.isNullOrEmpty()) bundle.putStringArrayList(ChartDialog.XAXIS_LABEL, ArrayList(xAxisLabel))
+                dialog.arguments = bundle
+                dialog.show(supportFragmentManager, null)
             }
-        }
-
-        val barData = BarData(barDataSet)
-        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeContentColor))
-        barData.barWidth = 3F
-        barData.setValueFormatter(newValueFormatter)
-
-        statsBarChart.axisLeft.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
-
-        statsBarChart.axisRight.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
-
-        statsBarChart.xAxis.apply {
-            setDrawGridLines(false)
-            position = XAxis.XAxisPosition.BOTTOM
-            setLabelCount(barDataSet.entryCount, true)
-            textColor = AndroidUtility.getResValueFromRefAttr(this@StatsDetailActivity, R.attr.themeContentColor)
-
-            if (!xAxisLabel.isNullOrEmpty()) {
-                valueFormatter = object : ValueFormatter() {
+        } else {
+            try {
+                val newValueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        val index = round(value / 10.0) - 1
-                        if (index < xAxisLabel.size) {
-                            return xAxisLabel[index.toInt()]
-                        }
-                        return ""
+                        return value.toInt().toString()
                     }
                 }
-            }
-        }
 
-        statsBarChart.apply {
-            setTouchEnabled(false)
-            description.isEnabled = false
-            legend.isEnabled = false
-            data = barData
-            invalidate()
+                val barData = BarData(barDataSet)
+                barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeContentColor))
+                barData.barWidth = 3F
+                barData.setValueFormatter(newValueFormatter)
+
+                statsBarChart.axisLeft.apply {
+                    setDrawGridLines(false)
+                    setDrawAxisLine(false)
+                    setDrawLabels(false)
+                }
+
+                statsBarChart.axisRight.apply {
+                    setDrawGridLines(false)
+                    setDrawAxisLine(false)
+                    setDrawLabels(false)
+                }
+
+                statsBarChart.xAxis.apply {
+                    setDrawGridLines(false)
+                    position = XAxis.XAxisPosition.BOTTOM
+                    setLabelCount(barDataSet.entryCount, true)
+                    textColor = AndroidUtility.getResValueFromRefAttr(this@StatsDetailActivity, R.attr.themeContentColor)
+
+                    if (!xAxisLabel.isNullOrEmpty()) {
+                        valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                val index = round(value / 10.0) - 1
+                                if (index < xAxisLabel.size) {
+                                    return xAxisLabel[index.toInt()]
+                                }
+                                return ""
+                            }
+                        }
+                    }
+                }
+
+                statsBarChart.apply {
+                    setTouchEnabled(false)
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    data = barData
+                    invalidate()
+                }
+            } catch (e: Exception) {
+                DialogUtility.showToast(this, e.localizedMessage)
+            }
         }
     }
 
-    private fun setupLineChart(lineDataSet: LineDataSet) {
+    private fun setupLineChart(lineDataSet: LineDataSet, lineEntries: List<Entry>) {
         statsPieChart.visibility = View.GONE
         statsBarChart.visibility = View.GONE
         statsLineChart.visibility = View.VISIBLE
+        detailStatsShowButton.visibility = View.GONE
 
         statsLineChart.data?.clearValues()
         statsLineChart.notifyDataSetChanged()
         statsLineChart.clear()
         statsLineChart.invalidate()
 
-        val newValueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return value.toInt().toString()
+        if (!viewModel.showStatsAutomatically) {
+            statsLineChart.visibility = View.GONE
+            detailStatsShowButton.visibility = View.VISIBLE
+
+            detailStatsShowButton.setOnClickListener {
+                val dialog = ChartDialog()
+                val bundle = Bundle()
+                bundle.putString(ChartDialog.LINE_ENTRIES, viewModel.gson.toJson(lineEntries))
+                dialog.arguments = bundle
+                dialog.show(supportFragmentManager, null)
             }
-        }
-
-        val lineData = LineData(lineDataSet)
-        lineData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeContentColor))
-        lineData.setValueFormatter(newValueFormatter)
-
-        statsLineChart.axisLeft.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
-
-        statsLineChart.axisRight.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
-
-        statsLineChart.xAxis.apply {
-            setDrawGridLines(false)
-            position = XAxis.XAxisPosition.BOTTOM
-            granularity = 1F
-            textColor = AndroidUtility.getResValueFromRefAttr(this@StatsDetailActivity, R.attr.themeContentColor)
-
-            valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return value.toInt().toString()
+        } else {
+            try {
+                val newValueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
                 }
-            }
-        }
 
-        statsLineChart.apply {
-            description.isEnabled = false
-            legend.isEnabled = false
-            data = lineData
-            invalidate()
+                val lineData = LineData(lineDataSet)
+                lineData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeContentColor))
+                lineData.setValueFormatter(newValueFormatter)
+
+                statsLineChart.axisLeft.apply {
+                    setDrawGridLines(false)
+                    setDrawAxisLine(false)
+                    setDrawLabels(false)
+                }
+
+                statsLineChart.axisRight.apply {
+                    setDrawGridLines(false)
+                    setDrawAxisLine(false)
+                    setDrawLabels(false)
+                }
+
+                statsLineChart.xAxis.apply {
+                    setDrawGridLines(false)
+                    position = XAxis.XAxisPosition.BOTTOM
+                    granularity = 1F
+                    textColor = AndroidUtility.getResValueFromRefAttr(this@StatsDetailActivity, R.attr.themeContentColor)
+
+                    valueFormatter = object : ValueFormatter() {
+                        override fun getFormattedValue(value: Float): String {
+                            return value.toInt().toString()
+                        }
+                    }
+                }
+
+                statsLineChart.apply {
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    data = lineData
+                    invalidate()
+                }
+            } catch (e: Exception) {
+                DialogUtility.showToast(this, e.localizedMessage)
+            }
         }
     }
 
@@ -1006,7 +1063,7 @@ class StatsDetailActivity : BaseActivity() {
         lineDataSet.setDrawFilled(true)
         lineDataSet.fillDrawable = ContextCompat.getDrawable(this, R.drawable.line_chart_fill)
 
-        setupLineChart(lineDataSet)
+        setupLineChart(lineDataSet, lineEntries)
 
         statsRecyclerView.adapter = assignAdapter()
     }
@@ -1026,7 +1083,7 @@ class StatsDetailActivity : BaseActivity() {
         lineDataSet.setDrawFilled(true)
         lineDataSet.fillDrawable = ContextCompat.getDrawable(this, R.drawable.line_chart_fill)
 
-        setupLineChart(lineDataSet)
+        setupLineChart(lineDataSet, lineEntries)
 
         statsRecyclerView.adapter = assignAdapter()
     }

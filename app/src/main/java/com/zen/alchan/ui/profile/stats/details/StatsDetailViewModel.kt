@@ -2,6 +2,8 @@ package com.zen.alchan.ui.profile.stats.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.repository.UserStatisticRepository
@@ -13,7 +15,13 @@ import type.MediaListStatus
 import type.MediaType
 import type.UserStatisticsSort
 
-class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRepository): ViewModel() {
+class StatsDetailViewModel(private val userStatisticRepository: UserStatisticRepository,
+                           private val appSettingsRepository: AppSettingsRepository,
+                           val gson: Gson
+): ViewModel() {
+
+    val showStatsAutomatically: Boolean
+        get() = appSettingsRepository.appSettings.showStatsAutomatically != false
 
     var selectedCategory: StatsCategory? = null
     var selectedMedia: MediaType? = null

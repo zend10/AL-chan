@@ -2,6 +2,7 @@ package com.zen.alchan
 
 import android.app.Application
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.network.ApolloHandler
@@ -77,7 +78,7 @@ import org.koin.dsl.module
 class ALchanApplication : Application() {
 
     private val appModules = module {
-        val gson = Gson()
+        val gson = GsonBuilder().serializeSpecialFloatingPointValues().create()
 
         single<LocalStorage> { LocalStorageImpl(this@ALchanApplication.applicationContext, Constant.SHARED_PREFERENCES_NAME, gson) }
         single<AppSettingsManager> { AppSettingsManagerImpl(get()) }
@@ -172,7 +173,7 @@ class ALchanApplication : Application() {
 
         // browse user
         viewModel { UserViewModel(get(), get(), get()) }
-        viewModel { UserStatsDetailViewModel(get()) }
+        viewModel { UserStatsDetailViewModel(get(), get(), gson) }
         viewModel { UserMediaListViewModel(get(), gson) }
 
         // browse activity
@@ -188,7 +189,7 @@ class ALchanApplication : Application() {
         viewModel { FavoritesViewModel(get(), get(), gson) }
         viewModel { ReorderFavoritesViewModel(get(), gson) }
         viewModel { StatsViewModel(get(), get(), get(), gson) }
-        viewModel { StatsDetailViewModel(get()) }
+        viewModel { StatsDetailViewModel(get(), get(), gson) }
         viewModel { UserReviewsViewModel(get(), get()) }
         viewModel { FollowsViewModel(get(), get()) }
         viewModel { AppSettingsViewModel(get()) }

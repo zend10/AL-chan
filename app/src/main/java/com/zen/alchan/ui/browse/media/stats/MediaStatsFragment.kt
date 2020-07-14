@@ -118,6 +118,9 @@ class MediaStatsFragment : BaseFragment() {
             statusDistributionList.add(StatusDistributionItem(it.status?.name!!, it.amount, Constant.STATUS_COLOR_LIST[statusDistributionList.size]))
         }
 
+        val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
+        pieDataSet.colors = Constant.STATUS_COLOR_LIST
+
         if (!viewModel.showStatsAutomatically) {
             mediaStatsStatusPieChart.visibility = View.GONE
             mediaStatsStatusShowButton.visibility = View.VISIBLE
@@ -125,15 +128,12 @@ class MediaStatsFragment : BaseFragment() {
             mediaStatsStatusShowButton.setOnClickListener {
                 val dialog = ChartDialog()
                 val bundle = Bundle()
-                bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieEntries))
+                bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieDataSet))
                 dialog.arguments = bundle
                 dialog.show(childFragmentManager, null)
             }
         } else {
             try {
-                val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
-                pieDataSet.colors = Constant.STATUS_COLOR_LIST
-
                 val pieData = PieData(pieDataSet)
                 pieData.setDrawValues(false)
 
@@ -169,6 +169,9 @@ class MediaStatsFragment : BaseFragment() {
             barEntries.add(barEntry)
         }
 
+        val barDataSet = BarDataSet(barEntries, "Score Distribution")
+        barDataSet.colors = Constant.SCORE_COLOR_LIST
+
         if (!viewModel.showStatsAutomatically) {
             mediaStatsScoreBarChart.visibility = View.GONE
             mediaStatsScoreShowButton.visibility = View.VISIBLE
@@ -176,15 +179,12 @@ class MediaStatsFragment : BaseFragment() {
             mediaStatsScoreShowButton.setOnClickListener {
                 val dialog = ChartDialog()
                 val bundle = Bundle()
-                bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barEntries))
+                bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barDataSet))
                 dialog.arguments = bundle
                 dialog.show(childFragmentManager, null)
             }
         } else {
             try {
-                val barDataSet = BarDataSet(barEntries, "Score Distribution")
-                barDataSet.colors = Constant.SCORE_COLOR_LIST
-
                 val barData = BarData(barDataSet)
                 barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
                 barData.barWidth = 3F

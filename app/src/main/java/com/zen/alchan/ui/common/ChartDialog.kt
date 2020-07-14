@@ -17,18 +17,24 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.dialog_chart.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.github.mikephil.charting.data.BarDataSet as BarDataSet1
+import kotlin.math.round
 
 class ChartDialog : DialogFragment() {
 
     private val viewModel by viewModel<ChartViewModel>()
 
-    private val pieEntries = ArrayList<PieEntry>()
-    private val barEntries = ArrayList<BarEntry>()
+    private lateinit var pieDataSet: PieDataSet
+    private lateinit var barDataSet: BarDataSet
+    private lateinit var lineEntries: List<Entry>
+
+    private var xAxisLabel = ArrayList<String>()
 
     companion object {
         const val PIE_ENTRIES = "pieEntries"
         const val BAR_ENTRIES = "barEntries"
+        const val LINE_ENTRIES = "lineEntries"
+
+        const val XAXIS_LABEL = "xAxisLabel"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -36,18 +42,23 @@ class ChartDialog : DialogFragment() {
         val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_chart, null, false)
 
         if (arguments?.getString(PIE_ENTRIES) != null) {
-            pieEntries.addAll(viewModel.gson.fromJson(arguments?.getString(PIE_ENTRIES), genericType<List<PieEntry>>()))
+            pieDataSet = viewModel.gson.fromJson(arguments?.getString(PIE_ENTRIES), PieDataSet::class.java)
         }
 
         if (arguments?.getString(BAR_ENTRIES) != null) {
-            barEntries.addAll(viewModel.gson.fromJson(arguments?.getString(BAR_ENTRIES), genericType<List<BarEntry>>()))
+            barDataSet = viewModel.gson.fromJson(arguments?.getString(BAR_ENTRIES), BarDataSet::class.java)
         }
 
-        if (!pieEntries.isNullOrEmpty()) {
-            try {
-                val pieDataSet = PieDataSet(pieEntries, "Pie Chart")
-                pieDataSet.colors = Constant.STATUS_COLOR_LIST
+        if (arguments?.getString(LINE_ENTRIES) != null) {
+            lineEntries = viewModel.gson.fromJson(arguments?.getString(LINE_ENTRIES), genericType<List<Entry>>())
+        }
 
+        if (arguments?.getStringArrayList(XAXIS_LABEL) != null) {
+            xAxisLabel = ArrayList(arguments?.getStringArrayList(XAXIS_LABEL)?.filterNotNull() ?: listOf())
+        }
+
+        if (this::pieDataSet.isInitialized) {
+            try {
                 val pieData = PieData(pieDataSet)
                 pieData.setDrawValues(false)
 
@@ -68,21 +79,18 @@ class ChartDialog : DialogFragment() {
             }
         }
 
-        if (!barEntries.isNullOrEmpty()) {
+        if (this::barDataSet.isInitialized) {
             try {
-                val valueFormatter = object : ValueFormatter() {
+                val defaultValueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return value.toInt().toString()
                     }
                 }
 
-                val barDataSet = BarDataSet1(barEntries, "Bar Chart")
-                barDataSet.colors = Constant.SCORE_COLOR_LIST
-
                 val barData = BarData(barDataSet)
                 barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
                 barData.barWidth = 3F
-                barData.setValueFormatter(valueFormatter)
+                barData.setValueFormatter(defaultValueFormatter)
 
                 dialogView.statsBarChart.axisLeft.apply {
                     setDrawGridLines(false)
@@ -99,8 +107,20 @@ class ChartDialog : DialogFragment() {
                 dialogView.statsBarChart.xAxis.apply {
                     setDrawGridLines(false)
                     position = XAxis.XAxisPosition.BOTTOM
-                    setLabelCount(barEntries.size, true)
+                    setLabelCount(barDataSet.entryCount, true)
                     textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+
+                    if (!xAxisLabel.isNullOrEmpty()) {
+                        valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                val index = round(value / 10.0) - 1
+                                if (index < xAxisLabel.size) {
+                                    return xAxisLabel[index.toInt()]
+                                }
+                                return ""
+                            }
+                        }
+                    }
                 }
 
                 dialogView.statsBarChart.apply {
@@ -112,6 +132,62 @@ class ChartDialog : DialogFragment() {
                 }
 
                 dialogView.statsBarChart.visibility = View.VISIBLE
+            } catch (e: Exception) {
+                DialogUtility.showToast(activity, e.localizedMessage)
+                dismiss()
+            }
+        }
+
+        if (this::lineEntries.isInitialized) {
+            try {
+                val defaultValueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
+
+                val lineDataSet = LineDataSet(lineEntries, "Line Chart")
+                lineDataSet.color = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeSecondaryColor)
+                lineDataSet.setDrawFilled(true)
+                lineDataSet.fillDrawable = ContextCompat.getDrawable(activity!!, R.drawable.line_chart_fill)
+
+                val lineData = LineData(lineDataSet)
+                lineData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+                lineData.setValueFormatter(defaultValueFormatter)
+
+                dialogView.statsLineChart.axisLeft.apply {
+                    setDrawGridLines(false)
+                    setDrawAxisLine(false)
+                    setDrawLabels(false)
+                }
+
+                dialogView.statsLineChart.axisRight.apply {
+                    setDrawGridLines(false)
+                    setDrawAxisLine(false)
+                    setDrawLabels(false)
+                }
+
+                dialogView.statsLineChart.xAxis.apply {
+                    setDrawGridLines(false)
+                    position = XAxis.XAxisPosition.BOTTOM
+                    granularity = 1F
+                    textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+
+                    valueFormatter = object : ValueFormatter() {
+                        override fun getFormattedValue(value: Float): String {
+                            return value.toInt().toString()
+                        }
+                    }
+                }
+
+                dialogView.statsLineChart.apply {
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    data = lineData
+                    invalidate()
+                }
+
+                dialogView.statsLineChart.visibility = View.VISIBLE
             } catch (e: Exception) {
                 DialogUtility.showToast(activity, e.localizedMessage)
                 dismiss()

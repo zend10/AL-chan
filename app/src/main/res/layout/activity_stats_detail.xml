@@ -152,6 +152,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
+                        android:id="@+id/detailStatsShowButton"
+                        android:text="@string/show_chart"
+                        style="?themeButtonPrimary"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/statsChartLayout"
                         android:layout_marginTop="@dimen/marginNormal"
