@@ -2,10 +2,7 @@ package com.zen.alchan.ui.social
 
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.R
-import com.zen.alchan.data.repository.MediaRepository
-import com.zen.alchan.data.repository.OtherUserRepository
-import com.zen.alchan.data.repository.SocialRepository
-import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.repository.*
 import com.zen.alchan.data.response.User
 import com.zen.alchan.data.response.UserAvatar
 import com.zen.alchan.helper.pojo.ActivityItem
@@ -16,7 +13,8 @@ import type.LikeableType
 
 class SocialViewModel(private val mediaRepository: MediaRepository,
                       private val userRepository: UserRepository,
-                      private val socialRepository: SocialRepository
+                      private val socialRepository: SocialRepository,
+                      private val appSettingsRepository: AppSettingsRepository
 ) : ViewModel() {
 
     val textActivityText: String
@@ -78,6 +76,9 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
 
     val currentUserId: Int?
         get() = userRepository.currentUser?.id
+
+    val useLiteVersion: Boolean
+        get() = appSettingsRepository.appSettings.liteVersion == true
 
     fun initData() {
         if (!isInit) {

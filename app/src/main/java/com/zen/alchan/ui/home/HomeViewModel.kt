@@ -57,6 +57,9 @@ class HomeViewModel(private val userRepository: UserRepository,
     val whiteBackgroundAvatar
         get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
 
+    val showRecentReviews: Boolean
+        get() = appSettingsRepository.appSettings.showRecentReviews == true
+
     fun initData() {
         userRepository.getViewerData()
         mediaRepository.getTrendingAnime()
@@ -70,7 +73,9 @@ class HomeViewModel(private val userRepository: UserRepository,
             mediaRepository.getGenre()
         }
 
-        mediaRepository.getReviews(1, 10, null, listOf(ReviewSort.CREATED_AT_DESC), true)
+        if (showRecentReviews) {
+            mediaRepository.getReviews(1, 10, null, listOf(ReviewSort.CREATED_AT_DESC), true)
+        }
 
         // TODO: uncomment later after search by tag is implemented
 //        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {

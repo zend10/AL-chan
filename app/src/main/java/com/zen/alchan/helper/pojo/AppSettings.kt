@@ -7,5 +7,7 @@ class AppSettings(
     var appTheme: AppColorTheme? = AppColorTheme.YELLOW,
     var circularAvatar: Boolean? = true,
     var whiteBackgroundAvatar: Boolean? = true,
-    var voiceActorLanguage: StaffLanguage? = StaffLanguage.JAPANESE
+    var voiceActorLanguage: StaffLanguage? = StaffLanguage.JAPANESE,
+    var showRecentReviews: Boolean? = true,
+    var liteVersion: Boolean? = null
 )

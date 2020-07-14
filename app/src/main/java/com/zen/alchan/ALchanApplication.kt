@@ -127,7 +127,7 @@ class ALchanApplication : Application() {
         viewModel { LikesViewModel(gson) }
 
         // auth
-        viewModel { SplashViewModel(get(), get()) }
+        viewModel { SplashViewModel(get(), get(), get()) }
         viewModel { LoginViewModel(get()) }
 
         // main
@@ -197,7 +197,7 @@ class ALchanApplication : Application() {
         viewModel { NotificationViewModel(get()) }
 
         // social
-        viewModel { SocialViewModel(get(), get(), get()) }
+        viewModel { SocialViewModel(get(), get(), get(), get()) }
         viewModel { GlobalFeedViewModel(get(), get()) }
         viewModel { GlobalFeedFilterViewModel(get()) }
 

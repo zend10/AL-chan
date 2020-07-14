@@ -28,12 +28,19 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         StaffLanguage.HUNGARIAN.name
     )
 
-    fun setAppSettings(circularAvatar: Boolean = true, whiteBackgroundAvatar: Boolean = true) {
+    fun setAppSettings(
+        circularAvatar: Boolean = true,
+        whiteBackgroundAvatar: Boolean = true,
+        showRecentReviews: Boolean = true,
+        useLiteVersion: Boolean
+    ) {
         appSettingsRepository.setAppSettings(AppSettings(
             appTheme = selectedAppTheme,
             circularAvatar = circularAvatar,
             whiteBackgroundAvatar = whiteBackgroundAvatar,
-            voiceActorLanguage = selectedLanguage
+            voiceActorLanguage = selectedLanguage,
+            showRecentReviews = showRecentReviews,
+            liteVersion = useLiteVersion
         ))
     }
 }

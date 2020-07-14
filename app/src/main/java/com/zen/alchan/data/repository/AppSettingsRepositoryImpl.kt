@@ -35,6 +35,12 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
         _appColorThemeLiveData.postValue(appColorThemeResource)
     }
 
+    override fun setLiteVersion(useLiteVersion: Boolean) {
+        val newAppSetting = appSettings
+        newAppSetting.liteVersion = useLiteVersion
+        appSettingsManager.setAppSettings(newAppSetting)
+    }
+
     override fun clearStorage() {
         appSettingsManager.clearStorage()
     }

@@ -598,6 +598,7 @@
                 </RelativeLayout>
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/recentReviewsLabel"
                     android:text="@string/recent_reviews"
                     style="?themeRegularBoldFont"
                     android:layout_marginTop="@dimen/marginPage"

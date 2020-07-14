@@ -415,4 +415,8 @@
     <string name="title">Title</string>
     <string name="last_updated">Last Updated</string>
     <string name="last_added">Last Added</string>
+    <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
+    <string name="use_lite_version">Use Lite Version</string>
+    <string name="in_lite_version_you_can_t_use_social_feature_also_bio_and_stats_need_to_be_toggled_on_manually_each_time_you_want_to_view_them">In Lite Version, you can\'t use Social feature. Also, Bio and Stats need to be toggled on manually each time you want to view them. It is recommended to use Lite Version if your phone is low on memory.</string>
+    <string name="social_feature_is_not_available_on_lite_version_if_you_want_to_use_the_full_version_go_to_profile_settings_app_setting_switch_off_use_lite_version"><![CDATA[Social feature is not available on Lite Version. If you want to use the full version, go to Profile > Settings > App Setting > Switch off Use Lite Version]]></string>
 </resources>

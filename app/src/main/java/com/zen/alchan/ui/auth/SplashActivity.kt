@@ -10,6 +10,7 @@ import com.zen.alchan.BuildConfig
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.main.MainActivity
@@ -25,6 +26,10 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        if (viewModel.appSettings.liteVersion == null) {
+            viewModel.setLiteVersion(AndroidUtility.isLowOnMemory(this))
+        }
 
         setupObserver()
     }

@@ -58,6 +58,8 @@ class AppSettingsFragment : Fragment() {
             viewModel.selectedLanguage = viewModel.appSettings.voiceActorLanguage
             circularAvatarCheckBox.isChecked = viewModel.appSettings.circularAvatar == true
             whiteBackgroundAvatarCheckBox.isChecked = viewModel.appSettings.whiteBackgroundAvatar == true
+            showRecentReviewsCheckBox.isChecked = viewModel.appSettings.showRecentReviews == true
+            useLiteVersionCheckBox.isChecked = viewModel.appSettings.liteVersion == true
             viewModel.isInit = true
         }
 
@@ -68,7 +70,12 @@ class AppSettingsFragment : Fragment() {
                 R.string.are_you_sure_you_want_to_save_this_configuration,
                 R.string.save,
                 {
-                    viewModel.setAppSettings(circularAvatarCheckBox.isChecked, whiteBackgroundAvatarCheckBox.isChecked)
+                    viewModel.setAppSettings(
+                        circularAvatarCheckBox.isChecked,
+                        whiteBackgroundAvatarCheckBox.isChecked,
+                        showRecentReviewsCheckBox.isChecked,
+                        useLiteVersionCheckBox.isChecked
+                    )
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
                 },
@@ -91,7 +98,7 @@ class AppSettingsFragment : Fragment() {
                 R.string.this_will_reset_your_app_settings_to_default_configuration,
                 R.string.reset,
                 {
-                    viewModel.setAppSettings()
+                    viewModel.setAppSettings(useLiteVersion = AndroidUtility.isLowOnMemory(activity))
                     viewModel.isInit = false
                     initLayout()
                     activity?.recreate()

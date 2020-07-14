@@ -1,6 +1,7 @@
 package com.zen.alchan.helper.utils
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -384,5 +385,14 @@ object AndroidUtility {
         } catch (e: Exception) {
             textView.text = context.getString(R.string.failed_to_render)
         }
+    }
+
+    fun isLowOnMemory(context: Context?): Boolean {
+        val memoryInfo = ActivityManager.MemoryInfo()
+        val activityManager = context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        activityManager.getMemoryInfo(memoryInfo)
+
+        // 3000000000 is maximum threshold that I consider low
+        return memoryInfo.totalMem < 3000000000
     }
 }

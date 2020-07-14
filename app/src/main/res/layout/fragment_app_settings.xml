@@ -221,6 +221,73 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/show_recent_reviews_at_home"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/showRecentReviewsCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/use_lite_version"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/useLiteVersionCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/in_lite_version_you_can_t_use_social_feature_also_bio_and_stats_need_to_be_toggled_on_manually_each_time_you_want_to_view_them"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:visibility="invisible"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/resetDefaultButton"
                 style="?themeButtonBorderNegative"

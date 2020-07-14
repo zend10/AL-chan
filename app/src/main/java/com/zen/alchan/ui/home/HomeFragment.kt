@@ -68,8 +68,15 @@ class HomeFragment : Fragment() {
         trendingMangaAdapter = assignTrendingRvAdapter(viewModel.trendingMangaList, MediaType.MANGA)
         trendingMangaListRecyclerView.adapter = trendingMangaAdapter
 
-        recentReviewsAdapter = assignReviewsRvAdapter()
-        recentReviewsRecyclerView.adapter = recentReviewsAdapter
+        if (viewModel.showRecentReviews) {
+            recentReviewsAdapter = assignReviewsRvAdapter()
+            recentReviewsRecyclerView.adapter = recentReviewsAdapter
+            recentReviewsRecyclerView.visibility = View.VISIBLE
+            recentReviewsLabel.visibility = View.VISIBLE
+        } else {
+            recentReviewsRecyclerView.visibility = View.GONE
+            recentReviewsLabel.visibility = View.GONE
+        }
 
         setupObserver()
         initLayout()

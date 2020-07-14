@@ -12,5 +12,6 @@ interface AppSettingsRepository {
     val appSettings: AppSettings
 
     fun setAppSettings(appSettings: AppSettings)
+    fun setLiteVersion(useLiteVersion: Boolean)
     fun clearStorage()
 }
