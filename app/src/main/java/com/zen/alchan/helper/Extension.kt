@@ -19,6 +19,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -41,11 +42,13 @@ fun Double.trimTrailingZero(): String {
 
 fun Double.roundToOneDecimal(): String {
     val format = DecimalFormat("#.#")
+    format.decimalFormatSymbols = DecimalFormatSymbols.getInstance().also { it.decimalSeparator = '.' }
     return format.format(this)
 }
 
 fun Double.roundToTwoDecimal(): String {
     val format = DecimalFormat("#.##")
+    format.decimalFormatSymbols = DecimalFormatSymbols.getInstance().also { it.decimalSeparator = '.' }
     return format.format(this)
 }
 
