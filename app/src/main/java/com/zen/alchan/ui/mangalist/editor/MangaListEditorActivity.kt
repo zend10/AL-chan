@@ -615,6 +615,7 @@ class MangaListEditorActivity : BaseActivity() {
                 viewModel.selectedScore = newScore
                 newAdvancedScores?.forEachIndexed { index: Int, score: Double ->
                     viewModel.advancedScoresList[index].score = score
+                    viewModel.selectedAdvancedScores[index] = score
                 }
                 if (viewModel.scoreFormat == ScoreFormat.POINT_3) {
                     GlideApp.with(this@MangaListEditorActivity).load(AndroidUtility.getSmileyFromScore(newScore)).into(scoreSmileyIcon)

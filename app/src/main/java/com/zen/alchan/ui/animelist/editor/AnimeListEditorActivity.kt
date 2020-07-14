@@ -577,8 +577,10 @@ class AnimeListEditorActivity : BaseActivity() {
         setScoreDialog.setListener(object : SetScoreDialog.SetScoreListener {
             override fun passScore(newScore: Double, newAdvancedScores: List<Double>?) {
                 viewModel.selectedScore = newScore
+                
                 newAdvancedScores?.forEachIndexed { index: Int, score: Double ->
                     viewModel.advancedScoresList[index].score = score
+                    viewModel.selectedAdvancedScores[index] = score
                 }
                 if (viewModel.scoreFormat == ScoreFormat.POINT_3) {
                     GlideApp.with(this@AnimeListEditorActivity).load(AndroidUtility.getSmileyFromScore(newScore)).into(scoreSmileyIcon)
