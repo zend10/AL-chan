@@ -29,7 +29,7 @@ class StatsViewModel(private val userRepository: UserRepository,
     }
 
     val showStatsAutomatically: Boolean
-        get() = appSettingsRepository.appSettings.showStatsAutomatically == true
+        get() = appSettingsRepository.appSettings.showStatsAutomatically != false
 
     fun getStatistics() {
         if (otherUserId != null) {

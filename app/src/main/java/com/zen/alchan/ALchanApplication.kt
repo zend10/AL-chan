@@ -157,7 +157,7 @@ class ALchanApplication : Application() {
         viewModel { MediaOverviewViewModel(get()) }
         viewModel { MediaCharactersViewModel(get(), get()) }
         viewModel { MediaStaffsViewModel(get()) }
-        viewModel { MediaStatsViewModel(get()) }
+        viewModel { MediaStatsViewModel(get(), get(), gson) }
         viewModel { MediaReviewsViewModel(get()) }
         viewModel { MediaSocialViewModel(get()) }
 

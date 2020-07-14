@@ -78,7 +78,7 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
         get() = userRepository.currentUser?.id
 
     val enableSocial: Boolean
-        get() = appSettingsRepository.appSettings.showSocialTabAutomatically == true
+        get() = appSettingsRepository.appSettings.showSocialTabAutomatically != false
 
     fun initData() {
         if (!isInit) {

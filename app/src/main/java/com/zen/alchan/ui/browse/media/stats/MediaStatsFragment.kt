@@ -22,6 +22,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.common.ChartDialog
 import kotlinx.android.synthetic.main.fragment_media_stats.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -117,19 +118,39 @@ class MediaStatsFragment : BaseFragment() {
             statusDistributionList.add(StatusDistributionItem(it.status?.name!!, it.amount, Constant.STATUS_COLOR_LIST[statusDistributionList.size]))
         }
 
-        val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
-        pieDataSet.colors = Constant.STATUS_COLOR_LIST
+        if (!viewModel.showStatsAutomatically) {
+            mediaStatsStatusPieChart.visibility = View.GONE
+            mediaStatsStatusShowButton.visibility = View.VISIBLE
 
-        val pieData = PieData(pieDataSet)
-        pieData.setDrawValues(false)
+            mediaStatsStatusShowButton.setOnClickListener {
+                val dialog = ChartDialog()
+                val bundle = Bundle()
+                bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieEntries))
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager, null)
+            }
+        } else {
+            try {
+                val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
+                pieDataSet.colors = Constant.STATUS_COLOR_LIST
 
-        mediaStatsStatusPieChart.setHoleColor(ContextCompat.getColor(activity!!, android.R.color.transparent))
-        mediaStatsStatusPieChart.setDrawEntryLabels(false)
-        mediaStatsStatusPieChart.setTouchEnabled(false)
-        mediaStatsStatusPieChart.description.isEnabled = false
-        mediaStatsStatusPieChart.legend.isEnabled = false
-        mediaStatsStatusPieChart.data = pieData
-        mediaStatsStatusPieChart.invalidate()
+                val pieData = PieData(pieDataSet)
+                pieData.setDrawValues(false)
+
+                mediaStatsStatusPieChart.setHoleColor(ContextCompat.getColor(activity!!, android.R.color.transparent))
+                mediaStatsStatusPieChart.setDrawEntryLabels(false)
+                mediaStatsStatusPieChart.setTouchEnabled(false)
+                mediaStatsStatusPieChart.description.isEnabled = false
+                mediaStatsStatusPieChart.legend.isEnabled = false
+                mediaStatsStatusPieChart.data = pieData
+                mediaStatsStatusPieChart.invalidate()
+            } catch (e: Exception) {
+                DialogUtility.showToast(activity, e.localizedMessage)
+            }
+
+            mediaStatsStatusPieChart.visibility = View.VISIBLE
+            mediaStatsStatusShowButton.visibility = View.GONE
+        }
 
         mediaStatsStatusRecyclerView.adapter = MediaStatsStatusRvAdapter(activity!!, statusDistributionList)
     }
@@ -148,31 +169,51 @@ class MediaStatsFragment : BaseFragment() {
             barEntries.add(barEntry)
         }
 
-        val barDataSet = BarDataSet(barEntries, "Score Distribution")
-        barDataSet.colors = Constant.SCORE_COLOR_LIST
+        if (!viewModel.showStatsAutomatically) {
+            mediaStatsScoreBarChart.visibility = View.GONE
+            mediaStatsScoreShowButton.visibility = View.VISIBLE
 
-        val barData = BarData(barDataSet)
-        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
-        barData.barWidth = 3F
+            mediaStatsScoreShowButton.setOnClickListener {
+                val dialog = ChartDialog()
+                val bundle = Bundle()
+                bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barEntries))
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager, null)
+            }
+        } else {
+            try {
+                val barDataSet = BarDataSet(barEntries, "Score Distribution")
+                barDataSet.colors = Constant.SCORE_COLOR_LIST
 
-        mediaStatsScoreBarChart.axisLeft.setDrawGridLines(false)
-        mediaStatsScoreBarChart.axisLeft.setDrawAxisLine(false)
-        mediaStatsScoreBarChart.axisLeft.setDrawLabels(false)
+                val barData = BarData(barDataSet)
+                barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+                barData.barWidth = 3F
 
-        mediaStatsScoreBarChart.axisRight.setDrawGridLines(false)
-        mediaStatsScoreBarChart.axisRight.setDrawAxisLine(false)
-        mediaStatsScoreBarChart.axisRight.setDrawLabels(false)
+                mediaStatsScoreBarChart.axisLeft.setDrawGridLines(false)
+                mediaStatsScoreBarChart.axisLeft.setDrawAxisLine(false)
+                mediaStatsScoreBarChart.axisLeft.setDrawLabels(false)
 
-        mediaStatsScoreBarChart.xAxis.setDrawGridLines(false)
-        mediaStatsScoreBarChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        mediaStatsScoreBarChart.xAxis.setLabelCount(barEntries.size, true)
-        mediaStatsScoreBarChart.xAxis.textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+                mediaStatsScoreBarChart.axisRight.setDrawGridLines(false)
+                mediaStatsScoreBarChart.axisRight.setDrawAxisLine(false)
+                mediaStatsScoreBarChart.axisRight.setDrawLabels(false)
 
-        mediaStatsScoreBarChart.setTouchEnabled(false)
-        mediaStatsScoreBarChart.description.isEnabled = false
-        mediaStatsScoreBarChart.legend.isEnabled = false
-        mediaStatsScoreBarChart.data = barData
-        mediaStatsScoreBarChart.invalidate()
+                mediaStatsScoreBarChart.xAxis.setDrawGridLines(false)
+                mediaStatsScoreBarChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                mediaStatsScoreBarChart.xAxis.setLabelCount(barEntries.size, true)
+                mediaStatsScoreBarChart.xAxis.textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+
+                mediaStatsScoreBarChart.setTouchEnabled(false)
+                mediaStatsScoreBarChart.description.isEnabled = false
+                mediaStatsScoreBarChart.legend.isEnabled = false
+                mediaStatsScoreBarChart.data = barData
+                mediaStatsScoreBarChart.invalidate()
+            } catch (e: Exception) {
+                DialogUtility.showToast(activity, e.localizedMessage)
+            }
+
+            mediaStatsScoreBarChart.visibility = View.VISIBLE
+            mediaStatsScoreShowButton.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

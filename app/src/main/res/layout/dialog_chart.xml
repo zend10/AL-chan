@@ -19,6 +19,7 @@
                 android:layout_marginTop="@dimen/marginNormal"
                 android:layout_marginStart="@dimen/marginPage"
                 android:layout_marginEnd="@dimen/marginPage"
+                android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

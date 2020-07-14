@@ -15,7 +15,7 @@ class BioViewModel(private val userRepository: UserRepository,
     var otherUserId: Int? = null
 
     val showBioAutomatically: Boolean
-        get() = appSettingsRepository.appSettings.showBioAutomatically == true
+        get() = appSettingsRepository.appSettings.showBioAutomatically != false
 
     val viewerData by lazy {
         userRepository.viewerData
