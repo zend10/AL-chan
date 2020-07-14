@@ -59,9 +59,9 @@ class AppSettingsFragment : Fragment() {
             circularAvatarCheckBox.isChecked = viewModel.appSettings.circularAvatar == true
             whiteBackgroundAvatarCheckBox.isChecked = viewModel.appSettings.whiteBackgroundAvatar == true
             showRecentReviewsCheckBox.isChecked = viewModel.appSettings.showRecentReviews == true
-            enableSocialCheckBox.isChecked = viewModel.appSettings.showSocialTabAutomatically == true
-            showBioCheckBox.isChecked = viewModel.appSettings.showBioAutomatically == true
-            showStatsCheckBox.isChecked = viewModel.appSettings.showStatsAutomatically == true
+            enableSocialCheckBox.isChecked = viewModel.appSettings.showSocialTabAutomatically != false
+            showBioCheckBox.isChecked = viewModel.appSettings.showBioAutomatically != false
+            showStatsCheckBox.isChecked = viewModel.appSettings.showStatsAutomatically != false
             viewModel.isInit = true
         }
 
@@ -105,9 +105,9 @@ class AppSettingsFragment : Fragment() {
                 R.string.reset,
                 {
                     viewModel.setAppSettings(
-                        showSocialTab = isLowOnMemory,
-                        showBio = isLowOnMemory,
-                        showStats = isLowOnMemory
+                        showSocialTab = !isLowOnMemory,
+                        showBio = !isLowOnMemory,
+                        showStats = !isLowOnMemory
                     )
                     viewModel.isInit = false
                     initLayout()
