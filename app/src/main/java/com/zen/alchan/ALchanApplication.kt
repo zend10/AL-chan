@@ -41,6 +41,7 @@ import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
 import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
+import com.zen.alchan.ui.common.ChartViewModel
 import com.zen.alchan.ui.common.LikesViewModel
 import com.zen.alchan.ui.common.MediaListDetailDialogViewModel
 import com.zen.alchan.ui.common.TextEditorViewModel
@@ -125,6 +126,7 @@ class ALchanApplication : Application() {
         viewModel { MediaListDetailDialogViewModel(gson) }
         viewModel { TextEditorViewModel(get()) }
         viewModel { LikesViewModel(gson) }
+        viewModel { ChartViewModel(gson) }
 
         // auth
         viewModel { SplashViewModel(get(), get(), get()) }
@@ -185,7 +187,7 @@ class ALchanApplication : Application() {
         viewModel { BioViewModel(get(), get(), get()) }
         viewModel { FavoritesViewModel(get(), get(), gson) }
         viewModel { ReorderFavoritesViewModel(get(), gson) }
-        viewModel { StatsViewModel(get(), get(), get()) }
+        viewModel { StatsViewModel(get(), get(), get(), gson) }
         viewModel { StatsDetailViewModel(get()) }
         viewModel { UserReviewsViewModel(get(), get()) }
         viewModel { FollowsViewModel(get(), get()) }

@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.gson.Gson
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -24,6 +25,7 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.media.stats.MediaStatsStatusRvAdapter
 import com.zen.alchan.ui.browse.user.UserFragment
+import com.zen.alchan.ui.common.ChartDialog
 import com.zen.alchan.ui.profile.stats.details.StatsDetailActivity
 import kotlinx.android.synthetic.main.fragment_stats.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -139,7 +141,7 @@ class StatsFragment : BaseFragment() {
                 animeStatsStatusChartLayout.visibility = View.GONE
 
                 animeStatsStatusShowButton.setOnClickListener {
-                    showAnimeStatsStatusChart(pieEntries)
+                    openPieChartDialog(pieEntries)
                 }
             } else {
                 showAnimeStatsStatusChart(pieEntries)
@@ -168,7 +170,7 @@ class StatsFragment : BaseFragment() {
                 mangaStatsStatusChartLayout.visibility = View.GONE
 
                 mangaStatsStatusShowButton.setOnClickListener {
-                    showMangaStatsStatusChart(pieEntries)
+                    openPieChartDialog(pieEntries)
                 }
             } else {
                 showMangaStatsStatusChart(pieEntries)
@@ -230,6 +232,14 @@ class StatsFragment : BaseFragment() {
         }
     }
 
+    private fun openPieChartDialog(pieEntries: List<PieEntry>) {
+        val dialog = ChartDialog()
+        val bundle = Bundle()
+        bundle.putString(ChartDialog.PIE_ENTRIES, viewModel.gson.toJson(pieEntries))
+        dialog.arguments = bundle
+        dialog.show(childFragmentManager, null)
+    }
+
     private fun handleScoreDistribution() {
         val stats = viewModel.userStats!!
         val scoreList = (10..100 step 10).toList()
@@ -266,7 +276,7 @@ class StatsFragment : BaseFragment() {
                 animeStatsScoreChartLayout.visibility = View.GONE
 
                 animeStatsScoreShowButton.setOnClickListener {
-                    showAnimeStatsScoreChart(valueFormatter, barEntries)
+                    openBarChartDialog(barEntries)
                 }
             } else {
                 showAnimeStatsScoreChart(valueFormatter, barEntries)
@@ -302,7 +312,7 @@ class StatsFragment : BaseFragment() {
                 mangaStatsScoreChartLayout.visibility = View.GONE
 
                 mangaStatsScoreShowButton.setOnClickListener {
-                    showMangaStatsScoreChart(valueFormatter, barEntries)
+                    openBarChartDialog(barEntries)
                 }
             } else {
                 showMangaStatsScoreChart(valueFormatter, barEntries)
@@ -316,39 +326,43 @@ class StatsFragment : BaseFragment() {
         animeStatsScoreShowButton.visibility = View.GONE
         animeStatsScoreChartLayout.visibility = View.VISIBLE
 
-        val barDataSet = BarDataSet(barEntries, "Score Distribution")
-        barDataSet.colors = Constant.SCORE_COLOR_LIST
+        try {
+            val barDataSet = BarDataSet(barEntries, "Score Distribution")
+            barDataSet.colors = Constant.SCORE_COLOR_LIST
 
-        val barData = BarData(barDataSet)
-        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
-        barData.barWidth = 3F
-        barData.setValueFormatter(valueFormatter)
+            val barData = BarData(barDataSet)
+            barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+            barData.barWidth = 3F
+            barData.setValueFormatter(valueFormatter)
 
-        animeStatsScoreBarChart.axisLeft.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
+            animeStatsScoreBarChart.axisLeft.apply {
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                setDrawLabels(false)
+            }
 
-        animeStatsScoreBarChart.axisRight.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
+            animeStatsScoreBarChart.axisRight.apply {
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                setDrawLabels(false)
+            }
 
-        animeStatsScoreBarChart.xAxis.apply {
-            setDrawGridLines(false)
-            position = XAxis.XAxisPosition.BOTTOM
-            setLabelCount(barEntries.size, true)
-            textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
-        }
+            animeStatsScoreBarChart.xAxis.apply {
+                setDrawGridLines(false)
+                position = XAxis.XAxisPosition.BOTTOM
+                setLabelCount(barEntries.size, true)
+                textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+            }
 
-        animeStatsScoreBarChart.apply {
-            setTouchEnabled(false)
-            description.isEnabled = false
-            legend.isEnabled = false
-            data = barData
-            invalidate()
+            animeStatsScoreBarChart.apply {
+                setTouchEnabled(false)
+                description.isEnabled = false
+                legend.isEnabled = false
+                data = barData
+                invalidate()
+            }
+        } catch (e: Exception) {
+            DialogUtility.showToast(activity, e.localizedMessage)
         }
     }
 
@@ -356,39 +370,51 @@ class StatsFragment : BaseFragment() {
         mangaStatsScoreShowButton.visibility = View.GONE
         mangaStatsScoreChartLayout.visibility = View.VISIBLE
 
-        val barDataSet = BarDataSet(barEntries, "Score Distribution")
-        barDataSet.colors = Constant.SCORE_COLOR_LIST
+        try {
+            val barDataSet = BarDataSet(barEntries, "Score Distribution")
+            barDataSet.colors = Constant.SCORE_COLOR_LIST
 
-        val barData = BarData(barDataSet)
-        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
-        barData.barWidth = 3F
-        barData.setValueFormatter(valueFormatter)
+            val barData = BarData(barDataSet)
+            barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+            barData.barWidth = 3F
+            barData.setValueFormatter(valueFormatter)
 
-        mangaStatsScoreBarChart.axisLeft.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
+            mangaStatsScoreBarChart.axisLeft.apply {
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                setDrawLabels(false)
+            }
+
+            mangaStatsScoreBarChart.axisRight.apply {
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                setDrawLabels(false)
+            }
+
+            mangaStatsScoreBarChart.xAxis.apply {
+                setDrawGridLines(false)
+                position = XAxis.XAxisPosition.BOTTOM
+                setLabelCount(barEntries.size, true)
+                textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+            }
+
+            mangaStatsScoreBarChart.apply {
+                setTouchEnabled(false)
+                description.isEnabled = false
+                legend.isEnabled = false
+                data = barData
+                invalidate()
+            }
+        } catch (e: Exception) {
+            DialogUtility.showToast(activity, e.localizedMessage)
         }
+    }
 
-        mangaStatsScoreBarChart.axisRight.apply {
-            setDrawGridLines(false)
-            setDrawAxisLine(false)
-            setDrawLabels(false)
-        }
-
-        mangaStatsScoreBarChart.xAxis.apply {
-            setDrawGridLines(false)
-            position = XAxis.XAxisPosition.BOTTOM
-            setLabelCount(barEntries.size, true)
-            textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
-        }
-
-        mangaStatsScoreBarChart.apply {
-            setTouchEnabled(false)
-            description.isEnabled = false
-            legend.isEnabled = false
-            data = barData
-            invalidate()
-        }
+    private fun openBarChartDialog(barEntries: List<BarEntry>) {
+        val dialog = ChartDialog()
+        val bundle = Bundle()
+        bundle.putString(ChartDialog.BAR_ENTRIES, viewModel.gson.toJson(barEntries))
+        dialog.arguments = bundle
+        dialog.show(childFragmentManager, null)
     }
 }
