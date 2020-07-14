@@ -32,7 +32,7 @@ class SplashViewModel(private val authRepository: AuthRepository,
         infoRepository.setLastAnnouncementId(id)
     }
 
-    fun setLiteVersion(useLiteVersion: Boolean) {
-        appSettingsRepository.setLiteVersion(useLiteVersion)
+    fun setDefaultAppSetting(isLowOnMemory: Boolean) {
+        appSettingsRepository.setDefaultSetting(isLowOnMemory)
     }
 }

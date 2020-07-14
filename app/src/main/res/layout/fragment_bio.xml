@@ -25,10 +25,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-<!--            <WebView-->
-<!--                android:id="@+id/bioWebView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"/>-->
+            <com.google.android.material.textview.MaterialTextView
+                android:visibility="visible"
+                android:id="@+id/bioShowButton"
+                android:text="@string/click_to_view_bio"
+                style="?themeRegularClickableFont"
+                android:foreground="?selectableItemBackground"
+                android:padding="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/bioTextView"

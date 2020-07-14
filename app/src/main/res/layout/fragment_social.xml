@@ -8,8 +8,8 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:visibility="gone"
-        android:id="@+id/liteWarning"
-        android:text="@string/social_feature_is_not_available_on_lite_version_if_you_want_to_use_the_full_version_go_to_profile_settings_app_setting_switch_off_use_lite_version"
+        android:id="@+id/socialDisabledText"
+        android:text="@string/social_feature_is_turned_off_however_if_you_want_to_use_it_you_can_enable_social_feature_by_n_ngo_to_profile_settings_app_settings_toggle_on_enable_social_feature"
         android:textAlignment="center"
         android:layout_centerInParent="true"
         android:padding="@dimen/marginPage"

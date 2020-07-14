@@ -3,12 +3,14 @@ package com.zen.alchan.ui.profile.stats
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import type.ScoreFormat
 
 class StatsViewModel(private val userRepository: UserRepository,
-                     private val otherUserRepository: OtherUserRepository
+                     private val otherUserRepository: OtherUserRepository,
+                     private val appSettingsRepository: AppSettingsRepository
 ) : ViewModel() {
 
     var otherUserId: Int? = null
@@ -23,6 +25,9 @@ class StatsViewModel(private val userRepository: UserRepository,
     val otherUserStatisticsResponse by lazy {
         otherUserRepository.userStatisticsResponse
     }
+
+    val showStatsAutomatically: Boolean
+        get() = appSettingsRepository.appSettings.showStatsAutomatically == true
 
     fun getStatistics() {
         if (otherUserId != null) {

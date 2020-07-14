@@ -264,6 +264,8 @@ class ProfileFragment : BaseMainFragment() {
             }
         })
 
+        itemActivity.isVisible = viewModel.enableSocial
+
         itemActivity.setOnMenuItemClickListener {
             val intent = Intent(activity, BrowseActivity::class.java)
             intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ACTIVITY_LIST.name)

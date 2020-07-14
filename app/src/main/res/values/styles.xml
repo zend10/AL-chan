@@ -207,7 +207,7 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <style name="Theme.MaterialComponents.NoActionBar.Translucent">
+    <style name="Theme.MaterialComponents.NoActionBar.Translucent" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>

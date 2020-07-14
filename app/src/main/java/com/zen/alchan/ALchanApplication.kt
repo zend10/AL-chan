@@ -182,10 +182,10 @@ class ALchanApplication : Application() {
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }
-        viewModel { BioViewModel(get(), get()) }
+        viewModel { BioViewModel(get(), get(), get()) }
         viewModel { FavoritesViewModel(get(), get(), gson) }
         viewModel { ReorderFavoritesViewModel(get(), gson) }
-        viewModel { StatsViewModel(get(), get()) }
+        viewModel { StatsViewModel(get(), get(), get()) }
         viewModel { StatsDetailViewModel(get()) }
         viewModel { UserReviewsViewModel(get(), get()) }
         viewModel { FollowsViewModel(get(), get()) }

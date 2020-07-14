@@ -134,20 +134,15 @@ class StatsFragment : BaseFragment() {
                 animeStatusDistributionList.add(StatusDistributionItem(status.name, count.toInt(), Constant.STATUS_COLOR_LIST[animeStatusDistributionList.size]))
             }
 
-            val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
-            pieDataSet.colors = Constant.STATUS_COLOR_LIST
+            if (!viewModel.showStatsAutomatically) {
+                animeStatsStatusShowButton.visibility = View.VISIBLE
+                animeStatsStatusChartLayout.visibility = View.GONE
 
-            val pieData = PieData(pieDataSet)
-            pieData.setDrawValues(false)
-
-            animeStatsStatusPieChart.apply {
-                setHoleColor(ContextCompat.getColor(activity!!, android.R.color.transparent))
-                setDrawEntryLabels(false)
-                setTouchEnabled(false)
-                description.isEnabled = false
-                legend.isEnabled = false
-                data = pieData
-                invalidate()
+                animeStatsStatusShowButton.setOnClickListener {
+                    showAnimeStatsStatusChart(pieEntries)
+                }
+            } else {
+                showAnimeStatsStatusChart(pieEntries)
             }
 
             animeStatsStatusRecyclerView.adapter = MediaStatsStatusRvAdapter(activity!!, animeStatusDistributionList)
@@ -168,7 +163,54 @@ class StatsFragment : BaseFragment() {
                 mangaStatusDistributionList.add(StatusDistributionItem(status.name, count.toInt(), Constant.STATUS_COLOR_LIST[mangaStatusDistributionList.size]))
             }
 
-            val pieDataSet = PieDataSet(pieEntries, "Score Distribution")
+            if (!viewModel.showStatsAutomatically) {
+                mangaStatsStatusShowButton.visibility = View.VISIBLE
+                mangaStatsStatusChartLayout.visibility = View.GONE
+
+                mangaStatsStatusShowButton.setOnClickListener {
+                    showMangaStatsStatusChart(pieEntries)
+                }
+            } else {
+                showMangaStatsStatusChart(pieEntries)
+            }
+
+            mangaStatsStatusRecyclerView.adapter = MediaStatsStatusRvAdapter(activity!!, mangaStatusDistributionList)
+        } else {
+            mangaStatsStatusLayout.visibility = View.GONE
+        }
+    }
+
+    private fun showAnimeStatsStatusChart(pieEntries: List<PieEntry>) {
+        animeStatsStatusShowButton.visibility = View.GONE
+        animeStatsStatusChartLayout.visibility = View.VISIBLE
+
+        try {
+            val pieDataSet = PieDataSet(pieEntries, "Status Distribution")
+            pieDataSet.colors = Constant.STATUS_COLOR_LIST
+
+            val pieData = PieData(pieDataSet)
+            pieData.setDrawValues(false)
+
+            animeStatsStatusPieChart.apply {
+                setHoleColor(ContextCompat.getColor(activity!!, android.R.color.transparent))
+                setDrawEntryLabels(false)
+                setTouchEnabled(false)
+                description.isEnabled = false
+                legend.isEnabled = false
+                data = pieData
+                invalidate()
+            }
+        } catch (e: Exception) {
+            DialogUtility.showToast(activity, e.localizedMessage)
+        }
+    }
+
+    private fun showMangaStatsStatusChart(pieEntries: List<PieEntry>) {
+        mangaStatsStatusShowButton.visibility = View.GONE
+        mangaStatsStatusChartLayout.visibility = View.VISIBLE
+
+        try {
+            val pieDataSet = PieDataSet(pieEntries, "Status Distribution")
             pieDataSet.colors = Constant.STATUS_COLOR_LIST
 
             val pieData = PieData(pieDataSet)
@@ -183,10 +225,8 @@ class StatsFragment : BaseFragment() {
                 data = pieData
                 invalidate()
             }
-
-            mangaStatsStatusRecyclerView.adapter = MediaStatsStatusRvAdapter(activity!!, mangaStatusDistributionList)
-        } else {
-            mangaStatsStatusLayout.visibility = View.GONE
+        } catch (e: Exception) {
+            DialogUtility.showToast(activity, e.localizedMessage)
         }
     }
 
@@ -221,39 +261,15 @@ class StatsFragment : BaseFragment() {
                 }
             }
 
-            val barDataSet = BarDataSet(barEntries, "Score Distribution")
-            barDataSet.colors = Constant.SCORE_COLOR_LIST
+            if (!viewModel.showStatsAutomatically) {
+                animeStatsScoreShowButton.visibility = View.VISIBLE
+                animeStatsScoreChartLayout.visibility = View.GONE
 
-            val barData = BarData(barDataSet)
-            barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
-            barData.barWidth = 3F
-            barData.setValueFormatter(valueFormatter)
-
-            animeStatsScoreBarChart.axisLeft.apply {
-                setDrawGridLines(false)
-                setDrawAxisLine(false)
-                setDrawLabels(false)
-            }
-
-            animeStatsScoreBarChart.axisRight.apply {
-                setDrawGridLines(false)
-                setDrawAxisLine(false)
-                setDrawLabels(false)
-            }
-
-            animeStatsScoreBarChart.xAxis.apply {
-                setDrawGridLines(false)
-                position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(barEntries.size, true)
-                textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
-            }
-
-            animeStatsScoreBarChart.apply {
-                setTouchEnabled(false)
-                description.isEnabled = false
-                legend.isEnabled = false
-                data = barData
-                invalidate()
+                animeStatsScoreShowButton.setOnClickListener {
+                    showAnimeStatsScoreChart(valueFormatter, barEntries)
+                }
+            } else {
+                showAnimeStatsScoreChart(valueFormatter, barEntries)
             }
         } else {
             animeStatsScoreLayout.visibility = View.GONE
@@ -281,42 +297,98 @@ class StatsFragment : BaseFragment() {
                 }
             }
 
-            val barDataSet = BarDataSet(barEntries, "Score Distribution")
-            barDataSet.colors = Constant.SCORE_COLOR_LIST
+            if (!viewModel.showStatsAutomatically) {
+                mangaStatsScoreShowButton.visibility = View.VISIBLE
+                mangaStatsScoreChartLayout.visibility = View.GONE
 
-            val barData = BarData(barDataSet)
-            barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
-            barData.barWidth = 3F
-            barData.setValueFormatter(valueFormatter)
-
-            mangaStatsScoreBarChart.axisLeft.apply {
-                setDrawGridLines(false)
-                setDrawAxisLine(false)
-                setDrawLabels(false)
-            }
-
-            mangaStatsScoreBarChart.axisRight.apply {
-                setDrawGridLines(false)
-                setDrawAxisLine(false)
-                setDrawLabels(false)
-            }
-
-            mangaStatsScoreBarChart.xAxis.apply {
-                setDrawGridLines(false)
-                position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(barEntries.size, true)
-                textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
-            }
-
-            mangaStatsScoreBarChart.apply {
-                setTouchEnabled(false)
-                description.isEnabled = false
-                legend.isEnabled = false
-                data = barData
-                invalidate()
+                mangaStatsScoreShowButton.setOnClickListener {
+                    showMangaStatsScoreChart(valueFormatter, barEntries)
+                }
+            } else {
+                showMangaStatsScoreChart(valueFormatter, barEntries)
             }
         } else {
             mangaStatsScoreLayout.visibility = View.GONE
+        }
+    }
+
+    private fun showAnimeStatsScoreChart(valueFormatter: ValueFormatter, barEntries: List<BarEntry>) {
+        animeStatsScoreShowButton.visibility = View.GONE
+        animeStatsScoreChartLayout.visibility = View.VISIBLE
+
+        val barDataSet = BarDataSet(barEntries, "Score Distribution")
+        barDataSet.colors = Constant.SCORE_COLOR_LIST
+
+        val barData = BarData(barDataSet)
+        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+        barData.barWidth = 3F
+        barData.setValueFormatter(valueFormatter)
+
+        animeStatsScoreBarChart.axisLeft.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        animeStatsScoreBarChart.axisRight.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        animeStatsScoreBarChart.xAxis.apply {
+            setDrawGridLines(false)
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(barEntries.size, true)
+            textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+        }
+
+        animeStatsScoreBarChart.apply {
+            setTouchEnabled(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            data = barData
+            invalidate()
+        }
+    }
+
+    private fun showMangaStatsScoreChart(valueFormatter: ValueFormatter, barEntries: List<BarEntry>) {
+        mangaStatsScoreShowButton.visibility = View.GONE
+        mangaStatsScoreChartLayout.visibility = View.VISIBLE
+
+        val barDataSet = BarDataSet(barEntries, "Score Distribution")
+        barDataSet.colors = Constant.SCORE_COLOR_LIST
+
+        val barData = BarData(barDataSet)
+        barData.setValueTextColor(AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor))
+        barData.barWidth = 3F
+        barData.setValueFormatter(valueFormatter)
+
+        mangaStatsScoreBarChart.axisLeft.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        mangaStatsScoreBarChart.axisRight.apply {
+            setDrawGridLines(false)
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        mangaStatsScoreBarChart.xAxis.apply {
+            setDrawGridLines(false)
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(barEntries.size, true)
+            textColor = AndroidUtility.getResValueFromRefAttr(activity, R.attr.themeContentColor)
+        }
+
+        mangaStatsScoreBarChart.apply {
+            setTouchEnabled(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            data = barData
+            invalidate()
         }
     }
 }

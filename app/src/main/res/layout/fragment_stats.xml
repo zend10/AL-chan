@@ -356,7 +356,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
+                        android:id="@+id/animeStatsStatusShowButton"
+                        android:text="@string/show"
+                        style="?themeButtonPrimary"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/animeStatsStatusChartLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -394,7 +404,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
+                        android:id="@+id/mangaStatsStatusShowButton"
+                        android:text="@string/show"
+                        style="?themeButtonPrimary"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mangaStatsStatusChartLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -432,7 +452,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
+                        android:id="@+id/animeStatsScoreShowButton"
+                        android:text="@string/show"
+                        style="?themeButtonPrimary"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/animeStatsScoreChartLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -462,7 +492,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
+                        android:id="@+id/mangaStatsScoreShowButton"
+                        android:text="@string/show"
+                        style="?themeButtonPrimary"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mangaStatsScoreChartLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 

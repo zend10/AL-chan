@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.profile.bio
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +15,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.browse.user.UserFragment
 import kotlinx.android.synthetic.main.fragment_bio.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.net.URLEncoder
 
 class BioFragment : Fragment() {
 
@@ -60,8 +63,22 @@ class BioFragment : Fragment() {
             viewModel.viewerData.value?.about
         }
 
-        val maxWidth = AndroidUtility.getScreenWidth(activity)
-        val markwon = AndroidUtility.initMarkwon(activity!!)
-        AndroidUtility.convertMarkdown(activity!!, bioTextView, aboutText, maxWidth, markwon)
+        if (!viewModel.showBioAutomatically) {
+            bioTextView.visibility = View.GONE
+            bioShowButton.visibility = View.VISIBLE
+
+            bioShowButton.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse("alchan://spoiler?data=${URLEncoder.encode(aboutText, "utf-8")}")
+                startActivity(intent)
+            }
+        } else {
+            bioTextView.visibility = View.VISIBLE
+            bioShowButton.visibility = View.GONE
+
+            val maxWidth = AndroidUtility.getScreenWidth(activity)
+            val markwon = AndroidUtility.initMarkwon(activity!!)
+            AndroidUtility.convertMarkdown(activity!!, bioTextView, aboutText, maxWidth, markwon)
+        }
     }
 }

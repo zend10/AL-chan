@@ -59,7 +59,9 @@ class AppSettingsFragment : Fragment() {
             circularAvatarCheckBox.isChecked = viewModel.appSettings.circularAvatar == true
             whiteBackgroundAvatarCheckBox.isChecked = viewModel.appSettings.whiteBackgroundAvatar == true
             showRecentReviewsCheckBox.isChecked = viewModel.appSettings.showRecentReviews == true
-            useLiteVersionCheckBox.isChecked = viewModel.appSettings.liteVersion == true
+            enableSocialCheckBox.isChecked = viewModel.appSettings.showSocialTabAutomatically == true
+            showBioCheckBox.isChecked = viewModel.appSettings.showBioAutomatically == true
+            showStatsCheckBox.isChecked = viewModel.appSettings.showStatsAutomatically == true
             viewModel.isInit = true
         }
 
@@ -74,7 +76,9 @@ class AppSettingsFragment : Fragment() {
                         circularAvatarCheckBox.isChecked,
                         whiteBackgroundAvatarCheckBox.isChecked,
                         showRecentReviewsCheckBox.isChecked,
-                        useLiteVersionCheckBox.isChecked
+                        enableSocialCheckBox.isChecked,
+                        showBioCheckBox.isChecked,
+                        showStatsCheckBox.isChecked
                     )
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
@@ -92,13 +96,19 @@ class AppSettingsFragment : Fragment() {
         defaultVoiceActorLanguageText.setOnClickListener { showLanguageDialog() }
 
         resetDefaultButton.setOnClickListener {
+            val isLowOnMemory = AndroidUtility.isLowOnMemory(activity)
+
             DialogUtility.showOptionDialog(
                 activity,
                 R.string.reset_to_default,
                 R.string.this_will_reset_your_app_settings_to_default_configuration,
                 R.string.reset,
                 {
-                    viewModel.setAppSettings(useLiteVersion = AndroidUtility.isLowOnMemory(activity))
+                    viewModel.setAppSettings(
+                        showSocialTab = isLowOnMemory,
+                        showBio = isLowOnMemory,
+                        showStats = isLowOnMemory
+                    )
                     viewModel.isInit = false
                     initLayout()
                     activity?.recreate()

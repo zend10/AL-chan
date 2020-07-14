@@ -9,5 +9,7 @@ class AppSettings(
     var whiteBackgroundAvatar: Boolean? = true,
     var voiceActorLanguage: StaffLanguage? = StaffLanguage.JAPANESE,
     var showRecentReviews: Boolean? = true,
-    var liteVersion: Boolean? = null
+    var showSocialTabAutomatically: Boolean? = null,
+    var showBioAutomatically: Boolean? = null,
+    var showStatsAutomatically: Boolean? = null
 )

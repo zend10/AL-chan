@@ -416,7 +416,12 @@
     <string name="last_updated">Last Updated</string>
     <string name="last_added">Last Added</string>
     <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
-    <string name="use_lite_version">Use Lite Version</string>
-    <string name="in_lite_version_you_can_t_use_social_feature_also_bio_and_stats_need_to_be_toggled_on_manually_each_time_you_want_to_view_them">In Lite Version, you can\'t use Social feature. Also, Bio and Stats need to be toggled on manually each time you want to view them. It is recommended to use Lite Version if your phone is low on memory.</string>
-    <string name="social_feature_is_not_available_on_lite_version_if_you_want_to_use_the_full_version_go_to_profile_settings_app_setting_switch_off_use_lite_version"><![CDATA[Social feature is not available on Lite Version. If you want to use the full version, go to Profile > Settings > App Setting > Switch off Use Lite Version]]></string>
+    <string name="show">Show</string>
+    <string name="memory_saver">Memory Saver</string>
+    <string name="enable_social_feature">Enable Social feature</string>
+    <string name="show_bio_automatically">Show Bio automatically</string>
+    <string name="show_stats_automatically">Show Stats automatically</string>
+    <string name="these_features_are_not_suitable_for_devices_with_limited_memory_it_is_recommended_to_uncheck_all_for_better_performance_and_stability">These features are not suitable for devices with limited memory. It is recommended to uncheck all for better performance and stability. Sorry for the inconvenience.</string>
+    <string name="social_feature_is_turned_off_however_if_you_want_to_use_it_you_can_enable_social_feature_by_n_ngo_to_profile_settings_app_settings_toggle_on_enable_social_feature"><![CDATA[Social feature is turned off. If you want to use it, you can enable Social feature by:\n\nGo to Profile > Settings > App Settings > Toggle on Enable Social feature]]></string>
+    <string name="click_to_view_bio">Click to view Bio</string>
 </resources>

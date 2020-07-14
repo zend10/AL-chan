@@ -35,9 +35,11 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
         _appColorThemeLiveData.postValue(appColorThemeResource)
     }
 
-    override fun setLiteVersion(useLiteVersion: Boolean) {
+    override fun setDefaultSetting(isLowOnMemory: Boolean) {
         val newAppSetting = appSettings
-        newAppSetting.liteVersion = useLiteVersion
+        newAppSetting.showSocialTabAutomatically = !isLowOnMemory
+        newAppSetting.showBioAutomatically = !isLowOnMemory
+        newAppSetting.showStatsAutomatically = !isLowOnMemory
         appSettingsManager.setAppSettings(newAppSetting)
     }
 

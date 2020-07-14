@@ -291,6 +291,8 @@ class UserFragment : BaseFragment() {
             }
         })
 
+        itemActivity?.isVisible = viewModel.enableSocial
+
         itemActivity?.setOnMenuItemClickListener {
             if (user?.id != null) listener?.changeFragment(BrowsePage.ACTIVITY_LIST, user.id, user.name)
             true

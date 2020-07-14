@@ -43,6 +43,9 @@ class ProfileViewModel(private val userRepository: UserRepository,
     val whiteBackgroundAvatar
         get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
 
+    val enableSocial : Boolean
+        get() = appSettingsRepository.appSettings.showSocialTabAutomatically == true
+
     fun initData() {
         userRepository.getViewerData()
 

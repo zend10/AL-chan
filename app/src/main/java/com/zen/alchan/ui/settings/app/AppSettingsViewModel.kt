@@ -32,7 +32,9 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         circularAvatar: Boolean = true,
         whiteBackgroundAvatar: Boolean = true,
         showRecentReviews: Boolean = true,
-        useLiteVersion: Boolean
+        showSocialTab: Boolean,
+        showBio: Boolean,
+        showStats: Boolean
     ) {
         appSettingsRepository.setAppSettings(AppSettings(
             appTheme = selectedAppTheme,
@@ -40,7 +42,9 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
             whiteBackgroundAvatar = whiteBackgroundAvatar,
             voiceActorLanguage = selectedLanguage,
             showRecentReviews = showRecentReviews,
-            liteVersion = useLiteVersion
+            showSocialTabAutomatically = showSocialTab,
+            showBioAutomatically = showBio,
+            showStatsAutomatically = showStats
         ))
     }
 }

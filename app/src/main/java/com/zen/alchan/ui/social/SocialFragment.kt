@@ -70,11 +70,11 @@ class SocialFragment : Fragment() {
         friendsActivityAdapter = assignAdapter()
         friendsActivityRecyclerView.adapter= friendsActivityAdapter
 
-        if (viewModel.useLiteVersion) {
-            liteWarning.visibility = View.VISIBLE
+        if (!viewModel.enableSocial) {
+            socialDisabledText.visibility = View.VISIBLE
             socialRefreshLayout.visibility = View.GONE
         } else {
-            liteWarning.visibility = View.GONE
+            socialDisabledText.visibility = View.GONE
             socialRefreshLayout.visibility = View.VISIBLE
             initLayout()
             setupObserver()

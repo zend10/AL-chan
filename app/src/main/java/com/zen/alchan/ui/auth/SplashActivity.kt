@@ -27,8 +27,8 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        if (viewModel.appSettings.liteVersion == null) {
-            viewModel.setLiteVersion(AndroidUtility.isLowOnMemory(this))
+        if (viewModel.appSettings.showSocialTabAutomatically == null) {
+            viewModel.setDefaultAppSetting(AndroidUtility.isLowOnMemory(this))
         }
 
         setupObserver()

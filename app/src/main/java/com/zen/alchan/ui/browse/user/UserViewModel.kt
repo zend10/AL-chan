@@ -53,6 +53,9 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
     val isBestFriend: Boolean
         get() = userRepository.bestFriends?.find { it.id == userId } != null
 
+    val enableSocial: Boolean
+        get() = appSettingsRepository.appSettings.showSocialTabAutomatically == true
+
     fun initData() {
         if (userId == null) {
             return
