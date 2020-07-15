@@ -63,22 +63,28 @@ class BioFragment : Fragment() {
             viewModel.viewerData.value?.about
         }
 
-        if (!viewModel.showBioAutomatically) {
-            bioTextView.visibility = View.GONE
-            bioShowButton.visibility = View.VISIBLE
-
-            bioShowButton.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse("alchan://spoiler?data=${URLEncoder.encode(aboutText, "utf-8")}")
-                startActivity(intent)
-            }
-        } else {
+        if (aboutText.isNullOrBlank()) {
             bioTextView.visibility = View.VISIBLE
             bioShowButton.visibility = View.GONE
+            bioTextView.text = getString(R.string.no_description)
+        } else {
+            if (!viewModel.showBioAutomatically) {
+                bioTextView.visibility = View.GONE
+                bioShowButton.visibility = View.VISIBLE
 
-            val maxWidth = AndroidUtility.getScreenWidth(activity)
-            val markwon = AndroidUtility.initMarkwon(activity!!)
-            AndroidUtility.convertMarkdown(activity!!, bioTextView, aboutText, maxWidth, markwon)
+                bioShowButton.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse("alchan://spoiler?data=${URLEncoder.encode(aboutText, "utf-8")}")
+                    startActivity(intent)
+                }
+            } else {
+                bioTextView.visibility = View.VISIBLE
+                bioShowButton.visibility = View.GONE
+
+                val maxWidth = AndroidUtility.getScreenWidth(activity)
+                val markwon = AndroidUtility.initMarkwon(activity!!)
+                AndroidUtility.convertMarkdown(activity!!, bioTextView, aboutText, maxWidth, markwon)
+            }
         }
     }
 }
