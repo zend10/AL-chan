@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_flexbox_button.view.*
 
@@ -29,7 +30,7 @@ class AppThemeRvAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val theme = list[position]
-        holder.appThemeItem.text = theme.name.toLowerCase().capitalize()
+        holder.appThemeItem.text = theme.name.toLowerCase().capitalize().replaceUnderscore()
 
         if (theme == selectedTheme) {
             holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))

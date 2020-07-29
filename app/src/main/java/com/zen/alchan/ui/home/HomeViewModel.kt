@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.MediaRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.Utility
@@ -50,6 +51,9 @@ class HomeViewModel(private val userRepository: UserRepository,
     val recentReviewsData by lazy {
         mediaRepository.recentReviewsData
     }
+
+    val appTheme: AppColorTheme?
+        get() = appSettingsRepository.appSettings.appTheme
 
     val circularAvatar
         get() = appSettingsRepository.appSettings.circularAvatar == true

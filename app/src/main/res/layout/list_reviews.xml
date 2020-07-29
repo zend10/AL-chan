@@ -19,8 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
 
-        <View
-            android:background="@drawable/dark_gradient_two_background"
+        <androidx.appcompat.widget.AppCompatImageView
+            app:srcCompat="@drawable/dark_gradient_two_background"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintDimensionRatio="2:1"
             android:scaleY="-1"

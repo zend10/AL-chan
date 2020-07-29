@@ -13,6 +13,7 @@ import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.browse.BrowseActivity
 import kotlinx.android.synthetic.main.activity_reviews.*

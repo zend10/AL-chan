@@ -5,6 +5,9 @@
     app:cardBackgroundColor="@android:color/transparent"
     android:id="@+id/trendingMediaCard"
     android:layout_marginEnd="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginClose"
+    android:layout_marginStart="@dimen/marginClose"
+    android:layout_marginTop="@dimen/marginClose"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 

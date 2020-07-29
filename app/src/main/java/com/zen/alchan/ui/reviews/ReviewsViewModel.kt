@@ -1,7 +1,9 @@
 package com.zen.alchan.ui.reviews
 
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.MediaRepository
+import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.pojo.Review
 import type.MediaType
 import type.ReviewSort

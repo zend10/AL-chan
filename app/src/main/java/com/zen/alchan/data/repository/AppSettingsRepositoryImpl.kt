@@ -20,6 +20,16 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
                 AppColorTheme.BLUE -> R.style.AppTheme_ThemeBlue
                 AppColorTheme.PINK -> R.style.AppTheme_ThemePink
                 AppColorTheme.RED -> R.style.AppTheme_ThemeRed
+                AppColorTheme.LIGHT_YELLOW -> R.style.AppTheme_ThemeLightYellow
+                AppColorTheme.LIGHT_GREEN -> R.style.AppTheme_ThemeLightGreen
+                AppColorTheme.LIGHT_BLUE -> R.style.AppTheme_ThemeLightBlue
+                AppColorTheme.LIGHT_PINK -> R.style.AppTheme_ThemeLightPink
+                AppColorTheme.LIGHT_RED -> R.style.AppTheme_ThemeLightRed
+                AppColorTheme.DARK_YELLOW -> R.style.AppTheme_ThemeDarkYellow
+                AppColorTheme.DARK_GREEN -> R.style.AppTheme_ThemeDarkGreen
+                AppColorTheme.DARK_BLUE -> R.style.AppTheme_ThemeDarkBlue
+                AppColorTheme.DARK_PINK -> R.style.AppTheme_ThemeDarkPink
+                AppColorTheme.DARK_RED -> R.style.AppTheme_ThemeDarkRed
             }
         }
 

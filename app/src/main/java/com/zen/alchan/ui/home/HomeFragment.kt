@@ -17,11 +17,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
+import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
 import com.zen.alchan.ui.explore.ExploreActivity
@@ -273,6 +275,7 @@ class HomeFragment : Fragment() {
         val user = viewModel.viewerData.value
 
         GlideApp.with(this).load(user?.bannerImage).into(headerImage)
+
         searchBar.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java)) }
 
         greetingsText.text = "Hello, ${user?.name ?: ""}."

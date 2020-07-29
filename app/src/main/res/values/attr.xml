@@ -9,6 +9,11 @@
     <attr name="themeCardTransparentColor" format="reference"/>
     <attr name="themeDividerColor" format="reference"/>
     <attr name="themeContentColor" format="reference"/>
+    <attr name="themeBackgroundTransparent100Color" format="reference"/>
+    <attr name="themeBackgroundTransparent86Color" format="reference"/>
+    <attr name="themeBackgroundTransparent50Color" format="reference"/>
+    <attr name="themeBackgroundTransparent36Color" format="reference"/>
+    <attr name="themeBackgroundTransparent0Color" format="reference"/>
 
     <attr name="themeAppNameFont" format="reference"/>
     <attr name="themeTitleFont" format="reference"/>

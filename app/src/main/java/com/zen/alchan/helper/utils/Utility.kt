@@ -1,6 +1,7 @@
 package com.zen.alchan.helper.utils
 
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.AppColorTheme
 import type.MediaSeason
 import java.text.SimpleDateFormat
 import java.util.*
@@ -66,5 +67,9 @@ object Utility {
             in Calendar.SEPTEMBER..Calendar.NOVEMBER -> MediaSeason.FALL
             else -> MediaSeason.WINTER
         }
+    }
+
+    fun isLightTheme(appColorTheme: AppColorTheme?): Boolean {
+        return appColorTheme?.name?.contains("LIGHT") ?: false
     }
 }

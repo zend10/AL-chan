@@ -18,6 +18,9 @@
         app:backgroundTint="?themeCardColor"
         app:menu="@menu/menu_main_bottom_nav"
         app:labelVisibilityMode="labeled"
+        app:itemIconTint="@color/color_main_bottom_nav"
+        app:itemTextColor="@color/color_main_bottom_nav"
+        android:foregroundTint="?themePrimaryColor"
         android:layout_marginTop="@dimen/lineWidth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
