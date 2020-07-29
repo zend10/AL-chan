@@ -58,7 +58,6 @@
                 android:layout_marginTop="@dimen/marginNormal"
                 android:paddingStart="@dimen/marginNormal"
                 android:paddingEnd="@dimen/marginNormal"
-                android:nestedScrollingEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

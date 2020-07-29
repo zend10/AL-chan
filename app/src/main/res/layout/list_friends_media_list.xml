@@ -57,7 +57,7 @@
                 android:id="@+id/nameText"
                 android:text="Name"
                 style="?themeRegularBoldFont"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:layout_marginEnd="@dimen/marginSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
@@ -74,7 +74,7 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:visibility="invisible"
                 android:id="@+id/scoreLayout"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
@@ -82,8 +82,9 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/scoreIcon"
                     app:srcCompat="@drawable/ic_happy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:adjustViewBounds="true"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/scoreText"
