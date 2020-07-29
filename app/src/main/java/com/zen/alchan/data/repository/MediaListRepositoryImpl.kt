@@ -263,36 +263,41 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                 _updateAnimeListEntryResponse.postValue(Resource.Error(t.errors!![0].message))
             }
         } else {
-            var editedEntriesIndex: Int? = null
-            var editedListsIndex: Int? = null
+            var editedEntriesIndex = ArrayList<Int>()
+            val editedListsIndex = ArrayList<Int>()
             val currentList = rawAnimeList
             currentList?.lists?.forEachIndexed { index, group ->
-                if (editedEntriesIndex == null || editedEntriesIndex == -1) {
-                    editedEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data?.saveMediaListEntry?.id }
-                    editedListsIndex = index
+                val tempEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data?.saveMediaListEntry?.id }
+                if (tempEntriesIndex != null && tempEntriesIndex != -1) {
+                    editedEntriesIndex.add(tempEntriesIndex)
+                    editedListsIndex.add(index)
                 }
             }
 
-            if (editedListsIndex != null && editedEntriesIndex != null && editedEntriesIndex != -1) {
-                if (isUpdateCustomList || (originStatus != null && currentList?.lists!![editedListsIndex!!].entries!![editedEntriesIndex!!].status != originStatus)) {
+            if (!editedListsIndex.isNullOrEmpty() && !editedEntriesIndex.isNullOrEmpty()) {
+                if (isUpdateCustomList || (originStatus != null && currentList?.lists!![editedListsIndex[0]].entries!![editedEntriesIndex[0]].status != originStatus)) {
                     // if status is changed, reload list
                     retrieveAnimeListData()
                 } else {
                     val newCollection = ArrayList(currentList?.lists!!)
-                    val newGroup = newCollection[editedListsIndex!!]
-                    val newMediaList = ArrayList(newGroup.entries!!)
 
-                    val tempNextAiringEp =  newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode
+                    editedListsIndex.forEachIndexed { index, value ->
+                        val newGroup = newCollection[value]
+                        val newMediaList = ArrayList(newGroup.entries!!)
 
-                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
+                        val tempNextAiringEp =  newMediaList[editedEntriesIndex[index]].media?.nextAiringEpisode
 
-                    // Needed because bugs in AniList where mutation won't return NextAiringEpisode
-                    if (tempNextAiringEp != null) {
-                        newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode = tempNextAiringEp
+                        newMediaList[editedEntriesIndex[index]] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
+
+                        // Needed because bugs in AniList where mutation won't return NextAiringEpisode
+                        if (tempNextAiringEp != null) {
+                            newMediaList[editedEntriesIndex[index]].media?.nextAiringEpisode = tempNextAiringEp
+                        }
+
+                        newGroup.entries = newMediaList
+                        newCollection[value] = newGroup
                     }
 
-                    newGroup.entries = newMediaList
-                    newCollection[editedListsIndex!!] = newGroup
                     currentList.lists = newCollection
                     rawAnimeList = currentList
 
@@ -687,37 +692,42 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                 _updateMangaListEntryResponse.postValue(Resource.Error(t.errors!![0].message))
             }
         } else {
-            var editedEntriesIndex: Int? = null
-            var editedListsIndex: Int? = null
+            val editedEntriesIndex = ArrayList<Int>()
+            val editedListsIndex = ArrayList<Int>()
             val currentList = rawMangaList
             currentList?.lists?.forEachIndexed { index, group ->
-                if (editedEntriesIndex == null || editedEntriesIndex == -1) {
-                    editedEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data?.saveMediaListEntry?.id }
-                    editedListsIndex = index
+                val tempEntriesIndex = group.entries?.indexOfFirst { mediaList -> mediaList.id == t.data?.saveMediaListEntry?.id }
+                if (tempEntriesIndex != null && tempEntriesIndex != -1) {
+                    editedEntriesIndex.add(tempEntriesIndex)
+                    editedListsIndex.add(index)
                 }
             }
 
-            if (editedListsIndex != null && editedEntriesIndex != null && editedEntriesIndex != -1) {
-                if (isUpdateCustomList || (originStatus != null && currentList?.lists!![editedListsIndex!!].entries!![editedEntriesIndex!!].status != originStatus)) {
+            if (!editedListsIndex.isNullOrEmpty() && !editedEntriesIndex.isNullOrEmpty()) {
+                if (isUpdateCustomList || (originStatus != null && currentList?.lists!![editedListsIndex[0]].entries!![editedEntriesIndex[0]].status != originStatus)) {
                     // if status is changed, reload list
                     retrieveMangaListData()
                 } else {
                     val newCollection = ArrayList(currentList?.lists!!)
-                    val newGroup = newCollection[editedListsIndex!!]
-                    val newMediaList = ArrayList(newGroup.entries!!)
 
-                    val tempNextAiringEp =  newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode
+                    editedListsIndex.forEachIndexed { index, value ->
+                        val newGroup = newCollection[value]
+                        val newMediaList = ArrayList(newGroup.entries!!)
 
-                    newMediaList[editedEntriesIndex!!] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
+                        val tempNextAiringEp =  newMediaList[editedEntriesIndex[index]].media?.nextAiringEpisode
 
-                    // Needed because bugs in AniList where mutation won't return NextAiringEpisode
-                    // Manga has no NextAiringEpisode anyway, this will be skipped
-                    if (tempNextAiringEp != null) {
-                        newMediaList[editedEntriesIndex!!].media?.nextAiringEpisode = tempNextAiringEp
+                        newMediaList[editedEntriesIndex[index]] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
+
+                        // Needed because bugs in AniList where mutation won't return NextAiringEpisode
+                        // Manga has no NextAiringEpisode anyway, this will be skipped
+                        if (tempNextAiringEp != null) {
+                            newMediaList[editedEntriesIndex[index]].media?.nextAiringEpisode = tempNextAiringEp
+                        }
+
+                        newGroup.entries = newMediaList
+                        newCollection[value] = newGroup
                     }
 
-                    newGroup.entries = newMediaList
-                    newCollection[editedListsIndex!!] = newGroup
                     currentList.lists = newCollection
                     rawMangaList = currentList
 
