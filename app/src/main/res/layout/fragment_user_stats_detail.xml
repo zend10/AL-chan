@@ -199,7 +199,6 @@
                         android:id="@+id/statsRecyclerView"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_marginTop="@dimen/marginNormal"
-                        android:nestedScrollingEnabled="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

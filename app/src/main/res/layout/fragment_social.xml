@@ -115,7 +115,6 @@
                     android:paddingStart="@dimen/marginPage"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
-                    android:nestedScrollingEnabled="false"
                     android:paddingTop="@dimen/marginNormal"
                     android:paddingBottom="@dimen/marginNormal"
                     android:layout_width="wrap_content"
@@ -156,7 +155,6 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/friendsActivityRecyclerView"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:nestedScrollingEnabled="false"
                         android:paddingStart="@dimen/marginNormal"
                         android:paddingEnd="@dimen/marginNormal"
                         android:layout_width="match_parent"

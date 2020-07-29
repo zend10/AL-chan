@@ -283,7 +283,6 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/characterMediaRecyclerView"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    android:nestedScrollingEnabled="false"
                     app:spanCount="3"
                     android:paddingStart="@dimen/marginNormal"
                     android:layout_width="match_parent"

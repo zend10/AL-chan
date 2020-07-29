@@ -32,6 +32,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/friendsListRecyclerView"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginTop="@dimen/marginNormal"
                 android:paddingStart="@dimen/marginNormal"
                 android:paddingEnd="@dimen/marginNormal"
