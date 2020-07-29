@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
@@ -33,6 +34,7 @@ import type.MediaType
 class FavoritesFragment : BaseFragment() {
 
     private val viewModel by viewModel<FavoritesViewModel>()
+    private lateinit var favoriteAdapter: FavoritesRvAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +51,19 @@ class FavoritesFragment : BaseFragment() {
             viewModel.otherUserId = arguments?.getInt(UserFragment.USER_ID)
         }
 
+        favoriteAdapter = FavoritesRvAdapter(activity!!, viewModel.getMixedList(), handleListenerAction())
+        favoriteListRecyclerView.adapter = favoriteAdapter
+
+        (favoriteListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (favoriteAdapter.getItemViewType(position) == FavoritesRvAdapter.VIEW_TYPE_TITLE) {
+                    3
+                } else {
+                    1
+                }
+            }
+        }
+
         initLayout()
         setupObserver()
     }
@@ -56,9 +71,9 @@ class FavoritesFragment : BaseFragment() {
     private fun setupObserver() {
         viewModel.getAnimeObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> favoriteAnimeLoading.visibility = View.VISIBLE
+                ResponseStatus.LOADING -> favoriteListLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
-                    favoriteAnimeLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
 
                     if (!viewModel.animeHasNextPage) {
                         return@Observer
@@ -76,23 +91,22 @@ class FavoritesFragment : BaseFragment() {
                     if (viewModel.animeHasNextPage) {
                         viewModel.getFavorites(BrowsePage.ANIME)
                     } else {
-                        favoriteAnimeRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.animeList, handleListenerAction())
-                        favoriteAnimeLayout.visibility = if (viewModel.animeList.isNullOrEmpty()) View.GONE else View.VISIBLE
+                        favoriteAdapter = FavoritesRvAdapter(activity!!, viewModel.getMixedList(), handleListenerAction())
+                        favoriteListRecyclerView.adapter = favoriteAdapter
                     }
                 }
                 ResponseStatus.ERROR -> {
-                    favoriteAnimeLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                    favoriteAnimeLayout.visibility = if (viewModel.animeList.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
             }
         })
 
         viewModel.getMangaObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> favoriteMangaLoading.visibility = View.VISIBLE
+                ResponseStatus.LOADING -> favoriteListLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
-                    favoriteMangaLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
 
                     if (!viewModel.mangaHasNextPage) {
                         return@Observer
@@ -110,23 +124,22 @@ class FavoritesFragment : BaseFragment() {
                     if (viewModel.mangaHasNextPage) {
                         viewModel.getFavorites(BrowsePage.MANGA)
                     } else {
-                        favoriteMangaRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.mangaList, handleListenerAction())
-                        favoriteMangaLayout.visibility = if (viewModel.mangaList.isNullOrEmpty()) View.GONE else View.VISIBLE
+                        favoriteAdapter = FavoritesRvAdapter(activity!!, viewModel.getMixedList(), handleListenerAction())
+                        favoriteListRecyclerView.adapter = favoriteAdapter
                     }
                 }
                 ResponseStatus.ERROR -> {
-                    favoriteMangaLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                    favoriteMangaLayout.visibility = if (viewModel.mangaList.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
             }
         })
 
         viewModel.getCharactersObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> favoriteCharactersLoading.visibility = View.VISIBLE
+                ResponseStatus.LOADING -> favoriteListLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
-                    favoriteCharactersLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
 
                     if (!viewModel.charactersHasNextPage) {
                         return@Observer
@@ -144,23 +157,22 @@ class FavoritesFragment : BaseFragment() {
                     if (viewModel.charactersHasNextPage) {
                         viewModel.getFavorites(BrowsePage.CHARACTER)
                     } else {
-                        favoriteCharactersRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.charactersList, handleListenerAction())
-                        favoriteCharactersLayout.visibility = if (viewModel.charactersList.isNullOrEmpty()) View.GONE else View.VISIBLE
+                        favoriteAdapter = FavoritesRvAdapter(activity!!, viewModel.getMixedList(), handleListenerAction())
+                        favoriteListRecyclerView.adapter = favoriteAdapter
                     }
                 }
                 ResponseStatus.ERROR -> {
-                    favoriteCharactersLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                    favoriteCharactersLayout.visibility = if (viewModel.charactersList.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
             }
         })
 
         viewModel.getStaffObserver().observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> favoriteStaffsLoading.visibility = View.VISIBLE
+                ResponseStatus.LOADING -> favoriteListLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
-                    favoriteStaffsLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
 
                     if (!viewModel.staffsHasNextPage) {
                         return@Observer
@@ -178,14 +190,13 @@ class FavoritesFragment : BaseFragment() {
                     if (viewModel.staffsHasNextPage) {
                         viewModel.getFavorites(BrowsePage.STAFF)
                     } else {
-                        favoriteStaffsRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.staffsList, handleListenerAction())
-                        favoriteStaffsLayout.visibility = if (viewModel.staffsList.isNullOrEmpty()) View.GONE else View.VISIBLE
+                        favoriteAdapter = FavoritesRvAdapter(activity!!, viewModel.getMixedList(), handleListenerAction())
+                        favoriteListRecyclerView.adapter = favoriteAdapter
                     }
                 }
                 ResponseStatus.ERROR -> {
-                    favoriteStaffsLoading.visibility = View.GONE
+                    favoriteListLoading.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
-                    favoriteStaffsLayout.visibility = if (viewModel.staffsList.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
             }
         })
@@ -230,30 +241,18 @@ class FavoritesFragment : BaseFragment() {
 
         if (!viewModel.animeIsInit) {
             viewModel.getFavorites(BrowsePage.ANIME)
-        } else {
-            favoriteAnimeRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.animeList, handleListenerAction())
-            favoriteAnimeLayout.visibility = if (viewModel.animeList.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         if (!viewModel.mangaIsInit) {
             viewModel.getFavorites(BrowsePage.MANGA)
-        } else {
-            favoriteMangaRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.mangaList, handleListenerAction())
-            favoriteMangaLayout.visibility = if (viewModel.mangaList.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         if (!viewModel.charactersIsInit) {
             viewModel.getFavorites(BrowsePage.CHARACTER)
-        } else {
-            favoriteCharactersRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.charactersList, handleListenerAction())
-            favoriteCharactersLayout.visibility = if (viewModel.charactersList.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         if (!viewModel.staffsIsInit) {
             viewModel.getFavorites(BrowsePage.STAFF)
-        } else {
-            favoriteStaffsRecyclerView.adapter = FavoritesRvAdapter(activity!!, viewModel.staffsList, handleListenerAction())
-            favoriteStaffsLayout.visibility = if (viewModel.staffsList.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         if (!viewModel.studiosIsInit) {

@@ -36,7 +36,7 @@ class ReorderFavoritesViewModel(private val userRepository: UserRepository,
         val idList = ArrayList<Int>()
         val orderList = ArrayList<Int>()
         favoriteList.forEach {
-            idList.add(it.id)
+            idList.add(it.id!!)
             orderList.add(idList.size)
         }
 

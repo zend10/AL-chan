@@ -16,7 +16,6 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/reorderFavoritesLayout"
             android:layout_gravity="end"
-            android:layout_marginBottom="@dimen/marginNormal"
             android:gravity="center_vertical"
             android:layout_marginEnd="@dimen/marginPage"
             android:layout_marginStart="@dimen/marginPage"
@@ -39,169 +38,29 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/favoriteAnimeLayout"
+        <RelativeLayout
+            android:id="@+id/favoriteListLayout"
             android:layout_marginBottom="@dimen/marginPage"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:text="@string/anime"
-                style="?themeRegularBoldFont"
-                android:layout_marginStart="@dimen/marginPage"
-                android:layout_marginEnd="@dimen/marginPage"
-                android:layout_marginBottom="@dimen/marginNormal"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favoriteListRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                android:paddingStart="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/favoriteListLoading"
+                android:layout_margin="@dimen/marginPage"
+                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/favoriteAnimeRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingStart="@dimen/marginNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <ProgressBar
-                    android:visibility="gone"
-                    android:id="@+id/favoriteAnimeLoading"
-                    android:layout_margin="@dimen/marginPage"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/favoriteMangaLayout"
-            android:layout_marginBottom="@dimen/marginPage"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:text="@string/manga"
-                style="?themeRegularBoldFont"
-                android:layout_marginStart="@dimen/marginPage"
-                android:layout_marginEnd="@dimen/marginPage"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/favoriteMangaRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    android:paddingStart="@dimen/marginNormal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <ProgressBar
-                    android:visibility="gone"
-                    android:id="@+id/favoriteMangaLoading"
-                    android:layout_margin="@dimen/marginPage"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/favoriteCharactersLayout"
-            android:layout_marginBottom="@dimen/marginPage"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:text="@string/characters"
-                style="?themeRegularBoldFont"
-                android:layout_marginStart="@dimen/marginPage"
-                android:layout_marginEnd="@dimen/marginPage"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/favoriteCharactersRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    android:paddingStart="@dimen/marginNormal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <ProgressBar
-                    android:visibility="gone"
-                    android:id="@+id/favoriteCharactersLoading"
-                    android:layout_margin="@dimen/marginPage"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/favoriteStaffsLayout"
-            android:layout_marginBottom="@dimen/marginPage"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:text="@string/staffs"
-                style="?themeRegularBoldFont"
-                android:layout_marginStart="@dimen/marginPage"
-                android:layout_marginEnd="@dimen/marginPage"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/favoriteStaffsRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    android:paddingStart="@dimen/marginNormal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <ProgressBar
-                    android:visibility="gone"
-                    android:id="@+id/favoriteStaffsLoading"
-                    android:layout_margin="@dimen/marginPage"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/favoriteStudiosLayout"
@@ -228,7 +87,6 @@
                     android:orientation="horizontal"
                     android:layout_marginStart="@dimen/marginNormal"
                     android:layout_marginEnd="@dimen/marginNormal"
-                    android:nestedScrollingEnabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

@@ -20,7 +20,7 @@ class FavoritesStudiosRvAdapter(private val list: List<FavoriteItem>,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.cardText.text = item.name
-        holder.itemView.setOnClickListener { listener.passSelectedItem(item.id, item.browsePage) }
+        holder.itemView.setOnClickListener { listener.passSelectedItem(item.id!!, item.browsePage) }
     }
 
     override fun getItemCount(): Int {

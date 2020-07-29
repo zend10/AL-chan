@@ -197,4 +197,25 @@ class FavoritesViewModel(private val userRepository: UserRepository,
             triggerRefreshFavorite
         }
     }
+
+    fun getMixedList(): ArrayList<FavoriteItem> {
+        val mixedList = ArrayList<FavoriteItem>()
+        if (!animeList.isNullOrEmpty()) {
+            mixedList.add(FavoriteItem(null, null, null, 0, BrowsePage.ANIME))
+            mixedList.addAll(animeList)
+        }
+        if (!mangaList.isNullOrEmpty()) {
+            mixedList.add(FavoriteItem(null, null, null, 0, BrowsePage.MANGA))
+            mixedList.addAll(mangaList)
+        }
+        if (!charactersList.isNullOrEmpty()) {
+            mixedList.add(FavoriteItem(null, null, null, 0, BrowsePage.CHARACTER))
+            mixedList.addAll(charactersList)
+        }
+        if (!staffsList.isNullOrEmpty()) {
+            mixedList.add(FavoriteItem(null, null, null, 0, BrowsePage.STAFF))
+            mixedList.addAll(staffsList)
+        }
+        return mixedList
+    }
 }

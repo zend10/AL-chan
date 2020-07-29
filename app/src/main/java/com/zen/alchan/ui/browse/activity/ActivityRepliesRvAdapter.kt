@@ -60,6 +60,12 @@ class ActivityRepliesRvAdapter(private val context: Context,
             listener.openUserPage(item.userId!!)
         }
 
+        holder.nameText.setOnLongClickListener {
+            AndroidUtility.copyToClipboard(context, holder.nameText.text.toString())
+            DialogUtility.showToast(context, context.getString(R.string.text_copied))
+            true
+        }
+
         holder.timeText.text = item.createdAt.secondsToDateTime()
 
         AndroidUtility.convertMarkdown(context, holder.activityTextLayout, item.text, maxWidth * 4 / 5, markwon)

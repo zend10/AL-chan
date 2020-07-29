@@ -18,6 +18,7 @@ import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.list_activity.view.*
 import type.ActivityType
@@ -68,6 +69,18 @@ class ActivityListRvAdapter(
 
         holder.activityListLayout.visibility = View.GONE
         holder.activityTextLayout.visibility = View.GONE
+
+        holder.nameText.setOnLongClickListener {
+            AndroidUtility.copyToClipboard(context, holder.nameText.text.toString())
+            DialogUtility.showToast(context, context.getString(R.string.text_copied))
+            true
+        }
+
+        holder.recipientNameText.setOnLongClickListener {
+            AndroidUtility.copyToClipboard(context, holder.recipientNameText.text.toString())
+            DialogUtility.showToast(context, context.getString(R.string.text_copied))
+            true
+        }
 
         holder.timeText.text = act.createdAt.secondsToDateTime()
 
