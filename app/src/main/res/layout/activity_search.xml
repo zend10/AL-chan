@@ -9,9 +9,8 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/searchBarLayout"
         android:layout_marginEnd="@dimen/marginNormal"
-        app:cardElevation="0dp"
         app:contentPadding="@dimen/marginSmall"
-        app:cardBackgroundColor="?themeContentColor"
+        app:cardBackgroundColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/marginPage"
         android:layout_width="match_parent"
@@ -26,7 +25,7 @@
                 android:id="@+id/searchBackButton"
                 app:srcCompat="@drawable/ic_long_arrow_left"
                 android:padding="@dimen/iconPadding"
-                app:tint="?themeBackgroundColor"
+                app:tint="@color/black"
                 android:foreground="?selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -34,11 +33,11 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/searchBarEditText"
                 style="?themeRegularFont"
-                android:textColor="?themeBackgroundColor"
+                android:textColor="@color/black"
                 android:padding="@dimen/iconPadding"
                 android:layout_marginStart="@dimen/marginNormal"
                 android:hint="@string/search"
-                android:textColorHint="?themeCardColor"
+                android:textColorHint="@color/blackLight"
                 android:background="@android:color/transparent"
                 android:maxLines="1"
                 android:inputType="textCapWords"

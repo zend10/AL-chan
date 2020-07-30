@@ -28,8 +28,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/updateProfileCard"
                 app:cardBackgroundColor="?themeCardColor"
-                app:cardElevation="0dp"
                 app:contentPadding="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_marginEnd="@dimen/marginClose"
                 android:layout_marginTop="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -45,8 +46,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/updateAccountCard"
                 app:cardBackgroundColor="?themeCardColor"
-                app:cardElevation="0dp"
                 app:contentPadding="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_marginEnd="@dimen/marginClose"
                 android:layout_marginTop="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -62,8 +64,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/importListsCard"
                 app:cardBackgroundColor="?themeCardColor"
-                app:cardElevation="0dp"
                 app:contentPadding="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_marginEnd="@dimen/marginClose"
                 android:layout_marginTop="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

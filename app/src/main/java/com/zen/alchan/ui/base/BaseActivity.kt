@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
@@ -18,6 +19,12 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(viewModel.appColorThemeResource)
         super.onCreate(savedInstanceState)
+
+        if (Utility.isLightTheme(viewModel.appColorTheme)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (Utility.isLightTheme(viewModel.appColorTheme)) {

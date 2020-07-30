@@ -147,7 +147,7 @@
             android:id="@+id/reviewRatingLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:cardBackgroundColor="@color/cyan"
+            app:cardBackgroundColor="?themeSecondaryColor"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginNormal"
             app:contentPadding="@dimen/marginClose"

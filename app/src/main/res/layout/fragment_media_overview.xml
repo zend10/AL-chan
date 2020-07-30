@@ -64,6 +64,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/mediaDescriptionArrow"
                     app:srcCompat="@drawable/ic_chevron_down"
+                    app:tint="?themeContentColor"
                     android:padding="@dimen/iconPadding"
                     android:foreground="?selectableItemBackground"
                     android:layout_alignBottom="@id/mediaDescriptionText"

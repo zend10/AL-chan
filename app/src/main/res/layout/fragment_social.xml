@@ -155,8 +155,6 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/friendsActivityRecyclerView"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:paddingStart="@dimen/marginNormal"
-                        android:paddingEnd="@dimen/marginNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#212121</color>
+    <color name="yellowStar">#F1C40F</color>
+    <color name="redHeart">#E74C3C</color>
+    <color name="greenCalculator">#2ECC71</color>
+
     <color name="yellow">#FCF1C2</color>
     <color name="cyan">#DCFDF9</color>
     <color name="cyanTransparent50">#80DCFDF9</color>
     <color name="magentaDark">#C987C4</color>
-
-<!--    <color name="yellow">#b49508</color>-->
-<!--    <color name="cyan">#0ccfb8</color>-->
-<!--    <color name="cyanTransparent50">#800ccfb8</color>-->
-<!--    <color name="magentaDark">#381936</color>-->
 
     <color name="green">#BEFAC6</color>
     <color name="lavender">#E3D8FB</color>
@@ -30,10 +31,8 @@
     <color name="aloeveraTransparent50">#80CFFDD0</color>
     <color name="purple">#8D7DC9</color>
 
-    <color name="white">#FFFFFF</color>
     <color name="whiteTransparent12">#1FFFFFFF</color>
 
-    <color name="black">#212121</color>
     <color name="blackTransparent86">#DB212121</color>
     <color name="blackTransparent50">#80212121</color>
     <color name="blackTransparent36">#5C212121</color>
@@ -42,18 +41,22 @@
     <color name="blackLight">#2F2F2F</color>
     <color name="blackLightTransparent80">#CC2F2F2F</color>
 
-    <color name="yellowStar">#F1C40F</color>
-    <color name="redHeart">#E74C3C</color>
-    <color name="greenCalculator">#2ECC71</color>
-
     <!-- For Light Theme -->
+    <color name="lightThemeYellow">#FF8C00</color>
+    <color name="lightThemeCyan">#0078B3</color>
+    <color name="lightThemeCyanTransparent50">#800078B3</color>
+    <color name="lightThemeMagentaDark">#7419FF</color>
+
+    <color name="blackTransparent12">#1F000000</color>
+
     <color name="whiteTransparent86">#DBFFFFFF</color>
-    <color name="whiteTransparent80">#CCFFFFFF</color>
     <color name="whiteTransparent50">#80FFFFFF</color>
     <color name="whiteTransparent36">#5CFFFFFF</color>
     <color name="whiteTransparent0">#00FFFFFF</color>
 
-    <color name="blackTransparent12">#1F000000</color>
+    <color name="whiteLight">#FFFFFF</color>
+    <color name="whiteLightTransparent80">#CCFFFFFF</color>
 
+    <!-- For Dark Theme -->
 
 </resources>

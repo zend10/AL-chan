@@ -31,6 +31,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_phonelink_setup"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -59,6 +60,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -79,6 +81,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_laptop_settings"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -107,6 +110,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -127,6 +131,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_folder_settings"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -155,6 +160,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -175,6 +181,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_alarm"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -203,6 +210,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -223,6 +231,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_admin_settings_male"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -251,6 +260,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -271,6 +281,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_help"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -299,6 +310,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?themeContentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

@@ -96,6 +96,7 @@
             android:visibility="gone"
             android:id="@+id/animeAiringDividerIcon"
             app:srcCompat="@drawable/ic_filled_circle"
+            app:tint="?themeContentColor"
             app:layout_constraintStart_toEndOf="@id/animeFormatText"
             app:layout_constraintTop_toTopOf="@id/animeFormatText"
             app:layout_constraintBottom_toBottomOf="@id/animeFormatText"

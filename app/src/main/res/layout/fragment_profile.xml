@@ -310,6 +310,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/profileBioIcon"
                         app:srcCompat="@drawable/ic_contacts"
+                        app:tint="?themeContentColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -338,6 +339,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/profileFavoritesIcon"
                         app:srcCompat="@drawable/ic_heart_outline"
+                        app:tint="?themeContentColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -366,6 +368,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/profileStatsIcon"
                         app:srcCompat="@drawable/ic_bar_chart"
+                        app:tint="?themeContentColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -394,6 +397,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/profileReviewsIcon"
                         app:srcCompat="@drawable/ic_inscription"
+                        app:tint="?themeContentColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

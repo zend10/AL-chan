@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -33,7 +34,7 @@ class OverviewLinksRvAdapter(private val context: Context,
         val cardTheme = if (Constant.EXTERNAL_LINK.containsKey(item.site.toLowerCase())) {
             Constant.EXTERNAL_LINK[item.site.toLowerCase()]!!
         } else {
-            Pair(null, AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
+            Pair(null, ContextCompat.getColor(context, R.color.blackLight))
         }
         if (cardTheme.first != null) {
             holder.mediaLinkIcon.visibility = View.VISIBLE

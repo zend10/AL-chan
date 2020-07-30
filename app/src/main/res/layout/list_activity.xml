@@ -2,7 +2,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     app:contentPadding="@dimen/marginNormal"
     app:cardBackgroundColor="?themeCardColor"
-    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginSmall"
+    android:layout_marginStart="@dimen/marginNormal"
+    android:layout_marginEnd="@dimen/marginNormal"
+    android:layout_marginTop="@dimen/marginClose"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -146,7 +149,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mediaLayout"
                     app:strokeWidth="@dimen/lineWidth"
-                    app:strokeColor="@color/white"
+                    app:strokeColor="?themeContentColor"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:layout_marginTop="@dimen/marginNormal"
@@ -217,6 +220,7 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:id="@+id/mediaFormatDivider"
                                     app:srcCompat="@drawable/ic_filled_circle"
+                                    app:tint="?themeContentColor"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="@dimen/marginClose"
                                     android:layout_marginEnd="@dimen/marginClose"
@@ -267,6 +271,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_chat_bubble"
+                    app:tint="?themeContentColor"
                     android:layout_width="@dimen/iconSmallSize"
                     android:layout_height="@dimen/iconSmallSize"/>
 
@@ -291,6 +296,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/activityLikeIcon"
                     app:srcCompat="@drawable/ic_heart_outline"
+                    app:tint="?themeContentColor"
                     android:layout_width="@dimen/iconSmallSize"
                     android:layout_height="@dimen/iconSmallSize"/>
 

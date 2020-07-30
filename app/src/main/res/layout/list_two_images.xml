@@ -4,9 +4,10 @@
     android:layout_height="wrap_content"
     app:cardElevation="@dimen/elevationNormal"
     app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginTop="@dimen/marginClose"
     android:layout_marginStart="@dimen/marginNormal"
     android:layout_marginEnd="@dimen/marginNormal"
-    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginSmall"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout

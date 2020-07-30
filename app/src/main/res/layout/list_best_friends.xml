@@ -43,7 +43,7 @@
             android:visibility="gone"
             android:id="@+id/selectedOverlay"
             android:background="@drawable/shape_oval"
-            android:backgroundTint="@color/cyanTransparent50"
+            android:backgroundTint="?themeSecondaryTransparentColor"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

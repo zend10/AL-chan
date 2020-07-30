@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginStart="@dimen/marginClose"
+    android:layout_marginTop="@dimen/marginClose"
+    android:layout_marginBottom="@dimen/marginClose"
     android:layout_marginEnd="@dimen/marginPage"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 

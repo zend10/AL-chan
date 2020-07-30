@@ -21,8 +21,6 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/globalFeedRecyclerView"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:paddingStart="@dimen/marginNormal"
-                android:paddingEnd="@dimen/marginNormal"
                 android:paddingTop="@dimen/marginNormal"
                 android:clipToPadding="false"
                 android:layout_width="match_parent"
@@ -37,7 +35,7 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newActivityButton"
         android:src="@drawable/ic_create"
-        android:tint="?themeBackgroundColor"
+        app:tint="?themeBackgroundColor"
         app:backgroundTint="?themeSecondaryColor"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"

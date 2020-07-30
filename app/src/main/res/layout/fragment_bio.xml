@@ -16,6 +16,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_marginStart="@dimen/marginPage"
             android:layout_marginEnd="@dimen/marginPage"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_marginBottom="@dimen/marginClose"
             app:cardBackgroundColor="?themeCardColor"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

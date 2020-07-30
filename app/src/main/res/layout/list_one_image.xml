@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="@dimen/elevationNormal"
     app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginTop="@dimen/marginClose"
     android:layout_marginStart="@dimen/marginNormal"
     android:layout_marginEnd="@dimen/marginNormal"
-    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginSmall"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
