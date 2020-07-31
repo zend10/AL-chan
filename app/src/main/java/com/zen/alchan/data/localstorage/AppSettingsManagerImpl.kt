@@ -9,7 +9,7 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
     override val appSettings: AppSettings
         get() {
             val savedSettings = localStorage.appSettings
-            if (savedSettings.appTheme == null) savedSettings.appTheme = AppColorTheme.YELLOW
+            if (savedSettings.appTheme == null) savedSettings.appTheme = AppColorTheme.DEFAULT_THEME_YELLOW
             if (savedSettings.circularAvatar == null) savedSettings.circularAvatar = true
             if (savedSettings.whiteBackgroundAvatar == null) savedSettings.whiteBackgroundAvatar = true
             if (savedSettings.voiceActorLanguage == null) savedSettings.voiceActorLanguage = StaffLanguage.JAPANESE

@@ -11,11 +11,10 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
-import kotlinx.android.synthetic.main.list_flexbox_button.view.*
+import kotlinx.android.synthetic.main.list_app_theme.view.*
 
 class AppThemeRvAdapter(private val context: Context,
                         private val list: List<AppColorTheme>,
-                        private val selectedTheme: AppColorTheme,
                         private val listener: AppThemeListener
 ) : RecyclerView.Adapter<AppThemeRvAdapter.ViewHolder>() {
 
@@ -24,23 +23,41 @@ class AppThemeRvAdapter(private val context: Context,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.list_flexbox_button, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.list_app_theme, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val theme = list[position]
-        holder.appThemeItem.text = theme.name.toLowerCase().capitalize().replaceUnderscore()
 
-        if (theme == selectedTheme) {
-            holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeCardColor))
-            holder.appThemeItem.backgroundTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+        var backgroundColor = ContextCompat.getColor(context, R.color.black)
+        var strokeColor = ContextCompat.getColor(context, R.color.white)
+
+        if (theme.name.contains("LIGHT")) {
+            backgroundColor = ContextCompat.getColor(context, R.color.whiteLightTransparent80)
+            strokeColor = ContextCompat.getColor(context, R.color.black)
+        } else if (theme.name.contains("DARK")) {
+            backgroundColor = ContextCompat.getColor(context, R.color.pureBlackLightTransparent80)
+            strokeColor = ContextCompat.getColor(context, R.color.white)
         } else {
-            holder.appThemeItem.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
-            holder.appThemeItem.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.transparent))
+            backgroundColor = ContextCompat.getColor(context, R.color.blackLightTransparent80)
+            strokeColor = ContextCompat.getColor(context, R.color.white)
         }
 
-        holder.appThemeItem.setOnClickListener {
+        holder.themeName.text = theme.name.replaceUnderscore()
+        holder.themeName.setTextColor(strokeColor)
+
+        holder.itemView.setBackgroundColor(backgroundColor)
+        holder.primaryColorItem.strokeColor = strokeColor
+        holder.secondaryColorItem.strokeColor = strokeColor
+        holder.negativeColorItem.strokeColor = strokeColor
+
+        val colorPalette = theme.value
+        holder.primaryColorItem.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, colorPalette.primaryColor))
+        holder.secondaryColorItem.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, colorPalette.secondaryColor))
+        holder.negativeColorItem.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, colorPalette.negativeColor))
+
+        holder.itemView.setOnClickListener {
             listener.passSelectedTheme(theme)
         }
     }
@@ -50,6 +67,9 @@ class AppThemeRvAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val appThemeItem = view.flexBoxItem!!
+        val themeName = view.themeName!!
+        val primaryColorItem = view.primaryColorItem!!
+        val secondaryColorItem = view.secondaryColorItem!!
+        val negativeColorItem = view.negativeColorItem!!
     }
 }

@@ -43,7 +43,7 @@ object Constant {
 
     const val EVA_ID = 103770
 
-    val DEFAULT_THEME = AppColorTheme.YELLOW
+    val DEFAULT_THEME = AppColorTheme.DEFAULT_THEME_YELLOW
 
     val DEFAULT_SPLIT_ANIME_LIST_ORDER = listOf(
         "Watching",

@@ -15,21 +15,21 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
     override val appColorThemeResource: Int
         get() {
             return when (appSettingsManager.appSettings.appTheme ?: Constant.DEFAULT_THEME) {
-                AppColorTheme.YELLOW -> R.style.AppTheme_ThemeYellow
-                AppColorTheme.GREEN -> R.style.AppTheme_ThemeGreen
-                AppColorTheme.BLUE -> R.style.AppTheme_ThemeBlue
-                AppColorTheme.PINK -> R.style.AppTheme_ThemePink
-                AppColorTheme.RED -> R.style.AppTheme_ThemeRed
-                AppColorTheme.LIGHT_YELLOW -> R.style.AppTheme_ThemeLightYellow
-                AppColorTheme.LIGHT_GREEN -> R.style.AppTheme_ThemeLightGreen
-                AppColorTheme.LIGHT_BLUE -> R.style.AppTheme_ThemeLightBlue
-                AppColorTheme.LIGHT_PINK -> R.style.AppTheme_ThemeLightPink
-                AppColorTheme.LIGHT_RED -> R.style.AppTheme_ThemeLightRed
-                AppColorTheme.DARK_YELLOW -> R.style.AppTheme_ThemeDarkYellow
-                AppColorTheme.DARK_GREEN -> R.style.AppTheme_ThemeDarkGreen
-                AppColorTheme.DARK_BLUE -> R.style.AppTheme_ThemeDarkBlue
-                AppColorTheme.DARK_PINK -> R.style.AppTheme_ThemeDarkPink
-                AppColorTheme.DARK_RED -> R.style.AppTheme_ThemeDarkRed
+                AppColorTheme.DEFAULT_THEME_YELLOW -> R.style.AppTheme_ThemeYellow
+                AppColorTheme.DEFAULT_THEME_GREEN -> R.style.AppTheme_ThemeGreen
+                AppColorTheme.DEFAULT_THEME_BLUE -> R.style.AppTheme_ThemeBlue
+                AppColorTheme.DEFAULT_THEME_PINK -> R.style.AppTheme_ThemePink
+                AppColorTheme.DEFAULT_THEME_RED -> R.style.AppTheme_ThemeRed
+                AppColorTheme.LIGHT_THEME_YELLOW -> R.style.AppTheme_ThemeLightYellow
+                AppColorTheme.LIGHT_THEME_GREEN -> R.style.AppTheme_ThemeLightGreen
+                AppColorTheme.LIGHT_THEME_BLUE -> R.style.AppTheme_ThemeLightBlue
+                AppColorTheme.LIGHT_THEME_PINK -> R.style.AppTheme_ThemeLightPink
+                AppColorTheme.LIGHT_THEME_RED -> R.style.AppTheme_ThemeLightRed
+                AppColorTheme.DARK_THEME_YELLOW -> R.style.AppTheme_ThemeDarkYellow
+                AppColorTheme.DARK_THEME_GREEN -> R.style.AppTheme_ThemeDarkGreen
+                AppColorTheme.DARK_THEME_BLUE -> R.style.AppTheme_ThemeDarkBlue
+                AppColorTheme.DARK_THEME_PINK -> R.style.AppTheme_ThemeDarkPink
+                AppColorTheme.DARK_THEME_RED -> R.style.AppTheme_ThemeDarkRed
             }
         }
 

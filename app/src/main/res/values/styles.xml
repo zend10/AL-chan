@@ -54,16 +54,16 @@
     </style>
 
     <style name="DarkAppTheme">
-        <item name="themeBackgroundColor">@color/black</item>
-        <item name="themeCardColor">@color/blackLight</item>
-        <item name="themeCardTransparentColor">@color/blackLightTransparent80</item>
+        <item name="themeBackgroundColor">@color/pureBlack</item>
+        <item name="themeCardColor">@color/pureBlackLight</item>
+        <item name="themeCardTransparentColor">@color/pureBlackLightTransparent80</item>
         <item name="themeDividerColor">@color/whiteTransparent12</item>
         <item name="themeContentColor">@color/white</item>
-        <item name="themeBackgroundTransparent100Color">@color/black</item>
-        <item name="themeBackgroundTransparent86Color">@color/blackTransparent86</item>
-        <item name="themeBackgroundTransparent50Color">@color/blackTransparent50</item>
-        <item name="themeBackgroundTransparent36Color">@color/blackTransparent36</item>
-        <item name="themeBackgroundTransparent0Color">@color/blackTransparent0</item>
+        <item name="themeBackgroundTransparent100Color">@color/pureBlack</item>
+        <item name="themeBackgroundTransparent86Color">@color/pureBlackTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/pureBlackTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/pureBlackTransparent36</item>
+        <item name="themeBackgroundTransparent0Color">@color/pureBlackTransparent0</item>
     </style>
 
     <style name="AppTheme.ThemeYellow" parent="DefaultAppTheme">

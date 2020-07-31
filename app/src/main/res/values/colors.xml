@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#212121</color>
+    <color name="pureBlack">#000000</color>
     <color name="yellowStar">#F1C40F</color>
     <color name="redHeart">#E74C3C</color>
     <color name="greenCalculator">#2ECC71</color>
@@ -47,7 +48,7 @@
     <color name="lightThemeCyanTransparent50">#800078B3</color>
     <color name="lightThemeMagentaDark">#7419FF</color>
 
-    <color name="blackTransparent12">#1F000000</color>
+    <color name="blackTransparent12">#1F212121</color>
 
     <color name="whiteTransparent86">#DBFFFFFF</color>
     <color name="whiteTransparent50">#80FFFFFF</color>
@@ -58,5 +59,12 @@
     <color name="whiteLightTransparent80">#CCFFFFFF</color>
 
     <!-- For Dark Theme -->
+    <color name="pureBlackTransparent86">#DB000000</color>
+    <color name="pureBlackTransparent50">#80000000</color>
+    <color name="pureBlackTransparent36">#5C000000</color>
+    <color name="pureBlackTransparent0">#00000000</color>
+
+    <color name="pureBlackLight">#0F0F0F</color>
+    <color name="pureBlackLightTransparent80">#CC0F0F0F</color>
 
 </resources>

@@ -425,4 +425,6 @@
     <string name="social_feature_is_turned_off_however_if_you_want_to_use_it_you_can_enable_social_feature_by_n_ngo_to_profile_settings_app_settings_toggle_on_enable_social_feature"><![CDATA[Social feature is turned off. If you want to use it, you can enable Social feature by:\n\nGo to Profile > Settings > App Settings > Toggle on Enable Social feature]]></string>
     <string name="click_to_view_bio">Click to view Bio</string>
     <string name="show_chart">Show Chart</string>
+    <string name="select_theme">Select theme</string>
+    <string name="select_colour_scheme">Select colour scheme</string>
 </resources>

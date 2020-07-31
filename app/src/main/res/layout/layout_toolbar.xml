@@ -4,6 +4,7 @@
     android:orientation="vertical"
     app:titleTextAppearance="?themeTitleFont"
     app:subtitleTextAppearance="?themeRegularFont"
+    app:titleTextColor="?themeContentColor"
     android:background="?themeCardColor"
     android:elevation="@dimen/elevationNormal"
     android:id="@+id/toolbarLayout"

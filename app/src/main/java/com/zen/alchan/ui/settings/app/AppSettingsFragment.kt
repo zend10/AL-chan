@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.fragment_app_settings.*
@@ -89,7 +90,7 @@ class AppSettingsFragment : Fragment() {
             true
         }
 
-        selectedThemeText.text = viewModel.selectedAppTheme?.name
+        selectedThemeText.text = viewModel.selectedAppTheme?.name.replaceUnderscore()
         selectedThemeText.setOnClickListener { showAppThemeDialog() }
 
         defaultVoiceActorLanguageText.text = viewModel.selectedLanguage?.name
@@ -125,7 +126,7 @@ class AppSettingsFragment : Fragment() {
         dialog.setListener(object : AppThemeDialogListener {
             override fun passSelectedTheme(theme: AppColorTheme) {
                 viewModel.selectedAppTheme = theme
-                selectedThemeText.text = theme.name
+                selectedThemeText.text = theme.name.replaceUnderscore()
 
                 val palette = viewModel.selectedAppTheme?.value ?: Constant.DEFAULT_THEME.value
                 primaryColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.primaryColor))
@@ -133,9 +134,6 @@ class AppSettingsFragment : Fragment() {
                 negativeColorItem.setCardBackgroundColor(ContextCompat.getColor(activity!!, palette.negativeColor))
             }
         })
-        val bundle = Bundle()
-        bundle.putString(AppThemeDialog.SELECTED_THEME, viewModel.selectedAppTheme.toString())
-        dialog.arguments = bundle
         dialog.show(childFragmentManager, null)
     }
 
