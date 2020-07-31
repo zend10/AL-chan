@@ -5,6 +5,7 @@ import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.helper.enums.AppColorTheme
 
 class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
                     private val userRepository: UserRepository
@@ -25,6 +26,9 @@ class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
     val notificationCount by lazy {
         userRepository.notificationCount
     }
+
+    val appColorTheme: AppColorTheme?
+        get() = appSettingsRepository.appSettings.appTheme
 
     fun checkSession() {
         userRepository.checkSession()

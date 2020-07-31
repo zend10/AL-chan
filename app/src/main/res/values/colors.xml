@@ -48,6 +48,26 @@
     <color name="lightThemeCyanTransparent50">#800078B3</color>
     <color name="lightThemeMagentaDark">#7419FF</color>
 
+    <color name="lightGreen">#2FB651</color>
+    <color name="lightLavender">#7241B5</color>
+    <color name="lightLavenderTransparent50">#807241B5</color>
+    <color name="lightBrown">#B5731D</color>
+
+    <color name="lightBlue">#007AFF</color>
+    <color name="lightCream">#FF2A19</color>
+    <color name="lightCreamTransparent50">#80FF2A19</color>
+    <color name="lightGold">#9DB309</color>
+
+    <color name="lightPink">#FD00F9</color>
+    <color name="lightSunshine">#FF9A1C</color>
+    <color name="lightSunshineTransparent50">#80FF9A1C</color>
+    <color name="lightJade">#09B098</color>
+
+    <color name="lightRed">#FF3B30</color>
+    <color name="lightAloevera">#00B344</color>
+    <color name="lightAloeveraTransparent50">#8000B344</color>
+    <color name="lightPurple">#1791FF</color>
+
     <color name="blackTransparent12">#1F212121</color>
 
     <color name="whiteTransparent86">#DBFFFFFF</color>
@@ -55,8 +75,8 @@
     <color name="whiteTransparent36">#5CFFFFFF</color>
     <color name="whiteTransparent0">#00FFFFFF</color>
 
-    <color name="whiteLight">#FFFFFF</color>
-    <color name="whiteLightTransparent80">#CCFFFFFF</color>
+    <color name="whiteLight">#F2F2F2</color>
+    <color name="whiteLightTransparent80">#CCF2F2F2</color>
 
     <!-- For Dark Theme -->
     <color name="pureBlackTransparent86">#DB000000</color>

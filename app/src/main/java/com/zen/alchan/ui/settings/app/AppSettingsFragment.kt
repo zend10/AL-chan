@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -16,6 +17,7 @@ import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import kotlinx.android.synthetic.main.fragment_app_settings.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -81,6 +83,7 @@ class AppSettingsFragment : Fragment() {
                         showBioCheckBox.isChecked,
                         showStatsCheckBox.isChecked
                     )
+
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
                 },
@@ -112,6 +115,7 @@ class AppSettingsFragment : Fragment() {
                     )
                     viewModel.isInit = false
                     initLayout()
+
                     activity?.recreate()
                     DialogUtility.showToast(activity, R.string.settings_saved)
                 },

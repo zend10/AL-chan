@@ -79,6 +79,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="?themeContentColor"
                         android:layout_width="@dimen/iconSmallSize"
                         android:layout_height="@dimen/iconSmallSize"/>
 

@@ -109,31 +109,31 @@
     </style>
 
     <style name="AppTheme.ThemeLightGreen" parent="LightAppTheme">
-        <item name="themePrimaryColor">@color/green</item>
-        <item name="themeSecondaryColor">@color/lavender</item>
-        <item name="themeSecondaryTransparentColor">@color/lavenderTransparent50</item>
-        <item name="themeNegativeColor">@color/brown</item>
+        <item name="themePrimaryColor">@color/lightGreen</item>
+        <item name="themeSecondaryColor">@color/lightLavender</item>
+        <item name="themeSecondaryTransparentColor">@color/lightLavenderTransparent50</item>
+        <item name="themeNegativeColor">@color/lightBrown</item>
     </style>
 
     <style name="AppTheme.ThemeLightBlue" parent="LightAppTheme">
-        <item name="themePrimaryColor">@color/blue</item>
-        <item name="themeSecondaryColor">@color/cream</item>
-        <item name="themeSecondaryTransparentColor">@color/creamTransparent50</item>
-        <item name="themeNegativeColor">@color/gold</item>
+        <item name="themePrimaryColor">@color/lightBlue</item>
+        <item name="themeSecondaryColor">@color/lightCream</item>
+        <item name="themeSecondaryTransparentColor">@color/lightCreamTransparent50</item>
+        <item name="themeNegativeColor">@color/lightGold</item>
     </style>
 
     <style name="AppTheme.ThemeLightPink" parent="LightAppTheme">
-        <item name="themePrimaryColor">@color/pink</item>
-        <item name="themeSecondaryColor">@color/sunshine</item>
-        <item name="themeSecondaryTransparentColor">@color/sunshineTransparent50</item>
-        <item name="themeNegativeColor">@color/jade</item>
+        <item name="themePrimaryColor">@color/lightPink</item>
+        <item name="themeSecondaryColor">@color/lightSunshine</item>
+        <item name="themeSecondaryTransparentColor">@color/lightSunshineTransparent50</item>
+        <item name="themeNegativeColor">@color/lightJade</item>
     </style>
 
     <style name="AppTheme.ThemeLightRed" parent="LightAppTheme">
-        <item name="themePrimaryColor">@color/red</item>
-        <item name="themeSecondaryColor">@color/aloevera</item>
-        <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
-        <item name="themeNegativeColor">@color/purple</item>
+        <item name="themePrimaryColor">@color/lightRed</item>
+        <item name="themeSecondaryColor">@color/lightAloevera</item>
+        <item name="themeSecondaryTransparentColor">@color/lightAloeveraTransparent50</item>
+        <item name="themeNegativeColor">@color/lightPurple</item>
     </style>
 
     <style name="AppTheme.ThemeDarkYellow" parent="DarkAppTheme">

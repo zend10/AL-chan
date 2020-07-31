@@ -52,9 +52,6 @@ class HomeViewModel(private val userRepository: UserRepository,
         mediaRepository.recentReviewsData
     }
 
-    val appTheme: AppColorTheme?
-        get() = appSettingsRepository.appSettings.appTheme
-
     val circularAvatar
         get() = appSettingsRepository.appSettings.circularAvatar == true
 

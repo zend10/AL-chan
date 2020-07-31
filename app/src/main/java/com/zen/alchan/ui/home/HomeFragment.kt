@@ -256,6 +256,11 @@ class HomeFragment : Fragment() {
         viewModel.initData()
         if (!viewModel.isInit) {
             viewModel.getReleasingToday()
+        } else {
+            releasingTodayAdapter = assignReleasingTodayRvAdapter()
+            releasingTodayRecyclerView.adapter = releasingTodayAdapter
+            releasingTodayRecyclerView.visibility = if (viewModel.releasingTodayList.isNullOrEmpty()) View.GONE else View.VISIBLE
+            noNewEpisodeText.visibility = if (viewModel.releasingTodayList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
     }
 

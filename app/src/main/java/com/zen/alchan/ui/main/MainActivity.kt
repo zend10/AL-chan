@@ -4,12 +4,14 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.zen.alchan.R
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.animelist.AnimeListFragment
 import com.zen.alchan.ui.auth.SplashActivity
 import com.zen.alchan.ui.base.BaseActivity
@@ -37,6 +39,11 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
     private fun setupObserver() {
         viewModel.appColorThemeLiveData.observe(this, Observer {
+            if (Utility.isLightTheme(viewModel.appColorTheme)) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
             recreate()
         })
 
