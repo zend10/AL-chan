@@ -87,4 +87,10 @@
     <color name="pureBlackLight">#0F0F0F</color>
     <color name="pureBlackLightTransparent80">#CC0F0F0F</color>
 
+    <!-- For Community Color -->
+<!--    <color name="blue">#3DB4F2</color>-->
+<!--    <color name="cream">#8DB2DB</color>-->
+<!--    <color name="creamTransparent50">#808DB2DB</color>-->
+<!--    <color name="gold">#E85D75</color>-->
+
 </resources>

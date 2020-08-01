@@ -294,7 +294,7 @@ class MangaListFragment : Fragment() {
                 MangaListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
             }
             ListType.GRID -> {
-                mangaListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+                mangaListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
                 MangaListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
             }
         }

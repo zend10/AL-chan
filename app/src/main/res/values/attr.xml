@@ -34,4 +34,10 @@
     <attr name="themeButtonBorderNegative" format="reference"/>
 
     <attr name="themeRegularCheckBox" format="reference"/>
+
+
+    <integer name="gridSpan">3</integer>
+
+
+
 </resources>

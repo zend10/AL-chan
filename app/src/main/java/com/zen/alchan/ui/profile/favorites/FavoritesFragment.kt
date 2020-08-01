@@ -57,7 +57,7 @@ class FavoritesFragment : BaseFragment() {
         (favoriteListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return if (favoriteAdapter.getItemViewType(position) == FavoritesRvAdapter.VIEW_TYPE_TITLE) {
-                    3
+                    resources.getInteger(R.integer.gridSpan)
                 } else {
                     1
                 }

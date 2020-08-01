@@ -294,7 +294,7 @@ class AnimeListFragment : Fragment() {
                 AnimeListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, handleListAction())
             }
             ListType.GRID -> {
-                animeListRecyclerView.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+                animeListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
                 AnimeListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, handleListAction())
             }
         }
