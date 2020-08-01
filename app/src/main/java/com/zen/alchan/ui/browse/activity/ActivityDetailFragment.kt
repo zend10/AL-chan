@@ -473,7 +473,7 @@ class ActivityDetailFragment : BaseFragment() {
         return ActivityLikesRvAdapter(
             activity!!,
             viewModel.activityDetail?.likes ?: listOf(),
-            maxWidth / 10,
+            maxWidth / resources.getInteger(R.integer.horizontalListLikeDivider),
             object : ActivityLikesRvAdapter.ActivityLikesListener {
                 override fun openUserPage(userId: Int) {
                     listener?.changeFragment(BrowsePage.USER, userId)

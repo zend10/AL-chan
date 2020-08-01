@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftImageGuideline"
-            app:layout_constraintGuide_percent="0.25"
+            app:layout_constraintGuide_percent="@fraction/listImageRatio"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

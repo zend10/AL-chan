@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/avatarImageGuideline"
-            app:layout_constraintGuide_percent="0.15"
+            app:layout_constraintGuide_percent="@fraction/listImageSmallRatio"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -163,7 +163,7 @@
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/mediaImageGuideline"
-                            app:layout_constraintGuide_percent="0.20"
+                            app:layout_constraintGuide_percent="@fraction/listImageMediumRatio"
                             android:orientation="vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>

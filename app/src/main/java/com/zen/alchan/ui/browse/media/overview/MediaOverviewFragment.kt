@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -374,7 +375,7 @@ class MediaOverviewFragment : BaseFragment() {
     private fun assignCharactersAdapter(): OverviewCharactersRvAdapter {
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        val width = metrics.widthPixels / 5
+        val width = metrics.widthPixels / resources.getInteger(R.integer.horizontalListCharacterDivider)
         return OverviewCharactersRvAdapter(activity!!, viewModel.charactersList, width, object : OverviewCharactersRvAdapter.OverviewCharactersListener {
             override fun passSelectedCharacter(characterId: Int) {
                 listener?.changeFragment(BrowsePage.CHARACTER, characterId)
@@ -402,7 +403,7 @@ class MediaOverviewFragment : BaseFragment() {
     private fun assignRelationsAdapter(): OverviewRelationsRvAdapter {
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        val width = metrics.widthPixels / 3
+        val width = metrics.widthPixels / resources.getInteger(R.integer.horizontalListRelationDivider)
         return OverviewRelationsRvAdapter(activity!!, viewModel.relationsList, width, object : OverviewRelationsRvAdapter.OverviewRelationsListener {
             override fun passSelectedRelations(mediaId: Int, mediaType: MediaType) {
                 listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)

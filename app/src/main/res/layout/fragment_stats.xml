@@ -373,7 +373,7 @@
                         <com.github.mikephil.charting.charts.PieChart
                             android:id="@+id/animeStatsStatusPieChart"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintDimensionRatio="@fraction/chartRatio"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"/>
 
@@ -421,7 +421,7 @@
                         <com.github.mikephil.charting.charts.PieChart
                             android:id="@+id/mangaStatsStatusPieChart"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintDimensionRatio="@fraction/chartRatio"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"/>
 
@@ -469,7 +469,7 @@
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/animeStatsScoreBarChart"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintDimensionRatio="@fraction/chartRatio"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"/>
 
@@ -509,7 +509,7 @@
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/mangaStatsScoreBarChart"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintDimensionRatio="@fraction/chartRatio"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"/>
 

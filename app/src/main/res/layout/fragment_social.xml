@@ -62,7 +62,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:padding="@dimen/marginPage"
                         android:orientation="vertical"
-                        android:layout_width="wrap_content"
+                        android:gravity="start"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textview.MaterialTextView

@@ -326,7 +326,7 @@ class CharacterFragment : BaseFragment() {
     private fun assignVoiceActorAdapter(): CharacterVoiceActorRvAdapter {
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        val width = metrics.widthPixels / 5
+        val width = metrics.widthPixels / resources.getInteger(R.integer.horizontalListCharacterDivider)
         return CharacterVoiceActorRvAdapter(activity!!, viewModel.characterVoiceActors, width, object : CharacterVoiceActorRvAdapter.CharacterVoiceActorListener {
             override fun passSelectedVoiceActor(voiceActorId: Int) {
                 listener?.changeFragment(BrowsePage.STAFF, voiceActorId)

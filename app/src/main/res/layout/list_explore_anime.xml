@@ -11,12 +11,13 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/marginSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/exploreImageGuideline"
-            app:layout_constraintGuide_percent="0.25"
+            app:layout_constraintGuide_percent="@fraction/listImageRatio"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -27,9 +28,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/exploreImageGuideline"
             app:layout_constraintDimensionRatio="2:3"
-            android:layout_marginStart="@dimen/marginSmall"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginBottom="@dimen/marginSmall"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_width="0dp"
@@ -42,9 +40,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal"
-            android:layout_marginEnd="@dimen/marginSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
@@ -56,7 +52,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginTop="@dimen/marginClose"
-            android:layout_marginEnd="@dimen/marginSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
@@ -119,7 +114,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal"
-            android:layout_marginEnd="@dimen/marginSmall"
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
@@ -156,12 +150,10 @@
             app:layout_constraintTop_toBottomOf="@+id/exploreScoreLayout"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginStart="@dimen/marginNormal"
-            android:layout_marginEnd="@dimen/marginSmall"
             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

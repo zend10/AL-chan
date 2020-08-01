@@ -256,7 +256,7 @@ class SocialFragment : Fragment() {
     }
 
     private fun assignBestFriendAdapter(): BestFriendRvAdapter {
-        return BestFriendRvAdapter(activity!!, viewModel.bestFriends, AndroidUtility.getScreenWidth(activity) / 5,
+        return BestFriendRvAdapter(activity!!, viewModel.bestFriends, AndroidUtility.getScreenWidth(activity) / resources.getInteger(R.integer.horizontalListCharacterDivider),
             object : BestFriendRvAdapter.BestFriendListener {
                 override fun passSelectedBestFriend(position: Int, id: Int?) {
                     if (position != 0) {

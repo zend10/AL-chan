@@ -60,7 +60,7 @@
 
                             <androidx.constraintlayout.widget.Guideline
                                 android:id="@+id/characterImageGuideline"
-                                app:layout_constraintGuide_percent="0.35"
+                                app:layout_constraintGuide_percent="@fraction/listImageBigRatio"
                                 android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -283,7 +283,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/characterMediaRecyclerView"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
+                    app:spanCount="@integer/gridSpan"
                     android:paddingStart="@dimen/marginNormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

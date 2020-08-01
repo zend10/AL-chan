@@ -247,7 +247,7 @@
                         android:visibility="gone"
                         android:id="@+id/releasingTodayRecyclerView"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="3"
+                        app:spanCount="@integer/gridSpan"
                         android:paddingStart="@dimen/marginNormal"
                         android:nestedScrollingEnabled="false"
                         android:layout_width="match_parent"

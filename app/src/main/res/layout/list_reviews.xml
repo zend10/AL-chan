@@ -13,7 +13,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/bannerImage"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintDimensionRatio="@fraction/listReviewRatio"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             app:srcCompat="@drawable/dark_gradient_two_background"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintDimensionRatio="@fraction/listReviewRatio"
             android:scaleY="-1"
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
@@ -40,7 +40,7 @@
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/avatarImageGuideline"
-                app:layout_constraintGuide_percent="0.25"
+                app:layout_constraintGuide_percent="@fraction/listImageRatio"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

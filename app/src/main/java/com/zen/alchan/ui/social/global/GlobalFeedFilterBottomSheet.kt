@@ -72,7 +72,7 @@ class GlobalFeedFilterBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun assignFilterAdapter(): GlobalFeedFilterRvAdapter {
-        return GlobalFeedFilterRvAdapter(activity!!, viewModel.bestFriends, AndroidUtility.getScreenWidth(activity) / 5, object : GlobalFeedFilterRvAdapter.BestFriendListener {
+        return GlobalFeedFilterRvAdapter(activity!!, viewModel.bestFriends, AndroidUtility.getScreenWidth(activity) / resources.getInteger(R.integer.horizontalListCharacterDivider), object : GlobalFeedFilterRvAdapter.BestFriendListener {
             override fun passSelectedBestFriend(position: Int, id: Int?) {
                 viewModel.selectedFilterIndex = position
 
