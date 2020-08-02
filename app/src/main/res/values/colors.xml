@@ -88,9 +88,17 @@
     <color name="pureBlackLightTransparent80">#CC0F0F0F</color>
 
     <!-- For Community Color -->
-<!--    <color name="blue">#3DB4F2</color>-->
-<!--    <color name="cream">#8DB2DB</color>-->
-<!--    <color name="creamTransparent50">#808DB2DB</color>-->
-<!--    <color name="gold">#E85D75</color>-->
+
+<!--    Axiel Blue-->
+    <color name="axielBlue">#3DB4F2</color>
+    <color name="axielLightBlue">#8DB2DB</color>
+    <color name="axielLightBlueTransparent50">#808DB2DB</color>
+    <color name="axielRed">#E85D75</color>
+
+<!--    Sam Orange-->
+    <color name="samOrange">#FF6E40</color>
+    <color name="samGreen">#33CC80</color>
+    <color name="samGreenTransparent50">#8033CC80</color>
+    <color name="samBlue">#4DB0E1</color>
 
 </resources>

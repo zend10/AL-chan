@@ -427,4 +427,5 @@
     <string name="show_chart">Show Chart</string>
     <string name="select_theme">Select theme</string>
     <string name="select_colour_scheme">Select colour scheme</string>
+    <string name="community_theme">Community Theme</string>
 </resources>

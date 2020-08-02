@@ -19,4 +19,8 @@ enum class AppColorTheme(val value: ColorPalette) {
     DARK_THEME_BLUE(ColorPalette(R.color.blue, R.color.cream, R.color.gold)),
     DARK_THEME_PINK(ColorPalette(R.color.pink, R.color.sunshine, R.color.jade)),
     DARK_THEME_RED(ColorPalette(R.color.red, R.color.aloevera, R.color.purple)),
+    COMMUNITY_AXIEL_BLUE(ColorPalette(R.color.axielBlue, R.color.axielLightBlue, R.color.axielRed)),
+    COMMUNITY_SAM_ORANGE(ColorPalette(R.color.samOrange, R.color.samGreen, R.color.samBlue)),
+    COMMUNITY_DARK_AXIEL_BLUE(ColorPalette(R.color.axielBlue, R.color.axielLightBlue, R.color.axielRed)),
+    COMMUNITY_DARK_SAM_ORANGE(ColorPalette(R.color.samOrange, R.color.samGreen, R.color.samBlue))
 }

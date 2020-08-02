@@ -1,5 +1,7 @@
 <resources>
 
+    <!-- Parent Theme -->
+
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">?themePrimaryColor</item>
         <item name="colorPrimaryDark">?themePrimaryColor</item>
@@ -66,6 +68,8 @@
         <item name="themeBackgroundTransparent0Color">@color/pureBlackTransparent0</item>
     </style>
 
+    <!-- Default Theme -->
+
     <style name="AppTheme.ThemeYellow" parent="DefaultAppTheme">
         <item name="themePrimaryColor">@color/yellow</item>
         <item name="themeSecondaryColor">@color/cyan</item>
@@ -100,6 +104,8 @@
         <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
         <item name="themeNegativeColor">@color/purple</item>
     </style>
+
+    <!-- Light Theme -->
 
     <style name="AppTheme.ThemeLightYellow" parent="LightAppTheme">
         <item name="themePrimaryColor">@color/lightThemeYellow</item>
@@ -136,6 +142,8 @@
         <item name="themeNegativeColor">@color/lightPurple</item>
     </style>
 
+    <!-- Dark Theme -->
+
     <style name="AppTheme.ThemeDarkYellow" parent="DarkAppTheme">
         <item name="themePrimaryColor">@color/yellow</item>
         <item name="themeSecondaryColor">@color/cyan</item>
@@ -170,6 +178,38 @@
         <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
         <item name="themeNegativeColor">@color/purple</item>
     </style>
+
+    <!-- Community Theme -->
+
+    <style name="AppTheme.ThemeAxielBlue" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/axielBlue</item>
+        <item name="themeSecondaryColor">@color/axielLightBlue</item>
+        <item name="themeSecondaryTransparentColor">@color/axielLightBlueTransparent50</item>
+        <item name="themeNegativeColor">@color/axielRed</item>
+    </style>
+
+    <style name="AppTheme.ThemeSamOrange" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/samOrange</item>
+        <item name="themeSecondaryColor">@color/samGreen</item>
+        <item name="themeSecondaryTransparentColor">@color/samGreenTransparent50</item>
+        <item name="themeNegativeColor">@color/samBlue</item>
+    </style>
+
+    <style name="AppTheme.ThemeDarkAxielBlue" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/axielBlue</item>
+        <item name="themeSecondaryColor">@color/axielLightBlue</item>
+        <item name="themeSecondaryTransparentColor">@color/axielLightBlueTransparent50</item>
+        <item name="themeNegativeColor">@color/axielRed</item>
+    </style>
+
+    <style name="AppTheme.ThemeDarkSamOrange" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/samOrange</item>
+        <item name="themeSecondaryColor">@color/samGreen</item>
+        <item name="themeSecondaryTransparentColor">@color/samGreenTransparent50</item>
+        <item name="themeNegativeColor">@color/samBlue</item>
+    </style>
+
+    <!-- Font -->
 
     <style name="FontAppName">
         <item name="android:fontFamily">@font/ubuntu_medium</item>
@@ -231,6 +271,8 @@
         <item name="android:textColor">?themeContentColor</item>
     </style>
 
+    <!-- Button -->
+
     <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?themePrimaryColor</item>
         <item name="android:textColor">?themeBackgroundColor</item>
@@ -277,6 +319,8 @@
         <item name="android:letterSpacing">0</item>
     </style>
 
+    <!-- Others -->
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -306,6 +350,8 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
+
+    <!-- Spoiler Activity -->
 
     <style name="Theme.MaterialComponents.NoActionBar.Translucent" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>

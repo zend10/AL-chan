@@ -16,7 +16,7 @@ class AppThemeDialog : DialogFragment() {
     private lateinit var dialogView: View
 
     private lateinit var adapter: AppThemeRvAdapter
-    private var themeList = ArrayList<AppColorTheme>()
+    private var themeList = ArrayList<AppColorTheme?>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(activity)
@@ -25,6 +25,16 @@ class AppThemeDialog : DialogFragment() {
         dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_list, null)
 
         themeList.addAll(AppColorTheme.values())
+
+        var titleIndex = 0
+        for (index in 0 until themeList.size) {
+            if (themeList[index]?.name?.contains("COMMUNITY") == true) {
+                titleIndex = index
+                break
+            }
+        }
+        themeList.add(titleIndex, null)
+
         adapter = assignAdapter()
         dialogView.listRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         dialogView.listRecyclerView.adapter = adapter
