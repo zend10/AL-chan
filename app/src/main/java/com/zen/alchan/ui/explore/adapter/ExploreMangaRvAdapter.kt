@@ -13,6 +13,7 @@ import com.zen.alchan.helper.setRegularPlural
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
 import com.zen.alchan.ui.search.SearchListener
 import kotlinx.android.synthetic.main.list_explore_anime.view.*
+import type.MediaListStatus
 
 class ExploreMangaRvAdapter(private val context: Context,
                             private val list: List<SearchResult?>,
@@ -73,6 +74,13 @@ class ExploreMangaRvAdapter(private val context: Context,
                 holder.exploreGenreRecyclerView.visibility = View.GONE
             }
 
+            if (item?.mediaListEntry != null) {
+                holder.userStatusLayout.visibility = View.VISIBLE
+                holder.userStatusText.text = if (item.mediaListEntry.status == MediaListStatus.CURRENT) context.getString(R.string.reading_caps) else item.mediaListEntry.status?.name.replaceUnderscore()
+            } else {
+                holder.userStatusLayout.visibility = View.GONE
+            }
+
             holder.itemView.setOnClickListener {
                 listener.passSelectedItem(item?.id!!)
             }
@@ -98,6 +106,8 @@ class ExploreMangaRvAdapter(private val context: Context,
         val exploreScoreText = view.exploreScoreText!!
         val exploreFavoriteText = view.exploreFavoriteText!!
         val exploreGenreRecyclerView = view.exploreGenreRecyclerView!!
+        val userStatusLayout = view.userStatusLayout!!
+        val userStatusText = view.userStatusText!!
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)

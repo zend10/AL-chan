@@ -145,7 +145,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/exploreGenreRecyclerView"
-            app:layout_constraintStart_toStartOf="@id/exploreImageGuideline"
+            app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/exploreScoreLayout"
             android:layout_marginTop="@dimen/marginNormal"
@@ -154,6 +154,29 @@
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/userStatusLayout"
+            android:visibility="visible"
+            app:contentPadding="@dimen/marginClose"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?themeSecondaryColor"
+            app:layout_constraintTop_toBottomOf="@id/exploreCoverImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/exploreImageGuideline"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/userStatusText"
+                style="?themeSmallFont"
+                android:layout_gravity="center"
+                android:textColor="?themeCardColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

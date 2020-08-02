@@ -45,7 +45,7 @@ class SeasonalRvAdapter(private val context: Context,
         holder.seasonalCountText.text = item.stats?.statusDistribution?.sumBy { it.amount }?.toString() ?: "0"
 
         if (item.mediaListEntry != null) {
-            holder.seasonalStatusText.text = if (item.mediaListEntry?.status == MediaListStatus.CURRENT) "WATCHING" else item.mediaListEntry?.status?.name.replaceUnderscore()
+            holder.seasonalStatusText.text = if (item.mediaListEntry?.status == MediaListStatus.CURRENT) context.getString(R.string.watching_caps) else item.mediaListEntry?.status?.name.replaceUnderscore()
             GlideApp.with(context).load(R.drawable.ic_filled_circle).into(holder.seasonalStatusIcon)
             holder.seasonalStatusText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
             holder.seasonalStatusIcon.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
