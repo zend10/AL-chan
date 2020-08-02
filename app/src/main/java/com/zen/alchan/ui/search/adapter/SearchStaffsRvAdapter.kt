@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.list_search.view.*
 
 class SearchStaffsRvAdapter(private val context: Context,
                             private val list: List<SearchResult?>,
+                            private val showRank: Boolean,
                             private val listener: SearchListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -44,6 +45,13 @@ class SearchStaffsRvAdapter(private val context: Context,
             holder.itemView.setOnClickListener {
                 listener.passSelectedItem(item?.staffsSearchResult?.id!!)
             }
+
+            if (showRank) {
+                holder.entryRankLayout.visibility = View.VISIBLE
+                holder.entryRankText.text = (position + 1).toString()
+            } else {
+                holder.entryRankLayout.visibility = View.GONE
+            }
         }
     }
 
@@ -61,6 +69,8 @@ class SearchStaffsRvAdapter(private val context: Context,
         val searchInfoLayout = view.searchInfoLayout!!
         val searchScoreText = view.searchScoreText!!
         val searchFavoriteText = view.searchFavoriteText!!
+        val entryRankLayout = view.entryRankLayout!!
+        val entryRankText = view.entryRankText!!
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)

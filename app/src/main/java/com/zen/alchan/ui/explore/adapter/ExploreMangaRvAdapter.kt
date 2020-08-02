@@ -81,6 +81,8 @@ class ExploreMangaRvAdapter(private val context: Context,
                 holder.userStatusLayout.visibility = View.GONE
             }
 
+            holder.entryRankText.text = (position + 1).toString()
+
             holder.itemView.setOnClickListener {
                 listener.passSelectedItem(item?.id!!)
             }
@@ -108,6 +110,7 @@ class ExploreMangaRvAdapter(private val context: Context,
         val exploreGenreRecyclerView = view.exploreGenreRecyclerView!!
         val userStatusLayout = view.userStatusLayout!!
         val userStatusText = view.userStatusText!!
+        val entryRankText = view.entryRankText!!
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)

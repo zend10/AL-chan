@@ -214,9 +214,9 @@ class SearchListFragment : Fragment() {
         adapter = when (viewModel.searchPage) {
             BrowsePage.ANIME -> SearchAnimeRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.ANIME))
             BrowsePage.MANGA -> SearchMangaRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.MANGA))
-            BrowsePage.CHARACTER -> SearchCharactersRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.CHARACTER))
-            BrowsePage.STAFF -> SearchStaffsRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.STAFF))
-            BrowsePage.STUDIO -> SearchStudioRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.STUDIO))
+            BrowsePage.CHARACTER -> SearchCharactersRvAdapter(activity!!, viewModel.searchResultList, false, searchListenerObject(BrowsePage.CHARACTER))
+            BrowsePage.STAFF -> SearchStaffsRvAdapter(activity!!, viewModel.searchResultList, false, searchListenerObject(BrowsePage.STAFF))
+            BrowsePage.STUDIO -> SearchStudioRvAdapter(activity!!, viewModel.searchResultList, false, searchListenerObject(BrowsePage.STUDIO))
             BrowsePage.USER -> SearchUsersRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.USER))
             else -> SearchAnimeRvAdapter(activity!!, viewModel.searchResultList, searchListenerObject(BrowsePage.ANIME))
         }

@@ -248,9 +248,9 @@ class ExploreActivity : BaseActivity() {
         adapter = when (viewModel.selectedExplorePage) {
             BrowsePage.ANIME -> ExploreAnimeRvAdapter(this, viewModel.searchResultList, searchListenerObject(BrowsePage.ANIME))
             BrowsePage.MANGA -> ExploreMangaRvAdapter(this, viewModel.searchResultList, searchListenerObject(BrowsePage.MANGA))
-            BrowsePage.CHARACTER -> SearchCharactersRvAdapter(this, viewModel.searchResultList, searchListenerObject(BrowsePage.CHARACTER))
-            BrowsePage.STAFF -> SearchStaffsRvAdapter(this, viewModel.searchResultList, searchListenerObject(BrowsePage.STAFF))
-            BrowsePage.STUDIO -> SearchStudioRvAdapter(this, viewModel.searchResultList, searchListenerObject(BrowsePage.STUDIO))
+            BrowsePage.CHARACTER -> SearchCharactersRvAdapter(this, viewModel.searchResultList, true, searchListenerObject(BrowsePage.CHARACTER))
+            BrowsePage.STAFF -> SearchStaffsRvAdapter(this, viewModel.searchResultList, true, searchListenerObject(BrowsePage.STAFF))
+            BrowsePage.STUDIO -> SearchStudioRvAdapter(this, viewModel.searchResultList, true, searchListenerObject(BrowsePage.STUDIO))
             else -> ExploreAnimeRvAdapter(this, viewModel.searchResultList, searchListenerObject(BrowsePage.ANIME))
         }
 
