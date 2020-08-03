@@ -75,7 +75,7 @@
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginNormal"
             android:foreground="?selectableItemBackground"
-            android:maxLines="2"
+            android:maxLines="1"
             android:ellipsize="end"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>

@@ -430,6 +430,6 @@
     <string name="community_theme">Community Theme</string>
     <string name="ep_in_h">Ep. %1$d in %2$dh</string>
     <string name="ep_in_m">Ep. %1$d in %2$dm</string>
-    <string name="ep_h_ago">Ep. %1$d %2$dh ago</string>
-    <string name="ep_m_ago">Ep. %1$d %2$dm ag.</string>
+    <string name="ep_h_ago">Ep. %1$d - %2$dh ago</string>
+    <string name="ep_m_ago">Ep. %1$d - %2$dm ago</string>
 </resources>
