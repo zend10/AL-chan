@@ -7,6 +7,7 @@ import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.SeasonalAnime
+import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.SeasonalCategory
 import type.*
 
@@ -15,6 +16,8 @@ class SeasonalViewModel(private val searchRepository: SearchRepository,
                         private val userRepository: UserRepository,
                         val gson: Gson
 ) : ViewModel() {
+
+    var currentListType: ListType? = null
 
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null

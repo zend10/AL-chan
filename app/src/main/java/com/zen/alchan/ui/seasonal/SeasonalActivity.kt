@@ -4,16 +4,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.util.toRange
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.SeasonalAnime
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.changeStatusBarColor
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -75,7 +80,7 @@ class SeasonalActivity : BaseActivity() {
                     if (viewModel.tvHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.TV)
                     } else {
-                        seasonalTvRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.tvList, handleAdapterAction())
+                        assignAdapter(seasonalTvRecyclerView, viewModel.tvList)
                         seasonalNoTvText.visibility = if (viewModel.tvList.isNullOrEmpty()) View.VISIBLE else View.GONE
                     }
                 }
@@ -105,7 +110,7 @@ class SeasonalActivity : BaseActivity() {
                     if (viewModel.tvShortHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.TV_SHORT)
                     } else {
-                        seasonalTvShortRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.tvShortList, handleAdapterAction())
+                        assignAdapter(seasonalTvShortRecyclerView, viewModel.tvShortList)
                         seasonalNoTvShortText.visibility = if (viewModel.tvShortList.isNullOrEmpty()) View.VISIBLE else View.GONE
                     }
                 }
@@ -135,7 +140,7 @@ class SeasonalActivity : BaseActivity() {
                     if (viewModel.movieHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.MOVIE)
                     } else {
-                        seasonalMovieRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.movieList, handleAdapterAction())
+                        assignAdapter(seasonalMovieRecyclerView, viewModel.movieList)
                         seasonalNoMovieText.visibility = if (viewModel.movieList.isNullOrEmpty()) View.VISIBLE else View.GONE
                     }
                 }
@@ -165,7 +170,7 @@ class SeasonalActivity : BaseActivity() {
                     if (viewModel.othersHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.OTHERS)
                     } else {
-                        seasonalOthersRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.othersList, handleAdapterAction())
+                        assignAdapter(seasonalOthersRecyclerView, viewModel.othersList)
                         seasonalNoOthersText.visibility = if (viewModel.othersList.isNullOrEmpty()) View.VISIBLE else View.GONE
                     }
                 }
@@ -202,28 +207,28 @@ class SeasonalActivity : BaseActivity() {
         if (!viewModel.tvIsInit) {
             viewModel.getSeasonalAnime(SeasonalCategory.TV)
         } else {
-            seasonalTvRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.tvList, handleAdapterAction())
+            assignAdapter(seasonalTvRecyclerView, viewModel.tvList)
             seasonalNoTvText.visibility = if (viewModel.tvList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         if (!viewModel.tvShortIsInit) {
             viewModel.getSeasonalAnime(SeasonalCategory.TV_SHORT)
         } else {
-            seasonalTvShortRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.tvShortList, handleAdapterAction())
+            assignAdapter(seasonalTvShortRecyclerView, viewModel.tvShortList)
             seasonalNoTvShortText.visibility = if (viewModel.tvShortList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         if (!viewModel.movieIsInit) {
             viewModel.getSeasonalAnime(SeasonalCategory.MOVIE)
         } else {
-            seasonalMovieRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.movieList, handleAdapterAction())
+            assignAdapter(seasonalMovieRecyclerView, viewModel.movieList)
             seasonalNoMovieText.visibility = if (viewModel.movieList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         if (!viewModel.othersIsInit) {
             viewModel.getSeasonalAnime(SeasonalCategory.OTHERS)
         } else {
-            seasonalOthersRecyclerView.adapter = SeasonalRvAdapter(this, viewModel.othersList, handleAdapterAction())
+            assignAdapter(seasonalOthersRecyclerView, viewModel.othersList)
             seasonalNoOthersText.visibility = if (viewModel.othersList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
     }
@@ -335,7 +340,7 @@ class SeasonalActivity : BaseActivity() {
         }
     }
 
-    private fun handleAdapterAction() = object : SeasonalRvAdapter.SeasonalListener {
+    private fun handleAdapterAction() = object : SeasonalListener {
         override fun openDetail(seasonalAnime: SeasonalAnime) {
             val dialog = SeasonalDialog()
             val bundle = Bundle()
@@ -353,6 +358,42 @@ class SeasonalActivity : BaseActivity() {
 
         override fun addToPlanning(id: Int) {
             viewModel.addToPlanning(id)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_seasonal, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.itemChangeListType) {
+            if (viewModel.currentListType == ListType.GRID) {
+                viewModel.currentListType = ListType.LINEAR
+            } else {
+                viewModel.currentListType = ListType.GRID
+            }
+
+            updateListType()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun updateListType() {
+        assignAdapter(seasonalTvRecyclerView, viewModel.tvList)
+        assignAdapter(seasonalTvShortRecyclerView, viewModel.tvShortList)
+        assignAdapter(seasonalMovieRecyclerView, viewModel.movieList)
+        assignAdapter(seasonalOthersRecyclerView, viewModel.othersList)
+    }
+
+    private fun assignAdapter(recyclerView: RecyclerView, list: List<SeasonalAnime>) {
+        if (viewModel.currentListType == ListType.GRID) {
+            recyclerView.layoutManager = GridLayoutManager(this, resources.getInteger(R.integer.gridSpan))
+            recyclerView.adapter = SeasonalGridRvAdapter(this, list, handleAdapterAction())
+        } else {
+            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            recyclerView.adapter = SeasonalRvAdapter(this, list, handleAdapterAction())
         }
     }
 

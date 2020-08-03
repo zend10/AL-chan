@@ -19,12 +19,6 @@ class SeasonalRvAdapter(private val context: Context,
                         private val listener: SeasonalListener
 ): RecyclerView.Adapter<SeasonalRvAdapter.ViewHolder>() {
 
-    interface SeasonalListener {
-        fun openDetail(seasonalAnime: SeasonalAnime)
-        fun openAnime(id: Int)
-        fun addToPlanning(id: Int)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_seasonal, parent, false)
         return ViewHolder(view)

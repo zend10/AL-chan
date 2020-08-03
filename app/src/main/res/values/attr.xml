@@ -9,6 +9,7 @@
     <attr name="themeCardTransparentColor" format="reference"/>
     <attr name="themeDividerColor" format="reference"/>
     <attr name="themeContentColor" format="reference"/>
+    <attr name="themeContentTransparentColor" format="reference"/>
     <attr name="themeBackgroundTransparent100Color" format="reference"/>
     <attr name="themeBackgroundTransparent86Color" format="reference"/>
     <attr name="themeBackgroundTransparent50Color" format="reference"/>
