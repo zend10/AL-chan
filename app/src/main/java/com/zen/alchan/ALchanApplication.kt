@@ -137,7 +137,7 @@ class ALchanApplication : Application() {
         viewModel { MainViewModel(get(), get()) }
 
         // home, search, explore, seasonal, reviews
-        viewModel { HomeViewModel(get(), get(), get()) }
+        viewModel { HomeViewModel(get(), get(), get(), get()) }
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
         viewModel { ExploreViewModel(get(), gson) }

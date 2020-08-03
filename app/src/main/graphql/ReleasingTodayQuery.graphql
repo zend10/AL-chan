@@ -21,6 +21,7 @@ query ReleasingTodayQuery($page: Int) {
             coverImage {
                 large
             }
+            episodes
             nextAiringEpisode {
                 airingAt
                 timeUntilAiring
@@ -36,7 +37,10 @@ query ReleasingTodayQuery($page: Int) {
                 }
             }
             mediaListEntry {
+                id
                 status
+                progress
+                repeat
             }
         }
     }

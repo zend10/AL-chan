@@ -2,17 +2,20 @@ package com.zen.alchan.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.data.repository.AppSettingsRepository
+import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.MediaRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.Utility
+import type.MediaListStatus
 import type.ReviewSort
 
 class HomeViewModel(private val userRepository: UserRepository,
                     private val appSettingsRepository: AppSettingsRepository,
-                    private val mediaRepository: MediaRepository
+                    private val mediaRepository: MediaRepository,
+                    private val mediaListRepository: MediaListRepository
 ) : ViewModel() {
 
     var isInit = false
@@ -50,6 +53,10 @@ class HomeViewModel(private val userRepository: UserRepository,
 
     val recentReviewsData by lazy {
         mediaRepository.recentReviewsData
+    }
+
+    val animeListData by lazy {
+        mediaListRepository.animeListData
     }
 
     val circularAvatar
@@ -90,5 +97,14 @@ class HomeViewModel(private val userRepository: UserRepository,
 
     fun getNotificationCount() {
         userRepository.getNotificationCount()
+    }
+
+    fun updateAnimeProgress(
+        entryId: Int,
+        status: MediaListStatus,
+        repeat: Int,
+        progress: Int
+    ) {
+        mediaListRepository.updateAnimeProgress(entryId, status, repeat, progress)
     }
 }

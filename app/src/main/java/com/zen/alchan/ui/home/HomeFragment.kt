@@ -24,8 +24,10 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
+import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
+import com.zen.alchan.ui.common.SetProgressDialog
 import com.zen.alchan.ui.explore.ExploreActivity
 import com.zen.alchan.ui.reviews.ReviewsActivity
 import com.zen.alchan.ui.reviews.ReviewsRvAdapter
@@ -253,6 +255,16 @@ class HomeFragment : Fragment() {
             }
         })
 
+        viewModel.animeListData.observe(viewLifecycleOwner, Observer {
+            if (!viewModel.releasingTodayList.isNullOrEmpty()) {
+                loadingLayout.visibility = View.GONE
+                viewModel.page = 1
+                viewModel.hasNextPage = true
+                viewModel.releasingTodayList.clear()
+                viewModel.getReleasingToday()
+            }
+        })
+
         viewModel.initData()
         if (!viewModel.isInit) {
             viewModel.getReleasingToday()
@@ -413,13 +425,106 @@ class HomeFragment : Fragment() {
 
     private fun assignReleasingTodayRvAdapter(): ReleasingTodayRvAdapter {
         return ReleasingTodayRvAdapter(activity!!, viewModel.releasingTodayList, object : ReleasingTodayRvAdapter.ReleasingTodayListener {
-            override fun passSelectedAnime(mediaId: Int) {
+            override fun openBrowsePage(id: Int) {
                 val intent = Intent(activity, BrowseActivity::class.java)
                 intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ANIME.name)
-                intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
+                intent.putExtra(BrowseActivity.LOAD_ID, id)
                 startActivity(intent)
             }
+
+            override fun openEditor(mediaListId: Int) {
+                val intent = Intent(activity, AnimeListEditorActivity::class.java)
+                intent.putExtra(AnimeListEditorActivity.INTENT_ENTRY_ID, mediaListId)
+                startActivity(intent)
+            }
+
+            override fun openProgressDialog(
+                mediaList: ReleasingTodayQuery.MediaListEntry,
+                episodeTotal: Int?
+            ) {
+                val setProgressDialog = SetProgressDialog()
+                val bundle = Bundle()
+                bundle.putInt(SetProgressDialog.BUNDLE_CURRENT_PROGRESS, mediaList.progress ?: 0)
+                if (episodeTotal != null) {
+                    bundle.putInt(SetProgressDialog.BUNDLE_TOTAL_EPISODES, episodeTotal)
+                }
+                setProgressDialog.arguments = bundle
+                setProgressDialog.setListener(object : SetProgressDialog.SetProgressListener {
+                    override fun passProgress(newProgress: Int) {
+                        handleUpdateProgressBehavior(mediaList, episodeTotal, newProgress)
+                    }
+                })
+                setProgressDialog.show(childFragmentManager, null)
+            }
+
+            override fun incrementProgress(
+                mediaList: ReleasingTodayQuery.MediaListEntry,
+                episodeTotal: Int?
+            ) {
+                handleUpdateProgressBehavior(mediaList, episodeTotal, mediaList.progress?.plus(1) ?: 1)
+            }
         })
+    }
+
+    private fun handleUpdateProgressBehavior(mediaList: ReleasingTodayQuery.MediaListEntry, episodeTotal: Int?, newProgress: Int) {
+        if (mediaList.progress == newProgress) {
+            return
+        }
+
+        var status = mediaList.status
+        var repeat = mediaList.repeat
+
+        if (newProgress == episodeTotal) {
+            DialogUtility.showOptionDialog(
+                activity,
+                R.string.move_to_completed,
+                R.string.do_you_want_to_set_this_entry_into_completed,
+                R.string.move,
+                {
+                    if (status == MediaListStatus.REPEATING) {
+                        repeat = repeat!! + 1
+                    }
+                    status = MediaListStatus.COMPLETED
+                    loadingLayout.visibility = View.VISIBLE
+                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                },
+                R.string.stay,
+                {
+                    loadingLayout.visibility = View.VISIBLE
+                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                }
+            )
+        } else {
+            when (mediaList.status) {
+                MediaListStatus.PLANNING, MediaListStatus.PAUSED, MediaListStatus.DROPPED -> {
+                    DialogUtility.showOptionDialog(
+                        activity,
+                        R.string.move_to_watching,
+                        R.string.do_you_want_to_set_this_entry_into_watching,
+                        R.string.move,
+                        {
+                            status = MediaListStatus.CURRENT
+                            loadingLayout.visibility = View.VISIBLE
+                            viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                        },
+                        R.string.stay,
+                        {
+                            loadingLayout.visibility = View.VISIBLE
+                            viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                        }
+                    )
+                }
+                MediaListStatus.COMPLETED -> {
+                    status = MediaListStatus.CURRENT
+                    loadingLayout.visibility = View.VISIBLE
+                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                }
+                else -> {
+                    loadingLayout.visibility = View.VISIBLE
+                    viewModel.updateAnimeProgress(mediaList.id, status!!, repeat!!, newProgress)
+                }
+            }
+        }
     }
 
     private fun assignReviewsRvAdapter(): ReviewsRvAdapter {
