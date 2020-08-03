@@ -85,7 +85,7 @@ class TextEditorActivity : BaseActivity() {
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_delete)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         supportActionBar?.title = when (viewModel.editorType) {
             EditorType.ACTIVITY -> {
                 if (viewModel.activityId != null) {

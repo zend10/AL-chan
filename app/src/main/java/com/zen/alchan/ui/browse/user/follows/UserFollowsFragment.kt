@@ -34,8 +34,8 @@ class UserFollowsFragment : BaseFragment() {
 
         followsToolbar.apply {
             title = getString(R.string.friends)
-            setNavigationOnClickListener { activity?.finish() }
-            navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+            setNavigationOnClickListener { activity?.onBackPressed() }
+            navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
         }
 
         followsViewPager.adapter = FollowsViewPagerAdapter(childFragmentManager, arguments?.getInt(USER_ID))

@@ -78,8 +78,8 @@ class ActivityListFragment : BaseFragment() {
         activityRecyclerView.adapter = adapter
 
         toolbarLayout.title = getString(R.string.activity)
-        toolbarLayout.setNavigationOnClickListener { activity?.finish() }
-        toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+        toolbarLayout.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
         toolbarLayout.inflateMenu(R.menu.menu_filter)
         itemFilter = toolbarLayout.menu.findItem(R.id.itemFilter)
 

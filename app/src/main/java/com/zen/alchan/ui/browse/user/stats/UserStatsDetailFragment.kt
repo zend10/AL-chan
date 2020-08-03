@@ -58,8 +58,8 @@ class UserStatsDetailFragment : BaseFragment() {
 
         viewModel.otherUserId = arguments?.getInt(USER_ID)
 
-        toolbarLayout.setNavigationOnClickListener { activity?.finish() }
-        toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+        toolbarLayout.setNavigationOnClickListener { activity?.onBackPressed() }
+        toolbarLayout.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
 
         if (viewModel.selectedCategory == null) {
             viewModel.selectedCategory = StatsCategory.FORMAT

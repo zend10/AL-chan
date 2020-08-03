@@ -80,8 +80,8 @@ class UserMediaListFragment : BaseFragment() {
 
         toolbarLayout.apply {
             title = if (viewModel.mediaType == MediaType.ANIME) getString(R.string.anime_list) else getString(R.string.manga_list)
-            setNavigationOnClickListener { activity?.finish() }
-            navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+            setNavigationOnClickListener { activity?.onBackPressed() }
+            navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
 
             inflateMenu(R.menu.menu_media_list)
             itemSearch = menu.findItem(R.id.itemSearch)
