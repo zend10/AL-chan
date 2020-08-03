@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="@dimen/marginNormal"
     android:layout_marginEnd="@dimen/marginNormal"
     android:id="@+id/listCardBackground"
     app:cardBackgroundColor="?themeCardColor"
     android:foreground="?selectableItemBackground"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/animeCoverImage"
+            android:id="@+id/mangaCoverImage"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/animeImageGuideline"
+            app:layout_constraintEnd_toStartOf="@id/mangaImageGuideline"
             app:layout_constraintDimensionRatio="2:3"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
@@ -26,7 +26,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:visibility="gone"
-            android:id="@+id/animeNotesLayout"
+            android:id="@+id/mangaNotesLayout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:cardCornerRadius="@dimen/cornerNormal"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/animeNotesIcon"
+                android:id="@+id/mangaNotesIcon"
                 app:srcCompat="@drawable/ic_speaker_notes"
                 app:tint="?themeContentColor"
                 android:layout_width="@dimen/iconSmallSize"
@@ -49,7 +49,7 @@
 
         <View
             android:visibility="gone"
-            android:id="@+id/animePriorityIndicator"
+            android:id="@+id/mangaPriorityIndicator"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,88 +57,59 @@
             android:layout_height="0dp"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/animeImageGuideline"
+            android:id="@+id/mangaImageGuideline"
             app:layout_constraintGuide_percent="@fraction/listImageRatio"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/animeTitleText"
+            android:id="@+id/mangaTitleText"
             style="?themeRegularBoldFont"
             android:textColor="?themePrimaryColor"
             android:text="Title"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/animeImageGuideline"
+            app:layout_constraintStart_toEndOf="@id/mangaImageGuideline"
             app:layout_constraintEnd_toEndOf="parent"
+            android:foreground="?selectableItemBackground"
             android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginNormal"
-            android:foreground="?selectableItemBackground"
-            android:maxLines="1"
+            android:maxLines="2"
             android:ellipsize="end"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/animeFormatText"
+            android:id="@+id/mangaFormatText"
             android:text="Format"
             style="?themeSmallFont"
-            app:layout_constraintTop_toBottomOf="@id/animeTitleText"
-            app:layout_constraintStart_toEndOf="@id/animeImageGuideline"
+            app:layout_constraintTop_toBottomOf="@id/mangaTitleText"
+            app:layout_constraintStart_toEndOf="@id/mangaImageGuideline"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginTop="@dimen/marginClose"
-            android:layout_marginEnd="@dimen/marginNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:visibility="gone"
-            android:id="@+id/animeAiringDividerIcon"
-            app:srcCompat="@drawable/ic_filled_circle"
-            app:tint="?themeContentColor"
-            app:layout_constraintStart_toEndOf="@id/animeFormatText"
-            app:layout_constraintTop_toTopOf="@id/animeFormatText"
-            app:layout_constraintBottom_toBottomOf="@id/animeFormatText"
-            android:layout_marginStart="@dimen/marginClose"
-            android:layout_width="@dimen/iconPadding"
-            android:layout_height="@dimen/iconPadding"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:visibility="gone"
-            android:id="@+id/animeAiringDateText"
-            style="?themeSmallFont"
-            android:textColor="?themeSecondaryColor"
-            app:layout_constraintTop_toBottomOf="@id/animeTitleText"
-            app:layout_constraintStart_toEndOf="@id/animeAiringDividerIcon"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/marginClose"
-            android:layout_marginStart="@dimen/marginClose"
-            android:layout_marginEnd="@dimen/marginNormal"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/animeStarIcon"
+            android:id="@+id/mangaStarIcon"
             app:srcCompat="@drawable/ic_star_filled"
-            app:layout_constraintTop_toTopOf="@id/animeRatingText"
-            app:layout_constraintBottom_toBottomOf="@id/animeRatingText"
-            app:layout_constraintStart_toEndOf="@id/animeImageGuideline"
+            app:layout_constraintTop_toTopOf="@id/mangaRatingText"
+            app:layout_constraintBottom_toBottomOf="@id/mangaRatingText"
+            app:layout_constraintStart_toEndOf="@id/mangaImageGuideline"
             android:foreground="?selectableItemBackground"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_width="@dimen/iconSmallSize"
             android:layout_height="@dimen/iconSmallSize"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/animeRatingText"
+            android:id="@+id/mangaRatingText"
             style="?themeRegularFont"
             android:textColor="?themePrimaryColor"
-            app:layout_constraintStart_toEndOf="@id/animeStarIcon"
-            app:layout_constraintTop_toTopOf="@id/animeProgressText"
-            app:layout_constraintBottom_toBottomOf="@id/animeProgressText"
+            app:layout_constraintStart_toEndOf="@id/mangaStarIcon"
             app:layout_constraintEnd_toStartOf="@id/dummySpace"
+            app:layout_constraintBottom_toTopOf="@id/mangaProgressBar"
+            android:layout_marginBottom="@dimen/marginClose"
             android:foreground="?selectableItemBackground"
             android:layout_marginEnd="@dimen/marginNormal"
             android:padding="@dimen/marginNormal"
@@ -147,17 +118,17 @@
 
         <View
             android:id="@+id/dummySpace"
-            app:layout_constraintTop_toTopOf="@id/animeProgressText"
-            app:layout_constraintBottom_toBottomOf="@id/animeProgressText"
-            app:layout_constraintStart_toEndOf="@id/animeRatingText"
-            app:layout_constraintEnd_toStartOf="@id/animeProgressText"
+            app:layout_constraintStart_toEndOf="@id/mangaRatingText"
+            app:layout_constraintEnd_toStartOf="@id/mangaAllProgressLayout"
+            app:layout_constraintBottom_toTopOf="@id/mangaProgressBar"
+            android:layout_marginBottom="@dimen/marginClose"
             android:layout_width="0dp"
             android:layout_height="0dp"/>
 
         <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/animeProgressBar"
+            android:id="@+id/mangaProgressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            app:layout_constraintStart_toEndOf="@id/animeImageGuideline"
+            app:layout_constraintStart_toEndOf="@id/mangaImageGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:progressDrawable="@drawable/custom_progress_bar"
@@ -166,33 +137,79 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/marginClose"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/animeProgressText"
-            style="?themeRegularClickableFont"
-            app:layout_constraintBottom_toTopOf="@id/animeProgressBar"
-            app:layout_constraintEnd_toStartOf="@id/animeIncrementProgressButton"
-            android:text="0/?"
-            android:foreground="?selectableItemBackground"
-            android:layout_marginBottom="@dimen/marginSmall"
-            android:layout_marginEnd="@dimen/marginClose"
-            android:padding="@dimen/iconPadding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:visibility="gone"
-            android:id="@+id/animeIncrementProgressButton"
-            style="?themeButtonBorderPrimary"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/mangaAllProgressLayout"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/mangaProgressBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/animeProgressText"
-            app:layout_constraintBottom_toBottomOf="@id/animeProgressText"
             android:layout_marginBottom="@dimen/marginClose"
             android:layout_marginEnd="@dimen/marginNormal"
-            android:text="+1 EP"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
+            android:gravity="end"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/mangaProgressVolumesLayout"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mangaProgressVolumesText"
+                    style="?themeRegularClickableFont"
+                    android:text="0/?"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginEnd="@dimen/marginClose"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:visibility="gone"
+                    android:id="@+id/mangaIncrementProgressVolumesButton"
+                    style="?themeButtonBorderPrimary"
+                    android:text="+1 VO"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/mangaProgressLayout"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mangaProgressText"
+                    style="?themeRegularClickableFont"
+                    android:text="0/?"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginEnd="@dimen/marginClose"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:visibility="gone"
+                    android:id="@+id/mangaIncrementProgressButton"
+                    style="?themeButtonBorderPrimary"
+                    android:text="+1 CH"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

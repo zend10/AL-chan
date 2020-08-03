@@ -369,20 +369,10 @@ class MangaListFragment : Fragment() {
                 return
             }
 
-            DialogUtility.showOptionDialog(
-                activity,
-                R.string.open_media_page,
-                "Do you want to open ${media.title?.userPreferred} page?",
-                R.string.open,
-                {
-                    val intent = Intent(activity, BrowseActivity::class.java)
-                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.MANGA.name)
-                    intent.putExtra(BrowseActivity.LOAD_ID, media.id)
-                    startActivity(intent)
-                },
-                R.string.cancel,
-                { }
-            )
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.MANGA.name)
+            intent.putExtra(BrowseActivity.LOAD_ID, media.id)
+            startActivity(intent)
         }
 
         override fun showDetail(entryId: Int) {

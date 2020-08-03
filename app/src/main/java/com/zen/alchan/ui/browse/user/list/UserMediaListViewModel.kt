@@ -104,6 +104,7 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
             MediaListSort.AVERAGE_SCORE -> ArrayList(entries.sortedWith(compareByDescending { it?.media?.averageScore }))
             MediaListSort.POPULARITY -> ArrayList(entries.sortedWith(compareByDescending { it?.media?.popularity }))
             MediaListSort.PRIORITY -> ArrayList(entries.sortedWith(compareByDescending { it?.priority }))
+            MediaListSort.NEXT_AIRING -> ArrayList(entries.sortedWith(compareBy { it?.media?.nextAiringEpisode?.timeUntilAiring }))
         }
     }
 
