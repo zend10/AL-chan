@@ -115,7 +115,7 @@ object AndroidUtility {
     // Copy image to clipboard
     fun copyToClipboard(context: Context?, textToCopy: String) {
         val clipboardManager = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboardManager.primaryClip = ClipData.newPlainText(textToCopy, textToCopy)
+        clipboardManager.setPrimaryClip(ClipData.newPlainText(textToCopy, textToCopy))
     }
 
     // TODO: need to know how to test this

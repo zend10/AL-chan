@@ -531,7 +531,7 @@ class StatsDetailActivity : BaseActivity() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     val pageInfo = it.data?.page?.pageInfo
-                    viewModel.currentMediaList?.addAll(ArrayList(it.data?.page?.media))
+                    viewModel.currentMediaList?.addAll(ArrayList(it.data?.page?.media ?: listOf()))
                     if (pageInfo?.hasNextPage == true) {
                         viewModel.searchMediaImage(pageInfo.currentPage!! + 1)
                     } else {
@@ -551,7 +551,7 @@ class StatsDetailActivity : BaseActivity() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     val pageInfo = it.data?.page?.pageInfo
-                    viewModel.currentCharacterList?.addAll(ArrayList(it.data?.page?.characters))
+                    viewModel.currentCharacterList?.addAll(ArrayList(it.data?.page?.characters ?: listOf()))
                     if (pageInfo?.hasNextPage == true) {
                         viewModel.searchCharacterImage(pageInfo.currentPage!! + 1)
                     } else {
@@ -1056,7 +1056,7 @@ class StatsDetailActivity : BaseActivity() {
             lineEntries.add(Entry(it.label?.toFloat()!!, it.count?.toFloat()!!))
         }
 
-        viewModel.currentStats = ArrayList(sortedStats)
+        viewModel.currentStats = ArrayList(sortedStats ?: listOf())
 
         val lineDataSet = LineDataSet(lineEntries, "Release Year Distribution")
         lineDataSet.color = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor)
@@ -1076,7 +1076,7 @@ class StatsDetailActivity : BaseActivity() {
             lineEntries.add(Entry(it.label?.toFloat()!!, it.count?.toFloat()!!))
         }
 
-        viewModel.currentStats = ArrayList(sortedStats)
+        viewModel.currentStats = ArrayList(sortedStats ?: listOf())
 
         val lineDataSet = LineDataSet(lineEntries, "Start Year Distribution")
         lineDataSet.color = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor)

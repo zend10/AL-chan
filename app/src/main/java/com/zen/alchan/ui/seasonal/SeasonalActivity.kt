@@ -75,7 +75,7 @@ class SeasonalActivity : BaseActivity() {
                     viewModel.tvHasNextPage = it.data?.page?.pageInfo?.hasNextPage ?: false
                     viewModel.tvPage += 1
                     viewModel.tvIsInit = true
-                    viewModel.tvList.addAll(ArrayList(viewModel.seasonalAnimeTvData.value))
+                    viewModel.tvList.addAll(ArrayList(viewModel.seasonalAnimeTvData.value ?: listOf()))
 
                     if (viewModel.tvHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.TV)
@@ -105,7 +105,7 @@ class SeasonalActivity : BaseActivity() {
                     viewModel.tvShortHasNextPage = it.data?.page?.pageInfo?.hasNextPage ?: false
                     viewModel.tvShortPage += 1
                     viewModel.tvShortIsInit = true
-                    viewModel.tvShortList.addAll(ArrayList(viewModel.seasonalAnimeTvShortData.value))
+                    viewModel.tvShortList.addAll(ArrayList(viewModel.seasonalAnimeTvShortData.value ?: listOf()))
 
                     if (viewModel.tvShortHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.TV_SHORT)
@@ -135,7 +135,7 @@ class SeasonalActivity : BaseActivity() {
                     viewModel.movieHasNextPage = it.data?.page?.pageInfo?.hasNextPage ?: false
                     viewModel.moviePage += 1
                     viewModel.movieIsInit = true
-                    viewModel.movieList.addAll(ArrayList(viewModel.seasonalAnimeMovieData.value))
+                    viewModel.movieList.addAll(ArrayList(viewModel.seasonalAnimeMovieData.value ?: listOf()))
 
                     if (viewModel.movieHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.MOVIE)
@@ -165,7 +165,7 @@ class SeasonalActivity : BaseActivity() {
                     viewModel.othersHasNextPage = it.data?.page?.pageInfo?.hasNextPage ?: false
                     viewModel.othersPage += 1
                     viewModel.othersIsInit = true
-                    viewModel.othersList.addAll(ArrayList(viewModel.seasonalAnimeOthersData.value))
+                    viewModel.othersList.addAll(ArrayList(viewModel.seasonalAnimeOthersData.value ?: listOf()))
 
                     if (viewModel.othersHasNextPage) {
                         viewModel.getSeasonalAnime(SeasonalCategory.OTHERS)

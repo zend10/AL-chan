@@ -166,7 +166,7 @@
     <string name="synonyms">Synonyms</string>
     <string name="episodes">Episodes</string>
     <string name="episode_duration">Episode Duration</string>
-    <string name="text_copied">Text copied.</string>
+    <string name="text_copied">Text copied</string>
     <string name="volumes">Volumes</string>
     <string name="end_date">End Date</string>
     <string name="chapters">Chapters</string>
@@ -193,7 +193,7 @@
     <string name="hide_spoiler">Hide Spoiler</string>
     <string name="recommendation_rating">Recommendation rating:</string>
     <string name="rating">Rating:</string>
-    <string name="link_copied">Link copied.</string>
+    <string name="link_copied">Link copied</string>
     <string name="language">Language</string>
     <string name="aliases">Aliases</string>
     <string name="series">Series</string>
