@@ -192,7 +192,7 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
                 .show()
         }
 
-        dialogView.filterYearSeekBar.max = Utility.getCurrentYear() - Constant.FILTER_EARLIEST_YEAR
+        dialogView.filterYearSeekBar.max = Utility.getCurrentYear() + 1 - Constant.FILTER_EARLIEST_YEAR
         dialogView.filterYearSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (progress == 0) {
