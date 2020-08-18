@@ -22,6 +22,10 @@ class AppThemeDialog : DialogFragment() {
         val builder = MaterialAlertDialogBuilder(activity)
         builder.setTitle(R.string.theme)
 
+        if (!this::listener.isInitialized) {
+            dismiss()
+        }
+
         dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_list, null)
 
         themeList.addAll(AppColorTheme.values())

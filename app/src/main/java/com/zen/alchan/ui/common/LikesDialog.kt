@@ -30,6 +30,10 @@ class LikesDialog : DialogFragment() {
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle(R.string.likes)
 
+        if (!this::listener.isInitialized) {
+            dismiss()
+        }
+
         userList = viewModel.gson.fromJson(arguments?.getString(USER_LIST), genericType<List<User>>())
 
         val view = activity?.layoutInflater?.inflate(R.layout.dialog_list, null)!!
