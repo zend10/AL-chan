@@ -118,20 +118,32 @@ class ActivityListFragment : BaseFragment() {
                         val activityItem = when (act?.__typename) {
                             viewModel.textActivityText -> {
                                 val item = act.fragments.onTextActivity
-                                val user = User(id = item?.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
-                                TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.text, user)
+                                if (item?.user?.id == null) {
+                                    null
+                                } else {
+                                    val user = User(id = item.user.id, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
+                                    TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.text, user)
+                                }
                             }
                             viewModel.listActivityText -> {
-                                val item = act.fragments.onListActivity!!
-                                val media = Media(id = item.media?.id!!, title = MediaTitle(item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
-                                val user = User(id = item.user?.id!!, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
-                                ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.status, item.progress, media, user)
+                                val item = act.fragments.onListActivity
+                                if (item?.media?.id == null || item.user?.id == null) {
+                                    null
+                                } else {
+                                    val media = Media(id = item.media.id, title = MediaTitle(item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
+                                    val user = User(id = item.user.id, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
+                                    ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.status, item.progress, media, user)
+                                }
                             }
                             viewModel.messageActivityText -> {
-                                val item = act.fragments.onMessageActivity!!
-                                val recipient = User(id = item.recipient?.id!!, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
-                                val messenger = User(id = item.messenger?.id!!, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
-                                MessageActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.recipientId, item.messengerId, item.message, item.isPrivate, recipient, messenger)
+                                val item = act.fragments.onMessageActivity
+                                if (item?.recipient?.id == null || item.messenger?.id == null) {
+                                    null
+                                } else {
+                                    val recipient = User(id = item.recipient.id, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
+                                    val messenger = User(id = item.messenger.id, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
+                                    MessageActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.recipientId, item.messengerId, item.message, item.isPrivate, recipient, messenger)
+                                }
                             }
                             else -> null
                         }

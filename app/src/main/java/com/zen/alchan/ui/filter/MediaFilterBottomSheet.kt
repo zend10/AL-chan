@@ -52,6 +52,10 @@ class MediaFilterBottomSheet : BottomSheetDialogFragment() {
     ): View? {
         dialogView = inflater.inflate(R.layout.bottomsheet_filter_media, container, false)
 
+        if (!this::listener.isInitialized) {
+            dismiss()
+        }
+
         viewModel.mediaType = MediaType.valueOf(arguments?.getString(BUNDLE_MEDIA_TYPE)!!)
         viewModel.isHandleSearch = arguments?.getBoolean(BUNDLE_IS_FILTER_SEARCH, false)!!
         viewModel.filteredData = viewModel.gson.fromJson(arguments?.getString(BUNDLE_FILTERED_DATA), MediaFilteredData::class.java)

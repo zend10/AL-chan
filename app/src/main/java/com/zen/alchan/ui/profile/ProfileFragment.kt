@@ -248,7 +248,7 @@ class ProfileFragment : BaseMainFragment() {
 
         profileAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
-            profileRefreshLayout.isEnabled = verticalOffset == 0
+            profileRefreshLayout?.isEnabled = verticalOffset == 0
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
