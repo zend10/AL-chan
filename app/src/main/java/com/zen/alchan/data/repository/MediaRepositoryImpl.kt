@@ -143,6 +143,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
     @SuppressLint("CheckResult")
     override fun checkMediaStatus(mediaId: Int) {
+        if (userManager.viewerData?.id == null) return
         mediaDataSource.checkMediaStatus(userManager.viewerData?.id!!,  mediaId).subscribeWith(AndroidUtility.rxApolloCallback(_mediaStatus))
     }
 

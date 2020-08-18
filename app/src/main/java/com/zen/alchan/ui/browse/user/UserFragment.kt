@@ -275,7 +275,7 @@ class UserFragment : BaseFragment() {
 
         userAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
-            userRefreshLayout.isEnabled = verticalOffset == 0
+            userRefreshLayout?.isEnabled = verticalOffset == 0
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {

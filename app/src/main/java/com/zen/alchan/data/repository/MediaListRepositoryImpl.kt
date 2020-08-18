@@ -433,7 +433,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                     return@forEach
                 }
 
-                if (!mangaFilteredData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(animeFilteredData?.selectedGenreList!!)) {
+                if (!mangaFilteredData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(mangaFilteredData?.selectedGenreList!!)) {
                     return@forEach
                 }
 

@@ -167,7 +167,7 @@ class ReviewsReaderFragment : BaseFragment() {
 
         reviewAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
-            reviewRefreshLayout.isEnabled = verticalOffset == 0
+            reviewRefreshLayout?.isEnabled = verticalOffset == 0
         })
 
         scoreText.text = "${review.score}/100"

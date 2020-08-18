@@ -236,7 +236,7 @@ class StudioFragment : BaseFragment() {
 
         studioAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
-            studioRefreshLayout.isEnabled = verticalOffset == 0
+            studioRefreshLayout?.isEnabled = verticalOffset == 0
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {

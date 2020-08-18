@@ -167,7 +167,7 @@ class MediaFragment : BaseFragment() {
 
         mediaAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             // disable refresh when toolbar is not fully expanded
-            mediaRefreshLayout.isEnabled = verticalOffset == 0
+            mediaRefreshLayout?.isEnabled = verticalOffset == 0
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
