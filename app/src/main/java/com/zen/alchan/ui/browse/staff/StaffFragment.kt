@@ -181,14 +181,14 @@ class StaffFragment : BaseFragment() {
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                if (staffBannerContentLayout.isVisible) {
-                    staffBannerContentLayout.startAnimation(scaleDownAnim)
-                    staffBannerContentLayout.visibility = View.INVISIBLE
+                if (staffBannerContentLayout?.isVisible == true) {
+                    staffBannerContentLayout?.startAnimation(scaleDownAnim)
+                    staffBannerContentLayout?.visibility = View.INVISIBLE
                 }
             } else {
-                if (staffBannerContentLayout.isInvisible) {
-                    staffBannerContentLayout.startAnimation(scaleUpAnim)
-                    staffBannerContentLayout.visibility = View.VISIBLE
+                if (staffBannerContentLayout?.isInvisible == true) {
+                    staffBannerContentLayout?.startAnimation(scaleUpAnim)
+                    staffBannerContentLayout?.visibility = View.VISIBLE
                 }
             }
         })

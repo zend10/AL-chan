@@ -240,14 +240,14 @@ class StudioFragment : BaseFragment() {
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                if (studioBannerContentLayout.isVisible) {
-                    studioBannerContentLayout.startAnimation(scaleDownAnim)
-                    studioBannerContentLayout.visibility = View.INVISIBLE
+                if (studioBannerContentLayout?.isVisible == true) {
+                    studioBannerContentLayout?.startAnimation(scaleDownAnim)
+                    studioBannerContentLayout?.visibility = View.INVISIBLE
                 }
             } else {
-                if (studioBannerContentLayout.isInvisible) {
-                    studioBannerContentLayout.startAnimation(scaleUpAnim)
-                    studioBannerContentLayout.visibility = View.VISIBLE
+                if (studioBannerContentLayout?.isInvisible == true) {
+                    studioBannerContentLayout?.startAnimation(scaleUpAnim)
+                    studioBannerContentLayout?.visibility = View.VISIBLE
                 }
             }
         })

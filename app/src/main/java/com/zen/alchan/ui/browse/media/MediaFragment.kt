@@ -171,14 +171,14 @@ class MediaFragment : BaseFragment() {
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                if (mediaBannerContentLayout.isVisible) {
-                    mediaBannerContentLayout.startAnimation(scaleDownAnim)
-                    mediaBannerContentLayout.visibility = View.INVISIBLE
+                if (mediaBannerContentLayout?.isVisible == true) {
+                    mediaBannerContentLayout?.startAnimation(scaleDownAnim)
+                    mediaBannerContentLayout?.visibility = View.INVISIBLE
                 }
             } else {
-                if (mediaBannerContentLayout.isInvisible) {
-                    mediaBannerContentLayout.startAnimation(scaleUpAnim)
-                    mediaBannerContentLayout.visibility = View.VISIBLE
+                if (mediaBannerContentLayout?.isInvisible == true) {
+                    mediaBannerContentLayout?.startAnimation(scaleUpAnim)
+                    mediaBannerContentLayout?.visibility = View.VISIBLE
                 }
             }
         })

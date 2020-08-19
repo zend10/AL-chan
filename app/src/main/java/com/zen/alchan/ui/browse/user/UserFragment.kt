@@ -279,14 +279,14 @@ class UserFragment : BaseFragment() {
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                if (userNumberLayout.isVisible) {
-                    userNumberLayout.startAnimation(scaleDownAnim)
-                    userNumberLayout.visibility = View.INVISIBLE
+                if (userNumberLayout?.isVisible == true) {
+                    userNumberLayout?.startAnimation(scaleDownAnim)
+                    userNumberLayout?.visibility = View.INVISIBLE
                 }
             } else {
-                if (userNumberLayout.isInvisible) {
-                    userNumberLayout.startAnimation(scaleUpAnim)
-                    userNumberLayout.visibility = View.VISIBLE
+                if (userNumberLayout?.isInvisible == true) {
+                    userNumberLayout?.startAnimation(scaleUpAnim)
+                    userNumberLayout?.visibility = View.VISIBLE
                 }
             }
         })

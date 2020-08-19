@@ -279,14 +279,14 @@ class CharacterFragment : BaseFragment() {
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                if (characterBannerContentLayout.isVisible) {
-                    characterBannerContentLayout.startAnimation(scaleDownAnim)
-                    characterBannerContentLayout.visibility = View.INVISIBLE
+                if (characterBannerContentLayout?.isVisible == true) {
+                    characterBannerContentLayout?.startAnimation(scaleDownAnim)
+                    characterBannerContentLayout?.visibility = View.INVISIBLE
                 }
             } else {
-                if (characterBannerContentLayout.isInvisible) {
-                    characterBannerContentLayout.startAnimation(scaleUpAnim)
-                    characterBannerContentLayout.visibility = View.VISIBLE
+                if (characterBannerContentLayout?.isInvisible == true) {
+                    characterBannerContentLayout?.startAnimation(scaleUpAnim)
+                    characterBannerContentLayout?.visibility = View.VISIBLE
                 }
             }
         })

@@ -252,14 +252,14 @@ class ProfileFragment : BaseMainFragment() {
 
             // 50 is magic number gotten from trial and error
             if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                if (profileNumberLayout.isVisible) {
-                    profileNumberLayout.startAnimation(scaleDownAnim)
-                    profileNumberLayout.visibility = View.INVISIBLE
+                if (profileNumberLayout?.isVisible == true) {
+                    profileNumberLayout?.startAnimation(scaleDownAnim)
+                    profileNumberLayout?.visibility = View.INVISIBLE
                 }
             } else {
-                if (profileNumberLayout.isInvisible) {
-                    profileNumberLayout.startAnimation(scaleUpAnim)
-                    profileNumberLayout.visibility = View.VISIBLE
+                if (profileNumberLayout?.isInvisible == true) {
+                    profileNumberLayout?.startAnimation(scaleUpAnim)
+                    profileNumberLayout?.visibility = View.VISIBLE
                 }
             }
         })

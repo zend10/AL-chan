@@ -13,8 +13,8 @@ android {
         applicationId "com.zen.alchan"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 100101
-        versionName "1.1.1"
+        versionCode 100102
+        versionName "1.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
