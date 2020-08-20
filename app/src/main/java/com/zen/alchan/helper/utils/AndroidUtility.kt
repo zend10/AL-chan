@@ -15,6 +15,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.AlignTagHandler
+import com.zen.alchan.helper.libs.GifGlideStore
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.ColorPalette
@@ -180,10 +181,7 @@ object AndroidUtility {
     // Help initializing markwon throughout the app for more consistent markdown parsing
     fun initMarkwon(context: Context): Markwon {
         return Markwon.builder(context)
-            .usePlugin(GlideImagesPlugin.create(GlideApp.with(context)))
-            .usePlugin(ImagesPlugin.create(ImagesPlugin.ImagesConfigure {
-                it.addMediaDecoder(GifMediaDecoder.create(true))
-            }))
+            .usePlugin(GlideImagesPlugin.create(GifGlideStore(GlideApp.with(context))))
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(SoftBreakAddsNewLinePlugin.create())
             .usePlugin(object : AbstractMarkwonPlugin() {
@@ -214,7 +212,7 @@ object AndroidUtility {
         val webmRegex = "webm(?=\\()".toRegex()
 
         // anilist flavor image
-        val imageUrlRegex = "img([0-9%]+)?\\(.+?\\)".toRegex()
+        val imageUrlRegex = "[iI]mg([0-9%]+)?\\(.+?\\)".toRegex()
 
         // plain url need to be wrapped with change to markdown []() or else it'll be treated like plain text
         val rogueUrlRegex = "((?<=\\s)|^)(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])?".toRegex()
