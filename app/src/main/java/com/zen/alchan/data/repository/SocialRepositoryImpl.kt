@@ -113,7 +113,7 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
         socialDataSource.getFriendsActivity(
             typeIn,
             userId,
-            if (userManager.viewerData?.id != null) listOf(userManager.viewerData?.id!!) else null
+            if (userId == null) { null } else { if (userManager.viewerData?.id != null) listOf(userManager.viewerData?.id!!) else null}
         ).subscribeWith(AndroidUtility.rxApolloCallback(_friendsActivityResponse))
     }
 
