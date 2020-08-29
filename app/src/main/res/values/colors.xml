@@ -10,26 +10,31 @@
     <color name="yellow">#FCF1C2</color>
     <color name="cyan">#DCFDF9</color>
     <color name="cyanTransparent50">#80DCFDF9</color>
+    <color name="cyanTransparent20">#33DCFDF9</color>
     <color name="magentaDark">#C987C4</color>
 
     <color name="green">#BEFAC6</color>
     <color name="lavender">#E3D8FB</color>
     <color name="lavenderTransparent50">#80E3D8FB</color>
+    <color name="lavenderTransparent20">#33E3D8FB</color>
     <color name="brown">#C7A683</color>
 
     <color name="blue">#B0D2F8</color>
     <color name="cream">#F9CDC9</color>
     <color name="creamTransparent50">#80F9CDC9</color>
+    <color name="creamTransparent20">#33F9CDC9</color>
     <color name="gold">#B9C478</color>
 
     <color name="pink">#FCC3FF</color>
     <color name="sunshine">#FFF7DB</color>
     <color name="sunshineTransparent50">#80FFF7DB</color>
+    <color name="sunshineTransparent20">#33FFF7DB</color>
     <color name="jade">#87CCBE</color>
 
     <color name="red">#FDD5B5</color>
     <color name="aloevera">#CFFDD0</color>
     <color name="aloeveraTransparent50">#80CFFDD0</color>
+    <color name="aloeveraTransparent20">#33CFFDD0</color>
     <color name="purple">#8D7DC9</color>
 
     <color name="whiteTransparent12">#1FFFFFFF</color>
@@ -46,26 +51,31 @@
     <color name="lightThemeYellow">#FF8C00</color>
     <color name="lightThemeCyan">#0078B3</color>
     <color name="lightThemeCyanTransparent50">#800078B3</color>
+    <color name="lightThemeCyanTransparent20">#330078B3</color>
     <color name="lightThemeMagentaDark">#7419FF</color>
 
     <color name="lightGreen">#2FB651</color>
     <color name="lightLavender">#7241B5</color>
     <color name="lightLavenderTransparent50">#807241B5</color>
+    <color name="lightLavenderTransparent20">#337241B5</color>
     <color name="lightBrown">#B5731D</color>
 
     <color name="lightBlue">#007AFF</color>
     <color name="lightCream">#FF2A19</color>
     <color name="lightCreamTransparent50">#80FF2A19</color>
+    <color name="lightCreamTransparent20">#33FF2A19</color>
     <color name="lightGold">#9DB309</color>
 
     <color name="lightPink">#FD00F9</color>
     <color name="lightSunshine">#FF9A1C</color>
     <color name="lightSunshineTransparent50">#80FF9A1C</color>
+    <color name="lightSunshineTransparent20">#33FF9A1C</color>
     <color name="lightJade">#09B098</color>
 
     <color name="lightRed">#FF3B30</color>
     <color name="lightAloevera">#00B344</color>
     <color name="lightAloeveraTransparent50">#8000B344</color>
+    <color name="lightAloeveraTransparent20">#3300B344</color>
     <color name="lightPurple">#1791FF</color>
 
     <color name="blackTransparent12">#1F212121</color>
@@ -93,12 +103,14 @@
     <color name="axielBlue">#3DB4F2</color>
     <color name="axielLightBlue">#8DB2DB</color>
     <color name="axielLightBlueTransparent50">#808DB2DB</color>
+    <color name="axielLightBlueTransparent20">#338DB2DB</color>
     <color name="axielRed">#E85D75</color>
 
 <!--    Sam Orange-->
     <color name="samOrange">#FF6E40</color>
     <color name="samGreen">#33CC80</color>
     <color name="samGreenTransparent50">#8033CC80</color>
+    <color name="samGreenTransparent20">#3333CC80</color>
     <color name="samBlue">#4DB0E1</color>
 
 </resources>

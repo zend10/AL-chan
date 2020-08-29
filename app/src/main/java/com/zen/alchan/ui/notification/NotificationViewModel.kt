@@ -37,6 +37,9 @@ class NotificationViewModel(private val userRepository: UserRepository) : ViewMo
         userRepository.notificationsResponse
     }
 
+    val unreadNotifications: Int
+        get() = userRepository.currentUser?.unreadNotificationCount ?: 0
+
     fun getNotifications() {
         if (hasNextPage) {
             userRepository.getNotifications(page, selectedTypes, true)

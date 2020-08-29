@@ -3,6 +3,7 @@
     <attr name="themePrimaryColor" format="reference"/>
     <attr name="themeSecondaryColor" format="reference"/>
     <attr name="themeSecondaryTransparentColor" format="reference"/>
+    <attr name="themeSecondaryTransparent20Color" format="reference"/>
     <attr name="themeNegativeColor" format="reference"/>
     <attr name="themeBackgroundColor" format="reference"/>
     <attr name="themeCardColor" format="reference"/>

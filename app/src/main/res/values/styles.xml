@@ -77,6 +77,7 @@
         <item name="themePrimaryColor">@color/yellow</item>
         <item name="themeSecondaryColor">@color/cyan</item>
         <item name="themeSecondaryTransparentColor">@color/cyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/cyanTransparent20</item>
         <item name="themeNegativeColor">@color/magentaDark</item>
     </style>
 
@@ -84,6 +85,7 @@
         <item name="themePrimaryColor">@color/green</item>
         <item name="themeSecondaryColor">@color/lavender</item>
         <item name="themeSecondaryTransparentColor">@color/lavenderTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lavenderTransparent20</item>
         <item name="themeNegativeColor">@color/brown</item>
     </style>
 
@@ -91,6 +93,7 @@
         <item name="themePrimaryColor">@color/blue</item>
         <item name="themeSecondaryColor">@color/cream</item>
         <item name="themeSecondaryTransparentColor">@color/creamTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/creamTransparent20</item>
         <item name="themeNegativeColor">@color/gold</item>
     </style>
 
@@ -98,6 +101,7 @@
         <item name="themePrimaryColor">@color/pink</item>
         <item name="themeSecondaryColor">@color/sunshine</item>
         <item name="themeSecondaryTransparentColor">@color/sunshineTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/sunshineTransparent20</item>
         <item name="themeNegativeColor">@color/jade</item>
     </style>
 
@@ -105,6 +109,7 @@
         <item name="themePrimaryColor">@color/red</item>
         <item name="themeSecondaryColor">@color/aloevera</item>
         <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/aloeveraTransparent20</item>
         <item name="themeNegativeColor">@color/purple</item>
     </style>
 
@@ -114,6 +119,7 @@
         <item name="themePrimaryColor">@color/lightThemeYellow</item>
         <item name="themeSecondaryColor">@color/lightThemeCyan</item>
         <item name="themeSecondaryTransparentColor">@color/lightThemeCyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightThemeCyanTransparent20</item>
         <item name="themeNegativeColor">@color/lightThemeMagentaDark</item>
     </style>
 
@@ -121,6 +127,7 @@
         <item name="themePrimaryColor">@color/lightGreen</item>
         <item name="themeSecondaryColor">@color/lightLavender</item>
         <item name="themeSecondaryTransparentColor">@color/lightLavenderTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightLavenderTransparent20</item>
         <item name="themeNegativeColor">@color/lightBrown</item>
     </style>
 
@@ -128,6 +135,7 @@
         <item name="themePrimaryColor">@color/lightBlue</item>
         <item name="themeSecondaryColor">@color/lightCream</item>
         <item name="themeSecondaryTransparentColor">@color/lightCreamTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightCreamTransparent20</item>
         <item name="themeNegativeColor">@color/lightGold</item>
     </style>
 
@@ -135,6 +143,7 @@
         <item name="themePrimaryColor">@color/lightPink</item>
         <item name="themeSecondaryColor">@color/lightSunshine</item>
         <item name="themeSecondaryTransparentColor">@color/lightSunshineTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightSunshineTransparent20</item>
         <item name="themeNegativeColor">@color/lightJade</item>
     </style>
 
@@ -142,6 +151,7 @@
         <item name="themePrimaryColor">@color/lightRed</item>
         <item name="themeSecondaryColor">@color/lightAloevera</item>
         <item name="themeSecondaryTransparentColor">@color/lightAloeveraTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightAloeveraTransparent20</item>
         <item name="themeNegativeColor">@color/lightPurple</item>
     </style>
 
@@ -151,6 +161,7 @@
         <item name="themePrimaryColor">@color/yellow</item>
         <item name="themeSecondaryColor">@color/cyan</item>
         <item name="themeSecondaryTransparentColor">@color/cyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/cyanTransparent20</item>
         <item name="themeNegativeColor">@color/magentaDark</item>
     </style>
 
@@ -158,6 +169,7 @@
         <item name="themePrimaryColor">@color/green</item>
         <item name="themeSecondaryColor">@color/lavender</item>
         <item name="themeSecondaryTransparentColor">@color/lavenderTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lavenderTransparent20</item>
         <item name="themeNegativeColor">@color/brown</item>
     </style>
 
@@ -165,6 +177,7 @@
         <item name="themePrimaryColor">@color/blue</item>
         <item name="themeSecondaryColor">@color/cream</item>
         <item name="themeSecondaryTransparentColor">@color/creamTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/creamTransparent20</item>
         <item name="themeNegativeColor">@color/gold</item>
     </style>
 
@@ -172,6 +185,7 @@
         <item name="themePrimaryColor">@color/pink</item>
         <item name="themeSecondaryColor">@color/sunshine</item>
         <item name="themeSecondaryTransparentColor">@color/sunshineTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/sunshineTransparent20</item>
         <item name="themeNegativeColor">@color/jade</item>
     </style>
 
@@ -179,6 +193,7 @@
         <item name="themePrimaryColor">@color/red</item>
         <item name="themeSecondaryColor">@color/aloevera</item>
         <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/aloeveraTransparent20</item>
         <item name="themeNegativeColor">@color/purple</item>
     </style>
 
@@ -188,6 +203,7 @@
         <item name="themePrimaryColor">@color/axielBlue</item>
         <item name="themeSecondaryColor">@color/axielLightBlue</item>
         <item name="themeSecondaryTransparentColor">@color/axielLightBlueTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/axielLightBlueTransparent20</item>
         <item name="themeNegativeColor">@color/axielRed</item>
     </style>
 
@@ -195,6 +211,7 @@
         <item name="themePrimaryColor">@color/samOrange</item>
         <item name="themeSecondaryColor">@color/samGreen</item>
         <item name="themeSecondaryTransparentColor">@color/samGreenTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/samGreenTransparent20</item>
         <item name="themeNegativeColor">@color/samBlue</item>
     </style>
 
@@ -202,6 +219,7 @@
         <item name="themePrimaryColor">@color/axielBlue</item>
         <item name="themeSecondaryColor">@color/axielLightBlue</item>
         <item name="themeSecondaryTransparentColor">@color/axielLightBlueTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/axielLightBlueTransparent20</item>
         <item name="themeNegativeColor">@color/axielRed</item>
     </style>
 
@@ -209,6 +227,7 @@
         <item name="themePrimaryColor">@color/samOrange</item>
         <item name="themeSecondaryColor">@color/samGreen</item>
         <item name="themeSecondaryTransparentColor">@color/samGreenTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/samGreenTransparent20</item>
         <item name="themeNegativeColor">@color/samBlue</item>
     </style>
 

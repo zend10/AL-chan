@@ -152,7 +152,7 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun assignAdapter(): NotificationRvAdapter {
-        return NotificationRvAdapter(this, viewModel.notificationList, object : NotificationRvAdapter.NotificationListener {
+        return NotificationRvAdapter(this, viewModel.notificationList, viewModel.unreadNotifications, object : NotificationRvAdapter.NotificationListener {
             override fun openUserPage(userId: Int) {
                 openPage(BrowsePage.USER, userId)
             }

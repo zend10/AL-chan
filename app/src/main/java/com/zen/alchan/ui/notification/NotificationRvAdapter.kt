@@ -15,6 +15,7 @@ import type.MediaType
 
 class NotificationRvAdapter(private val context: Context,
                             private val list: List<NotificationsQuery.Notification?>,
+                            private val unreadNotifications: Int,
                             private val listener: NotificationListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -44,6 +45,13 @@ class NotificationRvAdapter(private val context: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             val item = list[position]
+
+            if (position < unreadNotifications) {
+                holder.notificationUnreadLayout.visibility = View.VISIBLE
+            } else {
+                holder.notificationUnreadLayout.visibility = View.GONE
+            }
+
             when (item?.__typename) {
                 NotificationCategory.AIRING_NOTIFICATION.value -> handleAiringNotification(item.fragments.onAiringNotification!!, holder)
 
@@ -220,6 +228,7 @@ class NotificationRvAdapter(private val context: Context,
         val notificationImage = view.notificationImage!!
         val notificationText = view.notificationText!!
         val notificationDateText = view.notificationDateText!!
+        val notificationUnreadLayout = view.notificationUnreadLayout!!
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)

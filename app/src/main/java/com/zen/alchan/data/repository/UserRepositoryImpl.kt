@@ -622,7 +622,13 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onNext(t: Response<ViewerNotificationCountQuery.Data>) {
                 if (!t.hasErrors()) {
-                    _notificationCount.postValue(t.data?.viewer?.unreadNotificationCount ?: 0)
+                    val unreadNotificationCount = t.data?.viewer?.unreadNotificationCount ?: 0
+
+                    val savedUser = userManager.viewerData
+                    savedUser?.unreadNotificationCount = unreadNotificationCount
+                    userManager.setViewerData(savedUser)
+
+                    _notificationCount.postValue(unreadNotificationCount)
                 }
             }
 
