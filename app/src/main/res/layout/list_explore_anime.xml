@@ -155,28 +155,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/userStatusLayout"
-            android:visibility="visible"
-            app:contentPadding="@dimen/marginClose"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="?themeSecondaryColor"
-            app:layout_constraintTop_toBottomOf="@id/exploreCoverImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/exploreImageGuideline"
-            android:layout_marginTop="@dimen/marginSmall"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/userStatusIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            app:layout_constraintStart_toEndOf="@id/exploreImageGuideline"
+            app:layout_constraintTop_toTopOf="@id/userStatusText"
+            app:layout_constraintBottom_toBottomOf="@id/userStatusText"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="@dimen/iconSmallSize"
+            android:layout_height="@dimen/iconSmallSize"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/userStatusText"
+            style="?themeSmallFont"
+            app:layout_constraintTop_toBottomOf="@id/exploreGenreRecyclerView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/userStatusIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginSmall"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/userStatusText"
-                style="?themeSmallFont"
-                android:layout_gravity="center"
-                android:textColor="?themeCardColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.card.MaterialCardView
             app:layout_constraintTop_toTopOf="parent"
@@ -184,7 +183,7 @@
             app:cardElevation="@dimen/elevationNormal"
             app:cardBackgroundColor="@color/yellowStar"
             app:contentPadding="@dimen/marginClose"
-            app:cardCornerRadius="0dp"
+            android:layout_margin="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

@@ -209,12 +209,20 @@ object Constant {
     )
 
     // current, planning, completed, dropped, paused
+//    val STATUS_COLOR_LIST = arrayListOf(
+//        Color.parseColor("#f89963"),
+//        Color.parseColor("#05a9ff"),
+//        Color.parseColor("#69d83a"),
+//        Color.parseColor("#9256f3"),
+//        Color.parseColor("#f87aa5")
+//    )
+
     val STATUS_COLOR_LIST = arrayListOf(
-        Color.parseColor("#f89963"),
-        Color.parseColor("#05a9ff"),
-        Color.parseColor("#69d83a"),
-        Color.parseColor("#9256f3"),
-        Color.parseColor("#f87aa5")
+        Color.parseColor("#3BAEEA"),
+        Color.parseColor("#F79A63"),
+        Color.parseColor("#7BD555"),
+        Color.parseColor("#E85D75"),
+        Color.parseColor("#F17575")
     )
 
     val STATUS_COLOR_MAP = hashMapOf(
