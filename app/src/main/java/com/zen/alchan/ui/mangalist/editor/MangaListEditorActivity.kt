@@ -229,7 +229,7 @@ class MangaListEditorActivity : BaseActivity() {
         if (mediaList == null && !viewModel.isInit) {
             viewModel.isInit = true
 
-            viewModel.selectedStatus = MediaListStatus.CURRENT
+            viewModel.selectedStatus = MediaListStatus.PLANNING
             viewModel.selectedScore = 0.0
             viewModel.selectedProgress = 0
             viewModel.selectedProgressVolumes = 0
