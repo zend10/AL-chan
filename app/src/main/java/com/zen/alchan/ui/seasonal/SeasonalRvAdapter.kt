@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.SeasonalAnime
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -41,8 +42,10 @@ class SeasonalRvAdapter(private val context: Context,
         if (item.mediaListEntry != null) {
             holder.seasonalStatusText.text = if (item.mediaListEntry?.status == MediaListStatus.CURRENT) context.getString(R.string.watching_caps) else item.mediaListEntry?.status?.name.replaceUnderscore()
             GlideApp.with(context).load(R.drawable.ic_filled_circle).into(holder.seasonalStatusIcon)
-            holder.seasonalStatusText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
-            holder.seasonalStatusIcon.imageTintList = ColorStateList.valueOf(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeSecondaryColor))
+
+            val statusColor = Constant.STATUS_COLOR_MAP[item.mediaListEntry?.status] ?: Constant.STATUS_COLOR_LIST[0]
+            holder.seasonalStatusText.setTextColor(statusColor)
+            holder.seasonalStatusIcon.imageTintList = ColorStateList.valueOf(statusColor)
             holder.seasonalStatusLayout.isEnabled = false
         } else {
             holder.seasonalStatusText.text = context.getString(R.string.add_to_planning)
