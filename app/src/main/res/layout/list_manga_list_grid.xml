@@ -71,7 +71,8 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mangaTitleText"
                 style="?themeSmallClickableFont"
-                android:gravity="center_vertical"
+                android:textSize="@dimen/fontFixedSmall"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:lines="1"
                 android:maxLines="1"
@@ -96,6 +97,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mangaFormatText"
                 style="?themeSmallFont"
+                android:textSize="@dimen/fontFixedSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -129,6 +131,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mangaRatingText"
                     style="?themeSmallClickableFont"
+                    android:textSize="@dimen/fontFixedSmall"
                     android:layout_marginStart="@dimen/marginClose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -167,6 +170,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mangaProgressVolumesText"
                         style="?themeSmallClickableFont"
+                        android:textSize="@dimen/fontFixedSmall"
                         android:text="Vo. 0/?"
                         android:gravity="end"
                         android:layout_width="match_parent"
@@ -195,6 +199,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mangaProgressText"
                         style="?themeSmallClickableFont"
+                        android:textSize="@dimen/fontFixedSmall"
                         android:text="Ch. 0/?"
                         android:gravity="end"
                         android:layout_width="match_parent"

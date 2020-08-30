@@ -6,6 +6,9 @@
     <dimen name="fontLarge">36sp</dimen>
     <dimen name="fontHuge">48sp</dimen>
 
+    <dimen name="fontFixedNormal">14dp</dimen>
+    <dimen name="fontFixedSmall">12dp</dimen>
+
     <dimen name="iconPadding">4dp</dimen>
     <dimen name="iconSize">24dp</dimen>
     <dimen name="iconSmallSize">18dp</dimen>

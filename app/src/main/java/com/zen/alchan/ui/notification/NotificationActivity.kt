@@ -124,7 +124,9 @@ class NotificationActivity : BaseActivity() {
                     viewModel.page = 1
                     viewModel.hasNextPage = true
                     viewModel.notificationList.clear()
-                    adapter.notifyDataSetChanged()
+
+                    adapter = assignAdapter()
+                    notificationRecyclerView.adapter = adapter
 
                     viewModel.getNotifications()
                 }
@@ -152,34 +154,37 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun assignAdapter(): NotificationRvAdapter {
-        return NotificationRvAdapter(this, viewModel.notificationList, viewModel.unreadNotifications, object : NotificationRvAdapter.NotificationListener {
-            override fun openUserPage(userId: Int) {
-                openPage(BrowsePage.USER, userId)
-            }
-
-            override fun openActivityDetail(activityId: Int) {
-                openPage(BrowsePage.ACTIVITY_DETAIL, activityId)
-            }
-
-            override fun openMediaPage(mediaId: Int, mediaType: MediaType) {
-                openPage(BrowsePage.valueOf(mediaType.name), mediaId)
-            }
-
-            override fun openThread(threadId: Int, siteUrl: String) {
-                if (siteUrl.isBlank()) {
-                    DialogUtility.showToast(this@NotificationActivity, R.string.some_data_has_not_been_retrieved)
-                } else {
-                    CustomTabsIntent.Builder().build().launchUrl(this@NotificationActivity, Uri.parse(siteUrl))
+        return NotificationRvAdapter(this,
+            viewModel.notificationList,
+            if (viewModel.selectedTypes == null) viewModel.unreadNotifications else 0, // only show highlight on all
+            object : NotificationRvAdapter.NotificationListener {
+                override fun openUserPage(userId: Int) {
+                    openPage(BrowsePage.USER, userId)
                 }
-            }
 
-            override fun openThreadReply(threadReplyId: Int, siteUrl: String) {
-                if (siteUrl.isBlank()) {
-                    DialogUtility.showToast(this@NotificationActivity, R.string.some_data_has_not_been_retrieved)
-                } else {
-                    CustomTabsIntent.Builder().build().launchUrl(this@NotificationActivity, Uri.parse(siteUrl))
+                override fun openActivityDetail(activityId: Int) {
+                    openPage(BrowsePage.ACTIVITY_DETAIL, activityId)
                 }
-            }
+
+                override fun openMediaPage(mediaId: Int, mediaType: MediaType) {
+                    openPage(BrowsePage.valueOf(mediaType.name), mediaId)
+                }
+
+                override fun openThread(threadId: Int, siteUrl: String) {
+                    if (siteUrl.isBlank()) {
+                        DialogUtility.showToast(this@NotificationActivity, R.string.some_data_has_not_been_retrieved)
+                    } else {
+                        CustomTabsIntent.Builder().build().launchUrl(this@NotificationActivity, Uri.parse(siteUrl))
+                    }
+                }
+
+                override fun openThreadReply(threadReplyId: Int, siteUrl: String) {
+                    if (siteUrl.isBlank()) {
+                        DialogUtility.showToast(this@NotificationActivity, R.string.some_data_has_not_been_retrieved)
+                    } else {
+                        CustomTabsIntent.Builder().build().launchUrl(this@NotificationActivity, Uri.parse(siteUrl))
+                    }
+                }
         })
     }
 
