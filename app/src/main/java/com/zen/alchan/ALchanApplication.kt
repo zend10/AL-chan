@@ -1,7 +1,6 @@
 package com.zen.alchan
 
 import android.app.Application
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
@@ -39,6 +38,7 @@ import com.zen.alchan.ui.browse.staff.bio.StaffBioViewModel
 import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
 import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
+import com.zen.alchan.ui.browse.BrowseViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
 import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
@@ -152,6 +152,9 @@ class ALchanApplication : Application() {
         // manga list
         viewModel { MangaListViewModel(get(), get(), get(), gson) }
         viewModel { MangaListEditorViewModel(get(), get(), gson) }
+
+        // browse
+        viewModel { BrowseViewModel(get()) }
 
         // browse media
         viewModel { MediaViewModel(get(), get()) }

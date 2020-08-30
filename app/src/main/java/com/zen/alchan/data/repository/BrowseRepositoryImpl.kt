@@ -62,6 +62,10 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     override val studioIsFavoriteData: LiveData<Resource<StudioIsFavoriteQuery.Data>>
         get() = _studioIsFavoriteData
 
+    private val _idFromNameData = SingleLiveEvent<Resource<IdFromNameQuery.Data>>()
+    override val idFromNameData: LiveData<Resource<IdFromNameQuery.Data>>
+        get() = _idFromNameData
+
     @SuppressLint("CheckResult")
     override fun getCharacter(id: Int) {
         _characterData.postValue(Resource.Loading())
@@ -124,5 +128,11 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     @SuppressLint("CheckResult")
     override fun checkStudioIsFavorite(id: Int) {
         browseDataSource.checkStudioIsFavorite(id).subscribeWith(AndroidUtility.rxApolloCallback(_studioIsFavoriteData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getIdFromName(name: String) {
+        _idFromNameData.postValue(Resource.Loading())
+        browseDataSource.getIdFromName(name).subscribeWith(AndroidUtility.rxApolloCallback(_idFromNameData))
     }
 }

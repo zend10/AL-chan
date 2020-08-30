@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import CharacterIsFavoriteQuery
 import CharacterMediaConnectionQuery
 import CharacterQuery
+import IdFromNameQuery
 import StaffBioQuery
 import StaffCharacterConnectionQuery
 import StaffIsFavoriteQuery
@@ -119,6 +120,14 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
 
     override fun checkStudioIsFavorite(id: Int): Observable<Response<StudioIsFavoriteQuery.Data>> {
         val query = StudioIsFavoriteQuery(id = Input.fromNullable(id))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getIdFromName(name: String): Observable<Response<IdFromNameQuery.Data>> {
+        val query = IdFromNameQuery(name = Input.fromNullable(name))
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

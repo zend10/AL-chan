@@ -1,11 +1,14 @@
 package com.zen.alchan.ui.browse
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.FollowPage
+import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseListener
@@ -21,9 +24,15 @@ import com.zen.alchan.ui.browse.user.follows.UserFollowsFragment
 import com.zen.alchan.ui.browse.user.list.UserMediaListFragment
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailFragment
 import kotlinx.android.synthetic.main.activity_browse.*
+import kotlinx.android.synthetic.main.layout_loading.*
+import kotlinx.android.synthetic.main.list_media_activity.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.ext.isInt
 import type.MediaType
 
 class BrowseActivity : BaseActivity(), BaseListener {
+
+    private val viewModel by viewModel<BrowseViewModel>()
 
     companion object {
         const val TARGET_PAGE = "targetPage"
@@ -35,13 +44,19 @@ class BrowseActivity : BaseActivity(), BaseListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
 
+        setupObserver()
+
         if (intent?.data != null) {
             try {
                 val appLinkData = intent?.data.toString()
                 val splitLink = appLinkData.substring(appLinkData.indexOf("anilist.co")).split("/")
                 val target = splitLink[1]
-                val id = splitLink[2]
-                changeFragment(BrowsePage.valueOf(target.toUpperCase()), id.toInt(), null, supportFragmentManager.backStackEntryCount != 0)
+                val load = splitLink[2]
+                if (!load.isInt() && BrowsePage.valueOf(target.toUpperCase()) == BrowsePage.USER) {
+                    viewModel.getIdFromName(load)
+                } else {
+                    changeFragment(BrowsePage.valueOf(target.toUpperCase()), load.toInt(), null, supportFragmentManager.backStackEntryCount != 0)
+                }
             } catch (e: Exception) {
                 DialogUtility.showToast(this, R.string.invalid_link)
                 finish()
@@ -142,5 +157,28 @@ class BrowseActivity : BaseActivity(), BaseListener {
 
         targetFragment.arguments = bundle
         changeFragment(targetFragment, addToBackStack)
+    }
+
+    private fun setupObserver() {
+        viewModel.idFromNameData.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val userId = it.data?.user?.id
+                    if (userId != null) {
+                        changeFragment(BrowsePage.USER, userId, null, supportFragmentManager.backStackEntryCount != 0)
+                    } else {
+                        DialogUtility.showToast(this, R.string.invalid_link)
+                        finish()
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, R.string.invalid_link)
+                    finish()
+                }
+            }
+        })
     }
 }

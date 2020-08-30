@@ -21,6 +21,8 @@ interface BrowseRepository {
     val studioMediaData: LiveData<Resource<StudioMediaConnectionQuery.Data>>
     val studioIsFavoriteData: LiveData<Resource<StudioIsFavoriteQuery.Data>>
 
+    val idFromNameData: LiveData<Resource<IdFromNameQuery.Data>>
+
     fun getCharacter(id: Int)
     fun getCharacterMedia(id: Int, page: Int)
     fun checkCharacterIsFavorite(id: Int)
@@ -35,4 +37,6 @@ interface BrowseRepository {
     fun getStudio(id: Int)
     fun getStudioMedia(id: Int, page: Int, sort: MediaSort)
     fun checkStudioIsFavorite(id: Int)
+
+    fun getIdFromName(name: String)
 }

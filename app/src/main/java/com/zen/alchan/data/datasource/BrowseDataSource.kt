@@ -20,4 +20,6 @@ interface BrowseDataSource {
     fun getStudio(id: Int): Observable<Response<StudioQuery.Data>>
     fun getStudioMedia(id: Int, page: Int, sort: MediaSort): Observable<Response<StudioMediaConnectionQuery.Data>>
     fun checkStudioIsFavorite(id: Int): Observable<Response<StudioIsFavoriteQuery.Data>>
+
+    fun getIdFromName(name: String): Observable<Response<IdFromNameQuery.Data>>
 }

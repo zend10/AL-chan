@@ -5,4 +5,8 @@
     android:id="@+id/browseFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.browse.BrowseActivity"/>
+    tools:context=".ui.browse.BrowseActivity">
+
+    <include layout="@layout/layout_loading"/>
+
+</FrameLayout>

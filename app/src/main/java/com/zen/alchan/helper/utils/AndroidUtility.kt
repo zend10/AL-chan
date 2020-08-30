@@ -14,15 +14,13 @@ import com.zen.alchan.R
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.libs.AlignTagHandler
-import com.zen.alchan.helper.libs.GifGlideStore
-import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.libs.SingleLiveEvent
+import com.zen.alchan.helper.libs.*
 import com.zen.alchan.helper.pojo.ColorPalette
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
+import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.html.HtmlPlugin
@@ -191,6 +189,9 @@ object AndroidUtility {
                 override fun configure(registry: MarkwonPlugin.Registry) {
                     registry.require(HtmlPlugin::class.java) {
                         it.addHandler(AlignTagHandler())
+                    }
+                    registry.require(CorePlugin::class.java) {
+                        it.addOnTextAddedListener(MentionTextAddedListener())
                     }
                 }
             })
