@@ -78,6 +78,14 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
     override val userReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
         get() = _userReviewsResponse
 
+    private val _animeScoresCollectionResponse = SingleLiveEvent<Resource<MediaListScoreCollectionQuery.Data>>()
+    override val animeScoresCollectionResponse: LiveData<Resource<MediaListScoreCollectionQuery.Data>>
+        get() = _animeScoresCollectionResponse
+
+    private val _mangaScoresCollectionResponse = SingleLiveEvent<Resource<MediaListScoreCollectionQuery.Data>>()
+    override val mangaScoresCollectionResponse: LiveData<Resource<MediaListScoreCollectionQuery.Data>>
+        get() = _mangaScoresCollectionResponse
+
     @SuppressLint("CheckResult")
     override fun retrieveUserData(userId: Int) {
         _userDataResponse.postValue(Resource.Loading())
@@ -198,5 +206,17 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
     override fun getReviews(userId: Int, page: Int) {
         _userReviewsResponse.postValue(Resource.Loading())
         userDataSource.getReviews(userId, page).subscribeWith(AndroidUtility.rxApolloCallback(_userReviewsResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getAnimeScoresCollection(currentUserId: Int, otherUserId: Int) {
+        _animeScoresCollectionResponse.postValue(Resource.Loading())
+        userDataSource.getUserScores(currentUserId, otherUserId, MediaType.ANIME).subscribeWith(AndroidUtility.rxApolloCallback(_animeScoresCollectionResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getMangaScoresCollection(currentUserId: Int, otherUserId: Int) {
+        _mangaScoresCollectionResponse.postValue(Resource.Loading())
+        userDataSource.getUserScores(currentUserId, otherUserId, MediaType.MANGA).subscribeWith(AndroidUtility.rxApolloCallback(_mangaScoresCollectionResponse))
     }
 }

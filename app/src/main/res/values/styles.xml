@@ -382,5 +382,15 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
+    
+    <!--  Tooltip  -->
+    <style name="TooltipAltStyle" parent="ToolTipLayoutDefaultStyle">
+        <item name="ttlm_backgroundColor">?themeCardColor</item>
+        <item name="ttlm_textStyle">@style/TooltipAltTextStyle</item>
+    </style>
+    
+    <style name="TooltipAltTextStyle" parent="ToolTipTextStyle">
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
 
 </resources>

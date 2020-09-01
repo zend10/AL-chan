@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -35,6 +36,7 @@ import com.zen.alchan.ui.profile.bio.BioFragment
 import com.zen.alchan.ui.profile.favorites.FavoritesFragment
 import com.zen.alchan.ui.profile.reviews.UserReviewsFragment
 import com.zen.alchan.ui.profile.stats.StatsFragment
+import it.sephiroth.android.library.xtooltip.Tooltip
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -147,6 +149,44 @@ class UserFragment : BaseFragment() {
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.animeScoreCollectionResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> userAnimeAffinityIcon.visibility = View.GONE
+                ResponseStatus.SUCCESS -> {
+                    userAnimeAffinityIcon.visibility = View.VISIBLE
+                    val affinity = viewModel.calculateAffinity(it.data)
+                    viewModel.animeAffinityText = if (affinity != null) {
+                        getString(R.string.shared_anime_affinity, affinity.first, String.format("%.2f%%", affinity.second))
+                    } else {
+                        getString(R.string.not_enough_shared_anime_scores_to_compute_affinity)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    userAnimeAffinityIcon.visibility = View.VISIBLE
+                    viewModel.animeAffinityText = getString(R.string.failed_to_calculate_anime_affinity)
+                }
+            }
+        })
+
+        viewModel.mangaScoreCollectionResponse.observe(viewLifecycleOwner, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> userMangaAffinityIcon.visibility = View.GONE
+                ResponseStatus.SUCCESS -> {
+                    userMangaAffinityIcon.visibility = View.VISIBLE
+                    val affinity = viewModel.calculateAffinity(it.data)
+                    viewModel.mangaAffinityText = if (affinity != null) {
+                        getString(R.string.shared_manga_affinity, affinity.first, String.format("%.2f%%", affinity.second))
+                    } else {
+                        getString(R.string.not_enough_shared_manga_scores_to_compute_affinity)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    userMangaAffinityIcon.visibility = View.VISIBLE
+                    viewModel.mangaAffinityText = getString(R.string.failed_to_calculate_manga_affinity)
                 }
             }
         })
@@ -298,6 +338,14 @@ class UserFragment : BaseFragment() {
             true
         }
 
+        itemBestFriend?.isVisible = viewModel.currentUserId != viewModel.userId
+
+        if (viewModel.isBestFriend) {
+            itemBestFriend?.title = getString(R.string.remove_from_best_friend)
+        } else {
+            itemBestFriend?.title = getString(R.string.add_as_best_friend)
+        }
+
         itemBestFriend?.setOnMenuItemClickListener {
             val title: Int
             val message: Int
@@ -321,6 +369,12 @@ class UserFragment : BaseFragment() {
                 {
                     viewModel.handleBestFriend()
                     DialogUtility.showToast(activity, R.string.change_saved)
+
+                    if (viewModel.isBestFriend) {
+                        itemBestFriend?.title = getString(R.string.remove_from_best_friend)
+                    } else {
+                        itemBestFriend?.title = getString(R.string.add_as_best_friend)
+                    }
                 },
                 R.string.cancel,
                 { }
@@ -345,6 +399,14 @@ class UserFragment : BaseFragment() {
                 DialogUtility.showToast(activity, R.string.link_copied)
             }
             true
+        }
+
+        userAnimeAffinityIcon.setOnClickListener {
+            createTooltip(it, viewModel.animeAffinityText)
+        }
+
+        userMangaAffinityIcon.setOnClickListener {
+            createTooltip(it, viewModel.mangaAffinityText)
         }
     }
 
@@ -380,6 +442,20 @@ class UserFragment : BaseFragment() {
         } else {
             userFollowButton.text = getString(R.string.follow)
         }
+    }
+
+    private fun createTooltip(view: View, text: String) {
+        val tooltip = Tooltip.Builder(requireContext())
+            .anchor(view, 0, 0, false)
+            .maxWidth(AndroidUtility.getScreenWidth(requireActivity()) / 2)
+            .typeface(ResourcesCompat.getFont(requireContext(), R.font.sourcesanspro_regular))
+            .styleId(R.style.TooltipAltStyle)
+            .text(text)
+            .arrow(true)
+            .showDuration(2000)
+            .create()
+
+        tooltip.show(view, Tooltip.Gravity.RIGHT, false)
     }
 
     override fun onDestroyView() {

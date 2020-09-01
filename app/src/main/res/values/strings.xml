@@ -432,4 +432,12 @@
     <string name="ep_in_m">Ep. %1$d in %2$dm</string>
     <string name="ep_h_ago">Ep. %1$d - %2$dh ago</string>
     <string name="ep_m_ago">Ep. %1$d - %2$dm ago</string>
+    <string name="anime_affinity">Anime Affinity</string>
+    <string name="manga_affinity">Manga Affinity</string>
+    <string name="failed_to_calculate_anime_affinity">Failed to calculate anime affinity</string>
+    <string name="failed_to_calculate_manga_affinity">Failed to calculate manga affinity</string>
+    <string name="shared_anime_affinity">Shared Anime: %1$d, Affinity: %2$s</string>
+    <string name="shared_manga_affinity">Shared Manga: %1$d, Affinity: %2$s</string>
+    <string name="not_enough_shared_anime_scores_to_compute_affinity">Not enough shared Anime scores to compute affinity</string>
+    <string name="not_enough_shared_manga_scores_to_compute_affinity">Not enough shared Manga scores to compute affinity</string>
 </resources>

@@ -7,6 +7,7 @@ import FavoritesMangaQuery
 import FavoritesStaffsQuery
 import FavoritesStudiosQuery
 import ListSettingsMutation
+import MediaListScoreCollectionQuery
 import NotificationsQuery
 import ReorderFavoritesMutation
 import SessionQuery
@@ -285,6 +286,22 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
 
     override fun getNotificationCount(): Observable<Response<ViewerNotificationCountQuery.Data>> {
         val query = ViewerNotificationCountQuery()
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getUserScores(
+        currentUserId: Int,
+        otherUserId: Int,
+        type: MediaType
+    ): Observable<Response<MediaListScoreCollectionQuery.Data>> {
+        val query = MediaListScoreCollectionQuery(
+            userId = Input.fromNullable(currentUserId),
+            otherUserId = Input.fromNullable(otherUserId),
+            type = Input.fromNullable(type)
+        )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

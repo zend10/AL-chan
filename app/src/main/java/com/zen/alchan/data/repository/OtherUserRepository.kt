@@ -26,6 +26,9 @@ interface OtherUserRepository {
     val triggerRefreshReviews: LiveData<Boolean>
     val userReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
 
+    val animeScoresCollectionResponse: LiveData<Resource<MediaListScoreCollectionQuery.Data>>
+    val mangaScoresCollectionResponse: LiveData<Resource<MediaListScoreCollectionQuery.Data>>
+
     fun retrieveUserData(userId: Int)
     fun getFollowersCount(userId: Int)
     fun getFollowingsCount(userId: Int)
@@ -43,4 +46,7 @@ interface OtherUserRepository {
     fun getFavoriteStudios(userId: Int, page: Int)
     fun getStatistics(userId: Int)
     fun getReviews(userId: Int, page: Int)
+
+    fun getAnimeScoresCollection(currentUserId: Int, otherUserId: Int)
+    fun getMangaScoresCollection(currentUserId: Int, otherUserId: Int)
 }

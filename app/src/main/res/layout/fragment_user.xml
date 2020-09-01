@@ -150,61 +150,91 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/userAnimeCountLayout"
-                                android:foreground="?selectableItemBackground"
-                                android:orientation="vertical"
-                                android:gravity="center"
-                                android:padding="@dimen/marginNormal"
+                            <RelativeLayout
                                 android:layout_weight="1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content">
 
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/userAnimeCountText"
-                                    style="?themeAppNameFont"
-                                    android:text="0"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/userAnimeCountLayout"
+                                    android:foreground="?selectableItemBackground"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/marginNormal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
 
-                                <com.google.android.material.textview.MaterialTextView
-                                    style="?themeSmallClickableFont"
-                                    android:text="@string/anime"
-                                    android:maxLines="1"
-                                    android:ellipsize="end"
-                                    android:layout_marginTop="@dimen/marginClose"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/userAnimeCountText"
+                                        style="?themeAppNameFont"
+                                        android:text="0"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
 
-                            </androidx.appcompat.widget.LinearLayoutCompat>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="?themeSmallClickableFont"
+                                        android:text="@string/anime"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:layout_marginTop="@dimen/marginClose"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
 
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/userMangaCountLayout"
-                                android:foreground="?selectableItemBackground"
-                                android:orientation="vertical"
-                                android:gravity="center"
-                                android:padding="@dimen/marginNormal"
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:visibility="gone"
+                                    android:id="@+id/userAnimeAffinityIcon"
+                                    app:srcCompat="@drawable/ic_info"
+                                    android:tint="?themeNegativeColor"
+                                    android:padding="@dimen/iconPadding"
+                                    android:layout_width="@dimen/iconSize"
+                                    android:layout_height="@dimen/iconSize"/>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_weight="1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content">
 
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/userMangaCountText"
-                                    style="?themeAppNameFont"
-                                    android:text="0"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/userMangaCountLayout"
+                                    android:foreground="?selectableItemBackground"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/marginNormal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
 
-                                <com.google.android.material.textview.MaterialTextView
-                                    style="?themeSmallClickableFont"
-                                    android:text="@string/manga"
-                                    android:maxLines="1"
-                                    android:ellipsize="end"
-                                    android:layout_marginTop="@dimen/marginClose"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/userMangaCountText"
+                                        style="?themeAppNameFont"
+                                        android:text="0"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
 
-                            </androidx.appcompat.widget.LinearLayoutCompat>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="?themeSmallClickableFont"
+                                        android:text="@string/manga"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:layout_marginTop="@dimen/marginClose"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:visibility="gone"
+                                    android:id="@+id/userMangaAffinityIcon"
+                                    app:srcCompat="@drawable/ic_info"
+                                    android:tint="?themeNegativeColor"
+                                    android:padding="@dimen/iconPadding"
+                                    android:layout_width="@dimen/iconSize"
+                                    android:layout_height="@dimen/iconSize"/>
+
+                            </RelativeLayout>
 
                             <androidx.appcompat.widget.LinearLayoutCompat
                                 android:id="@+id/userFollowingCountLayout"

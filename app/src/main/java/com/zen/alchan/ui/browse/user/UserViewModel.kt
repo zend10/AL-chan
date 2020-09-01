@@ -8,6 +8,10 @@ import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.ProfileSection
 import com.zen.alchan.helper.pojo.BestFriend
+import fragment.MediaListScoreCollection
+import java.math.BigDecimal
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class UserViewModel(private val otherUserRepository: OtherUserRepository,
                     private val userRepository: UserRepository,
@@ -56,6 +60,17 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
     val enableSocial: Boolean
         get() = appSettingsRepository.appSettings.showSocialTabAutomatically == true
 
+    val animeScoreCollectionResponse by lazy {
+        otherUserRepository.animeScoresCollectionResponse
+    }
+
+    val mangaScoreCollectionResponse by lazy {
+        otherUserRepository.mangaScoresCollectionResponse
+    }
+
+    var animeAffinityText = ""
+    var mangaAffinityText = ""
+
     fun initData() {
         if (userId == null) {
             return
@@ -64,6 +79,9 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
         otherUserRepository.retrieveUserData(userId!!)
         otherUserRepository.getFollowersCount(userId!!)
         otherUserRepository.getFollowingsCount(userId!!)
+
+        otherUserRepository.getAnimeScoresCollection(currentUserId, userId!!)
+        otherUserRepository.getMangaScoresCollection(currentUserId, userId!!)
 
         if (currentSection.value == null) {
             _currentSection.postValue(ProfileSection.BIO)
@@ -113,5 +131,74 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
         if (userId != null) {
             userRepository.handleBestFriend(BestFriend(userId, userData.value?.user?.name, userData.value?.user?.avatar?.medium), isEdit)
         }
+    }
+
+    fun calculateAffinity(comparedScores: MediaListScoreCollectionQuery.Data?): Pair<Int, Double>? {
+        if (comparedScores?.currentUser == null || comparedScores.otherUser == null) {
+            return null
+        }
+
+        // maps are used to prevent duplicate entry (because of custome lists)
+        val currentUserScoreMap = HashMap<Int, Double>()
+        val otherUserScoreMap = HashMap<Int, Double>()
+
+        val currentUserScoreList = ArrayList<Double>()
+        val otherUserScoreList = ArrayList<Double>()
+
+        comparedScores.currentUser.fragments.mediaListScoreCollection.lists?.forEach { list ->
+            list?.entries?.forEach { entry ->
+                if (entry?.media?.id != null &&
+                    entry.score != null &&
+                    entry.score != 0.0 &&
+                    !currentUserScoreMap.containsKey(entry.media.id)
+                ) {
+                    currentUserScoreMap[entry.media.id] = entry.score
+                }
+            }
+        }
+
+        comparedScores.otherUser.fragments.mediaListScoreCollection.lists?.forEach { list ->
+            list?.entries?.forEach { entry ->
+                if (entry?.media?.id != null &&
+                    entry.score != null &&
+                    entry.score != 0.0 &&
+                    currentUserScoreMap.containsKey(entry.media.id) &&
+                    !otherUserScoreMap.containsKey(entry.media.id)
+                ) {
+                    otherUserScoreMap[entry.media.id] = entry.score
+
+                    currentUserScoreList.add(currentUserScoreMap[entry.media.id] ?: 0.0)
+                    otherUserScoreList.add(entry.score)
+                }
+            }
+        }
+
+        if (currentUserScoreList.size < 10) {
+            return null
+        } else {
+            val pearson = calculatePearsonCorrelation(currentUserScoreList, otherUserScoreList) ?: return null
+            return Pair(currentUserScoreList.size, pearson * 100)
+        }
+    }
+
+    private fun calculatePearsonCorrelation(x: ArrayList<Double>, y: ArrayList<Double>): Double? {
+        val mx = BigDecimal(x.average())
+        val my = BigDecimal(y.average())
+
+        val xm = x.map { BigDecimal(it).minus(mx) }
+        val ym = y.map { BigDecimal(it).minus(my) }
+
+        val sx = xm.map { it.pow(2) }
+        val sy = ym.map { it.pow(2) }
+
+        val num = xm.foldIndexed(BigDecimal.ZERO, { index, acc, bigDecimal -> acc + bigDecimal.multiply(ym[index]) })
+        val den =
+            sqrt(
+                sx.fold(BigDecimal.ZERO, { acc, bigDecimal -> acc + bigDecimal })
+                    .multiply(sy.fold(BigDecimal.ZERO, { acc, bigDecimal -> acc + bigDecimal }))
+                    .toDouble()
+            )
+
+        return if (den == 0.0) null else num.toDouble() / den
     }
 }

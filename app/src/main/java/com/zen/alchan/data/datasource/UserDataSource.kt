@@ -75,4 +75,6 @@ interface UserDataSource {
 
     fun getNotification(page: Int, typeIn: List<NotificationType>?, reset: Boolean): Observable<Response<NotificationsQuery.Data>>
     fun getNotificationCount(): Observable<Response<ViewerNotificationCountQuery.Data>>
+
+    fun getUserScores(currentUserId: Int, otherUserId: Int, type: MediaType): Observable<Response<MediaListScoreCollectionQuery.Data>>
 }

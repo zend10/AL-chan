@@ -7,8 +7,7 @@
         app:showAsAction="always"/>
     <item android:id="@+id/itemBestFriend"
         android:title="@string/add_as_best_friend"
-        android:icon="@drawable/ic_people"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
     <item android:id="@+id/itemViewOnAniList"
         android:title="@string/view_on_anilist"
         app:showAsAction="never"/>
