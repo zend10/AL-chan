@@ -275,7 +275,7 @@ class UserFragment : BaseFragment() {
             if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_FOLLOWING_LIST, viewModel.userId!!)
         }
         userFollowersCountLayout.setOnClickListener {
-            if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_FOLLOWING_LIST, viewModel.userId!!)
+            if (viewModel.userId != null) listener?.changeFragment(BrowsePage.USER_FOLLOWERS_LIST, viewModel.userId!!)
         }
 
         if (viewModel.userId != viewModel.currentUserId) {
@@ -407,6 +407,11 @@ class UserFragment : BaseFragment() {
 
         userMangaAffinityIcon.setOnClickListener {
             createTooltip(it, viewModel.mangaAffinityText)
+        }
+
+        if (viewModel.currentUserId != viewModel.userId) {
+            userAnimeAffinityIcon.visibility = View.GONE
+            userMangaAffinityIcon.visibility = View.GONE
         }
     }
 

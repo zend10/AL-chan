@@ -80,8 +80,10 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
         otherUserRepository.getFollowersCount(userId!!)
         otherUserRepository.getFollowingsCount(userId!!)
 
-        otherUserRepository.getAnimeScoresCollection(currentUserId, userId!!)
-        otherUserRepository.getMangaScoresCollection(currentUserId, userId!!)
+        if (currentUserId != userId) {
+            otherUserRepository.getAnimeScoresCollection(currentUserId, userId!!)
+            otherUserRepository.getMangaScoresCollection(currentUserId, userId!!)
+        }
 
         if (currentSection.value == null) {
             _currentSection.postValue(ProfileSection.BIO)
