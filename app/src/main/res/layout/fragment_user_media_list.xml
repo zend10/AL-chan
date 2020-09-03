@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.browse.user.list.UserMediaListFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -30,6 +31,17 @@
         <include layout="@layout/layout_empty"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mediaListRearrangeButton"
+        android:src="@drawable/ic_rearrange"
+        app:tint="?themeBackgroundColor"
+        app:backgroundTint="?themeSecondaryColor"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/marginNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <include layout="@layout/layout_loading"/>
 

@@ -10,6 +10,8 @@ class ListStyle(
     var cardColor: String? = null,
     var toolbarColor: String? = null,
     var backgroundColor: String? = null,
+    var floatingButtonColor: String? = null,
+    var floatingIconColor: String? = null,
     var backgroundImage: Boolean? = false,
     var longPressViewDetail: Boolean? = true,
     var hideMangaVolume: Boolean? = false,

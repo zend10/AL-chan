@@ -66,7 +66,6 @@ class AnimeListFragment : Fragment() {
 
     private lateinit var adapter: RecyclerView.Adapter<*>
     private lateinit var itemSearch: MenuItem
-    private lateinit var itemList: MenuItem
     private lateinit var itemCustomiseList: MenuItem
     private lateinit var itemFilter: MenuItem
 
@@ -87,7 +86,6 @@ class AnimeListFragment : Fragment() {
             title = getString(R.string.anime_list)
             inflateMenu(R.menu.menu_media_list)
             itemSearch = menu.findItem(R.id.itemSearch)
-            itemList = menu.findItem(R.id.itemList)
             itemCustomiseList = menu.findItem(R.id.itemCustomiseList)
             itemFilter = menu.findItem(R.id.itemFilter)
         }
@@ -116,29 +114,6 @@ class AnimeListFragment : Fragment() {
                 return true
             }
         })
-
-        itemList.setOnMenuItemClickListener {
-            MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.getTabItemArray()) { _, which ->
-                    viewModel.selectedTab = which
-
-                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
-                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
-
-                    viewModel.currentList = ArrayList(viewModel.animeListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
-
-                    adapter = assignAdapter()
-                    animeListRecyclerView.adapter = adapter
-
-                    if (viewModel.currentList.isNullOrEmpty()) {
-                        emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                    }
-                }
-                .show()
-            true
-        }
 
         itemFilter.setOnMenuItemClickListener {
             val filterDialog = MediaFilterBottomSheet()
@@ -242,6 +217,38 @@ class AnimeListFragment : Fragment() {
             viewModel.retrieveAnimeListData()
         }
 
+        animeListRearrangeButton.setOnClickListener {
+            MaterialAlertDialogBuilder(activity)
+                .setItems(viewModel.getTabItemArray()) { _, which ->
+                    viewModel.selectedTab = which
+
+                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
+                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
+
+                    viewModel.currentList = ArrayList(viewModel.animeListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
+
+                    adapter = assignAdapter()
+                    animeListRecyclerView.adapter = adapter
+
+                    if (viewModel.currentList.isNullOrEmpty()) {
+                        emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        emptyLayout.visibility = View.GONE
+                    }
+                }
+                .show()
+        }
+
+        animeListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    animeListRearrangeButton.hide()
+                } else {
+                    animeListRearrangeButton.show()
+                }
+            }
+        })
+
         val listStyle = viewModel.animeListStyleLiveData.value
         if (listStyle?.toolbarColor != null) {
             toolbarLayout.setBackgroundColor(Color.parseColor(listStyle.toolbarColor))
@@ -260,10 +267,6 @@ class AnimeListFragment : Fragment() {
             searchDrawable.mutate()
             searchDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
 
-            val listDrawable = itemList.icon
-            listDrawable.mutate()
-            listDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
-
             val overFlowDrawable = toolbarLayout.overflowIcon
             overFlowDrawable?.mutate()
             overFlowDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
@@ -277,6 +280,14 @@ class AnimeListFragment : Fragment() {
             val collapseDrawable = toolbarLayout.collapseIcon
             collapseDrawable?.mutate()
             collapseDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
+        }
+
+        if (listStyle?.floatingButtonColor != null) {
+            animeListRearrangeButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(listStyle.floatingButtonColor))
+        }
+
+        if (listStyle?.floatingIconColor != null) {
+            animeListRearrangeButton.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.floatingIconColor))
         }
 
         if (listStyle?.backgroundImage == true) {

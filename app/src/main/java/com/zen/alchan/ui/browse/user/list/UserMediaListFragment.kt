@@ -32,6 +32,7 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.MediaListDetailDialog
 import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
+import kotlinx.android.synthetic.main.fragment_anime_list.*
 import kotlinx.android.synthetic.main.fragment_user_media_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -49,7 +50,6 @@ class UserMediaListFragment : BaseFragment() {
 
     private lateinit var adapter: RecyclerView.Adapter<*>
     private var itemSearch: MenuItem? = null
-    private var itemList: MenuItem? = null
     private var itemCustomiseList: MenuItem? = null
     private var itemFilter: MenuItem? = null
 
@@ -85,7 +85,7 @@ class UserMediaListFragment : BaseFragment() {
 
             inflateMenu(R.menu.menu_media_list)
             itemSearch = menu.findItem(R.id.itemSearch)
-            itemList = menu.findItem(R.id.itemList)
+//            itemList = menu.findItem(R.id.itemList)
             itemCustomiseList = menu.findItem(R.id.itemCustomiseList)
             itemFilter = menu.findItem(R.id.itemFilter)
         }
@@ -114,29 +114,6 @@ class UserMediaListFragment : BaseFragment() {
                 return true
             }
         })
-
-        itemList?.setOnMenuItemClickListener {
-            MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.getTabItemArray()) { _, which ->
-                    viewModel.selectedTab = which
-
-                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
-                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
-
-                    viewModel.currentList = ArrayList(viewModel.sortedGroup.find { it?.name == currentTab.status }?.entries ?: listOf())
-
-                    adapter = assignAdapter()
-                    mediaListRecyclerView.adapter = adapter
-
-                    if (viewModel.currentList.isNullOrEmpty()) {
-                        emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                    }
-                }
-                .show()
-            true
-        }
 
         itemFilter?.setOnMenuItemClickListener {
             val filterDialog = MediaFilterBottomSheet()
@@ -241,6 +218,38 @@ class UserMediaListFragment : BaseFragment() {
             viewModel.retrieveMediaListCollection()
         }
 
+        mediaListRearrangeButton.setOnClickListener {
+            MaterialAlertDialogBuilder(activity)
+                .setItems(viewModel.getTabItemArray()) { _, which ->
+                    viewModel.selectedTab = which
+
+                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
+                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
+
+                    viewModel.currentList = ArrayList(viewModel.sortedGroup.find { it?.name == currentTab.status }?.entries ?: listOf())
+
+                    adapter = assignAdapter()
+                    mediaListRecyclerView.adapter = adapter
+
+                    if (viewModel.currentList.isNullOrEmpty()) {
+                        emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        emptyLayout.visibility = View.GONE
+                    }
+                }
+                .show()
+        }
+
+        mediaListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    mediaListRearrangeButton.hide()
+                } else {
+                    mediaListRearrangeButton.show()
+                }
+            }
+        })
+
         if (viewModel.userId == Constant.EVA_ID) {
             GlideApp.with(this).load(R.drawable.eva_bg).into(mediaListBackgroundImage)
         } else {
@@ -322,7 +331,6 @@ class UserMediaListFragment : BaseFragment() {
         mediaListRecyclerView.adapter = null
         itemCustomiseList = null
         itemFilter = null
-        itemList = null
         itemSearch = null
         searchView = null
     }

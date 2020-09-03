@@ -6,10 +6,6 @@
         android:icon="@drawable/ic_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always"/>
-    <item android:id="@+id/itemList"
-        android:title="@string/list"
-        android:icon="@drawable/ic_rearrange"
-        app:showAsAction="always"/>
     <item android:id="@+id/itemCustomiseList"
         android:title="@string/customise_list"
         app:showAsAction="never"/>

@@ -440,4 +440,6 @@
     <string name="shared_manga_affinity">Shared Manga: %1$d\nAffinity: %2$s</string>
     <string name="not_enough_shared_anime_scores_to_compute_affinity">Not enough shared anime scores to compute affinity</string>
     <string name="not_enough_shared_manga_scores_to_compute_affinity">Not enough shared manga scores to compute affinity</string>
+    <string name="floating_button_color">Floating Button Color</string>
+    <string name="floating_icon_color">Floating Icon Color</string>
 </resources>

@@ -49,6 +49,8 @@ class CustomiseListActivity : BaseActivity() {
         private const val COLOR_CARD = 4
         private const val COLOR_TOOLBAR = 5
         private const val COLOR_BACKGROUND = 6
+        private const val COLOR_FLOATING_BUTTON = 7
+        private const val COLOR_FLOATING_ICON = 8
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +125,8 @@ class CustomiseListActivity : BaseActivity() {
         if (listStyle.cardColor != null) cardColorItem.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
         if (listStyle.toolbarColor != null) toolbarColorItem.setCardBackgroundColor(Color.parseColor(listStyle.toolbarColor))
         if (listStyle.backgroundColor != null) backgroundColorItem.setCardBackgroundColor(Color.parseColor(listStyle.backgroundColor))
+        if (listStyle.floatingButtonColor != null) floatingButtonColorItem.setCardBackgroundColor(Color.parseColor(listStyle.floatingButtonColor))
+        if (listStyle.floatingIconColor != null) floatingIconColorItem.setCardBackgroundColor(Color.parseColor(listStyle.floatingIconColor))
 
         // handle background image
         if (viewModel.selectedListStyle.backgroundImage == true) {
@@ -159,6 +163,14 @@ class CustomiseListActivity : BaseActivity() {
 
         backgroundColorItem.setOnClickListener {
             showColorPickerDialog(COLOR_BACKGROUND)
+        }
+
+        floatingButtonColorItem.setOnClickListener {
+            showColorPickerDialog(COLOR_FLOATING_BUTTON)
+        }
+
+        floatingIconColorItem.setOnClickListener {
+            showColorPickerDialog(COLOR_FLOATING_ICON)
         }
 
         addImageText.setOnClickListener {
@@ -198,6 +210,8 @@ class CustomiseListActivity : BaseActivity() {
                     viewModel.selectedListStyle.cardColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor).toHex()
                     viewModel.selectedListStyle.toolbarColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor).toHex()
                     viewModel.selectedListStyle.backgroundColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeBackgroundColor).toHex()
+                    viewModel.selectedListStyle.floatingButtonColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor).toHex()
+                    viewModel.selectedListStyle.floatingIconColor = AndroidUtility.getResValueFromRefAttr(this, R.attr.themeBackgroundColor).toHex()
                     viewModel.selectedListStyle.backgroundImage = false
                     viewModel.selectedImageUri = null
 
@@ -215,6 +229,8 @@ class CustomiseListActivity : BaseActivity() {
                     cardColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
                     toolbarColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
                     backgroundColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeBackgroundColor))
+                    floatingButtonColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor))
+                    floatingIconColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeBackgroundColor))
                     GlideApp.with(this).load(0).signature(ObjectKey(Utility.getCurrentTimestamp())).into(listBackgroundImage)
                     listBackgroundImage.visibility = View.GONE
                     noImageSelectedText.visibility = View.VISIBLE
@@ -248,6 +264,8 @@ class CustomiseListActivity : BaseActivity() {
             COLOR_CARD -> viewModel.selectedListStyle.cardColor
             COLOR_TOOLBAR -> viewModel.selectedListStyle.toolbarColor
             COLOR_BACKGROUND -> viewModel.selectedListStyle.backgroundColor
+            COLOR_FLOATING_BUTTON -> viewModel.selectedListStyle.floatingButtonColor
+            COLOR_FLOATING_ICON -> viewModel.selectedListStyle.floatingIconColor
             else -> null
         }
 
@@ -289,6 +307,14 @@ class CustomiseListActivity : BaseActivity() {
                     COLOR_BACKGROUND -> {
                         viewModel.selectedListStyle.backgroundColor = color.toHex()
                         backgroundColorItem.setCardBackgroundColor(Color.parseColor(viewModel.selectedListStyle.backgroundColor))
+                    }
+                    COLOR_FLOATING_BUTTON -> {
+                        viewModel.selectedListStyle.floatingButtonColor = color.toHex()
+                        floatingButtonColorItem.setCardBackgroundColor(Color.parseColor(viewModel.selectedListStyle.floatingButtonColor))
+                    }
+                    COLOR_FLOATING_ICON -> {
+                        viewModel.selectedListStyle.floatingIconColor = color.toHex()
+                        floatingIconColorItem.setCardBackgroundColor(Color.parseColor(viewModel.selectedListStyle.floatingIconColor))
                     }
                 }
             }

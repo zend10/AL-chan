@@ -48,6 +48,7 @@ import com.zen.alchan.ui.mangalist.list.MangaListGridRvAdapter
 import com.zen.alchan.ui.mangalist.list.MangaListListener
 import com.zen.alchan.ui.mangalist.list.MangaListRvAdapter
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_anime_list.*
 import kotlinx.android.synthetic.main.fragment_manga_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -66,7 +67,6 @@ class MangaListFragment : Fragment() {
 
     private lateinit var adapter: RecyclerView.Adapter<*>
     private lateinit var itemSearch: MenuItem
-    private lateinit var itemList: MenuItem
     private lateinit var itemCustomiseList: MenuItem
     private lateinit var itemFilter: MenuItem
 
@@ -87,7 +87,6 @@ class MangaListFragment : Fragment() {
             title = getString(R.string.manga_list)
             inflateMenu(R.menu.menu_media_list)
             itemSearch = menu.findItem(R.id.itemSearch)
-            itemList = menu.findItem(R.id.itemList)
             itemCustomiseList = menu.findItem(R.id.itemCustomiseList)
             itemFilter = menu.findItem(R.id.itemFilter)
         }
@@ -116,29 +115,6 @@ class MangaListFragment : Fragment() {
                 return true
             }
         })
-
-        itemList.setOnMenuItemClickListener {
-            MaterialAlertDialogBuilder(activity)
-                .setItems(viewModel.getTabItemArray()) { _, which ->
-                    viewModel.selectedTab = which
-
-                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
-                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
-
-                    viewModel.currentList = ArrayList(viewModel.mangaListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
-
-                    adapter = assignAdapter()
-                    mangaListRecyclerView.adapter = adapter
-
-                    if (viewModel.currentList.isNullOrEmpty()) {
-                        emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                    }
-                }
-                .show()
-            true
-        }
 
         itemFilter.setOnMenuItemClickListener {
             val filterDialog = MediaFilterBottomSheet()
@@ -242,6 +218,38 @@ class MangaListFragment : Fragment() {
             viewModel.retrieveMangaListData()
         }
 
+        mangaListRearrangeButton.setOnClickListener {
+            MaterialAlertDialogBuilder(activity)
+                .setItems(viewModel.getTabItemArray()) { _, which ->
+                    viewModel.selectedTab = which
+
+                    val currentTab = viewModel.tabItemList[viewModel.selectedTab]
+                    toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
+
+                    viewModel.currentList = ArrayList(viewModel.mangaListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
+
+                    adapter = assignAdapter()
+                    mangaListRecyclerView.adapter = adapter
+
+                    if (viewModel.currentList.isNullOrEmpty()) {
+                        emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        emptyLayout.visibility = View.GONE
+                    }
+                }
+                .show()
+        }
+
+        mangaListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    mangaListRearrangeButton.hide()
+                } else {
+                    mangaListRearrangeButton.show()
+                }
+            }
+        })
+
         val listStyle = viewModel.mangaListStyleLiveData.value
         if (listStyle?.toolbarColor != null) {
             toolbarLayout.setBackgroundColor(Color.parseColor(listStyle.toolbarColor))
@@ -260,10 +268,6 @@ class MangaListFragment : Fragment() {
             searchDrawable.mutate()
             searchDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
 
-            val listDrawable = itemList.icon
-            listDrawable.mutate()
-            listDrawable.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
-
             val overFlowDrawable = toolbarLayout.overflowIcon
             overFlowDrawable?.mutate()
             overFlowDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
@@ -277,6 +281,14 @@ class MangaListFragment : Fragment() {
             val collapseDrawable = toolbarLayout.collapseIcon
             collapseDrawable?.mutate()
             collapseDrawable?.setColorFilter(Color.parseColor(listStyle.textColor), PorterDuff.Mode.SRC_ATOP)
+        }
+
+        if (listStyle?.floatingButtonColor != null) {
+            mangaListRearrangeButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(listStyle.floatingButtonColor))
+        }
+
+        if (listStyle?.floatingIconColor != null) {
+            mangaListRearrangeButton.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.floatingIconColor))
         }
 
         if (listStyle?.backgroundImage == true) {
