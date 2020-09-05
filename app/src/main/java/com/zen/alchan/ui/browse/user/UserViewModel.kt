@@ -184,22 +184,17 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
     }
 
     private fun calculatePearsonCorrelation(x: ArrayList<Double>, y: ArrayList<Double>): Double? {
-        val mx = BigDecimal(x.average())
-        val my = BigDecimal(y.average())
+        val mx = x.average()
+        val my = y.average()
 
-        val xm = x.map { BigDecimal(it).minus(mx) }
-        val ym = y.map { BigDecimal(it).minus(my) }
+        val xm = x.map { it - mx }
+        val ym = y.map { it - my }
 
         val sx = xm.map { it.pow(2) }
         val sy = ym.map { it.pow(2) }
 
-        val num = xm.foldIndexed(BigDecimal.ZERO, { index, acc, bigDecimal -> acc + bigDecimal.multiply(ym[index]) })
-        val den =
-            sqrt(
-                sx.fold(BigDecimal.ZERO, { acc, bigDecimal -> acc + bigDecimal })
-                    .multiply(sy.fold(BigDecimal.ZERO, { acc, bigDecimal -> acc + bigDecimal }))
-                    .toDouble()
-            )
+        val num = xm.zip(ym).fold(0.0, { acc, pair -> acc + pair.first * pair.second })
+        val den = sqrt(sx.sum() * sy.sum())
 
         return if (den == 0.0) null else num.toDouble() / den
     }

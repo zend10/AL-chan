@@ -113,9 +113,9 @@
                             android:background="@drawable/shape_oval"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginNormal"
-                            android:layout_marginEnd="@dimen/marginNormal"
-                            android:padding="@dimen/marginNormal"
+                            android:layout_marginStart="@dimen/marginPage"
+                            android:layout_marginEnd="@dimen/marginPage"
+                            android:padding="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
@@ -154,9 +154,9 @@
                             android:background="@drawable/shape_oval"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginNormal"
-                            android:layout_marginEnd="@dimen/marginNormal"
-                            android:padding="@dimen/marginNormal"
+                            android:layout_marginStart="@dimen/marginPage"
+                            android:layout_marginEnd="@dimen/marginPage"
+                            android:padding="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
@@ -195,9 +195,9 @@
                             android:background="@drawable/shape_oval"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginNormal"
-                            android:layout_marginEnd="@dimen/marginNormal"
-                            android:padding="@dimen/marginNormal"
+                            android:layout_marginStart="@dimen/marginPage"
+                            android:layout_marginEnd="@dimen/marginPage"
+                            android:padding="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
@@ -236,9 +236,9 @@
                             android:background="@drawable/shape_oval"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginNormal"
-                            android:layout_marginEnd="@dimen/marginNormal"
-                            android:padding="@dimen/marginNormal"
+                            android:layout_marginStart="@dimen/marginPage"
+                            android:layout_marginEnd="@dimen/marginPage"
+                            android:padding="@dimen/marginPage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 

@@ -436,10 +436,12 @@
     <string name="manga_affinity">Manga Affinity</string>
     <string name="failed_to_calculate_anime_affinity">Failed to calculate anime affinity</string>
     <string name="failed_to_calculate_manga_affinity">Failed to calculate manga affinity</string>
-    <string name="shared_anime_affinity">Shared Anime: %1$d\nAffinity: %2$s</string>
-    <string name="shared_manga_affinity">Shared Manga: %1$d\nAffinity: %2$s</string>
+    <string name="shared_anime_affinity"><![CDATA[Shared Anime: %1$d <br/>Affinity: %2$s]]></string>
+    <string name="shared_manga_affinity"><![CDATA[Shared Manga: %1$d <br/> Affinity: %2$s]]></string>
     <string name="not_enough_shared_anime_scores_to_compute_affinity">Not enough shared anime scores to compute affinity</string>
     <string name="not_enough_shared_manga_scores_to_compute_affinity">Not enough shared manga scores to compute affinity</string>
     <string name="floating_button_color">Floating Button Color</string>
     <string name="floating_icon_color">Floating Icon Color</string>
+    <string name="seasonal">Seasonal</string>
+    <string name="calendar">Calendar</string>
 </resources>
