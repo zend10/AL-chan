@@ -336,19 +336,21 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
         }
 
+        val sortedByTitle = entries.sortedWith(compareBy { it.media?.title?.userPreferred })
+
         return when (rowOrderEnum) {
-            MediaListSort.TITLE -> ArrayList(entries.sortedWith(compareBy { it.media?.title?.userPreferred }))
-            MediaListSort.SCORE -> ArrayList(entries.sortedWith(compareByDescending { it.score }))
-            MediaListSort.PROGRESS -> ArrayList(entries.sortedWith(compareByDescending { it.progress }))
-            MediaListSort.LAST_UPDATED -> ArrayList(entries.sortedWith(compareByDescending { it.updatedAt }))
-            MediaListSort.LAST_ADDED -> ArrayList(entries.sortedWith(compareByDescending { it.id }))
-            MediaListSort.START_DATE -> ArrayList(entries.sortedWith(compareByDescending { it.startedAt.toMillis() }))
-            MediaListSort.COMPLETED_DATE -> ArrayList(entries.sortedWith(compareByDescending { it.completedAt.toMillis() }))
-            MediaListSort.RELEASE_DATE -> ArrayList(entries.sortedWith(compareByDescending { it.media?.startDate.toMillis() }))
-            MediaListSort.AVERAGE_SCORE -> ArrayList(entries.sortedWith(compareByDescending { it.media?.averageScore }))
-            MediaListSort.POPULARITY -> ArrayList(entries.sortedWith(compareByDescending { it.media?.popularity }))
-            MediaListSort.PRIORITY -> ArrayList(entries.sortedWith(compareByDescending { it.priority }))
-            MediaListSort.NEXT_AIRING -> ArrayList(entries.sortedWith(compareBy { it.media?.nextAiringEpisode?.timeUntilAiring }))
+            MediaListSort.TITLE -> ArrayList(sortedByTitle)
+            MediaListSort.SCORE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.score }))
+            MediaListSort.PROGRESS -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.progress }))
+            MediaListSort.LAST_UPDATED -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.updatedAt }))
+            MediaListSort.LAST_ADDED -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.id }))
+            MediaListSort.START_DATE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.startedAt.toMillis() }))
+            MediaListSort.COMPLETED_DATE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.completedAt.toMillis() }))
+            MediaListSort.RELEASE_DATE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.media?.startDate.toMillis() }))
+            MediaListSort.AVERAGE_SCORE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.media?.averageScore }))
+            MediaListSort.POPULARITY -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.media?.popularity }))
+            MediaListSort.PRIORITY -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.priority }))
+            MediaListSort.NEXT_AIRING -> ArrayList(sortedByTitle.sortedWith(compareBy { it.media?.nextAiringEpisode?.timeUntilAiring ?: Int.MAX_VALUE }))
         }
     }
 
