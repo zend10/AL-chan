@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginEnd="@dimen/marginClose"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
@@ -111,19 +111,30 @@
                         <RelativeLayout
                             android:id="@+id/seasonalChartMenu"
                             android:background="@drawable/shape_oval"
+                            android:backgroundTint="?themePrimaryColor"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:padding="@dimen/marginPage"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:padding="@dimen/lineWidth"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                app:srcCompat="@drawable/ic_baseline_dashboard"
-                                app:tint="@color/black"
+                            <RelativeLayout
+                                android:background="@drawable/shape_oval"
+                                android:backgroundTint="?themeBackgroundColor"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/marginNormal"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_baseline_dashboard"
+                                    app:tint="?themePrimaryColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </RelativeLayout>
 
                         </RelativeLayout>
 
@@ -143,8 +154,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginStart="@dimen/marginClose"
-                        android:layout_marginEnd="@dimen/marginClose"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
@@ -152,19 +163,30 @@
                         <RelativeLayout
                             android:id="@+id/exploreMenu"
                             android:background="@drawable/shape_oval"
+                            android:backgroundTint="?themePrimaryColor"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:padding="@dimen/marginPage"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:padding="@dimen/lineWidth"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                app:srcCompat="@drawable/ic_compass"
-                                app:tint="@color/black"
+                            <RelativeLayout
+                                android:background="@drawable/shape_oval"
+                                android:backgroundTint="?themeBackgroundColor"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/marginNormal"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_compass"
+                                    app:tint="?themePrimaryColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </RelativeLayout>
 
                         </RelativeLayout>
 
@@ -184,8 +206,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginStart="@dimen/marginClose"
-                        android:layout_marginEnd="@dimen/marginClose"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
@@ -193,19 +215,30 @@
                         <RelativeLayout
                             android:id="@+id/reviewsMenu"
                             android:background="@drawable/shape_oval"
+                            android:backgroundTint="?themePrimaryColor"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:padding="@dimen/marginPage"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:padding="@dimen/lineWidth"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                app:srcCompat="@drawable/ic_inscription"
-                                app:tint="@color/black"
+                            <RelativeLayout
+                                android:background="@drawable/shape_oval"
+                                android:backgroundTint="?themeBackgroundColor"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/marginNormal"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_inscription"
+                                    app:tint="?themePrimaryColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </RelativeLayout>
 
                         </RelativeLayout>
 
@@ -226,7 +259,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:visibility="invisible"
-                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
@@ -234,19 +268,30 @@
                         <RelativeLayout
                             android:id="@+id/calendarMenu"
                             android:background="@drawable/shape_oval"
+                            android:backgroundTint="?themePrimaryColor"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintDimensionRatio="1:1"
-                            android:layout_marginStart="@dimen/marginPage"
-                            android:layout_marginEnd="@dimen/marginPage"
-                            android:padding="@dimen/marginPage"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:padding="@dimen/lineWidth"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                app:srcCompat="@drawable/ic_calendar"
-                                app:tint="@color/black"
+                            <RelativeLayout
+                                android:background="@drawable/shape_oval"
+                                android:backgroundTint="?themeBackgroundColor"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/marginNormal"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:srcCompat="@drawable/ic_calendar"
+                                    app:tint="?themePrimaryColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </RelativeLayout>
 
                         </RelativeLayout>
 
@@ -259,6 +304,107 @@
                             android:lines="2"
                             android:maxLines="2"
                             app:layout_constraintTop_toBottomOf="@id/calendarMenu"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:visibility="invisible"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/dummyMenu"
+                            android:background="@drawable/shape_oval"
+                            android:backgroundTint="?themePrimaryColor"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintDimensionRatio="1:1"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:padding="@dimen/lineWidth"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp">
+
+                            <RelativeLayout
+                                android:background="@drawable/shape_oval"
+                                android:backgroundTint="?themeBackgroundColor"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/marginNormal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:tint="?themePrimaryColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            style="?themeSmallClickableFont"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:lines="2"
+                            android:maxLines="2"
+                            app:layout_constraintTop_toBottomOf="@id/dummyMenu"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:visibility="invisible"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/dummyMenu2"
+                            android:background="@drawable/shape_oval"
+                            android:backgroundTint="?themePrimaryColor"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintDimensionRatio="1:1"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:layout_marginEnd="@dimen/marginNormal"
+                            android:padding="@dimen/lineWidth"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp">
+
+                            <RelativeLayout
+                                android:background="@drawable/shape_oval"
+                                android:backgroundTint="?themeBackgroundColor"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/marginNormal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    app:tint="?themePrimaryColor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            style="?themeSmallClickableFont"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:lines="2"
+                            android:maxLines="2"
+                            app:layout_constraintTop_toBottomOf="@id/dummyMenu2"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
