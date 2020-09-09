@@ -33,6 +33,9 @@ query AnimeListCollectionQuery(
                 media {
                     id
                     title {
+                        romaji
+                        english
+                        native
                         userPreferred
                     }
                     type

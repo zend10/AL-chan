@@ -548,31 +548,66 @@ object Converter {
     }
 
     private fun convertMediaTitle(mediaTitle: AnimeListCollectionQuery.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            mediaTitle.romaji,
+            mediaTitle.english,
+            mediaTitle.native_,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertMediaTitle(mediaTitle: AnimeListEntryMutation.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            mediaTitle.romaji,
+            mediaTitle.english,
+            mediaTitle.native_,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertMediaTitle(mediaTitle: AnimeListQuery.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            null,
+            null,
+            null,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertMediaTitle(mediaTitle: MangaListCollectionQuery.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            mediaTitle.romaji,
+            mediaTitle.english,
+            mediaTitle.native_,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertMediaTitle(mediaTitle: MangaListEntryMutation.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            mediaTitle.romaji,
+            mediaTitle.english,
+            mediaTitle.native_,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertMediaTitle(mediaTitle: MangaListQuery.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            null,
+            null,
+            null,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertMediaTitle(mediaTitle: SeasonalAnimeQuery.Title): MediaTitle {
-        return MediaTitle(mediaTitle.userPreferred!!)
+        return MediaTitle(
+            null,
+            null,
+            null,
+            mediaTitle.userPreferred!!
+        )
     }
 
     private fun convertNextAiringEpisode(nextAiringEpisode: AnimeListCollectionQuery.NextAiringEpisode): AiringSchedule {

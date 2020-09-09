@@ -34,6 +34,9 @@ query MangaListCollectionQuery(
                 media {
                     id
                     title {
+                        romaji
+                        english
+                        native
                         userPreferred
                     }
                     type

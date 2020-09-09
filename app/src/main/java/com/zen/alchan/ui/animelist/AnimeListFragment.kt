@@ -100,7 +100,11 @@ class AnimeListFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewModel.currentList.clear()
                 viewModel.getSelectedList().forEach { filtered ->
-                    if (filtered.media?.title?.userPreferred?.toLowerCase()?.contains(newText ?: "") == true) {
+                    if (
+                        filtered.media?.title?.romaji?.toLowerCase()?.contains(newText ?: "") == true ||
+                        filtered.media?.title?.english?.toLowerCase()?.contains(newText ?: "") == true ||
+                        filtered.media?.title?.native?.toLowerCase()?.contains(newText ?: "") == true
+                    ) {
                         viewModel.currentList.add(filtered)
                     }
                 }
