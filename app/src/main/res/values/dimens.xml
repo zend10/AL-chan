@@ -6,6 +6,7 @@
     <dimen name="fontLarge">36sp</dimen>
     <dimen name="fontHuge">48sp</dimen>
 
+    <dimen name="fontFixedBig">20dp</dimen>
     <dimen name="fontFixedNormal">14dp</dimen>
     <dimen name="fontFixedSmall">12dp</dimen>
 

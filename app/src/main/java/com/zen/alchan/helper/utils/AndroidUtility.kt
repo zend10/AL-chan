@@ -13,9 +13,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.zen.alchan.R
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.*
-import com.zen.alchan.helper.pojo.ColorPalette
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonPlugin
@@ -24,8 +22,6 @@ import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.html.HtmlPlugin
-import io.noties.markwon.image.ImagesPlugin
-import io.noties.markwon.image.gif.GifMediaDecoder
 import io.noties.markwon.image.glide.GlideImagesPlugin
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
@@ -33,13 +29,11 @@ import io.reactivex.disposables.Disposable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import type.MediaSeason
 import type.MediaType
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.net.URLEncoder
-import java.util.*
 import kotlin.math.max
 
 

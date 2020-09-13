@@ -18,7 +18,6 @@ class GifGlideStore(private val requestManager: RequestManager) : GlideImagesPlu
         val destination = drawable.destination
         return requestManager
             .asDrawable()
-            .apply(RequestOptions().override(1280, 720))
             .addListener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
