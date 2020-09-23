@@ -405,6 +405,7 @@ class AnimeListEditorActivity : BaseActivity() {
             inputDialogView.inputField.inputType = InputType.TYPE_CLASS_NUMBER
             inputDialogView.inputField.filters = arrayOf(InputFilter.LengthFilter(5))
             inputDialogView.inputField.setText(viewModel.selectedRewatches?.toString())
+            inputDialogView.inputField.setSelection(viewModel.selectedRewatches?.toString()?.length ?: 0)
 
             DialogUtility.showCustomViewDialog(
                 this,
@@ -437,6 +438,7 @@ class AnimeListEditorActivity : BaseActivity() {
             inputDialogView.inputField.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
             inputDialogView.inputField.filters = arrayOf(InputFilter.LengthFilter(6000))
             inputDialogView.inputField.setText(viewModel.selectedNotes)
+            inputDialogView.inputField.setSelection(viewModel.selectedNotes?.length ?: 0)
 
             DialogUtility.showCustomViewDialog(
                 this,

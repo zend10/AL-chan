@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -89,6 +90,10 @@ class SetScoreDialog : DialogFragment() {
 
         if (listener == null) {
             dismiss()
+        }
+        
+        if (scoreFormat == ScoreFormat.POINT_100 || scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
+            alertDialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         }
 
         return alertDialog

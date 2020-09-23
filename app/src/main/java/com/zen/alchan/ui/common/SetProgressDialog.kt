@@ -2,6 +2,7 @@ package com.zen.alchan.ui.common
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.zen.alchan.R
@@ -66,7 +67,10 @@ class SetProgressDialog : DialogFragment() {
             dismiss()
         }
 
-        return builder.create()
+        val dialog = builder.create()
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
+        return dialog
     }
 
     fun setListener(setProgressListener: SetProgressListener) {
