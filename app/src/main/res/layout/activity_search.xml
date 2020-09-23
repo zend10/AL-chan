@@ -42,8 +42,18 @@
                 android:maxLines="1"
                 android:inputType="textCapWords"
                 android:imeOptions="actionDone"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/searchClearButton"
+                app:srcCompat="@drawable/ic_delete"
+                app:tint="@color/black"
+                android:padding="@dimen/iconPadding"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

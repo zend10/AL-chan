@@ -51,6 +51,8 @@ class SearchActivity : BaseActivity() {
     private fun initLayout() {
         searchBackButton.setOnClickListener { finish() }
 
+        searchClearButton.setOnClickListener { searchBarEditText.setText("") }
+
         searchBarEditText.requestFocus()
 
         disposable = RxTextView.textChanges(searchBarEditText)
