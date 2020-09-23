@@ -91,7 +91,7 @@ class SetScoreDialog : DialogFragment() {
         if (listener == null) {
             dismiss()
         }
-        
+
         if (scoreFormat == ScoreFormat.POINT_100 || scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
             alertDialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         }
@@ -104,6 +104,7 @@ class SetScoreDialog : DialogFragment() {
             ScoreFormat.POINT_100 -> {
                 dialogView.score100Layout.visibility = View.VISIBLE
                 dialogView.setScore100Field.setText(if (currentScore == null || currentScore == 0.0) "" else currentScore?.toInt().toString())
+                dialogView.setScore100Field.setSelection(dialogView.setScore100Field.text?.length ?: 0)
 
                 if (!advancedScoring.isNullOrEmpty()) {
                     dialogView.score100AdvancedScoringLayout.visibility = View.VISIBLE
@@ -114,6 +115,7 @@ class SetScoreDialog : DialogFragment() {
             ScoreFormat.POINT_10_DECIMAL -> {
                 dialogView.scoreDecimalLayout.visibility = View.VISIBLE
                 dialogView.setScoreDecimalField.setText(if (currentScore == null || currentScore == 0.0) "" else currentScore?.roundToOneDecimal())
+                dialogView.setScoreDecimalField.setSelection(dialogView.setScoreDecimalField.text?.length ?: 0)
 
                 if (!advancedScoring.isNullOrEmpty()) {
                     dialogView.scoreDecimalAdvancedScoringLayout.visibility = View.VISIBLE
