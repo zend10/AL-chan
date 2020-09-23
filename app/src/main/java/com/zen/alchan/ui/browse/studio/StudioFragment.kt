@@ -275,6 +275,7 @@ class StudioFragment : BaseFragment() {
                     viewModel.mediaSortIndex = which
                     studioMediaSortText.text = viewModel.mediaSortArray[viewModel.mediaSortIndex]
 
+                    isLoading = false
                     viewModel.studioMediaList.clear()
                     viewModel.page = 1
                     viewModel.hasNextPage = true
