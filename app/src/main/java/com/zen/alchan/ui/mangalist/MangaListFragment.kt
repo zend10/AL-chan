@@ -104,7 +104,8 @@ class MangaListFragment : Fragment() {
                     if (
                         filtered.media?.title?.romaji?.toLowerCase()?.contains(newText ?: "") == true ||
                         filtered.media?.title?.english?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.title?.native?.toLowerCase()?.contains(newText ?: "") == true
+                        filtered.media?.title?.native?.toLowerCase()?.contains(newText ?: "") == true ||
+                        filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(newText ?: "") == true } != null
                     ) {
                         viewModel.currentList.add(filtered)
                     }

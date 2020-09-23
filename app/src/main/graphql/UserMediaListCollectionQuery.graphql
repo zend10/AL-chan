@@ -58,6 +58,9 @@ query UserMediaListCollectionQuery(
                     id
                     title {
                         userPreferred
+                        romaji
+                        english
+                        native
                     }
                     type
                     format
@@ -79,6 +82,7 @@ query UserMediaListCollectionQuery(
                         large
                     }
                     genres
+                    synonyms
                     averageScore
                     popularity
                     isAdult

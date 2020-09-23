@@ -100,7 +100,12 @@ class UserMediaListFragment : BaseFragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewModel.currentList.clear()
                 viewModel.getSelectedList().forEach { filtered ->
-                    if (filtered?.media?.title?.userPreferred?.toLowerCase()?.contains(newText ?: "") == true) {
+                    if (
+                        filtered?.media?.title?.romaji?.toLowerCase()?.contains(newText ?: "") == true ||
+                        filtered?.media?.title?.english?.toLowerCase()?.contains(newText ?: "") == true ||
+                        filtered?.media?.title?.native_?.toLowerCase()?.contains(newText ?: "") == true ||
+                        filtered?.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(newText ?: "") == true } != null
+                    ) {
                         viewModel.currentList.add(filtered)
                     }
                 }

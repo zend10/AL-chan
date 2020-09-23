@@ -20,6 +20,7 @@ class Media(
     val coverImage: MediaCoverImage? = null,
     val bannerImage: String? = null,
     val genres: List<String?>? = null,
+    val synonyms: List<String?>? = null,
     val averageScore: Int? = null,
     val popularity: Int? = null,
     val isAdult: Boolean? = null,

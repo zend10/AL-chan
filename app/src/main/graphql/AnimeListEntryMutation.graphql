@@ -80,6 +80,7 @@ mutation AnimeListEntryMutation(
                 large
             }
             genres
+            synonyms
             averageScore
             popularity
             isAdult
