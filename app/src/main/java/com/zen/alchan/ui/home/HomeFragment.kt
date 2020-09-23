@@ -184,6 +184,7 @@ class HomeFragment : Fragment() {
                 if (viewModel.hasNextPage) {
                     viewModel.getReleasingToday()
                 } else {
+                    viewModel.releasingTodayList.sortBy { releasingTodayItem ->  releasingTodayItem.timestamp }
                     releasingTodayAdapter = assignReleasingTodayRvAdapter()
                     releasingTodayRecyclerView.adapter = releasingTodayAdapter
                     releasingTodayRecyclerView.visibility = if (viewModel.releasingTodayList.isNullOrEmpty()) View.GONE else View.VISIBLE
