@@ -67,7 +67,6 @@
             android:id="@+id/mangaTitleText"
             style="?themeRegularClickableBoldFont"
             android:text="Title"
-            android:textSize="@dimen/fontFixedNormal"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/mangaImageGuideline"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +83,6 @@
             android:id="@+id/mangaFormatText"
             android:text="Format"
             style="?themeSmallFont"
-            android:textSize="@dimen/fontFixedSmall"
             app:layout_constraintTop_toBottomOf="@id/mangaTitleText"
             app:layout_constraintStart_toEndOf="@id/mangaImageGuideline"
             android:layout_marginStart="@dimen/marginNormal"
@@ -106,7 +104,6 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mangaRatingText"
             style="?themeRegularClickableFont"
-            android:textSize="@dimen/fontFixedNormal"
             app:layout_constraintStart_toEndOf="@id/mangaStarIcon"
             app:layout_constraintEnd_toStartOf="@id/dummySpace"
             app:layout_constraintBottom_toTopOf="@id/mangaProgressBar"
@@ -159,7 +156,6 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mangaProgressVolumesText"
                     style="?themeRegularClickableFont"
-                    android:textSize="@dimen/fontFixedNormal"
                     android:text="0/?"
                     android:foreground="?selectableItemBackground"
                     android:layout_marginEnd="@dimen/marginClose"
@@ -189,7 +185,6 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mangaProgressText"
                     style="?themeRegularClickableFont"
-                    android:textSize="@dimen/fontFixedNormal"
                     android:text="0/?"
                     android:foreground="?selectableItemBackground"
                     android:layout_marginEnd="@dimen/marginClose"

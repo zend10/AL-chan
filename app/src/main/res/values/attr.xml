@@ -28,8 +28,6 @@
     <attr name="themeSmallClickableBoldFont" format="reference"/>
     <attr name="themeLargeFont" format="reference"/>
     <attr name="themeHugeBoldFont" format="reference"/>
-    <attr name="themeToolbarTitleFont" format="reference"/>
-    <attr name="themeToolbarSubtitleFont" format="reference"/>
 
     <attr name="themeButtonPrimary" format="reference"/>
     <attr name="themeButtonSecondary" format="reference"/>

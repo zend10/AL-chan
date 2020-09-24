@@ -21,8 +21,6 @@
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
         <item name="themeLargeFont">@style/FontLarge</item>
         <item name="themeHugeBoldFont">@style/FontHugeBold</item>
-        <item name="themeToolbarTitleFont">@style/FontToolbarTitle</item>
-        <item name="themeToolbarSubtitleFont">@style/FontToolbarSubtitle</item>
         <item name="themeButtonPrimary">@style/ButtonPrimary</item>
         <item name="themeButtonSecondary">@style/ButtonSecondary</item>
         <item name="themeButtonBorderPrimary">@style/ButtonBorderPrimary</item>
@@ -292,18 +290,6 @@
     <style name="FontHugeBold">
         <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
         <item name="android:textSize">@dimen/fontHuge</item>
-        <item name="android:textColor">?themeContentColor</item>
-    </style>
-
-    <style name="FontToolbarTitle">
-        <item name="android:fontFamily">@font/ubuntu_medium</item>
-        <item name="android:textSize">@dimen/fontFixedBig</item>
-        <item name="android:textColor">?themeContentColor</item>
-    </style>
-
-    <style name="FontToolbarSubtitle">
-        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
-        <item name="android:textSize">@dimen/fontFixedNormal</item>
         <item name="android:textColor">?themeContentColor</item>
     </style>
 

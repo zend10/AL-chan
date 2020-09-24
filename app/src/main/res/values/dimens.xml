@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fontNormal">14sp</dimen>
-    <dimen name="fontSmall">12sp</dimen>
-    <dimen name="fontBig">20sp</dimen>
-    <dimen name="fontLarge">36sp</dimen>
-    <dimen name="fontHuge">48sp</dimen>
-
-    <dimen name="fontFixedBig">20dp</dimen>
-    <dimen name="fontFixedNormal">14dp</dimen>
-    <dimen name="fontFixedSmall">12dp</dimen>
+    <dimen name="fontNormal">14dp</dimen>
+    <dimen name="fontSmall">12dp</dimen>
+    <dimen name="fontBig">20dp</dimen>
+    <dimen name="fontLarge">36dp</dimen>
+    <dimen name="fontHuge">48dp</dimen>
 
     <dimen name="iconPadding">4dp</dimen>
     <dimen name="iconSize">24dp</dimen>
