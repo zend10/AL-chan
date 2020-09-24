@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.browse.activity
 
+import com.zen.alchan.helper.pojo.BestFriend
+import type.ActivityType
 import type.MediaType
 
 interface ActivityListener {
@@ -12,4 +14,6 @@ interface ActivityListener {
     fun viewOnAniList(siteUrl: String?)
     fun copyLink(siteUrl: String?)
     fun openMediaPage(mediaId: Int, mediaType: MediaType?)
+    fun changeActivityType(selectedActivityType: ArrayList<ActivityType>?)
+    fun changeBestFriend(selectedBestFriendPosition: Int)
 }

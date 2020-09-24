@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.fragment_social.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.ActivityType
 import type.MediaType
 
 /**
@@ -44,7 +45,6 @@ class SocialFragment : Fragment() {
 
     private val viewModel by viewModel<SocialViewModel>()
 
-    private lateinit var bestFriendAdapter: BestFriendRvAdapter
     private lateinit var friendsActivityAdapter: ActivityListRvAdapter
 
     private var maxWidth = 0
@@ -64,50 +64,41 @@ class SocialFragment : Fragment() {
         maxWidth = AndroidUtility.getScreenWidth(activity)
         markwon = AndroidUtility.initMarkwon(activity!!)
 
-        bestFriendAdapter = assignBestFriendAdapter()
-        bestFriendsRecyclerView.adapter = bestFriendAdapter
-
         friendsActivityAdapter = assignAdapter()
         friendsActivityRecyclerView.adapter= friendsActivityAdapter
 
         if (!viewModel.enableSocial) {
             socialDisabledText.visibility = View.VISIBLE
             socialRefreshLayout.visibility = View.GONE
+            newActivityButton.visibility = View.GONE
         } else {
             socialDisabledText.visibility = View.GONE
             socialRefreshLayout.visibility = View.VISIBLE
+            newActivityButton.visibility = View.VISIBLE
             initLayout()
             setupObserver()
         }
     }
 
     private fun setupObserver() {
-        viewModel.mostTrendingAnimeBannerLiveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                GlideApp.with(this).load(it).into(globalActivityImage)
-            } else {
-                GlideApp.with(this).load(0).into(globalActivityImage)
-            }
-        })
-
         viewModel.bestFriendChangedNotifier.observe(viewLifecycleOwner, Observer {
             viewModel.reinitBestFriends()
-            bestFriendAdapter.notifyDataSetChanged()
-            viewModel.selectedBestFriend = null
+            friendsActivityAdapter.notifyDataSetChanged()
+            viewModel.socialFilter.selectedBestFriend = null
             viewModel.retrieveFriendsActivity()
         })
 
         viewModel.notifyFriendsActivity.observe(viewLifecycleOwner, Observer {
-            if (true) {
+            if (it) {
                 viewModel.retrieveFriendsActivity()
             }
         })
 
         viewModel.friendsActivityResponse.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
-                ResponseStatus.LOADING -> friendsActivityLoading.visibility = View.VISIBLE
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
-                    friendsActivityLoading.visibility = View.GONE
+                    loadingLayout.visibility = View.GONE
                     viewModel.activityList.clear()
                     it.data?.page?.activities?.forEach { act ->
                         val activityItem = when (act?.__typename) {
@@ -160,7 +151,7 @@ class SocialFragment : Fragment() {
                     }
                 }
                 ResponseStatus.ERROR -> {
-                    friendsActivityLoading.visibility = View.GONE
+                    loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
                 }
             }
@@ -176,7 +167,7 @@ class SocialFragment : Fragment() {
                     if (activityIndex != -1) {
                         viewModel.activityList[activityIndex].isLiked = it.data?.isLiked
                         viewModel.activityList[activityIndex].likeCount = it.data?.likeCount ?: 0
-                        friendsActivityAdapter.notifyItemChanged(activityIndex)
+                        friendsActivityAdapter.notifyItemChanged(activityIndex + 1)
                     }
                 }
                 ResponseStatus.ERROR -> {
@@ -195,7 +186,7 @@ class SocialFragment : Fragment() {
                     val activityIndex = viewModel.activityList.indexOf(findActivity)
                     if (activityIndex != -1) {
                         viewModel.activityList[activityIndex].isSubscribed = it.data?.isSubscribed
-                        friendsActivityAdapter.notifyItemChanged(activityIndex)
+                        friendsActivityAdapter.notifyItemChanged(activityIndex + 1)
                     }
                 }
                 ResponseStatus.ERROR -> {
@@ -228,83 +219,14 @@ class SocialFragment : Fragment() {
             viewModel.retrieveFriendsActivity()
         }
 
-        visitGlobalActivityButton.setOnClickListener {
-            val intent = Intent(activity, GlobalFeedActivity::class.java)
-            intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_GLOBAL)
-            startActivity(intent)
+        newActivityButton.setOnClickListener {
+            val intent = Intent(activity, TextEditorActivity::class.java)
+            startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
         }
-
-        friendsActivityViewMore.setOnClickListener {
-            val intent = Intent(activity, GlobalFeedActivity::class.java)
-            if (viewModel.selectedBestFriend != null) {
-                intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_BEST_FRIEND)
-                intent.putExtra(GlobalFeedActivity.SELECTED_BEST_FRIEND, viewModel.selectedBestFriend?.id)
-            } else {
-                intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_FOLLOWING)
-            }
-            intent.putExtra(GlobalFeedActivity.SELECTED_ACTIVITY_TYPE, viewModel.activityTypeList.indexOf(viewModel.selectedActivityType))
-            startActivity(intent)
-        }
-
-        bestFriendInfo.setOnClickListener {
-            DialogUtility.showInfoDialog(
-                activity,
-                R.string.best_friend_instruction
-            )
-        }
-
-        friendsActivityFilterText.text = getString(viewModel.activityTypeArray[viewModel.activityTypeList.indexOf(viewModel.selectedActivityType)])
-
-        friendsActivityFilterText.setOnClickListener {
-            val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(activity)
-                .setItems(activityTypeStringArray) { _, which ->
-                    viewModel.selectedActivityType = viewModel.activityTypeList[which]
-                    friendsActivityFilterText.text = getString(viewModel.activityTypeArray[which])
-                    viewModel.retrieveFriendsActivity()
-                }
-                .show()
-        }
-    }
-
-    private fun assignBestFriendAdapter(): BestFriendRvAdapter {
-        return BestFriendRvAdapter(activity!!, viewModel.bestFriends, AndroidUtility.getScreenWidth(activity) / resources.getInteger(R.integer.horizontalListCharacterDivider),
-            object : BestFriendRvAdapter.BestFriendListener {
-                override fun passSelectedBestFriend(position: Int, id: Int?) {
-                    if (position != 0) {
-                        viewModel.selectedBestFriend = null
-
-                        viewModel.bestFriends.forEachIndexed { index, bestFriend ->
-                            if (index == position) {
-                                viewModel.bestFriends[index].isSelected = !viewModel.bestFriends[index].isSelected
-                                if (viewModel.bestFriends[index].isSelected) {
-                                    viewModel.selectedBestFriend = viewModel.bestFriends[index]
-                                }
-                            } else {
-                                viewModel.bestFriends[index].isSelected = false
-                            }
-                        }
-
-                        bestFriendAdapter.notifyDataSetChanged()
-                        viewModel.retrieveFriendsActivity()
-                    } else {
-                        val intent = Intent(activity, SearchActivity::class.java)
-                        intent.putExtra(SearchActivity.SEARCH_USER, true)
-                        startActivity(intent)
-                    }
-                }
-
-                override fun openUserPage(id: Int) {
-                    val intent = Intent(activity, BrowseActivity::class.java)
-                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
-                    intent.putExtra(BrowseActivity.LOAD_ID, id)
-                    startActivity(intent)
-                }
-            })
     }
 
     private fun assignAdapter(): ActivityListRvAdapter {
-        return ActivityListRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon,
+        return ActivityListRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon, viewModel.socialFilter,
             object : ActivityListener {
                 override fun openActivityPage(activityId: Int) {
                     val intent = Intent(activity, BrowseActivity::class.java)
@@ -380,6 +302,28 @@ class SocialFragment : Fragment() {
                     intent.putExtra(BrowseActivity.TARGET_PAGE, mediaType?.name)
                     intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
                     startActivity(intent)
+                }
+
+                override fun changeActivityType(selectedActivityType: ArrayList<ActivityType>?) {
+                    viewModel.socialFilter.selectedActivityType = selectedActivityType
+                    viewModel.retrieveFriendsActivity()
+                }
+
+                override fun changeBestFriend(selectedBestFriendPosition: Int) {
+                    viewModel.socialFilter.selectedBestFriend = null
+
+                    viewModel.socialFilter.bestFriends.forEachIndexed { index, bestFriend ->
+                        if (index == selectedBestFriendPosition) {
+                            viewModel.socialFilter.bestFriends[index].isSelected = !viewModel.socialFilter.bestFriends[index].isSelected
+                            if (viewModel.socialFilter.bestFriends[index].isSelected) {
+                                viewModel.socialFilter.selectedBestFriend = viewModel.socialFilter.bestFriends[index]
+                            }
+                        } else {
+                            viewModel.socialFilter.bestFriends[index].isSelected = false
+                        }
+                    }
+
+                    viewModel.retrieveFriendsActivity()
                 }
             }
         )

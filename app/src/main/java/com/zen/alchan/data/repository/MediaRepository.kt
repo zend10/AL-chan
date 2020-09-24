@@ -15,8 +15,6 @@ interface MediaRepository {
     val tagList: List<MediaTagCollection>
     val tagListLastRetrieved: Long?
 
-    val mostTrendingAnimeBannerLivaData: LiveData<String?>
-
     val mediaData: LiveData<Resource<MediaQuery.Data>>
     val mediaStatus: LiveData<Resource<MediaStatusQuery.Data>>
     val mediaOverviewData: LiveData<Resource<MediaOverviewQuery.Data>>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:text="@string/view_more"
+    android:layout_marginTop="@dimen/marginClose"
+    android:layout_marginBottom="@dimen/marginSmall"
+    android:layout_marginStart="@dimen/marginNormal"
+    android:layout_marginEnd="@dimen/marginNormal"
+    style="?themeButtonPrimary"
+    app:backgroundTint="?themeCardColor"
+    android:textColor="?themePrimaryColor"
+    android:id="@+id/viewMoreButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+

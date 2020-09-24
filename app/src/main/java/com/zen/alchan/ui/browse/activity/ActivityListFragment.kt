@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.ActivityType
 import type.MediaType
 
 /**
@@ -291,6 +292,7 @@ class ActivityListFragment : BaseFragment() {
             viewModel.currentUserId,
             maxWidth,
             markwon,
+            null,
             object : ActivityListener {
                 override fun openActivityPage(activityId: Int) {
                     listener?.changeFragment(BrowsePage.ACTIVITY_DETAIL, activityId)
@@ -352,6 +354,14 @@ class ActivityListFragment : BaseFragment() {
 
                 override fun openMediaPage(mediaId: Int, mediaType: MediaType?) {
                     listener?.changeFragment(BrowsePage.valueOf(mediaType?.name!!), mediaId)
+                }
+
+                override fun changeActivityType(selectedActivityType: ArrayList<ActivityType>?) {
+                    // do nothing
+                }
+
+                override fun changeBestFriend(selectedBestFriendPosition: Int) {
+                    // do nothing
                 }
             }
         )

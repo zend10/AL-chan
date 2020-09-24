@@ -8,6 +8,7 @@ import com.zen.alchan.data.response.UserAvatar
 import com.zen.alchan.helper.pojo.ActivityItem
 import com.zen.alchan.helper.pojo.ActivityReply
 import com.zen.alchan.helper.pojo.BestFriend
+import com.zen.alchan.helper.pojo.SocialFilter
 import type.ActivityType
 import type.LikeableType
 
@@ -28,27 +29,12 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
 
     var isInit = false
 
-    var selectedActivityType: ArrayList<ActivityType>? = null
-    var selectedBestFriend: BestFriend? = null
+    var socialFilter = SocialFilter(arrayListOf(), null, null)
 
-    var bestFriends = ArrayList<BestFriend>()
-
-    val activityTypeList = arrayListOf(
-        null, arrayListOf(ActivityType.TEXT), arrayListOf(ActivityType.ANIME_LIST, ActivityType.MANGA_LIST)
-    )
-
-    val activityTypeArray = arrayOf(
-        R.string.all, R.string.status, R.string.list
-    )
-
-    val savedBestFriends: List<BestFriend>?
+    private val savedBestFriends: List<BestFriend>?
         get() = userRepository.bestFriends
 
     val activityList = ArrayList<ActivityItem>()
-
-    val mostTrendingAnimeBannerLiveData by lazy {
-        mediaRepository.mostTrendingAnimeBannerLivaData
-    }
 
     val bestFriendChangedNotifier by lazy {
         userRepository.bestFriendChangedNotifier
@@ -84,19 +70,19 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
         if (!isInit) {
             isInit = true
             reinitBestFriends()
-            socialRepository.getFriendsActivity(selectedActivityType, if (selectedBestFriend != null) selectedBestFriend?.id!! else null)
+            socialRepository.getFriendsActivity(socialFilter.selectedActivityType, if (socialFilter.selectedBestFriend != null) socialFilter.selectedBestFriend?.id!! else null)
         }
     }
 
     fun retrieveFriendsActivity() {
-        socialRepository.getFriendsActivity(selectedActivityType, if (selectedBestFriend != null) selectedBestFriend?.id!! else null)
+        socialRepository.getFriendsActivity(socialFilter.selectedActivityType, if (socialFilter.selectedBestFriend != null) socialFilter.selectedBestFriend?.id!! else null)
     }
 
     fun reinitBestFriends() {
-        bestFriends.clear()
-        bestFriends.add(BestFriend(null, null, null))
+        socialFilter.bestFriends.clear()
+        socialFilter.bestFriends.add(BestFriend(null, null, null))
         savedBestFriends?.forEach {
-            bestFriends.add(it)
+            socialFilter.bestFriends.add(it)
         }
     }
 

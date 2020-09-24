@@ -37,11 +37,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val tagListLastRetrieved: Long?
         get() = mediaManager.tagListLastRetrieved
 
-    // Used for banner in Social tab, for aesthetic purpose
-    private val _mostTrendingAnimeBannerLiveData = MutableLiveData<String?>()
-    override val mostTrendingAnimeBannerLivaData: LiveData<String?>
-        get() = _mostTrendingAnimeBannerLiveData
-
     private val _mediaData = SingleLiveEvent<Resource<MediaQuery.Data>>()
     override val mediaData: LiveData<Resource<MediaQuery.Data>>
         get() = _mediaData
@@ -189,7 +184,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     @SuppressLint("CheckResult")
     override fun getTrendingAnime() {
         _trendingAnimeData.postValue(Resource.Loading())
-        _mostTrendingAnimeBannerLiveData.postValue(mediaManager.mostTrendingAnimeBanner)
 
         mediaDataSource.getTrendingMedia(MediaType.ANIME).subscribeWith(object : Observer<Response<TrendingMediaQuery.Data>> {
             override fun onSubscribe(d: Disposable) {}
@@ -202,7 +196,6 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
                     if (t.data?.page?.media?.get(0)?.bannerImage != null) {
                         mediaManager.setMostTrendingAnimeBanner(t.data?.page?.media?.get(0)?.bannerImage)
-                        _mostTrendingAnimeBannerLiveData.postValue(mediaManager.mostTrendingAnimeBanner)
                     }
                 }
             }

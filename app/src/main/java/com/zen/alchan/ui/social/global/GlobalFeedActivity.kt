@@ -264,7 +264,7 @@ class GlobalFeedActivity : BaseActivity() {
     }
 
     private fun assignAdapter(): ActivityListRvAdapter {
-        return ActivityListRvAdapter(this, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon, object : ActivityListener {
+        return ActivityListRvAdapter(this, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon, null, object : ActivityListener {
             override fun openActivityPage(activityId: Int) {
                 val intent = Intent(this@GlobalFeedActivity, BrowseActivity::class.java)
                 intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ACTIVITY_DETAIL.name)
@@ -339,6 +339,14 @@ class GlobalFeedActivity : BaseActivity() {
                 intent.putExtra(BrowseActivity.TARGET_PAGE, mediaType?.name)
                 intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
                 startActivity(intent)
+            }
+
+            override fun changeActivityType(selectedActivityType: ArrayList<ActivityType>?) {
+                // do nothing
+            }
+
+            override fun changeBestFriend(selectedBestFriendPosition: Int) {
+                // do nothing
             }
         })
     }

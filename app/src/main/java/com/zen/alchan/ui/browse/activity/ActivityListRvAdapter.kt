@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.browse.activity
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,17 +10,23 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.pojo.ActivityItem
-import com.zen.alchan.helper.pojo.ListActivity
-import com.zen.alchan.helper.pojo.MessageActivity
-import com.zen.alchan.helper.pojo.TextActivity
+import com.zen.alchan.helper.pojo.*
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.ui.browse.BrowseActivity
+import com.zen.alchan.ui.search.SearchActivity
+import com.zen.alchan.ui.social.BestFriendRvAdapter
+import com.zen.alchan.ui.social.global.GlobalFeedActivity
 import io.noties.markwon.Markwon
+import kotlinx.android.synthetic.main.fragment_social.*
+import kotlinx.android.synthetic.main.layout_best_friend.view.*
+import kotlinx.android.synthetic.main.layout_view_more.view.*
 import kotlinx.android.synthetic.main.list_activity.view.*
 import type.ActivityType
 
@@ -29,28 +36,56 @@ class ActivityListRvAdapter(
     private val currentUserId: Int?,
     private val maxWidth: Int,
     private val markwon: Markwon,
+    private val socialFilter: SocialFilter?,
     private val listener: ActivityListener
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
+        const val VIEW_TYPE_BEST_FRIEND = 2
+        const val VIEW_TYPE_VIEW_MORE = 3
     }
 
+    private val activityTypeList = arrayListOf(
+        null, arrayListOf(ActivityType.TEXT), arrayListOf(ActivityType.ANIME_LIST, ActivityType.MANGA_LIST)
+    )
+
+    private val activityTypeArray = arrayOf(
+        R.string.all, R.string.status, R.string.list
+    )
+
+    private lateinit var bestFriendAdapter: BestFriendRvAdapter
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_ITEM) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
-            ItemViewHolder(view)
-        } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_loading, parent, false)
-            LoadingViewHolder(view)
+        return when (viewType) {
+            VIEW_TYPE_ITEM -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.list_activity, parent, false)
+                ItemViewHolder(view)
+            }
+            VIEW_TYPE_BEST_FRIEND -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_best_friend, parent, false)
+                BestFriedViewHolder(view)
+            }
+            VIEW_TYPE_VIEW_MORE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_view_more, parent, false)
+                ViewMoreViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.list_loading, parent, false)
+                LoadingViewHolder(view)
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ItemViewHolder) {
-            val item = list[position]
-            handleLayout(item!!, holder)
+        when (holder) {
+            is ItemViewHolder -> {
+                val item = list[if (socialFilter != null) position - 1 else position]
+                handleLayout(item!!, holder)
+            }
+            is BestFriedViewHolder -> handleBestFriendLayout(holder)
+            is ViewMoreViewHolder -> handleViewMoreLayout(holder)
         }
     }
 
@@ -229,12 +264,94 @@ class ActivityListRvAdapter(
         holder.recipientLayout.visibility = View.VISIBLE
     }
 
+    private fun handleBestFriendLayout(holder: BestFriedViewHolder) {
+        GlideApp.with(context).load(R.drawable.welcome_background).into(holder.globalActivityImage)
+        holder.visitGlobalActivityButton.setOnClickListener {
+            val intent = Intent(context, GlobalFeedActivity::class.java)
+            intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_GLOBAL)
+            context.startActivity(intent)
+        }
+
+        holder.bestFriendInfo.setOnClickListener {
+            DialogUtility.showInfoDialog(
+                context,
+                R.string.best_friend_instruction
+            )
+        }
+
+        bestFriendAdapter = assignBestFriendAdapter()
+
+        holder.bestFriendsRecyclerView.adapter = bestFriendAdapter
+
+        if (socialFilter?.selectedBestFriend != null) {
+            val index = socialFilter.bestFriends.indexOf(socialFilter.selectedBestFriend!!)
+            if (index != -1) {
+                holder.bestFriendsRecyclerView.scrollToPosition(index)
+            }
+        }
+
+        holder.friendsActivityFilterText.text = context.getString(activityTypeArray[activityTypeList.indexOf(socialFilter?.selectedActivityType)])
+
+        holder.friendsActivityFilterText.setOnClickListener {
+            val activityTypeStringArray = activityTypeArray.map { context.getString(it) }.toTypedArray()
+            MaterialAlertDialogBuilder(context)
+                .setItems(activityTypeStringArray) { _, which ->
+                    listener.changeActivityType(activityTypeList[which])
+                }
+                .show()
+        }
+    }
+
+    private fun assignBestFriendAdapter(): BestFriendRvAdapter {
+        return BestFriendRvAdapter(context, socialFilter?.bestFriends ?: listOf(), maxWidth / context.resources.getInteger(R.integer.horizontalListCharacterDivider),
+            object : BestFriendRvAdapter.BestFriendListener {
+                override fun passSelectedBestFriend(position: Int, id: Int?) {
+                    if (position != 0) {
+                        listener.changeBestFriend(position)
+                    } else {
+                        val intent = Intent(context, SearchActivity::class.java)
+                        intent.putExtra(SearchActivity.SEARCH_USER, true)
+                        context.startActivity(intent)
+                    }
+                }
+
+                override fun openUserPage(id: Int) {
+                    val intent = Intent(context, BrowseActivity::class.java)
+                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
+                    intent.putExtra(BrowseActivity.LOAD_ID, id)
+                    context.startActivity(intent)
+                }
+            })
+    }
+
+    private fun handleViewMoreLayout(holder: ViewMoreViewHolder) {
+        holder.viewMoreButton.setOnClickListener {
+            val intent = Intent(context, GlobalFeedActivity::class.java)
+            if (socialFilter?.selectedBestFriend != null) {
+                intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_BEST_FRIEND)
+                intent.putExtra(GlobalFeedActivity.SELECTED_BEST_FRIEND, socialFilter.selectedBestFriend?.id)
+            } else {
+                intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_FOLLOWING)
+            }
+            intent.putExtra(GlobalFeedActivity.SELECTED_ACTIVITY_TYPE, activityTypeList.indexOf(socialFilter?.selectedActivityType))
+            context.startActivity(intent)
+        }
+    }
+
     override fun getItemCount(): Int {
-        return list.size
+        return if (socialFilter != null) list.size + 2 else list.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (socialFilter != null && position == 0) {
+            VIEW_TYPE_BEST_FRIEND
+        } else if (socialFilter != null && position > list.size) {
+            VIEW_TYPE_VIEW_MORE
+        } else if (socialFilter == null && list[position] == null) {
+            VIEW_TYPE_LOADING
+        } else {
+            VIEW_TYPE_ITEM
+        }
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -269,4 +386,16 @@ class ActivityListRvAdapter(
     }
 
     class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    class BestFriedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val globalActivityImage = view.globalActivityImage!!
+        val visitGlobalActivityButton = view.visitGlobalActivityButton!!
+        val bestFriendInfo = view.bestFriendInfo!!
+        val friendsActivityFilterText = view.friendsActivityFilterText!!
+        val bestFriendsRecyclerView = view.bestFriendsRecyclerView!!
+    }
+
+    class ViewMoreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val viewMoreButton = view.viewMoreButton!!
+    }
 }
