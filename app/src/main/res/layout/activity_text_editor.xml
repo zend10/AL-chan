@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_below="@+id/toolbarLayout"
-        android:layout_above="@id/editorFormatLayout"
+        android:layout_above="@id/textLimit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -24,6 +24,18 @@
             android:layout_height="wrap_content"/>
 
     </ScrollView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:visibility="gone"
+        android:id="@+id/textLimit"
+        android:text="@string/the_text_must_be_at_least_5_characters"
+        style="?themeSmallFont"
+        android:layout_above="@id/editorFormatLayout"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/previewButton"
+        android:layout_margin="@dimen/marginNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/previewButton"

@@ -209,14 +209,6 @@ object Constant {
     )
 
     // current, planning, completed, dropped, paused
-//    val STATUS_COLOR_LIST = arrayListOf(
-//        Color.parseColor("#f89963"),
-//        Color.parseColor("#05a9ff"),
-//        Color.parseColor("#69d83a"),
-//        Color.parseColor("#9256f3"),
-//        Color.parseColor("#f87aa5")
-//    )
-
     val STATUS_COLOR_LIST = arrayListOf(
         Color.parseColor("#3BAEEA"),
         Color.parseColor("#F79A63"),

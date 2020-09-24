@@ -28,10 +28,10 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/viewDetailLayout"
                     android:layout_gravity="end"
-                    android:layout_marginBottom="@dimen/marginNormal"
                     android:gravity="center_vertical"
                     android:foreground="?selectableItemBackground"
                     android:padding="@dimen/marginClose"
+                    android:layout_marginBottom="@dimen/marginNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -517,6 +517,11 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/stats_automatically_update_every_24_hours"
+                    style="?themeSmallFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

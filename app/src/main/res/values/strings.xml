@@ -444,4 +444,6 @@
     <string name="floating_icon_color">Floating Icon Color</string>
     <string name="seasonal">Seasonal</string>
     <string name="calendar">Calendar</string>
+    <string name="the_text_must_be_at_least_5_characters">The text must be at least 5 characters.</string>
+    <string name="stats_automatically_update_every_24_hours">Stats automatically update every 24 hours</string>
 </resources>

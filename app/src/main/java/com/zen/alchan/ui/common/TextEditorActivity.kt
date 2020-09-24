@@ -64,22 +64,29 @@ class TextEditorActivity : BaseActivity() {
 
         viewModel.editorType = EditorType.valueOf(intent.getStringExtra(EDITOR_TYPE) ?: EditorType.ACTIVITY.name)
 
+        textLimit.visibility = View.GONE
+
         if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
             viewModel.activityId = intent.getIntExtra(ACTIVITY_ID, 0)
 
+            // if reply
             if (intent.getIntExtra(REPLY_ID, 0) != 0) {
                 viewModel.replyId = intent.getIntExtra(REPLY_ID, 0)
                 viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
             }
         } else {
+            // if edit
             if (intent.getIntExtra(ACTIVITY_ID, 0) != 0) {
                 viewModel.activityId = intent.getIntExtra(ACTIVITY_ID, 0)
                 viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
             }
 
+            // if has recipient
             if (intent.getIntExtra(RECIPIENT_ID, 0) != 0) {
                 viewModel.recipientId = intent.getIntExtra(RECIPIENT_ID, 0)
                 viewModel.recipientName = intent.getStringExtra(RECIPIENT_NAME)
+            } else {
+                textLimit.visibility = View.VISIBLE
             }
         }
 
