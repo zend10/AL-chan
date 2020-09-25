@@ -14,6 +14,7 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
             if (savedSettings.whiteBackgroundAvatar == null) savedSettings.whiteBackgroundAvatar = true
             if (savedSettings.voiceActorLanguage == null) savedSettings.voiceActorLanguage = StaffLanguage.JAPANESE
             if (savedSettings.showRecentReviews == null) savedSettings.showRecentReviews = true
+            if (savedSettings.useRelativeDate == null) savedSettings.useRelativeDate = false
             // add more to here when adding new settings
             return savedSettings
         }

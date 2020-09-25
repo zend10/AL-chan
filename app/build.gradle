@@ -120,6 +120,9 @@ dependencies {
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
 
+    // Gif image that is needed for markwon gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
     // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }
 

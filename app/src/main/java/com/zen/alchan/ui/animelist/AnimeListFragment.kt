@@ -307,11 +307,11 @@ class AnimeListFragment : Fragment() {
         return when (viewModel.animeListStyleLiveData.value?.listType ?: ListType.LINEAR) {
             ListType.LINEAR -> {
                 animeListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                AnimeListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, handleListAction())
+                AnimeListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
             }
             ListType.GRID -> {
                 animeListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
-                AnimeListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, handleListAction())
+                AnimeListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
             }
         }
     }

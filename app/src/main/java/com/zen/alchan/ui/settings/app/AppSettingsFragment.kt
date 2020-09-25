@@ -65,6 +65,7 @@ class AppSettingsFragment : Fragment() {
             enableSocialCheckBox.isChecked = viewModel.appSettings.showSocialTabAutomatically != false
             showBioCheckBox.isChecked = viewModel.appSettings.showBioAutomatically != false
             showStatsCheckBox.isChecked = viewModel.appSettings.showStatsAutomatically != false
+            useRelativeDateCheckBox.isChecked = viewModel.appSettings.useRelativeDate == true
             viewModel.isInit = true
         }
 
@@ -81,7 +82,8 @@ class AppSettingsFragment : Fragment() {
                         showRecentReviewsCheckBox.isChecked,
                         enableSocialCheckBox.isChecked,
                         showBioCheckBox.isChecked,
-                        showStatsCheckBox.isChecked
+                        showStatsCheckBox.isChecked,
+                        useRelativeDateCheckBox.isChecked
                     )
 
                     activity?.recreate()

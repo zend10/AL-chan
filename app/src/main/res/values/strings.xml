@@ -446,4 +446,12 @@
     <string name="calendar">Calendar</string>
     <string name="the_text_must_be_at_least_5_characters">The text must be at least 5 characters.</string>
     <string name="stats_automatically_update_every_24_hours">Stats automatically update every 24 hours</string>
+    <string name="use_relative_date_for_next_airing_episode">Use relative date for next airing episode</string>
+    <string name="ep_on">Ep. %1$d on %2$s</string>
+    <string name="ep_in">Ep. %1$d in %2$d %3$s</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="you_are_behind">. You are %1$d %2$s behind.</string>
+    <string name="episode_small">episode</string>
 </resources>

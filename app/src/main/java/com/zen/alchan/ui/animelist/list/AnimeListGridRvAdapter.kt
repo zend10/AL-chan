@@ -26,6 +26,7 @@ class AnimeListGridRvAdapter(private val context: Context,
                              private val list: List<MediaList>,
                              private val scoreFormat: ScoreFormat,
                              private val listStyle: ListStyle?,
+                             private val useRelativeDate: Boolean,
                              private val listener: AnimeListListener
 ) : RecyclerView.Adapter<AnimeListGridRvAdapter.ViewHolder>() {
 
@@ -69,13 +70,30 @@ class AnimeListGridRvAdapter(private val context: Context,
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
 
         holder.animeAiringLayout.setOnClickListener {
-            var message = "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}."
+            val episode = mediaList.media?.nextAiringEpisode?.episode
+            val timeUntilAiring = mediaList.media?.nextAiringEpisode?.timeUntilAiring ?: 0
+
+            var message = if (useRelativeDate) {
+                when {
+                    timeUntilAiring > 3600 * 24 -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 3600 / 24 + 1, context.getString(R.string.day).setRegularPlural(timeUntilAiring / 3600 / 24 + 1))
+                    }
+                    timeUntilAiring >= 3600 -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 3600, context.getString(R.string.hour).setRegularPlural(timeUntilAiring / 3600))
+                    }
+                    else -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 60, context.getString(R.string.minute).setRegularPlural(timeUntilAiring / 60))
+                    }
+                }
+            } else {
+                context.getString(R.string.ep_on, episode, mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime())
+            }
+
             val epDiff = mediaList.media?.nextAiringEpisode?.episode!! - mediaList.progress!!
             if (epDiff > 1) {
-                message += "\nYou are ${epDiff - 1} ${"episode".setRegularPlural(epDiff - 1)} behind."
+                message += context.getString(R.string.you_are_behind, epDiff - 1, context.getString(R.string.episode_small).setRegularPlural(epDiff - 1))
             }
-            DialogUtility.showToast(context, message, Toast.LENGTH_LONG
-            )
+            DialogUtility.showToast(context, message, Toast.LENGTH_LONG)
         }
 
         holder.animeProgressLayout.setOnClickListener {

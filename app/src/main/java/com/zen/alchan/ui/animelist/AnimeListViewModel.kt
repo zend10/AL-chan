@@ -2,6 +2,7 @@ package com.zen.alchan.ui.animelist
 
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.ListStyleRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
@@ -15,6 +16,7 @@ import type.ScoreFormat
 class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
                          private val listStyleRepository: ListStyleRepository,
                          private val userRepository: UserRepository,
+                         private val appSettingsRepository: AppSettingsRepository,
                          val gson: Gson) : ViewModel() {
 
     var tabItemList = ArrayList<MediaListTabItem>()
@@ -56,6 +58,9 @@ class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
         } else {
             ArrayList()
         }
+
+    val useRelativeDate: Boolean
+        get() = appSettingsRepository.appSettings.useRelativeDate == true
 
     fun retrieveAnimeListData() {
         mediaListRepository.retrieveAnimeListData()

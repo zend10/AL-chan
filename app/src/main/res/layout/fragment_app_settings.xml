@@ -338,6 +338,28 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeRegularFont"
+                    android:text="@string/use_relative_date_for_next_airing_episode"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/useRelativeDateCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/resetDefaultButton"
                 style="?themeButtonBorderNegative"

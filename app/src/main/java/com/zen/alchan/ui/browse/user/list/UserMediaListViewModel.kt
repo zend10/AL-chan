@@ -3,6 +3,7 @@ package com.zen.alchan.ui.browse.user.list
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zen.alchan.data.network.Converter
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.Constant
@@ -14,6 +15,7 @@ import com.zen.alchan.helper.toMillis
 import type.MediaType
 
 class UserMediaListViewModel(private val otherUserRepository: OtherUserRepository,
+                             private val appSettingsRepository: AppSettingsRepository,
                              val gson: Gson) : ViewModel() {
 
     var userId: Int? = null
@@ -34,6 +36,9 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
     val userMediaListCollection by lazy {
         otherUserRepository.userMediaListCollection
     }
+
+    val useRelativeDate: Boolean
+        get() = appSettingsRepository.appSettings.useRelativeDate == true
 
     fun retrieveMediaListCollection() {
         if (userId == null || mediaType == null) {

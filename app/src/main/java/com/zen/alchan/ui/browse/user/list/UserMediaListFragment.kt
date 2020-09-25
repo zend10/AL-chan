@@ -267,11 +267,11 @@ class UserMediaListFragment : BaseFragment() {
         return when {
             viewModel.mediaType == MediaType.ANIME && viewModel.listType == ListType.LINEAR -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
+                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, viewModel.useRelativeDate, handleListAction())
             }
             viewModel.mediaType == MediaType.ANIME && viewModel.listType == ListType.GRID -> {
                 mediaListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
-                UserAnimeListGridRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
+                UserAnimeListGridRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, viewModel.useRelativeDate, handleListAction())
             }
             viewModel.mediaType == MediaType.MANGA && viewModel.listType == ListType.LINEAR -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -283,7 +283,7 @@ class UserMediaListFragment : BaseFragment() {
             }
             else -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, handleListAction())
+                UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, viewModel.useRelativeDate, handleListAction())
             }
         }
     }

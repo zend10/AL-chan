@@ -14,6 +14,7 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.secondsToDateTime
+import com.zen.alchan.helper.setRegularPlural
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.list_anime_list_grid.view.*
@@ -23,6 +24,7 @@ class UserAnimeListGridRvAdapter(private val context: Context,
                                  private val list: List<UserMediaListCollectionQuery.Entry?>,
                                  private val scoreFormat: ScoreFormat,
                                  private val userId: Int?,
+                                 private val useRelativeDate: Boolean,
                                  private val listener: UserMediaListener
 ): RecyclerView.Adapter<UserAnimeListGridRvAdapter.ViewHolder>() {
 
@@ -62,11 +64,26 @@ class UserAnimeListGridRvAdapter(private val context: Context,
         holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
 
         holder.animeAiringLayout.setOnClickListener {
-            DialogUtility.showToast(
-                context,
-                "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}.",
-                Toast.LENGTH_LONG
-            )
+            val episode = mediaList.media?.nextAiringEpisode?.episode
+            val timeUntilAiring = mediaList.media?.nextAiringEpisode?.timeUntilAiring ?: 0
+
+            val message = if (useRelativeDate) {
+                when {
+                    timeUntilAiring > 3600 * 24 -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 3600 / 24 + 1, context.getString(R.string.day).setRegularPlural(timeUntilAiring / 3600 / 24 + 1))
+                    }
+                    timeUntilAiring >= 3600 -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 3600, context.getString(R.string.hour).setRegularPlural(timeUntilAiring / 3600))
+                    }
+                    else -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 60, context.getString(R.string.minute).setRegularPlural(timeUntilAiring / 60))
+                    }
+                }
+            } else {
+                context.getString(R.string.ep_on, episode, mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime())
+            }
+
+            DialogUtility.showToast(context, message, Toast.LENGTH_LONG)
         }
 
         if (!mediaList.notes.isNullOrBlank()) {

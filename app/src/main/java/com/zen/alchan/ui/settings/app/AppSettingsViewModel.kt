@@ -34,7 +34,8 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         showRecentReviews: Boolean = true,
         showSocialTab: Boolean,
         showBio: Boolean,
-        showStats: Boolean
+        showStats: Boolean,
+        useRelativeDate: Boolean = false
     ) {
         appSettingsRepository.setAppSettings(AppSettings(
             appTheme = selectedAppTheme,
@@ -44,7 +45,8 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
             showRecentReviews = showRecentReviews,
             showSocialTabAutomatically = showSocialTab,
             showBioAutomatically = showBio,
-            showStatsAutomatically = showStats
+            showStatsAutomatically = showStats,
+            useRelativeDate = useRelativeDate
         ))
     }
 }

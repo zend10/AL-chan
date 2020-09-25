@@ -11,5 +11,6 @@ class AppSettings(
     var showRecentReviews: Boolean? = true,
     var showSocialTabAutomatically: Boolean? = null,
     var showBioAutomatically: Boolean? = null,
-    var showStatsAutomatically: Boolean? = null
+    var showStatsAutomatically: Boolean? = null,
+    var useRelativeDate: Boolean? = null
 )

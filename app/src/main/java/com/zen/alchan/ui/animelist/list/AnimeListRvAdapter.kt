@@ -26,6 +26,7 @@ class AnimeListRvAdapter(private val context: Context,
                          private val list: List<MediaList>,
                          private val scoreFormat: ScoreFormat,
                          private val listStyle: ListStyle?,
+                         private val useRelativeDate: Boolean,
                          private val listener: AnimeListListener
 ) : RecyclerView.Adapter<AnimeListRvAdapter.ViewHolder>() {
 
@@ -45,10 +46,28 @@ class AnimeListRvAdapter(private val context: Context,
             holder.animeAiringDividerIcon.visibility = View.VISIBLE
             holder.animeAiringDateText.visibility = View.VISIBLE
 
-            var nextEpisodeMessage = "Ep ${mediaList.media?.nextAiringEpisode?.episode} on ${mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime()}"
+            val episode = mediaList.media?.nextAiringEpisode?.episode
+            val timeUntilAiring = mediaList.media?.nextAiringEpisode?.timeUntilAiring ?: 0
+
+            var nextEpisodeMessage = if (useRelativeDate) {
+                when {
+                    timeUntilAiring > 3600 * 24 -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 3600 / 24 + 1, context.getString(R.string.day).setRegularPlural(timeUntilAiring / 3600 / 24 + 1))
+                    }
+                    timeUntilAiring >= 3600 -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 3600, context.getString(R.string.hour).setRegularPlural(timeUntilAiring / 3600))
+                    }
+                    else -> {
+                        context.getString(R.string.ep_in, episode, timeUntilAiring / 60, context.getString(R.string.minute).setRegularPlural(timeUntilAiring / 60))
+                    }
+                }
+            } else {
+                context.getString(R.string.ep_on, episode, mediaList.media?.nextAiringEpisode?.airingAt?.secondsToDateTime())
+            }
+
             val epDiff = mediaList.media?.nextAiringEpisode?.episode!! - mediaList.progress!!
             if (epDiff > 1) {
-                nextEpisodeMessage += ". You are ${epDiff - 1} ${"episode".setRegularPlural(epDiff - 1)} behind."
+                nextEpisodeMessage += context.getString(R.string.you_are_behind, epDiff - 1, context.getString(R.string.episode_small).setRegularPlural(epDiff - 1))
             }
             holder.animeAiringDateText.text = nextEpisodeMessage
         } else {
