@@ -1,24 +1,21 @@
 package com.zen.alchan.ui.animelist
 
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.signature.ObjectKey
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.internal.LinkedTreeMap
@@ -32,7 +29,7 @@ import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -46,8 +43,7 @@ import com.zen.alchan.ui.common.MediaListDetailDialog
 import com.zen.alchan.ui.common.SetProgressDialog
 import com.zen.alchan.ui.common.SetScoreDialog
 import com.zen.alchan.ui.common.customise.CustomiseListActivity
-import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
-import io.reactivex.subjects.PublishSubject
+import com.zen.alchan.ui.filter.MediaFilterActivity
 import kotlinx.android.synthetic.main.fragment_anime_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -121,18 +117,10 @@ class AnimeListFragment : Fragment() {
         })
 
         itemFilter.setOnMenuItemClickListener {
-            val filterDialog = MediaFilterBottomSheet()
-            filterDialog.setListener(object : MediaFilterBottomSheet.MediaFilterListener {
-                override fun passFilterData(filterData: MediaFilteredData?) {
-                    viewModel.setFilteredData(filterData)
-                    initLayout()
-                }
-            })
-            val bundle = Bundle()
-            bundle.putString(MediaFilterBottomSheet.BUNDLE_MEDIA_TYPE, MediaType.ANIME.name)
-            bundle.putString(MediaFilterBottomSheet.BUNDLE_FILTERED_DATA, viewModel.gson.toJson(viewModel.filteredData))
-            filterDialog.arguments = bundle
-            filterDialog.show(childFragmentManager, null)
+            val intent = Intent(activity, MediaFilterActivity::class.java)
+            intent.putExtra(MediaFilterActivity.MEDIA_TYPE, MediaType.ANIME.name)
+            intent.putExtra(MediaFilterActivity.FILTER_DATA, viewModel.gson.toJson(viewModel.filterData))
+            startActivityForResult(intent, MediaFilterActivity.ACTIVITY_FILTER)
             true
         }
 
@@ -445,5 +433,18 @@ class AnimeListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MediaFilterActivity.ACTIVITY_FILTER && resultCode == Activity.RESULT_OK) {
+            val filterData = if (data?.extras != null && data.extras?.getString(MediaFilterActivity.FILTER_DATA) != null) {
+                viewModel.gson.fromJson(data.extras?.getString(MediaFilterActivity.FILTER_DATA), MediaFilterData::class.java)
+            } else {
+                null
+            }
+            viewModel.setFilteredData(filterData)
+            initLayout()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

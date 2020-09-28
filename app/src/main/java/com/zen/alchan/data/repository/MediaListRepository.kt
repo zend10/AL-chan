@@ -5,7 +5,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.data.response.MediaListCollection
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import type.MediaListStatus
 import type.MediaType
 
@@ -24,8 +24,8 @@ interface MediaListRepository {
 
     val addAnimeToPlanningResponse: LiveData<Resource<AnimeListEntryMutation.Data>>
 
-    var animeFilteredData: MediaFilteredData?
-    var mangaFilteredData: MediaFilteredData?
+    var animeFilterData: MediaFilterData?
+    var mangaFilterData: MediaFilterData?
 
     fun retrieveAnimeListData()
     fun retrieveAnimeListDataDetail(entryId: Int)
@@ -120,7 +120,7 @@ interface MediaListRepository {
         priority: Int?
     )
 
-    fun handleNewFilter(newFilteredData: MediaFilteredData?, mediaType: MediaType)
+    fun handleNewFilter(newFilterData: MediaFilterData?, mediaType: MediaType)
     fun deleteMediaList(entryId: Int, mediaType: MediaType)
 
     fun addAnimeToPlanning(mediaId: Int)

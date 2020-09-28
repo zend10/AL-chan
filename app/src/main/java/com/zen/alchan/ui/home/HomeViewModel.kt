@@ -85,10 +85,9 @@ class HomeViewModel(private val userRepository: UserRepository,
             mediaRepository.getReviews(1, 10, null, listOf(ReviewSort.CREATED_AT_DESC), true)
         }
 
-        // TODO: uncomment later after search by tag is implemented
-//        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {
-//            mediaRepository.getTag()
-//        }
+        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {
+            mediaRepository.getTag()
+        }
     }
 
     fun getReleasingToday() {

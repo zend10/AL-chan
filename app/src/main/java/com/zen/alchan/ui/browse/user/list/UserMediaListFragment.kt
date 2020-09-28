@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.browse.user.list
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,26 +21,22 @@ import com.zen.alchan.R
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.response.Media
 import com.zen.alchan.data.response.MediaList
-import com.zen.alchan.data.response.MediaListGroup
 import com.zen.alchan.data.response.MediaTitle
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.pojo.MediaFilteredData
-import com.zen.alchan.helper.pojo.MediaListTabItem
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.MediaListDetailDialog
-import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
-import kotlinx.android.synthetic.main.fragment_anime_list.*
+import com.zen.alchan.ui.filter.MediaFilterActivity
 import kotlinx.android.synthetic.main.fragment_user_media_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaListStatus
 import type.MediaType
 
 /**
@@ -121,19 +119,10 @@ class UserMediaListFragment : BaseFragment() {
         })
 
         itemFilter?.setOnMenuItemClickListener {
-            val filterDialog = MediaFilterBottomSheet()
-            filterDialog.setListener(object : MediaFilterBottomSheet.MediaFilterListener {
-                override fun passFilterData(filterData: MediaFilteredData?) {
-                    viewModel.filterData = filterData
-                    viewModel.setSortedGroup()
-                    handleList()
-                }
-            })
-            val bundle = Bundle()
-            bundle.putString(MediaFilterBottomSheet.BUNDLE_MEDIA_TYPE, MediaType.ANIME.name)
-            bundle.putString(MediaFilterBottomSheet.BUNDLE_FILTERED_DATA, viewModel.gson.toJson(viewModel.filterData))
-            filterDialog.arguments = bundle
-            filterDialog.show(childFragmentManager, null)
+            val intent = Intent(activity, MediaFilterActivity::class.java)
+            intent.putExtra(MediaFilterActivity.MEDIA_TYPE, viewModel.mediaType?.name)
+            intent.putExtra(MediaFilterActivity.FILTER_DATA, viewModel.gson.toJson(viewModel.filterData))
+            startActivityForResult(intent, MediaFilterActivity.ACTIVITY_FILTER)
             true
         }
 
@@ -329,6 +318,20 @@ class UserMediaListFragment : BaseFragment() {
             dialog.arguments = bundle
             dialog.show(childFragmentManager, null)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MediaFilterActivity.ACTIVITY_FILTER && resultCode == Activity.RESULT_OK) {
+            val filterData = if (data?.extras != null && data.extras?.getString(MediaFilterActivity.FILTER_DATA) != null) {
+                viewModel.gson.fromJson(data.extras?.getString(MediaFilterActivity.FILTER_DATA), MediaFilterData::class.java)
+            } else {
+                null
+            }
+            viewModel.filterData = filterData
+            viewModel.setSortedGroup()
+            handleList()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {

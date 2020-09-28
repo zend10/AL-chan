@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.filter.MediaFilterActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:padding="@dimen/marginPage"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/sort"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/sortByLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/sort_by"
+                        style="?themeSmallFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/sortByText"
+                        style="?themeSmallClickableFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/orderByLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/order_by"
+                        style="?themeSmallFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/orderByText"
+                        style="?themeSmallClickableFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/media_filter"
+                style="?themeRegularBoldFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/filterFormatLayout"
+                android:foreground="?selectableItemBackground"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/format"
+                    style="?themeSmallFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterFormatText"
+                    android:text="-"
+                    style="?themeSmallClickableFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/filterStatusLayout"
+                android:foreground="?selectableItemBackground"
+                android:layout_marginTop="@dimen/marginPage"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/status"
+                    style="?themeSmallFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterStatusText"
+                    android:text="-"
+                    style="?themeSmallClickableFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/filterSourceLayout"
+                android:foreground="?selectableItemBackground"
+                android:layout_marginTop="@dimen/marginPage"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/source"
+                    style="?themeSmallFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterSourceText"
+                    android:text="-"
+                    style="?themeSmallClickableFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginPage"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/filterCountryLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/country"
+                        style="?themeSmallFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterCountryText"
+                        android:text="-"
+                        style="?themeSmallClickableFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/filterSeasonLayout"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/season"
+                        style="?themeSmallFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterSeasonText"
+                        android:text="-"
+                        style="?themeSmallClickableFont"
+                        android:layout_marginTop="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/release_Year"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/filterYearRangeSeekBar"
+                android:layout_marginTop="@dimen/marginNormal"
+                app:data_type="_integer"
+                app:bar_color="?themeNegativeColor"
+                app:bar_highlight_color="?themeSecondaryColor"
+                app:left_thumb_color="?themeSecondaryColor"
+                app:left_thumb_color_pressed="?themeSecondaryColor"
+                app:right_thumb_color="?themeSecondaryColor"
+                app:right_thumb_color_pressed="?themeSecondaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterStartYearText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterEndYearText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginPage"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/genres"
+                    style="?themeSmallFont"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterAddMoreGenreText"
+                    android:text="@string/add_more"
+                    style="?themeSmallClickableFont"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <RelativeLayout
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/filterGenreRecyclerView"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    android:orientation="horizontal"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/filterGenreNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallFont"
+                    android:textColor="?themeNegativeColor"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/marginPage"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/tags"
+                    style="?themeSmallFont"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterAddMoreTagText"
+                    android:text="@string/add_more"
+                    style="?themeSmallClickableFont"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <RelativeLayout
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/filterTagRecyclerView"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    android:orientation="horizontal"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/filterTagNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallFont"
+                    android:textColor="?themeNegativeColor"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/minimum_tag_percentage"
+                    style="?themeSmallFont"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterMinimumTagPercentageText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                android:id="@+id/filterMinimumTagPercentageSeekBar"
+                android:layout_marginTop="@dimen/marginNormal"
+                app:data_type="_integer"
+                app:bar_color="?themeSecondaryTransparentColor"
+                app:bar_highlight_color="?themeSecondaryColor"
+                app:left_thumb_color="?themeSecondaryColor"
+                app:left_thumb_color_pressed="?themeSecondaryColor"
+                app:min_value="0"
+                app:max_value="100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/filterLicensedLayout"
+                android:layout_marginTop="@dimen/marginPage"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterLicensedLabel"
+                    android:text="@string/streaming_on"
+                    style="?themeSmallFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterLicensedText"
+                    android:text="-"
+                    style="?themeSmallClickableFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/filterEpisodesLabel"
+                android:text="@string/episodes"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/filterEpisodesSeekBar"
+                android:layout_marginTop="@dimen/marginNormal"
+                app:data_type="_integer"
+                app:bar_color="?themeNegativeColor"
+                app:bar_highlight_color="?themeSecondaryColor"
+                app:left_thumb_color="?themeSecondaryColor"
+                app:left_thumb_color_pressed="?themeSecondaryColor"
+                app:right_thumb_color="?themeSecondaryColor"
+                app:right_thumb_color_pressed="?themeSecondaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterStartEpisodeText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterEndEpisodeText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/filterDurationLabel"
+                android:text="@string/duration"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/filterDurationSeekBar"
+                android:layout_marginTop="@dimen/marginNormal"
+                app:data_type="_integer"
+                app:bar_color="?themeNegativeColor"
+                app:bar_highlight_color="?themeSecondaryColor"
+                app:left_thumb_color="?themeSecondaryColor"
+                app:left_thumb_color_pressed="?themeSecondaryColor"
+                app:right_thumb_color="?themeSecondaryColor"
+                app:right_thumb_color_pressed="?themeSecondaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterStartDurationText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterEndDurationText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/average_score"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/filterAverageScoreSeekBar"
+                android:layout_marginTop="@dimen/marginNormal"
+                app:data_type="_integer"
+                app:bar_color="?themeNegativeColor"
+                app:bar_highlight_color="?themeSecondaryColor"
+                app:left_thumb_color="?themeSecondaryColor"
+                app:left_thumb_color_pressed="?themeSecondaryColor"
+                app:right_thumb_color="?themeSecondaryColor"
+                app:right_thumb_color_pressed="?themeSecondaryColor"
+                app:min_value="0"
+                app:max_value="100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterStartAverageScoreText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterEndAverageScoreText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/popularity"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/filterPopularitySeekBar"
+                android:layout_marginTop="@dimen/marginNormal"
+                app:data_type="_integer"
+                app:bar_color="?themeNegativeColor"
+                app:bar_highlight_color="?themeSecondaryColor"
+                app:left_thumb_color="?themeSecondaryColor"
+                app:left_thumb_color_pressed="?themeSecondaryColor"
+                app:right_thumb_color="?themeSecondaryColor"
+                app:right_thumb_color_pressed="?themeSecondaryColor"
+                app:min_value="0"
+                app:max_value="300000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterStartPopularityText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterEndPopularityText"
+                    android:text="-"
+                    style="?themeSmallFont"
+                    android:textColor="?themeSecondaryColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="visible"
+                android:id="@+id/filterExtraOptionsLayout"
+                android:layout_marginTop="@dimen/marginPage"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/filterHideMediaCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterHideMediaText"
+                        style="?themeSmallFont"
+                        android:text="@string/hide_anime_on_my_list"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/filterOnlyShowMediaCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterOnlyShowMediaText"
+                        style="?themeSmallFont"
+                        android:text="@string/only_show_anime_on_my_list"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/userListFilterLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/user_list_filter"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/score"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/start_date"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/finish_date"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/priority"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

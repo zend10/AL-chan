@@ -1,10 +1,9 @@
 package com.zen.alchan.ui.explore
 
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -12,14 +11,14 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.SearchResult
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.browse.BrowseActivity
-import com.zen.alchan.ui.common.filter.MediaFilterBottomSheet
 import com.zen.alchan.ui.explore.adapter.ExploreAnimeRvAdapter
 import com.zen.alchan.ui.explore.adapter.ExploreMangaRvAdapter
+import com.zen.alchan.ui.filter.MediaFilterActivity
 import com.zen.alchan.ui.search.SearchListener
 import com.zen.alchan.ui.search.adapter.SearchCharactersRvAdapter
 import com.zen.alchan.ui.search.adapter.SearchStaffsRvAdapter
@@ -177,19 +176,11 @@ class ExploreActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            val filterDialog = MediaFilterBottomSheet()
-            filterDialog.setListener(object : MediaFilterBottomSheet.MediaFilterListener {
-                override fun passFilterData(filterData: MediaFilteredData?) {
-                    viewModel.filteredData = filterData
-                    handleSearch(searchKeyWord)
-                }
-            })
-            val bundle = Bundle()
-            bundle.putString(MediaFilterBottomSheet.BUNDLE_MEDIA_TYPE, viewModel.selectedExplorePage?.name)
-            bundle.putBoolean(MediaFilterBottomSheet.BUNDLE_IS_FILTER_SEARCH, true)
-            bundle.putString(MediaFilterBottomSheet.BUNDLE_FILTERED_DATA, viewModel.gson.toJson(viewModel.filteredData))
-            filterDialog.arguments = bundle
-            filterDialog.show(supportFragmentManager, null)
+            val intent = Intent(this, MediaFilterActivity::class.java)
+            intent.putExtra(MediaFilterActivity.MEDIA_TYPE, viewModel.selectedExplorePage?.name)
+            intent.putExtra(MediaFilterActivity.IS_EXPLORE, true)
+            intent.putExtra(MediaFilterActivity.FILTER_DATA, viewModel.gson.toJson(viewModel.filterData))
+            startActivityForResult(intent, MediaFilterActivity.ACTIVITY_FILTER)
         }
 
         exploreTypeText.text = viewModel.selectedExplorePage?.name
@@ -294,6 +285,19 @@ class ExploreActivity : BaseActivity() {
         }
 
         emptyLayout.visibility = if (viewModel.searchResultList.isNullOrEmpty()) View.VISIBLE else View.GONE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MediaFilterActivity.ACTIVITY_FILTER && resultCode == Activity.RESULT_OK) {
+            if (data?.extras != null && data.extras?.getString(MediaFilterActivity.FILTER_DATA) != null) {
+                viewModel.filterData = viewModel.gson.fromJson(data.extras?.getString(MediaFilterActivity.FILTER_DATA), MediaFilterData::class.java)
+            } else {
+                viewModel.filterData = null
+            }
+
+            handleSearch(searchKeyWord)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {

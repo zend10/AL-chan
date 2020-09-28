@@ -10,6 +10,7 @@ import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.SeasonalAnime
 import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.libs.SingleLiveEvent
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -77,22 +78,38 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
     override fun searchAnime(
         page: Int,
         search: String,
-        season: MediaSeason?,
-        seasonYear: Int?,
-        format: MediaFormat?,
-        status: MediaStatus?,
-        isAdult: Boolean?,
-        onList: Boolean?,
-        source: MediaSource?,
-        countryOfOrigin: String?,
-        genreIn: List<String?>?,
-        tagIn: List<String?>?,
-        sort: List<MediaSort>?
+        filterData: MediaFilterData?
     ) {
         _searchAnimeResponse.postValue(Resource.Loading())
 
         searchDataSource.searchAnime(
-            page, search, season, seasonYear, format, status, isAdult, onList, source, countryOfOrigin, genreIn, tagIn, sort
+            page,
+            search,
+            if (filterData?.selectedMediaSort != null) listOf(filterData.selectedMediaSort!!) else null,
+            filterData?.selectedFormats,
+            filterData?.selectedStatuses,
+            filterData?.selectedSources,
+            filterData?.selectedCountry?.name,
+            filterData?.selectedSeason,
+            filterData?.selectedYear?.greaterThan,
+            filterData?.selectedYear?.lesserThan,
+            filterData?.selectedIsAdult,
+            filterData?.selectedOnList,
+            filterData?.selectedGenres,
+            filterData?.selectedExcludedGenres,
+            filterData?.selectedMinimumTagRank,
+            filterData?.selectedTagNames,
+            filterData?.selectedExcludedTagNames,
+            filterData?.selectedLicensed,
+            filterData?.selectedEpisodes?.greaterThan,
+            filterData?.selectedEpisodes?.lesserThan,
+            filterData?.selectedDuration?.greaterThan,
+            filterData?.selectedDuration?.lesserThan,
+            filterData?.selectedAverageScore?.greaterThan,
+            filterData?.selectedAverageScore?.lesserThan,
+            filterData?.selectedPopularity?.greaterThan,
+            filterData?.selectedPopularity?.lesserThan
+
         ).subscribeWith(AndroidUtility.rxApolloCallback(_searchAnimeResponse))
     }
 
@@ -100,22 +117,37 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
     override fun searchManga(
         page: Int,
         search: String,
-        startDateGreater: Int?,
-        endDateLesser: Int?,
-        format: MediaFormat?,
-        status: MediaStatus?,
-        isAdult: Boolean?,
-        onList: Boolean?,
-        source: MediaSource?,
-        countryOfOrigin: String?,
-        genreIn: List<String?>?,
-        tagIn: List<String?>?,
-        sort: List<MediaSort>?
+        filterData: MediaFilterData?
     ) {
         _searchMangaResponse.postValue(Resource.Loading())
 
         searchDataSource.searchManga(
-            page, search, startDateGreater, endDateLesser, format, status, isAdult, onList, source, countryOfOrigin, genreIn, tagIn, sort
+            page,
+            search,
+            if (filterData?.selectedMediaSort != null) listOf(filterData.selectedMediaSort!!) else null,
+            filterData?.selectedFormats,
+            filterData?.selectedStatuses,
+            filterData?.selectedSources,
+            filterData?.selectedCountry?.name,
+            filterData?.selectedSeason,
+            filterData?.selectedYear?.greaterThan,
+            filterData?.selectedYear?.lesserThan,
+            filterData?.selectedIsAdult,
+            filterData?.selectedOnList,
+            filterData?.selectedGenres,
+            filterData?.selectedExcludedGenres,
+            filterData?.selectedMinimumTagRank,
+            filterData?.selectedTagNames,
+            filterData?.selectedExcludedTagNames,
+            filterData?.selectedLicensed,
+            filterData?.selectedChapters?.greaterThan,
+            filterData?.selectedChapters?.lesserThan,
+            filterData?.selectedVolumes?.greaterThan,
+            filterData?.selectedVolumes?.lesserThan,
+            filterData?.selectedAverageScore?.greaterThan,
+            filterData?.selectedAverageScore?.lesserThan,
+            filterData?.selectedPopularity?.greaterThan,
+            filterData?.selectedPopularity?.lesserThan
         ).subscribeWith(AndroidUtility.rxApolloCallback(_searchMangaResponse))
     }
 

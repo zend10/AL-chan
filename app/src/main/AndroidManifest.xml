@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.filter.MediaFilterActivity"></activity>
         <activity android:name=".ui.reviews.ReviewsActivity" />
         <activity android:name=".ui.social.global.GlobalFeedActivity" />
         <activity android:name=".ui.common.TextEditorActivity" />
@@ -102,8 +103,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 
 </manifest>

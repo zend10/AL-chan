@@ -5,11 +5,10 @@ import com.google.gson.Gson
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserRepository
-import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.MediaListSort
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.toMillis
 import type.MediaType
@@ -25,7 +24,7 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
     var tabItemList = ArrayList<MediaListTabItem>()
     var selectedTab = 0
 
-    var filterData: MediaFilteredData? = null
+    var filterData: MediaFilterData? = null
 
     var userData: UserMediaListCollectionQuery.User? = null
 
@@ -93,8 +92,8 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
             else -> MediaListSort.TITLE
         }
 
-        if (filterData != null && filterData?.selectedListSort != null) {
-            rowOrderEnum = filterData?.selectedListSort!!
+        if (filterData != null && filterData?.selectedMediaListSort != null) {
+            rowOrderEnum = filterData?.selectedMediaListSort!!
         }
 
         return when (rowOrderEnum) {
@@ -125,33 +124,34 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
         val filteredList = ArrayList<UserMediaListCollectionQuery.Entry?>()
 
         entries.forEach {
-            if (filterData?.selectedFormat != null && it?.media?.format != filterData?.selectedFormat) {
-                return@forEach
-            }
-
-            if (filterData?.selectedYear != null && it?.media?.seasonYear != filterData?.selectedYear) {
-                return@forEach
-            }
-
-            if (filterData?.selectedSeason != null && it?.media?.season != filterData?.selectedSeason) {
-                return@forEach
-            }
-
-            if (filterData?.selectedCountry != null && it?.media?.countryOfOrigin != filterData?.selectedCountry?.name) {
-                return@forEach
-            }
-
-            if (filterData?.selectedStatus != null && it?.media?.status != filterData?.selectedStatus) {
-                return@forEach
-            }
-
-            if (filterData?.selectedSource != null && it?.media?.source != filterData?.selectedSource) {
-                return@forEach
-            }
-
-            if (!filterData?.selectedGenreList.isNullOrEmpty() && !it?.media?.genres.isNullOrEmpty() && !it?.media?.genres!!.containsAll(filterData?.selectedGenreList!!)) {
-                return@forEach
-            }
+            // TODO: handle sort this
+//            if (filterData?.selectedFormat != null && it?.media?.format != filterData?.selectedFormat) {
+//                return@forEach
+//            }
+//
+//            if (filterData?.selectedYear != null && it?.media?.seasonYear != filterData?.selectedYear) {
+//                return@forEach
+//            }
+//
+//            if (filterData?.selectedSeason != null && it?.media?.season != filterData?.selectedSeason) {
+//                return@forEach
+//            }
+//
+//            if (filterData?.selectedCountry != null && it?.media?.countryOfOrigin != filterData?.selectedCountry?.name) {
+//                return@forEach
+//            }
+//
+//            if (filterData?.selectedStatus != null && it?.media?.status != filterData?.selectedStatus) {
+//                return@forEach
+//            }
+//
+//            if (filterData?.selectedSource != null && it?.media?.source != filterData?.selectedSource) {
+//                return@forEach
+//            }
+//
+//            if (!filterData?.selectedGenreList.isNullOrEmpty() && !it?.media?.genres.isNullOrEmpty() && !it?.media?.genres!!.containsAll(filterData?.selectedGenreList!!)) {
+//                return@forEach
+//            }
 
             filteredList.add(it)
         }

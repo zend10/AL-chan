@@ -111,6 +111,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.github.zend10:OverlapImageListView:v1.0.1'
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'
+    implementation 'com.crystal:crystalrangeseekbar:1.1.3'
 
     def markwon_version = "4.4.0"
     implementation "io.noties.markwon:core:$markwon_version"
@@ -119,9 +120,6 @@ dependencies {
     implementation "io.noties.markwon:html:$markwon_version"
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
-
-    // Gif image that is needed for markwon gif
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
     // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }

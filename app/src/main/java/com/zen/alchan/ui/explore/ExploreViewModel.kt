@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.helper.enums.BrowsePage
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.SearchResult
 import type.*
 
@@ -18,7 +18,7 @@ class ExploreViewModel(private val searchRepository: SearchRepository,
     var isInit = false
     var searchResultList = ArrayList<SearchResult?>()
 
-    var filteredData: MediaFilteredData? = null
+    var filterData: MediaFilterData? = null
 
     var explorePageArray = arrayOf(
         BrowsePage.ANIME.name, BrowsePage.MANGA.name, BrowsePage.CHARACTER.name, BrowsePage.STAFF.name, BrowsePage.STUDIO.name
@@ -50,34 +50,14 @@ class ExploreViewModel(private val searchRepository: SearchRepository,
                 searchRepository.searchAnime(
                     page,
                     query,
-                    filteredData?.selectedSeason,
-                    filteredData?.selectedYear,
-                    filteredData?.selectedFormat,
-                    filteredData?.selectedStatus,
-                    filteredData?.selectedIsAdult,
-                    filteredData?.selectedOnList,
-                    filteredData?.selectedSource,
-                    filteredData?.selectedCountry?.name,
-                    filteredData?.selectedGenreList?.toList(),
-                    filteredData?.selectedTagList?.toList(),
-                    listOf(filteredData?.selectedSort ?: MediaSort.POPULARITY_DESC)
+                    filterData
                 )
             }
             BrowsePage.MANGA -> {
                 searchRepository.searchManga(
                     page,
                     query,
-                    if (filteredData?.selectedYear != null) "${filteredData?.selectedYear}0101".toInt() else null,
-                    if (filteredData?.selectedYear != null) "${filteredData?.selectedYear}1231".toInt() else null,
-                    filteredData?.selectedFormat,
-                    filteredData?.selectedStatus,
-                    filteredData?.selectedIsAdult,
-                    filteredData?.selectedOnList,
-                    filteredData?.selectedSource,
-                    filteredData?.selectedCountry?.name,
-                    filteredData?.selectedGenreList?.toList(),
-                    filteredData?.selectedTagList?.toList(),
-                    listOf(filteredData?.selectedSort ?: MediaSort.POPULARITY_DESC)
+                    filterData
                 )
             }
             BrowsePage.CHARACTER -> searchRepository.searchCharacters(page, query, if (query.isBlank()) listOf(CharacterSort.FAVOURITES_DESC) else null)

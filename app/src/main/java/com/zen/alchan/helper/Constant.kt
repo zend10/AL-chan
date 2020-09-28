@@ -36,6 +36,7 @@ object Constant {
     const val MANGA_LIST_BACKGROUND_FILENAME = "manga_list_background.jpg"
 
     const val FILTER_EARLIEST_YEAR = 1950
+    const val DEFAULT_MINIMUM_TAG_RANK = 18
 
     const val DEFAULT_DATE_FORMAT = "dd MMM yyyy"
     const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
@@ -152,8 +153,11 @@ object Constant {
         Pair("netflix", Pair(null, Color.parseColor("#F44335"))),
         Pair("amazon", Pair(null, Color.parseColor("#04A3DD"))),
         Pair("hulu", Pair(null, Color.parseColor("#8AC34A"))),
+        Pair("hbo max", Pair(null, Color.parseColor("#9531EC"))),
         Pair("animelab", Pair(null, Color.parseColor("#3B0087"))),
         Pair("viz", Pair(null, Color.parseColor("#FF0000"))),
+        Pair("adult swim", Pair(null, Color.parseColor("#171717"))),
+        Pair("retro crush", Pair(null, Color.parseColor("#000000"))),
         Pair("midnight pulp", Pair(null, Color.parseColor("#B7F00F"))),
         Pair("tubi tv", Pair(null, Color.parseColor("#F84C18"))),
         Pair("contv", Pair(null, Color.parseColor("#E35623"))),
@@ -282,5 +286,55 @@ object Constant {
         Pair(3, "Medium"),
         Pair(4, "High"),
         Pair(5, "Very High")
+    )
+
+    val ANIME_STREAMING_SITE = arrayListOf(
+        Pair("crunchyroll", "Crunchyroll"),
+        Pair("funimation", "Funimation"),
+        Pair("hidive", "Hidive"),
+        Pair("vrv", "VRV"),
+        Pair("netflix", "Netflix"),
+        Pair("amazon", "Amazon"),
+        Pair("hulu", "Hulu"),
+        Pair("hbomax", "HBO Max"),
+        Pair("animelab", "AnimeLab"),
+        Pair("viz", "Viz"),
+        Pair("adultswim", "Adult Swim"),
+        Pair("retrocrush", "RetroCrush"),
+        Pair("midnightpulp.com", "Midnight Pulp"),
+        Pair("tubitv.com", "Tubi TV"),
+        Pair("contv.com", "CONtv")
+    )
+
+    val MANGA_READING_SITE = arrayListOf(
+        Pair("mangaplus.shueisha.co.jp", "Manga Plus"),
+        Pair("viz", "Viz"),
+        Pair("crunchyroll", "Crunchyroll"),
+        Pair("manga.club", "Manga.Club"),
+        Pair("fakku", "Fakku"),
+        Pair("webtoons.com/en", "Webtoons"),
+        Pair("lezhin.com/en", "Lezhin"),
+        Pair("global.toomics.com", "Toomics"),
+        Pair("webcomicsapp.com", "Web Comics"),
+        Pair("comic-walker", "ComicWalker (JP)"),
+        Pair("comic.pixiv.net", "Pixiv Comic (JP)"),
+        Pair("comico.jp", "Comico (JP)"),
+        Pair("mangabox", "Mangabox (JP)"),
+        Pair("novel.pixiv.net", "Pixiv Novel (JP)"),
+        Pair("piccoma.com", "Piccoma (JP)"),
+        Pair("pocket.shonenmagazine.com", "Pocket Magazine (JP)"),
+        Pair("seiga.nicovideo.jp", "Nico Nico Seiga (JP)"),
+        Pair("shonenjumpplus.com", "Shonen Jump Plus (JP)"),
+        Pair("lezhin.com/ko", "Lezhin (KO)"),
+        Pair("naver", "Naver (KO)"),
+        Pair("webtoon.daum.net", "Daum Webtoon (KO)"),
+        Pair("toomics.com", "Toomics (KO)"),
+        Pair("bomtoon", "Bomtoon (KO)"),
+        Pair("kakao", "KakaoPage (KO)"),
+        Pair("Kuaikanmanhua", "KuaiKan Manhua (CN)"),
+        Pair("ac.qq.com", "QQ (CN)"),
+        Pair("dajiaochongmanhua.com", "Dajiaochong Manhua (CN)"),
+        Pair("manhua.weibo.com", "Weibo Manhua (CN)"),
+        Pair("manmanapp.com", "Manman Manhua (CN)")
     )
 }

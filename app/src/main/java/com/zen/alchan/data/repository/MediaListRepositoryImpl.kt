@@ -1,7 +1,6 @@
 package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
@@ -17,10 +16,8 @@ import com.zen.alchan.data.response.MediaListGroup
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.MediaListSort
 import com.zen.alchan.helper.libs.SingleLiveEvent
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.toMillis
-import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.helper.utils.Utility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.MediaListStatus
@@ -71,9 +68,9 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
     override val addAnimeToPlanningResponse: LiveData<Resource<AnimeListEntryMutation.Data>>
         get() = _addAnimeToPlanningResponse
 
-    override var animeFilteredData: MediaFilteredData? = null
+    override var animeFilterData: MediaFilterData? = null
 
-    override var mangaFilteredData: MediaFilteredData? = null
+    override var mangaFilterData: MediaFilterData? = null
 
     // to store anime list before filtered and sorted
     private var rawAnimeList: MediaListCollection? = null
@@ -327,12 +324,12 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         }
 
         if (mediaType == MediaType.ANIME) {
-            if (animeFilteredData != null && animeFilteredData?.selectedListSort != null) {
-                rowOrderEnum = animeFilteredData?.selectedListSort!!
+            if (animeFilterData != null && animeFilterData?.selectedMediaListSort != null) {
+                rowOrderEnum = animeFilterData?.selectedMediaListSort!!
             }
         } else if (mediaType == MediaType.MANGA) {
-            if (mangaFilteredData != null && mangaFilteredData?.selectedListSort != null) {
-                rowOrderEnum = mangaFilteredData?.selectedListSort!!
+            if (animeFilterData != null && animeFilterData?.selectedMediaListSort != null) {
+                rowOrderEnum = animeFilterData?.selectedMediaListSort!!
             }
         }
 
@@ -359,41 +356,42 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             return ArrayList()
         }
 
-        if (animeFilteredData == null) {
+        if (animeFilterData == null) {
             return ArrayList(entries)
         }
 
         val filteredList = ArrayList<MediaList>()
 
-        if (animeFilteredData != null) {
+        if (animeFilterData != null) {
             entries.forEach {
-                if (animeFilteredData?.selectedFormat != null && it.media?.format != animeFilteredData?.selectedFormat) {
-                    return@forEach
-                }
-
-                if (animeFilteredData?.selectedYear != null && it.media?.seasonYear != animeFilteredData?.selectedYear) {
-                    return@forEach
-                }
-
-                if (animeFilteredData?.selectedSeason != null && it.media?.season != animeFilteredData?.selectedSeason) {
-                    return@forEach
-                }
-
-                if (animeFilteredData?.selectedCountry != null && it.media?.countryOfOrigin != animeFilteredData?.selectedCountry?.name) {
-                    return@forEach
-                }
-
-                if (animeFilteredData?.selectedStatus != null && it.media?.status != animeFilteredData?.selectedStatus) {
-                    return@forEach
-                }
-
-                if (animeFilteredData?.selectedSource != null && it.media?.source != animeFilteredData?.selectedSource) {
-                    return@forEach
-                }
-
-                if (!animeFilteredData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(animeFilteredData?.selectedGenreList!!)) {
-                    return@forEach
-                }
+                // TODO: handle sort this
+//                if (animeFilterData?.selectedFormat != null && it.media?.format != animeFilterData?.selectedFormat) {
+//                    return@forEach
+//                }
+//
+//                if (animeFilterData?.selectedYear != null && it.media?.seasonYear != animeFilterData?.selectedYear) {
+//                    return@forEach
+//                }
+//
+//                if (animeFilterData?.selectedSeason != null && it.media?.season != animeFilteredData?.selectedSeason) {
+//                    return@forEach
+//                }
+//
+//                if (animeFilterData?.selectedCountry != null && it.media?.countryOfOrigin != animeFilteredData?.selectedCountry?.name) {
+//                    return@forEach
+//                }
+//
+//                if (animeFilterData?.selectedStatus != null && it.media?.status != animeFilteredData?.selectedStatus) {
+//                    return@forEach
+//                }
+//
+//                if (animeFilterData?.selectedSource != null && it.media?.source != animeFilteredData?.selectedSource) {
+//                    return@forEach
+//                }
+//
+//                if (!animeFilterData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(animeFilteredData?.selectedGenreList!!)) {
+//                    return@forEach
+//                }
 
                 filteredList.add(it)
             }
@@ -407,37 +405,38 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             return ArrayList()
         }
 
-        if (mangaFilteredData == null) {
+        if (mangaFilterData == null) {
             return ArrayList(entries)
         }
 
         val filteredList = ArrayList<MediaList>()
 
-        if (mangaFilteredData != null) {
+        if (mangaFilterData != null) {
             entries.forEach {
-                if (mangaFilteredData?.selectedFormat != null && it.media?.format != mangaFilteredData?.selectedFormat) {
-                    return@forEach
-                }
-
-                if (mangaFilteredData?.selectedYear != null && it.media?.seasonYear != mangaFilteredData?.selectedYear) {
-                    return@forEach
-                }
-
-                if (mangaFilteredData?.selectedCountry != null && it.media?.countryOfOrigin != mangaFilteredData?.selectedCountry?.name) {
-                    return@forEach
-                }
-
-                if (mangaFilteredData?.selectedStatus != null && it.media?.status != mangaFilteredData?.selectedStatus) {
-                    return@forEach
-                }
-
-                if (mangaFilteredData?.selectedSource != null && it.media?.source != mangaFilteredData?.selectedSource) {
-                    return@forEach
-                }
-
-                if (!mangaFilteredData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(mangaFilteredData?.selectedGenreList!!)) {
-                    return@forEach
-                }
+                // TODO: handle sort this
+//                if (mangaFilterData?.selectedFormat != null && it.media?.format != mangaFilterData?.selectedFormat) {
+//                    return@forEach
+//                }
+//
+//                if (mangaFilterData?.selectedYear != null && it.media?.seasonYear != mangaFilterData?.selectedYear) {
+//                    return@forEach
+//                }
+//
+//                if (mangaFilterData?.selectedCountry != null && it.media?.countryOfOrigin != mangaFilterData?.selectedCountry?.name) {
+//                    return@forEach
+//                }
+//
+//                if (mangaFilterData?.selectedStatus != null && it.media?.status != mangaFilterData?.selectedStatus) {
+//                    return@forEach
+//                }
+//
+//                if (mangaFilterData?.selectedSource != null && it.media?.source != mangaFilterData?.selectedSource) {
+//                    return@forEach
+//                }
+//
+//                if (!mangaFilterData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(mangaFilteredData?.selectedGenreList!!)) {
+//                    return@forEach
+//                }
 
                 filteredList.add(it)
             }
@@ -765,12 +764,12 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         }
     }
 
-    override fun handleNewFilter(newFilteredData: MediaFilteredData?, mediaType: MediaType) {
+    override fun handleNewFilter(newFilterData: MediaFilterData?, mediaType: MediaType) {
         if (mediaType == MediaType.ANIME) {
-            animeFilteredData = newFilteredData
+            animeFilterData = newFilterData
             notifyLiveDataFromRawAnimeList(true)
         } else if (mediaType == MediaType.MANGA) {
-            mangaFilteredData = newFilteredData
+            mangaFilterData = newFilterData
             notifyLiveDataFromRawMangaList(true)
         }
     }

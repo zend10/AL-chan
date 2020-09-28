@@ -6,7 +6,7 @@ import com.zen.alchan.data.repository.ListStyleRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.MediaList
-import com.zen.alchan.helper.pojo.MediaFilteredData
+import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import type.MediaListStatus
 import type.MediaType
@@ -22,8 +22,8 @@ class MangaListViewModel(private val mediaListRepository: MediaListRepository,
 
     var currentList = ArrayList<MediaList>()
 
-    val filteredData: MediaFilteredData?
-        get() = mediaListRepository.mangaFilteredData
+    val filterData: MediaFilterData?
+        get() = mediaListRepository.mangaFilterData
 
     val mangaListDataResponse by lazy {
         mediaListRepository.mangaListDataResponse
@@ -66,8 +66,8 @@ class MangaListViewModel(private val mediaListRepository: MediaListRepository,
         listStyleRepository.saveMangaListStyle(listStyleRepository.mangaListStyle)
     }
 
-    fun setFilteredData(newFilteredData: MediaFilteredData?) {
-        mediaListRepository.handleNewFilter(newFilteredData, MediaType.MANGA)
+    fun setFilteredData(newFilterData: MediaFilterData?) {
+        mediaListRepository.handleNewFilter(newFilterData, MediaType.MANGA)
     }
 
     fun updateMangaProgress(
