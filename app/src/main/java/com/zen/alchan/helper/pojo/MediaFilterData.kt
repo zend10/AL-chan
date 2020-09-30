@@ -16,8 +16,6 @@ class MediaFilterData(
     var selectedYear: FilterRange? = null,
     var selectedGenres: ArrayList<String>? = null,
     var selectedExcludedGenres: ArrayList<String>? = null,
-    var selectedTags: ArrayList<MediaTags>? = null,
-    var selectedExcludedTags: ArrayList<MediaTags>? = null,
     var selectedTagNames: ArrayList<String>? = null,
     var selectedExcludedTagNames: ArrayList<String>? = null,
     var selectedMinimumTagRank: Int? = null,

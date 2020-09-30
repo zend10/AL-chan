@@ -480,4 +480,10 @@
     <string name="media_filter">Media Filter</string>
     <string name="user_list_filter">User List Filter</string>
     <string name="release_Year">Release Year</string>
+    <string name="exclude">Exclude</string>
+    <string name="include">Include</string>
+    <string name="include_these_genres">Include these genres</string>
+    <string name="exclude_these_genres">Exclude these genres</string>
+    <string name="include_these_tags">Include these tags</string>
+    <string name="exclude_these_tags">Exclude these tags</string>
 </resources>

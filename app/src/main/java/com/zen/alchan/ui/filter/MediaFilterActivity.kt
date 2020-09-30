@@ -14,7 +14,7 @@ import com.zen.alchan.helper.pojo.FilterRange
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.ui.base.BaseActivity
-import com.zen.alchan.ui.common.filter.MediaFilterViewModel
+import com.zen.alchan.ui.common.filter.MediaFilterRvAdapter
 import kotlinx.android.synthetic.main.activity_media_filter.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,8 +33,10 @@ class MediaFilterActivity : BaseActivity() {
 
         const val ACTIVITY_FILTER = 100
 
-        private const val LIST_GENRE = 1
-        private const val LIST_TAG = 2
+        private const val LIST_INCLUDE_GENRE = 1
+        private const val LIST_EXCLUDE_GENRE = 2
+        private const val LIST_INCLUDE_TAG = 3
+        private const val LIST_EXCLUDE_TAG = 4
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +82,8 @@ class MediaFilterActivity : BaseActivity() {
         handleFilterCountryLayout()
         handleFilterSeasonLayout()
         handleFilterYearLayout()
+        handleGenreLayout()
+        handleTagLayout()
         handleFilterMinimumTagRankLayout()
         handleFilterLicensedLayout()
         handleFilterEpisodeCountLayout()
@@ -87,6 +91,7 @@ class MediaFilterActivity : BaseActivity() {
         handleFilterAverageScoreLayout()
         handleFilterPopularityLayout()
         handleExtraOptionsLayout()
+        handleUserListFilterLayout()
     }
 
     private fun handleSortLayout() {
@@ -268,6 +273,149 @@ class MediaFilterActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun handleGenreLayout() {
+        handleGenreVisibility()
+        filterIncludeGenreRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedGenres, LIST_INCLUDE_GENRE)
+        filterExcludeGenreRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedExcludedGenres, LIST_EXCLUDE_GENRE)
+
+        filterIncludeGenreText.setOnClickListener {
+            val stringBooleanPair = viewModel.getMediaGenreArrayPair()
+            MaterialAlertDialogBuilder(this)
+                .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
+                    viewModel.passMediaGenreFilterValue(index, isChecked)
+                    handleGenreVisibility()
+                    filterIncludeGenreRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedGenres, LIST_INCLUDE_GENRE)
+                    filterExcludeGenreRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedExcludedGenres, LIST_EXCLUDE_GENRE)
+                }
+                .setPositiveButton(R.string.close, null)
+                .show()
+        }
+
+        filterExcludeGenreText.setOnClickListener {
+            val stringBooleanPair = viewModel.getMediaExcludedGenreArrayPair()
+            MaterialAlertDialogBuilder(this)
+                .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
+                    viewModel.passMediaExcludedGenreFilterValue(index, isChecked)
+                    handleGenreVisibility()
+                    filterIncludeGenreRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedGenres, LIST_INCLUDE_GENRE)
+                    filterExcludeGenreRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedExcludedGenres, LIST_EXCLUDE_GENRE)
+                }
+                .setPositiveButton(R.string.close, null)
+                .show()
+        }
+    }
+
+    private fun handleGenreVisibility() {
+        if (viewModel.currentData.selectedGenres.isNullOrEmpty()) {
+            filterIncludeGenreLayout.visibility = View.GONE
+        } else {
+            filterIncludeGenreLayout.visibility = View.VISIBLE
+        }
+
+        if (viewModel.currentData.selectedExcludedGenres.isNullOrEmpty()) {
+            filterExcludeGenreLayout.visibility = View.GONE
+        } else {
+            filterExcludeGenreLayout.visibility = View.VISIBLE
+        }
+
+        if (viewModel.currentData.selectedGenres.isNullOrEmpty() && viewModel.currentData.selectedExcludedGenres.isNullOrEmpty()) {
+            filterGenreNoItemText.visibility = View.VISIBLE
+        } else {
+            filterGenreNoItemText.visibility = View.GONE
+        }
+    }
+
+    private fun handleTagLayout() {
+        handleTagVisibility()
+        filterIncludeTagRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedTagNames, LIST_INCLUDE_TAG)
+        filterExcludeTagRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedExcludedTagNames, LIST_EXCLUDE_TAG)
+
+        filterIncludeTagText.setOnClickListener {
+            val dialog = MediaFilterTagDialog()
+            dialog.setListener(object : MediaFilterTagListener {
+                override fun passSelectedTag(name: String) {
+                    viewModel.passMediaTagFilterValue(name)
+                    handleTagVisibility()
+                    filterIncludeTagRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedTagNames, LIST_INCLUDE_TAG)
+                    filterExcludeTagRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedExcludedTagNames, LIST_EXCLUDE_TAG)
+                }
+            })
+            if (!viewModel.currentData.selectedTagNames.isNullOrEmpty()) {
+                val bundle = Bundle()
+                bundle.putStringArrayList(MediaFilterTagDialog.SELECTED_TAGS, viewModel.currentData.selectedTagNames)
+                dialog.arguments = bundle
+            }
+            dialog.show(supportFragmentManager, null)
+        }
+
+        filterExcludeTagText.setOnClickListener {
+            val dialog = MediaFilterTagDialog()
+            dialog.setListener(object : MediaFilterTagListener {
+                override fun passSelectedTag(name: String) {
+                    viewModel.passMediaExcludedTagFilterValue(name)
+                    handleTagVisibility()
+                    filterIncludeTagRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedTagNames, LIST_INCLUDE_TAG)
+                    filterExcludeTagRecyclerView.adapter = assignGenreAndTagAdapter(viewModel.currentData.selectedExcludedTagNames, LIST_EXCLUDE_TAG)
+                }
+            })
+            if (!viewModel.currentData.selectedExcludedTagNames.isNullOrEmpty()) {
+                val bundle = Bundle()
+                bundle.putStringArrayList(MediaFilterTagDialog.SELECTED_TAGS, viewModel.currentData.selectedExcludedTagNames)
+                dialog.arguments = bundle
+            }
+            dialog.show(supportFragmentManager, null)
+        }
+    }
+
+    private fun handleTagVisibility() {
+        if (viewModel.currentData.selectedTagNames.isNullOrEmpty()) {
+            filterIncludeTagLayout.visibility = View.GONE
+        } else {
+            filterIncludeTagLayout.visibility = View.VISIBLE
+        }
+
+        if (viewModel.currentData.selectedExcludedTagNames.isNullOrEmpty()) {
+            filterExcludeTagLayout.visibility = View.GONE
+        } else {
+            filterExcludeTagLayout.visibility = View.VISIBLE
+        }
+
+        if (viewModel.currentData.selectedTagNames.isNullOrEmpty() && viewModel.currentData.selectedExcludedTagNames.isNullOrEmpty()) {
+            filterTagNoItemText.visibility = View.VISIBLE
+        } else {
+            filterTagNoItemText.visibility = View.GONE
+        }
+    }
+
+    private fun assignGenreAndTagAdapter(list: List<String?>?, code: Int): MediaFilterRvAdapter {
+        return MediaFilterRvAdapter(list ?: listOf(), code, object : MediaFilterRvAdapter.MediaFilterListListener {
+            override fun deleteItem(position: Int, code: Int) {
+                when (code) {
+                    LIST_INCLUDE_GENRE -> {
+                        viewModel.currentData.selectedGenres?.removeAt(position)
+                        filterIncludeGenreRecyclerView.adapter?.notifyDataSetChanged()
+                        handleGenreVisibility()
+                    }
+                    LIST_EXCLUDE_GENRE -> {
+                        viewModel.currentData.selectedExcludedGenres?.removeAt(position)
+                        filterExcludeGenreRecyclerView.adapter?.notifyDataSetChanged()
+                        handleGenreVisibility()
+                    }
+                    LIST_INCLUDE_TAG -> {
+                        viewModel.currentData.selectedTagNames?.removeAt(position)
+                        filterIncludeTagRecyclerView.adapter?.notifyDataSetChanged()
+                        handleTagVisibility()
+                    }
+                    LIST_EXCLUDE_TAG -> {
+                        viewModel.currentData.selectedExcludedTagNames?.removeAt(position)
+                        filterExcludeTagRecyclerView.adapter?.notifyDataSetChanged()
+                        handleTagVisibility()
+                    }
+                }
+            }
+        })
     }
 
     private fun handleFilterMinimumTagRankLayout() {

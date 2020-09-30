@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.common.filter
+package com.zen.alchan.ui.filter
 
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
@@ -117,11 +117,14 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
             }
         }
 
-    val genreList: List<String?>
-        get() = mediaRepository.genreList
+    private val genreList: List<String>
+        get() = mediaRepository.genreList.filterNotNull()
 
-    val tagList: List<MediaTagCollection>
-        get() = mediaRepository.tagList
+    private val tagList: List<MediaTagCollection>
+        get() = mediaRepository.tagList.sortedBy { it.category }
+
+    private val tagNameList: List<String>
+        get() = tagList.map { it.name }
 
     fun getMediaFormatArrayPair(): Pair<Array<String>, BooleanArray> {
         val stringArray = mediaFormatList.map { it.name.replaceUnderscore() }.toTypedArray()
@@ -229,11 +232,77 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
         }
     }
 
-    fun getGenreListStringArray(): Array<String?> {
-        return genreList.toTypedArray()
+    fun getMediaGenreArrayPair(): Pair<Array<String>, BooleanArray> {
+        val stringArray = genreList.toTypedArray()
+        val booleanArray = BooleanArray(stringArray.size)
+        currentData.selectedGenres?.forEach {
+            val selectedIndex = genreList.indexOf(it)
+            if (selectedIndex != -1) {
+                booleanArray[selectedIndex] = true
+            }
+        }
+        return Pair(stringArray, booleanArray)
     }
 
-    fun getTagListStringArray(): Array<String> {
-        return tagList.map { it.name }.toTypedArray()
+    fun passMediaGenreFilterValue(index: Int, isChecked: Boolean) {
+        if (isChecked) {
+            if (currentData.selectedGenres == null) {
+                currentData.selectedGenres = ArrayList()
+            }
+            currentData.selectedGenres?.add(genreList[index])
+            currentData.selectedExcludedGenres?.remove(genreList[index])
+        } else {
+            currentData.selectedGenres?.remove(genreList[index])
+        }
+    }
+
+    fun getMediaExcludedGenreArrayPair(): Pair<Array<String>, BooleanArray> {
+        val stringArray = genreList.toTypedArray()
+        val booleanArray = BooleanArray(stringArray.size)
+        currentData.selectedExcludedGenres?.forEach {
+            val selectedIndex = genreList.indexOf(it)
+            if (selectedIndex != -1) {
+                booleanArray[selectedIndex] = true
+            }
+        }
+        return Pair(stringArray, booleanArray)
+    }
+
+    fun passMediaExcludedGenreFilterValue(index: Int, isChecked: Boolean) {
+        if (isChecked) {
+            if (currentData.selectedExcludedGenres == null) {
+                currentData.selectedExcludedGenres = ArrayList()
+            }
+            currentData.selectedExcludedGenres?.add(genreList[index])
+            currentData.selectedGenres?.remove(genreList[index])
+        } else {
+            currentData.selectedExcludedGenres?.remove(genreList[index])
+        }
+    }
+
+    fun passMediaTagFilterValue(name: String) {
+        if (currentData.selectedTagNames == null) {
+            currentData.selectedTagNames = ArrayList()
+        }
+
+        if (currentData.selectedTagNames?.contains(name) == true) {
+            currentData.selectedTagNames?.remove(name)
+        } else {
+            currentData.selectedTagNames?.add(name)
+            currentData.selectedExcludedTagNames?.remove(name)
+        }
+    }
+
+    fun passMediaExcludedTagFilterValue(name: String) {
+        if (currentData.selectedExcludedTagNames == null) {
+            currentData.selectedExcludedTagNames = ArrayList()
+        }
+
+        if (currentData.selectedExcludedTagNames?.contains(name) == true) {
+            currentData.selectedExcludedTagNames?.remove(name)
+        } else {
+            currentData.selectedExcludedTagNames?.add(name)
+            currentData.selectedTagNames?.remove(name)
+        }
     }
 }

@@ -279,41 +279,96 @@
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/filterAddMoreGenreText"
-                    android:text="@string/add_more"
+                    android:id="@+id/filterExcludeGenreText"
+                    android:text="@string/exclude"
                     style="?themeSmallClickableFont"
+                    android:textColor="?themeNegativeColor"
                     android:padding="@dimen/iconPadding"
                     android:layout_marginStart="@dimen/marginPage"
                     android:foreground="?selectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterIncludeGenreText"
+                    android:text="@string/include"
+                    style="?themeSmallClickableFont"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <RelativeLayout
-                android:layout_marginTop="@dimen/marginSmall"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/filterGenreRecyclerView"
-                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                    android:orientation="horizontal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/filterIncludeGenreLayout"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/include_these_genres"
+                        style="?themeSmallFont"
+                        android:layout_marginBottom="@dimen/marginSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/filterIncludeGenreRecyclerView"
+                        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/filterExcludeGenreLayout"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/exclude_these_genres"
+                        style="?themeSmallFont"
+                        android:layout_marginBottom="@dimen/marginSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/filterExcludeGenreRecyclerView"
+                        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:visibility="gone"
                     android:id="@+id/filterGenreNoItemText"
                     android:text="@string/no_item"
+                    android:layout_marginTop="@dimen/marginSmall"
                     style="?themeSmallFont"
                     android:textColor="?themeNegativeColor"
-                    android:layout_centerInParent="true"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </RelativeLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_marginTop="@dimen/marginPage"
@@ -329,41 +384,96 @@
                     android:layout_height="wrap_content"/>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/filterAddMoreTagText"
-                    android:text="@string/add_more"
+                    android:id="@+id/filterExcludeTagText"
+                    android:text="@string/exclude"
                     style="?themeSmallClickableFont"
+                    android:textColor="?themeNegativeColor"
                     android:padding="@dimen/iconPadding"
                     android:layout_marginStart="@dimen/marginPage"
                     android:foreground="?selectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterIncludeTagText"
+                    android:text="@string/include"
+                    style="?themeSmallClickableFont"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <RelativeLayout
-                android:layout_marginTop="@dimen/marginSmall"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/filterTagRecyclerView"
-                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                    android:orientation="horizontal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/filterIncludeTagLayout"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/include_these_tags"
+                        style="?themeSmallFont"
+                        android:layout_marginBottom="@dimen/marginSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/filterIncludeTagRecyclerView"
+                        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/filterExcludeTagLayout"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/exclude_these_tags"
+                        style="?themeSmallFont"
+                        android:layout_marginBottom="@dimen/marginSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/filterExcludeTagRecyclerView"
+                        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:visibility="gone"
                     android:id="@+id/filterTagNoItemText"
                     android:text="@string/no_item"
+                    android:layout_marginTop="@dimen/marginSmall"
                     style="?themeSmallFont"
                     android:textColor="?themeNegativeColor"
-                    android:layout_centerInParent="true"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </RelativeLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"

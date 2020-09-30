@@ -20,7 +20,7 @@ import com.zen.alchan.ui.browse.activity.ActivityDetailViewModel
 import com.zen.alchan.ui.browse.activity.ActivityListViewModel
 import com.zen.alchan.ui.browse.character.CharacterViewModel
 import com.zen.alchan.ui.common.customise.CustomiseListViewModel
-import com.zen.alchan.ui.common.filter.MediaFilterViewModel
+import com.zen.alchan.ui.filter.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.mangalist.MangaListViewModel
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorViewModel
@@ -47,6 +47,7 @@ import com.zen.alchan.ui.common.LikesViewModel
 import com.zen.alchan.ui.common.MediaListDetailDialogViewModel
 import com.zen.alchan.ui.common.TextEditorViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
+import com.zen.alchan.ui.filter.MediaFilterTagViewModel
 import com.zen.alchan.ui.notification.NotificationViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.bio.BioViewModel
@@ -123,6 +124,7 @@ class ALchanApplication : Application() {
         // common
         viewModel { BaseViewModel(get()) }
         viewModel { MediaFilterViewModel(get(), get(), gson) }
+        viewModel { MediaFilterTagViewModel(get()) }
         viewModel { CustomiseListViewModel(get()) }
         viewModel { MediaListDetailDialogViewModel(gson) }
         viewModel { TextEditorViewModel(get()) }
