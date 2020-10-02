@@ -23,6 +23,7 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
     lateinit var mediaType: MediaType
     var isExplore = false
     var filterData: MediaFilterData? = null
+    lateinit var scoreFormat: ScoreFormat
     var currentData = MediaFilterData()
 
     val defaultSort: MediaListSort
@@ -119,12 +120,6 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
 
     private val genreList: List<String>
         get() = mediaRepository.genreList.filterNotNull()
-
-    private val tagList: List<MediaTagCollection>
-        get() = mediaRepository.tagList.sortedBy { it.category }
-
-    private val tagNameList: List<String>
-        get() = tagList.map { it.name }
 
     fun getMediaFormatArrayPair(): Pair<Array<String>, BooleanArray> {
         val stringArray = mediaFormatList.map { it.name.replaceUnderscore() }.toTypedArray()
@@ -303,6 +298,21 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
         } else {
             currentData.selectedExcludedTagNames?.add(name)
             currentData.selectedTagNames?.remove(name)
+        }
+    }
+
+    fun getUserScoreMaxValue(): Float {
+        if (!this::scoreFormat.isInitialized) {
+            return 100F
+        }
+
+        return when (scoreFormat) {
+            ScoreFormat.POINT_100 -> 100F
+            ScoreFormat.POINT_10_DECIMAL -> 10F
+            ScoreFormat.POINT_10 -> 10F
+            ScoreFormat.POINT_3 -> 3F
+            ScoreFormat.POINT_5 -> 5F
+            else -> 100F
         }
     }
 }

@@ -27,5 +27,9 @@ class MediaFilterData(
     var selectedAverageScore: FilterRange? = null,
     var selectedPopularity: FilterRange? = null,
     var selectedIsAdult: Boolean? = null,
-    var selectedOnList: Boolean? = null
+    var selectedOnList: Boolean? = null,
+    var selectedUserScore: FilterRange? = null,
+    var selectedUserStartYear: FilterRange? = null,
+    var selectedUserFinishYear: FilterRange? = null,
+    var selectedUserPriority: FilterRange? = null
 )

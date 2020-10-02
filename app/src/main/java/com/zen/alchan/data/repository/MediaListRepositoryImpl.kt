@@ -503,6 +503,38 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                     return@entries
                 }
 
+                if (animeFilterData?.selectedUserScore != null &&
+                    (it.score == null ||
+                    animeFilterData?.selectedUserScore?.minValue ?: 0 > it.score?.toInt() ?: 0 ||
+                    animeFilterData?.selectedUserScore?.maxValue ?: 0 < it.score?.toInt() ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedUserStartYear != null &&
+                    (it.startedAt?.year == null ||
+                    animeFilterData?.selectedUserStartYear?.minValue ?: 0 > it.startedAt?.year ?: 0 ||
+                    animeFilterData?.selectedUserStartYear?.maxValue ?: 0 < it.startedAt?.year ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedUserFinishYear != null &&
+                    (it.completedAt?.year == null ||
+                    animeFilterData?.selectedUserFinishYear?.minValue ?: 0 > it.completedAt?.year ?: 0 ||
+                    animeFilterData?.selectedUserFinishYear?.maxValue ?: 0 < it.completedAt?.year ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedUserPriority != null &&
+                    (it.priority == null ||
+                    animeFilterData?.selectedUserPriority?.minValue ?: 0 > it.priority ?: 0 ||
+                    animeFilterData?.selectedUserPriority?.maxValue ?: 0 < it.priority ?: 0)
+                ) {
+                    return@entries
+                }
+
                 filteredList.add(it)
             }
         }
@@ -599,7 +631,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                 }
 
                 if (mangaFilterData?.selectedChapters != null &&
-                    (it.media?.episodes == null ||
+                    (it.media?.chapters == null ||
                     mangaFilterData?.selectedChapters?.minValue ?: 0 > it.media?.chapters ?: 0 ||
                     mangaFilterData?.selectedChapters?.maxValue ?: 0 < it.media?.chapters ?: 0)
                 ) {
@@ -607,7 +639,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                 }
 
                 if (mangaFilterData?.selectedVolumes != null &&
-                    (it.media?.duration == null ||
+                    (it.media?.volumes == null ||
                     mangaFilterData?.selectedVolumes?.minValue ?: 0 > it.media?.volumes ?: 0 ||
                     mangaFilterData?.selectedVolumes?.maxValue ?: 0 < it.media?.volumes ?: 0)
                 ) {
@@ -626,6 +658,38 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                     (it.media?.popularity == null ||
                     mangaFilterData?.selectedPopularity?.minValue ?: 0 > it.media?.popularity ?: 0 ||
                     mangaFilterData?.selectedPopularity?.maxValue ?: 0 < it.media?.popularity ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedUserScore != null &&
+                    (it.score == null ||
+                    mangaFilterData?.selectedUserScore?.minValue ?: 0 > it.score?.toInt() ?: 0 ||
+                    mangaFilterData?.selectedUserScore?.maxValue ?: 0 < it.score?.toInt() ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedUserStartYear != null &&
+                    (it.startedAt?.year == null ||
+                    mangaFilterData?.selectedUserStartYear?.minValue ?: 0 > it.startedAt?.year ?: 0 ||
+                    mangaFilterData?.selectedUserStartYear?.maxValue ?: 0 < it.startedAt?.year ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedUserFinishYear != null &&
+                    (it.completedAt?.year == null ||
+                    mangaFilterData?.selectedUserFinishYear?.minValue ?: 0 > it.completedAt?.year ?: 0 ||
+                    mangaFilterData?.selectedUserFinishYear?.maxValue ?: 0 < it.completedAt?.year ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedUserPriority != null &&
+                    (it.priority == null ||
+                    mangaFilterData?.selectedUserPriority?.minValue ?: 0 > it.priority ?: 0 ||
+                    mangaFilterData?.selectedUserPriority?.maxValue ?: 0 < it.priority ?: 0)
                 ) {
                     return@entries
                 }

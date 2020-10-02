@@ -38,6 +38,7 @@ import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
+import type.ScoreFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -122,6 +123,7 @@ class UserMediaListFragment : BaseFragment() {
             val intent = Intent(activity, MediaFilterActivity::class.java)
             intent.putExtra(MediaFilterActivity.MEDIA_TYPE, viewModel.mediaType?.name)
             intent.putExtra(MediaFilterActivity.FILTER_DATA, viewModel.gson.toJson(viewModel.filterData))
+            intent.putExtra(MediaFilterActivity.SCORE_FORMAT, viewModel.userData?.mediaListOptions?.scoreFormat?.name ?: ScoreFormat.POINT_100.name)
             startActivityForResult(intent, MediaFilterActivity.ACTIVITY_FILTER)
             true
         }

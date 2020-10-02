@@ -284,7 +284,39 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
             ) {
                 return@entries
             }
-            
+
+            if (filterData?.selectedUserScore != null &&
+                (it?.score == null ||
+                filterData?.selectedUserScore?.minValue ?: 0 > it.score.toInt() ||
+                filterData?.selectedUserScore?.maxValue ?: 0 < it.score.toInt())
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedUserStartYear != null &&
+                (it?.startedAt?.year == null ||
+                filterData?.selectedUserStartYear?.minValue ?: 0 > it.startedAt.year ||
+                filterData?.selectedUserStartYear?.maxValue ?: 0 < it.startedAt.year)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedUserFinishYear != null &&
+                (it?.completedAt?.year == null ||
+                filterData?.selectedUserFinishYear?.minValue ?: 0 > it.completedAt.year ||
+                filterData?.selectedUserFinishYear?.maxValue ?: 0 < it.completedAt.year)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedUserPriority != null &&
+                (it?.priority == null ||
+                filterData?.selectedUserPriority?.minValue ?: 0 > it.priority ||
+                filterData?.selectedUserPriority?.maxValue ?: 0 < it.priority)
+            ) {
+                return@entries
+            }
+
             filteredList.add(it)
         }
 

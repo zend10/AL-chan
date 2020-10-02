@@ -816,12 +816,98 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/filterUserScoreSeekBar"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:data_type="_integer"
+                    app:bar_color="?themeNegativeColor"
+                    app:bar_highlight_color="?themeSecondaryColor"
+                    app:left_thumb_color="?themeSecondaryColor"
+                    app:left_thumb_color_pressed="?themeSecondaryColor"
+                    app:right_thumb_color="?themeSecondaryColor"
+                    app:right_thumb_color_pressed="?themeSecondaryColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterStartUserScoreText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <View
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterEndUserScoreText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:text="@string/start_date"
                     style="?themeSmallFont"
                     android:layout_marginTop="@dimen/marginPage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/filterUserStartYearSeekBar"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:data_type="_integer"
+                    app:bar_color="?themeNegativeColor"
+                    app:bar_highlight_color="?themeSecondaryColor"
+                    app:left_thumb_color="?themeSecondaryColor"
+                    app:left_thumb_color_pressed="?themeSecondaryColor"
+                    app:right_thumb_color="?themeSecondaryColor"
+                    app:right_thumb_color_pressed="?themeSecondaryColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterStartUserStartYearText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <View
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterEndUserStartYearText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:text="@string/finish_date"
@@ -830,12 +916,100 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/filterUserFinishYearSeekBar"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:data_type="_integer"
+                    app:bar_color="?themeNegativeColor"
+                    app:bar_highlight_color="?themeSecondaryColor"
+                    app:left_thumb_color="?themeSecondaryColor"
+                    app:left_thumb_color_pressed="?themeSecondaryColor"
+                    app:right_thumb_color="?themeSecondaryColor"
+                    app:right_thumb_color_pressed="?themeSecondaryColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterStartUserFinishYearText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <View
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterEndUserFinishYearText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:text="@string/priority"
                     style="?themeSmallFont"
                     android:layout_marginTop="@dimen/marginPage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/filterUserPrioritySeekBar"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:data_type="_integer"
+                    app:bar_color="?themeNegativeColor"
+                    app:bar_highlight_color="?themeSecondaryColor"
+                    app:left_thumb_color="?themeSecondaryColor"
+                    app:left_thumb_color_pressed="?themeSecondaryColor"
+                    app:right_thumb_color="?themeSecondaryColor"
+                    app:right_thumb_color_pressed="?themeSecondaryColor"
+                    app:min_value="0"
+                    app:max_value="5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterStartUserPriorityText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <View
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterEndUserPriorityText"
+                        android:text="-"
+                        style="?themeSmallFont"
+                        android:textColor="?themeSecondaryColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

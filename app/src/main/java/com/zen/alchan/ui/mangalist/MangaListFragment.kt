@@ -123,6 +123,7 @@ class MangaListFragment : Fragment() {
             val intent = Intent(activity, MediaFilterActivity::class.java)
             intent.putExtra(MediaFilterActivity.MEDIA_TYPE, MediaType.MANGA.name)
             intent.putExtra(MediaFilterActivity.FILTER_DATA, viewModel.gson.toJson(viewModel.filterData))
+            intent.putExtra(MediaFilterActivity.SCORE_FORMAT, viewModel.scoreFormat.name)
             startActivityForResult(intent, MediaFilterActivity.ACTIVITY_FILTER)
             true
         }
