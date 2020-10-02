@@ -1,7 +1,6 @@
 package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.datasource.SearchDataSource
@@ -91,8 +90,8 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
             filterData?.selectedSources,
             filterData?.selectedCountry?.name,
             filterData?.selectedSeason,
-            filterData?.selectedYear?.greaterThan,
-            filterData?.selectedYear?.lesserThan,
+            filterData?.selectedYear?.minValue,
+            filterData?.selectedYear?.maxValue,
             filterData?.selectedIsAdult,
             filterData?.selectedOnList,
             filterData?.selectedGenres,
@@ -101,14 +100,14 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
             filterData?.selectedTagNames,
             filterData?.selectedExcludedTagNames,
             filterData?.selectedLicensed,
-            filterData?.selectedEpisodes?.greaterThan,
-            filterData?.selectedEpisodes?.lesserThan,
-            filterData?.selectedDuration?.greaterThan,
-            filterData?.selectedDuration?.lesserThan,
-            filterData?.selectedAverageScore?.greaterThan,
-            filterData?.selectedAverageScore?.lesserThan,
-            filterData?.selectedPopularity?.greaterThan,
-            filterData?.selectedPopularity?.lesserThan
+            filterData?.selectedEpisodes?.minValue,
+            filterData?.selectedEpisodes?.maxValue,
+            filterData?.selectedDuration?.minValue,
+            filterData?.selectedDuration?.maxValue,
+            filterData?.selectedAverageScore?.minValue,
+            filterData?.selectedAverageScore?.maxValue,
+            filterData?.selectedPopularity?.minValue,
+            filterData?.selectedPopularity?.maxValue
 
         ).subscribeWith(AndroidUtility.rxApolloCallback(_searchAnimeResponse))
     }
@@ -130,8 +129,8 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
             filterData?.selectedSources,
             filterData?.selectedCountry?.name,
             filterData?.selectedSeason,
-            filterData?.selectedYear?.greaterThan,
-            filterData?.selectedYear?.lesserThan,
+            filterData?.selectedYear?.minValue,
+            filterData?.selectedYear?.maxValue,
             filterData?.selectedIsAdult,
             filterData?.selectedOnList,
             filterData?.selectedGenres,
@@ -140,14 +139,14 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
             filterData?.selectedTagNames,
             filterData?.selectedExcludedTagNames,
             filterData?.selectedLicensed,
-            filterData?.selectedChapters?.greaterThan,
-            filterData?.selectedChapters?.lesserThan,
-            filterData?.selectedVolumes?.greaterThan,
-            filterData?.selectedVolumes?.lesserThan,
-            filterData?.selectedAverageScore?.greaterThan,
-            filterData?.selectedAverageScore?.lesserThan,
-            filterData?.selectedPopularity?.greaterThan,
-            filterData?.selectedPopularity?.lesserThan
+            filterData?.selectedChapters?.minValue,
+            filterData?.selectedChapters?.maxValue,
+            filterData?.selectedVolumes?.minValue,
+            filterData?.selectedVolumes?.maxValue,
+            filterData?.selectedAverageScore?.minValue,
+            filterData?.selectedAverageScore?.maxValue,
+            filterData?.selectedPopularity?.minValue,
+            filterData?.selectedPopularity?.maxValue
         ).subscribeWith(AndroidUtility.rxApolloCallback(_searchMangaResponse))
     }
 

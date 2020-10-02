@@ -73,6 +73,7 @@ query UserMediaListCollectionQuery(
                     season
                     seasonYear
                     episodes
+                    duration
                     chapters
                     volumes
                     countryOfOrigin
@@ -85,6 +86,9 @@ query UserMediaListCollectionQuery(
                     synonyms
                     averageScore
                     popularity
+                    tags {
+                        name
+                    }
                     isAdult
                     nextAiringEpisode {
                         id
@@ -92,6 +96,9 @@ query UserMediaListCollectionQuery(
                         timeUntilAiring
                         episode
                         mediaId
+                    }
+                    externalLinks {
+                        site
                     }
                 }
             }

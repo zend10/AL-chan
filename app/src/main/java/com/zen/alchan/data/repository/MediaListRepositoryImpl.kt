@@ -22,6 +22,8 @@ import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.MediaListStatus
 import type.MediaType
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSource,
                               private val userManager: UserManager,
@@ -328,26 +330,52 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                 rowOrderEnum = animeFilterData?.selectedMediaListSort!!
             }
         } else if (mediaType == MediaType.MANGA) {
-            if (animeFilterData != null && animeFilterData?.selectedMediaListSort != null) {
-                rowOrderEnum = animeFilterData?.selectedMediaListSort!!
+            if (mangaFilterData != null && mangaFilterData?.selectedMediaListSort != null) {
+                rowOrderEnum = mangaFilterData?.selectedMediaListSort!!
             }
+        }
+
+        val orderByDescending = if (mediaType == MediaType.ANIME) {
+            animeFilterData?.selectedMediaListOrderByDescending != false
+        } else {
+            mangaFilterData?.selectedMediaListOrderByDescending != false
         }
 
         val sortedByTitle = entries.sortedWith(compareBy { it.media?.title?.userPreferred })
 
         return when (rowOrderEnum) {
-            MediaListSort.TITLE -> ArrayList(sortedByTitle)
-            MediaListSort.SCORE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.score }))
-            MediaListSort.PROGRESS -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.progress }))
-            MediaListSort.LAST_UPDATED -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.updatedAt }))
-            MediaListSort.LAST_ADDED -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.id }))
-            MediaListSort.START_DATE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.startedAt.toMillis() }))
-            MediaListSort.COMPLETED_DATE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.completedAt.toMillis() }))
-            MediaListSort.RELEASE_DATE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.media?.startDate.toMillis() }))
-            MediaListSort.AVERAGE_SCORE -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.media?.averageScore }))
-            MediaListSort.POPULARITY -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.media?.popularity }))
-            MediaListSort.PRIORITY -> ArrayList(sortedByTitle.sortedWith(compareByDescending { it.priority }))
-            MediaListSort.NEXT_AIRING -> ArrayList(sortedByTitle.sortedWith(compareBy { it.media?.nextAiringEpisode?.timeUntilAiring ?: Int.MAX_VALUE }))
+            MediaListSort.TITLE -> {
+                val orderByDescendingSpecialCase = if (mediaType == MediaType.ANIME) {
+                    animeFilterData?.selectedMediaListOrderByDescending == true
+                } else {
+                    mangaFilterData?.selectedMediaListOrderByDescending == true
+                }
+
+                ArrayList(if (orderByDescendingSpecialCase) sortedByTitle.reversed() else sortedByTitle)
+            }
+            MediaListSort.SCORE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.score } else compareBy { it.score }))
+            MediaListSort.PROGRESS -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.progress } else compareBy { it.progress }))
+            MediaListSort.LAST_UPDATED -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.updatedAt } else compareBy { it.updatedAt }))
+            MediaListSort.LAST_ADDED -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.id } else compareBy { it.id }))
+            MediaListSort.START_DATE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.startedAt.toMillis() } else compareBy { it.startedAt.toMillis() }))
+            MediaListSort.COMPLETED_DATE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.completedAt.toMillis() } else compareBy { it.completedAt.toMillis() }))
+            MediaListSort.RELEASE_DATE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.media?.startDate.toMillis() } else compareBy { it.media?.startDate.toMillis() }))
+            MediaListSort.AVERAGE_SCORE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.media?.averageScore } else compareBy { it.media?.averageScore }))
+            MediaListSort.POPULARITY -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.media?.popularity } else compareBy { it.media?.popularity }))
+            MediaListSort.PRIORITY -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it.priority } else compareBy { it.priority }))
+            MediaListSort.NEXT_AIRING -> {
+                val orderByDescendingSpecialCase = if (mediaType == MediaType.ANIME) {
+                    animeFilterData?.selectedMediaListOrderByDescending == true
+                } else {
+                    mangaFilterData?.selectedMediaListOrderByDescending == true
+                }
+
+                ArrayList(sortedByTitle.sortedWith(if (orderByDescendingSpecialCase) {
+                    compareByDescending { it.media?.nextAiringEpisode?.timeUntilAiring ?: Int.MIN_VALUE }
+                } else {
+                    compareBy { it.media?.nextAiringEpisode?.timeUntilAiring ?: Int.MAX_VALUE }
+                }))
+            }
         }
     }
 
@@ -363,35 +391,117 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         val filteredList = ArrayList<MediaList>()
 
         if (animeFilterData != null) {
-            entries.forEach {
-                // TODO: handle sort this
-//                if (animeFilterData?.selectedFormat != null && it.media?.format != animeFilterData?.selectedFormat) {
-//                    return@forEach
-//                }
-//
-//                if (animeFilterData?.selectedYear != null && it.media?.seasonYear != animeFilterData?.selectedYear) {
-//                    return@forEach
-//                }
-//
-//                if (animeFilterData?.selectedSeason != null && it.media?.season != animeFilteredData?.selectedSeason) {
-//                    return@forEach
-//                }
-//
-//                if (animeFilterData?.selectedCountry != null && it.media?.countryOfOrigin != animeFilteredData?.selectedCountry?.name) {
-//                    return@forEach
-//                }
-//
-//                if (animeFilterData?.selectedStatus != null && it.media?.status != animeFilteredData?.selectedStatus) {
-//                    return@forEach
-//                }
-//
-//                if (animeFilterData?.selectedSource != null && it.media?.source != animeFilteredData?.selectedSource) {
-//                    return@forEach
-//                }
-//
-//                if (!animeFilterData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(animeFilteredData?.selectedGenreList!!)) {
-//                    return@forEach
-//                }
+            entries.forEach entries@{
+                if (!animeFilterData?.selectedFormats.isNullOrEmpty() && animeFilterData?.selectedFormats?.contains(it.media?.format) != true) {
+                    return@entries
+                }
+
+                if (!animeFilterData?.selectedStatuses.isNullOrEmpty() && animeFilterData?.selectedStatuses?.contains(it.media?.status) != true) {
+                    return@entries
+                }
+
+                if (!animeFilterData?.selectedSources.isNullOrEmpty() &&  animeFilterData?.selectedSources?.contains(it.media?.source) != true) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedCountry != null && animeFilterData?.selectedCountry?.name != it.media?.countryOfOrigin) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedSeason != null && animeFilterData?.selectedSeason != it.media?.season) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedYear != null &&
+                    (it.media?.startDate?.year == null ||
+                    animeFilterData?.selectedYear?.minValue?.toString()?.substring(0..3)?.toInt()!! > it.media?.startDate?.year!! ||
+                    animeFilterData?.selectedYear?.maxValue?.toString()?.substring(0..3)?.toInt()!! < it.media?.startDate?.year!!)
+                ) {
+                    return@entries
+                }
+
+                if (!animeFilterData?.selectedGenres.isNullOrEmpty() &&
+                    (it.media?.genres.isNullOrEmpty() ||
+                    !it.media?.genres!!.containsAll(animeFilterData?.selectedGenres!!))
+                ) {
+                    return@entries
+                }
+
+                if (!animeFilterData?.selectedExcludedGenres.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty()) {
+                    animeFilterData?.selectedExcludedGenres?.forEach { excludedGenre ->
+                        if (it.media?.genres?.contains(excludedGenre) == true) {
+                            return@entries
+                        }
+                    }
+                }
+
+                val mediaTagNames = it.media?.tags?.filterNotNull()?.map { tag -> tag.name }
+
+                if (!animeFilterData?.selectedTagNames.isNullOrEmpty() &&
+                    (mediaTagNames.isNullOrEmpty() ||
+                    !mediaTagNames.containsAll(animeFilterData?.selectedTagNames!!))
+                ) {
+                    return@entries
+                }
+
+                if (!animeFilterData?.selectedExcludedTagNames.isNullOrEmpty() && !mediaTagNames.isNullOrEmpty()) {
+                    animeFilterData?.selectedExcludedTagNames?.forEach { excludedTag ->
+                        if (mediaTagNames.contains(excludedTag)) {
+                            return@entries
+                        }
+                    }
+                }
+
+                if (!animeFilterData?.selectedLicensed.isNullOrEmpty()) {
+                    if (it.media?.externalLinks.isNullOrEmpty()) {
+                        return@entries
+                    }
+
+                    var hasSelectedLicense = false
+
+                    it.media?.externalLinks?.forEach license@{ externalLink ->
+                        if (animeFilterData?.selectedLicensed?.contains(Constant.EXTERNAL_LINK_MAP[externalLink?.site]) == true) {
+                            hasSelectedLicense = true
+                            return@license
+                        }
+                    }
+
+                    if (!hasSelectedLicense) {
+                        return@entries
+                    }
+                }
+
+                if (animeFilterData?.selectedEpisodes != null &&
+                    (it.media?.episodes == null ||
+                    animeFilterData?.selectedEpisodes?.minValue ?: 0 > it.media?.episodes ?: 0 ||
+                    animeFilterData?.selectedEpisodes?.maxValue ?: 0 < it.media?.episodes ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedDuration != null &&
+                    (it.media?.duration == null ||
+                    animeFilterData?.selectedDuration?.minValue ?: 0 > it.media?.duration ?: 0 ||
+                    animeFilterData?.selectedDuration?.maxValue ?: 0 < it.media?.duration ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedAverageScore != null &&
+                    (it.media?.averageScore == null ||
+                    animeFilterData?.selectedAverageScore?.minValue ?: 0 > it.media?.averageScore ?: 0 ||
+                    animeFilterData?.selectedAverageScore?.maxValue ?: 0 < it.media?.averageScore ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (animeFilterData?.selectedPopularity != null &&
+                    (it.media?.popularity == null ||
+                    animeFilterData?.selectedPopularity?.minValue ?: 0 > it.media?.popularity ?: 0 ||
+                    animeFilterData?.selectedPopularity?.maxValue ?: 0 < it.media?.popularity ?: 0)
+                ) {
+                    return@entries
+                }
 
                 filteredList.add(it)
             }
@@ -412,31 +522,113 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
         val filteredList = ArrayList<MediaList>()
 
         if (mangaFilterData != null) {
-            entries.forEach {
-                // TODO: handle sort this
-//                if (mangaFilterData?.selectedFormat != null && it.media?.format != mangaFilterData?.selectedFormat) {
-//                    return@forEach
-//                }
-//
-//                if (mangaFilterData?.selectedYear != null && it.media?.seasonYear != mangaFilterData?.selectedYear) {
-//                    return@forEach
-//                }
-//
-//                if (mangaFilterData?.selectedCountry != null && it.media?.countryOfOrigin != mangaFilterData?.selectedCountry?.name) {
-//                    return@forEach
-//                }
-//
-//                if (mangaFilterData?.selectedStatus != null && it.media?.status != mangaFilterData?.selectedStatus) {
-//                    return@forEach
-//                }
-//
-//                if (mangaFilterData?.selectedSource != null && it.media?.source != mangaFilterData?.selectedSource) {
-//                    return@forEach
-//                }
-//
-//                if (!mangaFilterData?.selectedGenreList.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty() && !it.media?.genres!!.containsAll(mangaFilteredData?.selectedGenreList!!)) {
-//                    return@forEach
-//                }
+            entries.forEach entries@{
+                if (!mangaFilterData?.selectedFormats.isNullOrEmpty() && mangaFilterData?.selectedFormats?.contains(it.media?.format) != true) {
+                    return@entries
+                }
+
+                if (!mangaFilterData?.selectedStatuses.isNullOrEmpty() && mangaFilterData?.selectedStatuses?.contains(it.media?.status) != true) {
+                    return@entries
+                }
+
+                if (!mangaFilterData?.selectedSources.isNullOrEmpty() &&  mangaFilterData?.selectedSources?.contains(it.media?.source) != true) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedCountry != null && mangaFilterData?.selectedCountry?.name != it.media?.countryOfOrigin) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedYear != null &&
+                    (it.media?.startDate?.year == null ||
+                    mangaFilterData?.selectedYear?.minValue?.toString()?.substring(0..3)?.toInt()!! > it.media?.startDate?.year!! ||
+                    mangaFilterData?.selectedYear?.maxValue?.toString()?.substring(0..3)?.toInt()!! < it.media?.startDate?.year!!)
+                ) {
+                    return@entries
+                }
+
+                if (!mangaFilterData?.selectedGenres.isNullOrEmpty() &&
+                    (it.media?.genres.isNullOrEmpty() ||
+                    !it.media?.genres!!.containsAll(mangaFilterData?.selectedGenres!!))
+                ) {
+                    return@entries
+                }
+
+                if (!mangaFilterData?.selectedExcludedGenres.isNullOrEmpty() && !it.media?.genres.isNullOrEmpty()) {
+                    mangaFilterData?.selectedExcludedGenres?.forEach { excludedGenre ->
+                        if (it.media?.genres?.contains(excludedGenre) == true) {
+                            return@entries
+                        }
+                    }
+                }
+
+                val mediaTagNames = it.media?.tags?.filterNotNull()?.map { tag -> tag.name }
+
+                if (!mangaFilterData?.selectedTagNames.isNullOrEmpty() &&
+                    (mediaTagNames.isNullOrEmpty() ||
+                            !mediaTagNames.containsAll(mangaFilterData?.selectedTagNames!!))
+                ) {
+                    return@entries
+                }
+
+                if (!mangaFilterData?.selectedExcludedTagNames.isNullOrEmpty() && !mediaTagNames.isNullOrEmpty()) {
+                    mangaFilterData?.selectedExcludedTagNames?.forEach { excludedTag ->
+                        if (mediaTagNames.contains(excludedTag)) {
+                            return@entries
+                        }
+                    }
+                }
+
+                if (!mangaFilterData?.selectedLicensed.isNullOrEmpty()) {
+                    if (it.media?.externalLinks.isNullOrEmpty()) {
+                        return@entries
+                    }
+
+                    var hasSelectedLicense = false
+
+                    it.media?.externalLinks?.forEach license@{ externalLink ->
+                        if (mangaFilterData?.selectedLicensed?.contains(Constant.EXTERNAL_LINK_MAP[externalLink?.site]) == true) {
+                            hasSelectedLicense = true
+                            return@license
+                        }
+                    }
+
+                    if (!hasSelectedLicense) {
+                        return@entries
+                    }
+                }
+
+                if (mangaFilterData?.selectedChapters != null &&
+                    (it.media?.episodes == null ||
+                    mangaFilterData?.selectedChapters?.minValue ?: 0 > it.media?.chapters ?: 0 ||
+                    mangaFilterData?.selectedChapters?.maxValue ?: 0 < it.media?.chapters ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedVolumes != null &&
+                    (it.media?.duration == null ||
+                    mangaFilterData?.selectedVolumes?.minValue ?: 0 > it.media?.volumes ?: 0 ||
+                    mangaFilterData?.selectedVolumes?.maxValue ?: 0 < it.media?.volumes ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedAverageScore != null &&
+                    (it.media?.averageScore == null ||
+                    mangaFilterData?.selectedAverageScore?.minValue ?: 0 > it.media?.averageScore ?: 0 ||
+                    mangaFilterData?.selectedAverageScore?.maxValue ?: 0 < it.media?.averageScore ?: 0)
+                ) {
+                    return@entries
+                }
+
+                if (mangaFilterData?.selectedPopularity != null &&
+                    (it.media?.popularity == null ||
+                    mangaFilterData?.selectedPopularity?.minValue ?: 0 > it.media?.popularity ?: 0 ||
+                    mangaFilterData?.selectedPopularity?.maxValue ?: 0 < it.media?.popularity ?: 0)
+                ) {
+                    return@entries
+                }
 
                 filteredList.add(it)
             }

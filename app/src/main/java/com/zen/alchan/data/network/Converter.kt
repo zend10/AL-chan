@@ -9,11 +9,71 @@ object Converter {
             id = viewer?.id!!,
             name = viewer.name,
             about = viewer.about,
-            avatar = convertUserAvatar(viewer.avatar),
+            avatar = if (viewer.avatar != null) {
+                UserAvatar(
+                    large = viewer.avatar.large,
+                    medium = viewer.avatar.medium
+                )
+            } else null,
             bannerImage = viewer.bannerImage,
-            options = convertUserOptions(viewer.options),
-            mediaListOptions = convertMediaListOptions(viewer.mediaListOptions),
-            statistics = convertUserStatisticTypes(viewer.statistics),
+            options = if (viewer.options != null) {
+                UserOptions(
+                    titleLanguage = viewer.options.titleLanguage,
+                    displayAdultContent = viewer.options.displayAdultContent,
+                    airingNotifications = viewer.options.airingNotifications,
+                    notificationOptions = if (!viewer.options.notificationOptions.isNullOrEmpty()) {
+                        viewer.options.notificationOptions.filterNotNull().map { NotificationOption(it.type, it.enabled) }
+                    } else null
+                )
+            } else null,
+            mediaListOptions = if (viewer.mediaListOptions != null) MediaListOptions(
+                scoreFormat = viewer.mediaListOptions.scoreFormat,
+                rowOrder = viewer.mediaListOptions.rowOrder,
+                animeList = if (viewer.mediaListOptions.animeList != null) {
+                    MediaListTypeOptions(
+                        sectionOrder = viewer.mediaListOptions.animeList.sectionOrder,
+                        splitCompletedSectionByFormat = viewer.mediaListOptions.animeList.splitCompletedSectionByFormat,
+                        customLists = viewer.mediaListOptions.animeList.customLists,
+                        advancedScoring = viewer.mediaListOptions.animeList.advancedScoring,
+                        advancedScoringEnabled = viewer.mediaListOptions.animeList.advancedScoringEnabled
+                    )
+                } else null,
+                mangaList = if (viewer.mediaListOptions.mangaList != null) {
+                    MediaListTypeOptions(
+                        sectionOrder = viewer.mediaListOptions.mangaList.sectionOrder,
+                        splitCompletedSectionByFormat = viewer.mediaListOptions.mangaList.splitCompletedSectionByFormat,
+                        customLists = viewer.mediaListOptions.mangaList.customLists,
+                        advancedScoring = viewer.mediaListOptions.mangaList.advancedScoring,
+                        advancedScoringEnabled = viewer.mediaListOptions.mangaList.advancedScoringEnabled
+                    )
+                } else null
+            ) else null,
+            statistics = if (viewer.statistics != null) {
+                UserStatisticTypes(
+                    anime = if (viewer.statistics.anime != null) {
+                        UserStatistics(
+                            count = viewer.statistics.anime.count,
+                            meanScore = viewer.statistics.anime.meanScore,
+                            standardDeviation = viewer.statistics.anime.standardDeviation,
+                            minutesWatched = viewer.statistics.anime.minutesWatched,
+                            episodesWatched = viewer.statistics.anime.episodesWatched,
+                            chaptersRead = viewer.statistics.anime.chaptersRead,
+                            volumesRead = viewer.statistics.anime.volumesRead
+                        )
+                    } else null,
+                    manga = if (viewer.statistics.manga != null) {
+                        UserStatistics(
+                            count = viewer.statistics.manga.count,
+                            meanScore = viewer.statistics.manga.meanScore,
+                            standardDeviation = viewer.statistics.manga.standardDeviation,
+                            minutesWatched = viewer.statistics.manga.minutesWatched,
+                            episodesWatched = viewer.statistics.manga.episodesWatched,
+                            chaptersRead = viewer.statistics.manga.chaptersRead,
+                            volumesRead = viewer.statistics.manga.volumesRead
+                        )
+                    } else null
+                )
+            } else null,
             unreadNotificationCount = viewer.unreadNotificationCount,
             donatorTier = viewer.donatorTier,
             donatorBadge = viewer.donatorBadge,
@@ -22,116 +82,12 @@ object Converter {
         )
     }
 
-    private fun convertUserAvatar(avatar: ViewerQuery.Avatar?): UserAvatar? {
-        if (avatar == null) return null
-
-        return UserAvatar(
-            large = avatar.large,
-            medium = avatar.medium
-        )
-    }
-
-    private fun convertNotificationOptionList(notificationOption: List<ViewerQuery.NotificationOption?>?): List<NotificationOption>? {
-        if (notificationOption == null) return null
-
-        val notificationOptionList = ArrayList<NotificationOption>()
-        notificationOption.forEach {
-            notificationOptionList.add(
-                NotificationOption(
-                    type = it?.type,
-                    enabled = it?.enabled
-                )
-            )
-        }
-        return notificationOptionList
-    }
-
-    // Thanks JVM
-    private fun convertNotificationOptionListFromSettingsMutation(notificationOption: List<AniListSettingsMutation.NotificationOption?>?): List<NotificationOption> {
-        val notificationOptionList = ArrayList<NotificationOption>()
-        notificationOption?.forEach {
-            notificationOptionList.add(
-                NotificationOption(
-                    type = it?.type,
-                    enabled = it?.enabled
-                )
-            )
-        }
-        return notificationOptionList
-    }
-
-    private fun convertUserOptions(options: ViewerQuery.Options?): UserOptions? {
-        if (options == null) return null
-
-        return UserOptions(
-            titleLanguage = options.titleLanguage,
-            displayAdultContent = options.displayAdultContent,
-            airingNotifications = options.airingNotifications,
-            notificationOptions = convertNotificationOptionList(options.notificationOptions)
-        )
-    }
-
     fun convertUserOptions(options: AniListSettingsMutation.Options?): UserOptions {
         return UserOptions(
             titleLanguage = options?.titleLanguage,
             displayAdultContent = options?.displayAdultContent,
             airingNotifications = options?.airingNotifications,
-            notificationOptions = convertNotificationOptionListFromSettingsMutation(options?.notificationOptions)
-        )
-    }
-
-    private fun convertAnimeListMediaListTypeOptions(animeList: ViewerQuery.AnimeList?): MediaListTypeOptions? {
-        if (animeList == null) return null
-
-        return MediaListTypeOptions(
-            sectionOrder = animeList.sectionOrder,
-            splitCompletedSectionByFormat = animeList.splitCompletedSectionByFormat,
-            customLists = animeList.customLists,
-            advancedScoring = animeList.advancedScoring,
-            advancedScoringEnabled = animeList.advancedScoringEnabled
-        )
-    }
-
-    private fun convertAnimeListMediaListTypeOptions(animeList: ListSettingsMutation.AnimeList?): MediaListTypeOptions {
-        return MediaListTypeOptions(
-            sectionOrder = animeList?.sectionOrder,
-            splitCompletedSectionByFormat = animeList?.splitCompletedSectionByFormat,
-            customLists = animeList?.customLists,
-            advancedScoring = animeList?.advancedScoring,
-            advancedScoringEnabled = animeList?.advancedScoringEnabled
-        )
-    }
-
-    private fun convertMangaListMediaListTypeOptions(mangaList: ViewerQuery.MangaList?): MediaListTypeOptions? {
-        if (mangaList == null) return null
-
-        return MediaListTypeOptions(
-            sectionOrder = mangaList.sectionOrder,
-            splitCompletedSectionByFormat = mangaList.splitCompletedSectionByFormat,
-            customLists = mangaList.customLists,
-            advancedScoring = mangaList.advancedScoring,
-            advancedScoringEnabled = mangaList.advancedScoringEnabled
-        )
-    }
-
-    private fun convertMangaListMediaListTypeOptions(mangaList: ListSettingsMutation.MangaList?): MediaListTypeOptions {
-        return MediaListTypeOptions(
-            sectionOrder = mangaList?.sectionOrder,
-            splitCompletedSectionByFormat = mangaList?.splitCompletedSectionByFormat,
-            customLists = mangaList?.customLists,
-            advancedScoring = mangaList?.advancedScoring,
-            advancedScoringEnabled = mangaList?.advancedScoringEnabled
-        )
-    }
-
-    private fun convertMediaListOptions(mediaListOptions: ViewerQuery.MediaListOptions?): MediaListOptions? {
-        if (mediaListOptions == null) return null
-
-        return MediaListOptions(
-            scoreFormat = mediaListOptions.scoreFormat,
-            rowOrder = mediaListOptions.rowOrder,
-            animeList = convertAnimeListMediaListTypeOptions(mediaListOptions.animeList),
-            mangaList = convertMangaListMediaListTypeOptions(mediaListOptions.mangaList)
+            notificationOptions = options?.notificationOptions?.filterNotNull()?.map { NotificationOption(it.type, it.enabled) }
         )
     }
 
@@ -139,64 +95,26 @@ object Converter {
         return MediaListOptions(
             scoreFormat = mediaListOptions?.scoreFormat,
             rowOrder = mediaListOptions?.rowOrder,
-            animeList = convertAnimeListMediaListTypeOptions(mediaListOptions?.animeList),
-            mangaList = convertMangaListMediaListTypeOptions(mediaListOptions?.mangaList)
-        )
-    }
-
-    private fun convertAnimeUserStatistics(anime: ViewerQuery.Anime?): UserStatistics? {
-        if (anime == null) return null
-
-        return UserStatistics(
-            count = anime.count,
-            meanScore = anime.meanScore,
-            standardDeviation = anime.standardDeviation,
-            minutesWatched = anime.minutesWatched,
-            episodesWatched = anime.episodesWatched,
-            chaptersRead = anime.chaptersRead,
-            volumesRead = anime.volumesRead
-        )
-    }
-
-    private fun convertMangaUserStatistics(manga: ViewerQuery.Manga?): UserStatistics? {
-        if (manga == null) return null
-
-        return UserStatistics(
-            count = manga.count,
-            meanScore = manga.meanScore,
-            standardDeviation = manga.standardDeviation,
-            minutesWatched = manga.minutesWatched,
-            episodesWatched = manga.episodesWatched,
-            chaptersRead = manga.chaptersRead,
-            volumesRead = manga.volumesRead
-        )
-    }
-
-    private fun convertUserStatisticTypes(statistics: ViewerQuery.Statistics?): UserStatisticTypes? {
-        if (statistics == null) return null
-
-        return UserStatisticTypes(
-            anime = convertAnimeUserStatistics(statistics.anime),
-            manga = convertMangaUserStatistics(statistics.manga)
+            animeList = MediaListTypeOptions(
+                sectionOrder = mediaListOptions?.animeList?.sectionOrder,
+                splitCompletedSectionByFormat = mediaListOptions?.animeList?.splitCompletedSectionByFormat,
+                customLists = mediaListOptions?.animeList?.customLists,
+                advancedScoring = mediaListOptions?.animeList?.advancedScoring,
+                advancedScoringEnabled = mediaListOptions?.animeList?.advancedScoringEnabled
+            ),
+            mangaList = MediaListTypeOptions(
+                sectionOrder = mediaListOptions?.mangaList?.sectionOrder,
+                splitCompletedSectionByFormat = mediaListOptions?.mangaList?.splitCompletedSectionByFormat,
+                customLists = mediaListOptions?.mangaList?.customLists,
+                advancedScoring = mediaListOptions?.mangaList?.advancedScoring,
+                advancedScoringEnabled = mediaListOptions?.mangaList?.advancedScoringEnabled
+            )
         )
     }
 
     fun convertMediaListCollection(mediaListCollection: AnimeListCollectionQuery.MediaListCollection?): MediaListCollection {
         return MediaListCollection(
-            lists = convertAnimeMediaListGroupList(mediaListCollection?.lists)
-        )
-    }
-
-    fun convertMediaListCollection(mediaListCollection: MangaListCollectionQuery.MediaListCollection?): MediaListCollection {
-        return MediaListCollection(
-            lists = convertMangaMediaListGroupList(mediaListCollection?.lists)
-        )
-    }
-
-    private fun convertAnimeMediaListGroupList(lists: List<AnimeListCollectionQuery.List?>?): List<MediaListGroup> {
-        val mediaListGroupList = ArrayList<MediaListGroup>()
-        lists?.forEach {
-            mediaListGroupList.add(
+            mediaListCollection?.lists?.map {
                 MediaListGroup(
                     entries = convertAnimeMediaListList(it?.entries),
                     name = it?.name,
@@ -204,15 +122,13 @@ object Converter {
                     isSplitCompletedList = it?.isSplitCompletedList,
                     status = it?.status
                 )
-            )
-        }
-        return mediaListGroupList
+            }
+        )
     }
 
-    private fun convertMangaMediaListGroupList(lists: List<MangaListCollectionQuery.List?>?): List<MediaListGroup> {
-        val mediaListGroupList = ArrayList<MediaListGroup>()
-        lists?.forEach {
-            mediaListGroupList.add(
+    fun convertMediaListCollection(mediaListCollection: MangaListCollectionQuery.MediaListCollection?): MediaListCollection {
+        return MediaListCollection(
+            mediaListCollection?.lists?.map {
                 MediaListGroup(
                     entries = convertMangaMediaListList(it?.entries),
                     name = it?.name,
@@ -220,9 +136,8 @@ object Converter {
                     isSplitCompletedList = it?.isSplitCompletedList,
                     status = it?.status
                 )
-            )
-        }
-        return mediaListGroupList
+            }
+        )
     }
 
     private fun convertAnimeMediaListList(entries: List<AnimeListCollectionQuery.Entry?>?): List<MediaList> {
@@ -242,8 +157,8 @@ object Converter {
                     hiddenFromStatusList = it.hiddenFromStatusLists,
                     customLists = it.customLists,
                     advancedScores = it.advancedScores,
-                    startedAt = if (it.startedAt != null) convertFuzzyDate(it.startedAt) else null,
-                    completedAt = if (it.completedAt != null) convertFuzzyDate(it.completedAt) else null,
+                    startedAt = if (it.startedAt != null) FuzzyDate(it.startedAt.year, it.startedAt.month, it.startedAt.day) else null,
+                    completedAt = if (it.completedAt != null) FuzzyDate(it.completedAt.year, it.completedAt.month, it.completedAt.day) else null,
                     updatedAt = it.updatedAt,
                     createdAt = it.createdAt,
                     media = convertMedia(it.media!!)
@@ -270,8 +185,8 @@ object Converter {
                     hiddenFromStatusList = it.hiddenFromStatusLists,
                     customLists = it.customLists,
                     advancedScores = it.advancedScores,
-                    startedAt = if (it.startedAt != null) convertFuzzyDate(it.startedAt) else null,
-                    completedAt = if (it.completedAt != null) convertFuzzyDate(it.completedAt) else null,
+                    startedAt = if (it.startedAt != null) FuzzyDate(it.startedAt.year, it.startedAt.month, it.startedAt.day) else null,
+                    completedAt = if (it.completedAt != null) FuzzyDate(it.completedAt.year, it.completedAt.month, it.completedAt.day) else null,
                     updatedAt = it.updatedAt,
                     createdAt = it.createdAt,
                     media = convertMedia(it.media!!)
@@ -295,8 +210,8 @@ object Converter {
             hiddenFromStatusList = entries.hiddenFromStatusLists,
             customLists = entries.customLists,
             advancedScores = entries.advancedScores,
-            startedAt = if (entries.startedAt != null) convertFuzzyDate(entries.startedAt) else null,
-            completedAt = if (entries.completedAt != null) convertFuzzyDate(entries.completedAt) else null,
+            startedAt = if (entries.startedAt != null) FuzzyDate(entries.startedAt.year, entries.startedAt.month, entries.startedAt.day) else null,
+            completedAt = if (entries.completedAt != null) FuzzyDate(entries.completedAt.year, entries.completedAt.month, entries.completedAt.day) else null,
             updatedAt = entries.updatedAt,
             createdAt = entries.createdAt,
             media = convertMedia(entries.media!!)
@@ -317,8 +232,8 @@ object Converter {
             hiddenFromStatusList = entries.hiddenFromStatusLists,
             customLists = entries.customLists,
             advancedScores = entries.advancedScores,
-            startedAt = if (entries.startedAt != null) convertFuzzyDate(entries.startedAt) else null,
-            completedAt = if (entries.completedAt != null) convertFuzzyDate(entries.completedAt) else null,
+            startedAt = if (entries.startedAt != null) FuzzyDate(entries.startedAt.year, entries.startedAt.month, entries.startedAt.day) else null,
+            completedAt = if (entries.completedAt != null) FuzzyDate(entries.completedAt.year, entries.completedAt.month, entries.completedAt.day) else null,
             updatedAt = entries.updatedAt,
             createdAt = entries.createdAt,
             media = convertMedia(entries.media!!)
@@ -339,8 +254,8 @@ object Converter {
             hiddenFromStatusList = entries.hiddenFromStatusLists,
             customLists = entries.customLists,
             advancedScores = entries.advancedScores,
-            startedAt = if (entries.startedAt != null) convertFuzzyDate(entries.startedAt) else null,
-            completedAt = if (entries.completedAt != null) convertFuzzyDate(entries.completedAt) else null,
+            startedAt = if (entries.startedAt != null) FuzzyDate(entries.startedAt.year, entries.startedAt.month, entries.startedAt.day) else null,
+            completedAt = if (entries.completedAt != null) FuzzyDate(entries.completedAt.year, entries.completedAt.month, entries.completedAt.day) else null,
             updatedAt = entries.updatedAt,
             createdAt = entries.createdAt,
             media = convertMedia(entries.media!!)
@@ -361,15 +276,15 @@ object Converter {
             hiddenFromStatusList = entries.hiddenFromStatusLists,
             customLists = entries.customLists,
             advancedScores = entries.advancedScores,
-            startedAt = if (entries.startedAt != null) convertFuzzyDate(entries.startedAt) else null,
-            completedAt = if (entries.completedAt != null) convertFuzzyDate(entries.completedAt) else null,
+            startedAt = if (entries.startedAt != null) FuzzyDate(entries.startedAt.year, entries.startedAt.month, entries.startedAt.day) else null,
+            completedAt = if (entries.completedAt != null) FuzzyDate(entries.completedAt.year, entries.completedAt.month, entries.completedAt.day) else null,
             updatedAt = entries.updatedAt,
             createdAt = entries.createdAt,
             media = convertMedia(entries.media!!)
         )
     }
 
-    fun convertMediaList(entries: SeasonalAnimeQuery.MediaListEntry): MediaList {
+    private fun convertMediaList(entries: SeasonalAnimeQuery.MediaListEntry): MediaList {
         return MediaList(
             id = entries.id,
             status = entries.status,
@@ -394,26 +309,50 @@ object Converter {
     private fun convertMedia(media: AnimeListCollectionQuery.Media): Media {
         return Media(
             id = media.id,
-            title = convertMediaTitle(mediaTitle = media.title!!),
+            title = MediaTitle(
+                media.title?.romaji,
+                media.title?.english,
+                media.title?.native_,
+                media.title?.userPreferred!!
+            ),
             type = media.type,
             format = media.format,
             status = media.status,
-            startDate = if (media.startDate != null) convertFuzzyDate(media.startDate) else null,
+            startDate = if (media.startDate != null) {
+                FuzzyDate(media.startDate.year, media.startDate.month, media.startDate.day)
+            } else null,
             season = media.season,
             seasonYear = media.seasonYear,
             episodes = media.episodes,
+            duration = media.duration,
             chapters = null,
             volumes = null,
-            countryOfOrigin = media.countryOfOrigin?.toString(),
+            countryOfOrigin = media.countryOfOrigin,
             source = media.source,
             isFavourite = media.isFavourite,
-            coverImage = if (media.coverImage != null) convertMediaCoverImage(media.coverImage) else null,
+            coverImage = if (media.coverImage != null) {
+                MediaCoverImage(media.coverImage.large, null)
+            } else null,
             genres = media.genres,
             synonyms = media.synonyms,
             averageScore = media.averageScore,
             popularity = media.popularity,
+            tags = if (!media.tags.isNullOrEmpty()) {
+                media.tags.filterNotNull().map { MediaTag(it.name) }
+            } else null,
             isAdult = media.isAdult,
-            nextAiringEpisode = if (media.nextAiringEpisode != null) convertNextAiringEpisode(media.nextAiringEpisode) else null,
+            nextAiringEpisode = if (media.nextAiringEpisode != null) {
+                AiringSchedule(
+                    id = media.nextAiringEpisode.id,
+                    airingAt = media.nextAiringEpisode.airingAt,
+                    timeUntilAiring = media.nextAiringEpisode.timeUntilAiring,
+                    episode = media.nextAiringEpisode.episode,
+                    mediaId = media.nextAiringEpisode.mediaId
+                )
+            } else null,
+            externalLinks = if (!media.externalLinks.isNullOrEmpty()) {
+                media.externalLinks.filterNotNull().map { MediaExternalLinks(it.site) }
+            } else null,
             siteUrl = null
         )
     }
@@ -421,26 +360,41 @@ object Converter {
     private fun convertMedia(media: MangaListCollectionQuery.Media): Media {
         return Media(
             id = media.id,
-            title = convertMediaTitle(mediaTitle = media.title!!),
+            title = MediaTitle(
+                media.title?.romaji,
+                media.title?.english,
+                media.title?.native_,
+                media.title?.userPreferred!!
+            ),
             type = media.type,
             format = media.format,
             status = media.status,
-            startDate = if (media.startDate != null) convertFuzzyDate(media.startDate) else null,
+            startDate = if (media.startDate != null) {
+                FuzzyDate(media.startDate.year, media.startDate.month, media.startDate.day)
+            } else null,
             season = null,
             seasonYear = null,
             episodes = null,
             chapters = media.chapters,
             volumes = media.volumes,
-            countryOfOrigin = media.countryOfOrigin?.toString(),
+            countryOfOrigin = media.countryOfOrigin,
             source = media.source,
             isFavourite = media.isFavourite,
-            coverImage = if (media.coverImage != null) convertMediaCoverImage(media.coverImage) else null,
+            coverImage = if (media.coverImage != null) {
+                MediaCoverImage(media.coverImage.large, null)
+            } else null,
             genres = media.genres,
             synonyms = media.synonyms,
             averageScore = media.averageScore,
             popularity = media.popularity,
+            tags = if (!media.tags.isNullOrEmpty()) {
+                media.tags.filterNotNull().map { MediaTag(it.name) }
+            } else null,
             isAdult = media.isAdult,
             nextAiringEpisode = null,
+            externalLinks = if (!media.externalLinks.isNullOrEmpty()) {
+                media.externalLinks.filterNotNull().map { MediaExternalLinks(it.site) }
+            } else null,
             siteUrl = null
         )
     }
@@ -448,26 +402,49 @@ object Converter {
     private fun convertMedia(media: AnimeListEntryMutation.Media): Media {
         return Media(
             id = media.id,
-            title = convertMediaTitle(mediaTitle = media.title!!),
+            title = MediaTitle(
+                media.title?.romaji,
+                media.title?.english,
+                media.title?.native_,
+                media.title?.userPreferred!!
+            ),
             type = media.type,
             format = media.format,
             status = media.status,
-            startDate = if (media.startDate != null) convertFuzzyDate(media.startDate) else null,
+            startDate = if (media.startDate != null) {
+                FuzzyDate(media.startDate.year, media.startDate.month, media.startDate.day)
+            } else null,
             season = media.season,
             seasonYear = media.seasonYear,
             episodes = media.episodes,
             chapters = null,
             volumes = null,
             isFavourite = media.isFavourite,
-            countryOfOrigin = media.countryOfOrigin?.toString(),
+            countryOfOrigin = media.countryOfOrigin,
             source = media.source,
-            coverImage = if (media.coverImage != null) convertMediaCoverImage(media.coverImage) else null,
+            coverImage = if (media.coverImage != null) {
+                MediaCoverImage(media.coverImage.large, null)
+            } else null,
             genres = media.genres,
             synonyms = media.synonyms,
             averageScore = media.averageScore,
             popularity = media.popularity,
+            tags = if (!media.tags.isNullOrEmpty()) {
+                media.tags.filterNotNull().map { MediaTag(it.name) }
+            } else null,
             isAdult = media.isAdult,
-            nextAiringEpisode = if (media.nextAiringEpisode != null) convertNextAiringEpisode(media.nextAiringEpisode) else null,
+            nextAiringEpisode = if (media.nextAiringEpisode != null) {
+                AiringSchedule(
+                    id = media.nextAiringEpisode.id,
+                    airingAt = media.nextAiringEpisode.airingAt,
+                    timeUntilAiring = media.nextAiringEpisode.timeUntilAiring,
+                    episode = media.nextAiringEpisode.episode,
+                    mediaId = media.nextAiringEpisode.mediaId
+                )
+            } else null,
+            externalLinks = if (!media.externalLinks.isNullOrEmpty()) {
+                media.externalLinks.filterNotNull().map { MediaExternalLinks(it.site) }
+            } else null,
             siteUrl = media.siteUrl
         )
     }
@@ -475,26 +452,41 @@ object Converter {
     private fun convertMedia(media: MangaListEntryMutation.Media): Media {
         return Media(
             id = media.id,
-            title = convertMediaTitle(mediaTitle = media.title!!),
+            title = MediaTitle(
+                media.title?.romaji,
+                media.title?.english,
+                media.title?.native_,
+                media.title?.userPreferred!!
+            ),
             type = media.type,
             format = media.format,
             status = media.status,
-            startDate = if (media.startDate != null) convertFuzzyDate(media.startDate) else null,
+            startDate = if (media.startDate != null) {
+                FuzzyDate(media.startDate.year, media.startDate.month, media.startDate.day)
+            } else null,
             season = null,
             seasonYear = null,
             episodes = null,
             chapters = media.chapters,
             volumes = media.volumes,
             isFavourite = media.isFavourite,
-            countryOfOrigin = media.countryOfOrigin?.toString(),
+            countryOfOrigin = media.countryOfOrigin,
             source = media.source,
-            coverImage = if (media.coverImage != null) convertMediaCoverImage(media.coverImage) else null,
+            coverImage = if (media.coverImage != null) {
+                MediaCoverImage(media.coverImage.large, null)
+            } else null,
             genres = media.genres,
             synonyms = media.synonyms,
             averageScore = media.averageScore,
             popularity = media.popularity,
+            tags = if (!media.tags.isNullOrEmpty()) {
+                media.tags.filterNotNull().map { MediaTag(it.name) }
+            } else null,
             isAdult = media.isAdult,
             nextAiringEpisode = null,
+            externalLinks = if (!media.externalLinks.isNullOrEmpty()) {
+                media.externalLinks.filterNotNull().map { MediaExternalLinks(it.site) }
+            } else null,
             siteUrl = media.siteUrl
         )
     }
@@ -502,7 +494,7 @@ object Converter {
     private fun convertMedia(media: AnimeListQuery.Media): Media {
         return Media(
             id = media.id,
-            title = convertMediaTitle(mediaTitle = media.title!!),
+            title = MediaTitle(null, null, null, media.title?.userPreferred!!),
             type = media.type,
             format = media.format,
             status = media.status,
@@ -529,7 +521,7 @@ object Converter {
     private fun convertMedia(media: MangaListQuery.Media): Media {
         return Media(
             id = media.id,
-            title = convertMediaTitle(mediaTitle = media.title!!),
+            title = MediaTitle(null, null, null, media.title?.userPreferred!!),
             type = media.type,
             format = media.format,
             status = media.status,
@@ -550,245 +542,6 @@ object Converter {
             isAdult = media.isAdult,
             nextAiringEpisode = null,
             siteUrl = media.siteUrl
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: AnimeListCollectionQuery.Title): MediaTitle {
-        return MediaTitle(
-            mediaTitle.romaji,
-            mediaTitle.english,
-            mediaTitle.native_,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: AnimeListEntryMutation.Title): MediaTitle {
-        return MediaTitle(
-            mediaTitle.romaji,
-            mediaTitle.english,
-            mediaTitle.native_,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: AnimeListQuery.Title): MediaTitle {
-        return MediaTitle(
-            null,
-            null,
-            null,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: MangaListCollectionQuery.Title): MediaTitle {
-        return MediaTitle(
-            mediaTitle.romaji,
-            mediaTitle.english,
-            mediaTitle.native_,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: MangaListEntryMutation.Title): MediaTitle {
-        return MediaTitle(
-            mediaTitle.romaji,
-            mediaTitle.english,
-            mediaTitle.native_,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: MangaListQuery.Title): MediaTitle {
-        return MediaTitle(
-            null,
-            null,
-            null,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertMediaTitle(mediaTitle: SeasonalAnimeQuery.Title): MediaTitle {
-        return MediaTitle(
-            null,
-            null,
-            null,
-            mediaTitle.userPreferred!!
-        )
-    }
-
-    private fun convertNextAiringEpisode(nextAiringEpisode: AnimeListCollectionQuery.NextAiringEpisode): AiringSchedule {
-        return AiringSchedule(
-            id = nextAiringEpisode.id,
-            airingAt = nextAiringEpisode.airingAt,
-            timeUntilAiring = nextAiringEpisode.timeUntilAiring,
-            episode = nextAiringEpisode.episode,
-            mediaId = nextAiringEpisode.mediaId
-        )
-    }
-
-    private fun convertNextAiringEpisode(nextAiringEpisode: AnimeListEntryMutation.NextAiringEpisode): AiringSchedule {
-        return AiringSchedule(
-            id = nextAiringEpisode.id,
-            airingAt = nextAiringEpisode.airingAt,
-            timeUntilAiring = nextAiringEpisode.timeUntilAiring,
-            episode = nextAiringEpisode.episode,
-            mediaId = nextAiringEpisode.mediaId
-        )
-    }
-
-    private fun convertMediaCoverImage(coverImage: AnimeListCollectionQuery.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large, null)
-    }
-
-    private fun convertMediaCoverImage(coverImage: AnimeListEntryMutation.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large, null)
-    }
-
-    private fun convertMediaCoverImage(coverImage: MangaListCollectionQuery.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large, null)
-    }
-
-    private fun convertMediaCoverImage(coverImage: MangaListEntryMutation.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large, null)
-    }
-
-    private fun convertMediaCoverImage(coverImage: SeasonalAnimeQuery.CoverImage): MediaCoverImage {
-        return MediaCoverImage(coverImage.large, null)
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.StartedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.StartedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListCollectionQuery.StartedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListEntryMutation.StartedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.CompletedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.CompletedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListCollectionQuery.CompletedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListEntryMutation.CompletedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListCollectionQuery.StartDate): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListEntryMutation.StartDate): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListQuery.StartedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListCollectionQuery.StartDate): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListEntryMutation.StartDate): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListQuery.StartedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: AnimeListQuery.CompletedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: MangaListQuery.CompletedAt): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
-        )
-    }
-
-    private fun convertFuzzyDate(fuzzyDate: SeasonalAnimeQuery.StartDate): FuzzyDate {
-        return FuzzyDate(
-            fuzzyDate.year,
-            fuzzyDate.month,
-            fuzzyDate.day
         )
     }
 
@@ -830,15 +583,15 @@ object Converter {
             seasonalAnimeList.add(
                 SeasonalAnime(
                     id = it?.id!!,
-                    title = convertMediaTitle(mediaTitle = it.title!!),
-                    coverImage = convertMediaCoverImage(coverImage = it.coverImage!!),
+                    title = MediaTitle(null, null, null, it.title?.userPreferred!!),
+                    coverImage = MediaCoverImage(it.coverImage?.large, null),
                     format = it.format,
                     source = it.source,
                     episodes = it.episodes,
                     averageScore = it.averageScore,
                     favourites = it.favourites,
                     description = it.description,
-                    startDate = if (it.startDate != null) convertFuzzyDate(it.startDate) else null,
+                    startDate = if (it.startDate != null) FuzzyDate(it.startDate.year, it.startDate.month, it.startDate.day) else null,
                     genres = it.genres,
                     studios = if (it.studios != null) convertStudioConnection(it.studios) else null,
                     stats = if (it.stats != null) convertMediaStats(it.stats) else null,

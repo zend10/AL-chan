@@ -85,7 +85,13 @@ mutation MangaListEntryMutation(
             synonyms
             averageScore
             popularity
+            tags {
+                name
+            }
             isAdult
+            externalLinks {
+                site
+            }
             siteUrl
         }
     }

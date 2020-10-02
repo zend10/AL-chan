@@ -72,6 +72,7 @@ mutation AnimeListEntryMutation(
             season
             seasonYear
             episodes
+            duration
             countryOfOrigin
             source
             isFavourite
@@ -83,6 +84,9 @@ mutation AnimeListEntryMutation(
             synonyms
             averageScore
             popularity
+            tags {
+                name
+            }
             isAdult
             nextAiringEpisode {
                 id
@@ -90,6 +94,9 @@ mutation AnimeListEntryMutation(
                 timeUntilAiring
                 episode
                 mediaId
+            }
+            externalLinks {
+                site
             }
             siteUrl
         }

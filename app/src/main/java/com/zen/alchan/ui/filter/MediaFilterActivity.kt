@@ -145,7 +145,11 @@ class MediaFilterActivity : BaseActivity() {
     }
 
     private fun handleFilterFormatLayout() {
-        filterFormatText.text = viewModel.currentData.selectedFormats?.joinToString { it.name.replaceUnderscore() } ?: "-"
+        filterFormatText.text = if (viewModel.currentData.selectedFormats.isNullOrEmpty()) {
+            "-"
+        } else {
+            viewModel.currentData.selectedFormats?.joinToString { it.name.replaceUnderscore() }
+        }
 
         filterFormatLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaFormatArrayPair()
@@ -164,7 +168,11 @@ class MediaFilterActivity : BaseActivity() {
     }
 
     private fun handleFilterStatusLayout() {
-        filterStatusText.text = viewModel.currentData.selectedStatuses?.joinToString { it.name.replaceUnderscore() } ?: "-"
+        filterStatusText.text = if (viewModel.currentData.selectedStatuses.isNullOrEmpty()) {
+            "-"
+        } else {
+            viewModel.currentData.selectedStatuses?.joinToString { it.name.replaceUnderscore() } ?: "-"
+        }
 
         filterStatusLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaStatusArrayPair()
@@ -183,7 +191,11 @@ class MediaFilterActivity : BaseActivity() {
     }
 
     private fun handleFilterSourceLayout() {
-        filterSourceText.text = viewModel.currentData.selectedSources?.joinToString { it.name.replaceUnderscore() } ?: "-"
+        filterSourceText.text = if (viewModel.currentData.selectedSources.isNullOrEmpty()) {
+            "-"
+        } else {
+            viewModel.currentData.selectedSources?.joinToString { it.name.replaceUnderscore() }
+        }
 
         filterSourceLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaSourceArrayPair()
@@ -241,8 +253,8 @@ class MediaFilterActivity : BaseActivity() {
         filterYearRangeSeekBar.setMaxValue(viewModel.yearSeekBarMaxValue)
         filterYearRangeSeekBar.apply()
 
-        val minYear = viewModel.currentData.selectedYear?.greaterThan?.toString()?.substring(0, 4)?.toInt()
-        val maxYear = viewModel.currentData.selectedYear?.lesserThan?.toString()?.substring(0, 4)?.toInt()
+        val minYear = viewModel.currentData.selectedYear?.minValue?.toString()?.substring(0, 4)?.toInt()
+        val maxYear = viewModel.currentData.selectedYear?.maxValue?.toString()?.substring(0, 4)?.toInt()
 
         if (minYear != null && maxYear != null) {
             filterYearRangeSeekBar.setMinStartValue((minYear - Constant.FILTER_EARLIEST_YEAR).toFloat())
@@ -439,7 +451,11 @@ class MediaFilterActivity : BaseActivity() {
             filterLicensedLabel.text = getString(R.string.readeable_on)
         }
 
-        filterLicensedText.text = viewModel.currentData.selectedLicensed?.joinToString { viewModel.mediaLicensedList.find { licensed -> licensed.first == it }?.second.toString() } ?: "-"
+        filterLicensedText.text = if (viewModel.currentData.selectedLicensed.isNullOrEmpty()) {
+            "-"
+        } else {
+            viewModel.currentData.selectedLicensed?.joinToString { viewModel.mediaLicensedList.find { licensed -> licensed.first == it }?.second.toString() }
+        }
 
         filterLicensedLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaLicensedArrayPair()
@@ -475,21 +491,21 @@ class MediaFilterActivity : BaseActivity() {
             filterEpisodesLabel.text = getString(R.string.episodes)
 
             if (viewModel.currentData.selectedEpisodes != null) {
-                filterEpisodesSeekBar.setMinStartValue(viewModel.currentData.selectedEpisodes?.greaterThan?.toFloat() ?: 0F)
-                filterEpisodesSeekBar.setMaxStartValue(viewModel.currentData.selectedEpisodes?.lesserThan?.toFloat() ?: viewModel.episodeSeekBarMaxValue)
+                filterEpisodesSeekBar.setMinStartValue(viewModel.currentData.selectedEpisodes?.minValue?.toFloat() ?: 0F)
+                filterEpisodesSeekBar.setMaxStartValue(viewModel.currentData.selectedEpisodes?.maxValue?.toFloat() ?: viewModel.episodeSeekBarMaxValue)
                 filterEpisodesSeekBar.apply()
-                filterStartEpisodeText.text = viewModel.currentData.selectedEpisodes?.greaterThan.toString()
-                filterEndEpisodeText.text = viewModel.currentData.selectedEpisodes?.lesserThan.toString()
+                filterStartEpisodeText.text = viewModel.currentData.selectedEpisodes?.minValue.toString()
+                filterEndEpisodeText.text = viewModel.currentData.selectedEpisodes?.maxValue.toString()
             }
         } else {
             filterEpisodesLabel.text = getString(R.string.chapters)
 
             if (viewModel.currentData.selectedChapters != null) {
-                filterEpisodesSeekBar.setMinStartValue(viewModel.currentData.selectedChapters?.greaterThan?.toFloat() ?: 0F)
-                filterEpisodesSeekBar.setMaxStartValue(viewModel.currentData.selectedChapters?.lesserThan?.toFloat() ?: viewModel.episodeSeekBarMaxValue)
+                filterEpisodesSeekBar.setMinStartValue(viewModel.currentData.selectedChapters?.minValue?.toFloat() ?: 0F)
+                filterEpisodesSeekBar.setMaxStartValue(viewModel.currentData.selectedChapters?.maxValue?.toFloat() ?: viewModel.episodeSeekBarMaxValue)
                 filterEpisodesSeekBar.apply()
-                filterStartEpisodeText.text = viewModel.currentData.selectedChapters?.greaterThan.toString()
-                filterEndEpisodeText.text = viewModel.currentData.selectedChapters?.lesserThan.toString()
+                filterStartEpisodeText.text = viewModel.currentData.selectedChapters?.minValue.toString()
+                filterEndEpisodeText.text = viewModel.currentData.selectedChapters?.maxValue.toString()
             }
         }
 
@@ -532,21 +548,21 @@ class MediaFilterActivity : BaseActivity() {
             filterDurationLabel.text = getString(R.string.duration)
 
             if (viewModel.currentData.selectedDuration != null) {
-                filterDurationSeekBar.setMinStartValue(viewModel.currentData.selectedDuration?.greaterThan?.toFloat() ?: 0F)
-                filterDurationSeekBar.setMaxStartValue(viewModel.currentData.selectedDuration?.lesserThan?.toFloat() ?: viewModel.durationSeekBarMaxValue)
+                filterDurationSeekBar.setMinStartValue(viewModel.currentData.selectedDuration?.minValue?.toFloat() ?: 0F)
+                filterDurationSeekBar.setMaxStartValue(viewModel.currentData.selectedDuration?.maxValue?.toFloat() ?: viewModel.durationSeekBarMaxValue)
                 filterDurationSeekBar.apply()
-                filterStartDurationText.text = viewModel.currentData.selectedDuration?.greaterThan?.toString()
-                filterEndDurationText.text = viewModel.currentData.selectedDuration?.lesserThan?.toString()
+                filterStartDurationText.text = viewModel.currentData.selectedDuration?.minValue?.toString()
+                filterEndDurationText.text = viewModel.currentData.selectedDuration?.maxValue?.toString()
             }
         } else {
             filterDurationLabel.text = getString(R.string.volumes)
 
             if (viewModel.currentData.selectedVolumes != null) {
-                filterDurationSeekBar.setMinStartValue(viewModel.currentData.selectedVolumes?.greaterThan?.toFloat() ?: 0F)
-                filterDurationSeekBar.setMaxStartValue(viewModel.currentData.selectedVolumes?.lesserThan?.toFloat() ?: viewModel.durationSeekBarMaxValue)
+                filterDurationSeekBar.setMinStartValue(viewModel.currentData.selectedVolumes?.minValue?.toFloat() ?: 0F)
+                filterDurationSeekBar.setMaxStartValue(viewModel.currentData.selectedVolumes?.maxValue?.toFloat() ?: viewModel.durationSeekBarMaxValue)
                 filterDurationSeekBar.apply()
-                filterStartDurationText.text = viewModel.currentData.selectedVolumes?.greaterThan?.toString()
-                filterEndDurationText.text = viewModel.currentData.selectedVolumes?.lesserThan?.toString()
+                filterStartDurationText.text = viewModel.currentData.selectedVolumes?.minValue?.toString()
+                filterEndDurationText.text = viewModel.currentData.selectedVolumes?.maxValue?.toString()
             }
         }
 
@@ -573,11 +589,11 @@ class MediaFilterActivity : BaseActivity() {
 
     private fun handleFilterAverageScoreLayout() {
         if (viewModel.currentData.selectedAverageScore != null) {
-            filterAverageScoreSeekBar.setMinStartValue(viewModel.currentData.selectedAverageScore?.greaterThan?.toFloat() ?: 0F)
-            filterAverageScoreSeekBar.setMaxStartValue(viewModel.currentData.selectedAverageScore?.lesserThan?.toFloat() ?: 100F)
+            filterAverageScoreSeekBar.setMinStartValue(viewModel.currentData.selectedAverageScore?.minValue?.toFloat() ?: 0F)
+            filterAverageScoreSeekBar.setMaxStartValue(viewModel.currentData.selectedAverageScore?.maxValue?.toFloat() ?: 100F)
             filterAverageScoreSeekBar.apply()
-            filterStartAverageScoreText.text = viewModel.currentData.selectedAverageScore?.greaterThan?.toString()
-            filterEndAverageScoreText.text = viewModel.currentData.selectedAverageScore?.lesserThan?.toString()
+            filterStartAverageScoreText.text = viewModel.currentData.selectedAverageScore?.minValue?.toString()
+            filterEndAverageScoreText.text = viewModel.currentData.selectedAverageScore?.maxValue?.toString()
         } else {
             filterAverageScoreSeekBar.setMinStartValue(0F)
             filterAverageScoreSeekBar.setMaxStartValue(100F)
@@ -603,11 +619,11 @@ class MediaFilterActivity : BaseActivity() {
         val maxPopularity = 300000F
 
         if (viewModel.currentData.selectedPopularity != null) {
-            filterPopularitySeekBar.setMinStartValue(viewModel.currentData.selectedPopularity?.greaterThan?.toFloat() ?: 0F)
-            filterPopularitySeekBar.setMaxStartValue(viewModel.currentData.selectedPopularity?.lesserThan?.toFloat() ?: maxPopularity)
+            filterPopularitySeekBar.setMinStartValue(viewModel.currentData.selectedPopularity?.minValue?.toFloat() ?: 0F)
+            filterPopularitySeekBar.setMaxStartValue(viewModel.currentData.selectedPopularity?.maxValue?.toFloat() ?: maxPopularity)
             filterPopularitySeekBar.apply()
-            filterStartPopularityText.text = viewModel.currentData.selectedPopularity?.greaterThan?.toString()
-            filterEndPopularityText.text = viewModel.currentData.selectedPopularity?.lesserThan?.toString()
+            filterStartPopularityText.text = viewModel.currentData.selectedPopularity?.minValue?.toString()
+            filterEndPopularityText.text = viewModel.currentData.selectedPopularity?.maxValue?.toString()
         } else {
             filterPopularitySeekBar.setMinStartValue(0F)
             filterPopularitySeekBar.setMaxStartValue(maxPopularity)

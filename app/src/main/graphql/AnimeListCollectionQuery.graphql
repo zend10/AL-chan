@@ -49,6 +49,7 @@ query AnimeListCollectionQuery(
                     season
                     seasonYear
                     episodes
+                    duration
                     countryOfOrigin
                     source
                     isFavourite
@@ -59,6 +60,9 @@ query AnimeListCollectionQuery(
                     synonyms
                     averageScore
                     popularity
+                    tags {
+                        name
+                    }
                     isAdult
                     nextAiringEpisode {
                         id
@@ -66,6 +70,9 @@ query AnimeListCollectionQuery(
                         timeUntilAiring
                         episode
                         mediaId
+                    }
+                    externalLinks {
+                        site
                     }
                 }
             }

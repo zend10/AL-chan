@@ -96,19 +96,53 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
             rowOrderEnum = filterData?.selectedMediaListSort!!
         }
 
+        val orderByDescending = filterData?.selectedMediaListOrderByDescending != false
+
+        val sortedByTitle = entries.sortedWith(compareBy { it?.media?.title?.userPreferred })
+
+
+
         return when (rowOrderEnum) {
-            MediaListSort.TITLE -> ArrayList(entries.sortedWith(compareBy { it?.media?.title?.userPreferred }))
-            MediaListSort.SCORE -> ArrayList(entries.sortedWith(compareByDescending { it?.score }))
-            MediaListSort.PROGRESS -> ArrayList(entries.sortedWith(compareByDescending { it?.progress }))
-            MediaListSort.LAST_UPDATED -> ArrayList(entries.sortedWith(compareByDescending { it?.updatedAt }))
-            MediaListSort.LAST_ADDED -> ArrayList(entries.sortedWith(compareByDescending { it?.id }))
-            MediaListSort.START_DATE -> ArrayList(entries.sortedWith(compareByDescending { if (it?.startedAt != null) Converter.convertFuzzyDate(it.startedAt).toMillis() else it?.startedAt }))
-            MediaListSort.COMPLETED_DATE -> ArrayList(entries.sortedWith(compareByDescending { if (it?.completedAt != null) Converter.convertFuzzyDate(it.completedAt).toMillis() else it?.completedAt }))
-            MediaListSort.RELEASE_DATE -> ArrayList(entries.sortedWith(compareByDescending { if (it?.media?.startDate != null) Converter.convertFuzzyDate(it.media.startDate).toMillis() else it?.media?.startDate }))
-            MediaListSort.AVERAGE_SCORE -> ArrayList(entries.sortedWith(compareByDescending { it?.media?.averageScore }))
-            MediaListSort.POPULARITY -> ArrayList(entries.sortedWith(compareByDescending { it?.media?.popularity }))
-            MediaListSort.PRIORITY -> ArrayList(entries.sortedWith(compareByDescending { it?.priority }))
-            MediaListSort.NEXT_AIRING -> ArrayList(entries.sortedWith(compareBy { it?.media?.nextAiringEpisode?.timeUntilAiring }))
+            MediaListSort.TITLE -> {
+                val orderByDescendingSpecialCase = filterData?.selectedMediaListOrderByDescending == true
+                ArrayList(if (orderByDescendingSpecialCase) sortedByTitle.reversed() else sortedByTitle)
+            }
+            MediaListSort.SCORE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.score } else compareBy { it?.score }))
+            MediaListSort.PROGRESS -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.progress } else compareBy { it?.progress }))
+            MediaListSort.LAST_UPDATED -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.updatedAt } else compareBy { it?.updatedAt }))
+            MediaListSort.LAST_ADDED -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.id } else compareBy { it?.id }))
+            MediaListSort.START_DATE -> {
+                ArrayList(sortedByTitle.sortedWith(if (orderByDescending) {
+                    compareByDescending { if (it?.startedAt != null) Converter.convertFuzzyDate(it.startedAt).toMillis() else it?.startedAt }
+                } else {
+                    compareBy { if (it?.startedAt != null) Converter.convertFuzzyDate(it.startedAt).toMillis() else it?.startedAt }
+                }))
+            }
+            MediaListSort.COMPLETED_DATE -> {
+                ArrayList(sortedByTitle.sortedWith(if (orderByDescending) {
+                    compareByDescending { if (it?.completedAt != null) Converter.convertFuzzyDate(it.completedAt).toMillis() else it?.completedAt }
+                } else {
+                    compareBy { if (it?.completedAt != null) Converter.convertFuzzyDate(it.completedAt).toMillis() else it?.completedAt }
+                }))
+            }
+            MediaListSort.RELEASE_DATE -> {
+                ArrayList(sortedByTitle.sortedWith(if (orderByDescending) {
+                    compareByDescending { if (it?.media?.startDate != null) Converter.convertFuzzyDate(it.media.startDate).toMillis() else it?.media?.startDate }
+                } else {
+                    compareBy { if (it?.media?.startDate != null) Converter.convertFuzzyDate(it.media.startDate).toMillis() else it?.media?.startDate }
+                }))
+            }
+            MediaListSort.AVERAGE_SCORE -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.media?.averageScore } else compareBy { it?.media?.averageScore }))
+            MediaListSort.POPULARITY -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.media?.popularity } else compareBy { it?.media?.popularity }))
+            MediaListSort.PRIORITY -> ArrayList(sortedByTitle.sortedWith(if (orderByDescending) compareByDescending { it?.priority } else compareBy { it?.priority }))
+            MediaListSort.NEXT_AIRING -> {
+                val orderByDescendingSpecialCase = filterData?.selectedMediaListOrderByDescending == true
+                ArrayList(sortedByTitle.sortedWith(if (orderByDescendingSpecialCase) {
+                    compareByDescending { it?.media?.nextAiringEpisode?.timeUntilAiring ?: Int.MIN_VALUE }
+                } else {
+                    compareBy { it?.media?.nextAiringEpisode?.timeUntilAiring ?: Int.MAX_VALUE }
+                }))
+            }
         }
     }
 
@@ -123,36 +157,134 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
 
         val filteredList = ArrayList<UserMediaListCollectionQuery.Entry?>()
 
-        entries.forEach {
-            // TODO: handle sort this
-//            if (filterData?.selectedFormat != null && it?.media?.format != filterData?.selectedFormat) {
-//                return@forEach
-//            }
-//
-//            if (filterData?.selectedYear != null && it?.media?.seasonYear != filterData?.selectedYear) {
-//                return@forEach
-//            }
-//
-//            if (filterData?.selectedSeason != null && it?.media?.season != filterData?.selectedSeason) {
-//                return@forEach
-//            }
-//
-//            if (filterData?.selectedCountry != null && it?.media?.countryOfOrigin != filterData?.selectedCountry?.name) {
-//                return@forEach
-//            }
-//
-//            if (filterData?.selectedStatus != null && it?.media?.status != filterData?.selectedStatus) {
-//                return@forEach
-//            }
-//
-//            if (filterData?.selectedSource != null && it?.media?.source != filterData?.selectedSource) {
-//                return@forEach
-//            }
-//
-//            if (!filterData?.selectedGenreList.isNullOrEmpty() && !it?.media?.genres.isNullOrEmpty() && !it?.media?.genres!!.containsAll(filterData?.selectedGenreList!!)) {
-//                return@forEach
-//            }
+        entries.forEach entries@{
+            if (!filterData?.selectedFormats.isNullOrEmpty() && filterData?.selectedFormats?.contains(it?.media?.format) != true) {
+                return@entries
+            }
 
+            if (!filterData?.selectedStatuses.isNullOrEmpty() && filterData?.selectedStatuses?.contains(it?.media?.status) != true) {
+                return@entries
+            }
+
+            if (!filterData?.selectedSources.isNullOrEmpty() &&  filterData?.selectedSources?.contains(it?.media?.source) != true) {
+                return@entries
+            }
+
+            if (filterData?.selectedCountry != null && filterData?.selectedCountry?.name != it?.media?.countryOfOrigin) {
+                return@entries
+            }
+
+            if (filterData?.selectedSeason != null && filterData?.selectedSeason != it?.media?.season) {
+                return@entries
+            }
+
+            if (filterData?.selectedYear != null &&
+                (it?.media?.startDate?.year == null ||
+                filterData?.selectedYear?.minValue?.toString()?.substring(0..3)?.toInt()!! > it.media.startDate.year ||
+                filterData?.selectedYear?.maxValue?.toString()?.substring(0..3)?.toInt()!! < it.media.startDate.year)
+            ) {
+                return@entries
+            }
+
+            if (!filterData?.selectedGenres.isNullOrEmpty() &&
+                (it?.media?.genres.isNullOrEmpty() ||
+                !it?.media?.genres!!.containsAll(filterData?.selectedGenres!!))
+            ) {
+                return@entries
+            }
+
+            if (!filterData?.selectedExcludedGenres.isNullOrEmpty() && !it?.media?.genres.isNullOrEmpty()) {
+                filterData?.selectedExcludedGenres?.forEach { excludedGenre ->
+                    if (it?.media?.genres?.contains(excludedGenre) == true) {
+                        return@entries
+                    }
+                }
+            }
+
+            val mediaTagNames = it?.media?.tags?.filterNotNull()?.map { tag -> tag.name }
+
+            if (!filterData?.selectedTagNames.isNullOrEmpty() &&
+                (mediaTagNames.isNullOrEmpty() ||
+                        !mediaTagNames.containsAll(filterData?.selectedTagNames!!))
+            ) {
+                return@entries
+            }
+
+            if (!filterData?.selectedExcludedTagNames.isNullOrEmpty() && !mediaTagNames.isNullOrEmpty()) {
+                filterData?.selectedExcludedTagNames?.forEach { excludedTag ->
+                    if (mediaTagNames.contains(excludedTag)) {
+                        return@entries
+                    }
+                }
+            }
+
+            if (!filterData?.selectedLicensed.isNullOrEmpty()) {
+                if (it?.media?.externalLinks.isNullOrEmpty()) {
+                    return@entries
+                }
+
+                var hasSelectedLicense = false
+
+                it?.media?.externalLinks?.forEach license@{ externalLink ->
+                    if (filterData?.selectedLicensed?.contains(Constant.EXTERNAL_LINK_MAP[externalLink?.site]) == true) {
+                        hasSelectedLicense = true
+                        return@license
+                    }
+                }
+
+                if (!hasSelectedLicense) {
+                    return@entries
+                }
+            }
+
+            if (filterData?.selectedEpisodes != null &&
+                (it?.media?.episodes == null ||
+                filterData?.selectedEpisodes?.minValue ?: 0 > it.media.episodes ||
+                filterData?.selectedEpisodes?.maxValue ?: 0 < it.media.episodes)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedDuration != null &&
+                (it?.media?.duration == null ||
+                filterData?.selectedDuration?.minValue ?: 0 > it.media.duration ||
+                filterData?.selectedDuration?.maxValue ?: 0 < it.media.duration)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedChapters != null &&
+                (it?.media?.chapters == null ||
+                filterData?.selectedChapters?.minValue ?: 0 > it.media.chapters ||
+                filterData?.selectedChapters?.maxValue ?: 0 < it.media.chapters)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedVolumes != null &&
+                (it?.media?.volumes == null ||
+                filterData?.selectedVolumes?.minValue ?: 0 > it.media.volumes ||
+                filterData?.selectedVolumes?.maxValue ?: 0 < it.media.volumes)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedAverageScore != null &&
+                (it?.media?.averageScore == null ||
+                filterData?.selectedAverageScore?.minValue ?: 0 > it.media.averageScore ||
+                filterData?.selectedAverageScore?.maxValue ?: 0 < it.media.averageScore)
+            ) {
+                return@entries
+            }
+
+            if (filterData?.selectedPopularity != null &&
+                (it?.media?.popularity == null ||
+                filterData?.selectedPopularity?.minValue ?: 0 > it.media.popularity ||
+                filterData?.selectedPopularity?.maxValue ?: 0 < it.media.popularity)
+            ) {
+                return@entries
+            }
+            
             filteredList.add(it)
         }
 

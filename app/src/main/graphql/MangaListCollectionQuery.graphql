@@ -59,7 +59,13 @@ query MangaListCollectionQuery(
                     synonyms
                     averageScore
                     popularity
+                    tags {
+                        name
+                    }
                     isAdult
+                    externalLinks {
+                        site
+                    }
                 }
             }
             name
