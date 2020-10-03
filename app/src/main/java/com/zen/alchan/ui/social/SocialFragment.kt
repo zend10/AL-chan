@@ -81,6 +81,13 @@ class SocialFragment : Fragment() {
     }
 
     private fun setupObserver() {
+        viewModel.mostTrendingAnimeBannerLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                viewModel.socialFilter.bannerUrl = it
+                friendsActivityAdapter.notifyItemChanged(0)
+            }
+        })
+
         viewModel.bestFriendChangedNotifier.observe(viewLifecycleOwner, Observer {
             viewModel.reinitBestFriends()
             friendsActivityAdapter.notifyDataSetChanged()

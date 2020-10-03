@@ -265,7 +265,7 @@ class ActivityListRvAdapter(
     }
 
     private fun handleBestFriendLayout(holder: BestFriedViewHolder) {
-        GlideApp.with(context).load(R.drawable.welcome_background).into(holder.globalActivityImage)
+        GlideApp.with(context).load(socialFilter?.bannerUrl ?: R.drawable.welcome_background).into(holder.globalActivityImage)
         holder.visitGlobalActivityButton.setOnClickListener {
             val intent = Intent(context, GlobalFeedActivity::class.java)
             intent.putExtra(GlobalFeedActivity.SELECTED_FILTER, GlobalFeedActivity.FILTER_GLOBAL)

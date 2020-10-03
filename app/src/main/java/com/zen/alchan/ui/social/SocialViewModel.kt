@@ -29,12 +29,16 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
 
     var isInit = false
 
-    var socialFilter = SocialFilter(arrayListOf(), null, null)
+    var socialFilter = SocialFilter(arrayListOf(), null, null, null)
 
     private val savedBestFriends: List<BestFriend>?
         get() = userRepository.bestFriends
 
     val activityList = ArrayList<ActivityItem>()
+
+    val mostTrendingAnimeBannerLiveData by lazy {
+        mediaRepository.mostTrendingAnimeBannerLivaData
+    }
 
     val bestFriendChangedNotifier by lazy {
         userRepository.bestFriendChangedNotifier
