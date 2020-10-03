@@ -27,12 +27,12 @@ class OverviewStudiosRvAdapter(private val context: Context?,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.clickableText.text = item.key
-        holder.itemView.setOnClickListener { listener.passSelectedStudio(item.id) }
 
         if (item.id == null) {
             holder.clickableText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeContentColor))
         } else {
             holder.clickableText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+            holder.itemView.setOnClickListener { listener.passSelectedStudio(item.id) }
         }
     }
 

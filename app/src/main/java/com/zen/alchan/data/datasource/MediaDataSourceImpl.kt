@@ -21,13 +21,18 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.zen.alchan.data.network.ApolloHandler
+import com.zen.alchan.data.network.JikanRestService
+import com.zen.alchan.data.response.MangaDetails
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.internal.format
+import retrofit2.Call
 import type.*
 
-class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataSource {
+class MediaDataSourceImpl(private val apolloHandler: ApolloHandler,
+                          private val jikanRestService: JikanRestService
+) : MediaDataSource {
 
     override fun getGenre(): Observable<Response<GenreQuery.Data>> {
         val query = GenreQuery()
@@ -194,5 +199,9 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler) : MediaDataS
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMangaDetails(malId: Int): Call<MangaDetails> {
+        return jikanRestService.getMangaDetails(malId)
     }
 }

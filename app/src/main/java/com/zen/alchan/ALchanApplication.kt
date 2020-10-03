@@ -4,10 +4,7 @@ import android.app.Application
 import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
-import com.zen.alchan.data.network.ApolloHandler
-import com.zen.alchan.data.network.GithubRestService
-import com.zen.alchan.data.network.HeaderInterceptor
-import com.zen.alchan.data.network.HeaderInterceptorImpl
+import com.zen.alchan.data.network.*
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.main.MainViewModel
@@ -91,11 +88,12 @@ class ALchanApplication : Application() {
         single<HeaderInterceptor> { HeaderInterceptorImpl(get()) }
         single { ApolloHandler(get()) }
         single { GithubRestService() }
+        single { JikanRestService() }
 
         // AniList GraphQL data source
         single<UserDataSource> { UserDataSourceImpl(get()) }
         single<MediaListDataSource> { MediaListDataSourceImpl(get()) }
-        single<MediaDataSource> { MediaDataSourceImpl(get()) }
+        single<MediaDataSource> { MediaDataSourceImpl(get(), get()) }
         single<BrowseDataSource> { BrowseDataSourceImpl(get()) }
         single<SearchDataSource> { SearchDataSourceImpl(get()) }
         single<UserStatisticDataSource> { UserStatisticDataSourceImpl(get()) }

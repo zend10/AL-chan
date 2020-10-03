@@ -479,6 +479,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mediaStudioLabel"
                         android:text="@string/studios"
                         style="?themeSmallFont"
                         android:layout_marginEnd="@dimen/marginNormal"
@@ -497,6 +498,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/mediaProducerLayout"
                     android:gravity="top"
                     android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_width="match_parent"

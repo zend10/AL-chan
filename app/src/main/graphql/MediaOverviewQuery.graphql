@@ -3,6 +3,7 @@ query MediaOverviewQuery(
 ) {
     Media(id: $id) {
         id
+        idMal
         title {
             userPreferred
             romaji

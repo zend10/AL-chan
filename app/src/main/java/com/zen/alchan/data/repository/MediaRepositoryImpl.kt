@@ -9,6 +9,7 @@ import com.zen.alchan.data.localstorage.MediaManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.SeasonalAnime
 import com.zen.alchan.helper.enums.SeasonalCategory
@@ -100,6 +101,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _rateReviewResponse = SingleLiveEvent<Resource<RateReviewMutation.Data>>()
     override val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
         get() = _rateReviewResponse
+
+    private val _mangaDetailsLiveData = SingleLiveEvent<Resource<MangaDetails>>()
+    override val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
+        get() = _mangaDetailsLiveData
 
     @SuppressLint("CheckResult")
     override fun getGenre() {
@@ -242,5 +247,9 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override fun rateReview(reviewId: Int, rating: ReviewRating) {
         _rateReviewResponse.postValue(Resource.Loading())
         mediaDataSource.rateReview(reviewId, rating).subscribeWith(AndroidUtility.rxApolloCallback(_rateReviewResponse))
+    }
+
+    override fun getMangaDetails(malId: Int) {
+        mediaDataSource.getMangaDetails(malId).enqueue(AndroidUtility.apiCallback(_mangaDetailsLiveData))
     }
 }

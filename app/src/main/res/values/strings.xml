@@ -486,4 +486,5 @@
     <string name="exclude_these_genres">Exclude these genres</string>
     <string name="include_these_tags">Include these tags</string>
     <string name="exclude_these_tags">Exclude these tags</string>
+    <string name="serialization">Serialization</string>
 </resources>

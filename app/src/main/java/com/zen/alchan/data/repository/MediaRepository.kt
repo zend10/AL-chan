@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.SeasonalAnime
 import com.zen.alchan.helper.enums.SeasonalCategory
@@ -34,6 +35,8 @@ interface MediaRepository {
     val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
     val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
 
+    val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
+
     fun getGenre()
     fun getTag()
     fun getMedia(id: Int)
@@ -53,4 +56,6 @@ interface MediaRepository {
 
     fun getReviewDetail(reviewId: Int)
     fun rateReview(reviewId: Int, rating: ReviewRating)
+
+    fun getMangaDetails(malId: Int)
 }

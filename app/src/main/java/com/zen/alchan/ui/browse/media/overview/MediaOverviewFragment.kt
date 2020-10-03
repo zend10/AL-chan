@@ -75,11 +75,19 @@ class MediaOverviewFragment : BaseFragment() {
                     viewModel.mediaData = it.data?.media
                     mediaData = it.data?.media
                     initLayout()
+                    viewModel.getMangaPublisher()
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
                 }
+            }
+        })
+
+        viewModel.mangaDetailsLiveData.observe(viewLifecycleOwner, Observer {
+            if (it.responseStatus == ResponseStatus.SUCCESS) {
+                viewModel.mangaDetails = it.data
+                handleStudios()
             }
         })
 
@@ -248,6 +256,8 @@ class MediaOverviewFragment : BaseFragment() {
     private fun handleStudios() {
         if (viewModel.mediaData?.type == MediaType.ANIME) {
             mediaStudioLayout.visibility = View.VISIBLE
+            mediaProducerLayout.visibility = View.VISIBLE
+            mediaStudioLabel.text = getString(R.string.studios)
 
             if (viewModel.studioList.isNullOrEmpty()) {
                 mediaData?.studios?.edges?.forEach {
@@ -271,6 +281,21 @@ class MediaOverviewFragment : BaseFragment() {
             mediaProducersRecyclerView.adapter = assignStudioAdapter(viewModel.producerList)
         } else {
             mediaStudioLayout.visibility = View.GONE
+            mediaProducerLayout.visibility = View.GONE
+            mediaStudioLabel.text = getString(R.string.serialization)
+
+            if (viewModel.mangaDetails != null && viewModel.studioList.isNullOrEmpty()) {
+                viewModel.mangaDetails?.serializations?.forEach {
+                    viewModel.studioList.add(KeyValueItem(it.name, null))
+                }
+            }
+
+            if (viewModel.studioList.isNullOrEmpty()) {
+                mediaStudioLayout.visibility = View.GONE
+            } else {
+                mediaStudioLayout.visibility = View.VISIBLE
+                mediaStudiosRecyclerView.adapter = assignStudioAdapter(viewModel.studioList)
+            }
         }
     }
 
