@@ -30,7 +30,7 @@ class OverviewTagsRvAdapter(private val context: Context,
         holder.tagRankText.text = "${item.rank ?: "0"}%"
         holder.itemView.setOnClickListener { listener.passSelectedTag(item.name) }
 
-        if (item.isMediaSpoiler == true) {
+        if (item.isMediaSpoiler == true || item.isGeneralSpoiler == true) {
             holder.tagNameText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeNegativeColor))
             holder.tagRankText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeNegativeColor))
         } else {
