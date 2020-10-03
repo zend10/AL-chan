@@ -29,9 +29,9 @@ class OverviewGenreRvAdapter(private val list: List<String?>,
         holder.genreCard.setCardBackgroundColor(genreColor)
         holder.genreText.setTextColor(Color.parseColor("#FFFFFF"))
         holder.genreText.text = item
-//        holder.itemView.setOnClickListener {
-//            listener.passSelectedGenre(item)
-//        }
+        holder.itemView.setOnClickListener {
+            listener.passSelectedGenre(item)
+        }
     }
 
     override fun getItemCount(): Int {

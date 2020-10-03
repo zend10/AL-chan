@@ -60,7 +60,7 @@ class ReleasingTodayRvAdapter(private val context: Context,
             listener.openProgressDialog(item.releasingToday?.mediaListEntry!!, item.releasingToday.episodes)
         }
 
-        holder.animeIncrementProgressLayout.visibility = if (item.releasingToday?.episodes != null && item.releasingToday.episodes > (item.releasingToday.mediaListEntry?.progress ?: 0)) {
+        holder.animeIncrementProgressLayout.visibility = if (item.releasingToday?.episodes == null || item.releasingToday.episodes > (item.releasingToday.mediaListEntry?.progress ?: 0)) {
             View.VISIBLE
         } else {
             View.GONE

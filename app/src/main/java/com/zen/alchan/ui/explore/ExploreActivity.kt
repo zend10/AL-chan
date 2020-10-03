@@ -11,6 +11,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.pojo.FilterRange
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.SearchResult
 import com.zen.alchan.helper.utils.DialogUtility
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_explore.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaSeason
 import java.util.concurrent.TimeUnit
 
 class ExploreActivity : BaseActivity() {
@@ -42,6 +44,13 @@ class ExploreActivity : BaseActivity() {
 
     companion object {
         const val EXPLORE_PAGE = "explorePage"
+
+        const val SELECTED_TAG = "selectedTag"
+        const val SELECTED_GENRE = "selectedGenre"
+        const val SELECTED_SEASON = "selectedSeason"
+
+        // use this as request code in want to do something with the search result
+        const val ACTIVITY_EXPLORE = 200
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +59,21 @@ class ExploreActivity : BaseActivity() {
 
         if (viewModel.selectedExplorePage == null) {
             viewModel.selectedExplorePage = BrowsePage.valueOf(intent.getStringExtra(EXPLORE_PAGE))
+        }
+
+        if (viewModel.filterData == null && intent?.getStringExtra(SELECTED_TAG) != null) {
+            viewModel.filterData = MediaFilterData(selectedTagNames = arrayListOf(intent?.getStringExtra(SELECTED_TAG)!!))
+        }
+
+        if (viewModel.filterData == null && intent?.getStringExtra(SELECTED_GENRE) != null) {
+            viewModel.filterData = MediaFilterData(selectedGenres = arrayListOf(intent?.getStringExtra(SELECTED_GENRE)!!))
+        }
+
+        if (viewModel.filterData == null && intent?.getStringExtra(SELECTED_SEASON) != null) {
+            val seasonAndYear = intent?.getStringExtra(SELECTED_SEASON)!!.split(" ")
+            val season = MediaSeason.valueOf(seasonAndYear[0])
+            val year = seasonAndYear[1]
+            viewModel.filterData = MediaFilterData(selectedSeason = season, selectedYear = FilterRange("${year}0101".toInt(), "${year}1231".toInt()))
         }
 
         assignAdapter()
@@ -161,6 +185,7 @@ class ExploreActivity : BaseActivity() {
         if (disposable == null) {
             disposable = RxTextView.textChanges(searchBarEditText)
                 .debounce(800, TimeUnit.MILLISECONDS)
+                .skip(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { string -> if (viewModel.isInit) handleSearch(string?.toString()) }
         }
@@ -250,6 +275,18 @@ class ExploreActivity : BaseActivity() {
 
     private fun searchListenerObject(explorePage: BrowsePage) = object : SearchListener {
         override fun passSelectedItem(id: Int) {
+            if (intent?.getStringExtra(SELECTED_TAG) != null ||
+                intent.getStringExtra(SELECTED_GENRE) != null ||
+                intent.getStringExtra(SELECTED_SEASON) != null
+            ) {
+                val intent = Intent()
+                intent.putExtra(BrowseActivity.TARGET_PAGE, explorePage.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, id)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+                return
+            }
+
             val intent = Intent(this@ExploreActivity, BrowseActivity::class.java)
             intent.putExtra(BrowseActivity.TARGET_PAGE, explorePage.name)
             intent.putExtra(BrowseActivity.LOAD_ID, id)

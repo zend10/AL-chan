@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.browse.media.overview
 
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -27,9 +29,12 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
 import com.zen.alchan.ui.browse.studio.StudioFragment
+import com.zen.alchan.ui.explore.ExploreActivity
+import com.zen.alchan.ui.filter.MediaFilterActivity
 import kotlinx.android.synthetic.main.fragment_media_overview.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -105,7 +110,10 @@ class MediaOverviewFragment : BaseFragment() {
             mediaGenreRecyclerView.visibility = View.VISIBLE
             mediaGenreRecyclerView.adapter = OverviewGenreRvAdapter(mediaData?.genres!!, object : OverviewGenreRvAdapter.OverviewGenreListener {
                 override fun passSelectedGenre(genre: String) {
-                    // TODO: open genre search
+                    val intent = Intent(activity, ExploreActivity::class.java)
+                    intent.putExtra(ExploreActivity.EXPLORE_PAGE, viewModel.mediaData?.type?.name)
+                    intent.putExtra(ExploreActivity.SELECTED_GENRE, genre)
+                    startActivityForResult(intent, ExploreActivity.ACTIVITY_EXPLORE)
                 }
             })
         } else {
@@ -211,10 +219,14 @@ class MediaOverviewFragment : BaseFragment() {
             }
             mediaVolumesLayout.visibility = View.GONE
             if (mediaData?.season != null) {
+                val seasonAndYear = "${mediaData?.season?.name} ${mediaData?.seasonYear}"
                 mediaSeasonLayout.visibility = View.VISIBLE
-                mediaSeasonText.text = "${mediaData?.season?.name} ${mediaData?.seasonYear}"
+                mediaSeasonText.text = seasonAndYear
                 mediaSeasonText.setOnClickListener {
-                    // TODO: open seasonal chart
+                    val intent = Intent(activity, ExploreActivity::class.java)
+                    intent.putExtra(ExploreActivity.EXPLORE_PAGE, viewModel.mediaData?.type?.name)
+                    intent.putExtra(ExploreActivity.SELECTED_SEASON, seasonAndYear)
+                    startActivityForResult(intent, ExploreActivity.ACTIVITY_EXPLORE)
                 }
             } else {
                 mediaSeasonLayout.visibility = View.GONE
@@ -394,8 +406,11 @@ class MediaOverviewFragment : BaseFragment() {
 
     private fun assignTagsAdapter(): OverviewTagsRvAdapter {
         return OverviewTagsRvAdapter(activity!!, if (!viewModel.showSpoiler) viewModel.tagsList.filter { it.isMediaSpoiler == false && it.isGeneralSpoiler == false } else viewModel.tagsList, object : OverviewTagsRvAdapter.OverviewTagsListener {
-            override fun passSelectedTag(tagId: Int) {
-                // TODO: search tag
+            override fun passSelectedTag(tagName: String) {
+                val intent = Intent(activity, ExploreActivity::class.java)
+                intent.putExtra(ExploreActivity.EXPLORE_PAGE, viewModel.mediaData?.type?.name)
+                intent.putExtra(ExploreActivity.SELECTED_TAG, tagName)
+                startActivityForResult(intent, ExploreActivity.ACTIVITY_EXPLORE)
             }
         })
     }
@@ -435,6 +450,17 @@ class MediaOverviewFragment : BaseFragment() {
                 DialogUtility.showToast(activity, "${getString(R.string.link_copied)}: $url")
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == ExploreActivity.ACTIVITY_EXPLORE && resultCode == Activity.RESULT_OK) {
+            if (data?.extras != null && data.extras?.getInt(BrowseActivity.LOAD_ID) != null) {
+                val id = data.extras?.getInt(BrowseActivity.LOAD_ID)!!
+                val targetPage = BrowsePage.valueOf(data.extras?.getString(BrowseActivity.TARGET_PAGE) ?: BrowsePage.ANIME.name)
+                listener?.changeFragment(browsePage = targetPage, id = id)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {

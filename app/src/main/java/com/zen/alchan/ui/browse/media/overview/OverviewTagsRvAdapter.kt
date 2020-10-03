@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.MediaTags
+import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.list_media_tags.view.*
 
 class OverviewTagsRvAdapter(private val context: Context,
@@ -15,7 +16,7 @@ class OverviewTagsRvAdapter(private val context: Context,
 ) : RecyclerView.Adapter<OverviewTagsRvAdapter.ViewHolder>() {
 
     interface OverviewTagsListener {
-        fun passSelectedTag(tagId: Int)
+        fun passSelectedTag(tagName: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +28,15 @@ class OverviewTagsRvAdapter(private val context: Context,
         val item = list[position]
         holder.tagNameText.text = item.name
         holder.tagRankText.text = "${item.rank ?: "0"}%"
-        holder.itemView.setOnClickListener { listener.passSelectedTag(item.id) }
+        holder.itemView.setOnClickListener { listener.passSelectedTag(item.name) }
+
+        if (item.isMediaSpoiler == true) {
+            holder.tagNameText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeNegativeColor))
+            holder.tagRankText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themeNegativeColor))
+        } else {
+            holder.tagNameText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+            holder.tagRankText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+        }
     }
 
     override fun getItemCount(): Int {

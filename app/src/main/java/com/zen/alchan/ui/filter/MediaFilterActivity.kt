@@ -33,6 +33,7 @@ class MediaFilterActivity : BaseActivity() {
         const val FILTER_DATA = "filterData"
         const val SCORE_FORMAT = "scoreFormat"
 
+        // use this as request code if you want to do something with the filter
         const val ACTIVITY_FILTER = 100
 
         private const val LIST_INCLUDE_GENRE = 1
