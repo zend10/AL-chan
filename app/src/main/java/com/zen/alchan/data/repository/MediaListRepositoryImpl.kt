@@ -284,9 +284,15 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                         val newGroup = newCollection[value]
                         val newMediaList = ArrayList(newGroup.entries!!)
 
+                        val tempTags = newMediaList[editedEntriesIndex[index]].media?.tags
                         val tempNextAiringEp =  newMediaList[editedEntriesIndex[index]].media?.nextAiringEpisode
 
                         newMediaList[editedEntriesIndex[index]] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
+
+                        // Needed because bugs in AniList where mutation won't return Tags
+                        if (!tempTags.isNullOrEmpty()) {
+                            newMediaList[editedEntriesIndex[index]].media?.tags = tempTags
+                        }
 
                         // Needed because bugs in AniList where mutation won't return NextAiringEpisode
                         if (tempNextAiringEp != null) {
@@ -972,9 +978,15 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
                         val newGroup = newCollection[value]
                         val newMediaList = ArrayList(newGroup.entries!!)
 
+                        val tempTags = newMediaList[editedEntriesIndex[index]].media?.tags
                         val tempNextAiringEp =  newMediaList[editedEntriesIndex[index]].media?.nextAiringEpisode
 
                         newMediaList[editedEntriesIndex[index]] = Converter.convertMediaList(t.data?.saveMediaListEntry!!)
+
+                        // Needed because bugs in AniList where mutation won't return Tags
+                        if (!tempTags.isNullOrEmpty()) {
+                            newMediaList[editedEntriesIndex[index]].media?.tags = tempTags
+                        }
 
                         // Needed because bugs in AniList where mutation won't return NextAiringEpisode
                         // Manga has no NextAiringEpisode anyway, this will be skipped

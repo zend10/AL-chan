@@ -25,7 +25,7 @@ class Media(
     val synonyms: List<String?>? = null,
     val averageScore: Int? = null,
     val popularity: Int? = null,
-    val tags: List<MediaTag?>? = null,
+    var tags: List<MediaTag?>? = null,
     val isAdult: Boolean? = null,
     var nextAiringEpisode: AiringSchedule? = null,
     val externalLinks: List<MediaExternalLinks?>? = null,

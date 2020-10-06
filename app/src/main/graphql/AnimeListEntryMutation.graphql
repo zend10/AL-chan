@@ -84,9 +84,6 @@ mutation AnimeListEntryMutation(
             synonyms
             averageScore
             popularity
-            tags {
-                name
-            }
             isAdult
             nextAiringEpisode {
                 id

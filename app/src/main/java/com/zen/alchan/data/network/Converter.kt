@@ -429,9 +429,7 @@ object Converter {
             synonyms = media.synonyms,
             averageScore = media.averageScore,
             popularity = media.popularity,
-            tags = if (!media.tags.isNullOrEmpty()) {
-                media.tags.filterNotNull().map { MediaTag(it.name) }
-            } else null,
+            tags = null,
             isAdult = media.isAdult,
             nextAiringEpisode = if (media.nextAiringEpisode != null) {
                 AiringSchedule(
@@ -479,9 +477,7 @@ object Converter {
             synonyms = media.synonyms,
             averageScore = media.averageScore,
             popularity = media.popularity,
-            tags = if (!media.tags.isNullOrEmpty()) {
-                media.tags.filterNotNull().map { MediaTag(it.name) }
-            } else null,
+            tags = null,
             isAdult = media.isAdult,
             nextAiringEpisode = null,
             externalLinks = if (!media.externalLinks.isNullOrEmpty()) {
