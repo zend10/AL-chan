@@ -12,6 +12,8 @@ import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.MediaListTabItem
 import com.zen.alchan.helper.toMillis
 import type.MediaType
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserMediaListViewModel(private val otherUserRepository: OtherUserRepository,
                              private val appSettingsRepository: AppSettingsRepository,
@@ -98,9 +100,7 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
 
         val orderByDescending = filterData?.selectedMediaListOrderByDescending != false
 
-        val sortedByTitle = entries.sortedWith(compareBy { it?.media?.title?.userPreferred })
-
-
+        val sortedByTitle = entries.sortedWith(compareBy { it?.media?.title?.userPreferred?.toLowerCase(Locale.US) })
 
         return when (rowOrderEnum) {
             MediaListSort.TITLE -> {
