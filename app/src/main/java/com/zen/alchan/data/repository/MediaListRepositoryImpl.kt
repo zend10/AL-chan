@@ -347,7 +347,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             mangaFilterData?.selectedMediaListOrderByDescending != false
         }
 
-        val sortedByTitle = entries.sortedWith(compareBy { it.media?.title?.userPreferred })
+        val sortedByTitle = entries.sortedWith(compareBy { it.media?.title?.userPreferred?.toLowerCase(Locale.US) })
 
         return when (rowOrderEnum) {
             MediaListSort.TITLE -> {
