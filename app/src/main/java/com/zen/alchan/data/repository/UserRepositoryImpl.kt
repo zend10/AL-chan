@@ -637,4 +637,16 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             override fun onComplete() { }
         })
     }
+
+    override fun sendFirebaseToken(token: String) {
+        if (currentUser?.id != null && !currentUser?.name.isNullOrBlank()) {
+            userDataSource.sendFirebaseToken(currentUser?.id!!, currentUser?.name!!, token)
+        }
+    }
+
+    override fun setLatestNotification(notificationId: Int) {
+        if (userManager.latestNotification == null || (userManager.latestNotification ?: 0) < notificationId) {
+            userManager.setLatestNotification(notificationId)
+        }
+    }
 }

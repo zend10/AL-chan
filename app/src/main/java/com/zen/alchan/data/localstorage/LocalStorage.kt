@@ -37,5 +37,7 @@ interface LocalStorage {
 
     var bestFriends: List<BestFriend>?
 
+    var latestNotification: Int?
+
     fun clearStorage()
 }

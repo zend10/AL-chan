@@ -16,7 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.filter.MediaFilterActivity"></activity>
+        <service
+            android:name=".notifications.PushNotificationsService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".notifications.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notif"/>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/yellow"/>
+        <activity android:name=".ui.filter.MediaFilterActivity" />
         <activity android:name=".ui.reviews.ReviewsActivity" />
         <activity android:name=".ui.social.global.GlobalFeedActivity" />
         <activity android:name=".ui.common.TextEditorActivity" />
@@ -36,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.profile.follows.FollowsActivity" />
-        <activity android:name=".ui.notification.NotificationActivity" />
+        <activity android:name=".ui.notification.NotificationActivity"/>
         <activity android:name=".ui.profile.stats.details.StatsDetailActivity" />
         <activity android:name=".ui.profile.favorites.reorder.ReorderFavoritesActivity" />
         <activity android:name=".ui.seasonal.SeasonalActivity" />
@@ -105,6 +118,7 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 

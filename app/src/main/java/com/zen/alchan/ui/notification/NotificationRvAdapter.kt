@@ -27,6 +27,8 @@ class NotificationRvAdapter(private val context: Context,
         fun openThreadReply(threadReplyId: Int, siteUrl: String)
     }
 
+    private var latestNotificationId: Int? = null
+
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
@@ -53,65 +55,87 @@ class NotificationRvAdapter(private val context: Context,
             }
 
             when (item?.__typename) {
-                NotificationCategory.AIRING_NOTIFICATION.value -> handleAiringNotification(item.fragments.onAiringNotification!!, holder)
+                NotificationCategory.AIRING_NOTIFICATION.value -> {
+                    handleAiringNotification(item.fragments.onAiringNotification!!, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onAiringNotification.id
+                }
 
-                NotificationCategory.FOLLOWING_NOTIFICATION.value -> handleFollowingNotification(item.fragments.onFollowingNotification!!, holder)
+                NotificationCategory.FOLLOWING_NOTIFICATION.value -> {
+                    handleFollowingNotification(item.fragments.onFollowingNotification!!, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onFollowingNotification.id
+                }
 
                 NotificationCategory.ACTIVITY_MESSAGE_NOTIFICATION.value -> {
                     val notif = item.fragments.onActivityMessageNotification!!
                     val activityNotification = ActivityNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.activityId)
                     handleActivityNotification(activityNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onActivityMessageNotification.id
                 }
                 NotificationCategory.ACTIVITY_MENTION_NOTIFICATION.value -> {
                     val notif = item.fragments.onActivityMentionNotification!!
                     val activityNotification = ActivityNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.activityId)
                     handleActivityNotification(activityNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onActivityMentionNotification.id
                 }
                 NotificationCategory.ACTIVITY_REPLY_NOTIFICATION.value -> {
                     val notif = item.fragments.onActivityReplyNotification!!
                     val activityNotification = ActivityNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.activityId)
                     handleActivityNotification(activityNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onActivityReplyNotification.id
                 }
                 NotificationCategory.ACTIVITY_REPLY_SUBSCRIBED_NOTIFICATION.value -> {
                     val notif = item.fragments.onActivityReplySubscribedNotification!!
                     val activityNotification = ActivityNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.activityId)
                     handleActivityNotification(activityNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onActivityReplySubscribedNotification.id
                 }
                 NotificationCategory.ACTIVITY_LIKE_NOTIFICATION.value -> {
                     val notif = item.fragments.onActivityLikeNotification!!
                     val activityNotification = ActivityNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.activityId)
                     handleActivityNotification(activityNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onActivityLikeNotification.id
                 }
                 NotificationCategory.ACTIVITY_REPLY_LIKE_NOTIFICATION.value -> {
                     val notif = item.fragments.onActivityReplyLikeNotification!!
                     val activityNotification = ActivityNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.activityId)
                     handleActivityNotification(activityNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onActivityReplyLikeNotification.id
                 }
 
                 NotificationCategory.THREAD_COMMENT_MENTION_NOTIFICATION.value -> {
                     val notif = item.fragments.onThreadCommentMentionNotification!!
                     val threadReplyNotification = ThreadReplyNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.thread?.id, notif.thread?.title, notif.thread?.siteUrl, notif.commentId, notif.comment?.siteUrl)
                     handleThreadReplyNotification(threadReplyNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onThreadCommentMentionNotification.id
                 }
                 NotificationCategory.THREAD_COMMENT_REPLY_NOTIFICATION.value -> {
                     val notif = item.fragments.onThreadCommentReplyNotification!!
                     val threadReplyNotification = ThreadReplyNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.thread?.id, notif.thread?.title, notif.thread?.siteUrl, notif.commentId, notif.comment?.siteUrl)
                     handleThreadReplyNotification(threadReplyNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onThreadCommentReplyNotification.id
                 }
                 NotificationCategory.THREAD_COMMENT_SUBSCRIBED_NOTIFICATION.value -> {
                     val notif = item.fragments.onThreadCommentSubscribedNotification!!
                     val threadReplyNotification = ThreadReplyNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.thread?.id, notif.thread?.title, notif.thread?.siteUrl, notif.commentId, notif.comment?.siteUrl)
                     handleThreadReplyNotification(threadReplyNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onThreadCommentSubscribedNotification.id
                 }
                 NotificationCategory.THREAD_COMMENT_LIKE_NOTIFICATION.value -> {
                     val notif = item.fragments.onThreadCommentLikeNotification!!
                     val threadReplyNotification = ThreadReplyNotification(notif.userId, notif.user?.name, notif.user?.avatar?.large, notif.createdAt, notif.context, notif.thread?.id, notif.thread?.title, notif.thread?.siteUrl, notif.commentId, notif.comment?.siteUrl)
                     handleThreadReplyNotification(threadReplyNotification, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onThreadCommentLikeNotification.id
                 }
 
-                NotificationCategory.THREAD_LIKE_NOTIFICATION.value -> handleThreadNotification(item.fragments.onThreadLikeNotification!!, holder)
+                NotificationCategory.THREAD_LIKE_NOTIFICATION.value -> {
+                    handleThreadNotification(item.fragments.onThreadLikeNotification!!, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onThreadLikeNotification.id
+                }
 
-                NotificationCategory.RELATED_MEDIA_ADDITION_NOTIFICATION.value -> handleRelationNotification(item.fragments.onRelatedMediaAdditionNotification!!, holder)
+                NotificationCategory.RELATED_MEDIA_ADDITION_NOTIFICATION.value -> {
+                    handleRelationNotification(item.fragments.onRelatedMediaAdditionNotification!!, holder)
+                    if (position == 0) latestNotificationId = item.fragments.onRelatedMediaAdditionNotification.id
+                }
             }
         }
     }
@@ -222,6 +246,10 @@ class NotificationRvAdapter(private val context: Context,
 
     override fun getItemViewType(position: Int): Int {
         return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+    }
+
+    fun getLatestNotification(): Int? {
+        return latestNotificationId
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {

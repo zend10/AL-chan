@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.main
 
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.MediaListRepository
@@ -40,5 +42,11 @@ class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
 
     fun clearStorage() {
         appSettingsRepository.clearStorage()
+    }
+
+    fun sendFirebaseToken(token: String?) {
+        if (!token.isNullOrBlank()) {
+            userRepository.sendFirebaseToken(token)
+        }
     }
 }

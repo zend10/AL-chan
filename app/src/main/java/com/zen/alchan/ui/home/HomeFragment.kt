@@ -12,23 +12,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
-import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.Review
 import com.zen.alchan.helper.utils.DialogUtility
-import com.zen.alchan.helper.utils.Utility
-import com.zen.alchan.notifications.PushNotificationsWorker
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
@@ -43,7 +36,6 @@ import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
 import type.MediaType
-import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 /**
@@ -95,13 +87,6 @@ class HomeFragment : Fragment() {
 
         setupObserver()
         initLayout()
-
-        val pushNotificationsWorkRequest = PeriodicWorkRequestBuilder<PushNotificationsWorker>(15, TimeUnit.MINUTES)
-            .build()
-
-        WorkManager
-            .getInstance(requireContext())
-            .enqueueUniquePeriodicWork("pushNotifications", ExistingPeriodicWorkPolicy.KEEP, pushNotificationsWorkRequest)
     }
 
     private fun setupObserver() {

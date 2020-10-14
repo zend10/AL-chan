@@ -1,15 +1,13 @@
 package com.zen.alchan.ui.main
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.messaging.FirebaseMessaging
 import com.zen.alchan.R
-import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.animelist.AnimeListFragment
@@ -18,10 +16,10 @@ import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.BaseMainFragmentListener
 import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.mangalist.MangaListFragment
+import com.zen.alchan.ui.notification.NotificationActivity
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -29,12 +27,29 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
     private val viewModel by viewModel<MainViewModel>()
 
+    companion object {
+        const val GO_TO_NOTIFICATION = "goToNotification"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setupObserver()
         initLayout()
+
+        if (intent.getBooleanExtra(GO_TO_NOTIFICATION, false)) {
+            val intent = Intent(this, NotificationActivity::class.java)
+            startActivity(intent)
+        }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                return@addOnCompleteListener
+            }
+
+            viewModel.sendFirebaseToken(it.result)
+        }
     }
 
     private fun setupObserver() {

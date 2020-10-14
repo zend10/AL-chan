@@ -30,6 +30,9 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
     override val bestFriends: List<BestFriend>?
         get() = localStorage.bestFriends
 
+    override val latestNotification: Int?
+        get() = localStorage.latestNotification
+
     override fun setBearerToken(token: String?) {
         localStorage.bearerToken = token
     }
@@ -51,5 +54,9 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
 
     override fun setBestFriends(list: List<BestFriend>?) {
         localStorage.bestFriends = list
+    }
+
+    override fun setLatestNotification(notificationId: Int) {
+        localStorage.latestNotification = notificationId
     }
 }

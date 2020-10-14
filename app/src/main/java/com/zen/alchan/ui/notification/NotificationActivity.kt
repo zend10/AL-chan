@@ -1,8 +1,9 @@
 package com.zen.alchan.ui.notification
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
+
 
 class NotificationActivity : BaseActivity() {
 
@@ -75,6 +77,10 @@ class NotificationActivity : BaseActivity() {
 
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.notificationList.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+                    if (viewModel.selectedTypes == null && adapter.getLatestNotification() != null) {
+                        viewModel.setLatestNotification(adapter.getLatestNotification()!!)
+                    }
                 }
                 ResponseStatus.ERROR -> {
                     DialogUtility.showToast(this, it.message)
@@ -193,6 +199,12 @@ class NotificationActivity : BaseActivity() {
         intent.putExtra(BrowseActivity.TARGET_PAGE, targetPage.name)
         intent.putExtra(BrowseActivity.LOAD_ID, id)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     override fun onSupportNavigateUp(): Boolean {

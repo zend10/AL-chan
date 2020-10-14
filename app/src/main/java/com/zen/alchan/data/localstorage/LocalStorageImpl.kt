@@ -37,6 +37,7 @@ class LocalStorageImpl(private val context: Context,
         private const val MANGA_LIST_STYLE = "mangaListStyle"
         private const val LAST_ANNOUNCEMENT_ID = "lastAnnouncementId"
         private const val BEST_FRIENDS = "bestFriends"
+        private const val LATEST_NOTIFICATION = "latestNotification"
     }
 
     override var bearerToken: String?
@@ -106,6 +107,10 @@ class LocalStorageImpl(private val context: Context,
     override var bestFriends: List<BestFriend>?
         get() = gson.fromJson(getData(BEST_FRIENDS), genericType<List<BestFriend>>())
         set(value) { setData(BEST_FRIENDS, gson.toJson(value)) }
+
+    override var latestNotification: Int?
+        get() = getData(LATEST_NOTIFICATION)?.toInt()
+        set(value) { setData(LATEST_NOTIFICATION, value.toString()) }
 
     private fun getData(key: String): String? {
         return sharedPreferences.getString(key, null)

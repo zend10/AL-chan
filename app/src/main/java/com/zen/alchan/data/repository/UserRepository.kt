@@ -110,4 +110,7 @@ interface UserRepository {
 
     fun getNotifications(page: Int, typeIn: List<NotificationType>?, reset: Boolean)
     fun getNotificationCount()
+
+    fun sendFirebaseToken(token: String)
+    fun setLatestNotification(notificationId: Int)
 }

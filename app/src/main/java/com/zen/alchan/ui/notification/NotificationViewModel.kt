@@ -45,4 +45,8 @@ class NotificationViewModel(private val userRepository: UserRepository) : ViewMo
             userRepository.getNotifications(page, selectedTypes, true)
         }
     }
+
+    fun setLatestNotification(notificationId: Int) {
+        userRepository.setLatestNotification(notificationId)
+    }
 }
