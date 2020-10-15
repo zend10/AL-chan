@@ -487,4 +487,6 @@
     <string name="include_these_tags">Include these tags</string>
     <string name="exclude_these_tags">Exclude these tags</string>
     <string name="serialization">Serialization</string>
+    <string name="send_relations_push_notifications">Send Relations push notifications</string>
+    <string name="important_to_know_n1_push_notification_will_show_up_periodically_not_real_time_2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com">Important to know:\n1. Push notification will show up periodically, not real time.2. Depending on your ROM and phone setting, it might not show up at all. (reference: https://dontkillmyapp.com/)</string>
 </resources>

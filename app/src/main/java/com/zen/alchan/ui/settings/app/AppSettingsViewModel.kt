@@ -35,7 +35,12 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         showSocialTab: Boolean,
         showBio: Boolean,
         showStats: Boolean,
-        useRelativeDate: Boolean = false
+        useRelativeDate: Boolean = false,
+        sendAiringPushNotifications: Boolean = true,
+        sendActivityPushNotifications: Boolean = true,
+        sendForumPushNotifications: Boolean = true,
+        sendFollowsPushNotifications: Boolean = true,
+        sendRelationsPushNotifications: Boolean = true
     ) {
         appSettingsRepository.setAppSettings(AppSettings(
             appTheme = selectedAppTheme,
@@ -46,7 +51,12 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
             showSocialTabAutomatically = showSocialTab,
             showBioAutomatically = showBio,
             showStatsAutomatically = showStats,
-            useRelativeDate = useRelativeDate
+            useRelativeDate = useRelativeDate,
+            sendAiringPushNotification = sendAiringPushNotifications,
+            sendActivityPushNotification = sendActivityPushNotifications,
+            sendForumPushNotification = sendForumPushNotifications,
+            sendFollowsPushNotification = sendFollowsPushNotifications,
+            sendRelationsPushNotification = sendRelationsPushNotifications
         ))
     }
 }

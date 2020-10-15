@@ -15,6 +15,11 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
             if (savedSettings.voiceActorLanguage == null) savedSettings.voiceActorLanguage = StaffLanguage.JAPANESE
             if (savedSettings.showRecentReviews == null) savedSettings.showRecentReviews = true
             if (savedSettings.useRelativeDate == null) savedSettings.useRelativeDate = false
+            if (savedSettings.sendAiringPushNotification == null) savedSettings.sendAiringPushNotification = true
+            if (savedSettings.sendActivityPushNotification == null) savedSettings.sendActivityPushNotification = true
+            if (savedSettings.sendForumPushNotification == null) savedSettings.sendForumPushNotification = true
+            if (savedSettings.sendFollowsPushNotification == null) savedSettings.sendFollowsPushNotification = true
+            if (savedSettings.sendRelationsPushNotification == null) savedSettings.sendRelationsPushNotification = true
             // add more to here when adding new settings
             return savedSettings
         }

@@ -12,5 +12,10 @@ class AppSettings(
     var showSocialTabAutomatically: Boolean? = null,
     var showBioAutomatically: Boolean? = null,
     var showStatsAutomatically: Boolean? = null,
-    var useRelativeDate: Boolean? = null
+    var useRelativeDate: Boolean? = null,
+    var sendAiringPushNotification: Boolean? = null,
+    var sendActivityPushNotification: Boolean? = null,
+    var sendForumPushNotification: Boolean? = null,
+    var sendFollowsPushNotification: Boolean? = null,
+    var sendRelationsPushNotification: Boolean? = null
 )
