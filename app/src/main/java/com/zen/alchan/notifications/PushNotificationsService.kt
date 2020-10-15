@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.R
 import com.zen.alchan.data.datasource.UserDataSource
+import com.zen.alchan.data.localstorage.AppSettingsManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.helper.enums.NotificationCategory
 import com.zen.alchan.ui.main.MainActivity
@@ -28,6 +29,7 @@ class PushNotificationsService : JobIntentService() {
 
     private val userDataSource: UserDataSource by inject()
     private val userManager: UserManager by inject()
+    private val appSettingManager: AppSettingsManager by inject()
 
     companion object {
         private const val CHANNEL_ID = "Notifications"
@@ -40,6 +42,15 @@ class PushNotificationsService : JobIntentService() {
 
     @SuppressLint("CheckResult")
     override fun onHandleWork(intent: Intent) {
+        if (appSettingManager.appSettings.sendAiringPushNotification == false &&
+            appSettingManager.appSettings.sendActivityPushNotification == false &&
+            appSettingManager.appSettings.sendForumPushNotification == false &&
+            appSettingManager.appSettings.sendFollowsPushNotification == false &&
+            appSettingManager.appSettings.sendRelationsPushNotification == false
+        ) {
+            return
+        }
+
         userDataSource.getNotification(1, null, false).subscribeWith(@SuppressLint("CheckResult")
         object : Observer<Response<NotificationsQuery.Data>> {
             override fun onSubscribe(d: Disposable) {
@@ -71,60 +82,74 @@ class PushNotificationsService : JobIntentService() {
             notificationList?.forEach {
                 when (it?.__typename) {
                     NotificationCategory.AIRING_NOTIFICATION.value -> {
-                        val notif = it.fragments.onAiringNotification
-                        showPushNotification(notif?.id, "${notif?.contexts!![0]}${notif.episode}${notif.contexts[1]}${notif.media?.title?.userPreferred}${notif.contexts[2]}")
+                        val item = it.fragments.onAiringNotification
+                        val message = "${item?.contexts!![0]}${item.episode}${item.contexts[1]}${item.media?.title?.userPreferred}${item.contexts[2]}"
+                        showPushNotification(item.id, message, NotificationCategory.AIRING_NOTIFICATION)
                     }
                     NotificationCategory.FOLLOWING_NOTIFICATION.value -> {
-                        val notif = it.fragments.onFollowingNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onFollowingNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.FOLLOWING_NOTIFICATION)
                     }
                     NotificationCategory.ACTIVITY_MESSAGE_NOTIFICATION.value -> {
-                        val notif = it.fragments.onActivityMessageNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onActivityMessageNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.ACTIVITY_MESSAGE_NOTIFICATION)
                     }
                     NotificationCategory.ACTIVITY_MENTION_NOTIFICATION.value -> {
-                        val notif = it.fragments.onActivityMentionNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onActivityMentionNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.ACTIVITY_MENTION_NOTIFICATION)
                     }
                     NotificationCategory.ACTIVITY_REPLY_NOTIFICATION.value -> {
-                        val notif = it.fragments.onActivityReplyNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onActivityReplyNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.ACTIVITY_REPLY_NOTIFICATION)
                     }
                     NotificationCategory.ACTIVITY_REPLY_SUBSCRIBED_NOTIFICATION.value -> {
-                        val notif = it.fragments.onActivityReplySubscribedNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onActivityReplySubscribedNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.ACTIVITY_REPLY_SUBSCRIBED_NOTIFICATION)
                     }
                     NotificationCategory.ACTIVITY_LIKE_NOTIFICATION.value -> {
-                        val notif = it.fragments.onActivityLikeNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onActivityLikeNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.ACTIVITY_LIKE_NOTIFICATION)
                     }
                     NotificationCategory.ACTIVITY_REPLY_LIKE_NOTIFICATION.value -> {
-                        val notif = it.fragments.onActivityReplyLikeNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}")
+                        val item = it.fragments.onActivityReplyLikeNotification
+                        val message = "${item?.user?.name}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.ACTIVITY_REPLY_LIKE_NOTIFICATION)
                     }
                     NotificationCategory.THREAD_COMMENT_MENTION_NOTIFICATION.value -> {
-                        val notif = it.fragments.onThreadCommentMentionNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}${notif?.thread?.title}")
+                        val item = it.fragments.onThreadCommentMentionNotification
+                        val message = "${item?.user?.name}${item?.context}${item?.thread?.title}"
+                        showPushNotification(item?.id, message, NotificationCategory.THREAD_COMMENT_MENTION_NOTIFICATION)
                     }
                     NotificationCategory.THREAD_COMMENT_REPLY_NOTIFICATION.value -> {
-                        val notif = it.fragments.onThreadCommentReplyNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}${notif?.thread?.title}")
+                        val item = it.fragments.onThreadCommentReplyNotification
+                        val message = "${item?.user?.name}${item?.context}${item?.thread?.title}"
+                        showPushNotification(item?.id, message, NotificationCategory.THREAD_COMMENT_REPLY_NOTIFICATION)
                     }
                     NotificationCategory.THREAD_COMMENT_SUBSCRIBED_NOTIFICATION.value -> {
-                        val notif = it.fragments.onThreadCommentSubscribedNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}${notif?.thread?.title}")
+                        val item = it.fragments.onThreadCommentSubscribedNotification
+                        val message = "${item?.user?.name}${item?.context}${item?.thread?.title}"
+                        showPushNotification(item?.id, message, NotificationCategory.THREAD_COMMENT_SUBSCRIBED_NOTIFICATION)
                     }
                     NotificationCategory.THREAD_COMMENT_LIKE_NOTIFICATION.value -> {
-                        val notif = it.fragments.onThreadCommentLikeNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}${notif?.thread?.title}")
+                        val item = it.fragments.onThreadCommentLikeNotification
+                        val message = "${item?.user?.name}${item?.context}${item?.thread?.title}"
+                        showPushNotification(item?.id, message, NotificationCategory.THREAD_COMMENT_LIKE_NOTIFICATION)
                     }
                     NotificationCategory.THREAD_LIKE_NOTIFICATION.value -> {
-                        val notif = it.fragments.onThreadLikeNotification
-                        showPushNotification(notif?.id, "${notif?.user?.name}${notif?.context}${notif?.thread?.title}")
+                        val item = it.fragments.onThreadLikeNotification
+                        val message = "${item?.user?.name}${item?.context}${item?.thread?.title}"
+                        showPushNotification(item?.id, message, NotificationCategory.THREAD_LIKE_NOTIFICATION)
                     }
                     NotificationCategory.RELATED_MEDIA_ADDITION_NOTIFICATION.value -> {
-                        val notif = it.fragments.onRelatedMediaAdditionNotification
-                        showPushNotification(notif?.id, "${notif?.media?.title?.userPreferred}${notif?.context}")
+                        val item = it.fragments.onRelatedMediaAdditionNotification
+                        val message = "${item?.media?.title?.userPreferred}${item?.context}"
+                        showPushNotification(item?.id, message, NotificationCategory.RELATED_MEDIA_ADDITION_NOTIFICATION)
                     }
                 }
             }
@@ -133,7 +158,7 @@ class PushNotificationsService : JobIntentService() {
         stopSelf()
     }
 
-    private fun showPushNotification(notificationId: Int?, message: String) {
+    private fun showPushNotification(notificationId: Int?, message: String, notificationCategory: NotificationCategory) {
         if (userManager.latestNotification == null && notificationId != null) {
             userManager.setLatestNotification(notificationId)
             return
@@ -147,14 +172,36 @@ class PushNotificationsService : JobIntentService() {
             userManager.setLatestNotification(notificationId)
         }
 
+        when (notificationCategory) {
+            NotificationCategory.AIRING_NOTIFICATION -> {
+                if (appSettingManager.appSettings.sendAiringPushNotification == false) return
+            }
+            NotificationCategory.FOLLOWING_NOTIFICATION -> {
+                if (appSettingManager.appSettings.sendFollowsPushNotification == false) return
+            }
+            NotificationCategory.ACTIVITY_MESSAGE_NOTIFICATION,
+            NotificationCategory.ACTIVITY_MENTION_NOTIFICATION,
+            NotificationCategory.ACTIVITY_REPLY_NOTIFICATION,
+            NotificationCategory.ACTIVITY_REPLY_SUBSCRIBED_NOTIFICATION,
+            NotificationCategory.ACTIVITY_LIKE_NOTIFICATION,
+            NotificationCategory.ACTIVITY_REPLY_LIKE_NOTIFICATION -> {
+                if (appSettingManager.appSettings.sendActivityPushNotification == false) return
+            }
+            NotificationCategory.THREAD_COMMENT_MENTION_NOTIFICATION,
+            NotificationCategory.THREAD_COMMENT_REPLY_NOTIFICATION,
+            NotificationCategory.THREAD_COMMENT_SUBSCRIBED_NOTIFICATION,
+            NotificationCategory.THREAD_COMMENT_LIKE_NOTIFICATION,
+            NotificationCategory.THREAD_LIKE_NOTIFICATION -> {
+                if (appSettingManager.appSettings.sendForumPushNotification == false) return
+            }
+            NotificationCategory.RELATED_MEDIA_ADDITION_NOTIFICATION -> {
+                if (appSettingManager.appSettings.sendRelationsPushNotification == false) return
+            }
+        }
+
         val notificationIntent = Intent(applicationContext, MainActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         notificationIntent.putExtra(MainActivity.GO_TO_NOTIFICATION, true)
-
-//        val notificationPendingIntent = TaskStackBuilder.create(this).run {
-//            addNextIntentWithParentStack(notificationIntent)
-//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-//        }
 
         val notificationPendingIntent = PendingIntent.getActivity(applicationContext, 0, notificationIntent, 0)
 
