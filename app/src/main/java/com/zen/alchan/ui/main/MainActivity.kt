@@ -2,6 +2,7 @@ package com.zen.alchan.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
 import androidx.lifecycle.Observer
@@ -27,6 +28,9 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
     private val viewModel by viewModel<MainViewModel>()
 
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
+
     companion object {
         const val GO_TO_NOTIFICATION = "goToNotification"
     }
@@ -35,13 +39,19 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (intent.getBooleanExtra(GO_TO_NOTIFICATION, false)) {
+            // hate it but necessary because of SingleLiveEvent
+            val handler = Handler()
+            val runnable = { initPage() }
+            handler.postDelayed(runnable, 100)
+        } else {
+            initPage()
+        }
+    }
+
+    private fun initPage() {
         setupObserver()
         initLayout()
-
-        if (intent.getBooleanExtra(GO_TO_NOTIFICATION, false)) {
-            val intent = Intent(this, NotificationActivity::class.java)
-            startActivity(intent)
-        }
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener {
             if (!it.isSuccessful) {
@@ -49,6 +59,12 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
             }
 
             viewModel.sendFirebaseToken(it.result)
+        }
+
+        if (intent.getBooleanExtra(GO_TO_NOTIFICATION, false)) {
+            intent.removeExtra(GO_TO_NOTIFICATION)
+            val intent = Intent(this, NotificationActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -90,6 +106,10 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         })
 
         viewModel.checkSession()
+    }
+
+    override fun onStart() {
+        super.onStart()
         viewModel.getNotificationCount()
     }
 
@@ -113,5 +133,12 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
     override fun changeMenu(targetMenuId: Int) {
         mainBottomNavigation.selectedItemId = targetMenuId
+    }
+
+    override fun onDestroy() {
+        if (this::handler.isInitialized && this::runnable.isInitialized) {
+            handler.removeCallbacks(runnable)
+        }
+        super.onDestroy()
     }
 }

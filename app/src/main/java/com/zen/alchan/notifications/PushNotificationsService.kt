@@ -7,20 +7,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.R
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.helper.enums.NotificationCategory
-import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.main.MainActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -151,8 +147,8 @@ class PushNotificationsService : JobIntentService() {
             userManager.setLatestNotification(notificationId)
         }
 
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP and Intent.FLAG_ACTIVITY_SINGLE_TOP and Intent.FLAG_ACTIVITY_NEW_TASK)
+        val notificationIntent = Intent(applicationContext, MainActivity::class.java)
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         notificationIntent.putExtra(MainActivity.GO_TO_NOTIFICATION, true)
 
 //        val notificationPendingIntent = TaskStackBuilder.create(this).run {
@@ -160,7 +156,7 @@ class PushNotificationsService : JobIntentService() {
 //            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 //        }
 
-        val notificationPendingIntent = PendingIntent.getActivity(applicationContext, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val notificationPendingIntent = PendingIntent.getActivity(applicationContext, 0, notificationIntent, 0)
 
         val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notif)

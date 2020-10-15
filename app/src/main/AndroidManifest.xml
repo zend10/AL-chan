@@ -118,7 +118,6 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 
