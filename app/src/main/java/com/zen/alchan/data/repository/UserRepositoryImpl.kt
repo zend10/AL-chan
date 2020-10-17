@@ -639,9 +639,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
     }
 
     override fun sendFirebaseToken(token: String) {
-        if (currentUser?.id != null && !currentUser?.name.isNullOrBlank()) {
-            userDataSource.sendFirebaseToken(currentUser?.id!!, currentUser?.name!!, token)
-        }
+        userDataSource.sendFirebaseToken(token)
     }
 
     override fun setLatestNotification(notificationId: Int) {

@@ -78,5 +78,5 @@ interface UserDataSource {
 
     fun getUserScores(currentUserId: Int, otherUserId: Int, type: MediaType): Observable<Response<MediaListScoreCollectionQuery.Data>>
 
-    fun sendFirebaseToken(userId: Int, name: String, token: String)
+    fun sendFirebaseToken(token: String)
 }

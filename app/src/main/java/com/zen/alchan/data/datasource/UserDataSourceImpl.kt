@@ -24,18 +24,17 @@ import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.apollographql.apollo.rx2.rxPrefetch
 import com.google.firebase.database.FirebaseDatabase
 import com.zen.alchan.data.network.ApolloHandler
 import com.zen.alchan.data.response.MediaListTypeOptions
 import com.zen.alchan.data.response.NotificationOption
-import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.pojo.FirebaseUser
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import type.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSource {
 
@@ -310,8 +309,8 @@ class UserDataSourceImpl(private val apolloHandler: ApolloHandler) : UserDataSou
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun sendFirebaseToken(userId: Int, name: String, token: String) {
+    override fun sendFirebaseToken(token: String) {
         val ref = FirebaseDatabase.getInstance().getReference("users")
-        ref.child(userId.toString()).setValue(FirebaseUser(name, token))
+        ref.child(token).setValue(true)
     }
 }
