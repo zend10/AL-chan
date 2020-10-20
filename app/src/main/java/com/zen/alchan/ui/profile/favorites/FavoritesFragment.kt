@@ -270,7 +270,7 @@ class FavoritesFragment : BaseFragment() {
         }
 
         reorderFavoritesLayout.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.favoritePageArray) { _, which ->
                     val intent = Intent(activity, ReorderFavoritesActivity::class.java)
                     intent.putExtra(ReorderFavoritesActivity.FAVORITE_CATEGORY, viewModel.favoritePageArray[which])

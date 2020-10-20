@@ -258,7 +258,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:visibility="invisible"
                         android:layout_marginStart="@dimen/marginNormal"
                         android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"

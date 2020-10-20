@@ -109,7 +109,7 @@ class MediaReviewsFragment : BaseFragment() {
         reviewSortText.text = viewModel.sortReviewArray[viewModel.sortReviewList.indexOf(viewModel.selectedSort)]
 
         reviewSortText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.sortReviewArray) { _, which ->
                     viewModel.selectedSort = viewModel.sortReviewList[which]
                     reviewSortText.text = viewModel.sortReviewArray[which]

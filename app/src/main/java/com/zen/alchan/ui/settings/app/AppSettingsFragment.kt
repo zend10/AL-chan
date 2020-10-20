@@ -80,7 +80,7 @@ class AppSettingsFragment : Fragment() {
 
         itemSave.setOnMenuItemClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.save_settings,
                 R.string.are_you_sure_you_want_to_save_this_configuration,
                 R.string.save,
@@ -119,7 +119,7 @@ class AppSettingsFragment : Fragment() {
             val isLowOnMemory = AndroidUtility.isLowOnMemory(activity)
 
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.reset_to_default,
                 R.string.this_will_reset_your_app_settings_to_default_configuration,
                 R.string.reset,
@@ -175,7 +175,7 @@ class AppSettingsFragment : Fragment() {
     }
 
     private fun showLanguageDialog() {
-        MaterialAlertDialogBuilder(activity)
+        MaterialAlertDialogBuilder(requireActivity())
             .setItems(viewModel.staffLanguageArray) { _, which ->
                 viewModel.selectedLanguage = StaffLanguage.valueOf(viewModel.staffLanguageArray[which])
                 defaultVoiceActorLanguageText.text = viewModel.staffLanguageArray[which]

@@ -73,6 +73,10 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
     override val seasonalAnimeOthersData: LiveData<List<SeasonalAnime>>
         get() = _seasonalAnimeOthersData
 
+    private val _airingScheduleResponse = SingleLiveEvent<Resource<AiringScheduleQuery.Data>>()
+    override val airingScheduleResponse: LiveData<Resource<AiringScheduleQuery.Data>>
+        get() = _airingScheduleResponse
+
     @SuppressLint("CheckResult")
     override fun searchAnime(
         page: Int,
@@ -234,5 +238,11 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
             SeasonalCategory.MOVIE -> _seasonalAnimeMovieData
             SeasonalCategory.OTHERS -> _seasonalAnimeOthersData
         }
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int) {
+        _airingScheduleResponse.postValue(Resource.Loading())
+        searchDataSource.getAiringSchedule(page, airingAtGreater, airingAtLesser).subscribeWith(AndroidUtility.rxApolloCallback(_airingScheduleResponse))
     }
 }

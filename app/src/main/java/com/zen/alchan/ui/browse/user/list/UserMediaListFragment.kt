@@ -215,7 +215,7 @@ class UserMediaListFragment : BaseFragment() {
         }
 
         mediaListRearrangeButton.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.getTabItemArray()) { _, which ->
                     viewModel.selectedTab = which
 

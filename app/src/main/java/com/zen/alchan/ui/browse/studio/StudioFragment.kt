@@ -270,7 +270,7 @@ class StudioFragment : BaseFragment() {
         studioMediaSortText.text = viewModel.mediaSortArray[viewModel.mediaSortIndex]
 
         studioMediaSortText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.mediaSortArray) { _, which ->
                     viewModel.mediaSortIndex = which
                     studioMediaSortText.text = viewModel.mediaSortArray[viewModel.mediaSortIndex]

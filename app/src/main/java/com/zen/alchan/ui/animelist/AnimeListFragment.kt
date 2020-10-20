@@ -212,7 +212,7 @@ class AnimeListFragment : Fragment() {
         }
 
         animeListRearrangeButton.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.getTabItemArray()) { _, which ->
                     viewModel.selectedTab = which
 
@@ -391,7 +391,7 @@ class AnimeListFragment : Fragment() {
 
         if (newProgress == mediaList.media?.episodes) {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.move_to_completed,
                 R.string.do_you_want_to_set_this_entry_into_completed,
                 R.string.move,
@@ -411,7 +411,7 @@ class AnimeListFragment : Fragment() {
             when (mediaList.status) {
                 MediaListStatus.PLANNING, MediaListStatus.PAUSED, MediaListStatus.DROPPED -> {
                     DialogUtility.showOptionDialog(
-                        activity,
+                        requireActivity(),
                         R.string.move_to_watching,
                         R.string.do_you_want_to_set_this_entry_into_watching,
                         R.string.move,

@@ -89,4 +89,10 @@ interface SearchDataSource {
         page: Int,
         idIn: List<Int>
     ): Observable<Response<CharacterImageQuery.Data>>
+
+    fun getAiringSchedule(
+        page: Int,
+        airingAtGreater: Int,
+        airingAtLesser: Int
+    ): Observable<Response<AiringScheduleQuery.Data>>
 }

@@ -19,7 +19,7 @@ class AppThemeDialog : DialogFragment() {
     private var themeList = ArrayList<AppColorTheme?>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = MaterialAlertDialogBuilder(activity)
+        val builder = MaterialAlertDialogBuilder(requireActivity())
         builder.setTitle(R.string.theme)
 
         if (!this::listener.isInitialized) {

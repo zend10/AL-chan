@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import AiringScheduleQuery
 import CharacterImageQuery
 import MediaImageQuery
 import SearchAnimeQuery
@@ -277,6 +278,22 @@ class SearchDataSourceImpl(private val apolloHandler: ApolloHandler) : SearchDat
         idIn: List<Int>
     ): Observable<Response<CharacterImageQuery.Data>> {
         val query = CharacterImageQuery(page = Input.fromNullable(page), id_in = Input.fromNullable(idIn))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getAiringSchedule(
+        page: Int,
+        airingAtGreater: Int,
+        airingAtLesser: Int
+    ): Observable<Response<AiringScheduleQuery.Data>> {
+        val query = AiringScheduleQuery(
+            page = Input.fromNullable(page),
+            airingAtGreater = Input.fromNullable(airingAtGreater),
+            airingAtLesser = Input.fromNullable(airingAtLesser)
+        )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

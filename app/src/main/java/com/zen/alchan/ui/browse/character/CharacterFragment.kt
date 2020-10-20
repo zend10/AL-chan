@@ -337,7 +337,7 @@ class CharacterFragment : BaseFragment() {
                 list.forEach {
                     titleList.add("${it.mediaTitle} (${it.mediaFormat})")
                 }
-                MaterialAlertDialogBuilder(activity)
+                MaterialAlertDialogBuilder(requireActivity())
                     .setItems(titleList.toTypedArray()) { _, which ->
                         listener?.changeFragment(BrowsePage.valueOf(list[which].mediaType?.name!!), list[which].mediaId!!)
                     }

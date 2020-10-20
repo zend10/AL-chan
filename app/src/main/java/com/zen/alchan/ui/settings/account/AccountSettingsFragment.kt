@@ -62,7 +62,7 @@ class AccountSettingsFragment : Fragment() {
 
         logoutButton.setOnClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.logout_from_al_chan,
                 R.string.logging_out_from_al_chan,
                 R.string.logout,

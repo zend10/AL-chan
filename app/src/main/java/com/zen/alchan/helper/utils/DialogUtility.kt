@@ -16,7 +16,7 @@ object DialogUtility {
     }
 
     fun showOptionDialog(
-        context: Context?,
+        context: Context,
         title: Int,
         message: Int,
         positiveButton: Int,
@@ -33,7 +33,7 @@ object DialogUtility {
     }
 
     fun showOptionDialog(
-        context: Context?,
+        context: Context,
         title: Int,
         message: Int,
         positiveButton: Int,
@@ -52,7 +52,7 @@ object DialogUtility {
     }
 
     fun showOptionDialog(
-        context: Context?,
+        context: Context,
         title: Int,
         message: String,
         positiveButton: Int,
@@ -68,20 +68,20 @@ object DialogUtility {
             .show()
     }
 
-    fun showInfoDialog(context: Context?, message: Int) {
+    fun showInfoDialog(context: Context, message: Int) {
         MaterialAlertDialogBuilder(context)
             .setMessage(message)
             .show()
     }
 
-    fun showInfoDialog(context: Context?, message: String) {
+    fun showInfoDialog(context: Context, message: String) {
         MaterialAlertDialogBuilder(context)
             .setMessage(message)
             .show()
     }
 
     fun showCustomViewDialog(
-        context: Context?,
+        context: Context,
         title: Int,
         customView: View,
         positiveButton: Int,
@@ -98,7 +98,7 @@ object DialogUtility {
     }
 
     fun showActionDialog(
-        context: Context?,
+        context: Context,
         title: Int,
         message: Int,
         positiveButton: Int,
@@ -112,7 +112,7 @@ object DialogUtility {
     }
 
     fun showForceActionDialog(
-        context: Context?,
+        context: Context,
         title: Int,
         message: Int,
         positiveButton: Int,

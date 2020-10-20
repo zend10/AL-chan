@@ -42,6 +42,7 @@ import com.zen.alchan.ui.browse.BrowseViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
 import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
+import com.zen.alchan.ui.calendar.CalendarViewModel
 import com.zen.alchan.ui.common.ChartViewModel
 import com.zen.alchan.ui.common.LikesViewModel
 import com.zen.alchan.ui.common.MediaListDetailDialogViewModel
@@ -147,6 +148,7 @@ class ALchanApplication : Application() {
         viewModel { SeasonalViewModel(get(), get(), get(), gson) }
         viewModel { SeasonalDialogViewModel(gson) }
         viewModel { ReviewsViewModel(get()) }
+        viewModel { CalendarViewModel(get()) }
 
         // anime list
         viewModel { AnimeListViewModel(get(), get(), get(), get(), gson) }

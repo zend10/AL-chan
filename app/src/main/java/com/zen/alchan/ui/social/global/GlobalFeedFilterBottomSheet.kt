@@ -57,7 +57,7 @@ class GlobalFeedFilterBottomSheet : BottomSheetDialogFragment() {
         dialogView.activityTypeText.text = getString(viewModel.activityTypeArray[viewModel.activityTypeList.indexOf(viewModel.selectedActivityType)])
         dialogView.activityTypeLayout.setOnClickListener {
             val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(activityTypeStringArray) { _, which ->
                     viewModel.selectedActivityType = viewModel.activityTypeList[which]
                     dialogView.activityTypeText.text = getString(viewModel.activityTypeArray[which])

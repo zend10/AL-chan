@@ -25,6 +25,7 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.overview.OverviewGenreRvAdapter
+import com.zen.alchan.ui.calendar.CalendarActivity
 import com.zen.alchan.ui.common.SetProgressDialog
 import com.zen.alchan.ui.explore.ExploreActivity
 import com.zen.alchan.ui.reviews.ReviewsActivity
@@ -306,7 +307,7 @@ class HomeFragment : Fragment() {
         }
 
         exploreMenu.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.explorePageArray) { _, which ->
                     val intent = Intent(activity, ExploreActivity::class.java)
                     intent.putExtra(ExploreActivity.EXPLORE_PAGE, viewModel.explorePageArray[which])
@@ -321,6 +322,10 @@ class HomeFragment : Fragment() {
 
         reviewsMenu.setOnClickListener {
             startActivity(Intent(activity, ReviewsActivity::class.java))
+        }
+
+        calendarMenu.setOnClickListener {
+            startActivity(Intent(activity, CalendarActivity::class.java))
         }
     }
 
@@ -470,7 +475,7 @@ class HomeFragment : Fragment() {
 
         if (newProgress == episodeTotal) {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.move_to_completed,
                 R.string.do_you_want_to_set_this_entry_into_completed,
                 R.string.move,
@@ -492,7 +497,7 @@ class HomeFragment : Fragment() {
             when (mediaList.status) {
                 MediaListStatus.PLANNING, MediaListStatus.PAUSED, MediaListStatus.DROPPED -> {
                     DialogUtility.showOptionDialog(
-                        activity,
+                        requireActivity(),
                         R.string.move_to_watching,
                         R.string.do_you_want_to_set_this_entry_into_watching,
                         R.string.move,

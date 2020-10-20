@@ -449,7 +449,7 @@ class ActivityDetailFragment : BaseFragment() {
     private fun deleteActivity(activityId: Int) {
         if (viewModel.activityId != null) {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.delete_activity,
                 R.string.are_you_sure_you_want_to_delete_this_activity,
                 R.string.delete,

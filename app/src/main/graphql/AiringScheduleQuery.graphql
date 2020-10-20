@@ -1,0 +1,38 @@
+query AiringScheduleQuery(
+    $page: Int,
+    $airingAtGreater: Int,
+    $airingAtLesser: Int
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        airingSchedules(
+            airingAt_greater: $airingAtGreater,
+            airingAt_lesser: $airingAtLesser
+        ) {
+            id
+            airingAt
+            timeUntilAiring
+            episode
+            media {
+                id
+                title {
+                    userPreferred
+                }
+                coverImage {
+                    medium
+                }
+                season
+                seasonYear
+                mediaListEntry {
+                    status
+                }
+            }
+        }
+    }
+}

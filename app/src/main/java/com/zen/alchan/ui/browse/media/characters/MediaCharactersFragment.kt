@@ -146,7 +146,7 @@ class MediaCharactersFragment : BaseFragment() {
         voiceActorLanguageText.text = viewModel.staffLanguage?.name
 
         voiceActorLanguageText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.staffLanguageArray) { _, which ->
                     viewModel.staffLanguage = StaffLanguage.valueOf(viewModel.staffLanguageArray[which])
                     voiceActorLanguageText.text = viewModel.staffLanguageArray[which]

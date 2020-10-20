@@ -244,7 +244,7 @@ class ActivityListFragment : BaseFragment() {
 
         itemFilter?.setOnMenuItemClickListener {
             val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(activityTypeStringArray) { _, which ->
                     viewModel.selectedActivityType = viewModel.activityTypeList[which]
                     loadingLayout.visibility = View.VISIBLE
@@ -321,7 +321,7 @@ class ActivityListFragment : BaseFragment() {
 
                 override fun deleteActivity(activityId: Int) {
                     DialogUtility.showOptionDialog(
-                        activity,
+                        requireActivity(),
                         R.string.delete_activity,
                         R.string.are_you_sure_you_want_to_delete_this_activity,
                         R.string.delete,

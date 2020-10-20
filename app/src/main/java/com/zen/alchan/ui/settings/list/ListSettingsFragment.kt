@@ -133,7 +133,7 @@ class ListSettingsFragment : Fragment() {
         scoringSystemText.setOnClickListener {
             val scoringFormatKeysArray = viewModel.scoreFormatMap.map { it.key }.toTypedArray()
             val scoringFormatValuesArray = viewModel.scoreFormatMap.map { getString(it.value) }.toTypedArray()
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(scoringFormatValuesArray) { _, which ->
                     viewModel.selectedScoringSystem = scoringFormatKeysArray[which]
                     scoringSystemText.text = scoringFormatValuesArray[which]
@@ -155,7 +155,7 @@ class ListSettingsFragment : Fragment() {
             inputDialogView.inputField.filters = arrayOf(InputFilter.LengthFilter(CHARACTER_LIMIT))
 
             DialogUtility.showCustomViewDialog(
-                activity,
+                requireActivity(),
                 R.string.add_new_criteria,
                 inputDialogView,
                 R.string.add,
@@ -175,7 +175,7 @@ class ListSettingsFragment : Fragment() {
         // Handle Split
         splitAnimeCheckBox.setOnClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.reset_anime_section_order,
                 R.string.by_changing_this_setting_your_anime_section_order_will_be_reset,
                 R.string.proceed,
@@ -192,7 +192,7 @@ class ListSettingsFragment : Fragment() {
 
         splitMangaCheckBox.setOnClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.reset_manga_section_order,
                 R.string.by_changing_this_setting_your_manga_section_order_will_be_reset,
                 R.string.proceed,
@@ -217,7 +217,7 @@ class ListSettingsFragment : Fragment() {
         defaultListOrderText.setOnClickListener {
             val defaultListOrderKeysArray = viewModel.defaultListOrderMap.map { it.key }.toTypedArray()
             val defaultListOrderValuesArray = viewModel.defaultListOrderMap.map { getString(it.value) }.toTypedArray()
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(defaultListOrderValuesArray) { _, which ->
                     viewModel.selectedDefaultListOrder = defaultListOrderKeysArray[which]
                     defaultListOrderText.text = defaultListOrderValuesArray[which]
@@ -235,7 +235,7 @@ class ListSettingsFragment : Fragment() {
             inputDialogView.inputField.filters = arrayOf(InputFilter.LengthFilter(CHARACTER_LIMIT))
 
             DialogUtility.showCustomViewDialog(
-                activity,
+                requireActivity(),
                 R.string.add_new_list,
                 inputDialogView,
                 R.string.add,
@@ -264,7 +264,7 @@ class ListSettingsFragment : Fragment() {
             inputDialogView.inputField.filters = arrayOf(InputFilter.LengthFilter(CHARACTER_LIMIT))
 
             DialogUtility.showCustomViewDialog(
-                activity,
+                requireActivity(),
                 R.string.add_new_list,
                 inputDialogView,
                 R.string.add,
@@ -304,7 +304,7 @@ class ListSettingsFragment : Fragment() {
 
         resetAnimeSectionText.setOnClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.reset_order,
                 R.string.are_you_sure_you_want_to_reset_your_anime_section_order,
                 R.string.reset,
@@ -338,7 +338,7 @@ class ListSettingsFragment : Fragment() {
 
         resetMangaSectionText.setOnClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.reset_order,
                 R.string.are_you_sure_you_want_to_reset_your_manga_section_order,
                 R.string.reset,
@@ -410,7 +410,7 @@ class ListSettingsFragment : Fragment() {
                 inputDialogView.inputField.setSelection(inputDialogView.inputField.length())
 
                 DialogUtility.showCustomViewDialog(
-                    activity,
+                    requireActivity(),
                     title,
                     inputDialogView,
                     R.string.edit,

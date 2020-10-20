@@ -137,7 +137,7 @@ class ReviewsReaderFragment : BaseFragment() {
         reviewTitleText.text = getString(R.string.review_of_by, review.media?.title?.userPreferred, review.user?.name)
         reviewTitleText.setOnClickListener {
             DialogUtility.showOptionDialog(
-                activity,
+                requireActivity(),
                 R.string.open_media_page,
                 getString(R.string.do_you_want_to_open_a_page, review.media?.title?.userPreferred),
                 R.string.open_media_page,

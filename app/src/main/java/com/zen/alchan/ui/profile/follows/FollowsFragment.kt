@@ -253,7 +253,7 @@ class FollowsFragment : BaseFragment() {
         return FollowsRvAdapter(activity!!, viewModel.followsList, viewModel.otherUserId != null, object : FollowsRvAdapter.FollowsListener {
             override fun toggleFollow(id: Int, isFollowing: Boolean) {
                 DialogUtility.showOptionDialog(
-                    activity,
+                    requireActivity(),
                     if (isFollowing) R.string.follow_this_user else R.string.unfollow_this_user,
                     if (isFollowing) R.string.are_you_sure_you_want_to_follow_this_user else R.string.are_you_sure_you_want_to_shatter_this_friendship,
                     if (isFollowing) R.string.follow else R.string.unfollow,

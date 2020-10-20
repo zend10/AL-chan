@@ -640,7 +640,7 @@ class UserStatsDetailFragment : BaseFragment() {
         }
 
         statsCategoryText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.getStatsCategoryArray()) { _, which ->
                     viewModel.selectedCategory = StatsCategory.values()[which]
                     if (viewModel.selectedCategory == StatsCategory.VOICE_ACTOR || viewModel.selectedCategory == StatsCategory.STUDIO) {
@@ -654,7 +654,7 @@ class UserStatsDetailFragment : BaseFragment() {
 
         statsMediaText.setOnClickListener {
             val mediaTypeArray = viewModel.getMediaTypeArray()
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(mediaTypeArray) { _, which ->
                     viewModel.selectedMedia = MediaType.valueOf(mediaTypeArray[which])
                     initLayout()
@@ -664,7 +664,7 @@ class UserStatsDetailFragment : BaseFragment() {
         }
 
         statsSortText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.getSortDataArray()) { _, which ->
                     viewModel.selectedStatsSort = viewModel.sortDataList[which]
                     initLayout()
@@ -674,7 +674,7 @@ class UserStatsDetailFragment : BaseFragment() {
         }
 
         statsImageText.setOnClickListener {
-            MaterialAlertDialogBuilder(activity)
+            MaterialAlertDialogBuilder(requireActivity())
                 .setItems(viewModel.imageDataList.toTypedArray()) { _, which ->
                     viewModel.selectedImage = which
                     initLayout()
