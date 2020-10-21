@@ -19,83 +19,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <HorizontalScrollView
-                android:layout_marginTop="@dimen/marginNormal"
-                android:scrollbars="none"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:paddingStart="@dimen/marginPage"
-                    android:paddingEnd="@dimen/marginPage"
-                    android:paddingTop="@dimen/marginSmall"
-                    android:paddingBottom="@dimen/marginSmall"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/date_range"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/dateRangeText"
-                        android:text="-"
-                        style="?themeRegularClickableFont"
-                        android:foreground="?selectableItemBackground"
-                        android:padding="@dimen/marginSmall"
-                        android:layout_marginEnd="@dimen/marginPage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/showCurrentSeasonText"
-                        android:text="@string/only_show_anime_from_current_season"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/showCurrentSeasonCheckBox"
-                        style="?themeRegularCheckBox"
-                        android:layout_marginEnd="@dimen/marginPage"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/showOnListText"
-                        android:text="@string/only_show_anime_on_my_list"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/showOnListCheckBox"
-                        style="?themeRegularCheckBox"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </HorizontalScrollView>
-
-            <RelativeLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dateRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/scheduleRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <include layout="@layout/layout_empty"/>
-
-            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/scheduleRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
