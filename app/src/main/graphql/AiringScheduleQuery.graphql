@@ -24,11 +24,10 @@ query AiringScheduleQuery(
                 title {
                     userPreferred
                 }
-                coverImage {
-                    medium
-                }
                 season
                 seasonYear
+                bannerImage
+                isAdult
                 mediaListEntry {
                     status
                 }

@@ -491,4 +491,7 @@
     <string name="important_to_know_n1_push_notification_will_show_up_periodically_not_real_time_2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com">Important to know:\n1. Push notification will show up periodically, not real time.2. Depending on your ROM and phone setting, it might not show up at all. (reference: https://dontkillmyapp.com/)</string>
     <string name="date_range">Date range</string>
     <string name="only_show_anime_from_current_season">Only show Anime from current season</string>
+    <string name="ep">Ep. %1$d</string>
+    <string name="show_only_anime_in_your_watching_and_planning_list">Show only Anime in your Watching and Planning list</string>
+    <string name="show_only_anime_from_current_season">Show only Anime from current season</string>
 </resources>
