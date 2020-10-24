@@ -2,6 +2,7 @@ package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.MangaDetails
+import io.reactivex.Completable
 import io.reactivex.Observable
 import retrofit2.Call
 import type.*
@@ -25,6 +26,9 @@ interface MediaDataSource {
 
     fun getReviewDetail(reviewId: Int): Observable<Response<ReviewDetailQuery.Data>>
     fun rateReview(reviewId: Int, rating: ReviewRating): Observable<Response<RateReviewMutation.Data>>
+
+    fun saveReview(id: Int?, mediaId: Int, body: String, summary: String, score: Int, private: Boolean): Observable<Response<SaveReviewMutation.Data>>
+    fun deleteReview(id: Int): Completable
 
     fun getMangaDetails(malId: Int): Call<MangaDetails>
 }

@@ -13,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
 import com.zen.alchan.helper.enums.EditorType
+import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_anime_list_editor.*
 import kotlinx.android.synthetic.main.activity_review_editor.*
 import kotlinx.android.synthetic.main.dialog_input.*
 import kotlinx.android.synthetic.main.dialog_input.view.*
+import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
@@ -36,11 +38,11 @@ class ReviewEditorActivity : BaseActivity() {
     companion object {
         const val REVIEW_ID = "reviewId"
         const val MEDIA_ID = "mediaId"
-        const val MEDIA_TYPE = "mediaType"
-        const val MEDIA_TITLE = "mediaTitle"
 
         const val MIN_SUMMARY_LENGTH = 20
         const val MAX_SUMMARY_LENGTH = 120
+
+        const val MIN_REVIEW_LENGTH = 2200
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +64,65 @@ class ReviewEditorActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_delete)
 
+        setupObserver()
         initLayout()
+    }
+
+    private fun setupObserver() {
+        viewModel.reviewDetailData.observe(this, androidx.lifecycle.Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    viewModel.reviewString = it.data?.review?.body ?: ""
+                    viewModel.summaryString = it.data?.review?.summary ?: ""
+                    viewModel.score = it.data?.review?.score ?: 0
+                    viewModel.isPrivate = it.data?.review?.private_ ?: false
+                    initLayout()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.saveReviewResponse.observe(this, androidx.lifecycle.Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        viewModel.deleteReviewResponse.observe(this, androidx.lifecycle.Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
+                ResponseStatus.SUCCESS -> {
+                    loadingLayout.visibility = View.GONE
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+                ResponseStatus.ERROR -> {
+                    loadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(this, it.message)
+                }
+            }
+        })
+
+        if (viewModel.reviewId != null && viewModel.reviewId != 0) {
+            viewModel.getReviewDetail()
+        }
     }
 
     private fun initLayout() {
@@ -70,6 +130,12 @@ class ReviewEditorActivity : BaseActivity() {
             getString(R.string.write)
         } else {
             getString(R.string.edit)
+        }
+
+        reviewWarningText.visibility = if (viewModel.reviewString.length < MIN_REVIEW_LENGTH) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
 
         reviewText.setOnClickListener {
@@ -113,6 +179,14 @@ class ReviewEditorActivity : BaseActivity() {
             dialog.show(supportFragmentManager, null)
         }
 
+        setPrivateCheckBox.isChecked = viewModel.isPrivate
+
+        setPrivateCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.isPrivate = isChecked
+        }
+
+        setPrivateText.setOnClickListener { setPrivateCheckBox.performClick() }
+
         deleteReviewButton.visibility = if (viewModel.reviewId != 0) {
             View.VISIBLE
         } else {
@@ -120,7 +194,17 @@ class ReviewEditorActivity : BaseActivity() {
         }
 
         deleteReviewButton.setOnClickListener {
-            // TODO: delete
+            DialogUtility.showOptionDialog(
+                this,
+                R.string.delete_review,
+                R.string.are_you_sure_you_want_to_delete_this_review,
+                R.string.delete,
+                {
+                    viewModel.deleteReview()
+                },
+                R.string.cancel,
+                { }
+            )
         }
     }
 
@@ -131,7 +215,27 @@ class ReviewEditorActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.itemPost) {
-            // TODO: save
+            if (viewModel.reviewString.length < MIN_REVIEW_LENGTH ||
+                viewModel.summaryString.trim().length < MIN_SUMMARY_LENGTH ||
+                viewModel.summaryString.trim().length > MAX_SUMMARY_LENGTH ||
+                viewModel.score <= 0
+            ) {
+                DialogUtility.showToast(this, R.string.you_need_to_hit_the_character_limit_to_submit_your_review)
+                return false
+            }
+
+            DialogUtility.showOptionDialog(
+                this,
+                R.string.post_review,
+                R.string.are_you_sure_you_want_to_post_this_review,
+                R.string.post,
+                {
+                    viewModel.saveReview()
+                },
+                R.string.cancel,
+                { }
+            )
+
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -140,10 +244,17 @@ class ReviewEditorActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == EditorType.REVIEW.ordinal && resultCode == Activity.RESULT_OK) {
             viewModel.reviewString = data?.extras?.get(TextEditorActivity.TEXT_CONTENT)?.toString() ?: ""
+
             reviewText.text = if (viewModel.reviewString.isBlank()) {
                 getString(R.string.write)
             } else {
                 getString(R.string.edit)
+            }
+
+            reviewWarningText.visibility = if (viewModel.reviewString.length < MIN_REVIEW_LENGTH) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

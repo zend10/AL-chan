@@ -16,6 +16,7 @@ import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.utils.AndroidUtility
+import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.*
@@ -99,13 +100,21 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val reviewsData: LiveData<Resource<ReviewsQuery.Data>>
         get() = _reviewsData
 
-    private val _reviewDetailData = SingleLiveEvent<Resource<ReviewDetailQuery.Data>>()
+    private val _reviewDetailData = MutableLiveData<Resource<ReviewDetailQuery.Data>>()
     override val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
         get() = _reviewDetailData
 
     private val _rateReviewResponse = SingleLiveEvent<Resource<RateReviewMutation.Data>>()
     override val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
         get() = _rateReviewResponse
+
+    private val _saveReviewResponse = SingleLiveEvent<Resource<SaveReviewMutation.Data>>()
+    override val saveReviewResponse: LiveData<Resource<SaveReviewMutation.Data>>
+        get() = _saveReviewResponse
+
+    private val _deleteReviewResponse = SingleLiveEvent<Resource<Boolean>>()
+    override val deleteReviewResponse: LiveData<Resource<Boolean>>
+        get() = _deleteReviewResponse
 
     private val _mangaDetailsLiveData = SingleLiveEvent<Resource<MangaDetails>>()
     override val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
@@ -254,6 +263,37 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override fun rateReview(reviewId: Int, rating: ReviewRating) {
         _rateReviewResponse.postValue(Resource.Loading())
         mediaDataSource.rateReview(reviewId, rating).subscribeWith(AndroidUtility.rxApolloCallback(_rateReviewResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun saveReview(
+        id: Int?,
+        mediaId: Int,
+        body: String,
+        summary: String,
+        score: Int,
+        private: Boolean
+    ) {
+        _saveReviewResponse.postValue(Resource.Loading())
+        mediaDataSource.saveReview(id, mediaId, body, summary, score, private).subscribeWith(AndroidUtility.rxApolloCallback(_saveReviewResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun deleteReview(id: Int) {
+        _deleteReviewResponse.postValue(Resource.Loading())
+        mediaDataSource.deleteReview(id).subscribeWith(object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) {
+                // do nothing
+            }
+
+            override fun onComplete() {
+                _deleteReviewResponse.postValue(Resource.Success(true))
+            }
+
+            override fun onError(e: Throwable) {
+                _deleteReviewResponse.postValue(Resource.Error(e.localizedMessage))
+            }
+        })
     }
 
     override fun getMangaDetails(malId: Int) {

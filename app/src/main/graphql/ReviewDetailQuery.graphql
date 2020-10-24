@@ -14,6 +14,7 @@ query ReviewDetailQuery(
         ratingAmount
         userRating
         score
+        private
         siteUrl
         createdAt
         updatedAt

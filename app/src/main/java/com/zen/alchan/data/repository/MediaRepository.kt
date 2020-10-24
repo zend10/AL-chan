@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.data.response.MediaTagCollection
-import com.zen.alchan.data.response.SeasonalAnime
-import com.zen.alchan.helper.enums.SeasonalCategory
-import com.zen.alchan.helper.pojo.MediaCharacters
 import type.*
 
 interface MediaRepository {
@@ -37,6 +34,9 @@ interface MediaRepository {
     val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
     val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
 
+    val saveReviewResponse: LiveData<Resource<SaveReviewMutation.Data>>
+    val deleteReviewResponse: LiveData<Resource<Boolean>>
+
     val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
 
     fun getGenre()
@@ -58,6 +58,9 @@ interface MediaRepository {
 
     fun getReviewDetail(reviewId: Int)
     fun rateReview(reviewId: Int, rating: ReviewRating)
+
+    fun saveReview(id: Int?, mediaId: Int, body: String, summary: String, score: Int, private: Boolean)
+    fun deleteReview(id: Int)
 
     fun getMangaDetails(malId: Int)
 }

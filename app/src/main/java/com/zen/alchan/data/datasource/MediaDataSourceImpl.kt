@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import DeleteReviewMutation
 import GenreQuery
 import MediaActivityQuery
 import MediaCharactersQuery
@@ -14,6 +15,7 @@ import RateReviewMutation
 import ReleasingTodayQuery
 import ReviewDetailQuery
 import ReviewsQuery
+import SaveReviewMutation
 import SeasonalAnimeQuery
 import TagQuery
 import TrendingMediaQuery
@@ -23,6 +25,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import com.zen.alchan.data.network.ApolloHandler
 import com.zen.alchan.data.network.JikanRestService
 import com.zen.alchan.data.response.MangaDetails
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -196,6 +199,36 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler,
     ): Observable<Response<RateReviewMutation.Data>> {
         val mutation = RateReviewMutation(reviewId = Input.fromNullable(reviewId), rating = Input.fromNullable(rating))
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun saveReview(
+        id: Int?,
+        mediaId: Int,
+        body: String,
+        summary: String,
+        score: Int,
+        private: Boolean
+    ): Observable<Response<SaveReviewMutation.Data>> {
+        val mutation = SaveReviewMutation(
+            id = Input.optional(id),
+            mediaId = Input.fromNullable(mediaId),
+            body = Input.fromNullable(body),
+            summary = Input.fromNullable(summary),
+            score = Input.fromNullable(score),
+            private_ = Input.fromNullable(private)
+        )
+        val mutationCall = apolloHandler.apolloClient.mutate(mutation)
+        return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun deleteReview(id: Int): Completable {
+        val mutation = DeleteReviewMutation(id = Input.fromNullable(id))
+        val mutationCall = apolloHandler.apolloClient.prefetch(mutation)
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

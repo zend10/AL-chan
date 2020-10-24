@@ -37,6 +37,14 @@
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewWarningText"
+                android:text="@string/the_text_must_be_at_least_2200_characters"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
                 android:text="@string/review_summary"
                 style="?themeRegularBoldFont"
                 android:layout_marginTop="@dimen/marginPage"

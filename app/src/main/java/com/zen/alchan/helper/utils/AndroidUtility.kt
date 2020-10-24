@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.MutableLiveData
 import com.zen.alchan.R
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.Constant
@@ -131,7 +132,7 @@ object AndroidUtility {
 
     // TODO: need to know how to test this
     // Generic function to pass rx2apollo observable response to live data (single live event)
-    fun <T> rxApolloCallback(observer: SingleLiveEvent<Resource<T>>) = object : Observer<com.apollographql.apollo.api.Response<T>> {
+    fun <T> rxApolloCallback(observer: MutableLiveData<Resource<T>>) = object : Observer<com.apollographql.apollo.api.Response<T>> {
         override fun onSubscribe(d: Disposable) { }
 
         override fun onNext(t: com.apollographql.apollo.api.Response<T>) {
