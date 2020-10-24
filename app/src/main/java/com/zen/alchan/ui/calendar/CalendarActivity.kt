@@ -88,6 +88,7 @@ class CalendarActivity : BaseActivity() {
             dateAdapter = assignDateAdapter()
             dateRecyclerView.adapter = dateAdapter
 
+            viewModel.scheduleList.clear()
             viewModel.hasNextPage = true
             viewModel.page = 1
             viewModel.getAiringSchedule()

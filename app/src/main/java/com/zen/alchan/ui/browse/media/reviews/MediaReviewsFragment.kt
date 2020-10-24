@@ -16,8 +16,8 @@ import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.browse.media.MediaFragment
+import com.zen.alchan.ui.browse.reviews.editor.ReviewEditorActivity
 import kotlinx.android.synthetic.main.fragment_media_reviews.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -135,6 +135,12 @@ class MediaReviewsFragment : BaseFragment() {
                 }
             }
         })
+
+        newReviewText.setOnClickListener {
+            val intent = Intent(activity, ReviewEditorActivity::class.java)
+            intent.putExtra(ReviewEditorActivity.MEDIA_ID, viewModel.mediaId)
+            startActivity(intent)
+        }
     }
 
     private fun loadMore() {

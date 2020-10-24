@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.widget.ImageViewCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
@@ -47,15 +48,13 @@ class TextEditorActivity : BaseActivity() {
     )
 
     companion object {
-        const val EDITOR_TYPE = "editorType"
+        const val EDITOR_TYPE = "editorType" // always required
 
-        const val RECIPIENT_ID = "recipientId"
-        const val RECIPIENT_NAME = "recipientName"
-
-        const val ACTIVITY_ID = "activityId"
-        const val TEXT_CONTENT = "textContent"
-
-        const val REPLY_ID = "replyId"
+        const val ACTIVITY_ID = "activityId" // needed if edit activity or reply to activity
+        const val REPLY_ID = "replyId" // needed if edit a reply
+        const val TEXT_CONTENT = "textContent" // needed if edit
+        const val RECIPIENT_ID = "recipientId" // needed if send a message
+        const val RECIPIENT_NAME = "recipientName" // needed if send a message
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,10 +65,14 @@ class TextEditorActivity : BaseActivity() {
 
         textLimit.visibility = View.GONE
 
-        if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
+        if (viewModel.editorType == EditorType.REVIEW) {
+            textLimit.visibility = View.VISIBLE
+            viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
+            initReviewLayout()
+        } else if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
             viewModel.activityId = intent.getIntExtra(ACTIVITY_ID, 0)
 
-            // if reply
+            // if edit
             if (intent.getIntExtra(REPLY_ID, 0) != 0) {
                 viewModel.replyId = intent.getIntExtra(REPLY_ID, 0)
                 viewModel.originalText = intent.getStringExtra(TEXT_CONTENT)
@@ -109,6 +112,9 @@ class TextEditorActivity : BaseActivity() {
                 } else {
                     getString(R.string.reply_message)
                 }
+            }
+            EditorType.REVIEW -> {
+                getString(R.string.write_review)
             }
             else -> getString(R.string.post_new_message)
         }
@@ -251,8 +257,21 @@ class TextEditorActivity : BaseActivity() {
         }
     }
 
+    private fun initReviewLayout() {
+        textLimit.text = "${getString(R.string.the_text_must_be_at_least_2200_characters)} (${editorEditText.text?.trim()?.length}/2200)"
+
+        editorEditText.addTextChangedListener {
+            textLimit.text = "${getString(R.string.the_text_must_be_at_least_2200_characters)} (${it?.trim()?.length}/2200)"
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_post, menu)
+
+        if (viewModel.editorType == EditorType.REVIEW) {
+            menu?.findItem(R.id.itemPost)?.title = getString(R.string.save)
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -263,45 +282,52 @@ class TextEditorActivity : BaseActivity() {
                 return false
             }
 
-            var title = R.string.post_this_message
-            var message = getString(R.string.are_you_sure_you_want_to_post_this_message)
-            var positiveText = R.string.post
-
-            if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
-                if (viewModel.replyId != null) {
-                    title = R.string.edit_this_message
-                    message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
-                    positiveText = R.string.edit
-                } else {
-                    title = R.string.send_this_reply
-                    message = getString(R.string.are_you_sure_you_want_to_send_this_reply)
-                    positiveText = R.string.send
-                }
+            if (viewModel.editorType == EditorType.REVIEW) {
+                val intent = Intent()
+                intent.putExtra(TEXT_CONTENT, editorEditText.text?.trim())
+                setResult(Activity.RESULT_OK, intent)
+                finish()
             } else {
-                if (viewModel.activityId != null) {
-                    title = R.string.edit_this_message
-                    message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
-                    positiveText = R.string.edit
-                } else if (viewModel.recipientId != null) {
-                    title = R.string.send_this_message
-                    message = getString(R.string.are_you_sure_you_want_to_send_this_message, viewModel.recipientName)
-                    positiveText = R.string.send
+                var title = R.string.post_this_message
+                var message = getString(R.string.are_you_sure_you_want_to_post_this_message)
+                var positiveText = R.string.post
+
+                if (viewModel.editorType == EditorType.ACTIVITY_REPLY) {
+                    if (viewModel.replyId != null) {
+                        title = R.string.edit_this_message
+                        message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
+                        positiveText = R.string.edit
+                    } else {
+                        title = R.string.send_this_reply
+                        message = getString(R.string.are_you_sure_you_want_to_send_this_reply)
+                        positiveText = R.string.send
+                    }
+                } else {
+                    if (viewModel.activityId != null) {
+                        title = R.string.edit_this_message
+                        message = getString(R.string.are_you_sure_you_want_to_edit_this_message)
+                        positiveText = R.string.edit
+                    } else if (viewModel.recipientId != null) {
+                        title = R.string.send_this_message
+                        message = getString(R.string.are_you_sure_you_want_to_send_this_message, viewModel.recipientName)
+                        positiveText = R.string.send
+                    }
                 }
-            }
 
-            val builder = MaterialAlertDialogBuilder(this)
+                val builder = MaterialAlertDialogBuilder(this)
 
-            val text = editorEditText.text?.trim().toString()
+                val text = editorEditText.text?.trim().toString()
 
-            builder.apply {
-                setTitle(title)
-                setMessage(message)
-                setPositiveButton(positiveText) { _, _ -> viewModel.post(text) }
-                if (viewModel.activityId == null && viewModel.recipientId != null) {
-                    setNeutralButton(R.string.send_private) { _, _ -> viewModel.post(text, true) }
+                builder.apply {
+                    setTitle(title)
+                    setMessage(message)
+                    setPositiveButton(positiveText) { _, _ -> viewModel.post(text) }
+                    if (viewModel.activityId == null && viewModel.recipientId != null) {
+                        setNeutralButton(R.string.send_private) { _, _ -> viewModel.post(text, true) }
+                    }
+                    setNegativeButton(R.string.cancel) { _, _ -> }
+                    show()
                 }
-                setNegativeButton(R.string.cancel) { _, _ -> }
-                show()
             }
 
             return true

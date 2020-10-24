@@ -494,4 +494,14 @@
     <string name="ep">Ep. %1$d</string>
     <string name="show_only_anime_in_your_watching_and_planning_list">Show only Anime in your Watching and Planning list</string>
     <string name="show_only_anime_from_current_season">Show only Anime from current season</string>
+    <string name="write_new_review">Write new review</string>
+    <string name="review">Review</string>
+    <string name="review_summary">Review summary</string>
+    <string name="edit_review">Edit Review</string>
+    <string name="new_review">New Review</string>
+    <string name="write">Write</string>
+    <string name="write_review">Write Review</string>
+    <string name="save_as_private">Save as private</string>
+    <string name="summary_must_be_less_than_120_characters_and_greater_than_20_characters">Summary must be less than 120 characters and greater than 20 characters</string>
+    <string name="the_text_must_be_at_least_2200_characters">The text must be at least 2200 characters.</string>
 </resources>

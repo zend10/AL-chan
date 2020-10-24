@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.browse.reviews.editor.ReviewEditorActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <ScrollView
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:padding="@dimen/marginPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/review"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewText"
+                style="?themeRegularClickableFont"
+                android:foreground="?selectableItemBackground"
+                android:paddingTop="@dimen/iconPadding"
+                android:paddingBottom="@dimen/iconPadding"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/review_summary"
+                style="?themeRegularBoldFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/reviewSummaryText"
+                style="?themeRegularFont"
+                android:paddingTop="@dimen/iconPadding"
+                android:paddingBottom="@dimen/iconPadding"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:inputType="textCapSentences|textMultiLine"
+                android:gravity="top"
+                android:minLines="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewSummaryCountText"
+                style="?themeSmallFont"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewSummaryWarningText"
+                android:text="@string/summary_must_be_less_than_120_characters_and_greater_than_20_characters"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/score"
+                style="?themeRegularBoldFont"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewScoreText"
+                style="?themeRegularClickableFont"
+                android:foreground="?selectableItemBackground"
+                android:paddingTop="@dimen/iconPadding"
+                android:paddingBottom="@dimen/iconPadding"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/setPrivateCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/setPrivateText"
+                    style="?themeRegularFont"
+                    android:text="@string/save_as_private"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
+                android:id="@+id/deleteReviewButton"
+                android:text="@string/delete"
+                style="?themeButtonBorderNegative"
+                android:layout_marginTop="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+    <include layout="@layout/layout_loading"/>
+
+</RelativeLayout>

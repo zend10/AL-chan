@@ -1,9 +1,6 @@
 package com.zen.alchan
 
 import android.app.Application
-import com.google.firebase.FirebaseApp
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
@@ -39,6 +36,7 @@ import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
 import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.browse.BrowseViewModel
+import com.zen.alchan.ui.browse.reviews.editor.ReviewEditorViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
 import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
@@ -168,6 +166,7 @@ class ALchanApplication : Application() {
         viewModel { MediaStaffsViewModel(get()) }
         viewModel { MediaStatsViewModel(get(), get(), gson) }
         viewModel { MediaReviewsViewModel(get()) }
+        viewModel { ReviewEditorViewModel(get()) }
         viewModel { MediaSocialViewModel(get()) }
 
         // browse character, staff, studio
