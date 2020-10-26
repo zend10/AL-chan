@@ -38,7 +38,18 @@ class MediaReviewsViewModel(private val mediaRepository: MediaRepository) : View
         mediaRepository.mediaReviewsData
     }
 
+    val triggerMediaReview by lazy {
+        mediaRepository.triggerMediaReview
+    }
+
     fun getMediaReviews() {
         if (hasNextPage && mediaId != null) mediaRepository.getMediaReviews(mediaId!!, page, listOf(selectedSort))
+    }
+
+    fun refresh() {
+        mediaReviews.clear()
+        page = 1
+        hasNextPage = true
+        getMediaReviews()
     }
 }

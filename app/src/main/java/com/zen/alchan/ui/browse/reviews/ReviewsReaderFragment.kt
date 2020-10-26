@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.browse.reviews
 
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +26,7 @@ import com.zen.alchan.helper.secondsToDate
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.browse.reviews.editor.ReviewEditorActivity
 import io.noties.markwon.Markwon
 import kotlinx.android.synthetic.main.fragment_reviews_reader.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -44,6 +47,7 @@ class ReviewsReaderFragment : BaseFragment() {
 
     private var itemOpenAniList: MenuItem? = null
     private var itemCopyLink: MenuItem? = null
+    private var itemEdit: MenuItem? = null
 
     companion object {
         const val REVIEW_ID = "reviewId"
@@ -67,8 +71,9 @@ class ReviewsReaderFragment : BaseFragment() {
 
         reviewToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         reviewToolbar.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_arrow_back)
-        reviewToolbar.inflateMenu(R.menu.menu_anilist_link)
+        reviewToolbar.inflateMenu(R.menu.menu_review)
 
+        itemEdit = reviewToolbar.menu.findItem(R.id.itemEdit)
         itemOpenAniList = reviewToolbar.menu.findItem(R.id.itemOpenAnilist)
         itemCopyLink = reviewToolbar.menu.findItem(R.id.itemCopyLink)
 
@@ -218,6 +223,16 @@ class ReviewsReaderFragment : BaseFragment() {
             }
             true
         }
+
+        itemEdit?.isVisible = viewModel.reviewDetail?.userId == viewModel.userId
+
+        itemEdit?.setOnMenuItemClickListener {
+            val intent = Intent(activity, ReviewEditorActivity::class.java)
+            intent.putExtra(ReviewEditorActivity.REVIEW_ID, viewModel.reviewDetail?.id)
+            intent.putExtra(ReviewEditorActivity.MEDIA_ID, viewModel.reviewDetail?.mediaId)
+            startActivityForResult(intent, ReviewEditorActivity.ACTIVITY_EDITOR)
+            true
+        }
     }
 
     private fun handleLike() {
@@ -240,8 +255,20 @@ class ReviewsReaderFragment : BaseFragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == ReviewEditorActivity.ACTIVITY_EDITOR && resultCode == Activity.RESULT_OK) {
+            if (data?.extras?.getBoolean(ReviewEditorActivity.IS_DELETE) == true) {
+                activity?.onBackPressed()
+            } else {
+                viewModel.getReviewDetail()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        itemEdit = null
         itemOpenAniList = null
         itemCopyLink = null
     }

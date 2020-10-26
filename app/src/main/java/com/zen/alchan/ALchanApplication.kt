@@ -188,7 +188,7 @@ class ALchanApplication : Application() {
         viewModel { ActivityListViewModel(get(), get()) }
 
         // browse review
-        viewModel { ReviewsReaderViewModel(get()) }
+        viewModel { ReviewsReaderViewModel(get(), get()) }
 
         // profile and settings
         viewModel { ProfileViewModel(get(), get()) }

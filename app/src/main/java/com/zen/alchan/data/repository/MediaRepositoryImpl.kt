@@ -120,6 +120,22 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
         get() = _mangaDetailsLiveData
 
+    private val _triggerMediaCharacter = SingleLiveEvent<Boolean>()
+    override val triggerMediaCharacter: LiveData<Boolean>
+        get() = _triggerMediaCharacter
+
+    private val _triggerMediaStaff = SingleLiveEvent<Boolean>()
+    override val triggerMediaStaff: LiveData<Boolean>
+        get() = _triggerMediaStaff
+
+    private val _triggerMediaReview = SingleLiveEvent<Boolean>()
+    override val triggerMediaReview: LiveData<Boolean>
+        get() = _triggerMediaReview
+
+    private val _triggerMediaSocial = SingleLiveEvent<Boolean>()
+    override val triggerMediaSocial: LiveData<Boolean>
+        get() = _triggerMediaSocial
+
     @SuppressLint("CheckResult")
     override fun getGenre() {
         mediaDataSource.getGenre().subscribeWith(object : Observer<Response<GenreQuery.Data>> {
@@ -298,5 +314,12 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
     override fun getMangaDetails(malId: Int) {
         mediaDataSource.getMangaDetails(malId).enqueue(AndroidUtility.apiCallback(_mangaDetailsLiveData))
+    }
+
+    override fun triggerRefreshMediaChildren() {
+        _triggerMediaCharacter.postValue(true)
+        _triggerMediaStaff.postValue(true)
+        _triggerMediaReview.postValue(true)
+        _triggerMediaSocial.postValue(true)
     }
 }

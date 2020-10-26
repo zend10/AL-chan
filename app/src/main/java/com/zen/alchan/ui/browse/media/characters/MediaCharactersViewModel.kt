@@ -37,7 +37,18 @@ class MediaCharactersViewModel(private val mediaRepository: MediaRepository,
         mediaRepository.mediaCharactersData
     }
 
+    val triggerMediaCharacter by lazy {
+        mediaRepository.triggerMediaCharacter
+    }
+
     fun getMediaCharacters() {
         if (hasNextPage && mediaId != null) mediaRepository.getMediaCharacters(mediaId!!, page)
+    }
+
+    fun refresh() {
+        mediaCharacters.clear()
+        page = 1
+        hasNextPage = true
+        getMediaCharacters()
     }
 }

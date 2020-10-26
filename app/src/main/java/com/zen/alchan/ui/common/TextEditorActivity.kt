@@ -258,10 +258,10 @@ class TextEditorActivity : BaseActivity() {
     }
 
     private fun initReviewLayout() {
-        textLimit.text = "${getString(R.string.the_text_must_be_at_least_2200_characters)} (${editorEditText.text?.trim()?.length}/2200)"
+        textLimit.text = "${getString(R.string.the_text_must_be_at_least_2200_characters)} (${editorEditText.text?.toString()?.replace(" ", "")?.replace("\n", "")?.trim()?.length}/2200)"
 
         editorEditText.addTextChangedListener {
-            textLimit.text = "${getString(R.string.the_text_must_be_at_least_2200_characters)} (${it?.trim()?.length}/2200)"
+            textLimit.text = "${getString(R.string.the_text_must_be_at_least_2200_characters)} (${it?.toString()?.replace(" ", "")?.replace("\n", "")?.trim()?.length}/2200)"
         }
     }
 

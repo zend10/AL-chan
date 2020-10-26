@@ -1,10 +1,14 @@
 package com.zen.alchan.ui.browse.reviews
 
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.MediaRepository
+import com.zen.alchan.data.repository.UserRepository
 import type.ReviewRating
 
-class ReviewsReaderViewModel(private val mediaRepository: MediaRepository) : ViewModel() {
+class ReviewsReaderViewModel(private val mediaRepository: MediaRepository,
+                             private val userRepository: UserRepository
+) : ViewModel() {
 
     var reviewId: Int? = null
     var reviewDetail: ReviewDetailQuery.Review? = null
@@ -12,6 +16,9 @@ class ReviewsReaderViewModel(private val mediaRepository: MediaRepository) : Vie
     var currentUserRating: ReviewRating? = null
     var currentRating: Int? = null
     var currentRatingAmount: Int? = null
+
+    val userId: Int?
+        get() = userRepository.currentUser?.id
 
     val reviewDetailData by lazy {
         mediaRepository.reviewDetailData

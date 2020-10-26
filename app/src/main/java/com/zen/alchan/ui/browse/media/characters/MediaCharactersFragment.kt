@@ -130,6 +130,11 @@ class MediaCharactersFragment : BaseFragment() {
             }
         })
 
+        viewModel.triggerMediaCharacter.observe(viewLifecycleOwner, Observer {
+            isLoading = false
+            viewModel.refresh()
+        })
+
         if (!viewModel.isInit) {
             viewModel.getMediaCharacters()
             loadingLayout.visibility = View.VISIBLE

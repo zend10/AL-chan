@@ -38,11 +38,14 @@ class ReviewEditorActivity : BaseActivity() {
     companion object {
         const val REVIEW_ID = "reviewId"
         const val MEDIA_ID = "mediaId"
+        const val IS_DELETE = "isDelete"
 
-        const val MIN_SUMMARY_LENGTH = 20
-        const val MAX_SUMMARY_LENGTH = 120
+        const val ACTIVITY_EDITOR = 200
 
-        const val MIN_REVIEW_LENGTH = 2200
+        private const val MIN_SUMMARY_LENGTH = 20
+        private const val MAX_SUMMARY_LENGTH = 120
+
+        private const val MIN_REVIEW_LENGTH = 2200
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,15 +77,19 @@ class ReviewEditorActivity : BaseActivity() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    viewModel.reviewString = it.data?.review?.body ?: ""
-                    viewModel.summaryString = it.data?.review?.summary ?: ""
-                    viewModel.score = it.data?.review?.score ?: 0
-                    viewModel.isPrivate = it.data?.review?.private_ ?: false
-                    initLayout()
+                    if (viewModel.reviewId == it.data?.review?.id) {
+                        viewModel.reviewString = it.data?.review?.body ?: ""
+                        viewModel.summaryString = it.data?.review?.summary ?: ""
+                        viewModel.score = it.data?.review?.score ?: 0
+                        viewModel.isPrivate = it.data?.review?.private_ ?: false
+                        initLayout()
+                    }
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(this, it.message)
+                    if (viewModel.reviewId == it.data?.review?.id) {
+                        DialogUtility.showToast(this, it.message)
+                    }
                 }
             }
         })
@@ -93,6 +100,7 @@ class ReviewEditorActivity : BaseActivity() {
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     val intent = Intent()
+                    intent.putExtra(IS_DELETE, false)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
 
@@ -110,6 +118,7 @@ class ReviewEditorActivity : BaseActivity() {
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
                     val intent = Intent()
+                    intent.putExtra(IS_DELETE, true)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
@@ -215,7 +224,7 @@ class ReviewEditorActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.itemPost) {
-            if (viewModel.reviewString.length < MIN_REVIEW_LENGTH ||
+            if (viewModel.reviewString.replace(" ", "").replace("\n", "").length < MIN_REVIEW_LENGTH ||
                 viewModel.summaryString.trim().length < MIN_SUMMARY_LENGTH ||
                 viewModel.summaryString.trim().length > MAX_SUMMARY_LENGTH ||
                 viewModel.score <= 0
@@ -251,7 +260,7 @@ class ReviewEditorActivity : BaseActivity() {
                 getString(R.string.edit)
             }
 
-            reviewWarningText.visibility = if (viewModel.reviewString.length < MIN_REVIEW_LENGTH) {
+            reviewWarningText.visibility = if (viewModel.reviewString.replace(" ", "").replace("\n", "").length < MIN_REVIEW_LENGTH) {
                 View.VISIBLE
             } else {
                 View.GONE

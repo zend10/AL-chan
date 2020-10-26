@@ -105,6 +105,11 @@ class MediaStaffsFragment : BaseFragment() {
             }
         })
 
+        viewModel.triggerMediaStaff.observe(viewLifecycleOwner, Observer {
+            isLoading = false
+            viewModel.refresh()
+        })
+
         if (!viewModel.isInit) {
             viewModel.getMediaStaffs()
             loadingLayout.visibility = View.VISIBLE

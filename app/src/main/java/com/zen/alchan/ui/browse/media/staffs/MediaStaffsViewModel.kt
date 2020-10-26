@@ -19,7 +19,18 @@ class MediaStaffsViewModel(private val mediaRepository: MediaRepository) : ViewM
         mediaRepository.mediaStaffsData
     }
 
+    val triggerMediaStaff by lazy {
+        mediaRepository.triggerMediaStaff
+    }
+
     fun getMediaStaffs() {
         if (hasNextPage && mediaId != null) mediaRepository.getMediaStaffs(mediaId!!, page)
+    }
+
+    fun refresh() {
+        mediaStaffs.clear()
+        page = 1
+        hasNextPage = true
+        getMediaStaffs()
     }
 }

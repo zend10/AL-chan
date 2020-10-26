@@ -99,6 +99,11 @@ class MediaReviewsFragment : BaseFragment() {
             }
         })
 
+        viewModel.triggerMediaReview.observe(viewLifecycleOwner, Observer {
+            isLoading = false
+            viewModel.refresh()
+        })
+
         if (!viewModel.isInit) {
             viewModel.getMediaReviews()
             loadingLayout.visibility = View.VISIBLE

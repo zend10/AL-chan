@@ -110,6 +110,10 @@ class MediaSocialFragment : BaseFragment() {
             }
         })
 
+        viewModel.triggerMediaSocial.observe(viewLifecycleOwner, Observer {
+            viewModel.refresh()
+        })
+
         if (!viewModel.friendsIsInit) {
             viewModel.getMediaFriendsMediaList()
         } else {

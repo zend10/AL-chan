@@ -39,6 +39,11 @@ interface MediaRepository {
 
     val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
 
+    val triggerMediaCharacter: LiveData<Boolean>
+    val triggerMediaStaff: LiveData<Boolean>
+    val triggerMediaReview: LiveData<Boolean>
+    val triggerMediaSocial: LiveData<Boolean>
+
     fun getGenre()
     fun getTag()
     fun getMedia(id: Int)
@@ -63,4 +68,6 @@ interface MediaRepository {
     fun deleteReview(id: Int)
 
     fun getMangaDetails(malId: Int)
+
+    fun triggerRefreshMediaChildren()
 }

@@ -27,6 +27,10 @@ class MediaSocialViewModel(private val mediaRepository: MediaRepository) : ViewM
         mediaRepository.mediaActivityData
     }
 
+    val triggerMediaSocial by lazy {
+        mediaRepository.triggerMediaSocial
+    }
+
     fun getMediaFriendsMediaList() {
         if (friendsHasNextPage && mediaId != null) {
             mediaRepository.getMediaFriendsMediaList(mediaId!!, friendsPage)
@@ -37,5 +41,17 @@ class MediaSocialViewModel(private val mediaRepository: MediaRepository) : ViewM
         if (activityHasNextPage && mediaId != null) {
             mediaRepository.getMediaActivity(mediaId!!, activityPage)
         }
+    }
+
+    fun refresh() {
+        friendsMediaList.clear()
+        friendsPage = 1
+        friendsHasNextPage = true
+        getMediaFriendsMediaList()
+
+        activityList.clear()
+        activityPage = 1
+        activityHasNextPage = true
+        getMediaActivity()
     }
 }
