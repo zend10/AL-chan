@@ -149,6 +149,7 @@ object Constant {
         Pair("anilist", Pair(R.drawable.ic_anilist, Color.parseColor("#324760"))),
         Pair("twitter", Pair(R.drawable.ic_twitter, Color.parseColor("#03A9F4"))),
         Pair("crunchyroll", Pair(R.drawable.ic_crunchyroll, Color.parseColor("#FF9100"))),
+        Pair("youtube", Pair(null, Color.parseColor("#FF0000"))),
         Pair("funimation", Pair(null, Color.parseColor("#452C8A"))),
         Pair("hidive", Pair(null, Color.parseColor("#03A8EB"))),
         Pair("vrv", Pair(null, Color.parseColor("#FEDD01"))),
@@ -292,6 +293,7 @@ object Constant {
 
     val ANIME_STREAMING_SITE = arrayListOf(
         Pair("crunchyroll", "Crunchyroll"),
+        Pair("youtube", "Youtube"),
         Pair("funimation", "Funimation"),
         Pair("hidive", "Hidive"),
         Pair("vrv", "VRV"),
@@ -342,6 +344,7 @@ object Constant {
 
     val EXTERNAL_LINK_MAP = hashMapOf(
         Pair("Crunchyroll", "crunchyroll"),
+        Pair("Youtube", "youtube"),
         Pair("Funimation", "funimation"),
         Pair("Hidive", "hidive"),
         Pair("VRV", "vrv"),
