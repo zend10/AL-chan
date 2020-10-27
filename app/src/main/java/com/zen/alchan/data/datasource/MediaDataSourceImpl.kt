@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import CheckReviewQuery
 import DeleteReviewMutation
 import GenreQuery
 import MediaActivityQuery
@@ -200,6 +201,17 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler,
         val mutation = RateReviewMutation(reviewId = Input.fromNullable(reviewId), rating = Input.fromNullable(rating))
         val mutationCall = apolloHandler.apolloClient.mutate(mutation)
         return Rx2Apollo.from(mutationCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun checkReview(
+        mediaId: Int,
+        userId: Int
+    ): Observable<Response<CheckReviewQuery.Data>> {
+        val query = CheckReviewQuery(mediaId = Input.fromNullable(mediaId), userId = Input.fromNullable(userId))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

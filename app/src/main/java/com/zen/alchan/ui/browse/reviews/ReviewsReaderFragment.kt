@@ -95,7 +95,7 @@ class ReviewsReaderFragment : BaseFragment() {
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, it.message)
+                    activity?.onBackPressed()
                 }
             }
         })
@@ -256,14 +256,21 @@ class ReviewsReaderFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == ReviewEditorActivity.ACTIVITY_EDITOR && resultCode == Activity.RESULT_OK) {
-            if (data?.extras?.getBoolean(ReviewEditorActivity.IS_DELETE) == true) {
-                activity?.onBackPressed()
-            } else {
-                viewModel.getReviewDetail()
-            }
-        }
+//        if (requestCode == ReviewEditorActivity.ACTIVITY_EDITOR && resultCode == Activity.RESULT_OK) {
+//            if (data?.extras?.getBoolean(ReviewEditorActivity.IS_DELETE) == true) {
+//                activity?.onBackPressed()
+//            } else {
+//                viewModel.getReviewDetail()
+//            }
+//        }
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ReviewEditorActivity.ACTIVITY_EDITOR && resultCode == Activity.RESULT_OK) {
+//            if (data?.extras?.getBoolean(ReviewEditorActivity.IS_DELETE) == true) {
+//                activity?.onBackPressed()
+//            } else {
+                viewModel.getReviewDetail()
+//            }
+        }
     }
 
     override fun onDestroyView() {

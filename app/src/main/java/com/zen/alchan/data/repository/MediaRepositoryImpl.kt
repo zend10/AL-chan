@@ -18,6 +18,7 @@ import com.zen.alchan.helper.pojo.MediaCharacters
 import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import type.*
 import java.util.*
@@ -100,13 +101,17 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override val reviewsData: LiveData<Resource<ReviewsQuery.Data>>
         get() = _reviewsData
 
-    private val _reviewDetailData = MutableLiveData<Resource<ReviewDetailQuery.Data>>()
+    private val _reviewDetailData = SingleLiveEvent<Resource<ReviewDetailQuery.Data>>()
     override val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
         get() = _reviewDetailData
 
     private val _rateReviewResponse = SingleLiveEvent<Resource<RateReviewMutation.Data>>()
     override val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
         get() = _rateReviewResponse
+
+    private val _checkReviewResponse = SingleLiveEvent<Resource<CheckReviewQuery.Data>>()
+    override val checkReviewResponse: LiveData<Resource<CheckReviewQuery.Data>>
+        get() = _checkReviewResponse
 
     private val _saveReviewResponse = SingleLiveEvent<Resource<SaveReviewMutation.Data>>()
     override val saveReviewResponse: LiveData<Resource<SaveReviewMutation.Data>>
@@ -279,6 +284,13 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     override fun rateReview(reviewId: Int, rating: ReviewRating) {
         _rateReviewResponse.postValue(Resource.Loading())
         mediaDataSource.rateReview(reviewId, rating).subscribeWith(AndroidUtility.rxApolloCallback(_rateReviewResponse))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun checkReview(mediaId: Int) {
+        if (userManager.viewerData?.id == null) return
+        _checkReviewResponse.postValue(Resource.Loading())
+        mediaDataSource.checkReview(mediaId, userManager.viewerData?.id!!).subscribeWith(AndroidUtility.rxApolloCallback(_checkReviewResponse))
     }
 
     @SuppressLint("CheckResult")

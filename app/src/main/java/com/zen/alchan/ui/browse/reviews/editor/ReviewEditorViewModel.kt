@@ -17,8 +17,8 @@ class ReviewEditorViewModel(private val mediaRepository: MediaRepository) : View
     var score = 0
     var isPrivate = false
 
-    val reviewDetailData by lazy {
-        mediaRepository.reviewDetailData
+    val checkReviewResponse by lazy {
+        mediaRepository.checkReviewResponse
     }
 
     val saveReviewResponse by lazy {
@@ -29,9 +29,9 @@ class ReviewEditorViewModel(private val mediaRepository: MediaRepository) : View
         mediaRepository.deleteReviewResponse
     }
 
-    fun getReviewDetail() {
-        if (reviewId != null && reviewId != 0) {
-            mediaRepository.getReviewDetail(reviewId!!)
+    fun checkReview() {
+        if (mediaId != null) {
+            mediaRepository.checkReview(mediaId!!)
         }
     }
 

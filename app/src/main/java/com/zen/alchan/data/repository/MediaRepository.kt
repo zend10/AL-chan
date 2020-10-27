@@ -34,6 +34,7 @@ interface MediaRepository {
     val reviewDetailData: LiveData<Resource<ReviewDetailQuery.Data>>
     val rateReviewResponse: LiveData<Resource<RateReviewMutation.Data>>
 
+    val checkReviewResponse: LiveData<Resource<CheckReviewQuery.Data>>
     val saveReviewResponse: LiveData<Resource<SaveReviewMutation.Data>>
     val deleteReviewResponse: LiveData<Resource<Boolean>>
 
@@ -64,6 +65,7 @@ interface MediaRepository {
     fun getReviewDetail(reviewId: Int)
     fun rateReview(reviewId: Int, rating: ReviewRating)
 
+    fun checkReview(mediaId: Int)
     fun saveReview(id: Int?, mediaId: Int, body: String, summary: String, score: Int, private: Boolean)
     fun deleteReview(id: Int)
 

@@ -40,7 +40,7 @@ class ReviewEditorActivity : BaseActivity() {
         const val MEDIA_ID = "mediaId"
         const val IS_DELETE = "isDelete"
 
-        const val ACTIVITY_EDITOR = 200
+        const val ACTIVITY_EDITOR = 300
 
         private const val MIN_SUMMARY_LENGTH = 20
         private const val MAX_SUMMARY_LENGTH = 120
@@ -72,24 +72,23 @@ class ReviewEditorActivity : BaseActivity() {
     }
 
     private fun setupObserver() {
-        viewModel.reviewDetailData.observe(this, androidx.lifecycle.Observer {
+        viewModel.checkReviewResponse.observe(this, androidx.lifecycle.Observer {
             when (it.responseStatus) {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    if (viewModel.reviewId == it.data?.review?.id) {
-                        viewModel.reviewString = it.data?.review?.body ?: ""
-                        viewModel.summaryString = it.data?.review?.summary ?: ""
-                        viewModel.score = it.data?.review?.score ?: 0
-                        viewModel.isPrivate = it.data?.review?.private_ ?: false
-                        initLayout()
-                    }
+                    viewModel.reviewId = it.data?.review?.id
+                    viewModel.reviewString = it.data?.review?.body ?: ""
+                    viewModel.summaryString = it.data?.review?.summary ?: ""
+                    viewModel.score = it.data?.review?.score ?: 0
+                    viewModel.isPrivate = it.data?.review?.private_ ?: false
+
+                    supportActionBar?.title = getString(R.string.edit_review)
+
+                    initLayout()
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
-                    if (viewModel.reviewId == it.data?.review?.id) {
-                        DialogUtility.showToast(this, it.message)
-                    }
                 }
             }
         })
@@ -103,7 +102,7 @@ class ReviewEditorActivity : BaseActivity() {
                     intent.putExtra(IS_DELETE, false)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
-
+                    DialogUtility.showToast(this, R.string.change_saved)
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
@@ -121,6 +120,7 @@ class ReviewEditorActivity : BaseActivity() {
                     intent.putExtra(IS_DELETE, true)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
+                    DialogUtility.showToast(this, R.string.change_saved)
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
@@ -129,8 +129,8 @@ class ReviewEditorActivity : BaseActivity() {
             }
         })
 
-        if (viewModel.reviewId != null && viewModel.reviewId != 0) {
-            viewModel.getReviewDetail()
+        if (viewModel.mediaId != null) {
+            viewModel.checkReview()
         }
     }
 
