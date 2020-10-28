@@ -9,6 +9,7 @@ import com.zen.alchan.data.localstorage.MediaManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.data.response.MediaTagCollection
 import com.zen.alchan.data.response.SeasonalAnime
@@ -124,6 +125,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _mangaDetailsLiveData = SingleLiveEvent<Resource<MangaDetails>>()
     override val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
         get() = _mangaDetailsLiveData
+
+    private val _animeVideoLiveData = SingleLiveEvent<Resource<AnimeVideo>>()
+    override val animeVideoLiveData: LiveData<Resource<AnimeVideo>>
+        get() = _animeVideoLiveData
 
     private val _triggerMediaCharacter = SingleLiveEvent<Boolean>()
     override val triggerMediaCharacter: LiveData<Boolean>
@@ -326,6 +331,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
 
     override fun getMangaDetails(malId: Int) {
         mediaDataSource.getMangaDetails(malId).enqueue(AndroidUtility.apiCallback(_mangaDetailsLiveData))
+    }
+
+    override fun getAnimeVideos(malId: Int) {
+        mediaDataSource.getAnimeVideos(malId).enqueue(AndroidUtility.apiCallback(_animeVideoLiveData))
     }
 
     override fun triggerRefreshMediaChildren() {

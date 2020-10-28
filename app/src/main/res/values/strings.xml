@@ -509,4 +509,9 @@
     <string name="are_you_sure_you_want_to_delete_this_review">Are you sure you want to delete this review?</string>
     <string name="post_review">Post Review</string>
     <string name="are_you_sure_you_want_to_post_this_review">Are you sure you want to post this review?</string>
+    <string name="trailers">Trailers</string>
+    <string name="trailer">Trailer</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="watch_this_trailer_in_the_browser_or_the_appropriate_app">Watch this trailer in the browser or the appropriate app?</string>
+    <string name="watch">Watch</string>
 </resources>

@@ -16,9 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.zen.alchan.ui.browse.reviews.editor.ReviewEditorActivity"></activity>
+        <activity android:name=".ui.browse.reviews.editor.ReviewEditorActivity" />
         <activity android:name=".ui.calendar.CalendarActivity" />
-
         <service
             android:name=".notifications.PushNotificationsService"
             android:permission="android.permission.BIND_JOB_SERVICE" />

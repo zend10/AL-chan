@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.data.response.MediaTagCollection
 import type.*
@@ -39,6 +40,7 @@ interface MediaRepository {
     val deleteReviewResponse: LiveData<Resource<Boolean>>
 
     val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
+    val animeVideoLiveData: LiveData<Resource<AnimeVideo>>
 
     val triggerMediaCharacter: LiveData<Boolean>
     val triggerMediaStaff: LiveData<Boolean>
@@ -70,6 +72,7 @@ interface MediaRepository {
     fun deleteReview(id: Int)
 
     fun getMangaDetails(malId: Int)
+    fun getAnimeVideos(malId: Int)
 
     fun triggerRefreshMediaChildren()
 }

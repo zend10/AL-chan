@@ -11,16 +11,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
+import com.zen.alchan.data.response.AnimePromo
+import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.BrowsePage
-import com.zen.alchan.helper.enums.MediaPage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.*
@@ -30,16 +29,12 @@ import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.BrowseActivity
-import com.zen.alchan.ui.browse.character.CharacterFragment
 import com.zen.alchan.ui.browse.media.MediaFragment
-import com.zen.alchan.ui.browse.studio.StudioFragment
 import com.zen.alchan.ui.explore.ExploreActivity
-import com.zen.alchan.ui.filter.MediaFilterActivity
 import kotlinx.android.synthetic.main.fragment_media_overview.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
-import type.StaffLanguage
 
 /**
  * A simple [Fragment] subclass.
@@ -76,6 +71,7 @@ class MediaOverviewFragment : BaseFragment() {
                     mediaData = it.data?.media
                     initLayout()
                     viewModel.getMangaPublisher()
+                    viewModel.getAnimeVideos()
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
@@ -88,6 +84,12 @@ class MediaOverviewFragment : BaseFragment() {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
                 viewModel.mangaDetails = it.data
                 handleStudios()
+            }
+        })
+
+        viewModel.animeVideoLiveData.observe(viewLifecycleOwner, Observer {
+            if (it.responseStatus == ResponseStatus.SUCCESS) {
+                handleTrailers(it.data?.promo)
             }
         })
 
@@ -110,6 +112,7 @@ class MediaOverviewFragment : BaseFragment() {
         handleTags()
         handleRelations()
         handleRecommendations()
+        handleTrailers(null)
         handleLinks()
     }
 
@@ -398,6 +401,38 @@ class MediaOverviewFragment : BaseFragment() {
         }
     }
 
+    private fun handleTrailers(malVideos: List<AnimePromo>?) {
+        if (viewModel.trailersList.isNullOrEmpty() && mediaData?.trailer != null) {
+            viewModel.trailersList.add(
+                MediaTrailer(
+                    getString(R.string.trailer),
+                    if (mediaData?.trailer?.site == "dailymotion") "https://www.dailymotion.com/video/${mediaData?.trailer?.id}" else "https://www.youtube.com/watch?v=${mediaData?.trailer?.id}",
+                    mediaData?.trailer?.thumbnail ?: ""
+                )
+            )
+        }
+
+        // <= 1 because wouldn't want duplicate entry
+        if (viewModel.trailersList.size <= 1) {
+            malVideos?.forEach {
+                viewModel.trailersList.add(
+                    MediaTrailer(
+                        it.title,
+                        it.videoUrl,
+                        it.imageUrl
+                    )
+                )
+            }
+        }
+
+        if (!viewModel.trailersList.isNullOrEmpty()) {
+            mediaTrailersRecyclerView.adapter = assignTrailersAdapter()
+            mediaTrailersLayout.visibility = View.VISIBLE
+        } else {
+            mediaTrailersLayout.visibility = View.GONE
+        }
+    }
+
     private fun handleLinks() {
         if (viewModel.linksList.isNullOrEmpty()) {
             mediaData?.externalLinks?.forEach {
@@ -462,12 +497,35 @@ class MediaOverviewFragment : BaseFragment() {
         })
     }
 
+    private fun assignTrailersAdapter(): OverviewTrailersRvAdapter {
+        val metrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        val width = (metrics.widthPixels / 1.3).toInt()
+        return OverviewTrailersRvAdapter(activity!!, viewModel.trailersList, width, object : OverviewTrailersRvAdapter.OverviewTrailersListener {
+            override fun playTrailer(site: String) {
+                CustomTabsIntent.Builder()
+                    .build()
+                    .launchUrl(activity!!, Uri.parse(site))
+            }
+        })
+    }
+
     private fun assignLinksAdapter(): OverviewLinksRvAdapter {
         return OverviewLinksRvAdapter(activity!!, viewModel.linksList, object : OverviewLinksRvAdapter.OverviewLinksListener {
             override fun openUrl(url: String) {
-                CustomTabsIntent.Builder()
-                    .build()
-                    .launchUrl(activity!!, Uri.parse(url))
+                DialogUtility.showOptionDialog(
+                    requireActivity(),
+                    R.string.watch_trailer,
+                    R.string.watch_this_trailer_in_the_browser_or_the_appropriate_app,
+                    R.string.watch,
+                    {
+                        CustomTabsIntent.Builder()
+                            .build()
+                            .launchUrl(activity!!, Uri.parse(url))
+                    },
+                    R.string.cancel,
+                    { }
+                )
             }
 
             override fun copyUrl(url: String) {

@@ -1,6 +1,7 @@
 package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo.api.Response
+import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.data.response.MangaDetails
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -32,4 +33,5 @@ interface MediaDataSource {
     fun deleteReview(id: Int): Completable
 
     fun getMangaDetails(malId: Int): Call<MangaDetails>
+    fun getAnimeVideos(malId: Int): Call<AnimeVideo>
 }

@@ -1,5 +1,6 @@
 package com.zen.alchan.data.network
 
+import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.helper.Constant
 import okhttp3.OkHttpClient
@@ -14,6 +15,9 @@ interface JikanRestService {
 
     @GET("manga/{malId}")
     fun getMangaDetails(@Path("malId") malId: Int): Call<MangaDetails>
+
+    @GET("anime/{malId}/videos")
+    fun getAnimeVideos(@Path("malId") malId: Int): Call<AnimeVideo>
 
     companion object {
         operator fun invoke(): JikanRestService {

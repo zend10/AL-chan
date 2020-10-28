@@ -18,6 +18,7 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
     var showSpoiler = false
     var relationsList = ArrayList<MediaRelations>()
     var recommendationsList = ArrayList<MediaRecommendations>()
+    var trailersList = ArrayList<MediaTrailer>()
     var linksList = ArrayList<MediaLinks>()
 
     var mangaDetails: MangaDetails? = null
@@ -30,6 +31,10 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
         mediaRepository.mangaDetailsLiveData
     }
 
+    val animeVideoLiveData by lazy {
+        mediaRepository.animeVideoLiveData
+    }
+
     fun getMediaOverview() {
         if (mediaId != null) mediaRepository.getMediaOverview(mediaId!!)
     }
@@ -37,6 +42,12 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
     fun getMangaPublisher() {
         if (mediaId != null && mediaData?.type == MediaType.MANGA && mediaData?.idMal != null) {
             mediaRepository.getMangaDetails(mediaData?.idMal!!)
+        }
+    }
+
+    fun getAnimeVideos() {
+        if (mediaId != null && mediaData?.type == MediaType.ANIME && mediaData?.idMal != null) {
+            mediaRepository.getAnimeVideos(mediaData?.idMal!!)
         }
     }
 }
