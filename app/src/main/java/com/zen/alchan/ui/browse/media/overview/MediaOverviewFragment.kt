@@ -503,16 +503,6 @@ class MediaOverviewFragment : BaseFragment() {
         val width = (metrics.widthPixels / 1.3).toInt()
         return OverviewTrailersRvAdapter(activity!!, viewModel.trailersList, width, object : OverviewTrailersRvAdapter.OverviewTrailersListener {
             override fun playTrailer(site: String) {
-                CustomTabsIntent.Builder()
-                    .build()
-                    .launchUrl(activity!!, Uri.parse(site))
-            }
-        })
-    }
-
-    private fun assignLinksAdapter(): OverviewLinksRvAdapter {
-        return OverviewLinksRvAdapter(activity!!, viewModel.linksList, object : OverviewLinksRvAdapter.OverviewLinksListener {
-            override fun openUrl(url: String) {
                 DialogUtility.showOptionDialog(
                     requireActivity(),
                     R.string.watch_trailer,
@@ -521,11 +511,21 @@ class MediaOverviewFragment : BaseFragment() {
                     {
                         CustomTabsIntent.Builder()
                             .build()
-                            .launchUrl(activity!!, Uri.parse(url))
+                            .launchUrl(activity!!, Uri.parse(site))
                     },
                     R.string.cancel,
                     { }
                 )
+            }
+        })
+    }
+
+    private fun assignLinksAdapter(): OverviewLinksRvAdapter {
+        return OverviewLinksRvAdapter(activity!!, viewModel.linksList, object : OverviewLinksRvAdapter.OverviewLinksListener {
+            override fun openUrl(url: String) {
+                CustomTabsIntent.Builder()
+                    .build()
+                    .launchUrl(activity!!, Uri.parse(url))
             }
 
             override fun copyUrl(url: String) {

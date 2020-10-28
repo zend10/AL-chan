@@ -271,21 +271,11 @@ class MangaListEditorActivity : BaseActivity() {
                     return@setOnClickListener
                 }
 
-                DialogUtility.showOptionDialog(
-                    this,
-                    R.string.open_media_page,
-                    getString(R.string.do_you_want_to_open_a_page, mediaList.media?.title?.userPreferred),
-                    R.string.open,
-                    {
-                        val intent = Intent(this, BrowseActivity::class.java)
-                        intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.MANGA.name)
-                        intent.putExtra(BrowseActivity.LOAD_ID, mediaList.media?.id)
-                        startActivity(intent)
-                        finish()
-                    },
-                    R.string.cancel,
-                    { }
-                )
+                val intent = Intent(this, BrowseActivity::class.java)
+                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.MANGA.name)
+                intent.putExtra(BrowseActivity.LOAD_ID, mediaList.media?.id)
+                startActivity(intent)
+                finish()
             }
         }
 

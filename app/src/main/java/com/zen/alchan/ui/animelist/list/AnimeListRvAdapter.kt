@@ -124,6 +124,10 @@ class AnimeListRvAdapter(private val context: Context,
             listener.openBrowsePage(mediaList.media!!)
         }
 
+        holder.animeCoverImage.setOnClickListener {
+            listener.openBrowsePage(mediaList.media!!)
+        }
+
         holder.itemView.setOnLongClickListener {
             if (listStyle?.longPressViewDetail == true) {
                 listener.showDetail(mediaList.id)
