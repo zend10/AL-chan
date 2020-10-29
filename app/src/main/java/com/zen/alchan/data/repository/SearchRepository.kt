@@ -25,6 +25,7 @@ interface SearchRepository {
     val seasonalAnimeOthersData: LiveData<List<SeasonalAnime>>
 
     val airingScheduleResponse: LiveData<Resource<AiringScheduleQuery.Data>>
+    val filteredAiringSchedule: LiveData<List<AiringScheduleQuery.AiringSchedule>>
 
     fun searchAnime(
         page: Int,
@@ -55,4 +56,5 @@ interface SearchRepository {
     )
 
     fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int)
+    fun setFilteredAiringSchedule(list: List<AiringScheduleQuery.AiringSchedule>)
 }

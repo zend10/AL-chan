@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.viewpager.widget.ViewPager
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
 import com.zen.alchan.helper.enums.BrowsePage
@@ -24,7 +25,8 @@ class CalendarActivity : BaseActivity() {
     private val viewModel by viewModel<CalendarViewModel>()
 
     private lateinit var dateAdapter: CalendarDateRvAdapter
-    private lateinit var scheduleAdapter: CalendarScheduleRvAdapter
+    private lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
+//    private lateinit var scheduleAdapter: CalendarScheduleRvAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,21 +65,18 @@ class CalendarActivity : BaseActivity() {
                         viewModel.getAiringSchedule()
                     } else {
                         loadingLayout.visibility = View.GONE
-                        assignScheduleAdapter()
+                        viewModel.filterList()
                     }
                 }
                 ResponseStatus.ERROR -> {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(this, it.message)
-                    assignScheduleAdapter()
                 }
             }
         })
 
         if (!viewModel.isInit) {
             viewModel.getAiringSchedule()
-        } else {
-            assignScheduleAdapter()
         }
     }
 
@@ -88,11 +87,34 @@ class CalendarActivity : BaseActivity() {
             dateAdapter = assignDateAdapter()
             dateRecyclerView.adapter = dateAdapter
 
+            viewModel.currentPosition = 0
+            handleDate(viewModel.currentPosition)
+
             viewModel.scheduleList.clear()
             viewModel.hasNextPage = true
             viewModel.page = 1
             viewModel.getAiringSchedule()
         }
+
+        calendarViewPagerAdapter = CalendarViewPagerAdapter(supportFragmentManager, viewModel.dateList)
+        calendarViewPager.adapter = calendarViewPagerAdapter
+        calendarViewPager.offscreenPageLimit = calendarViewPagerAdapter.count
+
+        calendarViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageSelected(position: Int) {
+                handleDate(position)
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) { }
+
+            override fun onPageScrollStateChanged(state: Int) { }
+        })
+
+        handleDate(viewModel.currentPosition)
     }
 
     private fun assignDateAdapter(): CalendarDateRvAdapter {
@@ -100,34 +122,17 @@ class CalendarActivity : BaseActivity() {
 
         return CalendarDateRvAdapter(this, viewModel.dateList, object : CalendarDateRvAdapter.CalendarDateListener {
             override fun passSelectedDate(position: Int) {
-                viewModel.dateList.forEach { it.isSelected = false }
-                viewModel.dateList[position].isSelected = true
-                dateAdapter.notifyDataSetChanged()
-                assignScheduleAdapter()
+                handleDate(position)
             }
         })
     }
 
-    private fun assignScheduleAdapter() {
-        viewModel.filterList()
+    private fun handleDate(position: Int) {
+        viewModel.dateList.forEach { it.isSelected = false }
+        viewModel.dateList[position].isSelected = true
+        dateAdapter.notifyDataSetChanged()
 
-        scheduleAdapter = CalendarScheduleRvAdapter(this, viewModel.filteredList, object : CalendarScheduleRvAdapter.CalendarScheduleListener {
-            override fun openMedia(id: Int) {
-                val intent = Intent(this@CalendarActivity, BrowseActivity::class.java)
-                intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ANIME.name)
-                intent.putExtra(BrowseActivity.LOAD_ID, id)
-                startActivity(intent)
-            }
-        })
-        scheduleRecyclerView.adapter = scheduleAdapter
-
-        if (viewModel.filteredList.isNullOrEmpty()) {
-            scheduleRecyclerView.visibility = View.GONE
-            emptyLayout.visibility = View.VISIBLE
-        } else {
-            scheduleRecyclerView.visibility = View.VISIBLE
-            emptyLayout.visibility = View.GONE
-        }
+        calendarViewPager.currentItem = position
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -147,7 +152,8 @@ class CalendarActivity : BaseActivity() {
                     viewModel.showOnlyOnWatchingAndPlanning = showOnlyInList
                     viewModel.showOnlyCurrentSeason = showOnlyCurrentSeason
                     viewModel.showAdult = showAdultContent
-                    assignScheduleAdapter()
+
+                    viewModel.filterList()
                 }
             })
 

@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.datasource.SearchDataSource
 import com.zen.alchan.data.network.Converter
@@ -76,6 +77,10 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
     private val _airingScheduleResponse = SingleLiveEvent<Resource<AiringScheduleQuery.Data>>()
     override val airingScheduleResponse: LiveData<Resource<AiringScheduleQuery.Data>>
         get() = _airingScheduleResponse
+
+    private val _filteredAiringSchedule = MutableLiveData<List<AiringScheduleQuery.AiringSchedule>>()
+    override val filteredAiringSchedule: LiveData<List<AiringScheduleQuery.AiringSchedule>>
+        get() = _filteredAiringSchedule
 
     @SuppressLint("CheckResult")
     override fun searchAnime(
@@ -244,5 +249,9 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
     override fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int) {
         _airingScheduleResponse.postValue(Resource.Loading())
         searchDataSource.getAiringSchedule(page, airingAtGreater, airingAtLesser).subscribeWith(AndroidUtility.rxApolloCallback(_airingScheduleResponse))
+    }
+
+    override fun setFilteredAiringSchedule(list: List<AiringScheduleQuery.AiringSchedule>) {
+        _filteredAiringSchedule.postValue(list)
     }
 }

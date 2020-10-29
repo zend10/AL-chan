@@ -12,11 +12,12 @@ import kotlin.collections.ArrayList
 
 class CalendarViewModel(private val searchRepository: SearchRepository) : ViewModel() {
 
+    var currentPosition = 0
+
     var page = 1
     var hasNextPage = true
     var isInit = false
     var scheduleList = ArrayList<AiringScheduleQuery.AiringSchedule>()
-    var filteredList = ArrayList<AiringScheduleQuery.AiringSchedule>()
 
     var dateList = ArrayList<DateItem>()
 
@@ -54,14 +55,9 @@ class CalendarViewModel(private val searchRepository: SearchRepository) : ViewMo
     }
 
     fun filterList() {
-        filteredList.clear()
+        val filteredList = ArrayList<AiringScheduleQuery.AiringSchedule>()
 
-        val startDate = dateList.find { it.isSelected }?.dateTimestamp ?: dateList[0].dateTimestamp
-        val endDate = startDate + (24 * 3600 * 1000)
-
-        val tempList = scheduleList.filter { it.airingAt * 1000L in startDate until endDate }
-
-        tempList.forEach {
+        scheduleList.forEach {
             if (showOnlyOnWatchingAndPlanning && !(it.media?.mediaListEntry?.status == MediaListStatus.CURRENT || it.media?.mediaListEntry?.status == MediaListStatus.PLANNING)) {
                 return@forEach
             }
@@ -76,5 +72,7 @@ class CalendarViewModel(private val searchRepository: SearchRepository) : ViewMo
 
             filteredList.add(it)
         }
+
+        searchRepository.setFilteredAiringSchedule(filteredList)
     }
 }

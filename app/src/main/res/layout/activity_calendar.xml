@@ -26,19 +26,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <RelativeLayout
+            <com.zen.alchan.helper.libs.CustomViewPager
+                android:id="@+id/calendarViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/scheduleRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <include layout="@layout/layout_empty"/>
-
-            </RelativeLayout>
+                android:layout_height="match_parent"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
