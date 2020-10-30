@@ -1,10 +1,13 @@
 package com.zen.alchan.ui.browse.media.overview
 
 import androidx.lifecycle.ViewModel
+import com.zen.alchan.data.repository.InfoRepository
 import com.zen.alchan.data.repository.MediaRepository
+import com.zen.alchan.data.response.AnimeDetails
 import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.helper.pojo.*
 import type.MediaType
+import java.net.URLEncoder
 
 class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : ViewModel() {
 
@@ -21,10 +24,15 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
     var trailersList = ArrayList<MediaTrailer>()
     var linksList = ArrayList<MediaLinks>()
 
+    var animeDetails: AnimeDetails? = null
     var mangaDetails: MangaDetails? = null
 
     val mediaOverviewData by lazy {
         mediaRepository.mediaOverviewData
+    }
+
+    val animeDetailsLiveData by lazy {
+        mediaRepository.animeDetailsLiveData
     }
 
     val mangaDetailsLiveData by lazy {
@@ -35,8 +43,16 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
         mediaRepository.animeVideoLiveData
     }
 
+
+
     fun getMediaOverview() {
         if (mediaId != null) mediaRepository.getMediaOverview(mediaId!!)
+    }
+
+    fun getAnimeThemes() {
+        if (mediaId != null && mediaData?.type == MediaType.ANIME && mediaData?.idMal != null) {
+            mediaRepository.getAnimeDetails(mediaData?.idMal!!)
+        }
     }
 
     fun getMangaPublisher() {
@@ -50,4 +66,6 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
             mediaRepository.getAnimeVideos(mediaData?.idMal!!)
         }
     }
+
+
 }

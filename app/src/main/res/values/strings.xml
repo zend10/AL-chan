@@ -514,4 +514,11 @@
     <string name="watch_trailer">Watch Trailer</string>
     <string name="watch_this_trailer_in_the_browser_or_the_appropriate_app">Watch this trailer in the browser or the appropriate app?</string>
     <string name="watch">Watch</string>
+    <string name="opening_themes">Opening Themes</string>
+    <string name="ending_themes">Ending Themes</string>
+    <string name="this_app_has_no_affiliation_with_above_players_and_can_end_up_opening_the_wrong_track">AL-chan has no affiliation with the above players and can end up opening the wrong track.</string>
+    <string name="play_on_youtube">Play on YouTube</string>
+    <string name="play_on_spotify">Play on Spotify</string>
+    <string name="sorry_failed_to_find_this_song_on_youtube">Sorry, AL-chan failed to find this song on YouTube :(</string>
+    <string name="select_player">Select Player</string>
 </resources>

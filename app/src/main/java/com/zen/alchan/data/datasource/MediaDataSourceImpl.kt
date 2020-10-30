@@ -25,6 +25,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.zen.alchan.data.network.ApolloHandler
 import com.zen.alchan.data.network.JikanRestService
+import com.zen.alchan.data.response.AnimeDetails
 import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.data.response.MangaDetails
 import io.reactivex.Completable
@@ -245,6 +246,10 @@ class MediaDataSourceImpl(private val apolloHandler: ApolloHandler,
         return Rx2Apollo.from(mutationCall)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getAnimeDetails(malId: Int): Call<AnimeDetails> {
+        return jikanRestService.getAnimeDetails(malId)
     }
 
     override fun getMangaDetails(malId: Int): Call<MangaDetails> {

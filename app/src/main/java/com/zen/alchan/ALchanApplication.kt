@@ -36,6 +36,7 @@ import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
 import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.browse.BrowseViewModel
+import com.zen.alchan.ui.browse.media.overview.ThemesPlayerViewModel
 import com.zen.alchan.ui.browse.reviews.editor.ReviewEditorViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
 import com.zen.alchan.ui.browse.user.UserViewModel
@@ -92,6 +93,7 @@ class ALchanApplication : Application() {
         single { ApolloHandler(get()) }
         single { GithubRestService() }
         single { JikanRestService() }
+        single { YouTubeRestService() }
 
         // AniList GraphQL data source
         single<UserDataSource> { UserDataSourceImpl(get()) }
@@ -103,7 +105,7 @@ class ALchanApplication : Application() {
         single<SocialDataSource> { SocialDataSourceImpl(get()) }
 
         // REST API data source
-        single<InfoDataSource> { InfoDataSourceImpl(get()) }
+        single<InfoDataSource> { InfoDataSourceImpl(get(), get()) }
 
         // AniList GraphQL repository
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
@@ -164,6 +166,7 @@ class ALchanApplication : Application() {
         // browse media
         viewModel { MediaViewModel(get(), get()) }
         viewModel { MediaOverviewViewModel(get()) }
+        viewModel { ThemesPlayerViewModel(get())}
         viewModel { MediaCharactersViewModel(get(), get()) }
         viewModel { MediaStaffsViewModel(get()) }
         viewModel { MediaStatsViewModel(get(), get(), gson) }

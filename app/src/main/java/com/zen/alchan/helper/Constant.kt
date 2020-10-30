@@ -28,6 +28,8 @@ object Constant {
     const val ALCHAN_THREAD_URL = "${ANILIST_URL}forum/thread/12889"
 
     const val JIKAN_URL = "https://api.jikan.moe/v3/"
+    const val YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/"
+    const val SPOTIFY_API_URL = "https://api.spotify.com/v1/"
 
     const val RAW_GITHUB_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/"
     const val VIDEO_THUMBNAIL_URL = "${RAW_GITHUB_URL}docs/images/video_thumbnail.png"

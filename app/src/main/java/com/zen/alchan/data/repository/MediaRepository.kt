@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import androidx.lifecycle.LiveData
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.data.response.AnimeDetails
 import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.data.response.MangaDetails
 import com.zen.alchan.data.response.MediaTagCollection
@@ -39,6 +40,7 @@ interface MediaRepository {
     val saveReviewResponse: LiveData<Resource<SaveReviewMutation.Data>>
     val deleteReviewResponse: LiveData<Resource<Boolean>>
 
+    val animeDetailsLiveData: LiveData<Resource<AnimeDetails>>
     val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
     val animeVideoLiveData: LiveData<Resource<AnimeVideo>>
 
@@ -71,6 +73,7 @@ interface MediaRepository {
     fun saveReview(id: Int?, mediaId: Int, body: String, summary: String, score: Int, private: Boolean)
     fun deleteReview(id: Int)
 
+    fun getAnimeDetails(malId: Int)
     fun getMangaDetails(malId: Int)
     fun getAnimeVideos(malId: Int)
 

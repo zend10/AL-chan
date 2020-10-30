@@ -706,6 +706,60 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:visibility="gone"
+                android:id="@+id/mediaOpeningThemesLayout"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/opening_themes"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mediaOpeningThemesRecyclerView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/mediaEndingThemesLayout"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/marginPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/ending_themes"
+                    style="?themeRegularBoldFont"
+                    android:layout_marginBottom="@dimen/marginNormal"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mediaEndingThemesRecyclerView"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginStart="@dimen/marginPage"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
                 android:id="@+id/mediaRelationsLayout"
                 android:orientation="vertical"
                 android:layout_marginBottom="@dimen/marginPage"

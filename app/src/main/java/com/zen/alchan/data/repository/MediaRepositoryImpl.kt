@@ -9,10 +9,7 @@ import com.zen.alchan.data.localstorage.MediaManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
-import com.zen.alchan.data.response.AnimeVideo
-import com.zen.alchan.data.response.MangaDetails
-import com.zen.alchan.data.response.MediaTagCollection
-import com.zen.alchan.data.response.SeasonalAnime
+import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.enums.SeasonalCategory
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaCharacters
@@ -121,6 +118,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     private val _deleteReviewResponse = SingleLiveEvent<Resource<Boolean>>()
     override val deleteReviewResponse: LiveData<Resource<Boolean>>
         get() = _deleteReviewResponse
+
+    private val _animeDetailsLiveData = SingleLiveEvent<Resource<AnimeDetails>>()
+    override val animeDetailsLiveData: LiveData<Resource<AnimeDetails>>
+        get() = _animeDetailsLiveData
 
     private val _mangaDetailsLiveData = SingleLiveEvent<Resource<MangaDetails>>()
     override val mangaDetailsLiveData: LiveData<Resource<MangaDetails>>
@@ -327,6 +328,10 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                 _deleteReviewResponse.postValue(Resource.Error(e.localizedMessage))
             }
         })
+    }
+
+    override fun getAnimeDetails(malId: Int) {
+        mediaDataSource.getAnimeDetails(malId).enqueue(AndroidUtility.apiCallback(_animeDetailsLiveData))
     }
 
     override fun getMangaDetails(malId: Int) {

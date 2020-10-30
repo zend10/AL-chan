@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.fragment_media_overview.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
+import java.net.URLEncoder
 
 /**
  * A simple [Fragment] subclass.
@@ -70,6 +71,7 @@ class MediaOverviewFragment : BaseFragment() {
                     viewModel.mediaData = it.data?.media
                     mediaData = it.data?.media
                     initLayout()
+                    viewModel.getAnimeThemes()
                     viewModel.getMangaPublisher()
                     viewModel.getAnimeVideos()
                 }
@@ -77,6 +79,13 @@ class MediaOverviewFragment : BaseFragment() {
                     loadingLayout.visibility = View.GONE
                     DialogUtility.showToast(activity, it.message)
                 }
+            }
+        })
+
+        viewModel.animeDetailsLiveData.observe(viewLifecycleOwner, Observer {
+            if (it.responseStatus == ResponseStatus.SUCCESS) {
+                viewModel.animeDetails = it.data
+                handleThemes()
             }
         })
 
@@ -110,6 +119,7 @@ class MediaOverviewFragment : BaseFragment() {
         handleStudios()
         handleStats()
         handleTags()
+        handleThemes()
         handleRelations()
         handleRecommendations()
         handleTrailers(null)
@@ -345,6 +355,38 @@ class MediaOverviewFragment : BaseFragment() {
         } else {
             mediaTagsShowSpoilerText.visibility = View.GONE
         }
+    }
+
+    private fun handleThemes() {
+        mediaOpeningThemesLayout.visibility = View.GONE
+        mediaEndingThemesLayout.visibility = View.GONE
+
+        if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
+            mediaOpeningThemesLayout.visibility = View.VISIBLE
+            mediaOpeningThemesRecyclerView.adapter = OverviewThemesRvAdapter(viewModel.animeDetails?.openingThemes ?: listOf(), object : OverviewThemesRvAdapter.OverviewThemeListener {
+                override fun passSelectedTheme(title: String) {
+                    openThemesPlayerDialog(title)
+                }
+            })
+        }
+
+        if (viewModel.animeDetails?.endingThemes?.isNullOrEmpty() == false) {
+            mediaEndingThemesLayout.visibility = View.VISIBLE
+            mediaEndingThemesRecyclerView.adapter = OverviewThemesRvAdapter(viewModel.animeDetails?.endingThemes ?: listOf(), object : OverviewThemesRvAdapter.OverviewThemeListener {
+                override fun passSelectedTheme(title: String) {
+                    openThemesPlayerDialog(title)
+                }
+            })
+        }
+    }
+
+    private fun openThemesPlayerDialog(title: String) {
+        val dialog = ThemesPlayerDialog()
+        val bundle = Bundle()
+        bundle.putString(ThemesPlayerDialog.MEDIA_TITLE, viewModel.mediaData?.title?.romaji)
+        bundle.putString(ThemesPlayerDialog.TRACK_TITLE, title)
+        dialog.arguments = bundle
+        dialog.show(childFragmentManager, null)
     }
 
     private fun handleRelations() {
