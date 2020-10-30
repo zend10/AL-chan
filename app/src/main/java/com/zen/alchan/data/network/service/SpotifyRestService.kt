@@ -1,5 +1,8 @@
-package com.zen.alchan.data.network
+package com.zen.alchan.data.network.service
 
+import com.zen.alchan.data.network.header.SpotifyAuthHeaderInterceptor
+import com.zen.alchan.data.network.header.SpotifyAuthHeaderInterceptorImpl
+import com.zen.alchan.data.network.header.SpotifyHeaderInterceptor
 import com.zen.alchan.data.response.SpotifySearch
 import com.zen.alchan.helper.Constant
 import okhttp3.OkHttpClient
@@ -20,8 +23,9 @@ interface SpotifyRestService {
     ): Call<SpotifySearch>
 
     companion object {
-        operator fun invoke(): SpotifyRestService {
+        operator fun invoke(spotifyHeaderInterceptor: SpotifyHeaderInterceptor): SpotifyRestService {
             val okHttpClient = OkHttpClient.Builder()
+                .addNetworkInterceptor(spotifyHeaderInterceptor)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)

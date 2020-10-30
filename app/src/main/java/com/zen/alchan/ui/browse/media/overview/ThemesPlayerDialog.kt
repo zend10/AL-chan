@@ -39,7 +39,7 @@ class ThemesPlayerDialog : DialogFragment() {
         }
 
         dialogView.playOnSpotifyLayout.setOnClickListener {
-
+            viewModel.getSpotifyTrack()
         }
 
         builder.setView(dialogView)
@@ -63,6 +63,29 @@ class ThemesPlayerDialog : DialogFragment() {
                             .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=${it.data?.items!![0].id.videoId}"))
                     } else {
                         DialogUtility.showToast(activity, R.string.sorry_failed_to_find_this_song_on_youtube)
+                    }
+                }
+                ResponseStatus.ERROR -> {
+                    dialogView.themesPlayerLoadingLayout.visibility = View.GONE
+                    DialogUtility.showToast(activity, it.message)
+                }
+            }
+        })
+
+        viewModel.spotifyTrackResponse.observe(this, Observer {
+            when (it.responseStatus) {
+                ResponseStatus.LOADING -> {
+                    dialogView.themesPlayerLoadingLayout.visibility = View.VISIBLE
+                }
+                ResponseStatus.SUCCESS -> {
+                    dialogView.themesPlayerLoadingLayout.visibility = View.GONE
+                    if (!it.data?.tracks?.items.isNullOrEmpty()) {
+                        dismiss()
+                        CustomTabsIntent.Builder()
+                            .build()
+                            .launchUrl(requireActivity(), Uri.parse(it.data?.tracks?.items!![0].externalUrls.spotify))
+                    } else {
+                        DialogUtility.showToast(activity, R.string.sorry_failed_to_find_this_song_on_spotify)
                     }
                 }
                 ResponseStatus.ERROR -> {

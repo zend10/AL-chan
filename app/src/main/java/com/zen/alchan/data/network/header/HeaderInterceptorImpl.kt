@@ -1,10 +1,11 @@
-package com.zen.alchan.data.network
+package com.zen.alchan.data.network.header
 
 import com.zen.alchan.data.localstorage.LocalStorage
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HeaderInterceptorImpl(private val localStorage: LocalStorage) : HeaderInterceptor {
+class HeaderInterceptorImpl(private val localStorage: LocalStorage) :
+    HeaderInterceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         proceed(

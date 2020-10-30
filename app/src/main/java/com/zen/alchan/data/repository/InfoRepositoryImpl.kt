@@ -7,14 +7,22 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.zen.alchan.data.datasource.InfoDataSource
 import com.zen.alchan.data.localstorage.InfoManager
+import com.zen.alchan.data.localstorage.TempStorageManager
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.data.response.Announcement
+import com.zen.alchan.data.response.SpotifyAccessToken
+import com.zen.alchan.data.response.SpotifySearch
 import com.zen.alchan.data.response.YouTubeSearch
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.Utility
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class InfoRepositoryImpl(private val infoDataSource: InfoDataSource,
-                         private val infoManager: InfoManager) : InfoRepository {
+                         private val infoManager: InfoManager,
+                         private val tempStorageManager: TempStorageManager) : InfoRepository {
 
     private val _announcementResponse = SingleLiveEvent<Resource<Announcement>>()
     override val announcementResponse: LiveData<Resource<Announcement>>
@@ -27,7 +35,9 @@ class InfoRepositoryImpl(private val infoDataSource: InfoDataSource,
     override val youTubeVideoResponse: LiveData<Resource<YouTubeSearch>>
         get() = _youTubeVideoResponse
 
-    private var youtubeKey: String? = null
+    private val _spotifyTrackResponse = SingleLiveEvent<Resource<SpotifySearch>>()
+    override val spotifyTrackResponse: LiveData<Resource<SpotifySearch>>
+        get() = _spotifyTrackResponse
 
     override fun getAnnouncement() {
         infoDataSource.getAnnouncement().enqueue(AndroidUtility.apiCallback(_announcementResponse))
@@ -40,12 +50,12 @@ class InfoRepositoryImpl(private val infoDataSource: InfoDataSource,
     override fun getYouTubeVideo(query: String) {
         _youTubeVideoResponse.postValue(Resource.Loading())
 
-        if (youtubeKey == null) {
+        if (tempStorageManager.youtubeKey == null) {
             val ref = FirebaseDatabase.getInstance().getReference("keys")
             ref.child("youtube").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    youtubeKey = snapshot.value as String
-                    infoDataSource.getYouTubeVideo(youtubeKey ?: "", query).enqueue(AndroidUtility.apiCallback(_youTubeVideoResponse))
+                    tempStorageManager.youtubeKey = snapshot.value as String
+                    infoDataSource.getYouTubeVideo(tempStorageManager.youtubeKey ?: "", query).enqueue(AndroidUtility.apiCallback(_youTubeVideoResponse))
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -53,7 +63,47 @@ class InfoRepositoryImpl(private val infoDataSource: InfoDataSource,
                 }
             })
         } else {
-            infoDataSource.getYouTubeVideo(youtubeKey ?: "", query).enqueue(AndroidUtility.apiCallback(_youTubeVideoResponse))
+            infoDataSource.getYouTubeVideo(tempStorageManager.youtubeKey ?: "", query).enqueue(AndroidUtility.apiCallback(_youTubeVideoResponse))
+        }
+    }
+
+    override fun getSpotifyTrack(query: String) {
+        _spotifyTrackResponse.postValue(Resource.Loading())
+
+        if (tempStorageManager.spotifyAccessToken == null || Utility.getCurrentTimestamp() > (tempStorageManager.spotifyAccessTokenLastRetrieve ?: 0) + 3600000) {
+            val ref = FirebaseDatabase.getInstance().getReference("keys")
+            ref.child("spotify").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    tempStorageManager.spotifyKey = snapshot.value as String
+
+                    infoDataSource.getSpotifyAccessToken().enqueue(object : Callback<SpotifyAccessToken> {
+                        override fun onResponse(
+                            call: Call<SpotifyAccessToken>,
+                            response: Response<SpotifyAccessToken>
+                        ) {
+                            if (response.isSuccessful) {
+                                val accessToken = response.body()
+                                tempStorageManager.spotifyAccessTokenLastRetrieve = Utility.getCurrentTimestamp()
+                                tempStorageManager.spotifyAccessToken = accessToken?.accessToken
+                                tempStorageManager.spotifyAccessTokenExpiresIn = accessToken?.expiresIn
+                                infoDataSource.getSpotifyTrack(query).enqueue(AndroidUtility.apiCallback(_spotifyTrackResponse))
+                            } else {
+                                _spotifyTrackResponse.postValue(Resource.Error(response.errorBody()?.string() ?: ""))
+                            }
+                        }
+
+                        override fun onFailure(call: Call<SpotifyAccessToken>, t: Throwable) {
+                            _spotifyTrackResponse.postValue(Resource.Error(t.localizedMessage ?: ""))
+                        }
+                    })
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    _spotifyTrackResponse.postValue(Resource.Error(error.message))
+                }
+            })
+        } else {
+            infoDataSource.getSpotifyTrack(query).enqueue(AndroidUtility.apiCallback(_spotifyTrackResponse))
         }
     }
 }

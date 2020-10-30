@@ -520,5 +520,6 @@
     <string name="play_on_youtube">Play on YouTube</string>
     <string name="play_on_spotify">Play on Spotify</string>
     <string name="sorry_failed_to_find_this_song_on_youtube">Sorry, AL-chan failed to find this song on YouTube :(</string>
+    <string name="sorry_failed_to_find_this_song_on_spotify">Sorry, AL-chan failed to find this song on Spotify :(</string>
     <string name="select_player">Select Player</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.zen.alchan.data.network
+package com.zen.alchan.data.network.service
 
 import com.zen.alchan.data.response.AnimeDetails
 import com.zen.alchan.data.response.AnimeVideo

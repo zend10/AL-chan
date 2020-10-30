@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.network.*
+import com.zen.alchan.data.network.header.*
+import com.zen.alchan.data.network.service.*
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.main.MainViewModel
@@ -88,12 +90,18 @@ class ALchanApplication : Application() {
         single<MediaManager> { MediaManagerImpl(get()) }
         single<ListStyleManager> { ListStyleManagerImpl(get()) }
         single<InfoManager> { InfoManagerImpl(get()) }
+        single<TempStorageManager> { TempStorageManagerImpl() }
 
         single<HeaderInterceptor> { HeaderInterceptorImpl(get()) }
+        single<SpotifyAuthHeaderInterceptor> { SpotifyAuthHeaderInterceptorImpl(get()) }
+        single<SpotifyHeaderInterceptor> { SpotifyHeaderInterceptorImpl(get()) }
+
         single { ApolloHandler(get()) }
         single { GithubRestService() }
         single { JikanRestService() }
         single { YouTubeRestService() }
+        single { SpotifyAuthRestService(get()) }
+        single { SpotifyRestService(get()) }
 
         // AniList GraphQL data source
         single<UserDataSource> { UserDataSourceImpl(get()) }
@@ -105,7 +113,7 @@ class ALchanApplication : Application() {
         single<SocialDataSource> { SocialDataSourceImpl(get()) }
 
         // REST API data source
-        single<InfoDataSource> { InfoDataSourceImpl(get(), get()) }
+        single<InfoDataSource> { InfoDataSourceImpl(get(), get(), get(), get()) }
 
         // AniList GraphQL repository
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
@@ -122,7 +130,7 @@ class ALchanApplication : Application() {
         single<SocialRepository> { SocialRepositoryImpl(get(), get()) }
 
         // REST API repository
-        single<InfoRepository> { InfoRepositoryImpl(get(), get()) }
+        single<InfoRepository> { InfoRepositoryImpl(get(), get(), get()) }
 
         // common
         viewModel { BaseViewModel(get()) }

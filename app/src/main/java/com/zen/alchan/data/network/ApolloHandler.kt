@@ -1,6 +1,7 @@
 package com.zen.alchan.data.network
 
 import com.apollographql.apollo.ApolloClient
+import com.zen.alchan.data.network.header.HeaderInterceptor
 import com.zen.alchan.helper.Constant
 import okhttp3.OkHttpClient
 import type.CustomType

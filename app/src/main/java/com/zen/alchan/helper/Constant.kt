@@ -29,6 +29,7 @@ object Constant {
 
     const val JIKAN_URL = "https://api.jikan.moe/v3/"
     const val YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/"
+    const val SPOTIFY_AUTH_API_URL = "https://accounts.spotify.com/api/"
     const val SPOTIFY_API_URL = "https://api.spotify.com/v1/"
 
     const val RAW_GITHUB_URL = "https://raw.githubusercontent.com/zend10/AL-chan/master/"
