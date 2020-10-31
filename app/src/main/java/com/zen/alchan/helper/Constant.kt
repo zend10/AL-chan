@@ -152,7 +152,7 @@ object Constant {
         Pair("anilist", Pair(R.drawable.ic_anilist, Color.parseColor("#324760"))),
         Pair("twitter", Pair(R.drawable.ic_twitter, Color.parseColor("#03A9F4"))),
         Pair("crunchyroll", Pair(R.drawable.ic_crunchyroll, Color.parseColor("#FF9100"))),
-        Pair("youtube", Pair(null, Color.parseColor("#FF0000"))),
+        Pair("youtube", Pair(R.drawable.ic_play_button, Color.parseColor("#FF0000"))),
         Pair("funimation", Pair(null, Color.parseColor("#452C8A"))),
         Pair("hidive", Pair(null, Color.parseColor("#03A8EB"))),
         Pair("vrv", Pair(null, Color.parseColor("#FEDD01"))),
