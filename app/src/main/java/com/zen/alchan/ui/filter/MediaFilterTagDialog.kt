@@ -40,7 +40,7 @@ class MediaFilterTagDialog : DialogFragment() {
             adapter.notifyDataSetChanged()
         }
 
-        adapter = MediaFilterTagRvAdapter(viewModel.filteredTagList, object : MediaFilterTagListener {
+        adapter = MediaFilterTagRvAdapter(requireActivity(), viewModel.filteredTagList, object : MediaFilterTagListener {
             override fun passSelectedTag(name: String) {
                 val findTag = viewModel.filteredTagList.find { it.name == name }
                 if (findTag != null) {
@@ -63,5 +63,5 @@ class MediaFilterTagDialog : DialogFragment() {
         listener = mediaFilterTagListener
     }
 
-    class MediaFilterTagItem(val name: String, val isCategory: Boolean, var isChecked: Boolean)
+    class MediaFilterTagItem(val name: String, val description: String?, val isCategory: Boolean, var isChecked: Boolean)
 }

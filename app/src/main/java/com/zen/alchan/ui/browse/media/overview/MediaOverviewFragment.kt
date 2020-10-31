@@ -334,6 +334,7 @@ class MediaOverviewFragment : BaseFragment() {
                     MediaTags(
                         it?.id!!,
                         it.name,
+                        it.description,
                         it.rank,
                         it.isGeneralSpoiler,
                         it.isMediaSpoiler,

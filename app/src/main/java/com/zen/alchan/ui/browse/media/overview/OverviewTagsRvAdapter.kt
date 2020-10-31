@@ -4,10 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.MediaTags
 import com.zen.alchan.helper.utils.AndroidUtility
+import com.zen.alchan.helper.utils.DialogUtility
+import kotlinx.android.synthetic.main.activity_customise_list.view.*
 import kotlinx.android.synthetic.main.list_media_tags.view.*
 
 class OverviewTagsRvAdapter(private val context: Context,
@@ -36,6 +39,11 @@ class OverviewTagsRvAdapter(private val context: Context,
         } else {
             holder.tagNameText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
             holder.tagRankText.setTextColor(AndroidUtility.getResValueFromRefAttr(context, R.attr.themePrimaryColor))
+        }
+
+        holder.itemView.setOnLongClickListener {
+            DialogUtility.showToast(context, item.description, Toast.LENGTH_LONG)
+            true
         }
     }
 

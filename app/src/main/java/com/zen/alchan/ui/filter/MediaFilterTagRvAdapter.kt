@@ -1,14 +1,18 @@
 package com.zen.alchan.ui.filter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.list_original_checkbox.view.*
 import kotlinx.android.synthetic.main.list_subtitle.view.*
 
-class MediaFilterTagRvAdapter(private val list: List<MediaFilterTagDialog.MediaFilterTagItem>,
+class MediaFilterTagRvAdapter(private val context: Context,
+                              private val list: List<MediaFilterTagDialog.MediaFilterTagItem>,
                               private val listener: MediaFilterTagListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,6 +38,10 @@ class MediaFilterTagRvAdapter(private val list: List<MediaFilterTagDialog.MediaF
             holder.itemCheckBox.isChecked = item.isChecked
             holder.itemCheckBox.setOnClickListener {
                 listener.passSelectedTag(item.name)
+            }
+            holder.itemCheckBox.setOnLongClickListener {
+                DialogUtility.showToast(context, item.description, Toast.LENGTH_LONG)
+                true
             }
         } else if (holder is CategoryViewHolder) {
             holder.subtitleText.text = item.name

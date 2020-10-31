@@ -53,6 +53,7 @@ query MediaOverviewQuery(
         tags {
             id
             name
+            description
             rank
             isGeneralSpoiler
             isMediaSpoiler

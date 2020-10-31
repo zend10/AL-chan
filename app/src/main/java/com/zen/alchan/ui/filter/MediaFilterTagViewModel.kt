@@ -19,12 +19,14 @@ class MediaFilterTagViewModel(private val mediaRepository: MediaRepository) : Vi
                 if (headerSet.add(it.category)) {
                     tagList.add(MediaFilterTagDialog.MediaFilterTagItem(
                         it.category,
+                        null,
                         isCategory = true,
                         isChecked = false
                     ))
                 }
                 tagList.add(MediaFilterTagDialog.MediaFilterTagItem(
                     it.name,
+                    it.description,
                     isCategory = false,
                     isChecked = selectedTags.contains(it.name)
                 ))
