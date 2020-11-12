@@ -16,7 +16,11 @@ class LoginActivity : BaseActivity(), BaseListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility = (
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        )
 
         if (supportFragmentManager.backStackEntryCount == 0) {
             changeFragment(WelcomeFragment(), false)

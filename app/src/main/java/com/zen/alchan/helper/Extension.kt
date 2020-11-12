@@ -8,13 +8,16 @@ import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
+import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.text.HtmlCompat
+import androidx.core.view.updatePadding
 import com.google.gson.reflect.TypeToken
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.pojo.InitialPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import java.math.BigDecimal
@@ -202,4 +205,26 @@ fun String?.handleSpoilerAndLink(context: Context, urlAction: (BrowsePage, Int) 
     }
 
     return spannableString
+}
+
+private fun recordInitialPadding(view: View) = InitialPadding(
+    view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom
+)
+
+fun View.doOnApplyWindowInsets(f: (View, WindowInsets, InitialPadding) -> Unit) {
+    val initialPadding = recordInitialPadding(this)
+    setOnApplyWindowInsetsListener { v, insets ->
+        f(v, insets, initialPadding)
+        insets
+    }
+    requestApplyInsets()
+}
+
+fun View.updateAllPadding(view: View, windowInsets: WindowInsets, initialPadding: InitialPadding) {
+    view.updatePadding(
+        left = initialPadding.left + windowInsets.systemWindowInsetLeft,
+        top = initialPadding.top + windowInsets.systemWindowInsetTop,
+        right = initialPadding.right + windowInsets.systemWindowInsetRight,
+        bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom
+    )
 }

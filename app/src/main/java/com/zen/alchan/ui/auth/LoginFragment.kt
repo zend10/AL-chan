@@ -13,15 +13,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.helper.updateAllPadding
 import com.zen.alchan.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_login.contentLayout
+import kotlinx.android.synthetic.main.fragment_welcome.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,6 +48,11 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        contentLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateAllPadding(view, windowInsets, initialPadding)
+        }
+
         initLayout()
         setupObserver()
 

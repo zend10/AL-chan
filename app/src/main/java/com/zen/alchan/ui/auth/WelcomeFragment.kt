@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.libs.GlideApp
+import com.zen.alchan.helper.updateAllPadding
 import com.zen.alchan.ui.base.BaseListener
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
@@ -39,6 +42,10 @@ class WelcomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        contentLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateAllPadding(view, windowInsets, initialPadding)
+        }
 
         GlideApp.with(this).load(R.drawable.welcome_background).into(welcomeBackgroundImage)
 
