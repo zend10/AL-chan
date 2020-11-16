@@ -23,8 +23,6 @@ import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.Review
-import com.zen.alchan.helper.updateAllPadding
-import com.zen.alchan.helper.updateSidePadding
 import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
@@ -71,21 +69,6 @@ class HomeFragment : Fragment() {
             view.updateTopPadding(windowInsets, initialPadding)
         }
 
-        applySidePadding(
-            listOf(
-                homeMenuLayout,
-                releasingTodayLayout,
-                trendingAnimeText,
-                trendingAnimeLayout,
-                trendingAnimeListRecyclerView,
-                trendingMangaText,
-                trendingMangaLayout,
-                trendingMangaListRecyclerView,
-                recentReviewsLabel,
-                recentReviewsLayout
-            )
-        )
-
         releasingTodayAdapter = assignReleasingTodayRvAdapter()
         releasingTodayRecyclerView.adapter = releasingTodayAdapter
 
@@ -107,14 +90,6 @@ class HomeFragment : Fragment() {
 
         setupObserver()
         initLayout()
-    }
-
-    private fun applySidePadding(list: List<View>) {
-        list.forEach {
-            it.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-                view.updateSidePadding(windowInsets, initialPadding)
-            }
-        }
     }
 
     private fun setupObserver() {

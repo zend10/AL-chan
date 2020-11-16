@@ -126,6 +126,8 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
+
+
     </application>
 
 </manifest>

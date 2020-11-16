@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.main
 
+import android.view.WindowInsets
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -8,6 +9,7 @@ import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.pojo.InitialPadding
 
 class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
                     private val userRepository: UserRepository

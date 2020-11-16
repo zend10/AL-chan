@@ -86,14 +86,6 @@ class AnimeListFragment : Fragment() {
             view.updateTopPadding(windowInsets, initialPadding)
         }
 
-        animeListRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateSidePadding(windowInsets, initialPadding)
-        }
-
-        animeListRearrangeLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateSidePadding(windowInsets, initialPadding)
-        }
-
         toolbarLayout.apply {
             title = getString(R.string.anime_list)
             inflateMenu(R.menu.menu_media_list)

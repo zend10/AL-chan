@@ -12,10 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.messaging.FirebaseMessaging
 import com.zen.alchan.R
-import com.zen.alchan.helper.doOnApplyWindowInsets
-import com.zen.alchan.helper.setFullScreen
-import com.zen.alchan.helper.updateAllPadding
-import com.zen.alchan.helper.updateBottomPadding
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.animelist.AnimeListFragment
@@ -48,8 +45,9 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
 
         setFullScreen()
 
-        mainBottomNavigation.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateBottomPadding(windowInsets, initialPadding)
+        mainLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+            mainBottomNavigation.updateBottomPadding(windowInsets, initialPadding)
         }
 
         if (intent.getBooleanExtra(GO_TO_NOTIFICATION, false)) {

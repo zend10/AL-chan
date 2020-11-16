@@ -241,11 +241,7 @@ fun View.updateTopPadding(windowInsets: WindowInsets, initialPadding: InitialPad
         windowInsets.systemWindowInsetLeft != 0 ||
         windowInsets.systemWindowInsetRight != 0
     ) {
-        updatePadding(
-            left = initialPadding.left + windowInsets.systemWindowInsetLeft,
-            top = initialPadding.top + windowInsets.systemWindowInsetTop,
-            right = initialPadding.right + windowInsets.systemWindowInsetRight
-        )
+        updatePadding(top = initialPadding.top + windowInsets.systemWindowInsetTop)
     }
 }
 
@@ -255,11 +251,7 @@ fun View.updateBottomPadding(windowInsets: WindowInsets, initialPadding: Initial
         windowInsets.systemWindowInsetLeft != 0 ||
         windowInsets.systemWindowInsetRight != 0
     ) {
-        updatePadding(
-            left = initialPadding.left + windowInsets.systemWindowInsetLeft,
-            right = initialPadding.right + windowInsets.systemWindowInsetRight,
-            bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom
-        )
+        updatePadding(bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom)
     }
 }
 
@@ -279,7 +271,7 @@ fun View.updateSidePadding(windowInsets: WindowInsets, initialPadding: InitialPa
 fun Activity.setFullScreen() {
     window.decorView.systemUiVisibility = (
         View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+//        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     )
 }

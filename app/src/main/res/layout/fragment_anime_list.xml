@@ -33,23 +33,16 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <RelativeLayout
-        android:id="@+id/animeListRearrangeLayout"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/animeListRearrangeButton"
+        android:src="@drawable/ic_rearrange"
+        app:tint="?themeBackgroundColor"
+        app:backgroundTint="?themeSecondaryColor"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:padding="@dimen/marginNormal"
+        android:layout_margin="@dimen/marginNormal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/animeListRearrangeButton"
-            android:src="@drawable/ic_rearrange"
-            app:tint="?themeBackgroundColor"
-            app:backgroundTint="?themeSecondaryColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"/>
 
     <include layout="@layout/layout_loading"/>
 

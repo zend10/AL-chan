@@ -88,14 +88,6 @@ class MangaListFragment : Fragment() {
             view.updateTopPadding(windowInsets, initialPadding)
         }
 
-        mangaListRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateSidePadding(windowInsets, initialPadding)
-        }
-
-        mangaListRearrangeLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateSidePadding(windowInsets, initialPadding)
-        }
-
         toolbarLayout.apply {
             title = getString(R.string.manga_list)
             inflateMenu(R.menu.menu_media_list)
