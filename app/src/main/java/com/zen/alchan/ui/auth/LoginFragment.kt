@@ -50,7 +50,7 @@ class LoginFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         contentLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateAllPadding(view, windowInsets, initialPadding)
+            view.updateAllPadding(windowInsets, initialPadding)
         }
 
         initLayout()

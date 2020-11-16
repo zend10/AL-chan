@@ -1,14 +1,21 @@
 package com.zen.alchan.ui.main
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.messaging.FirebaseMessaging
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
+import com.zen.alchan.helper.setFullScreen
+import com.zen.alchan.helper.updateAllPadding
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.animelist.AnimeListFragment
@@ -38,6 +45,12 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setFullScreen()
+
+        mainBottomNavigation.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         if (intent.getBooleanExtra(GO_TO_NOTIFICATION, false)) {
             // hate it but necessary because of SingleLiveEvent

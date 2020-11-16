@@ -11,16 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.Review
+import com.zen.alchan.helper.updateAllPadding
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.browse.BrowseActivity
@@ -62,6 +67,25 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        greetingsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
+
+        applySidePadding(
+            listOf(
+                homeMenuLayout,
+                releasingTodayLayout,
+                trendingAnimeText,
+                trendingAnimeLayout,
+                trendingAnimeListRecyclerView,
+                trendingMangaText,
+                trendingMangaLayout,
+                trendingMangaListRecyclerView,
+                recentReviewsLabel,
+                recentReviewsLayout
+            )
+        )
+
         releasingTodayAdapter = assignReleasingTodayRvAdapter()
         releasingTodayRecyclerView.adapter = releasingTodayAdapter
 
@@ -83,6 +107,14 @@ class HomeFragment : Fragment() {
 
         setupObserver()
         initLayout()
+    }
+
+    private fun applySidePadding(list: List<View>) {
+        list.forEach {
+            it.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+                view.updateSidePadding(windowInsets, initialPadding)
+            }
+        }
     }
 
     private fun setupObserver() {

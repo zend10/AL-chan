@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,6 +25,7 @@ import com.zen.alchan.R
 import com.zen.alchan.data.response.Media
 import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -31,6 +33,8 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.MediaListTabItem
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
@@ -77,6 +81,18 @@ class AnimeListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        toolbarLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
+
+        animeListRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        animeListRearrangeLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
 
         toolbarLayout.apply {
             title = getString(R.string.anime_list)
