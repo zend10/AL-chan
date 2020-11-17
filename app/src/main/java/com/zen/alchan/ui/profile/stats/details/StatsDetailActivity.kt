@@ -10,15 +10,12 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.CountryCode
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.enums.StatsCategory
 import com.zen.alchan.helper.pojo.UserStatsData
-import com.zen.alchan.helper.roundToOneDecimal
-import com.zen.alchan.helper.replaceUnderscore
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
@@ -43,6 +40,15 @@ class StatsDetailActivity : BaseActivity() {
         setContentView(R.layout.activity_stats_detail)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        statsDetailLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        statsRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {

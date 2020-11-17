@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.ui.browse.BrowseActivity
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_empty.*
@@ -35,6 +37,10 @@ class CalendarFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        scheduleRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         viewModel.startDate = arguments?.getLong(START_DATE) ?: 0
 

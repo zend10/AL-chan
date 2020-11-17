@@ -1,6 +1,5 @@
 package com.zen.alchan.ui.profile.favorites.reorder
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,10 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
-import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.libs.DragListener
 import com.zen.alchan.helper.libs.ItemMoveCallback
 import com.zen.alchan.helper.pojo.FavoriteItem
@@ -42,6 +40,15 @@ class ReorderFavoritesActivity : BaseActivity() {
         setContentView(R.layout.activity_reorder_favorites)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        reorderFavoritesLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        reorderFavoritesRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         if (intent.getStringExtra(FAVORITE_DATA) != null && viewModel.favoriteList.isNullOrEmpty()) {
             val favoriteItemList = viewModel.gson.fromJson<List<FavoriteItem>>(intent.getStringExtra(FAVORITE_DATA), genericType<List<FavoriteItem>>())

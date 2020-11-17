@@ -17,9 +17,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.DragListener
 import com.zen.alchan.helper.libs.ItemMoveCallback
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import kotlinx.android.synthetic.main.dialog_input.*
@@ -79,6 +81,10 @@ class ListSettingsFragment : Fragment() {
 
             inflateMenu(R.menu.menu_save)
             itemSave = menu.findItem(R.id.itemSave)
+        }
+
+        listSettingsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         setupObserver()

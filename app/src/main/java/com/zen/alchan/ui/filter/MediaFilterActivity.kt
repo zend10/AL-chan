@@ -9,10 +9,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.pojo.FilterRange
 import com.zen.alchan.helper.pojo.MediaFilterData
-import com.zen.alchan.helper.replaceUnderscore
+import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.common.filter.MediaFilterRvAdapter
 import kotlinx.android.synthetic.main.activity_media_filter.*
@@ -45,6 +45,17 @@ class MediaFilterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_filter)
+
+        changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        filterLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        filterFormLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         viewModel.mediaType = MediaType.valueOf(intent.getStringExtra(MEDIA_TYPE)!!)
         viewModel.isExplore = intent.getBooleanExtra(IS_EXPLORE, false)

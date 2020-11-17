@@ -14,6 +14,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/aboutLayout"
             android:orientation="vertical"
             android:padding="@dimen/marginPage"
             android:layout_width="match_parent"

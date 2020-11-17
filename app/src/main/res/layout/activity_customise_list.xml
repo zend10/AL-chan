@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customiseLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.common.customise.CustomiseListActivity">
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/customiseFormLayout"
             android:orientation="vertical"
             android:padding="@dimen/marginPage"
             android:layout_width="match_parent"

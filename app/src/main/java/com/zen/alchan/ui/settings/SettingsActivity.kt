@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.base.BaseActivity
@@ -19,6 +19,11 @@ class SettingsActivity : BaseActivity(), BaseListener {
         setContentView(R.layout.activity_settings)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        settingsFrameLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
 
         if (supportFragmentManager.backStackEntryCount == 0) {
             changeFragment(SettingsFragment(), false)

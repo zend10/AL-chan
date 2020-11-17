@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.notification.NotificationActivity">
@@ -51,6 +52,7 @@
                 android:id="@+id/notificationRecyclerView"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_below="@id/notificationTypeLayout"
+                android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

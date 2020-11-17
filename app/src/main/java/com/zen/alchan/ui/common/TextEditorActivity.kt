@@ -14,8 +14,10 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_spoiler.*
@@ -60,6 +62,17 @@ class TextEditorActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_text_editor)
+
+        changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        editorLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        editorFormatLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         viewModel.editorType = EditorType.valueOf(intent.getStringExtra(EDITOR_TYPE) ?: EditorType.ACTIVITY.name)
 

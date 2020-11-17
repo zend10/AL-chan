@@ -18,6 +18,8 @@ import com.zen.alchan.BuildConfig
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
+import com.zen.alchan.helper.updateBottomPadding
 import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
@@ -41,6 +43,10 @@ class AboutFragment : Fragment() {
             title = getString(R.string.about_al_chan)
             navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_left)
             setNavigationOnClickListener { activity?.onBackPressed() }
+        }
+
+        aboutLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         versionText.text = "Version ${BuildConfig.VERSION_NAME}"

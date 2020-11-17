@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -38,6 +38,15 @@ class NotificationActivity : BaseActivity() {
         setContentView(R.layout.activity_notification)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        notificationLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        notificationRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {

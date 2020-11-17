@@ -43,8 +43,6 @@ class MainActivity : BaseActivity(), BaseMainFragmentListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setFullScreen()
-
         mainLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
             view.updateSidePadding(windowInsets, initialPadding)
             mainBottomNavigation.updateBottomPadding(windowInsets, initialPadding)

@@ -18,11 +18,9 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.jaredrummler.android.colorpicker.ColorShape
 import com.zen.alchan.R
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.toAlphaHex
-import com.zen.alchan.helper.toHex
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
@@ -64,6 +62,15 @@ class CustomiseListActivity : BaseActivity() {
         }
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        customiseLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
+
+        customiseFormLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {

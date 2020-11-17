@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
-import com.zen.alchan.helper.pojo.BestFriend
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.bottomsheet_filter_global_activity.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

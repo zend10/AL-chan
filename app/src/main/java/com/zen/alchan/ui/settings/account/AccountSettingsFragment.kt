@@ -14,6 +14,8 @@ import com.zen.alchan.BuildConfig
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.auth.SplashActivity
 import kotlinx.android.synthetic.main.fragment_account_settings.*
@@ -42,6 +44,10 @@ class AccountSettingsFragment : Fragment() {
             title = getString(R.string.account_settings)
             navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_left)
             setNavigationOnClickListener { activity?.onBackPressed() }
+        }
+
+        accountSettingsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         initLayout()

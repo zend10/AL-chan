@@ -8,7 +8,10 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.button.MaterialButton
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.ui.base.BaseActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,6 +38,11 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        searchLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
 
         searchCategoryButtonList = listOf(
             searchAnimeButton, searchMangaButton, searchCharactersButton, searchStaffsButton, searchStudiosButton, searchUsersButton

@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.NotificationOption
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.fragment_notifications_settings.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -49,6 +51,10 @@ class NotificationsSettingsFragment : Fragment() {
 
             inflateMenu(R.menu.menu_save)
             itemSave = menu.findItem(R.id.itemSave)
+        }
+
+        notificationsSettingsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         checkBoxList = hashMapOf(

@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.dialog_input.*
 import kotlinx.android.synthetic.main.dialog_input.view.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.android.synthetic.main.list_anime_list_grid.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
 import type.ScoreFormat
@@ -67,6 +68,15 @@ class AnimeListEditorActivity : BaseActivity() {
         setContentView(R.layout.activity_anime_list_editor)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        animeEditorLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        animeEditorFormLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         viewModel.entryId = intent.getIntExtra(INTENT_ENTRY_ID, 0)
 

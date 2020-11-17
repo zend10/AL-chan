@@ -10,9 +10,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.Review
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
@@ -38,6 +41,11 @@ class ReviewsActivity : BaseActivity() {
         setContentView(R.layout.activity_reviews)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        reviewsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
 
         if (viewModel.selectedSort == null) {
             viewModel.selectedSort = ReviewSort.CREATED_AT_DESC

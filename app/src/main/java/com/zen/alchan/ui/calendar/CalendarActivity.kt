@@ -8,8 +8,11 @@ import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
@@ -26,7 +29,6 @@ class CalendarActivity : BaseActivity() {
 
     private lateinit var dateAdapter: CalendarDateRvAdapter
     private lateinit var calendarViewPagerAdapter: CalendarViewPagerAdapter
-//    private lateinit var scheduleAdapter: CalendarScheduleRvAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,11 @@ class CalendarActivity : BaseActivity() {
         supportActionBar?.apply {
             title = getString(R.string.calendar)
             setDisplayHomeAsUpEnabled(true)
+        }
+
+        calendarLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+            view.updateTopPadding(windowInsets, initialPadding)
         }
 
         dateAdapter = assignDateAdapter()

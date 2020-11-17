@@ -18,8 +18,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.replaceUnderscore
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import kotlinx.android.synthetic.main.fragment_app_settings.*
@@ -54,6 +56,10 @@ class AppSettingsFragment : Fragment() {
 
             inflateMenu(R.menu.menu_save)
             itemSave = menu.findItem(R.id.itemSave)
+        }
+
+        appSettingsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         initLayout()

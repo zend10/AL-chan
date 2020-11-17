@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.base
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -27,17 +28,31 @@ abstract class BaseActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (Utility.isLightTheme(viewModel.appColorTheme)) {
                 changeStatusBarColor(R.color.black)
             }
-        } else {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             if (Utility.isLightTheme(viewModel.appColorTheme)) {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                window.navigationBarColor = getColor(R.color.whiteTransparent70)
             } else {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
+            }
+        } else {
+            if (Utility.isLightTheme(viewModel.appColorTheme)) {
+                val flags = window.decorView.systemUiVisibility
+                window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                window.navigationBarColor = getColor(R.color.whiteTransparent70)
+            } else {
+                val flags = window.decorView.systemUiVisibility
+                window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+                window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
         }
     }

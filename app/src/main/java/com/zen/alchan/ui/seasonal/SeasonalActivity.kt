@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.SeasonalAnime
-import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -47,6 +46,15 @@ class SeasonalActivity : BaseActivity() {
         supportActionBar?.apply {
             title = getString(R.string.seasonal_chart)
             setDisplayHomeAsUpEnabled(true)
+        }
+
+        seasonalLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateSidePadding(windowInsets, initialPadding)
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
+
+        seasonalOthersRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         if (viewModel.selectedSort == null) {

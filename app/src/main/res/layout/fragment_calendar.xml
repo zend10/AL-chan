@@ -9,6 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/scheduleRecyclerView"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

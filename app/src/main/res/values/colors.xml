@@ -7,6 +7,9 @@
     <color name="redHeart">#E74C3C</color>
     <color name="greenCalculator">#2ECC71</color>
 
+    <color name="whiteTransparent70">#B3FFFFFF</color>
+    <color name="pureBlackTransparent70">#B3000000</color>
+
     <color name="yellow">#FCF1C2</color>
     <color name="cyan">#DCFDF9</color>
     <color name="cyanTransparent50">#80DCFDF9</color>

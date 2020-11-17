@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/globalActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.social.global.GlobalFeedActivity">
@@ -32,16 +33,23 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newActivityButton"
-        android:src="@drawable/ic_create"
-        app:tint="?themeBackgroundColor"
-        app:backgroundTint="?themeSecondaryColor"
+    <RelativeLayout
+        android:id="@+id/newActivityLayout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/marginNormal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newActivityButton"
+            android:src="@drawable/ic_create"
+            app:tint="?themeBackgroundColor"
+            app:backgroundTint="?themeSecondaryColor"
+            android:layout_margin="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
     <include layout="@layout/layout_loading"/>
 

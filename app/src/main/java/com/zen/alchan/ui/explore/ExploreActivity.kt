@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.FilterRange
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.SearchResult
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.browse.BrowseActivity
@@ -56,6 +59,11 @@ class ExploreActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_explore)
+
+        browseLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
 
         if (viewModel.selectedExplorePage == null) {
             viewModel.selectedExplorePage = BrowsePage.valueOf(intent.getStringExtra(EXPLORE_PAGE))

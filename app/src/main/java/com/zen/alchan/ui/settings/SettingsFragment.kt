@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
+import com.zen.alchan.helper.updateBottomPadding
+import com.zen.alchan.helper.updateSidePadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.settings.about.AboutFragment
 import com.zen.alchan.ui.settings.account.AccountSettingsFragment
@@ -34,6 +38,10 @@ class SettingsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        settingsMenuLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         toolbarLayout.title = getString(R.string.settings)
         toolbarLayout.setNavigationOnClickListener { activity?.onBackPressed() }

@@ -18,6 +18,7 @@
     <androidx.appcompat.widget.AppCompatImageView
         app:srcCompat="@drawable/ic_right_arrow"
         android:layout_marginEnd="@dimen/marginNormal"
+        app:tint="?themeContentColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
