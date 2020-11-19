@@ -100,6 +100,8 @@ class ProfileFragment : BaseMainFragment() {
             itemShareProfile = findItem(R.id.itemShareProfile)
         }
 
+        profileToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.custom_more_icon)
+
         notificationActionView = itemNotifications.actionView
         badgeCount = notificationActionView.findViewById(R.id.notification_badge)
 

@@ -93,7 +93,8 @@ class UserFragment : BaseFragment() {
         scaleDownAnim = AnimationUtils.loadAnimation(activity, R.anim.scale_down)
 
         userToolbar.setNavigationOnClickListener { activity?.finish() }
-        userToolbar.navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_delete)
+        userToolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.custom_close_icon)
+        userToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.custom_more_icon)
 
         userToolbar.menu.apply {
             itemActivity = findItem(R.id.itemActivity)
