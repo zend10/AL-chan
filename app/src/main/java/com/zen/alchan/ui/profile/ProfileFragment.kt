@@ -61,6 +61,7 @@ class ProfileFragment : BaseMainFragment() {
     private lateinit var itemSettings: MenuItem
     private lateinit var itemViewInAniList: MenuItem
     private lateinit var itemShareProfile: MenuItem
+    private lateinit var itemCopyLink: MenuItem
 
     private lateinit var notificationActionView: View
     private lateinit var badgeCount: MaterialTextView
@@ -98,6 +99,7 @@ class ProfileFragment : BaseMainFragment() {
             itemSettings = findItem(R.id.itemSettings)
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
             itemShareProfile = findItem(R.id.itemShareProfile)
+            itemCopyLink = findItem(R.id.itemCopyLink)
         }
 
         profileToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.custom_more_icon)
@@ -318,6 +320,21 @@ class ProfileFragment : BaseMainFragment() {
         }
 
         itemShareProfile.setOnMenuItemClickListener {
+            if (user?.siteUrl == null) {
+                DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+            } else {
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_TEXT, user.siteUrl)
+                sendIntent.type = "text/plain"
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+            true
+        }
+
+        itemCopyLink.setOnMenuItemClickListener {
             if (user?.siteUrl == null) {
                 DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {

@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:cardCornerRadius="@dimen/cornerNormal"
             app:cardBackgroundColor="?themeCardTransparentColor"
-            app:contentPadding="@dimen/marginClose"
+            app:contentPadding="2dp"
             android:layout_margin="2dp"
             app:cardElevation="0dp"
             android:layout_width="wrap_content"

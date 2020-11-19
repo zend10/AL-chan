@@ -11,7 +11,7 @@
     <item android:id="@+id/itemViewOnAniList"
         android:title="@string/view_on_anilist"
         app:showAsAction="never"/>
-    <item android:id="@+id/itemShareProfile"
-        android:title="@string/share_profile"
+    <item android:id="@+id/itemCopyLink"
+        android:title="@string/copy_link"
         app:showAsAction="never"/>
 </menu>

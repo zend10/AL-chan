@@ -200,7 +200,7 @@
     <string name="set_as_favorite">Set as Favorite</string>
     <string name="favorited">Favorited</string>
     <string name="open_in_anilist">Open in AniList</string>
-    <string name="copy_link">Copy link</string>
+    <string name="copy_link">Copy Link</string>
     <string name="character_voice_roles">Character Voice Roles</string>
     <string name="staff_roles">Staff Roles</string>
     <string name="no_description">No description.</string>
@@ -430,8 +430,8 @@
     <string name="community_theme">Community Theme</string>
     <string name="ep_in_h">Ep. %1$d in %2$dh</string>
     <string name="ep_in_m">Ep. %1$d in %2$dm</string>
-    <string name="ep_h_ago">Ep. %1$d - %2$dh ago</string>
-    <string name="ep_m_ago">Ep. %1$d - %2$dm ago</string>
+    <string name="ep_h_ago">Ep. %1$d (%2$dh ago)</string>
+    <string name="ep_m_ago">Ep. %1$d (%2$dm ago)</string>
     <string name="anime_affinity">Anime Affinity</string>
     <string name="manga_affinity">Manga Affinity</string>
     <string name="failed_to_calculate_anime_affinity">Failed to calculate anime affinity</string>

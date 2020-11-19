@@ -54,8 +54,8 @@ class MangaListGridRvAdapter(private val context: Context,
             }
         }
 
-        holder.mangaProgressText.text = "Ch. ${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
-        holder.mangaProgressVolumesText.text = "Vo. ${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
+        holder.mangaProgressText.text = "${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
+        holder.mangaProgressVolumesText.text = "${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
 
         if (mediaList.media?.format == MediaFormat.MANGA || mediaList.media?.format == MediaFormat.ONE_SHOT) {
             holder.mangaProgressVolumesLayout.visibility = if (listStyle?.hideMangaVolume == true) View.GONE else View.VISIBLE

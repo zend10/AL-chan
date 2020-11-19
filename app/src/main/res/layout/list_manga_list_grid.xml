@@ -167,7 +167,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mangaProgressVolumesText"
                         style="?themeSmallClickableFont"
-                        android:text="Vo. 0/?"
+                        android:text="0/?"
                         android:gravity="end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -195,7 +195,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mangaProgressText"
                         style="?themeSmallClickableFont"
-                        android:text="Ch. 0/?"
+                        android:text="0/?"
                         android:gravity="end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

@@ -57,7 +57,7 @@ class UserFragment : BaseFragment() {
     private var itemActivity: MenuItem? = null
     private var itemBestFriend: MenuItem? = null
     private var itemViewInAniList: MenuItem? = null
-    private var itemShareProfile: MenuItem? = null
+    private var itemCopyLink: MenuItem? = null
 
     companion object {
         const val USER_ID = "userId"
@@ -100,7 +100,7 @@ class UserFragment : BaseFragment() {
             itemActivity = findItem(R.id.itemActivity)
             itemBestFriend = findItem(R.id.itemBestFriend)
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
-            itemShareProfile = findItem(R.id.itemShareProfile)
+            itemCopyLink = findItem(R.id.itemShareProfile)
         }
 
         setupObserver()
@@ -398,7 +398,7 @@ class UserFragment : BaseFragment() {
             true
         }
 
-        itemShareProfile?.setOnMenuItemClickListener {
+        itemCopyLink?.setOnMenuItemClickListener {
             if (user?.siteUrl == null) {
                 DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
             } else {
@@ -477,6 +477,6 @@ class UserFragment : BaseFragment() {
         itemActivity = null
         itemBestFriend = null
         itemViewInAniList = null
-        itemShareProfile = null
+        itemCopyLink = null
     }
 }
