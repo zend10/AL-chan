@@ -10,6 +10,7 @@
         android:id="@+id/staffMangaRecyclerView"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:paddingTop="@dimen/marginFar"
+        android:paddingBottom="@dimen/marginFar"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

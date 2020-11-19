@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="vertical"
         android:paddingTop="@dimen/marginFar"
-        android:paddingBottom="@dimen/marginPage"
+        android:paddingBottom="@dimen/marginFar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

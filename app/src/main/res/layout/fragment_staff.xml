@@ -8,7 +8,6 @@
     tools:context=".ui.browse.staff.StaffFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -148,10 +147,10 @@
                     android:id="@+id/staffToolbar"
                     app:layout_collapseMode="pin"
                     android:elevation="0dp"
-                    android:fitsSystemWindows="false"
                     android:backgroundTint="@android:color/transparent"
+                    android:minHeight="@dimen/toolbarBigHeight"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/toolbarBigHeight"/>
+                    android:layout_height="wrap_content"/>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

@@ -11,7 +11,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import com.zen.alchan.R
-import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.EditorType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.AndroidUtility
@@ -53,6 +53,16 @@ class ReviewEditorActivity : BaseActivity() {
         setContentView(R.layout.activity_review_editor)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
+        reviewEditorLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+            view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        reviewEditorFormLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
+
         setSupportActionBar(toolbarLayout)
 
         viewModel.reviewId = intent.getIntExtra(REVIEW_ID, 0)

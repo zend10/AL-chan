@@ -32,16 +32,23 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/mediaListRearrangeButton"
-        android:src="@drawable/ic_rearrange"
-        app:tint="?themeBackgroundColor"
-        app:backgroundTint="?themeSecondaryColor"
+    <RelativeLayout
+        android:id="@+id/mediaListRearrangeLayout"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/marginNormal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mediaListRearrangeButton"
+            android:src="@drawable/ic_rearrange"
+            app:tint="?themeBackgroundColor"
+            app:backgroundTint="?themeSecondaryColor"
+            android:layout_margin="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
     <include layout="@layout/layout_loading"/>
 

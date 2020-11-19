@@ -19,11 +19,13 @@ import com.zen.alchan.R
 import com.zen.alchan.data.response.AnimePromo
 import com.zen.alchan.data.response.AnimeVideo
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.*
 import com.zen.alchan.helper.setRegularPlural
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility

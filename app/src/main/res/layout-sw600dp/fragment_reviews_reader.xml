@@ -8,7 +8,6 @@
     tools:context=".ui.browse.reviews.ReviewsReaderFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -54,8 +53,8 @@
                     android:id="@+id/reviewToolbar"
                     app:layout_collapseMode="pin"
                     android:elevation="0dp"
-                    android:fitsSystemWindows="false"
                     android:backgroundTint="@android:color/transparent"
+                    android:minHeight="@dimen/toolbarBigHeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -270,6 +269,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/reviewLikeText"
                         android:layout_marginTop="@dimen/marginSmall"
+                        android:layout_marginBottom="@dimen/marginPage"
                         style="?themeSmallFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

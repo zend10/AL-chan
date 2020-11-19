@@ -13,10 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.FollowPage
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.FollowsItem
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.BrowseActivity
@@ -53,6 +55,10 @@ class FollowsFragment : BaseFragment() {
 
         if (arguments != null && arguments?.getInt(UserFollowsFragment.USER_ID) != null && arguments?.getInt(UserFollowsFragment.USER_ID) != 0) {
             viewModel.otherUserId = arguments?.getInt(UserFollowsFragment.USER_ID)
+        }
+
+        followsRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         viewModel.followPage = FollowPage.valueOf(arguments?.getString(FOLLOW_PAGE)!!)

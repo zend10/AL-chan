@@ -46,6 +46,8 @@
         android:id="@+id/charactersRecyclerView"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_below="@id/voiceActorLanguageScrollView"
+        android:paddingBottom="@dimen/marginFar"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

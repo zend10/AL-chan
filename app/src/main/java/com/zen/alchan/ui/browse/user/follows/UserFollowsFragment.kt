@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 
 import com.zen.alchan.R
+import com.zen.alchan.helper.doOnApplyWindowInsets
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.profile.follows.FollowsViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_user_follows.*
@@ -31,6 +33,10 @@ class UserFollowsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        followsToolbar.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
 
         followsToolbar.apply {
             title = getString(R.string.friends)

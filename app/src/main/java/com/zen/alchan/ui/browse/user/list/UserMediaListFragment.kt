@@ -23,11 +23,14 @@ import com.zen.alchan.data.response.Media
 import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.data.response.MediaTitle
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.MediaFilterData
+import com.zen.alchan.helper.updateBottomPadding
+import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.MediaListDetailDialog
@@ -69,6 +72,18 @@ class UserMediaListFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        toolbarLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateTopPadding(windowInsets, initialPadding)
+        }
+
+        mediaListRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
+
+        mediaListRearrangeLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
+        }
 
         viewModel.userId = arguments?.getInt(USER_ID)
         viewModel.mediaType = MediaType.valueOf(arguments?.getString(MEDIA_TYPE)!!)

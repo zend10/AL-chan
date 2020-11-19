@@ -15,6 +15,7 @@ import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.pojo.FilterRange
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.SearchResult
+import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.updateSidePadding
 import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.DialogUtility
@@ -63,6 +64,10 @@ class ExploreActivity : BaseActivity() {
         browseLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
             view.updateTopPadding(windowInsets, initialPadding)
             view.updateSidePadding(windowInsets, initialPadding)
+        }
+
+        exploreRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
+            view.updateBottomPadding(windowInsets, initialPadding)
         }
 
         if (viewModel.selectedExplorePage == null) {

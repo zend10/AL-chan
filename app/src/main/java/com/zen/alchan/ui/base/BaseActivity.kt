@@ -38,20 +38,24 @@ abstract class BaseActivity : AppCompatActivity() {
             if (Utility.isLightTheme(viewModel.appColorTheme)) {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//                window.statusBarColor = getColor(R.color.whiteTransparent70)
                 window.navigationBarColor = getColor(R.color.whiteTransparent70)
             } else {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+//                window.statusBarColor = getColor(R.color.pureBlackTransparent70)
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
         } else {
             if (Utility.isLightTheme(viewModel.appColorTheme)) {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+//                window.statusBarColor = getColor(R.color.whiteTransparent70)
                 window.navigationBarColor = getColor(R.color.whiteTransparent70)
             } else {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+//                window.statusBarColor = getColor(R.color.pureBlackTransparent70)
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
         }

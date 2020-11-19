@@ -8,7 +8,6 @@
     tools:context=".ui.browse.character.CharacterFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -145,8 +144,8 @@
                     android:id="@+id/characterToolbar"
                     app:layout_collapseMode="pin"
                     android:elevation="0dp"
-                    android:fitsSystemWindows="false"
                     android:backgroundTint="@android:color/transparent"
+                    android:minHeight="@dimen/toolbarBigHeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -285,6 +284,8 @@
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="@integer/gridSpan"
                     android:paddingStart="@dimen/marginNormal"
+                    android:paddingBottom="@dimen/marginFar"
+                    android:clipToPadding="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

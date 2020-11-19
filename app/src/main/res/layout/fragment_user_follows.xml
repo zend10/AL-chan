@@ -16,8 +16,9 @@
             app:titleTextAppearance="?themeTitleFont"
             android:background="?themeCardColor"
             android:elevation="0dp"
+            android:minHeight="?actionBarSize"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"/>
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/followsTabLayout"
