@@ -6,6 +6,7 @@
     app:subtitleTextAppearance="?themeRegularFont"
     app:titleTextColor="?themeContentColor"
     android:background="?themeCardColor"
+    app:popupTheme="@style/PopupTheme"
     android:elevation="@dimen/elevationNormal"
     android:id="@+id/toolbarLayout"
     android:layout_width="match_parent"

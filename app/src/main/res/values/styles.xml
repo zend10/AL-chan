@@ -414,7 +414,12 @@
     <style name="CustomBottomSheet" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/shape_rounded_dialog</item>
     </style>
-
+    
+    <style name="PopupTheme" parent="Theme.AppCompat.DayNight">
+        <item name="android:colorBackground">?themeCardColor</item>
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
+    
     <!-- Spoiler Activity -->
 
     <style name="Theme.MaterialComponents.NoActionBar.Translucent" parent="AppTheme">
