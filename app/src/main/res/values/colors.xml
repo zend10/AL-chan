@@ -99,6 +99,36 @@
 
     <color name="pureBlackLight">#0F0F0F</color>
     <color name="pureBlackLightTransparent80">#CC0F0F0F</color>
+    
+    <!-- For AniList Light Theme -->
+    <color name="anilistWhite">#FAFAFA</color>
+    <color name="anilistPaleWhite">#EDF1F5</color>
+    <color name="anilistDarkBlue">#2B2D42</color>
+
+    <color name="anilistWhiteTransparent80">#CCFAFAFA</color>
+
+    <color name="anilistPaleWhiteTransparent86">#DBEDF1F5</color>
+    <color name="anilistPaleWhiteTransparent50">#80EDF1F5</color>
+    <color name="anilistPaleWhiteTransparent36">#5CEDF1F5</color>
+    <color name="anilistPaleWhiteTransparent0">#00EDF1F5</color>
+
+    <color name="anilistDarkBlueTransparent12">#1F2B2D42</color>
+    <color name="anilistDarkBlueTransparent36">#5C2B2D42</color>
+
+    <!-- For AniList Dark Theme -->
+    <color name="anilistBlue">#151F2E</color>
+    <color name="anilistVeryDarkBlue">#0B1622</color>
+    <color name="anilistDarkWhite">#9FADBD</color>
+
+    <color name="anilistBlueTransparent80">#CC151F2E</color>
+
+    <color name="anilistVeryDarkBlueTransparent86">#DB0B1622</color>
+    <color name="anilistVeryDarkBlueTransparent50">#800B1622</color>
+    <color name="anilistVeryDarkBlueTransparent36">#5C0B1622</color>
+    <color name="anilistVeryDarkBlueTransparent0">#000B1622</color>
+
+    <color name="anilistDarkWhiteTransparent12">#1F9FADBD</color>
+    <color name="anilistDarkWhiteTransparent36">#5C9FADBD</color>
 
     <!-- For Community Color -->
 

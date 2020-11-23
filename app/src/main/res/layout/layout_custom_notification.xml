@@ -2,14 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingEnd="@dimen/marginClose"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
         app:cardCornerRadius="16dp"
-        android:clipToPadding="false"
-        android:clickable="true"
-        android:focusable="true"
         app:contentPadding="@dimen/marginClose"
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/color_transparent_50"

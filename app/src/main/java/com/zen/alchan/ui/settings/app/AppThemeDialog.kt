@@ -3,9 +3,9 @@ package com.zen.alchan.ui.settings.app
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppColorTheme
 import kotlinx.android.synthetic.main.dialog_list.view.*
@@ -19,7 +19,7 @@ class AppThemeDialog : DialogFragment() {
     private var themeList = ArrayList<AppColorTheme?>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = MaterialAlertDialogBuilder(requireActivity())
+        val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(R.string.theme)
 
         if (!this::listener.isInitialized) {

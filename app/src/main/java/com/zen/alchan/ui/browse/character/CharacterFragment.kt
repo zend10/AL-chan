@@ -4,11 +4,7 @@ package com.zen.alchan.ui.browse.character
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextPaint
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,20 +13,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.webkit.WebChromeClient
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.stfalcon.imageviewer.StfalconImageViewer
 
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.doOnApplyWindowInsets
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.enums.ResponseStatus
@@ -42,15 +35,10 @@ import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.browse.media.MediaFragment
-import com.zen.alchan.ui.browse.media.characters.MediaCharactersRvAdapter
-import com.zen.alchan.ui.browse.staff.StaffFragment
-import com.zen.alchan.ui.browse.user.UserFragment
 import kotlinx.android.synthetic.main.fragment_character.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
-import type.StaffLanguage
 import kotlin.math.abs
 
 /**
@@ -343,7 +331,7 @@ class CharacterFragment : BaseFragment() {
                 list.forEach {
                     titleList.add("${it.mediaTitle} (${it.mediaFormat})")
                 }
-                MaterialAlertDialogBuilder(requireActivity())
+                AlertDialog.Builder(requireActivity())
                     .setItems(titleList.toTypedArray()) { _, which ->
                         listener?.changeFragment(BrowsePage.valueOf(list[which].mediaType?.name!!), list[which].mediaId!!)
                     }

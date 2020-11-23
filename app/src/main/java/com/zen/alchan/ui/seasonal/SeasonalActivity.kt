@@ -1,18 +1,15 @@
 package com.zen.alchan.ui.seasonal
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.SearchView
-import androidx.core.util.toRange
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.SeasonalAnime
 import com.zen.alchan.helper.*
@@ -42,6 +39,7 @@ class SeasonalActivity : BaseActivity() {
         setContentView(R.layout.activity_seasonal)
 
         changeStatusBarColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeCardColor))
+
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {
             title = getString(R.string.seasonal_chart)
@@ -262,7 +260,7 @@ class SeasonalActivity : BaseActivity() {
         seasonalYearText.setOnClickListener {
             val yearList = ArrayList((Utility.getCurrentYear() + 1 downTo Constant.FILTER_EARLIEST_YEAR).map { it.toString() })
             yearList.add(0, "TBA")
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(yearList.toTypedArray()) { _, which ->
                     if (which == 0) {
                         viewModel.selectedStatus = MediaStatus.NOT_YET_RELEASED
@@ -281,7 +279,7 @@ class SeasonalActivity : BaseActivity() {
 
         seasonalSeasonText.setOnClickListener {
             val seasonArray = Constant.SEASON_LIST.map { it.name }.toTypedArray()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(seasonArray) { _, which ->
                     viewModel.selectedSeason = Constant.SEASON_LIST[which]
                     seasonalSeasonText.text = viewModel.selectedSeason?.name
@@ -297,7 +295,7 @@ class SeasonalActivity : BaseActivity() {
         }
 
         seasonalSortText.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(viewModel.mediaSortArray) { _, which ->
                     viewModel.selectedSort = viewModel.mediaSortList[which]
                     seasonalSortText.text = viewModel.mediaSortArray[which]

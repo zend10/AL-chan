@@ -3,15 +3,13 @@ package com.zen.alchan.ui.auth
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.BuildConfig
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.main.MainActivity
 import com.zen.alchan.ui.base.BaseActivity
@@ -46,7 +44,7 @@ class SplashActivity : BaseActivity() {
                     // Handle update announcement
                     // Show update dialog if app_version has a value
                     if (it.data.app_version.isNotBlank() && BuildConfig.VERSION_CODE < it.data.app_version.toInt()) {
-                        MaterialAlertDialogBuilder(this).apply {
+                        AlertDialog.Builder(this).apply {
                             setTitle(R.string.new_update_is_available)
                             setMessage(it.data.message)
                             setCancelable(false)
@@ -76,7 +74,7 @@ class SplashActivity : BaseActivity() {
                         it.data.until_date.isNotBlank() &&
                         Utility.isBetweenTwoDates(it.data.from_date, it.data.until_date)
                     ) {
-                        MaterialAlertDialogBuilder(this).apply {
+                        AlertDialog.Builder(this).apply {
                             setMessage(it.data.message)
                             setCancelable(false)
                             setPositiveButton(R.string.ok) { _, _ ->

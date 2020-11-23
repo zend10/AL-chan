@@ -10,11 +10,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
@@ -259,7 +259,7 @@ class ActivityListFragment : BaseFragment() {
 
         itemFilter?.setOnMenuItemClickListener {
             val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(activityTypeStringArray) { _, which ->
                     viewModel.selectedActivityType = viewModel.activityTypeList[which]
                     loadingLayout.visibility = View.VISIBLE

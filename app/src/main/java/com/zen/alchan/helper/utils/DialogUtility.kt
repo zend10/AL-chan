@@ -3,7 +3,7 @@ package com.zen.alchan.helper.utils
 import android.content.Context
 import android.view.View
 import android.widget.Toast
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AlertDialog
 
 object DialogUtility {
 
@@ -24,7 +24,7 @@ object DialogUtility {
         negativeButton: Int,
         negativeAction: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
@@ -42,7 +42,7 @@ object DialogUtility {
         negativeAction: () -> Unit,
         cancelable: Boolean
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
@@ -60,7 +60,7 @@ object DialogUtility {
         negativeButton: Int,
         negativeAction: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
@@ -69,13 +69,13 @@ object DialogUtility {
     }
 
     fun showInfoDialog(context: Context, message: Int) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setMessage(message)
             .show()
     }
 
     fun showInfoDialog(context: Context, message: String) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setMessage(message)
             .show()
     }
@@ -89,7 +89,7 @@ object DialogUtility {
         negativeButton: Int,
         negativeAction: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setView(customView)
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
@@ -104,7 +104,7 @@ object DialogUtility {
         positiveButton: Int,
         positiveAction: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
@@ -118,7 +118,7 @@ object DialogUtility {
         positiveButton: Int,
         positiveAction: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setCancelable(false)

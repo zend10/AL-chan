@@ -9,13 +9,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.network.Converter
@@ -230,7 +230,7 @@ class UserMediaListFragment : BaseFragment() {
         }
 
         mediaListRearrangeButton.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.getTabItemArray()) { _, which ->
                     viewModel.selectedTab = which
 

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import com.zen.alchan.R
 import com.zen.alchan.helper.changeStatusBarColor
+import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.utils.Utility
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,5 +56,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
         }
+    }
+
+    protected fun getCurrentTheme(): AppColorTheme? {
+        return viewModel.appColorTheme
     }
 }

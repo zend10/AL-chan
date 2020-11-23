@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -139,7 +139,7 @@ class ListSettingsFragment : Fragment() {
         scoringSystemText.setOnClickListener {
             val scoringFormatKeysArray = viewModel.scoreFormatMap.map { it.key }.toTypedArray()
             val scoringFormatValuesArray = viewModel.scoreFormatMap.map { getString(it.value) }.toTypedArray()
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(scoringFormatValuesArray) { _, which ->
                     viewModel.selectedScoringSystem = scoringFormatKeysArray[which]
                     scoringSystemText.text = scoringFormatValuesArray[which]
@@ -223,7 +223,7 @@ class ListSettingsFragment : Fragment() {
         defaultListOrderText.setOnClickListener {
             val defaultListOrderKeysArray = viewModel.defaultListOrderMap.map { it.key }.toTypedArray()
             val defaultListOrderValuesArray = viewModel.defaultListOrderMap.map { getString(it.value) }.toTypedArray()
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(defaultListOrderValuesArray) { _, which ->
                     viewModel.selectedDefaultListOrder = defaultListOrderKeysArray[which]
                     defaultListOrderText.text = defaultListOrderValuesArray[which]

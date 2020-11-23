@@ -28,6 +28,7 @@
         <item name="themeButtonBorderSecondary">@style/ButtonBorderSecondary</item>
         <item name="themeButtonBorderNegative">@style/ButtonBorderNegative</item>
         <item name="themeRegularCheckBox">@style/CheckBoxRegular</item>
+        <item name="colorBackgroundFloating">?themeCardColor</item>
     </style>
 
     <style name="DefaultAppTheme">
@@ -70,6 +71,34 @@
         <item name="themeBackgroundTransparent50Color">@color/pureBlackTransparent50</item>
         <item name="themeBackgroundTransparent36Color">@color/pureBlackTransparent36</item>
         <item name="themeBackgroundTransparent0Color">@color/pureBlackTransparent0</item>
+    </style>
+
+    <style name="AniListLightTheme">
+        <item name="themeBackgroundColor">@color/anilistPaleWhite</item>
+        <item name="themeCardColor">@color/anilistWhite</item>
+        <item name="themeCardTransparentColor">@color/anilistWhiteTransparent80</item>
+        <item name="themeDividerColor">@color/anilistDarkBlueTransparent12</item>
+        <item name="themeContentColor">@color/anilistDarkBlue</item>
+        <item name="themeContentTransparentColor">@color/anilistDarkBlueTransparent36</item>
+        <item name="themeBackgroundTransparent100Color">@color/anilistPaleWhite</item>
+        <item name="themeBackgroundTransparent86Color">@color/anilistPaleWhiteTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/anilistPaleWhiteTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/anilistPaleWhiteTransparent36</item>
+        <item name="themeBackgroundTransparent0Color">@color/anilistPaleWhiteTransparent0</item>
+    </style>
+
+    <style name="AniListDarkTheme">
+        <item name="themeBackgroundColor">@color/anilistVeryDarkBlue</item>
+        <item name="themeCardColor">@color/anilistBlue</item>
+        <item name="themeCardTransparentColor">@color/anilistBlueTransparent80</item>
+        <item name="themeDividerColor">@color/anilistDarkWhiteTransparent12</item>
+        <item name="themeContentColor">@color/anilistDarkWhite</item>
+        <item name="themeContentTransparentColor">@color/anilistDarkWhiteTransparent36</item>
+        <item name="themeBackgroundTransparent100Color">@color/anilistVeryDarkBlue</item>
+        <item name="themeBackgroundTransparent86Color">@color/anilistVeryDarkBlueTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/anilistVeryDarkBlueTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/anilistVeryDarkBlueTransparent36</item>
+        <item name="themeBackgroundTransparent0Color">@color/anilistVeryDarkBlueTransparent0</item>
     </style>
 
     <!-- Default Theme -->
@@ -196,6 +225,24 @@
         <item name="themeSecondaryTransparentColor">@color/aloeveraTransparent50</item>
         <item name="themeSecondaryTransparent20Color">@color/aloeveraTransparent20</item>
         <item name="themeNegativeColor">@color/purple</item>
+    </style>
+
+    <!-- AniList Light Theme -->
+    <style name="AppTheme.ThemeAniListLightYellow" parent="AniListLightTheme">
+        <item name="themePrimaryColor">@color/lightThemeYellow</item>
+        <item name="themeSecondaryColor">@color/lightThemeCyan</item>
+        <item name="themeSecondaryTransparentColor">@color/lightThemeCyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightThemeCyanTransparent20</item>
+        <item name="themeNegativeColor">@color/lightThemeMagentaDark</item>
+    </style>
+
+    <!-- AniList Dark Theme -->
+    <style name="AppTheme.ThemeAniListDarkYellow" parent="AniListDarkTheme">
+        <item name="themePrimaryColor">@color/yellow</item>
+        <item name="themeSecondaryColor">@color/cyan</item>
+        <item name="themeSecondaryTransparentColor">@color/cyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/cyanTransparent20</item>
+        <item name="themeNegativeColor">@color/magentaDark</item>
     </style>
 
     <!-- Community Theme -->

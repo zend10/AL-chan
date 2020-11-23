@@ -12,9 +12,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
@@ -181,7 +181,7 @@ class AppSettingsFragment : Fragment() {
     }
 
     private fun showLanguageDialog() {
-        MaterialAlertDialogBuilder(requireActivity())
+        AlertDialog.Builder(requireActivity())
             .setItems(viewModel.staffLanguageArray) { _, which ->
                 viewModel.selectedLanguage = StaffLanguage.valueOf(viewModel.staffLanguageArray[which])
                 defaultVoiceActorLanguageText.text = viewModel.staffLanguageArray[which]

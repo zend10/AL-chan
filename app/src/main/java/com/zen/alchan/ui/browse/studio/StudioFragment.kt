@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
@@ -18,7 +19,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.doOnApplyWindowInsets
@@ -276,7 +276,7 @@ class StudioFragment : BaseFragment() {
         studioMediaSortText.text = viewModel.mediaSortArray[viewModel.mediaSortIndex]
 
         studioMediaSortText.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.mediaSortArray) { _, which ->
                     viewModel.mediaSortIndex = which
                     studioMediaSortText.text = viewModel.mediaSortArray[viewModel.mediaSortIndex]

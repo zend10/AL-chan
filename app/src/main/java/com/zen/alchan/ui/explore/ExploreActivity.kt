@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.zen.alchan.R
 import com.zen.alchan.helper.doOnApplyWindowInsets
@@ -224,7 +224,7 @@ class ExploreActivity : BaseActivity() {
         exploreTypeText.text = viewModel.selectedExplorePage?.name
 
         exploreTypeText.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(viewModel.explorePageArray) { _, which ->
                     viewModel.selectedExplorePage = BrowsePage.valueOf(viewModel.explorePageArray[which])
                     exploreTypeText.text = viewModel.selectedExplorePage?.name

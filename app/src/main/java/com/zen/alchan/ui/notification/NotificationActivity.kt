@@ -6,10 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.BrowsePage
@@ -128,7 +128,7 @@ class NotificationActivity : BaseActivity() {
         notificationTypeText.text = getString(viewModel.notificationTypesArray[viewModel.notificationTypesList.indexOf(viewModel.selectedTypes)])
         notificationTypeText.setOnClickListener {
             val stringArray = viewModel.notificationTypesArray.map { getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(stringArray) { _, which ->
                     viewModel.selectedTypes = viewModel.notificationTypesList[which]
                     notificationTypeText.text = stringArray[which]

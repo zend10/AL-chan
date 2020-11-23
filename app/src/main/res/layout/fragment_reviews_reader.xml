@@ -183,6 +183,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/scoreLayout"
                         app:contentPadding="@dimen/marginNormal"
+                        app:cardBackgroundColor="?themeCardColor"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">

@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.*
@@ -646,7 +646,7 @@ class UserStatsDetailFragment : BaseFragment() {
         }
 
         statsCategoryText.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.getStatsCategoryArray()) { _, which ->
                     viewModel.selectedCategory = StatsCategory.values()[which]
                     if (viewModel.selectedCategory == StatsCategory.VOICE_ACTOR || viewModel.selectedCategory == StatsCategory.STUDIO) {
@@ -660,7 +660,7 @@ class UserStatsDetailFragment : BaseFragment() {
 
         statsMediaText.setOnClickListener {
             val mediaTypeArray = viewModel.getMediaTypeArray()
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(mediaTypeArray) { _, which ->
                     viewModel.selectedMedia = MediaType.valueOf(mediaTypeArray[which])
                     initLayout()
@@ -670,7 +670,7 @@ class UserStatsDetailFragment : BaseFragment() {
         }
 
         statsSortText.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.getSortDataArray()) { _, which ->
                     viewModel.selectedStatsSort = viewModel.sortDataList[which]
                     initLayout()
@@ -680,7 +680,7 @@ class UserStatsDetailFragment : BaseFragment() {
         }
 
         statsImageText.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.imageDataList.toTypedArray()) { _, which ->
                     viewModel.selectedImage = which
                     initLayout()

@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
 import com.zen.alchan.helper.libs.GlideApp
@@ -294,7 +294,7 @@ class ActivityListRvAdapter(
 
         holder.friendsActivityFilterText.setOnClickListener {
             val activityTypeStringArray = activityTypeArray.map { context.getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(context)
+            AlertDialog.Builder(context)
                 .setItems(activityTypeStringArray) { _, which ->
                     listener.changeActivityType(activityTypeList[which])
                 }

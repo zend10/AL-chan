@@ -3,16 +3,14 @@ package com.zen.alchan.ui.common
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.EditorType
@@ -20,7 +18,6 @@ import com.zen.alchan.helper.enums.ResponseStatus
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_spoiler.*
 import kotlinx.android.synthetic.main.activity_text_editor.*
 import kotlinx.android.synthetic.main.dialog_input.*
 import kotlinx.android.synthetic.main.dialog_input.view.*
@@ -327,7 +324,7 @@ class TextEditorActivity : BaseActivity() {
                     }
                 }
 
-                val builder = MaterialAlertDialogBuilder(this)
+                val builder = AlertDialog.Builder(this)
 
                 val text = editorEditText.text?.trim().toString()
 

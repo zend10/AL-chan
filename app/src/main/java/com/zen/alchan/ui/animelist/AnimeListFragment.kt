@@ -10,15 +10,14 @@ import android.os.Bundle
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.signature.ObjectKey
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.internal.LinkedTreeMap
 
 import com.zen.alchan.R
@@ -33,7 +32,6 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.AdvancedScoresItem
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.pojo.MediaListTabItem
-import com.zen.alchan.helper.updateSidePadding
 import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -220,7 +218,7 @@ class AnimeListFragment : Fragment() {
         }
 
         animeListRearrangeButton.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.getTabItemArray()) { _, which ->
                     viewModel.selectedTab = which
 

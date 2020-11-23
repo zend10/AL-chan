@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.BrowsePage
@@ -18,15 +18,10 @@ import com.zen.alchan.helper.pojo.FavoriteItem
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.browse.BrowseActivity
-import com.zen.alchan.ui.browse.character.CharacterFragment
-import com.zen.alchan.ui.browse.media.MediaFragment
-import com.zen.alchan.ui.browse.staff.StaffFragment
-import com.zen.alchan.ui.browse.studio.StudioFragment
 import com.zen.alchan.ui.browse.user.UserFragment
 import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesActivity
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaType
 
 /**
  * A simple [Fragment] subclass.
@@ -270,7 +265,7 @@ class FavoritesFragment : BaseFragment() {
         }
 
         reorderFavoritesLayout.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.favoritePageArray) { _, which ->
                     val intent = Intent(activity, ReorderFavoritesActivity::class.java)
                     intent.putExtra(ReorderFavoritesActivity.FAVORITE_CATEGORY, viewModel.favoritePageArray[which])

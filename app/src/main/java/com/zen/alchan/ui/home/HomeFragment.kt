@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
@@ -314,7 +313,7 @@ class HomeFragment : Fragment() {
         }
 
         exploreMenu.setOnClickListener {
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.explorePageArray) { _, which ->
                     val intent = Intent(activity, ExploreActivity::class.java)
                     intent.putExtra(ExploreActivity.EXPLORE_PAGE, viewModel.explorePageArray[which])

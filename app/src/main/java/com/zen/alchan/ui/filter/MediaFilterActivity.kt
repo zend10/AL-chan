@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.*
 import com.zen.alchan.helper.pojo.FilterRange
@@ -130,7 +130,7 @@ class MediaFilterActivity : BaseActivity() {
         sortByLayout.setOnClickListener {
             if (viewModel.isExplore) {
                 val stringArray = viewModel.mediaSortMap.map { sort -> getString(sort.value).toUpperCase(Locale.US) }.toTypedArray()
-                MaterialAlertDialogBuilder(this)
+                AlertDialog.Builder(this)
                     .setItems(stringArray) { _, which ->
                         viewModel.currentData.selectedMediaSort = viewModel.mediaSortMap.toList()[which].first
                         sortByText.text = stringArray[which]
@@ -138,7 +138,7 @@ class MediaFilterActivity : BaseActivity() {
                     .show()
             } else {
                 val stringArray = viewModel.mediaListSortList.map { sort -> sort.name.replaceUnderscore().toUpperCase(Locale.US) }.toTypedArray()
-                MaterialAlertDialogBuilder(this)
+                AlertDialog.Builder(this)
                     .setItems(stringArray) { _, which ->
                         viewModel.currentData.selectedMediaListSort = viewModel.mediaListSortList[which]
                         sortByText.text = stringArray[which]
@@ -149,7 +149,7 @@ class MediaFilterActivity : BaseActivity() {
 
         orderByLayout.setOnClickListener {
             val stringArray = viewModel.orderByList.map { order -> getString(order).toUpperCase(Locale.US) }.toTypedArray()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(stringArray) { _, which ->
                     // 0 is index for ascending
                     viewModel.currentData.selectedMediaListOrderByDescending = which != 0
@@ -168,7 +168,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterFormatLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaFormatArrayPair()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
                     viewModel.passMediaFormatFilterValue(index, isChecked)
                     filterFormatText.text = if (viewModel.currentData.selectedFormats.isNullOrEmpty()) {
@@ -191,7 +191,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterStatusLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaStatusArrayPair()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
                     viewModel.passMediaStatusFilterValue(index, isChecked)
                     filterStatusText.text = if (viewModel.currentData.selectedStatuses.isNullOrEmpty()) {
@@ -214,7 +214,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterSourceLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaSourceArrayPair()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
                     viewModel.passMediaSourceFilterValue(index, isChecked)
                     filterSourceText.text = if (viewModel.currentData.selectedSources.isNullOrEmpty()) {
@@ -233,7 +233,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterCountryLayout.setOnClickListener {
             val stringArray = viewModel.getMediaCountryStringArray()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(stringArray) { _, which ->
                     viewModel.currentData.selectedCountry = viewModel.mediaCountryList[which]
                     filterCountryText.text = stringArray[which]
@@ -254,7 +254,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterSeasonLayout.setOnClickListener {
             val stringArray = viewModel.getMediaSeasonStringArray()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(stringArray) { _, which ->
                     viewModel.currentData.selectedSeason = viewModel.mediaSeasonList[which]
                     filterSeasonText.text = stringArray[which]
@@ -318,7 +318,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterIncludeGenreText.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaGenreArrayPair()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
                     viewModel.passMediaGenreFilterValue(index, isChecked)
                     handleGenreVisibility()
@@ -331,7 +331,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterExcludeGenreText.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaExcludedGenreArrayPair()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
                     viewModel.passMediaExcludedGenreFilterValue(index, isChecked)
                     handleGenreVisibility()
@@ -483,7 +483,7 @@ class MediaFilterActivity : BaseActivity() {
 
         filterLicensedLayout.setOnClickListener {
             val stringBooleanPair = viewModel.getMediaLicensedArrayPair()
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
                     viewModel.passMediaFormatLicensedValue(index, isChecked)
                     filterLicensedText.text = if (viewModel.currentData.selectedLicensed.isNullOrEmpty()) {

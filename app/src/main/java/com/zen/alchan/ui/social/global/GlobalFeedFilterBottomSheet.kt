@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.helper.utils.AndroidUtility
 import kotlinx.android.synthetic.main.bottomsheet_filter_global_activity.view.*
@@ -56,7 +56,7 @@ class GlobalFeedFilterBottomSheet : BottomSheetDialogFragment() {
         dialogView.activityTypeText.text = getString(viewModel.activityTypeArray[viewModel.activityTypeList.indexOf(viewModel.selectedActivityType)])
         dialogView.activityTypeLayout.setOnClickListener {
             val activityTypeStringArray = viewModel.activityTypeArray.map { getString(it) }.toTypedArray()
-            MaterialAlertDialogBuilder(requireActivity())
+            AlertDialog.Builder(requireActivity())
                 .setItems(activityTypeStringArray) { _, which ->
                     viewModel.selectedActivityType = viewModel.activityTypeList[which]
                     dialogView.activityTypeText.text = getString(viewModel.activityTypeArray[which])

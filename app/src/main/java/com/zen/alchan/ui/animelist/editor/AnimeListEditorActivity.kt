@@ -11,10 +11,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.apollographql.apollo.api.CustomTypeValue
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.FuzzyDate
 import com.zen.alchan.helper.*
@@ -304,7 +304,7 @@ class AnimeListEditorActivity : BaseActivity() {
         val mediaListStatusIndex = viewModel.mediaListStatusList.indexOf(viewModel.selectedStatus)
         statusText.text = Constant.DEFAULT_ANIME_LIST_ORDER[if (mediaListStatusIndex < 0) 0 else mediaListStatusIndex]
         statusText.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(Constant.DEFAULT_ANIME_LIST_ORDER.toTypedArray()) { _, which ->
                     viewModel.selectedStatus = viewModel.mediaListStatusList[which]
                     statusText.text = Constant.DEFAULT_ANIME_LIST_ORDER[which]

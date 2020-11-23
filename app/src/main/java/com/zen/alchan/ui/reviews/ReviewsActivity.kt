@@ -1,12 +1,11 @@
 package com.zen.alchan.ui.reviews
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zen.alchan.R
 import com.zen.alchan.data.response.*
 import com.zen.alchan.helper.changeStatusBarColor
@@ -18,7 +17,6 @@ import com.zen.alchan.helper.updateSidePadding
 import com.zen.alchan.helper.updateTopPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
-import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.browse.BrowseActivity
 import kotlinx.android.synthetic.main.activity_reviews.*
@@ -26,7 +24,6 @@ import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaType
 import type.ReviewSort
 
 class ReviewsActivity : BaseActivity() {
@@ -159,7 +156,7 @@ class ReviewsActivity : BaseActivity() {
         }
 
         mediaTypeText.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(viewModel.mediaTypeArray) { _, which ->
                     viewModel.selectedMediaType = viewModel.mediaTypeList[which]
                     mediaTypeText.text = viewModel.mediaTypeArray[which]
@@ -179,7 +176,7 @@ class ReviewsActivity : BaseActivity() {
         sortText.text = viewModel.sortReviewArray[viewModel.sortReviewList.indexOf(viewModel.selectedSort)]
 
         sortText.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
+            AlertDialog.Builder(this)
                 .setItems(viewModel.sortReviewArray) { _, which ->
                     viewModel.selectedSort = viewModel.sortReviewList[which]
                     sortText.text = viewModel.sortReviewArray[which]
