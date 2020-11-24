@@ -45,7 +45,13 @@ class AppThemeRvAdapter(private val context: Context,
             var backgroundColor = ContextCompat.getColor(context, R.color.black)
             var strokeColor = ContextCompat.getColor(context, R.color.white)
 
-            if (theme.name.contains("LIGHT")) {
+            if (theme.name.contains("ANILIST_LIGHT")) {
+                backgroundColor = ContextCompat.getColor(context, R.color.anilistWhiteTransparent80)
+                strokeColor = ContextCompat.getColor(context, R.color.black)
+            } else if (theme.name.contains("ANILIST_DARK")) {
+                backgroundColor = ContextCompat.getColor(context, R.color.anilistDeepBlueTransparent80)
+                strokeColor = ContextCompat.getColor(context, R.color.white)
+            } else if (theme.name.contains("LIGHT")) {
                 backgroundColor = ContextCompat.getColor(context, R.color.whiteLightTransparent80)
                 strokeColor = ContextCompat.getColor(context, R.color.black)
             } else if (theme.name.contains("DARK")) {

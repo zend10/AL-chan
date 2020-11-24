@@ -30,8 +30,20 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
                 AppColorTheme.DARK_THEME_BLUE -> R.style.AppTheme_ThemeDarkBlue
                 AppColorTheme.DARK_THEME_PINK -> R.style.AppTheme_ThemeDarkPink
                 AppColorTheme.DARK_THEME_RED -> R.style.AppTheme_ThemeDarkRed
-                AppColorTheme.ANILIST_LIGHT_YELLOW -> R.style.AppTheme_ThemeAniListLightYellow
-                AppColorTheme.ANILIST_DARK_YELLOW -> R.style.AppTheme_ThemeAniListDarkYellow
+                AppColorTheme.ANILIST_LIGHT_BLUE -> R.style.AppTheme_ThemeAniListLightBlue
+                AppColorTheme.ANILIST_LIGHT_PURPLE -> R.style.AppTheme_ThemeAniListLightPurple
+                AppColorTheme.ANILIST_LIGHT_GREEN -> R.style.AppTheme_ThemeAniListLightGreen
+                AppColorTheme.ANILIST_LIGHT_ORANGE -> R.style.AppTheme_ThemeAniListLightOrange
+                AppColorTheme.ANILIST_LIGHT_RED -> R.style.AppTheme_ThemeAniListLightRed
+                AppColorTheme.ANILIST_LIGHT_PINK -> R.style.AppTheme_ThemeAniListLightPink
+                AppColorTheme.ANILIST_LIGHT_GREY -> R.style.AppTheme_ThemeAniListLightGrey
+                AppColorTheme.ANILIST_DARK_BLUE -> R.style.AppTheme_ThemeAniListDarkBlue
+                AppColorTheme.ANILIST_DARK_PURPLE -> R.style.AppTheme_ThemeAniListDarkPurple
+                AppColorTheme.ANILIST_DARK_GREEN -> R.style.AppTheme_ThemeAniListDarkGreen
+                AppColorTheme.ANILIST_DARK_ORANGE -> R.style.AppTheme_ThemeAniListDarkOrange
+                AppColorTheme.ANILIST_DARK_RED -> R.style.AppTheme_ThemeAniListDarkRed
+                AppColorTheme.ANILIST_DARK_PINK -> R.style.AppTheme_ThemeAniListDarkPink
+                AppColorTheme.ANILIST_DARK_GREY -> R.style.AppTheme_ThemeAniListDarkGrey
                 AppColorTheme.COMMUNITY_AXIEL_BLUE -> R.style.AppTheme_ThemeAxielBlue
                 AppColorTheme.COMMUNITY_SAM_ORANGE -> R.style.AppTheme_ThemeSamOrange
                 AppColorTheme.COMMUNITY_DARK_AXIEL_BLUE -> R.style.AppTheme_ThemeDarkAxielBlue

@@ -132,7 +132,7 @@
                             android:id="@+id/staffFavoriteButton"
                             android:text="@string/set_as_favorite"
                             android:textAllCaps="true"
-                            style="?themeButtonPrimary"
+                            style="?themeButtonBorderPrimary"
                             android:enabled="false"
                             android:layout_marginStart="@dimen/marginPage"
                             android:layout_marginEnd="@dimen/marginPage"

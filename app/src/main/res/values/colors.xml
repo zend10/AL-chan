@@ -100,7 +100,51 @@
     <color name="pureBlackLight">#0F0F0F</color>
     <color name="pureBlackLightTransparent80">#CC0F0F0F</color>
     
+    <!-- For AniList Theme -->
+    <color name="anilistBlue">#3DB4F2</color>
+    <color name="anilistLightBlue">#86CEF4</color>
+    <color name="anilistLightBlueTransparent50">#8086CEF4</color>
+    <color name="anilistLightBlueTransparent20">#3386CEF4</color>
+    <color name="anilistBrightRed">#F25560</color>
+
+    <color name="anilistPurple">#C063FF</color>
+    <color name="anilistLightPurple">#DFB0FF</color>
+    <color name="anilistLightPurpleTransparent50">#80DFB0FF</color>
+    <color name="anilistLightPurpleTransparent20">#33DFB0FF</color>
+    <color name="anilistPaleOrange">#FFD07D</color>
+
+    <color name="anilistGreen">#4CCA51</color>
+    <color name="anilistLightGreen">#8FD291</color>
+    <color name="anilistLightGreenTransparent50">#808FD291</color>
+    <color name="anilistLightGreenTransparent20">#338FD291</color>
+    <color name="anilistDarkPurple">#7761C9</color>
+
+    <color name="anilistOrange">#EF881A</color>
+    <color name="anilistLightOrange">#F2AD63</color>
+    <color name="anilistLightOrangeTransparent50">#80F2AD63</color>
+    <color name="anilistLightOrangeTransparent20">#33F2AD63</color>
+    <color name="anilistBrightGreen">#32F04F</color>
+
+    <color name="anilistRed">#E13333</color>
+    <color name="anilistLightRed">#E67A7A</color>
+    <color name="anilistLightRedTransparent50">#80E67A7A</color>
+    <color name="anilistLightRedTransparent20">#33E67A7A</color>
+    <color name="anilistBrightYellow">#E0DE4A</color>
+
+    <color name="anilistPink">#FC9DD6</color>
+    <color name="anilistBrightPink">#FD51B8</color>
+    <color name="anilistBrightPinkTransparent50">#80FD51B8</color>
+    <color name="anilistBrightPinkTransparent20">#33FD51B8</color>
+    <color name="anilistCyan">#64ABB0</color>
+
+    <color name="anilistGrey">#677B94</color>
+    <color name="anilistBrightGrey">#426FA6</color>
+    <color name="anilistBrightGreyTransparent50">#80426FA6</color>
+    <color name="anilistBrightGreyTransparent20">#33426FA6</color>
+    <color name="anilistBrown">#947976</color>
+
     <!-- For AniList Light Theme -->
+
     <color name="anilistWhite">#FAFAFA</color>
     <color name="anilistPaleWhite">#EDF1F5</color>
     <color name="anilistDarkBlue">#2B2D42</color>
@@ -116,16 +160,16 @@
     <color name="anilistDarkBlueTransparent36">#5C2B2D42</color>
 
     <!-- For AniList Dark Theme -->
-    <color name="anilistBlue">#151F2E</color>
-    <color name="anilistVeryDarkBlue">#0B1622</color>
+    <color name="anilistDeepBlue">#151F2E</color>
+    <color name="anilistVeryDeepBlue">#0B1622</color>
     <color name="anilistDarkWhite">#9FADBD</color>
 
-    <color name="anilistBlueTransparent80">#CC151F2E</color>
+    <color name="anilistDeepBlueTransparent80">#CC151F2E</color>
 
-    <color name="anilistVeryDarkBlueTransparent86">#DB0B1622</color>
-    <color name="anilistVeryDarkBlueTransparent50">#800B1622</color>
-    <color name="anilistVeryDarkBlueTransparent36">#5C0B1622</color>
-    <color name="anilistVeryDarkBlueTransparent0">#000B1622</color>
+    <color name="anilistVeryDeepBlueTransparent86">#DB0B1622</color>
+    <color name="anilistVeryDeepBlueTransparent50">#800B1622</color>
+    <color name="anilistVeryDeepBlueTransparent36">#5C0B1622</color>
+    <color name="anilistVeryDeepBlueTransparent0">#000B1622</color>
 
     <color name="anilistDarkWhiteTransparent12">#1F9FADBD</color>
     <color name="anilistDarkWhiteTransparent36">#5C9FADBD</color>
