@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
@@ -144,7 +145,8 @@ class ActivityListRvAdapter(
         }
         holder.activityMoreLayout.setOnClickListener {
             // view pop up menu (edit, delete, view in anilist, copy link)
-            val popupMenu = PopupMenu(context, it)
+            val wrapper = ContextThemeWrapper(context, R.style.PopupTheme)
+            val popupMenu = PopupMenu(wrapper, it)
             popupMenu.menuInflater.inflate(R.menu.menu_activity, popupMenu.menu)
 
             popupMenu.menu.apply {

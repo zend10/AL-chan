@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -297,8 +298,10 @@ class ActivityDetailFragment : BaseFragment() {
 
         activityMoreLayout.setOnClickListener {
             // view pop up menu (edit, delete, view in anilist, copy link)
-            val popupMenu = PopupMenu(activity!!, it)
+            val wrapper = ContextThemeWrapper(activity!!, R.style.PopupTheme)
+            val popupMenu = PopupMenu(wrapper, it)
             popupMenu.menuInflater.inflate(R.menu.menu_activity, popupMenu.menu)
+
 
             popupMenu.menu.apply {
                 findItem(R.id.itemEdit).isVisible = (act is TextActivity && act.userId == viewModel.userId) ||

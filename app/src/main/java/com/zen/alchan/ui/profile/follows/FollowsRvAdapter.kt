@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.zen.alchan.R
@@ -73,7 +74,8 @@ class FollowsRvAdapter(private val context: Context,
             }
 
             holder.followMoreIcon.setOnClickListener {
-                val popupMenu = PopupMenu(context, it)
+                val wrapper = ContextThemeWrapper(context, R.style.PopupTheme)
+                val popupMenu = PopupMenu(wrapper, it)
                 popupMenu.menuInflater.inflate(R.menu.menu_follows, popupMenu.menu)
                 if (fromOtherUser) {
                     popupMenu.menu.findItem(R.id.itemUnfollow).isVisible = false

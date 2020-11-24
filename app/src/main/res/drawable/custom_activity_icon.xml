@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/background">
         <shape android:shape="oval"
-            android:tint="@color/color_transparent_50"/>
+            android:tint="?themeBackgroundTransparent50Color"/>
     </item>
     <item android:id="@+id/icon"
         android:drawable="@drawable/ic_chat_bubble"

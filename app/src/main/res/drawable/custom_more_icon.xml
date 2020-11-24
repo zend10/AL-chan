@@ -4,7 +4,7 @@
         android:width="32dp"
         android:height="32dp">
         <shape android:shape="oval"
-            android:tint="@color/color_transparent_50"/>
+            android:tint="?themeBackgroundTransparent50Color"/>
     </item>
     <item android:id="@+id/icon"
         android:width="24dp"

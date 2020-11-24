@@ -11,7 +11,7 @@
         app:cardCornerRadius="16dp"
         app:contentPadding="@dimen/marginClose"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/color_transparent_50"
+        app:cardBackgroundColor="?themeBackgroundTransparent50Color"
         android:layout_width="32dp"
         android:layout_height="32dp">
 
