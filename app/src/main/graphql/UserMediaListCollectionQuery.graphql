@@ -64,7 +64,7 @@ query UserMediaListCollectionQuery(
                     }
                     type
                     format
-                    status
+                    status(version: 2)
                     startDate {
                         year
                         month

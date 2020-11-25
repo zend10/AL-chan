@@ -12,7 +12,7 @@ query MediaQuery(
         }
         type
         format
-        status
+        status(version: 2)
         startDate {
             year
             month

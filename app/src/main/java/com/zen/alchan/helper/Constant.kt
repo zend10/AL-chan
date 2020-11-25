@@ -108,7 +108,7 @@ object Constant {
     )
 
     val MEDIA_STATUS_LIST = listOf(
-        MediaStatus.FINISHED, MediaStatus.RELEASING, MediaStatus.NOT_YET_RELEASED, MediaStatus.CANCELLED
+        MediaStatus.FINISHED, MediaStatus.RELEASING, MediaStatus.NOT_YET_RELEASED, MediaStatus.CANCELLED, MediaStatus.HIATUS
     )
 
     val ANIME_SOURCE_LIST = listOf(

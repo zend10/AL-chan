@@ -37,7 +37,7 @@ query MangaListQuery(
             }
             type
             format
-            status
+            status(version: 2)
             chapters
             volumes
             isFavourite

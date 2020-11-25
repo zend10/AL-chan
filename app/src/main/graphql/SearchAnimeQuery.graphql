@@ -71,7 +71,7 @@ query SearchAnimeQuery(
             }
             type
             format
-            status
+            status(version: 2)
             episodes
             averageScore
             favourites

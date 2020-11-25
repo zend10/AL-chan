@@ -36,7 +36,7 @@ query AnimeListQuery(
             }
             type
             format
-            status
+            status(version: 2)
             episodes
             isFavourite
             isAdult
