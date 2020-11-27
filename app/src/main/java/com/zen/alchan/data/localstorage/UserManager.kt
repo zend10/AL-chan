@@ -13,6 +13,7 @@ interface UserManager {
     val followingsCountLastRetrieved: Long?
     val bestFriends: List<BestFriend>?
     val latestNotification: Int?
+    val lastPushNotificationTimestamp: Long?
 
     fun setBearerToken(token: String?)
     fun setViewerData(user: User?)
@@ -20,4 +21,5 @@ interface UserManager {
     fun setFollowingsCount(followings: Int)
     fun setBestFriends(list: List<BestFriend>?)
     fun setLatestNotification(notificationId: Int)
+    fun setLastPushNotificationTimestamp(timestamp: Long)
 }

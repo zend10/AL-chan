@@ -17,5 +17,7 @@ class AppSettings(
     var sendActivityPushNotification: Boolean? = null,
     var sendForumPushNotification: Boolean? = null,
     var sendFollowsPushNotification: Boolean? = null,
-    var sendRelationsPushNotification: Boolean? = null
+    var sendRelationsPushNotification: Boolean? = null,
+    var mergePushNotifications: Boolean? = null,
+    var pushNotificationMinimumHours: Int? = null
 )

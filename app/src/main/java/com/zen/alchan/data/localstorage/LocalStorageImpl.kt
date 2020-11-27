@@ -38,6 +38,7 @@ class LocalStorageImpl(private val context: Context,
         private const val LAST_ANNOUNCEMENT_ID = "lastAnnouncementId"
         private const val BEST_FRIENDS = "bestFriends"
         private const val LATEST_NOTIFICATION = "latestNotification"
+        private const val LAST_PUSH_NOTIFICATION_TIMESTAMP = "lastPushNotificationTimestamp"
     }
 
     override var bearerToken: String?
@@ -111,6 +112,10 @@ class LocalStorageImpl(private val context: Context,
     override var latestNotification: Int?
         get() = getData(LATEST_NOTIFICATION)?.toInt()
         set(value) { setData(LATEST_NOTIFICATION, value.toString()) }
+
+    override var lastPushNotificationTimestamp: Long?
+        get() = getData(LAST_PUSH_NOTIFICATION_TIMESTAMP)?.toLong()
+        set(value) { setData(LAST_PUSH_NOTIFICATION_TIMESTAMP, value.toString()) }
 
     private fun getData(key: String): String? {
         return sharedPreferences.getString(key, null)

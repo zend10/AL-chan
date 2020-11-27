@@ -33,6 +33,9 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
     override val latestNotification: Int?
         get() = localStorage.latestNotification
 
+    override val lastPushNotificationTimestamp: Long?
+        get() = localStorage.lastPushNotificationTimestamp
+
     override fun setBearerToken(token: String?) {
         localStorage.bearerToken = token
     }
@@ -58,5 +61,9 @@ class UserManagerImpl(private val localStorage: LocalStorage) : UserManager {
 
     override fun setLatestNotification(notificationId: Int) {
         localStorage.latestNotification = notificationId
+    }
+
+    override fun setLastPushNotificationTimestamp(timestamp: Long) {
+        localStorage.lastPushNotificationTimestamp = timestamp
     }
 }

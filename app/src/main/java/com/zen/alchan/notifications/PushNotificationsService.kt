@@ -18,6 +18,7 @@ import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.localstorage.AppSettingsManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.helper.enums.NotificationCategory
+import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.main.MainActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -34,6 +35,7 @@ class PushNotificationsService : JobIntentService() {
     companion object {
         private const val CHANNEL_ID = "Notifications"
         private const val JOB_ID = 1007
+        private const val MERGED_NOTIFICATION_ID = 1017
     }
 
     fun enqueueWork(context: Context, intent: Intent) {
@@ -42,6 +44,10 @@ class PushNotificationsService : JobIntentService() {
 
     @SuppressLint("CheckResult")
     override fun onHandleWork(intent: Intent) {
+        if (Utility.getCurrentTimestamp() - (appSettingManager.appSettings.pushNotificationMinimumHours ?: 1) * 3600000 < (userManager.lastPushNotificationTimestamp ?: 0)) {
+            return
+        }
+
         if (appSettingManager.appSettings.sendAiringPushNotification == false &&
             appSettingManager.appSettings.sendActivityPushNotification == false &&
             appSettingManager.appSettings.sendForumPushNotification == false &&
@@ -208,7 +214,7 @@ class PushNotificationsService : JobIntentService() {
         val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notif)
             .setContentTitle(applicationContext.getString(R.string.app_name))
-            .setContentText(message)
+            .setContentText(if (appSettingManager.appSettings.mergePushNotifications == true) applicationContext.getString(R.string.you_have_unread_notifications) else message)
             .setColorized(true)
             .setColor(ContextCompat.getColor(applicationContext, R.color.yellow))
             .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
@@ -227,7 +233,9 @@ class PushNotificationsService : JobIntentService() {
         }
 
         with(NotificationManagerCompat.from(applicationContext)) {
-            notify(Random.nextInt(), builder.build())
+            notify(if (appSettingManager.appSettings.mergePushNotifications == true) MERGED_NOTIFICATION_ID else Random.nextInt(), builder.build())
         }
+
+        userManager.setLastPushNotificationTimestamp(Utility.getCurrentTimestamp())
     }
 }

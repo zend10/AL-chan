@@ -10,6 +10,7 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
 
     var isInit = false
     var selectedAppTheme: AppColorTheme? = null
+    var pushNotificationsMinHours: Int? = null
     var selectedLanguage: StaffLanguage? = null
 
     val appSettings: AppSettings
@@ -40,7 +41,8 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
         sendActivityPushNotifications: Boolean = true,
         sendForumPushNotifications: Boolean = true,
         sendFollowsPushNotifications: Boolean = true,
-        sendRelationsPushNotifications: Boolean = true
+        sendRelationsPushNotifications: Boolean = true,
+        mergePushNotifications: Boolean = false
     ) {
         appSettingsRepository.setAppSettings(AppSettings(
             appTheme = selectedAppTheme,
@@ -56,7 +58,9 @@ class AppSettingsViewModel(private val appSettingsRepository: AppSettingsReposit
             sendActivityPushNotification = sendActivityPushNotifications,
             sendForumPushNotification = sendForumPushNotifications,
             sendFollowsPushNotification = sendFollowsPushNotifications,
-            sendRelationsPushNotification = sendRelationsPushNotifications
+            sendRelationsPushNotification = sendRelationsPushNotifications,
+            mergePushNotifications = mergePushNotifications,
+            pushNotificationMinimumHours = pushNotificationsMinHours
         ))
     }
 }

@@ -39,5 +39,7 @@ interface LocalStorage {
 
     var latestNotification: Int?
 
+    var lastPushNotificationTimestamp: Long?
+
     fun clearStorage()
 }

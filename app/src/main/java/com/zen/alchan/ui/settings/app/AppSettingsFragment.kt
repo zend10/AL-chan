@@ -17,13 +17,11 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 
 import com.zen.alchan.R
-import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.doOnApplyWindowInsets
+import com.zen.alchan.helper.*
 import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.replaceUnderscore
-import com.zen.alchan.helper.updateBottomPadding
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
+import com.zen.alchan.helper.utils.Utility
 import kotlinx.android.synthetic.main.fragment_app_settings.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -81,6 +79,8 @@ class AppSettingsFragment : Fragment() {
             sendForumPushNotificationsCheckBox.isChecked = viewModel.appSettings.sendForumPushNotification == true
             sendFollowsPushNotificationsCheckBox.isChecked = viewModel.appSettings.sendFollowsPushNotification == true
             sendRelationsPushNotificationsCheckBox.isChecked = viewModel.appSettings.sendRelationsPushNotification == true
+            mergePushNotificationsCheckBox.isChecked = viewModel.appSettings.mergePushNotifications == true
+            viewModel.pushNotificationsMinHours = viewModel.appSettings.pushNotificationMinimumHours
             viewModel.isInit = true
         }
 
@@ -103,7 +103,8 @@ class AppSettingsFragment : Fragment() {
                         sendActivityPushNotificationsCheckBox.isChecked,
                         sendForumPushNotificationsCheckBox.isChecked,
                         sendFollowsPushNotificationsCheckBox.isChecked,
-                        sendRelationsPushNotificationsCheckBox.isChecked
+                        sendRelationsPushNotificationsCheckBox.isChecked,
+                        mergePushNotificationsCheckBox.isChecked
                     )
 
                     activity?.recreate()
@@ -118,11 +119,15 @@ class AppSettingsFragment : Fragment() {
         selectedThemeText.text = viewModel.selectedAppTheme?.name.replaceUnderscore()
         selectedThemeText.setOnClickListener { showAppThemeDialog() }
 
+        pushNotificationMinHoursText.text = "${viewModel.pushNotificationsMinHours} ${getString(R.string.hour).setRegularPlural(viewModel.pushNotificationsMinHours)}"
+        pushNotificationMinHoursText.setOnClickListener { showPushNotificationMinHoursDialog() }
+
         defaultVoiceActorLanguageText.text = viewModel.selectedLanguage?.name
         defaultVoiceActorLanguageText.setOnClickListener { showLanguageDialog() }
 
         resetDefaultButton.setOnClickListener {
             val isLowOnMemory = AndroidUtility.isLowOnMemory(activity)
+            viewModel.pushNotificationsMinHours = 1
 
             DialogUtility.showOptionDialog(
                 requireActivity(),
@@ -187,5 +192,19 @@ class AppSettingsFragment : Fragment() {
                 defaultVoiceActorLanguageText.text = viewModel.staffLanguageArray[which]
             }
             .show()
+    }
+
+    private fun showPushNotificationMinHoursDialog() {
+        val dialog = PushNotificationMinHoursDialog()
+        dialog.setListener(object : PushNotificationMinHoursDialog.PushNotificationMinHoursListener {
+            override fun passHour(hour: Int) {
+                viewModel.pushNotificationsMinHours = hour
+                pushNotificationMinHoursText.text = "${viewModel.pushNotificationsMinHours} ${getString(R.string.hour).setRegularPlural(viewModel.pushNotificationsMinHours)}"
+            }
+        })
+        val bundle = Bundle()
+        bundle.putInt(PushNotificationMinHoursDialog.CURRENT_HOUR, viewModel.pushNotificationsMinHours ?: 1)
+        dialog.arguments = bundle
+        dialog.show(childFragmentManager, null)
     }
 }

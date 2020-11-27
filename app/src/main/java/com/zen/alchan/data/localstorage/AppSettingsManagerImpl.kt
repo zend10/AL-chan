@@ -20,6 +20,8 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
             if (savedSettings.sendForumPushNotification == null) savedSettings.sendForumPushNotification = true
             if (savedSettings.sendFollowsPushNotification == null) savedSettings.sendFollowsPushNotification = true
             if (savedSettings.sendRelationsPushNotification == null) savedSettings.sendRelationsPushNotification = true
+            if (savedSettings.mergePushNotifications == null) savedSettings.mergePushNotifications = false
+            if (savedSettings.pushNotificationMinimumHours == null) savedSettings.pushNotificationMinimumHours = 1
             // add more to here when adding new settings
             return savedSettings
         }
