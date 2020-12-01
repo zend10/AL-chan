@@ -100,24 +100,7 @@ class AnimeListFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.currentList.clear()
-                viewModel.getSelectedList().forEach { filtered ->
-                    if (
-                        filtered.media?.title?.romaji?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.title?.english?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.title?.native?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(newText ?: "") == true } != null
-                    ) {
-                        viewModel.currentList.add(filtered)
-                    }
-                }
-                adapter.notifyDataSetChanged()
-
-                if (viewModel.currentList.isNullOrEmpty()) {
-                    emptyLayout.visibility = View.VISIBLE
-                } else {
-                    emptyLayout.visibility = View.GONE
-                }
+                handleSearch(newText)
                 return true
             }
         })
@@ -174,15 +157,7 @@ class AnimeListFragment : Fragment() {
             val currentTab = viewModel.tabItemList[viewModel.selectedTab]
             toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-            viewModel.currentList.clear()
-            viewModel.currentList.addAll(ArrayList(it.lists?.find { status -> status.name == currentTab.status }?.entries ?: listOf()))
-            adapter.notifyDataSetChanged()
-
-            if (viewModel.currentList.isNullOrEmpty()) {
-                emptyLayout.visibility = View.VISIBLE
-            } else {
-                emptyLayout.visibility = View.GONE
-            }
+            handleSearch(searchView.query.toString())
         })
 
         viewModel.animeListStyleLiveData.observe(viewLifecycleOwner, Observer {
@@ -225,16 +200,7 @@ class AnimeListFragment : Fragment() {
                     val currentTab = viewModel.tabItemList[viewModel.selectedTab]
                     toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-                    viewModel.currentList = ArrayList(viewModel.animeListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
-
-                    adapter = assignAdapter()
-                    animeListRecyclerView.adapter = adapter
-
-                    if (viewModel.currentList.isNullOrEmpty()) {
-                        emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                    }
+                    handleSearch(searchView.query.toString())
                 }
                 .show()
         }
@@ -295,6 +261,27 @@ class AnimeListFragment : Fragment() {
                 .load(AndroidUtility.getImageFileFromFolder(activity, MediaType.ANIME))
                 .signature(ObjectKey(Utility.getCurrentTimestamp()))
                 .into(animeListBackgroundImage)
+        }
+    }
+
+    private fun handleSearch(query: String?) {
+        viewModel.currentList.clear()
+        viewModel.getSelectedList().forEach { filtered ->
+            if (
+                filtered.media?.title?.romaji?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered.media?.title?.english?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered.media?.title?.native?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(query ?: "") == true } != null
+            ) {
+                viewModel.currentList.add(filtered)
+            }
+        }
+        adapter.notifyDataSetChanged()
+
+        if (viewModel.currentList.isNullOrEmpty()) {
+            emptyLayout.visibility = View.VISIBLE
+        } else {
+            emptyLayout.visibility = View.GONE
         }
     }
 

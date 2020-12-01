@@ -99,7 +99,6 @@ class UserMediaListFragment : BaseFragment() {
 
             inflateMenu(R.menu.menu_media_list)
             itemSearch = menu.findItem(R.id.itemSearch)
-//            itemList = menu.findItem(R.id.itemList)
             itemCustomiseList = menu.findItem(R.id.itemCustomiseList)
             itemFilter = menu.findItem(R.id.itemFilter)
         }
@@ -112,24 +111,7 @@ class UserMediaListFragment : BaseFragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.currentList.clear()
-                viewModel.getSelectedList().forEach { filtered ->
-                    if (
-                        filtered?.media?.title?.romaji?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered?.media?.title?.english?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered?.media?.title?.native_?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered?.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(newText ?: "") == true } != null
-                    ) {
-                        viewModel.currentList.add(filtered)
-                    }
-                }
-                adapter.notifyDataSetChanged()
-
-                if (viewModel.currentList.isNullOrEmpty()) {
-                    emptyLayout.visibility = View.VISIBLE
-                } else {
-                    emptyLayout.visibility = View.GONE
-                }
+                handleSearch(newText)
                 return true
             }
         })
@@ -208,18 +190,22 @@ class UserMediaListFragment : BaseFragment() {
         val currentTab = viewModel.tabItemList[viewModel.selectedTab]
         toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-        viewModel.currentList.clear()
-        viewModel.currentList.addAll(ArrayList(viewModel.sortedGroup.find { status -> status?.name == currentTab.status }?.entries ?: listOf()))
-
-        adapter = assignAdapter()
-        mediaListRecyclerView.adapter = adapter
-
-        if (viewModel.currentList.isNullOrEmpty()) {
-            emptyLayout.visibility = View.VISIBLE
-            mediaListRecyclerView.visibility = View.GONE
+        if (this::adapter.isInitialized) {
+            handleSearch(searchView?.query.toString())
         } else {
-            emptyLayout.visibility = View.GONE
-            mediaListRecyclerView.visibility = View.VISIBLE
+            viewModel.currentList.clear()
+            viewModel.currentList.addAll(ArrayList(viewModel.sortedGroup.find { status -> status?.name == currentTab.status }?.entries ?: listOf()))
+
+            adapter = assignAdapter()
+            mediaListRecyclerView.adapter = adapter
+
+            if (viewModel.currentList.isNullOrEmpty()) {
+                emptyLayout.visibility = View.VISIBLE
+                mediaListRecyclerView.visibility = View.GONE
+            } else {
+                emptyLayout.visibility = View.GONE
+                mediaListRecyclerView.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -237,16 +223,7 @@ class UserMediaListFragment : BaseFragment() {
                     val currentTab = viewModel.tabItemList[viewModel.selectedTab]
                     toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-                    viewModel.currentList = ArrayList(viewModel.sortedGroup.find { it?.name == currentTab.status }?.entries ?: listOf())
-
-                    adapter = assignAdapter()
-                    mediaListRecyclerView.adapter = adapter
-
-                    if (viewModel.currentList.isNullOrEmpty()) {
-                        emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                    }
+                    handleSearch(searchView?.query.toString())
                 }
                 .show()
         }
@@ -265,6 +242,27 @@ class UserMediaListFragment : BaseFragment() {
             GlideApp.with(this).load(R.drawable.eva_bg).into(mediaListBackgroundImage)
         } else {
             GlideApp.with(this).load(0).into(mediaListBackgroundImage)
+        }
+    }
+
+    private fun handleSearch(query: String?) {
+        viewModel.currentList.clear()
+        viewModel.getSelectedList().forEach { filtered ->
+            if (
+                filtered?.media?.title?.romaji?.toLowerCase()?.contains(query?: "") == true ||
+                filtered?.media?.title?.english?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered?.media?.title?.native_?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered?.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(query ?: "") == true } != null
+            ) {
+                viewModel.currentList.add(filtered)
+            }
+        }
+        adapter.notifyDataSetChanged()
+
+        if (viewModel.currentList.isNullOrEmpty()) {
+            emptyLayout.visibility = View.VISIBLE
+        } else {
+            emptyLayout.visibility = View.GONE
         }
     }
 

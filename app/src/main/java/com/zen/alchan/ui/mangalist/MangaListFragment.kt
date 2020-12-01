@@ -103,24 +103,7 @@ class MangaListFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.currentList.clear()
-                viewModel.getSelectedList().forEach { filtered ->
-                    if (
-                        filtered.media?.title?.romaji?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.title?.english?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.title?.native?.toLowerCase()?.contains(newText ?: "") == true ||
-                        filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(newText ?: "") == true } != null
-                    ) {
-                        viewModel.currentList.add(filtered)
-                    }
-                }
-                adapter.notifyDataSetChanged()
-
-                if (viewModel.currentList.isNullOrEmpty()) {
-                    emptyLayout.visibility = View.VISIBLE
-                } else {
-                    emptyLayout.visibility = View.GONE
-                }
+                handleSearch(newText)
                 return true
             }
         })
@@ -177,15 +160,7 @@ class MangaListFragment : Fragment() {
             val currentTab = viewModel.tabItemList[viewModel.selectedTab]
             toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-            viewModel.currentList.clear()
-            viewModel.currentList.addAll(ArrayList(it.lists?.find { status -> status.name == currentTab.status }?.entries ?: listOf()))
-            adapter.notifyDataSetChanged()
-
-            if (viewModel.currentList.isNullOrEmpty()) {
-                emptyLayout.visibility = View.VISIBLE
-            } else {
-                emptyLayout.visibility = View.GONE
-            }
+            handleSearch(searchView.query.toString())
         })
 
         viewModel.mangaListStyleLiveData.observe(viewLifecycleOwner, Observer {
@@ -228,16 +203,7 @@ class MangaListFragment : Fragment() {
                     val currentTab = viewModel.tabItemList[viewModel.selectedTab]
                     toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-                    viewModel.currentList = ArrayList(viewModel.mangaListData.value?.lists?.find { it.name == currentTab.status }?.entries ?: listOf())
-
-                    adapter = assignAdapter()
-                    mangaListRecyclerView.adapter = adapter
-
-                    if (viewModel.currentList.isNullOrEmpty()) {
-                        emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                    }
+                    handleSearch(searchView.query.toString())
                 }
                 .show()
         }
@@ -298,6 +264,27 @@ class MangaListFragment : Fragment() {
                 .load(AndroidUtility.getImageFileFromFolder(activity, MediaType.MANGA))
                 .signature(ObjectKey(Utility.getCurrentTimestamp()))
                 .into(mangaListBackgroundImage)
+        }
+    }
+
+    private fun handleSearch(query: String?) {
+        viewModel.currentList.clear()
+        viewModel.getSelectedList().forEach { filtered ->
+            if (
+                filtered.media?.title?.romaji?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered.media?.title?.english?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered.media?.title?.native?.toLowerCase()?.contains(query ?: "") == true ||
+                filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(query ?: "") == true } != null
+            ) {
+                viewModel.currentList.add(filtered)
+            }
+        }
+        adapter.notifyDataSetChanged()
+
+        if (viewModel.currentList.isNullOrEmpty()) {
+            emptyLayout.visibility = View.VISIBLE
+        } else {
+            emptyLayout.visibility = View.GONE
         }
     }
 

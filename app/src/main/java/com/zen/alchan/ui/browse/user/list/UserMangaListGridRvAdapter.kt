@@ -51,8 +51,8 @@ class UserMangaListGridRvAdapter(private val context: Context,
             }
         }
 
-        holder.mangaProgressText.text = "Ch. ${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
-        holder.mangaProgressVolumesText.text = "Vo ${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
+        holder.mangaProgressText.text = "${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
+        holder.mangaProgressVolumesText.text = "${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
 
         if (!mediaList.notes.isNullOrBlank()) {
             holder.mangaNotesLayout.visibility = View.VISIBLE
