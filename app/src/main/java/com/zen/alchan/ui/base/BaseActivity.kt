@@ -45,7 +45,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
-        } else {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (Utility.isLightTheme(viewModel.appColorTheme)) {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
@@ -54,6 +54,14 @@ abstract class BaseActivity : AppCompatActivity() {
                 val flags = window.decorView.systemUiVisibility
                 window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
+            }
+        } else {
+            if (Utility.isLightTheme(viewModel.appColorTheme)) {
+                val flags = window.decorView.systemUiVisibility
+                window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            } else {
+                val flags = window.decorView.systemUiVisibility
+                window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
             }
         }
     }
