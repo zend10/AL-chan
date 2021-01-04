@@ -51,6 +51,7 @@ class FriendsMediaListRvAdapter(private val context: Context,
                 ScoreFormat.POINT_3 -> {
                     holder.scoreIcon.visibility = View.VISIBLE
                     GlideApp.with(context).load(AndroidUtility.getSmileyFromScore(item.score)).into(holder.scoreIcon)
+                    holder.scoreText.text = ""
                 }
                 ScoreFormat.POINT_5 -> {
                     holder.scoreIcon.visibility = View.VISIBLE
