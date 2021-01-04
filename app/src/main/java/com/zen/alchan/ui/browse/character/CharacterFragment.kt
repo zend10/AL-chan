@@ -38,6 +38,8 @@ import com.zen.alchan.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_character.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaFormat
+import type.MediaSort
 import type.MediaType
 import kotlin.math.abs
 
@@ -290,6 +292,23 @@ class CharacterFragment : BaseFragment() {
         }
 
         characterVoiceActorsLayout.visibility = if (viewModel.characterVoiceActors.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+        seriesFilterIcon.setOnClickListener {
+            val dialog = FilterCharacterMediaBottomSheet()
+            dialog.setListener(object : FilterCharacterMediaBottomSheet.FilterCharacterMediaListener {
+                override fun passFilterData(
+                    sortBy: MediaSort?,
+                    orderByDescending: Boolean,
+                    selectedFormats: ArrayList<MediaFormat>?,
+                    showOnlyOnList: Boolean?
+                ) {
+                    // filter
+                }
+            })
+            val bundle = Bundle()
+            dialog.arguments = bundle
+            dialog.show(childFragmentManager, null)
+        }
     }
 
     private fun handleDescription() {

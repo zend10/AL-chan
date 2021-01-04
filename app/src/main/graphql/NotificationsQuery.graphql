@@ -32,6 +32,9 @@ query NotificationsQuery(
             ... onRelatedMediaAdditionNotification
         }
     }
+    Viewer {
+        unreadNotificationCount
+    }
 }
 
 fragment onAiringNotification on AiringNotification {

@@ -16,6 +16,17 @@ query CharacterMediaConnectionQuery($id: Int, $page: Int) {
                     }
                     type
                     format
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                    averageScore
+                    popularity
+                    favourites
+                    mediaListEntry {
+                        status
+                    }
                 }
                 relationType
                 characterRole

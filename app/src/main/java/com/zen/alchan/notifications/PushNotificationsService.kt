@@ -79,10 +79,17 @@ class PushNotificationsService : JobIntentService() {
 
     private fun handleResult(response: Response<NotificationsQuery.Data>) {
         if (!response.hasErrors()) {
+            val notificationPerPage = response.data?.page?.notifications?.size ?: 0
+            var notificationUnreadCount = response.data?.viewer?.unreadNotificationCount ?: 0
+
+            if (notificationUnreadCount > notificationPerPage) {
+                notificationUnreadCount = notificationPerPage
+            }
+
             val notificationList = if (userManager.latestNotification == null) {
                 response.data?.page?.notifications
             } else {
-                response.data?.page?.notifications?.reversed()
+                response.data?.page?.notifications?.reversed()?.drop(notificationPerPage - notificationUnreadCount)
             }
 
             notificationList?.forEach {

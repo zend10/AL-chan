@@ -38,6 +38,7 @@ import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
 import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
 import com.zen.alchan.ui.browse.studio.StudioViewModel
 import com.zen.alchan.ui.browse.BrowseViewModel
+import com.zen.alchan.ui.browse.character.FilterCharacterMediaViewModel
 import com.zen.alchan.ui.browse.media.overview.ThemesPlayerViewModel
 import com.zen.alchan.ui.browse.reviews.editor.ReviewEditorViewModel
 import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
@@ -184,6 +185,7 @@ class ALchanApplication : Application() {
 
         // browse character, staff, studio
         viewModel { CharacterViewModel(get(), get()) }
+        viewModel { FilterCharacterMediaViewModel(gson) }
         viewModel { StaffViewModel(get(), get()) }
         viewModel { StaffBioViewModel(get()) }
         viewModel { StaffVoiceViewModel(get()) }

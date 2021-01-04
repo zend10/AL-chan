@@ -525,4 +525,6 @@
     <string name="merge_activity_forum_follows_and_relations_push_notifications_into_one">Merge Activity, Forum, Follows, and Relations push notifications into one</string>
     <string name="show_push_notification_not_earlier_than_every">Show push notification not earlier than every</string>
     <string name="you_have_unread_notifications">You have unread notifications.</string>
+    <string name="hide_series_on_my_list">Hide series on my list</string>
+    <string name="only_show_series_on_my_list">Only show series on my list</string>
 </resources>
