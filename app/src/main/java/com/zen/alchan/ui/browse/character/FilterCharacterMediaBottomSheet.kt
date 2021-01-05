@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zen.alchan.R
-import kotlinx.android.synthetic.main.activity_media_filter.*
+import com.zen.alchan.helper.replaceUnderscore
 import kotlinx.android.synthetic.main.bottomsheet_filter_character_media.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaFormat
@@ -49,8 +49,14 @@ class FilterCharacterMediaBottomSheet : BottomSheetDialogFragment() {
         }
 
         viewModel.orderByDescending = arguments?.getBoolean(ORDER_BY_DESCENDING, true) ?: true
-        viewModel.selectedFormats = viewModel.deserializeSelectedFormats(arguments?.getString(SELECTED_FORMATS))
-        viewModel.showOnlyOnList = arguments?.getBoolean(SHOW_ONLY_ON_LIST)
+
+        if (arguments?.getString(SELECTED_FORMATS) != null) {
+            viewModel.selectedFormats = viewModel.deserializeSelectedFormats(arguments?.getString(SELECTED_FORMATS))
+        }
+
+        if (arguments?.containsKey(SHOW_ONLY_ON_LIST) == true) {
+            viewModel.showOnlyOnList = arguments?.getBoolean(SHOW_ONLY_ON_LIST)
+        }
 
         initLayout()
 
@@ -95,28 +101,56 @@ class FilterCharacterMediaBottomSheet : BottomSheetDialogFragment() {
                 .show()
         }
 
-        dialogView.filterFormatText.text = ""
+        dialogView.filterFormatText.text = if (viewModel.selectedFormats.isNullOrEmpty()) {
+            "-"
+        } else {
+            viewModel.selectedFormats?.joinToString { it.name.replaceUnderscore() }
+        }
         dialogView.filterFormatLayout.setOnClickListener {
-
+            val stringBooleanPair = viewModel.getMediaFormatArrayPair()
+            AlertDialog.Builder(requireContext())
+                .setMultiChoiceItems(stringBooleanPair.first, stringBooleanPair.second) { _, index, isChecked ->
+                    viewModel.passMediaFormatFilterValue(index, isChecked)
+                    dialogView.filterFormatText.text = if (viewModel.selectedFormats.isNullOrEmpty()) {
+                        "-"
+                    } else {
+                        viewModel.selectedFormats?.joinToString { it.name.replaceUnderscore() }
+                    }
+                }
+                .setPositiveButton(R.string.close, null)
+                .show()
         }
 
-        dialogView.filterHideMediaCheckBox.isChecked = false
+        dialogView.filterHideMediaCheckBox.isChecked = viewModel.showOnlyOnList == false
         dialogView.filterHideMediaCheckBox.setOnClickListener {
-
+            if (dialogView.filterHideMediaCheckBox.isChecked) {
+                viewModel.showOnlyOnList = false
+                dialogView.filterOnlyShowMediaCheckBox.isChecked = false
+            } else {
+                viewModel.showOnlyOnList = null
+            }
         }
         dialogView.filterHideMediaText.setOnClickListener {
             dialogView.filterHideMediaCheckBox.performClick()
         }
 
-        dialogView.filterOnlyShowMediaCheckBox.isChecked = false
+        dialogView.filterOnlyShowMediaCheckBox.isChecked = viewModel.showOnlyOnList == true
         dialogView.filterOnlyShowMediaCheckBox.setOnClickListener {
-
+            if (dialogView.filterOnlyShowMediaCheckBox.isChecked) {
+                viewModel.showOnlyOnList = true
+                dialogView.filterHideMediaCheckBox.isChecked = false
+            } else {
+                viewModel.showOnlyOnList = null
+            }
         }
         dialogView.filterOnlyShowMediaText.setOnClickListener {
             dialogView.filterOnlyShowMediaCheckBox.performClick()
         }
 
         dialogView.filterApplyButton.setOnClickListener {
+            if (viewModel.sortBy == null) {
+                viewModel.sortBy = MediaSort.POPULARITY
+            }
             listener.passFilterData(viewModel.sortBy, viewModel.orderByDescending, viewModel.selectedFormats, viewModel.showOnlyOnList)
             dismiss()
         }

@@ -138,6 +138,11 @@ class CharacterFragment : BaseFragment() {
                         edge?.node?.coverImage?.large,
                         edge?.node?.type,
                         edge?.node?.format,
+                        "${edge?.node?.startDate?.year ?: 9999}${edge?.node?.startDate?.month ?: 12}${edge?.node?.startDate?.day ?: 31}".toInt(),
+                        edge?.node?.averageScore,
+                        edge?.node?.popularity,
+                        edge?.node?.favourites,
+                        edge?.node?.mediaListEntry?.status,
                         edge?.characterRole
                     )
                     viewModel.characterMedia.add(characterMedia)
@@ -302,10 +307,28 @@ class CharacterFragment : BaseFragment() {
                     selectedFormats: ArrayList<MediaFormat>?,
                     showOnlyOnList: Boolean?
                 ) {
-                    // filter
+                    viewModel.sortBy = sortBy
+                    viewModel.orderByDescending = orderByDescending
+                    viewModel.selectedFormats = selectedFormats
+                    viewModel.showOnlyOnList = showOnlyOnList
+
+                    adapter = assignAdapter()
+                    characterMediaRecyclerView.adapter = adapter
                 }
             })
             val bundle = Bundle()
+            if (viewModel.sortBy != null) {
+                bundle.putString(FilterCharacterMediaBottomSheet.SORT_BY, viewModel.sortBy?.name)
+                bundle.putBoolean(FilterCharacterMediaBottomSheet.ORDER_BY_DESCENDING, viewModel.orderByDescending)
+
+                if (!viewModel.selectedFormats.isNullOrEmpty()) {
+                    bundle.putString(FilterCharacterMediaBottomSheet.SELECTED_FORMATS, viewModel.getSerializedSelectedFormats())
+                }
+
+                if (viewModel.showOnlyOnList != null) {
+                    bundle.putBoolean(FilterCharacterMediaBottomSheet.SHOW_ONLY_ON_LIST, viewModel.showOnlyOnList!!)
+                }
+            }
             dialog.arguments = bundle
             dialog.show(childFragmentManager, null)
         }
@@ -329,7 +352,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun assignAdapter(): CharacterMediaRvAdapter {
-        return CharacterMediaRvAdapter(activity!!, viewModel.characterMedia, object : CharacterMediaRvAdapter.CharacterMediaListener {
+        return CharacterMediaRvAdapter(activity!!, viewModel.getFilteredMedia(), object : CharacterMediaRvAdapter.CharacterMediaListener {
             override fun passSelectedMedia(mediaId: Int, mediaType: MediaType) {
                 listener?.changeFragment(BrowsePage.valueOf(mediaType.name), mediaId)
             }

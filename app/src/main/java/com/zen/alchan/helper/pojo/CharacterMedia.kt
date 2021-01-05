@@ -1,9 +1,7 @@
 package com.zen.alchan.helper.pojo
 
-import type.CharacterRole
-import type.MediaFormat
-import type.MediaType
-import type.StaffLanguage
+import com.zen.alchan.data.response.FuzzyDate
+import type.*
 
 class CharacterMedia(
     val mediaId: Int?,
@@ -11,6 +9,11 @@ class CharacterMedia(
     val mediaImage: String?,
     val mediaType: MediaType?,
     val mediaFormat: MediaFormat?,
+    val mediaStartDate: Int?,
+    val mediaAverageScore: Int?,
+    val mediaPopularity: Int?,
+    val mediaFavourites: Int?,
+    val mediaListStatus: MediaListStatus?,
     val role: CharacterRole?
 )
 

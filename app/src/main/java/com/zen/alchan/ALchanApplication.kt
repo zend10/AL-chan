@@ -184,7 +184,7 @@ class ALchanApplication : Application() {
         viewModel { MediaSocialViewModel(get()) }
 
         // browse character, staff, studio
-        viewModel { CharacterViewModel(get(), get()) }
+        viewModel { CharacterViewModel(get(), get(), gson) }
         viewModel { FilterCharacterMediaViewModel(gson) }
         viewModel { StaffViewModel(get(), get()) }
         viewModel { StaffBioViewModel(get()) }
