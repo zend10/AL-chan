@@ -527,4 +527,5 @@
     <string name="you_have_unread_notifications">You have unread notifications.</string>
     <string name="hide_series_on_my_list">Hide series on my list</string>
     <string name="only_show_series_on_my_list">Only show series on my list</string>
+    <string name="on_list">On List</string>
 </resources>

@@ -7,7 +7,7 @@ query StaffCharacterConnectionQuery(
         name {
             full
         }
-        characters(page: $page) {
+        characters(page: $page, sort: [FAVOURITES_DESC]) {
             edges {
                 node {
                     id

@@ -13,6 +13,7 @@ interface BrowseRepository {
     val staffData: LiveData<Resource<StaffQuery.Data>>
     val staffBioData: LiveData<Resource<StaffBioQuery.Data>>
     val staffCharacterData: LiveData<Resource<StaffCharacterConnectionQuery.Data>>
+    val staffMediaCharacterData: LiveData<Resource<StaffMediaCharacterConnectionQuery.Data>>
     val staffAnimeData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
     val staffMangaData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
     val staffIsFavoriteData: LiveData<Resource<StaffIsFavoriteQuery.Data>>
@@ -30,6 +31,7 @@ interface BrowseRepository {
     fun getStaff(id: Int)
     fun getStaffBio(id: Int)
     fun getStaffCharacter(id: Int, page: Int)
+    fun getStaffMediaCharacter(id: Int, page: Int, sort: MediaSort, onList: Boolean?)
     fun getStaffAnime(id:Int, page: Int)
     fun getStaffManga(id:Int, page: Int)
     fun checkStaffIsFavorite(id: Int)

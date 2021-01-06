@@ -6,17 +6,85 @@
     android:layout_height="wrap_content"
     tools:context=".ui.browse.staff.voice.StaffVoiceFragment">
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/characterSortScrollView"
+        android:paddingTop="@dimen/marginFar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="visible"
+            android:id="@+id/characterSortLayout"
+            android:layout_marginStart="@dimen/marginPage"
+            android:layout_marginEnd="@dimen/marginPage"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/sort"
+                    style="?themeRegularFont"
+                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/characterSortText"
+                    style="?themeRegularClickableFont"
+                    android:foreground="?selectableItemBackground"
+                    android:padding="@dimen/iconPadding"
+                    android:layout_marginEnd="@dimen/marginPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/characterShowOnListLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/characterShowOnListText"
+                    android:text="@string/on_list"
+                    style="?themeRegularFont"
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/characterShowOnListCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/staffVoiceRecyclerView"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:paddingTop="@dimen/marginFar"
+        android:layout_below="@+id/characterSortScrollView"
         android:paddingBottom="@dimen/marginFar"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="@dimen/marginFar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -7,6 +7,7 @@ import IdFromNameQuery
 import StaffBioQuery
 import StaffCharacterConnectionQuery
 import StaffIsFavoriteQuery
+import StaffMediaCharacterConnectionQuery
 import StaffMediaConnectionQuery
 import StaffQuery
 import StudioIsFavoriteQuery
@@ -72,6 +73,24 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
         page: Int
     ): Observable<Response<StaffCharacterConnectionQuery.Data>> {
         val query = StaffCharacterConnectionQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
+        val queryCall = apolloHandler.apolloClient.query(query)
+        return Rx2Apollo.from(queryCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getStaffMediaCharacter(
+        id: Int,
+        page: Int,
+        sort: List<MediaSort>,
+        onList: Boolean?
+    ): Observable<Response<StaffMediaCharacterConnectionQuery.Data>> {
+        val query = StaffMediaCharacterConnectionQuery(
+            id = Input.fromNullable(id),
+            page = Input.fromNullable(page),
+            sort = Input.fromNullable(sort),
+            onList = Input.optional(onList)
+        )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

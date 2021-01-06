@@ -18,11 +18,6 @@ class StaffVoiceRvAdapter(private val context: Context,
                           private val listener: StaffVoiceListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    interface StaffVoiceListener {
-        fun passSelectedCharacter(characterId: Int)
-        fun passSelectedMedia(mediaId: Int, mediaType: MediaType)
-    }
-
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1

@@ -38,6 +38,10 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     override val staffCharacterData: LiveData<Resource<StaffCharacterConnectionQuery.Data>>
         get() = _staffCharacterData
 
+    private val _staffMediaCharacterData = SingleLiveEvent<Resource<StaffMediaCharacterConnectionQuery.Data>>()
+    override val staffMediaCharacterData: LiveData<Resource<StaffMediaCharacterConnectionQuery.Data>>
+        get() = _staffMediaCharacterData
+
     private val _staffAnimeData = SingleLiveEvent<Resource<StaffMediaConnectionQuery.Data>>()
     override val staffAnimeData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
         get() = _staffAnimeData
@@ -97,6 +101,11 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     @SuppressLint("CheckResult")
     override fun getStaffCharacter(id: Int, page: Int) {
         browseDataSource.getStaffCharacter(id, page).subscribeWith(AndroidUtility.rxApolloCallback(_staffCharacterData))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getStaffMediaCharacter(id: Int, page: Int, sort: MediaSort, onList: Boolean?) {
+        browseDataSource.getStaffMediaCharacter(id, page, listOf(sort), onList).subscribeWith(AndroidUtility.rxApolloCallback(_staffMediaCharacterData))
     }
 
     @SuppressLint("CheckResult")
