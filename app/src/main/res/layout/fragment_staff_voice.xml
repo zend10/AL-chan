@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/characterSortLayout"
             android:layout_marginStart="@dimen/marginPage"
             android:layout_marginEnd="@dimen/marginPage"

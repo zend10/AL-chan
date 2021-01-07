@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -92,6 +94,7 @@ class StaffAnimeFragment : BaseFragment() {
 
                     adapter.notifyDataSetChanged()
                     emptyLayout.visibility = if (viewModel.staffMedia.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    animeSortLayout.visibility = if (viewModel.staffMedia.isNullOrEmpty()) View.GONE else View.VISIBLE
                 }
                 ResponseStatus.ERROR -> {
                     DialogUtility.showToast(activity, it.message)
@@ -128,6 +131,35 @@ class StaffAnimeFragment : BaseFragment() {
                 }
             }
         })
+
+        animeSortLayout.visibility = if (viewModel.staffMedia.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+        animeSortText.text = getString(viewModel.mediaSortArray[viewModel.mediaSortList.indexOf(viewModel.sortBy)]).toUpperCase(Locale.US)
+        animeSortText.setOnClickListener {
+            val stringArray = viewModel.mediaSortArray.map { sort -> getString(sort).toUpperCase(Locale.US) }.toTypedArray()
+            AlertDialog.Builder(requireContext())
+                .setItems(stringArray) { _, which ->
+                    viewModel.sortBy = viewModel.mediaSortList[which]
+                    animeSortText.text = stringArray[which]
+
+                    loadingLayout.visibility = View.VISIBLE
+                    isLoading = false
+                    viewModel.getStaffMedia(true)
+                }
+                .show()
+        }
+
+        animeShowOnListCheckBox.setOnClickListener {
+            viewModel.onlyShowOnList = animeShowOnListCheckBox.isChecked
+
+            loadingLayout.visibility = View.VISIBLE
+            isLoading = false
+            viewModel.getStaffMedia(true)
+        }
+
+        animeShowOnListText.setOnClickListener {
+            animeShowOnListCheckBox.performClick()
+        }
     }
 
     private fun loadMore() {

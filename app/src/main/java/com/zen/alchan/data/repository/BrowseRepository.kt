@@ -32,8 +32,8 @@ interface BrowseRepository {
     fun getStaffBio(id: Int)
     fun getStaffCharacter(id: Int, page: Int)
     fun getStaffMediaCharacter(id: Int, page: Int, sort: MediaSort, onList: Boolean?)
-    fun getStaffAnime(id:Int, page: Int)
-    fun getStaffManga(id:Int, page: Int)
+    fun getStaffAnime(id:Int, page: Int, sort: MediaSort, onList: Boolean?)
+    fun getStaffManga(id:Int, page: Int, sort: MediaSort, onList: Boolean?)
     fun checkStaffIsFavorite(id: Int)
 
     fun getStudio(id: Int)

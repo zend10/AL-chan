@@ -1,14 +1,16 @@
 query StaffMediaConnectionQuery(
     $id: Int,
     $type: MediaType,
-    $page: Int
+    $page: Int,
+    $sort: [MediaSort],
+    $onList: Boolean
 ) {
     Staff(id: $id) {
         id
         name {
             full
         }
-        staffMedia(type: $type, page: $page) {
+        staffMedia(type: $type, page: $page, sort: $sort, onList: $onList) {
             edges {
                 node {
                     id

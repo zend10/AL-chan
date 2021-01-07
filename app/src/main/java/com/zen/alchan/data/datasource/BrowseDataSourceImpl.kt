@@ -100,9 +100,17 @@ class BrowseDataSourceImpl(private val apolloHandler: ApolloHandler) : BrowseDat
     override fun getStaffMedia(
         id: Int,
         type: MediaType,
-        page: Int
+        page: Int,
+        sort: List<MediaSort>,
+        onList: Boolean?
     ): Observable<Response<StaffMediaConnectionQuery.Data>> {
-        val query = StaffMediaConnectionQuery(id = Input.fromNullable(id), type = Input.fromNullable(type), page = Input.fromNullable(page))
+        val query = StaffMediaConnectionQuery(
+            id = Input.fromNullable(id),
+            type = Input.fromNullable(type),
+            page = Input.fromNullable(page),
+            sort = Input.fromNullable(sort),
+            onList = Input.optional(onList)
+        )
         val queryCall = apolloHandler.apolloClient.query(query)
         return Rx2Apollo.from(queryCall)
             .subscribeOn(Schedulers.io())

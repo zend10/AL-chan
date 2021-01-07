@@ -109,13 +109,13 @@ class BrowseRepositoryImpl(private val browseDataSource: BrowseDataSource) : Bro
     }
 
     @SuppressLint("CheckResult")
-    override fun getStaffAnime(id: Int, page: Int) {
-        browseDataSource.getStaffMedia(id, MediaType.ANIME, page).subscribeWith(AndroidUtility.rxApolloCallback(_staffAnimeData))
+    override fun getStaffAnime(id: Int, page: Int, sort: MediaSort, onList: Boolean?) {
+        browseDataSource.getStaffMedia(id, MediaType.ANIME, page, listOf(sort), onList).subscribeWith(AndroidUtility.rxApolloCallback(_staffAnimeData))
     }
 
     @SuppressLint("CheckResult")
-    override fun getStaffManga(id: Int, page: Int) {
-        browseDataSource.getStaffMedia(id, MediaType.MANGA, page).subscribeWith(AndroidUtility.rxApolloCallback(_staffMangaData))
+    override fun getStaffManga(id: Int, page: Int, sort: MediaSort, onList: Boolean?) {
+        browseDataSource.getStaffMedia(id, MediaType.MANGA, page, listOf(sort), onList).subscribeWith(AndroidUtility.rxApolloCallback(_staffMangaData))
     }
 
     @SuppressLint("CheckResult")

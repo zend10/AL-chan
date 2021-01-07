@@ -15,7 +15,7 @@ interface BrowseDataSource {
     fun getStaffBio(id: Int): Observable<Response<StaffBioQuery.Data>>
     fun getStaffCharacter(id: Int, page: Int): Observable<Response<StaffCharacterConnectionQuery.Data>>
     fun getStaffMediaCharacter(id: Int, page: Int, sort: List<MediaSort>, onList: Boolean?): Observable<Response<StaffMediaCharacterConnectionQuery.Data>>
-    fun getStaffMedia(id: Int, type: MediaType, page: Int): Observable<Response<StaffMediaConnectionQuery.Data>>
+    fun getStaffMedia(id: Int, type: MediaType, page: Int, sort: List<MediaSort>, onList: Boolean?): Observable<Response<StaffMediaConnectionQuery.Data>>
     fun checkStaffIsFavorite(id: Int): Observable<Response<StaffIsFavoriteQuery.Data>>
 
     fun getStudio(id: Int): Observable<Response<StudioQuery.Data>>
