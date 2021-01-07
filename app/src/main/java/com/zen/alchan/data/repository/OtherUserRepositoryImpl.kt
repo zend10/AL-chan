@@ -103,7 +103,7 @@ class OtherUserRepositoryImpl(private val userDataSource: UserDataSource) : Othe
             }
 
             override fun onError(e: Throwable) {
-                _userDataResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_userDataResponse, e)
             }
 
             override fun onComplete() { }

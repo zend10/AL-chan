@@ -3,11 +3,13 @@ package com.zen.alchan.data.repository
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.localstorage.AppSettingsManager
 import com.zen.alchan.data.localstorage.UserManager
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.network.Resource
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import io.reactivex.Observer
@@ -46,7 +48,7 @@ class AuthRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _viewerDataResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_viewerDataResponse, e)
             }
 
             override fun onComplete() { }

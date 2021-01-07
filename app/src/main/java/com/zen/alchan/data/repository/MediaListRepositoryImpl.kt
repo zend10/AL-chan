@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.google.gson.Gson
 import com.zen.alchan.data.datasource.MediaListDataSource
 import com.zen.alchan.data.localstorage.UserManager
@@ -18,6 +19,7 @@ import com.zen.alchan.helper.enums.MediaListSort
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.MediaFilterData
 import com.zen.alchan.helper.toMillis
+import com.zen.alchan.helper.utils.AndroidUtility
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import type.MediaListStatus
@@ -101,7 +103,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _animeListDataResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_animeListDataResponse, e)
             }
 
             override fun onComplete() { }
@@ -128,7 +130,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _mediaListDataDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_mediaListDataDetailResponse, e)
             }
 
             override fun onComplete() { }
@@ -152,7 +154,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateAnimeListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateAnimeListEntryResponse, e)
             }
 
             override fun onComplete() { }
@@ -171,7 +173,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateAnimeListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateAnimeListEntryResponse, e)
             }
 
             override fun onComplete() { }
@@ -207,7 +209,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateMediaListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateMediaListEntryDetailResponse, e)
             }
 
             override fun onComplete() { }
@@ -247,7 +249,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateMediaListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateMediaListEntryDetailResponse, e)
             }
 
             override fun onComplete() { }
@@ -792,7 +794,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _mangaListDataResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_mangaListDataResponse, e)
             }
 
             override fun onComplete() { }
@@ -819,7 +821,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _mediaListDataDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_mediaListDataDetailResponse, e)
             }
 
             override fun onComplete() { }
@@ -844,7 +846,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateMangaListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateMangaListEntryResponse, e)
             }
 
             override fun onComplete() { }
@@ -863,7 +865,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateMangaListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateMangaListEntryResponse, e)
             }
 
             override fun onComplete() { }
@@ -900,7 +902,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateMediaListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateMediaListEntryDetailResponse, e)
             }
 
             override fun onComplete() { }
@@ -941,7 +943,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _updateMediaListEntryDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateMediaListEntryDetailResponse, e)
             }
 
             override fun onComplete() { }
@@ -1067,7 +1069,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _deleteMediaListEntryResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_deleteMediaListEntryResponse, e)
             }
 
             override fun onComplete() { }
@@ -1091,7 +1093,7 @@ class MediaListRepositoryImpl(private val mediaListDataSource: MediaListDataSour
             }
 
             override fun onError(e: Throwable) {
-                _addAnimeToPlanningResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_addAnimeToPlanningResponse, e)
             }
 
             override fun onComplete() { }

@@ -156,7 +156,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                     mediaManager.setGenreList(t.data?.genreCollection!!)
                 }
             }
-            override fun onError(e: Throwable) { e.printStackTrace() }
+            override fun onError(e: Throwable) { }
             override fun onComplete() { }
         })
     }
@@ -171,7 +171,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
                     mediaManager.setTagList(mediaTagCollections)
                 }
             }
-            override fun onError(e: Throwable) { e.printStackTrace() }
+            override fun onError(e: Throwable) { }
             override fun onComplete() { }
         })
     }
@@ -249,8 +249,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _trendingAnimeData.postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
+                AndroidUtility.rxApolloHandleError(_trendingAnimeData, e)
             }
 
             override fun onComplete() {}
@@ -315,19 +314,7 @@ class MediaRepositoryImpl(private val mediaDataSource: MediaDataSource,
     @SuppressLint("CheckResult")
     override fun deleteReview(id: Int) {
         _deleteReviewResponse.postValue(Resource.Loading())
-        mediaDataSource.deleteReview(id).subscribeWith(object : CompletableObserver {
-            override fun onSubscribe(d: Disposable) {
-                // do nothing
-            }
-
-            override fun onComplete() {
-                _deleteReviewResponse.postValue(Resource.Success(true))
-            }
-
-            override fun onError(e: Throwable) {
-                _deleteReviewResponse.postValue(Resource.Error(e.localizedMessage))
-            }
-        })
+        mediaDataSource.deleteReview(id).subscribeWith(AndroidUtility.rxApolloCompletable(_deleteReviewResponse))
     }
 
     override fun getAnimeDetails(malId: Int) {

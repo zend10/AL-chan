@@ -198,7 +198,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _viewerDataResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_viewerDataResponse, e)
             }
 
             override fun onComplete() { }
@@ -231,7 +231,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _updateAniListSettingsResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateAniListSettingsResponse, e)
             }
 
             override fun onComplete() { }
@@ -265,7 +265,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _updateListSettingsResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateListSettingsResponse, e)
             }
 
             override fun onComplete() { }
@@ -293,7 +293,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _updateAniListSettingsResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_updateAniListSettingsResponse, e)
             }
 
             override fun onComplete() { }
@@ -390,7 +390,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             override fun onSubscribe(d: Disposable) { }
 
             override fun onError(e: Throwable) {
-                _reorderFavoritesResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_reorderFavoritesResponse, e)
             }
 
             override fun onComplete() {
@@ -484,7 +484,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _userFollowersResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_userFollowersResponse, e)
             }
 
             override fun onComplete() { }
@@ -511,7 +511,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _userFollowingsResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_userFollowingsResponse, e)
             }
 
             override fun onComplete() { }
@@ -546,9 +546,9 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
 
             override fun onError(e: Throwable) {
                 if (fromPage == FollowPage.FOLLOWING) {
-                    _toggleFollowingResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_toggleFollowingResponse, e)
                 } else {
-                    _toggleFollowerResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_toggleFollowerResponse, e)
                 }
             }
 
@@ -576,7 +576,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource,
             }
 
             override fun onError(e: Throwable) {
-                _toggleFollowResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_toggleFollowResponse, e)
             }
 
             override fun onComplete() { }

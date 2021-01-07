@@ -170,9 +170,9 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
 
             override fun onError(e: Throwable) {
                 if (fromDetail) {
-                    _toggleLikeDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_toggleLikeDetailResponse, e)
                 } else {
-                    _toggleLikeResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_toggleLikeResponse, e)
                 }
             }
 
@@ -193,9 +193,9 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
 
             override fun onError(e: Throwable) {
                 if (fromDetail) {
-                    _toggleActivitySubscriptionDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_toggleActivitySubscriptionDetailResponse, e)
                 } else {
-                    _toggleActivitySubscriptionResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_toggleActivitySubscriptionResponse, e)
                 }
             }
 
@@ -224,9 +224,9 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
 
             override fun onError(e: Throwable) {
                 if (fromDetail) {
-                    _deleteActivityDetailResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_deleteActivityDetailResponse, e)
                 } else {
-                    _deleteActivityResponse.postValue(Resource.Error(e.localizedMessage))
+                    AndroidUtility.rxApolloHandleError(_deleteActivityResponse, e)
                 }
             }
 
@@ -247,7 +247,7 @@ class SocialRepositoryImpl(private val socialDataSource: SocialDataSource,
             override fun onSubscribe(d: Disposable) { }
 
             override fun onError(e: Throwable) {
-                _deleteActivityReplyResponse.postValue(Resource.Error(e.localizedMessage))
+                AndroidUtility.rxApolloHandleError(_deleteActivityReplyResponse, e)
             }
 
             override fun onComplete() {

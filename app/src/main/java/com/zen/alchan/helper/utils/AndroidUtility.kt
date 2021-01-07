@@ -11,6 +11,7 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.MutableLiveData
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.zen.alchan.R
 import com.zen.alchan.data.network.Resource
 import com.zen.alchan.helper.Constant
@@ -144,7 +145,7 @@ object AndroidUtility {
         }
 
         override fun onError(e: Throwable) {
-            observer.postValue(Resource.Error(e.localizedMessage))
+            rxApolloHandleError(observer, e)
         }
 
         override fun onComplete() { }
@@ -156,11 +157,21 @@ object AndroidUtility {
         override fun onSubscribe(d: Disposable) { }
 
         override fun onError(e: Throwable) {
-            observer.postValue(Resource.Error(e.localizedMessage))
+            rxApolloHandleError(observer, e)
         }
 
         override fun onComplete() {
             observer.postValue(Resource.Success(true))
+        }
+    }
+
+    fun <T> rxApolloHandleError(observer: MutableLiveData<Resource<T>>, e: Throwable) {
+        if (e is ApolloHttpException) {
+            when (e.code()) {
+                Constant.RATE_LIMIT_CODE -> observer.postValue(Resource.Error(Constant.RATE_LIMIT_RESPONSE))
+            }
+        } else {
+            observer.postValue(Resource.Error(e.localizedMessage ?: ""))
         }
     }
 

@@ -47,6 +47,9 @@ object Constant {
     const val DATE_TIME_FORMAT = "E, dd MMM yyyy, hh:mm a"
     const val ISO_DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss"
 
+    const val RATE_LIMIT_CODE = 429
+    const val RATE_LIMIT_RESPONSE = "Sorry that you have hit the rate limit. Some things will not be loaded properly. Please wait a while before navigating between pages again."
+
     const val EVA_ID = 103770
 
     val DEFAULT_THEME = AppColorTheme.DEFAULT_THEME_YELLOW

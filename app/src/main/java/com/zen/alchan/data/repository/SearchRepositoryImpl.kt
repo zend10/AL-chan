@@ -219,8 +219,7 @@ class SearchRepositoryImpl(private val searchDataSource: SearchDataSource) : Sea
             }
 
             override fun onError(e: Throwable) {
-                getSeasonalResponseLiveData(seasonalCategory).postValue(Resource.Error(e.localizedMessage))
-                e.printStackTrace()
+                AndroidUtility.rxApolloHandleError(getSeasonalResponseLiveData(seasonalCategory), e)
             }
 
             override fun onComplete() { }
