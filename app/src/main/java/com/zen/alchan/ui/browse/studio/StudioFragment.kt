@@ -108,6 +108,11 @@ class StudioFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (it?.data?.studio?.id != viewModel.studioId) {
+                        return@Observer
+                    }
+
                     if (it.data?.studio != null) {
                         viewModel.currentStudioData = it.data.studio
                         setupHeader()
@@ -121,6 +126,10 @@ class StudioFragment : BaseFragment() {
         })
 
         viewModel.studioIsFavoriteData.observe(viewLifecycleOwner, Observer {
+            if (it?.data?.studio?.id != viewModel.studioId) {
+                return@Observer
+            }
+
             if (it.responseStatus == ResponseStatus.SUCCESS) {
                 if (it.data?.studio?.isFavourite == true) {
                     studioFavoriteButton.text = getString(R.string.favorited)
@@ -157,6 +166,10 @@ class StudioFragment : BaseFragment() {
         viewModel.studioMediaData.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it.data?.studio?.id != viewModel.studioId) {
+                        return@Observer
+                    }
+
                     if (isLoading) {
                         viewModel.studioMediaList.removeAt(viewModel.studioMediaList.lastIndex)
                         adapter.notifyItemRemoved(viewModel.studioMediaList.size)

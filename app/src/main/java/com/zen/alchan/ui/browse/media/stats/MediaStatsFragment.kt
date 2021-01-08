@@ -58,6 +58,11 @@ class MediaStatsFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (viewModel.mediaId != it.data?.media?.id) {
+                        return@Observer
+                    }
+
                     viewModel.mediaData = it.data?.media
                     mediaData = it.data?.media
                     initLayout()

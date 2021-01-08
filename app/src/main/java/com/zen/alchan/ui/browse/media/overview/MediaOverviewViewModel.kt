@@ -66,6 +66,4 @@ class MediaOverviewViewModel(private val mediaRepository: MediaRepository) : Vie
             mediaRepository.getAnimeVideos(mediaData?.idMal!!)
         }
     }
-
-
 }

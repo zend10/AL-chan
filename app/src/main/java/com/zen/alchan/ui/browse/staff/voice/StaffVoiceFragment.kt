@@ -85,6 +85,10 @@ class StaffVoiceFragment : BaseFragment() {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it?.data?.staff?.id != viewModel.staffId) {
+                        return@Observer
+                    }
+
                     if (!handleSuccessLoading(it.data?.staff?.characters?.pageInfo?.hasNextPage == true)) {
                         return@Observer
                     }
@@ -133,6 +137,10 @@ class StaffVoiceFragment : BaseFragment() {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it?.data?.staff?.id != viewModel.staffId) {
+                        return@Observer
+                    }
+
                     if (!handleSuccessLoading(it.data?.staff?.characterMedia?.pageInfo?.hasNextPage == true)) {
                         return@Observer
                     }

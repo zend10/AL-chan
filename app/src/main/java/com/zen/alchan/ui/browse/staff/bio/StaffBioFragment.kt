@@ -62,6 +62,11 @@ class StaffBioFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (it.data?.staff?.id != viewModel.staffId) {
+                        return@Observer
+                    }
+
                     viewModel.staffData = it.data?.staff
                     staffData = it.data?.staff
                     initLayout()

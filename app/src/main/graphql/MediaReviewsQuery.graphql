@@ -4,6 +4,7 @@ query MediaReviewsQuery(
     $sort: [ReviewSort]
 ) {
     Media(id: $id) {
+        id
         reviews(page: $page, sort: $sort) {
             edges {
                 node {

@@ -72,6 +72,10 @@ class MediaCharactersFragment : BaseFragment() {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it.data?.media?.id != viewModel.mediaId) {
+                        return@Observer
+                    }
+
                     if (isLoading) {
                         viewModel.mediaCharacters.removeAt(viewModel.mediaCharacters.lastIndex)
                         adapter.notifyItemRemoved(viewModel.mediaCharacters.size)

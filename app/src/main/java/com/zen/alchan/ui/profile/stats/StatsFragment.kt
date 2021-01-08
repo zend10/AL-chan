@@ -66,6 +66,11 @@ class StatsFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (viewModel.otherUserId != null && it.data?.user?.id != viewModel.otherUserId) {
+                        return@Observer
+                    }
+
                     viewModel.userStats = it.data?.user?.statistics
                     viewModel.scoreFormat = it.data?.user?.mediaListOptions?.scoreFormat
                     initLayout()

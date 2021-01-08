@@ -70,6 +70,10 @@ class FavoritesFragment : BaseFragment() {
                 ResponseStatus.SUCCESS -> {
                     favoriteListLoading.visibility = View.GONE
 
+                    if (viewModel.otherUserId != null && viewModel.otherUserId != it?.data?.user?.id) {
+                        return@Observer
+                    }
+
                     if (!viewModel.animeHasNextPage) {
                         return@Observer
                     }
@@ -102,6 +106,10 @@ class FavoritesFragment : BaseFragment() {
                 ResponseStatus.LOADING -> favoriteListLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     favoriteListLoading.visibility = View.GONE
+
+                    if (viewModel.otherUserId != null && viewModel.otherUserId != it?.data?.user?.id) {
+                        return@Observer
+                    }
 
                     if (!viewModel.mangaHasNextPage) {
                         return@Observer
@@ -136,6 +144,10 @@ class FavoritesFragment : BaseFragment() {
                 ResponseStatus.SUCCESS -> {
                     favoriteListLoading.visibility = View.GONE
 
+                    if (viewModel.otherUserId != null && viewModel.otherUserId != it?.data?.user?.id) {
+                        return@Observer
+                    }
+
                     if (!viewModel.charactersHasNextPage) {
                         return@Observer
                     }
@@ -169,6 +181,10 @@ class FavoritesFragment : BaseFragment() {
                 ResponseStatus.SUCCESS -> {
                     favoriteListLoading.visibility = View.GONE
 
+                    if (viewModel.otherUserId != null && viewModel.otherUserId != it?.data?.user?.id) {
+                        return@Observer
+                    }
+
                     if (!viewModel.staffsHasNextPage) {
                         return@Observer
                     }
@@ -201,6 +217,10 @@ class FavoritesFragment : BaseFragment() {
                 ResponseStatus.LOADING -> favoriteStudiosLoading.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     favoriteStudiosLoading.visibility = View.GONE
+
+                    if (viewModel.otherUserId != null && viewModel.otherUserId != it?.data?.user?.id) {
+                        return@Observer
+                    }
 
                     if (!viewModel.studiosHasNextPage) {
                         return@Observer

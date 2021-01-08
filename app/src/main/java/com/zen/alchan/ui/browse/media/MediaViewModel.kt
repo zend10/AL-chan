@@ -60,4 +60,8 @@ class MediaViewModel(private val mediaRepository: MediaRepository,
             mediaRepository.triggerRefreshMediaChildren()
         }
     }
+
+    fun checkMediaId(id: Int?): Boolean {
+        return id == mediaId
+    }
 }

@@ -57,6 +57,10 @@ class MediaSocialFragment : BaseFragment() {
         viewModel.mediaFriendsMediaListData.observe(viewLifecycleOwner, Observer {
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it.data?.page?.mediaList?.isNullOrEmpty() == false && it.data.page.mediaList[0]?.media?.id != viewModel.mediaId) {
+                        return@Observer
+                    }
+
                     viewModel.friendsHasNextPage = it.data?.page?.pageInfo?.hasNextPage ?: false
                     viewModel.friendsIsInit = true
                     viewModel.friendsPage += 1
@@ -92,6 +96,10 @@ class MediaSocialFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (it.data?.page?.activities?.isNullOrEmpty() == false && it.data.page.activities[0]?.fragments?.onListActivity?.media?.id != viewModel.mediaId) {
+                        return@Observer
+                    }
 
                     viewModel.activityHasNextPage = it.data?.page?.pageInfo?.hasNextPage ?: false
                     viewModel.activityIsInit = true

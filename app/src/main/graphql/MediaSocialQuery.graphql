@@ -30,6 +30,7 @@ query MediaSocialQuery(
                 }
             }
             media {
+                id
                 title {
                     userPreferred
                 }

@@ -116,6 +116,10 @@ class MediaFragment : BaseFragment() {
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
 
+                    if (!viewModel.checkMediaId(it.data?.media?.id)) {
+                        return@Observer
+                    }
+
                     if (it.data?.media?.isAdult == true && !viewModel.showAdultContent) {
                         DialogUtility.showToast(activity, R.string.you_are_not_allowed_to_view_this_content)
                         activity?.finish()
@@ -135,6 +139,10 @@ class MediaFragment : BaseFragment() {
         })
 
         viewModel.mediaStatus.observe(viewLifecycleOwner, Observer {
+            if (!viewModel.checkMediaId(it.data?.mediaList?.mediaId)) {
+                return@Observer
+            }
+
             if (it.data?.mediaList != null) {
                 if (it.data.mediaList.status == MediaListStatus.CURRENT) {
                     mediaManageListButton.text = if (viewModel.mediaType == MediaType.MANGA) {

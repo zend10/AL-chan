@@ -66,6 +66,10 @@ class MediaStaffsFragment : BaseFragment() {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it.data?.media?.id != viewModel.mediaId) {
+                        return@Observer
+                    }
+
                     if (isLoading) {
                         viewModel.mediaStaffs.removeAt(viewModel.mediaStaffs.lastIndex)
                         adapter.notifyItemRemoved(viewModel.mediaStaffs.size)

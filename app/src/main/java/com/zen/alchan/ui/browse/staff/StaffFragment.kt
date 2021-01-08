@@ -126,6 +126,11 @@ class StaffFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (it.data?.staff?.id != viewModel.staffId) {
+                        return@Observer
+                    }
+
                     if (it.data?.staff != null) {
                         viewModel.currentStaffData = it.data.staff
                         setupHeader()
@@ -139,6 +144,10 @@ class StaffFragment : BaseFragment() {
         })
 
         viewModel.staffIsFavoriteData.observe(viewLifecycleOwner, Observer {
+            if (it.data?.staff?.id != viewModel.staffId) {
+                return@Observer
+            }
+
             if (it.responseStatus == ResponseStatus.SUCCESS) {
                 if (it.data?.staff?.isFavourite == true) {
                     staffFavoriteButton.text = getString(R.string.favorited)

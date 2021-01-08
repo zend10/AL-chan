@@ -43,7 +43,7 @@ class BioFragment : Fragment() {
     private fun setupObserver() {
         if (viewModel.otherUserId != null) {
             viewModel.userData.observe(viewLifecycleOwner, Observer {
-                if (it != null) {
+                if (it != null && it.user?.id == viewModel.otherUserId) {
                     initLayout()
                 }
             })

@@ -108,7 +108,7 @@ class CharacterFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
-                    if (it.data?.character != null) {
+                    if (it.data?.character != null && it.data.character.id == viewModel.characterId) {
                         viewModel.currentCharacterData = it.data.character
                         setupHeader()
                         handleDescription()
@@ -123,6 +123,10 @@ class CharacterFragment : BaseFragment() {
 
         viewModel.characterMediaData.observe(viewLifecycleOwner, Observer {
             if (it.responseStatus == ResponseStatus.SUCCESS) {
+                if (it.data?.character?.id != viewModel.characterId) {
+                    return@Observer
+                }
+
                 if (!viewModel.hasNextPage) {
                     return@Observer
                 }
@@ -175,6 +179,10 @@ class CharacterFragment : BaseFragment() {
         })
 
         viewModel.characterIsFavoriteData.observe(viewLifecycleOwner, Observer {
+            if (it.data?.character?.id != viewModel.characterId) {
+                return@Observer
+            }
+
             if (it.responseStatus == ResponseStatus.SUCCESS) {
                 if (it.data?.character?.isFavourite == true) {
                     characterFavoriteButton.text = getString(R.string.favorited)

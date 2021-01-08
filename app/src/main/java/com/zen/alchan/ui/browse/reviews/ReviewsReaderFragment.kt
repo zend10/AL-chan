@@ -93,6 +93,11 @@ class ReviewsReaderFragment : BaseFragment() {
                 ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
                 ResponseStatus.SUCCESS -> {
                     loadingLayout.visibility = View.GONE
+
+                    if (it?.data?.review?.id != viewModel.reviewId) {
+                        return@Observer
+                    }
+
                     viewModel.reviewDetail = it.data?.review
                     viewModel.currentUserRating = viewModel.reviewDetail?.userRating
                     viewModel.currentRating = viewModel.reviewDetail?.rating

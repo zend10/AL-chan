@@ -67,6 +67,10 @@ class StaffAnimeFragment : BaseFragment() {
             loadingLayout.visibility = View.GONE
             when (it.responseStatus) {
                 ResponseStatus.SUCCESS -> {
+                    if (it?.data?.staff?.id != viewModel.staffId) {
+                        return@Observer
+                    }
+
                     if (isLoading) {
                         viewModel.staffMedia.removeAt(viewModel.staffMedia.lastIndex)
                         adapter.notifyItemRemoved(viewModel.staffMedia.size)

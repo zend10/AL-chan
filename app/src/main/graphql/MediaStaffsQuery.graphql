@@ -3,6 +3,7 @@ query MediaStaffsQuery(
     $page: Int
 ) {
     Media(id: $id) {
+        id
         staff(page: $page) {
             edges {
                 node {

@@ -68,6 +68,10 @@ class UserReviewsFragment : BaseFragment() {
         when (it.responseStatus) {
             ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
             ResponseStatus.SUCCESS -> {
+                if (viewModel.otherUserId != null && it.data?.page?.reviews?.isNullOrEmpty() == false && it.data.page.reviews[0]?.userId != viewModel.otherUserId) {
+                    return
+                }
+
                 if (!viewModel.hasNextPage) {
                     return
                 }
