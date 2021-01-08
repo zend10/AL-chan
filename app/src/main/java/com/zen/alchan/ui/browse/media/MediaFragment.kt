@@ -223,7 +223,7 @@ class MediaFragment : BaseFragment() {
             mediaCoverImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentMediaData?.coverImage?.extraLarge)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(mediaCoverImage).show(true)
+                }.withTransitionFrom(mediaCoverImage).withHiddenStatusBar(false).show(true)
             }
         }
 
@@ -231,7 +231,7 @@ class MediaFragment : BaseFragment() {
             mediaBannerImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentMediaData?.bannerImage)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(mediaBannerImage).show(true)
+                }.withTransitionFrom(mediaBannerImage).withHiddenStatusBar(false).show(true)
             }
         }
 

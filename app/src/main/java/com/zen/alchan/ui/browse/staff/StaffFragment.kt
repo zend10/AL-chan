@@ -211,7 +211,7 @@ class StaffFragment : BaseFragment() {
             leftImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentStaffData?.image?.large)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(leftImage).show(true)
+                }.withTransitionFrom(leftImage).withHiddenStatusBar(false).show(true)
             }
         }
 

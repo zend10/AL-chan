@@ -215,7 +215,7 @@ class UserFragment : BaseFragment() {
             userBannerImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(user.bannerImage)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(userBannerImage).show(true)
+                }.withTransitionFrom(userBannerImage).withHiddenStatusBar(false).show(true)
             }
         }
 
@@ -237,7 +237,7 @@ class UserFragment : BaseFragment() {
             userAvatarImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(user.avatar.large)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(userAvatarImage).show(true)
+                }.withTransitionFrom(userAvatarImage).withHiddenStatusBar(false).show(true)
             }
         }
 

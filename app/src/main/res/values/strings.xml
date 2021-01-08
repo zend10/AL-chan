@@ -289,7 +289,7 @@
     <string name="logout_from_al_chan">Logout from AL-chan</string>
     <string name="logging_out_from_al_chan">Logging out from AL-chan doesn\'t mean logging out from AniList. If you also want to logout from AniList, you have to logout from the web.</string>
     <string name="you_are_logged_out">You Are Logged Out</string>
-    <string name="your_session_has_ended">Your session has ended. Please login again.</string>
+    <string name="your_session_has_ended">Your session has ended, but don\'t worry about it. Please just login again.</string>
     <string name="al_chan_is_an_unofficial_app_for_anilist_this_app_exists_with_the_purpose_to_help_manage_your_anilist_account">AL-chan is an unofficial app for AniList. This app exists with the purpose to help manage your AniList account.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="the_privacy_policy_of_this_app_can_be_read_fully_here">The privacy policy of this app can be read fully here.</string>

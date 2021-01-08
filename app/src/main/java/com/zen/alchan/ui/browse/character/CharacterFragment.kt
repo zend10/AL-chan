@@ -221,7 +221,7 @@ class CharacterFragment : BaseFragment() {
             characterImage.setOnClickListener {
                 StfalconImageViewer.Builder<String>(context, arrayOf(viewModel.currentCharacterData?.image?.large)) { view, image ->
                     GlideApp.with(context!!).load(image).into(view)
-                }.withTransitionFrom(characterImage).show(true)
+                }.withTransitionFrom(characterImage).withHiddenStatusBar(false).show(true)
             }
         }
 
