@@ -83,11 +83,12 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
     }
 
     fun reinitBestFriends() {
-        socialFilter.bestFriends.clear()
-        socialFilter.bestFriends.add(BestFriend(null, null, null))
+        val bestFriendList = ArrayList<BestFriend>()
+        bestFriendList.add(BestFriend(null, null, null))
         savedBestFriends?.forEach {
-            socialFilter.bestFriends.add(it)
+            bestFriendList.add(it)
         }
+        socialFilter.bestFriends = bestFriendList
     }
 
     fun toggleLike(id: Int) {
