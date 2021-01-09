@@ -68,7 +68,7 @@ class UserMangaListRvAdapter(private val context: Context,
         if (!mediaList.notes.isNullOrBlank()) {
             holder.mangaNotesLayout.visibility = View.VISIBLE
             holder.mangaNotesLayout.setOnClickListener {
-                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+                DialogUtility.showInfoDialog(context, mediaList.notes)
             }
         } else {
             holder.mangaNotesLayout.visibility = View.GONE

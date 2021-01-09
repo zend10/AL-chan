@@ -89,7 +89,7 @@ class UserAnimeListGridRvAdapter(private val context: Context,
         if (!mediaList.notes.isNullOrBlank()) {
             holder.animeNotesLayout.visibility = View.VISIBLE
             holder.animeNotesLayout.setOnClickListener {
-                DialogUtility.showToast(context, mediaList.notes, Toast.LENGTH_LONG)
+                DialogUtility.showInfoDialog(context, mediaList.notes)
             }
         } else {
             holder.animeNotesLayout.visibility = View.GONE
