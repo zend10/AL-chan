@@ -139,10 +139,6 @@ class MediaFragment : BaseFragment() {
         })
 
         viewModel.mediaStatus.observe(viewLifecycleOwner, Observer {
-            if (!viewModel.checkMediaId(it.data?.mediaList?.mediaId)) {
-                return@Observer
-            }
-
             if (it.data?.mediaList != null) {
                 if (it.data.mediaList.status == MediaListStatus.CURRENT) {
                     mediaManageListButton.text = if (viewModel.mediaType == MediaType.MANGA) {

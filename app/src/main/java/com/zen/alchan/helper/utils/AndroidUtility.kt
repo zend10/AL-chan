@@ -169,6 +169,7 @@ object AndroidUtility {
         if (e is ApolloHttpException) {
             when (e.code()) {
                 Constant.RATE_LIMIT_CODE -> observer.postValue(Resource.Error(Constant.RATE_LIMIT_RESPONSE))
+                else -> observer.postValue(Resource.Error(e.localizedMessage ?: ""))
             }
         } else {
             observer.postValue(Resource.Error(e.localizedMessage ?: ""))
