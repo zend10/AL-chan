@@ -1,7 +1,10 @@
 package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.helper.enums.AppColorTheme
+import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.pojo.AppSettings
+import com.zen.alchan.helper.pojo.UserPreferences
+import type.MediaSort
 import type.StaffLanguage
 
 class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettingsManager {
@@ -12,7 +15,6 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
             if (savedSettings.appTheme == null) savedSettings.appTheme = AppColorTheme.DEFAULT_THEME_YELLOW
             if (savedSettings.circularAvatar == null) savedSettings.circularAvatar = true
             if (savedSettings.whiteBackgroundAvatar == null) savedSettings.whiteBackgroundAvatar = true
-            if (savedSettings.voiceActorLanguage == null) savedSettings.voiceActorLanguage = StaffLanguage.JAPANESE
             if (savedSettings.showRecentReviews == null) savedSettings.showRecentReviews = true
             if (savedSettings.useRelativeDate == null) savedSettings.useRelativeDate = false
             if (savedSettings.sendAiringPushNotification == null) savedSettings.sendAiringPushNotification = true
@@ -26,8 +28,23 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
             return savedSettings
         }
 
+    override val userPreferences: UserPreferences
+        get() {
+            val savedPreferences = localStorage.userPreferences
+            if (savedPreferences.seasonalListType == null) savedPreferences.seasonalListType = ListType.LINEAR
+            if (savedPreferences.voiceActorLanguage == null) savedPreferences.voiceActorLanguage = StaffLanguage.JAPANESE
+            if (savedPreferences.sortCharacterMedia == null) savedPreferences.sortCharacterMedia = MediaSort.POPULARITY
+            if (savedPreferences.orderCharacterMediaIsDescending == null) savedPreferences.orderCharacterMediaIsDescending = true
+            if (savedPreferences.sortStaffMedia == null) savedPreferences.sortStaffMedia = MediaSort.POPULARITY_DESC
+            return savedPreferences
+        }
+
     override fun setAppSettings(value: AppSettings) {
         localStorage.appSettings = value
+    }
+
+    override fun setUserPreferences(value: UserPreferences) {
+        localStorage.userPreferences = value
     }
 
     override fun clearStorage() {

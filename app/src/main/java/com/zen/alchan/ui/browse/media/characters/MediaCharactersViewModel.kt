@@ -15,7 +15,7 @@ class MediaCharactersViewModel(private val mediaRepository: MediaRepository,
     var mediaType: MediaType? = null
     var page = 1
     var hasNextPage = true
-    var staffLanguage = appSettingsRepository.appSettings.voiceActorLanguage
+    var staffLanguage = appSettingsRepository.userPreferences.voiceActorLanguage
 
     var isInit = false
     var mediaCharacters = ArrayList<MediaCharacters?>()
@@ -43,6 +43,14 @@ class MediaCharactersViewModel(private val mediaRepository: MediaRepository,
 
     fun getMediaCharacters() {
         if (hasNextPage && mediaId != null) mediaRepository.getMediaCharacters(mediaId!!, page)
+    }
+
+    fun changeVoiceActorLanguage(index: Int) {
+        staffLanguage = StaffLanguage.valueOf(staffLanguageArray[index])
+
+        val savedUserPreference = appSettingsRepository.userPreferences
+        savedUserPreference.voiceActorLanguage = staffLanguage
+        appSettingsRepository.setUserPreferences(savedUserPreference)
     }
 
     fun refresh() {

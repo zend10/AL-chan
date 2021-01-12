@@ -10,6 +10,7 @@ import com.zen.alchan.helper.genericType
 import com.zen.alchan.helper.pojo.AppSettings
 import com.zen.alchan.helper.pojo.BestFriend
 import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.helper.pojo.UserPreferences
 import type.StaffLanguage
 
 class LocalStorageImpl(private val context: Context,
@@ -22,6 +23,7 @@ class LocalStorageImpl(private val context: Context,
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val APP_SETTINGS = "appSettings"
+        private const val USER_PREFERENCES = "userPreferences"
         private const val VIEWER_DATA = "viewerData"
         private const val VIEWER_DATA_LAST_RETRIEVED = "viewerDataLastRetrieved"
         private const val FOLLOWERS_COUNT = "followersCount"
@@ -48,6 +50,10 @@ class LocalStorageImpl(private val context: Context,
     override var appSettings: AppSettings
         get() = if (getData(APP_SETTINGS) == null) AppSettings() else gson.fromJson(getData(APP_SETTINGS), AppSettings::class.java)
         set(value) { setData(APP_SETTINGS, gson.toJson(value)) }
+
+    override var userPreferences: UserPreferences
+        get() = if (getData(USER_PREFERENCES) == null) UserPreferences() else gson.fromJson(getData(USER_PREFERENCES), UserPreferences::class.java)
+        set(value) { setData(USER_PREFERENCES, gson.toJson(value)) }
 
     override var viewerData: User?
         get() = gson.fromJson(getData(VIEWER_DATA), User::class.java)

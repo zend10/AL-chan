@@ -6,12 +6,14 @@ import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.pojo.AppSettings
 import com.zen.alchan.helper.pojo.BestFriend
 import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.helper.pojo.UserPreferences
 import type.StaffLanguage
 
 interface LocalStorage {
     var bearerToken: String?
 
     var appSettings: AppSettings
+    var userPreferences: UserPreferences
 
     var viewerData: User?
     var viewerDataLastRetrieved: Long?

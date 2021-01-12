@@ -7,6 +7,7 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.AppColorTheme
 import com.zen.alchan.helper.libs.SingleLiveEvent
 import com.zen.alchan.helper.pojo.AppSettings
+import com.zen.alchan.helper.pojo.UserPreferences
 import com.zen.alchan.helper.utils.AndroidUtility
 import type.StaffLanguage
 
@@ -58,6 +59,9 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
     override val appSettings: AppSettings
         get() = appSettingsManager.appSettings
 
+    override val userPreferences: UserPreferences
+        get() = appSettingsManager.userPreferences
+
     override fun setAppSettings(appSettings: AppSettings) {
         appSettingsManager.setAppSettings(appSettings)
         _appColorThemeLiveData.postValue(appColorThemeResource)
@@ -69,6 +73,10 @@ class AppSettingsRepositoryImpl(private val appSettingsManager: AppSettingsManag
         newAppSetting.showBioAutomatically = !isLowOnMemory
         newAppSetting.showStatsAutomatically = !isLowOnMemory
         appSettingsManager.setAppSettings(newAppSetting)
+    }
+
+    override fun setUserPreferences(userPreferences: UserPreferences) {
+        appSettingsManager.setUserPreferences(userPreferences)
     }
 
     override fun clearStorage() {

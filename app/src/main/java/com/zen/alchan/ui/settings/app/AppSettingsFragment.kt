@@ -66,7 +66,6 @@ class AppSettingsFragment : Fragment() {
     private fun initLayout() {
         if (!viewModel.isInit) {
             viewModel.selectedAppTheme = viewModel.appSettings.appTheme
-            viewModel.selectedLanguage = viewModel.appSettings.voiceActorLanguage
             circularAvatarCheckBox.isChecked = viewModel.appSettings.circularAvatar == true
             whiteBackgroundAvatarCheckBox.isChecked = viewModel.appSettings.whiteBackgroundAvatar == true
             showRecentReviewsCheckBox.isChecked = viewModel.appSettings.showRecentReviews == true
@@ -121,9 +120,6 @@ class AppSettingsFragment : Fragment() {
 
         pushNotificationMinHoursText.text = "${viewModel.pushNotificationsMinHours} ${getString(R.string.hour).setRegularPlural(viewModel.pushNotificationsMinHours)}"
         pushNotificationMinHoursText.setOnClickListener { showPushNotificationMinHoursDialog() }
-
-        defaultVoiceActorLanguageText.text = viewModel.selectedLanguage?.name
-        defaultVoiceActorLanguageText.setOnClickListener { showLanguageDialog() }
 
         resetDefaultButton.setOnClickListener {
             val isLowOnMemory = AndroidUtility.isLowOnMemory(activity)
@@ -183,15 +179,6 @@ class AppSettingsFragment : Fragment() {
             }
         })
         dialog.show(childFragmentManager, null)
-    }
-
-    private fun showLanguageDialog() {
-        AlertDialog.Builder(requireActivity())
-            .setItems(viewModel.staffLanguageArray) { _, which ->
-                viewModel.selectedLanguage = StaffLanguage.valueOf(viewModel.staffLanguageArray[which])
-                defaultVoiceActorLanguageText.text = viewModel.staffLanguageArray[which]
-            }
-            .show()
     }
 
     private fun showPushNotificationMinHoursDialog() {

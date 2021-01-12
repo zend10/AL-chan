@@ -152,7 +152,7 @@ class MediaCharactersFragment : BaseFragment() {
         voiceActorLanguageText.setOnClickListener {
             AlertDialog.Builder(requireActivity())
                 .setItems(viewModel.staffLanguageArray) { _, which ->
-                    viewModel.staffLanguage = StaffLanguage.valueOf(viewModel.staffLanguageArray[which])
+                    viewModel.changeVoiceActorLanguage(which)
                     voiceActorLanguageText.text = viewModel.staffLanguageArray[which]
                     adapter = assignAdapter()
                     charactersRecyclerView.adapter = adapter
