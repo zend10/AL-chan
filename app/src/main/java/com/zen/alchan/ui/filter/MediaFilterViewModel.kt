@@ -46,21 +46,38 @@ class MediaFilterViewModel(private val userRepository: UserRepository,
 
     val mediaListSortList = MediaListSort.values().toList()
 
-    var mediaSortMap = hashMapOf(
-        Pair(MediaSort.START_DATE_DESC, R.string.newest),
-        Pair(MediaSort.START_DATE, R.string.oldest),
-        Pair(MediaSort.TITLE_ROMAJI, R.string.title_romaji),
-        Pair(MediaSort.TITLE_ENGLISH, R.string.title_english),
-        Pair(MediaSort.TITLE_NATIVE, R.string.title_native),
-        Pair(MediaSort.ID, R.string.first_added),
-        Pair(MediaSort.ID_DESC, R.string.last_added),
-        Pair(MediaSort.SCORE_DESC, R.string.highest_score),
-        Pair(MediaSort.SCORE, R.string.lowest_score),
-        Pair(MediaSort.POPULARITY_DESC, R.string.most_popular),
-        Pair(MediaSort.POPULARITY, R.string.least_popular),
-        Pair(MediaSort.FAVOURITES_DESC, R.string.most_favorite),
-        Pair(MediaSort.FAVOURITES, R.string.least_favorite),
-        Pair(MediaSort.TRENDING_DESC, R.string.trending)
+    val mediaSortArray = arrayOf(
+        R.string.newest,
+        R.string.oldest,
+        R.string.title_romaji,
+        R.string.title_english,
+        R.string.title_native,
+        R.string.first_added,
+        R.string.last_added,
+        R.string.highest_score,
+        R.string.lowest_score,
+        R.string.most_popular,
+        R.string.least_popular,
+        R.string.most_favorite,
+        R.string.least_favorite,
+        R.string.trending
+    )
+
+    val mediaSortList = arrayListOf(
+        MediaSort.START_DATE_DESC,
+        MediaSort.START_DATE,
+        MediaSort.TITLE_ROMAJI,
+        MediaSort.TITLE_ENGLISH,
+        MediaSort.TITLE_NATIVE,
+        MediaSort.ID,
+        MediaSort.ID_DESC,
+        MediaSort.SCORE_DESC,
+        MediaSort.SCORE,
+        MediaSort.POPULARITY_DESC,
+        MediaSort.POPULARITY,
+        MediaSort.FAVOURITES_DESC,
+        MediaSort.FAVOURITES,
+        MediaSort.TRENDING_DESC
     )
 
     val orderByList = listOf(R.string.ascending, R.string.descending)

@@ -111,8 +111,8 @@ class MediaFilterActivity : BaseActivity() {
 
     private fun handleSortLayout() {
         if (viewModel.isExplore) {
-            sortByText.text = if (viewModel.mediaSortMap.containsKey(viewModel.currentData.selectedMediaSort)) {
-                getString(viewModel.mediaSortMap[viewModel.currentData.selectedMediaSort]!!).toUpperCase(Locale.US)
+            sortByText.text = if (viewModel.mediaSortList.indexOf(viewModel.currentData.selectedMediaSort) != -1) {
+                getString(viewModel.mediaSortArray[viewModel.mediaSortList.indexOf(viewModel.currentData.selectedMediaSort)]).toUpperCase(Locale.US)
             } else {
                 "-"
             }
@@ -129,10 +129,10 @@ class MediaFilterActivity : BaseActivity() {
 
         sortByLayout.setOnClickListener {
             if (viewModel.isExplore) {
-                val stringArray = viewModel.mediaSortMap.map { sort -> getString(sort.value).toUpperCase(Locale.US) }.toTypedArray()
+                val stringArray = viewModel.mediaSortArray.map { sort -> getString(sort).toUpperCase(Locale.US) }.toTypedArray()
                 AlertDialog.Builder(this)
                     .setItems(stringArray) { _, which ->
-                        viewModel.currentData.selectedMediaSort = viewModel.mediaSortMap.toList()[which].first
+                        viewModel.currentData.selectedMediaSort = viewModel.mediaSortList[which]
                         sortByText.text = stringArray[which]
                     }
                     .show()
