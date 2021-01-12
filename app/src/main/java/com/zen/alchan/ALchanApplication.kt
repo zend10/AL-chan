@@ -155,7 +155,7 @@ class ALchanApplication : Application() {
         viewModel { SearchViewModel() }
         viewModel { SearchListViewModel(get()) }
         viewModel { ExploreViewModel(get(), gson) }
-        viewModel { SeasonalViewModel(get(), get(), get(), gson) }
+        viewModel { SeasonalViewModel(get(), get(), get(), get(), gson) }
         viewModel { SeasonalDialogViewModel(gson) }
         viewModel { ReviewsViewModel(get()) }
         viewModel { CalendarViewModel(get()) }
@@ -184,13 +184,13 @@ class ALchanApplication : Application() {
         viewModel { MediaSocialViewModel(get()) }
 
         // browse character, staff, studio
-        viewModel { CharacterViewModel(get(), get(), gson) }
+        viewModel { CharacterViewModel(get(), get(), get(), gson) }
         viewModel { FilterCharacterMediaViewModel(gson) }
         viewModel { StaffViewModel(get(), get()) }
         viewModel { StaffBioViewModel(get()) }
-        viewModel { StaffVoiceViewModel(get()) }
-        viewModel { StaffAnimeViewModel(get()) }
-        viewModel { StaffMangaViewModel(get()) }
+        viewModel { StaffVoiceViewModel(get(), get()) }
+        viewModel { StaffAnimeViewModel(get(), get()) }
+        viewModel { StaffMangaViewModel(get(), get()) }
         viewModel { StudioViewModel(get(), get()) }
 
         // browse user
@@ -223,7 +223,7 @@ class ALchanApplication : Application() {
 
         // social
         viewModel { SocialViewModel(get(), get(), get(), get()) }
-        viewModel { GlobalFeedViewModel(get(), get()) }
+        viewModel { GlobalFeedViewModel(get(), get(), get()) }
         viewModel { GlobalFeedFilterViewModel(get()) }
 
     }

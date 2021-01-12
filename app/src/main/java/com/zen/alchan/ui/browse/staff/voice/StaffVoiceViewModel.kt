@@ -2,11 +2,14 @@ package com.zen.alchan.ui.browse.staff.voice
 
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.R
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.helper.pojo.StaffCharacter
 import type.MediaSort
 
-class StaffVoiceViewModel(private val browseRepository: BrowseRepository) : ViewModel() {
+class StaffVoiceViewModel(private val browseRepository: BrowseRepository,
+                          private val appSettingsRepository: AppSettingsRepository
+) : ViewModel() {
 
     var staffId: Int? = null
     var page = 1
@@ -15,7 +18,7 @@ class StaffVoiceViewModel(private val browseRepository: BrowseRepository) : View
     var isInit = false
     var staffCharacters = ArrayList<StaffCharacter?>()
 
-    var sortBy: MediaSort? = null
+    var sortBy: MediaSort? = appSettingsRepository.userPreferences.sortStaffCharacter
     var onlyShowOnList: Boolean = false
 
     val mediaSortArray = arrayOf(
@@ -70,5 +73,13 @@ class StaffVoiceViewModel(private val browseRepository: BrowseRepository) : View
                 browseRepository.getStaffMediaCharacter(staffId!!, page, sortBy!!, if (onlyShowOnList) true else null)
             }
         }
+    }
+
+    fun changeCharacterSort(selectedSort: MediaSort?) {
+        sortBy = selectedSort
+
+        val savedUserPreferences = appSettingsRepository.userPreferences
+        savedUserPreferences.sortStaffCharacter = sortBy
+        appSettingsRepository.setUserPreferences(savedUserPreferences)
     }
 }

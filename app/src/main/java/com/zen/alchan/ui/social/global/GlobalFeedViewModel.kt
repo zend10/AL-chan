@@ -3,6 +3,7 @@ package com.zen.alchan.ui.social.global
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zen.alchan.R
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.pojo.ActivityItem
@@ -11,10 +12,11 @@ import type.ActivityType
 import type.LikeableType
 
 class GlobalFeedViewModel(private val userRepository: UserRepository,
-                          private val socialRepository: SocialRepository
+                          private val socialRepository: SocialRepository,
+                          private val appSettingsRepository: AppSettingsRepository
 ) : ViewModel() {
 
-    var selectedActivityType: ArrayList<ActivityType>? = null
+    var selectedActivityType: ArrayList<ActivityType>? = appSettingsRepository.userPreferences.globalActivityType
     var selectedFilterIndex: Int? = null
 
     val activityTypeList = arrayListOf(
@@ -100,5 +102,13 @@ class GlobalFeedViewModel(private val userRepository: UserRepository,
 
     fun deleteActivity(id: Int) {
         socialRepository.deleteActivity(id)
+    }
+
+    fun changeActivityType(activityTypes: ArrayList<ActivityType>?) {
+        selectedActivityType = activityTypes
+
+        val savedUserPreferences = appSettingsRepository.userPreferences
+        savedUserPreferences.globalActivityType = activityTypes
+        appSettingsRepository.setUserPreferences(savedUserPreferences)
     }
 }

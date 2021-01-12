@@ -143,7 +143,7 @@ class StaffAnimeFragment : BaseFragment() {
             val stringArray = viewModel.mediaSortArray.map { sort -> getString(sort).toUpperCase(Locale.US) }.toTypedArray()
             AlertDialog.Builder(requireContext())
                 .setItems(stringArray) { _, which ->
-                    viewModel.sortBy = viewModel.mediaSortList[which]
+                    viewModel.changeSortMedia(viewModel.mediaSortList[which])
                     animeSortText.text = stringArray[which]
 
                     loadingLayout.visibility = View.VISIBLE

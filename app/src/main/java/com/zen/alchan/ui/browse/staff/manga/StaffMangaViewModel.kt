@@ -2,11 +2,14 @@ package com.zen.alchan.ui.browse.staff.manga
 
 import androidx.lifecycle.ViewModel
 import com.zen.alchan.R
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.helper.pojo.StaffMedia
 import type.MediaSort
 
-class StaffMangaViewModel(private val browseRepository: BrowseRepository) : ViewModel() {
+class StaffMangaViewModel(private val browseRepository: BrowseRepository,
+                          private val appSettingsRepository: AppSettingsRepository
+) : ViewModel() {
 
     var staffId: Int? = null
     var page = 1
@@ -15,7 +18,7 @@ class StaffMangaViewModel(private val browseRepository: BrowseRepository) : View
     var isInit = false
     var staffMedia = ArrayList<StaffMedia?>()
 
-    var sortBy: MediaSort = MediaSort.POPULARITY_DESC
+    var sortBy: MediaSort = appSettingsRepository.userPreferences.sortStaffManga ?: MediaSort.POPULARITY_DESC
     var onlyShowOnList: Boolean = false
 
     val mediaSortArray = arrayOf(
@@ -58,5 +61,13 @@ class StaffMangaViewModel(private val browseRepository: BrowseRepository) : View
         }
 
         if (hasNextPage && staffId != null) browseRepository.getStaffManga(staffId!!, page, sortBy, if (onlyShowOnList) true else null)
+    }
+
+    fun changeSortMedia(selectedSort: MediaSort) {
+        sortBy = selectedSort
+
+        val savedUserPreferences = appSettingsRepository.userPreferences
+        savedUserPreferences.sortStaffManga = sortBy
+        appSettingsRepository.setUserPreferences(savedUserPreferences)
     }
 }

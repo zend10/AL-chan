@@ -87,7 +87,9 @@ class GlobalFeedActivity : BaseActivity() {
             else -> FILTER_GLOBAL
         }
 
-        viewModel.selectedActivityType = viewModel.activityTypeList[intent.getIntExtra(SELECTED_ACTIVITY_TYPE, 0)]
+        if (intent.hasExtra(SELECTED_ACTIVITY_TYPE)) {
+            viewModel.selectedActivityType = viewModel.activityTypeList[intent.getIntExtra(SELECTED_ACTIVITY_TYPE, 0)]
+        }
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {
@@ -386,7 +388,7 @@ class GlobalFeedActivity : BaseActivity() {
                     activityTypes: ArrayList<ActivityType>?
                 ) {
                     viewModel.selectedFilterIndex = selectedFilterIndex
-                    viewModel.selectedActivityType = activityTypes
+                    viewModel.changeActivityType(activityTypes)
                     loadingLayout.visibility = View.VISIBLE
                     isLoading = false
                     viewModel.refresh()

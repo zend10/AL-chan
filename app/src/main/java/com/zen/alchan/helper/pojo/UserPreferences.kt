@@ -10,8 +10,9 @@ class UserPreferences(
     var socialActivityType: ArrayList<ActivityType>? = null,
     var globalActivityType: ArrayList<ActivityType>? = null,
     var voiceActorLanguage: StaffLanguage? = StaffLanguage.JAPANESE,
-    var sortCharacterMedia: MediaSort? = MediaSort.POPULARITY,
+    var sortCharacterMedia: MediaSort? = null,
     var orderCharacterMediaIsDescending: Boolean? = true,
-    var sortStaffMedia: MediaSort? = MediaSort.POPULARITY_DESC,
+    var sortStaffAnime: MediaSort? = MediaSort.POPULARITY_DESC,
+    var sortStaffManga: MediaSort? = MediaSort.POPULARITY_DESC,
     var sortStaffCharacter: MediaSort? = null
 )

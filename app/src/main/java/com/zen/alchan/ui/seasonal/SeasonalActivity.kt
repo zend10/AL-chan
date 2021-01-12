@@ -375,9 +375,9 @@ class SeasonalActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.itemChangeListType) {
             if (viewModel.currentListType == ListType.GRID) {
-                viewModel.currentListType = ListType.LINEAR
+                viewModel.changeListType(ListType.LINEAR)
             } else {
-                viewModel.currentListType = ListType.GRID
+                viewModel.changeListType(ListType.GRID)
             }
 
             updateListType()

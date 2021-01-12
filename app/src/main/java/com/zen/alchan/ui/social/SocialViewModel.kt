@@ -29,7 +29,7 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
 
     var isInit = false
 
-    var socialFilter = SocialFilter(arrayListOf(), null, null, null)
+    var socialFilter = SocialFilter(arrayListOf(), null, appSettingsRepository.userPreferences.socialActivityType, null)
 
     private val savedBestFriends: List<BestFriend>?
         get() = userRepository.bestFriends
@@ -101,5 +101,13 @@ class SocialViewModel(private val mediaRepository: MediaRepository,
 
     fun deleteActivity(id: Int) {
         socialRepository.deleteActivity(id)
+    }
+
+    fun changeActivityType(activityTypes: ArrayList<ActivityType>?) {
+        socialFilter.selectedActivityType = activityTypes
+
+        val savedUserPreferences = appSettingsRepository.userPreferences
+        savedUserPreferences.socialActivityType = activityTypes
+        appSettingsRepository.setUserPreferences(savedUserPreferences)
     }
 }

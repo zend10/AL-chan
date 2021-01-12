@@ -315,8 +315,7 @@ class CharacterFragment : BaseFragment() {
                     selectedFormats: ArrayList<MediaFormat>?,
                     showOnlyOnList: Boolean?
                 ) {
-                    viewModel.sortBy = sortBy
-                    viewModel.orderByDescending = orderByDescending
+                    viewModel.changeMediaSort(sortBy, orderByDescending)
                     viewModel.selectedFormats = selectedFormats
                     viewModel.showOnlyOnList = showOnlyOnList
 

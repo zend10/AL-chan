@@ -33,9 +33,9 @@ class AppSettingsManagerImpl(private val localStorage: LocalStorage) : AppSettin
             val savedPreferences = localStorage.userPreferences
             if (savedPreferences.seasonalListType == null) savedPreferences.seasonalListType = ListType.LINEAR
             if (savedPreferences.voiceActorLanguage == null) savedPreferences.voiceActorLanguage = StaffLanguage.JAPANESE
-            if (savedPreferences.sortCharacterMedia == null) savedPreferences.sortCharacterMedia = MediaSort.POPULARITY
             if (savedPreferences.orderCharacterMediaIsDescending == null) savedPreferences.orderCharacterMediaIsDescending = true
-            if (savedPreferences.sortStaffMedia == null) savedPreferences.sortStaffMedia = MediaSort.POPULARITY_DESC
+            if (savedPreferences.sortStaffAnime == null) savedPreferences.sortStaffAnime = MediaSort.POPULARITY_DESC
+            if (savedPreferences.sortStaffManga == null) savedPreferences.sortStaffManga = MediaSort.POPULARITY_DESC
             return savedPreferences
         }
 

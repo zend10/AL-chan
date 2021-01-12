@@ -2,6 +2,7 @@ package com.zen.alchan.ui.browse.character
 
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.pojo.CharacterMedia
@@ -12,6 +13,7 @@ import type.StaffLanguage
 
 class CharacterViewModel(private val browseRepository: BrowseRepository,
                          private val userRepository: UserRepository,
+                         private val appSettingsRepository: AppSettingsRepository,
                          private val gson: Gson
 ) : ViewModel() {
 
@@ -27,8 +29,8 @@ class CharacterViewModel(private val browseRepository: BrowseRepository,
     var characterVoiceActors = ArrayList<CharacterVoiceActors>()
 
     // for media filter
-    var sortBy: MediaSort? = null
-    var orderByDescending: Boolean = true
+    var sortBy: MediaSort? = appSettingsRepository.userPreferences.sortCharacterMedia
+    var orderByDescending: Boolean = appSettingsRepository.userPreferences.orderCharacterMediaIsDescending ?: true
     var selectedFormats: ArrayList<MediaFormat>? = null
     var showOnlyOnList: Boolean? = null
 
@@ -138,5 +140,15 @@ class CharacterViewModel(private val browseRepository: BrowseRepository,
         } else {
             null
         }
+    }
+
+    fun changeMediaSort(selectedSort: MediaSort?, selectedOrderByDescending: Boolean) {
+        sortBy = selectedSort
+        orderByDescending = selectedOrderByDescending
+
+        val savedUserPreferences = appSettingsRepository.userPreferences
+        savedUserPreferences.sortCharacterMedia = sortBy
+        savedUserPreferences.orderCharacterMediaIsDescending = selectedOrderByDescending
+        appSettingsRepository.setUserPreferences(savedUserPreferences)
     }
 }

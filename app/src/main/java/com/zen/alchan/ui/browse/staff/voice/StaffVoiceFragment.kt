@@ -254,7 +254,7 @@ class StaffVoiceFragment : BaseFragment() {
             val stringArray = viewModel.mediaSortArray.map { sort -> getString(sort).toUpperCase(Locale.US) }.toTypedArray()
             AlertDialog.Builder(requireContext())
                 .setItems(stringArray) { _, which ->
-                    viewModel.sortBy = viewModel.mediaSortList[which]
+                    viewModel.changeCharacterSort(viewModel.mediaSortList[which])
                     characterSortText.text = stringArray[which]
 
                     if (viewModel.sortBy == null) {

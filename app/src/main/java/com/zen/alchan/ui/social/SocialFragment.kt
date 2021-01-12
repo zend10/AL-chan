@@ -314,7 +314,7 @@ class SocialFragment : Fragment() {
                 }
 
                 override fun changeActivityType(selectedActivityType: ArrayList<ActivityType>?) {
-                    viewModel.socialFilter.selectedActivityType = selectedActivityType
+                    viewModel.changeActivityType(selectedActivityType)
                     viewModel.retrieveFriendsActivity()
                 }
 

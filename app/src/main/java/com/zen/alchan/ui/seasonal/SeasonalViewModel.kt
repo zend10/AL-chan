@@ -3,6 +3,7 @@ package com.zen.alchan.ui.seasonal
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zen.alchan.data.network.Converter
+import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.SearchRepository
 import com.zen.alchan.data.repository.UserRepository
@@ -14,10 +15,11 @@ import type.*
 class SeasonalViewModel(private val searchRepository: SearchRepository,
                         private val mediaListRepository: MediaListRepository,
                         private val userRepository: UserRepository,
+                        private val appSettingsRepository: AppSettingsRepository,
                         val gson: Gson
 ) : ViewModel() {
 
-    var currentListType: ListType? = null
+    var currentListType: ListType? = appSettingsRepository.userPreferences.seasonalListType
 
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
@@ -189,5 +191,13 @@ class SeasonalViewModel(private val searchRepository: SearchRepository,
                 othersList[index].mediaListEntry = mediaList
             }
         }
+    }
+
+    fun changeListType(listType: ListType) {
+        currentListType = listType
+
+        val savedUserPreferences = appSettingsRepository.userPreferences
+        savedUserPreferences.seasonalListType = listType
+        appSettingsRepository.setUserPreferences(savedUserPreferences)
     }
 }
