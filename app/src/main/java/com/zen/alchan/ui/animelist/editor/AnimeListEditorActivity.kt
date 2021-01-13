@@ -483,6 +483,7 @@ class AnimeListEditorActivity : BaseActivity() {
         hideFromStatusListsCheckBox.isChecked = viewModel.selectedHidden == true
         hideFromStatusListsCheckBox.setOnClickListener {
             viewModel.selectedHidden = viewModel.selectedHidden != true
+            viewModel.isCustomListsModified = true
         }
         hideFromStatusListsText.setOnClickListener {
             hideFromStatusListsCheckBox.performClick()

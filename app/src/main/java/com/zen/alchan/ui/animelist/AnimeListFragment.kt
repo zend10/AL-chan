@@ -150,6 +150,8 @@ class AnimeListFragment : Fragment() {
                 }
             }
 
+            viewModel.tabItemList.add(0, MediaListTabItem(getString(R.string.all), it.lists?.sumBy { list -> list.entries?.size ?: 0 } ?: 0))
+
             if (viewModel.selectedTab >= viewModel.tabItemList.size) {
                 viewModel.selectedTab = viewModel.tabItemList.size - 1
             }
@@ -266,16 +268,27 @@ class AnimeListFragment : Fragment() {
 
     private fun handleSearch(query: String?) {
         viewModel.currentList.clear()
-        viewModel.getSelectedList().forEach { filtered ->
-            if (
+        var lastItemIsTitle = false
+        viewModel.getSelectedList().forEachIndexed { index, filtered ->
+            if (filtered.id == 0) {
+                if (lastItemIsTitle) {
+                    viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
+                }
+                viewModel.currentList.add(filtered)
+                lastItemIsTitle = true
+            } else if (
                 filtered.media?.title?.romaji?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered.media?.title?.english?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered.media?.title?.native?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(query ?: "") == true } != null
             ) {
                 viewModel.currentList.add(filtered)
+                lastItemIsTitle = false
+            } else if (index == viewModel.getSelectedList().lastIndex && lastItemIsTitle) {
+                viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
             }
         }
+
         adapter.notifyDataSetChanged()
 
         if (viewModel.currentList.isNullOrEmpty()) {

@@ -95,7 +95,20 @@ class AnimeListViewModel(private val mediaListRepository: MediaListRepository,
     }
 
     fun getSelectedList(): ArrayList<MediaList> {
-        val selectedList = animeListData.value?.lists?.find { it.name == tabItemList[selectedTab].status }?.entries
+        val selectedList = ArrayList<MediaList>()
+        if (selectedTab == 0) {
+            tabItemList.forEachIndexed { index, mediaListTabItem ->
+                if (index != 0) {
+                    val checkList = ArrayList(animeListData.value?.lists?.find { list -> list.name == mediaListTabItem.status }?.entries ?: listOf())
+                    if (!checkList.isNullOrEmpty()) {
+                        selectedList.add(MediaList(id = 0, notes = mediaListTabItem.status, progress = mediaListTabItem.count, status = null, score = null, progressVolumes = null, repeat = null, priority = null, private = null, hiddenFromStatusList = null, customLists = null, advancedScores = null, startedAt = null, completedAt = null, updatedAt = null, createdAt = null, media = null))
+                        selectedList.addAll(checkList)
+                    }
+                }
+            }
+        } else {
+            selectedList.addAll(ArrayList(animeListData.value?.lists?.find { it.name == tabItemList[selectedTab].status }?.entries ?: listOf()))
+        }
 
         return if (!selectedList.isNullOrEmpty()) {
             ArrayList(selectedList)
