@@ -121,8 +121,7 @@ class AnimeListFragment : Fragment() {
             true
         }
 
-        adapter = assignAdapter()
-        animeListRecyclerView.adapter = adapter
+        assignAdapter()
 
         initLayout()
         setupObserver()
@@ -163,8 +162,7 @@ class AnimeListFragment : Fragment() {
         })
 
         viewModel.animeListStyleLiveData.observe(viewLifecycleOwner, Observer {
-            adapter = assignAdapter()
-            animeListRecyclerView.adapter = adapter
+            assignAdapter()
             initLayout()
 
             if (viewModel.currentList.isNullOrEmpty()) {
@@ -298,8 +296,8 @@ class AnimeListFragment : Fragment() {
         }
     }
 
-    private fun assignAdapter(): RecyclerView.Adapter<*> {
-        return when (viewModel.animeListStyleLiveData.value?.listType ?: ListType.LINEAR) {
+    private fun assignAdapter() {
+        adapter = when (viewModel.animeListStyleLiveData.value?.listType ?: ListType.LINEAR) {
             ListType.LINEAR -> {
                 animeListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 AnimeListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
@@ -307,6 +305,20 @@ class AnimeListFragment : Fragment() {
             ListType.GRID -> {
                 animeListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
                 AnimeListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
+            }
+        }
+
+        animeListRecyclerView.adapter = adapter
+
+        if (viewModel.animeListStyleLiveData.value?.listType == ListType.GRID) {
+            (animeListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == AnimeListGridRvAdapter.VIEW_TYPE_TITLE) {
+                        resources.getInteger(R.integer.gridSpan)
+                    } else {
+                        1
+                    }
+                }
             }
         }
     }
