@@ -124,8 +124,7 @@ class MangaListFragment : Fragment() {
             true
         }
 
-        adapter = assignAdapter()
-        mangaListRecyclerView.adapter = adapter
+        assignAdapter()
 
         initLayout()
         setupObserver()
@@ -153,6 +152,8 @@ class MangaListFragment : Fragment() {
                 }
             }
 
+            viewModel.tabItemList.add(0, MediaListTabItem(getString(R.string.all), it.lists?.sumBy { list -> list.entries?.size ?: 0 } ?: 0))
+
             if (viewModel.selectedTab >= viewModel.tabItemList.size) {
                 viewModel.selectedTab = viewModel.tabItemList.size - 1
             }
@@ -164,8 +165,7 @@ class MangaListFragment : Fragment() {
         })
 
         viewModel.mangaListStyleLiveData.observe(viewLifecycleOwner, Observer {
-            adapter = assignAdapter()
-            mangaListRecyclerView.adapter = adapter
+            assignAdapter()
             initLayout()
 
             if (viewModel.currentList.isNullOrEmpty()) {
@@ -269,16 +269,27 @@ class MangaListFragment : Fragment() {
 
     private fun handleSearch(query: String?) {
         viewModel.currentList.clear()
-        viewModel.getSelectedList().forEach { filtered ->
-            if (
+        var lastItemIsTitle = false
+        viewModel.getSelectedList().forEachIndexed { index, filtered ->
+            if (filtered.id == 0) {
+                if (lastItemIsTitle) {
+                    viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
+                }
+                viewModel.currentList.add(filtered)
+                lastItemIsTitle = true
+            } else if (
                 filtered.media?.title?.romaji?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered.media?.title?.english?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered.media?.title?.native?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(query ?: "") == true } != null
             ) {
                 viewModel.currentList.add(filtered)
+                lastItemIsTitle = false
+            } else if (index == viewModel.getSelectedList().lastIndex && lastItemIsTitle) {
+                viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
             }
         }
+
         adapter.notifyDataSetChanged()
 
         if (viewModel.currentList.isNullOrEmpty()) {
@@ -288,8 +299,8 @@ class MangaListFragment : Fragment() {
         }
     }
 
-    private fun assignAdapter(): RecyclerView.Adapter<*> {
-        return when (viewModel.mangaListStyleLiveData.value?.listType ?: ListType.LINEAR) {
+    private fun assignAdapter() {
+        adapter = when (viewModel.mangaListStyleLiveData.value?.listType ?: ListType.LINEAR) {
             ListType.LINEAR -> {
                 mangaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 MangaListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
@@ -297,6 +308,20 @@ class MangaListFragment : Fragment() {
             ListType.GRID -> {
                 mangaListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
                 MangaListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
+            }
+        }
+
+        mangaListRecyclerView.adapter = adapter
+
+        if (viewModel.mangaListStyleLiveData.value?.listType == ListType.GRID) {
+            (mangaListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == MangaListGridRvAdapter.VIEW_TYPE_TITLE) {
+                        resources.getInteger(R.integer.gridSpan)
+                    } else {
+                        1
+                    }
+                }
             }
         }
     }
