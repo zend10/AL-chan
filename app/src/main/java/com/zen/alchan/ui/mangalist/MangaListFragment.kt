@@ -270,7 +270,8 @@ class MangaListFragment : Fragment() {
     private fun handleSearch(query: String?) {
         viewModel.currentList.clear()
         var lastItemIsTitle = false
-        viewModel.getSelectedList().forEachIndexed { index, filtered ->
+        val selectedList = viewModel.getSelectedList()
+        selectedList.forEachIndexed { index, filtered ->
             if (filtered.id == 0) {
                 if (lastItemIsTitle) {
                     viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
@@ -285,7 +286,7 @@ class MangaListFragment : Fragment() {
             ) {
                 viewModel.currentList.add(filtered)
                 lastItemIsTitle = false
-            } else if (index == viewModel.getSelectedList().lastIndex && lastItemIsTitle) {
+            } else if (index == selectedList.lastIndex && lastItemIsTitle) {
                 viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
             }
         }

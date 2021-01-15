@@ -132,8 +132,7 @@ class UserMediaListFragment : BaseFragment() {
             } else {
                 viewModel.listType = ListType.LINEAR
             }
-            adapter = assignAdapter()
-            mediaListRecyclerView.adapter = adapter
+            assignAdapter()
             true
         }
 
@@ -196,8 +195,8 @@ class UserMediaListFragment : BaseFragment() {
             viewModel.currentList.clear()
             viewModel.currentList.addAll(ArrayList(viewModel.sortedGroup.find { status -> status?.name == currentTab.status }?.entries ?: listOf()))
 
-            adapter = assignAdapter()
-            mediaListRecyclerView.adapter = adapter
+            assignAdapter()
+            handleSearch(searchView?.query.toString())
 
             if (viewModel.currentList.isNullOrEmpty()) {
                 emptyLayout.visibility = View.VISIBLE
@@ -247,14 +246,25 @@ class UserMediaListFragment : BaseFragment() {
 
     private fun handleSearch(query: String?) {
         viewModel.currentList.clear()
-        viewModel.getSelectedList().forEach { filtered ->
-            if (
+        var lastItemIsTitle = false
+        val selectedList = viewModel.getSelectedList()
+        selectedList.forEachIndexed { index, filtered ->
+            if (filtered?.id == 0) {
+                if (lastItemIsTitle) {
+                    viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
+                }
+                viewModel.currentList.add(filtered)
+                lastItemIsTitle = true
+            } else if (
                 filtered?.media?.title?.romaji?.toLowerCase()?.contains(query?: "") == true ||
                 filtered?.media?.title?.english?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered?.media?.title?.native_?.toLowerCase()?.contains(query ?: "") == true ||
                 filtered?.media?.synonyms?.find { synonym -> synonym?.toLowerCase()?.contains(query ?: "") == true } != null
             ) {
                 viewModel.currentList.add(filtered)
+                lastItemIsTitle = false
+            } else if (index == selectedList.lastIndex && lastItemIsTitle) {
+                viewModel.currentList.removeAt(viewModel.currentList.lastIndex)
             }
         }
         adapter.notifyDataSetChanged()
@@ -266,9 +276,9 @@ class UserMediaListFragment : BaseFragment() {
         }
     }
 
-    private fun assignAdapter(): RecyclerView.Adapter<*> {
+    private fun assignAdapter() {
         val scoreFormat = viewModel.userData?.mediaListOptions?.scoreFormat!!
-        return when {
+        adapter = when {
             viewModel.mediaType == MediaType.ANIME && viewModel.listType == ListType.LINEAR -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, viewModel.useRelativeDate, handleListAction())
@@ -288,6 +298,20 @@ class UserMediaListFragment : BaseFragment() {
             else -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 UserAnimeListRvAdapter(activity!!, viewModel.currentList, scoreFormat, viewModel.userId, viewModel.useRelativeDate, handleListAction())
+            }
+        }
+
+        mediaListRecyclerView.adapter = adapter
+
+        if (viewModel.listType == ListType.GRID) {
+            (mediaListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == UserAnimeListGridRvAdapter.VIEW_TYPE_TITLE) {
+                        resources.getInteger(R.integer.gridSpan)
+                    } else {
+                        1
+                    }
+                }
             }
         }
     }

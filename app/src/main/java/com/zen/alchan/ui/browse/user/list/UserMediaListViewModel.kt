@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.zen.alchan.data.network.Converter
 import com.zen.alchan.data.repository.AppSettingsRepository
 import com.zen.alchan.data.repository.OtherUserRepository
+import com.zen.alchan.data.response.MediaList
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.MediaListSort
@@ -79,6 +80,8 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
         if (tabItemList.isNullOrEmpty()) {
             Constant.DEFAULT_ANIME_LIST_ORDER.forEach { list -> tabItemList.add(MediaListTabItem(list, 0)) }
         }
+
+        tabItemList.add(0, MediaListTabItem("All", sortedGroup.sumBy { list -> list?.entries?.size ?: 0 }))
     }
 
     private fun sortMediaListEntries(entries: List<UserMediaListCollectionQuery.Entry?>?): ArrayList<UserMediaListCollectionQuery.Entry?> {
@@ -369,7 +372,20 @@ class UserMediaListViewModel(private val otherUserRepository: OtherUserRepositor
     }
 
     fun getSelectedList(): ArrayList<UserMediaListCollectionQuery.Entry?> {
-        val selectedList = sortedGroup.find { it?.name == tabItemList[selectedTab].status }?.entries
+        val selectedList = ArrayList<UserMediaListCollectionQuery.Entry?>()
+        if (selectedTab == 0) {
+            tabItemList.forEachIndexed { index, mediaListTabItem ->
+                if (index != 0) {
+                    val checkList = ArrayList(sortedGroup.find { list -> list?.name == mediaListTabItem.status }?.entries ?: listOf())
+                    if (!checkList.isNullOrEmpty()) {
+                        selectedList.add(UserMediaListCollectionQuery.Entry(id = 0, notes = mediaListTabItem.status, progress = mediaListTabItem.count, status = null, score = null, progressVolumes = null, repeat = null, priority = null, private_ = null, hiddenFromStatusLists = null, customLists = null, advancedScores = null, startedAt = null, completedAt = null, updatedAt = null, createdAt = null, media = null))
+                        selectedList.addAll(checkList)
+                    }
+                }
+            }
+        } else {
+            selectedList.addAll(ArrayList(sortedGroup.find { it?.name == tabItemList[selectedTab].status }?.entries ?: listOf()))
+        }
 
         return if (!selectedList.isNullOrEmpty()) {
             ArrayList(selectedList)
