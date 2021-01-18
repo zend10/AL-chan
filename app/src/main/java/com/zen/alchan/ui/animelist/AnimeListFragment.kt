@@ -40,6 +40,7 @@ import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
 import com.zen.alchan.ui.animelist.list.AnimeListGridRvAdapter
 import com.zen.alchan.ui.animelist.list.AnimeListListener
 import com.zen.alchan.ui.animelist.list.AnimeListRvAdapter
+import com.zen.alchan.ui.animelist.list.AnimeListSimplifiedRvAdapter
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.common.MediaListDetailDialog
 import com.zen.alchan.ui.common.SetProgressDialog
@@ -306,6 +307,10 @@ class AnimeListFragment : Fragment() {
             ListType.GRID -> {
                 animeListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
                 AnimeListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
+            }
+            ListType.SIMPLIFIED -> {
+                animeListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                AnimeListSimplifiedRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
             }
         }
 
