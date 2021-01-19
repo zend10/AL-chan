@@ -27,7 +27,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/animeTitleText"
-            style="?themeRegularBoldFont"
+            style="?themeRegularFont"
             android:text="Title"
             android:layout_margin="@dimen/marginNormal"
             app:layout_constraintTop_toTopOf="parent"

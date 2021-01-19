@@ -49,6 +49,7 @@ import com.zen.alchan.ui.mangalist.editor.MangaListEditorActivity
 import com.zen.alchan.ui.mangalist.list.MangaListGridRvAdapter
 import com.zen.alchan.ui.mangalist.list.MangaListListener
 import com.zen.alchan.ui.mangalist.list.MangaListRvAdapter
+import com.zen.alchan.ui.mangalist.list.MangaListSimplifiedRvAdapter
 import kotlinx.android.synthetic.main.fragment_manga_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -312,7 +313,7 @@ class MangaListFragment : Fragment() {
             }
             ListType.SIMPLIFIED -> {
                 mangaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                MangaListRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
+                MangaListSimplifiedRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
             }
         }
 
