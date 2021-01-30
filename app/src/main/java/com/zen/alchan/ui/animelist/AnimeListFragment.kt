@@ -37,10 +37,7 @@ import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
 import com.zen.alchan.helper.utils.Utility
 import com.zen.alchan.ui.animelist.editor.AnimeListEditorActivity
-import com.zen.alchan.ui.animelist.list.AnimeListGridRvAdapter
-import com.zen.alchan.ui.animelist.list.AnimeListListener
-import com.zen.alchan.ui.animelist.list.AnimeListRvAdapter
-import com.zen.alchan.ui.animelist.list.AnimeListSimplifiedRvAdapter
+import com.zen.alchan.ui.animelist.list.*
 import com.zen.alchan.ui.browse.BrowseActivity
 import com.zen.alchan.ui.common.MediaListDetailDialog
 import com.zen.alchan.ui.common.SetProgressDialog
@@ -312,11 +309,15 @@ class AnimeListFragment : Fragment() {
                 animeListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 AnimeListSimplifiedRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
             }
+            ListType.ALBUM -> {
+                animeListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
+                AnimeListAlbumRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.animeListStyleLiveData.value, viewModel.useRelativeDate, handleListAction())
+            }
         }
 
         animeListRecyclerView.adapter = adapter
 
-        if (viewModel.animeListStyleLiveData.value?.listType == ListType.GRID) {
+        if (viewModel.animeListStyleLiveData.value?.listType == ListType.GRID || viewModel.animeListStyleLiveData.value?.listType == ListType.ALBUM) {
             (animeListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (adapter.getItemViewType(position) == AnimeListGridRvAdapter.VIEW_TYPE_TITLE) {

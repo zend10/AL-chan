@@ -15,7 +15,7 @@ class CustomiseListViewModel(private val listStyleRepository: ListStyleRepositor
     var mediaType: MediaType? = null
     var selectedImageUri: Uri? = null
     var selectedListStyle = ListStyle()
-    val listTypeList = arrayListOf(ListType.LINEAR, ListType.GRID, ListType.SIMPLIFIED)
+    val listTypeList = arrayListOf(ListType.LINEAR, ListType.GRID, ListType.SIMPLIFIED, ListType.ALBUM)
 
     val animeListStyle: ListStyle
         get() = listStyleRepository.animeListStyle
