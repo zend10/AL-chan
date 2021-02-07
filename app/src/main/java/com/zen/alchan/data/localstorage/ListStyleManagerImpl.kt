@@ -30,6 +30,9 @@ class ListStyleManagerImpl(private val localStorage: LocalStorage) : ListStyleMa
             if (savedStyle.hideNovelChapter == null) savedStyle.hideNovelChapter = false
             if (savedStyle.showNotesIndicator == null) savedStyle.showNotesIndicator = false
             if (savedStyle.showPriorityIndicator == null) savedStyle.showPriorityIndicator = false
+            if (savedStyle.hideMediaFormat == null) savedStyle.hideMediaFormat = false
+            if (savedStyle.hideScoreWhenNotScored == null) savedStyle.hideScoreWhenNotScored = false
+            if (savedStyle.hideAiringIndicator == null) savedStyle.hideAiringIndicator = false
             // add more to here when adding new settings
             return savedStyle
         }
@@ -46,6 +49,9 @@ class ListStyleManagerImpl(private val localStorage: LocalStorage) : ListStyleMa
             if (savedStyle.hideNovelChapter == null) savedStyle.hideNovelChapter = false
             if (savedStyle.showNotesIndicator == null) savedStyle.showNotesIndicator = false
             if (savedStyle.showPriorityIndicator == null) savedStyle.showPriorityIndicator = false
+            if (savedStyle.hideMediaFormat == null) savedStyle.hideMediaFormat = false
+            if (savedStyle.hideScoreWhenNotScored == null) savedStyle.hideScoreWhenNotScored = false
+            if (savedStyle.hideAiringIndicator == null) savedStyle.hideAiringIndicator = false
             // add more to here when adding new settings
             return savedStyle
         }

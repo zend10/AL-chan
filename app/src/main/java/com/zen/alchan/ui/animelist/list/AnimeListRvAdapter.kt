@@ -60,7 +60,7 @@ class AnimeListRvAdapter(private val context: Context,
             holder.animeTitleText.text = mediaList.media?.title?.userPreferred
             holder.animeFormatText.text = mediaList.media?.format?.name?.replace('_', ' ')
 
-            if (mediaList.media?.nextAiringEpisode != null) {
+            if (listStyle?.hideAiringIndicator != true && mediaList.media?.nextAiringEpisode != null) {
                 holder.animeAiringDividerIcon.visibility = View.VISIBLE
                 holder.animeAiringDateText.visibility = View.VISIBLE
 
@@ -100,7 +100,7 @@ class AnimeListRvAdapter(private val context: Context,
             } else {
                 GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.animeStarIcon)
                 holder.animeStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-                holder.animeRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
+                holder.animeRatingText.text = if (mediaList.score == null || mediaList.score == 0.0) {
                     "?"
                 } else {
                     mediaList.score?.roundToOneDecimal()
@@ -169,6 +169,14 @@ class AnimeListRvAdapter(private val context: Context,
                 holder.animePriorityIndicator.setBackgroundColor(Constant.PRIORITY_COLOR_MAP[mediaList.priority!!]!!)
             } else {
                 holder.animePriorityIndicator.visibility = View.GONE
+            }
+
+            if (listStyle?.hideScoreWhenNotScored == true && (mediaList.score == null || mediaList.score == 0.0)) {
+                holder.animeStarIcon.visibility = View.GONE
+                holder.animeRatingText.visibility = View.GONE
+            } else {
+                holder.animeStarIcon.visibility = View.VISIBLE
+                holder.animeRatingText.visibility = View.VISIBLE
             }
 
             if (listStyle?.cardColor != null) {

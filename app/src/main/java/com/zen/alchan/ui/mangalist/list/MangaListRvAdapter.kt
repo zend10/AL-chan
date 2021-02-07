@@ -65,7 +65,7 @@ class MangaListRvAdapter(private val context: Context,
             } else {
                 GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.mangaStarIcon)
                 holder.mangaStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-                holder.mangaRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
+                holder.mangaRatingText.text = if (mediaList.score == null || mediaList.score == 0.0) {
                     "?"
                 } else {
                     mediaList.score?.roundToOneDecimal()
@@ -153,6 +153,14 @@ class MangaListRvAdapter(private val context: Context,
                 holder.mangaPriorityIndicator.setBackgroundColor(Constant.PRIORITY_COLOR_MAP[mediaList.priority!!]!!)
             } else {
                 holder.mangaPriorityIndicator.visibility = View.GONE
+            }
+
+            if (listStyle?.hideScoreWhenNotScored == true && (mediaList.score == null || mediaList.score == 0.0)) {
+                holder.mangaStarIcon.visibility = View.GONE
+                holder.mangaRatingText.visibility = View.GONE
+            } else {
+                holder.mangaStarIcon.visibility = View.VISIBLE
+                holder.mangaRatingText.visibility = View.VISIBLE
             }
 
             if (listStyle?.cardColor != null) {

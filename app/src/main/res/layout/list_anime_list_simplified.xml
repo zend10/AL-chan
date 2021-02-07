@@ -29,6 +29,8 @@
             android:id="@+id/animeTitleText"
             style="?themeRegularFont"
             android:text="Title"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:layout_margin="@dimen/marginNormal"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

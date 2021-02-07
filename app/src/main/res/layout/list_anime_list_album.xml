@@ -43,8 +43,8 @@
             android:ellipsize="end"
             android:foreground="?selectableItemBackground"
             app:layout_constraintTop_toBottomOf="@id/animeCoverImage"
-            app:layout_constraintStart_toEndOf="@id/animeAiringIcon"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/animeAiringIcon"
             android:layout_marginStart="@dimen/marginSmall"
             android:layout_marginEnd="@dimen/marginSmall"
             android:layout_marginTop="@dimen/marginSmall"
@@ -55,10 +55,10 @@
             android:id="@+id/animeAiringIcon"
             app:srcCompat="@drawable/ic_filled_circle"
             app:tint="?themeSecondaryColor"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/animeTitleText"
             app:layout_constraintBottom_toBottomOf="@id/animeTitleText"
-            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginEnd="@dimen/marginSmall"
             android:layout_width="@dimen/iconSmallSize"
             android:layout_height="@dimen/iconSmallSize"/>
 

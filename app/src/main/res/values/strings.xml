@@ -528,4 +528,7 @@
     <string name="hide_series_on_my_list">Hide series on my list</string>
     <string name="only_show_series_on_my_list">Only show series on my list</string>
     <string name="on_list">On List</string>
+    <string name="hide_media_format">Hide media format</string>
+    <string name="hide_score_when_not_scored">Hide score when not scored</string>
+    <string name="hide_airing_indicator">Hide airing indicator</string>
 </resources>

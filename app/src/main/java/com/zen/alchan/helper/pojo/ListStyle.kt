@@ -19,5 +19,8 @@ class ListStyle(
     var hideNovelVolume: Boolean? = false,
     var hideNovelChapter: Boolean? = false,
     var showNotesIndicator: Boolean? = false,
-    var showPriorityIndicator: Boolean? = false
+    var showPriorityIndicator: Boolean? = false,
+    var hideMediaFormat: Boolean? = false,
+    var hideScoreWhenNotScored: Boolean? = false,
+    var hideAiringIndicator: Boolean? = false
 )

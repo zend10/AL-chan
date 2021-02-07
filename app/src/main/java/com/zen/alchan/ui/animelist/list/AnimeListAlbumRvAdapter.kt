@@ -59,7 +59,7 @@ class AnimeListAlbumRvAdapter(private val context: Context,
             GlideApp.with(context).load(mediaList.media?.coverImage?.large).into(holder.animeCoverImage)
             holder.animeTitleText.text = mediaList.media?.title?.userPreferred
 
-            if (mediaList.media?.nextAiringEpisode != null) {
+            if (listStyle?.hideAiringIndicator != true && mediaList.media?.nextAiringEpisode != null) {
                 holder.animeAiringIcon.visibility = View.VISIBLE
                 if (mediaList.media?.nextAiringEpisode?.episode!! > mediaList.progress!! + 1) {
                     GlideApp.with(context).load(R.drawable.ic_spam).into(holder.animeAiringIcon)
@@ -77,7 +77,7 @@ class AnimeListAlbumRvAdapter(private val context: Context,
             } else {
                 GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.animeStarIcon)
                 holder.animeStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-                holder.animeRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
+                holder.animeRatingText.text = if (mediaList.score == null || mediaList.score == 0.0) {
                     "?"
                 } else {
                     mediaList.score?.roundToOneDecimal()
@@ -143,6 +143,12 @@ class AnimeListAlbumRvAdapter(private val context: Context,
                 holder.animePriorityIndicator.backgroundTintList = ColorStateList.valueOf(Constant.PRIORITY_COLOR_MAP[mediaList.priority!!]!!)
             } else {
                 holder.animePriorityIndicator.visibility = View.GONE
+            }
+
+            if (listStyle?.hideScoreWhenNotScored == true && (mediaList.score == null || mediaList.score == 0.0)) {
+                holder.animeScoreLayout.visibility = View.GONE
+            } else {
+                holder.animeScoreLayout.visibility = View.VISIBLE
             }
 
             if (listStyle?.cardColor != null) {

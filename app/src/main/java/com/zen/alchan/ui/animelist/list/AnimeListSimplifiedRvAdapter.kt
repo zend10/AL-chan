@@ -66,7 +66,7 @@ class AnimeListSimplifiedRvAdapter(private val context: Context,
             } else {
                 GlideApp.with(context).load(R.drawable.ic_star_filled).into(holder.animeStarIcon)
                 holder.animeStarIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.yellowStar))
-                holder.animeRatingText.text = if (mediaList.score == null || mediaList.score?.toInt() == 0) {
+                holder.animeRatingText.text = if (mediaList.score == null || mediaList.score == 0.0) {
                     "?"
                 } else {
                     mediaList.score?.roundToOneDecimal()
@@ -76,7 +76,7 @@ class AnimeListSimplifiedRvAdapter(private val context: Context,
 
             holder.animeProgressText.text = "${mediaList.progress}/${mediaList.media?.episodes ?: '?'}"
 
-            if (mediaList.media?.nextAiringEpisode != null) {
+            if (listStyle?.hideAiringIndicator != true && mediaList.media?.nextAiringEpisode != null) {
                 holder.animeAiringIcon.visibility = View.VISIBLE
                 if (mediaList.media?.nextAiringEpisode?.episode!! > mediaList.progress!! + 1) {
                     GlideApp.with(context).load(R.drawable.ic_spam).into(holder.animeAiringIcon)
@@ -144,6 +144,16 @@ class AnimeListSimplifiedRvAdapter(private val context: Context,
                 holder.animePriorityIndicator.setBackgroundColor(Constant.PRIORITY_COLOR_MAP[mediaList.priority!!]!!)
             } else {
                 holder.animePriorityIndicator.visibility = View.GONE
+            }
+
+            if (listStyle?.hideScoreWhenNotScored == true && (mediaList.score == null || mediaList.score == 0.0)) {
+                holder.animeStarIcon.visibility = View.GONE
+                holder.animeRatingText.visibility = View.GONE
+                holder.animeDummyRatingText.visibility = View.GONE
+            } else {
+                holder.animeStarIcon.visibility = View.VISIBLE
+                holder.animeRatingText.visibility = View.VISIBLE
+                holder.animeDummyRatingText.visibility = View.INVISIBLE
             }
 
             if (listStyle?.cardColor != null) {

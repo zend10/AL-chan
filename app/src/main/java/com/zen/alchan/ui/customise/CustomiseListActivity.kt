@@ -103,18 +103,11 @@ class CustomiseListActivity : BaseActivity() {
         hideNovelChapterCheckBox.isChecked = viewModel.selectedListStyle.hideNovelChapter == true
         showNotesIndicatorCheckBox.isChecked = viewModel.selectedListStyle.showNotesIndicator == true
         showPriorityIndicatorCheckBox.isChecked = viewModel.selectedListStyle.showPriorityIndicator == true
+        hideMediaFormatCheckBox.isChecked = viewModel.selectedListStyle.hideMediaFormat == true
+        hideScoreWhenNotScoredCheckBox.isChecked = viewModel.selectedListStyle.hideScoreWhenNotScored == true
+        hideAiringIndicatorCheckBox.isChecked = viewModel.selectedListStyle.hideAiringIndicator == true
 
-        if (viewModel.mediaType == MediaType.MANGA) {
-            hideMangaVolumeLayout.visibility = View.VISIBLE
-            hideMangaChapterLayout.visibility = View.VISIBLE
-            hideNovelVolumeLayout.visibility = View.VISIBLE
-            hideNovelChapterLayout.visibility = View.VISIBLE
-        } else {
-            hideMangaVolumeLayout.visibility = View.GONE
-            hideMangaChapterLayout.visibility = View.GONE
-            hideNovelVolumeLayout.visibility = View.GONE
-            hideNovelChapterLayout.visibility = View.GONE
-        }
+        handleLayoutVisibility(viewModel.selectedListStyle.listType)
 
         longPressViewDetailCheckBox.setOnClickListener { viewModel.selectedListStyle.longPressViewDetail = longPressViewDetailCheckBox.isChecked }
         hideMangaVolumeCheckBox.setOnClickListener { viewModel.selectedListStyle.hideMangaVolume = hideMangaVolumeCheckBox.isChecked }
@@ -123,6 +116,9 @@ class CustomiseListActivity : BaseActivity() {
         hideNovelChapterCheckBox.setOnClickListener { viewModel.selectedListStyle.hideNovelChapter = hideNovelChapterCheckBox.isChecked }
         showNotesIndicatorCheckBox.setOnClickListener { viewModel.selectedListStyle.showNotesIndicator = showNotesIndicatorCheckBox.isChecked }
         showPriorityIndicatorCheckBox.setOnClickListener { viewModel.selectedListStyle.showPriorityIndicator = showPriorityIndicatorCheckBox.isChecked }
+        hideMediaFormatCheckBox.setOnClickListener { viewModel.selectedListStyle.hideMediaFormat = hideMediaFormatCheckBox.isChecked }
+        hideScoreWhenNotScoredCheckBox.setOnClickListener { viewModel.selectedListStyle.hideScoreWhenNotScored = hideScoreWhenNotScoredCheckBox.isChecked }
+        hideAiringIndicatorCheckBox.setOnClickListener { viewModel.selectedListStyle.hideAiringIndicator = hideAiringIndicatorCheckBox.isChecked }
 
         // handle theme
         val listStyle = viewModel.selectedListStyle
@@ -229,6 +225,9 @@ class CustomiseListActivity : BaseActivity() {
                     viewModel.selectedListStyle.hideNovelChapter = false
                     viewModel.selectedListStyle.showNotesIndicator = false
                     viewModel.selectedListStyle.showPriorityIndicator = false
+                    viewModel.selectedListStyle.hideMediaFormat = false
+                    viewModel.selectedListStyle.hideScoreWhenNotScored = false
+                    viewModel.selectedListStyle.hideAiringIndicator = false
 
                     primaryColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themePrimaryColor))
                     secondaryColorItem.setCardBackgroundColor(AndroidUtility.getResValueFromRefAttr(this, R.attr.themeSecondaryColor))
@@ -257,8 +256,37 @@ class CustomiseListActivity : BaseActivity() {
                 viewModel.selectedListStyle.listType = newListType
                 adapter = assignAdapter()
                 listTypeRecyclerView.adapter = adapter
+                handleLayoutVisibility(newListType)
             }
         })
+    }
+
+    private fun handleLayoutVisibility(listType: ListType?) {
+        if (viewModel.mediaType == MediaType.MANGA) {
+            hideMangaVolumeLayout.visibility = View.VISIBLE
+            hideMangaChapterLayout.visibility = View.VISIBLE
+            hideNovelVolumeLayout.visibility = View.VISIBLE
+            hideNovelChapterLayout.visibility = View.VISIBLE
+            hideAiringIndicatorLayout.visibility = View.GONE
+        } else {
+            hideMangaVolumeLayout.visibility = View.GONE
+            hideMangaChapterLayout.visibility = View.GONE
+            hideNovelVolumeLayout.visibility = View.GONE
+            hideNovelChapterLayout.visibility = View.GONE
+            hideAiringIndicatorLayout.visibility = View.VISIBLE
+        }
+
+        if (listType == ListType.LINEAR || listType == ListType.GRID) {
+            showNotesLayout.visibility = View.VISIBLE
+        } else {
+            showNotesLayout.visibility = View.GONE
+        }
+
+        if (listType == ListType.GRID) {
+            hideMediaFormatLayout.visibility = View.VISIBLE
+        } else {
+            hideMediaFormatLayout.visibility = View.GONE
+        }
     }
 
     private fun showColorPickerDialog(colorCode: Int) {

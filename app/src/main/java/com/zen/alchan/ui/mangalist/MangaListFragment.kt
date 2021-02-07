@@ -323,7 +323,7 @@ class MangaListFragment : Fragment() {
 
         mangaListRecyclerView.adapter = adapter
 
-        if (viewModel.mangaListStyleLiveData.value?.listType == ListType.GRID) {
+        if (viewModel.mangaListStyleLiveData.value?.listType == ListType.GRID || viewModel.mangaListStyleLiveData.value?.listType == ListType.ALBUM) {
             (mangaListRecyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (adapter.getItemViewType(position) == MangaListGridRvAdapter.VIEW_TYPE_TITLE) {
