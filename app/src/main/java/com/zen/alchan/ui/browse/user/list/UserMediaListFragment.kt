@@ -136,6 +136,7 @@ class UserMediaListFragment : BaseFragment() {
             true
         }
 
+        assignAdapter()
         initLayout()
         setupObserver()
     }
@@ -189,22 +190,17 @@ class UserMediaListFragment : BaseFragment() {
         val currentTab = viewModel.tabItemList[viewModel.selectedTab]
         toolbarLayout.subtitle = "${currentTab.status} (${currentTab.count})"
 
-        if (this::adapter.isInitialized) {
-            handleSearch(searchView?.query.toString())
+        viewModel.currentList.clear()
+        viewModel.currentList.addAll(ArrayList(viewModel.sortedGroup.find { status -> status?.name == currentTab.status }?.entries ?: listOf()))
+
+        handleSearch(searchView?.query.toString())
+
+        if (viewModel.currentList.isNullOrEmpty()) {
+            emptyLayout.visibility = View.VISIBLE
+            mediaListRecyclerView.visibility = View.GONE
         } else {
-            viewModel.currentList.clear()
-            viewModel.currentList.addAll(ArrayList(viewModel.sortedGroup.find { status -> status?.name == currentTab.status }?.entries ?: listOf()))
-
-            assignAdapter()
-            handleSearch(searchView?.query.toString())
-
-            if (viewModel.currentList.isNullOrEmpty()) {
-                emptyLayout.visibility = View.VISIBLE
-                mediaListRecyclerView.visibility = View.GONE
-            } else {
-                emptyLayout.visibility = View.GONE
-                mediaListRecyclerView.visibility = View.VISIBLE
-            }
+            emptyLayout.visibility = View.GONE
+            mediaListRecyclerView.visibility = View.VISIBLE
         }
     }
 
@@ -271,13 +267,15 @@ class UserMediaListFragment : BaseFragment() {
 
         if (viewModel.currentList.isNullOrEmpty()) {
             emptyLayout.visibility = View.VISIBLE
+            mediaListRecyclerView.visibility = View.GONE
         } else {
             emptyLayout.visibility = View.GONE
+            mediaListRecyclerView.visibility = View.VISIBLE
         }
     }
 
     private fun assignAdapter() {
-        val scoreFormat = viewModel.userData?.mediaListOptions?.scoreFormat!!
+        val scoreFormat = viewModel.userData?.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100
         adapter = when {
             viewModel.mediaType == MediaType.ANIME && viewModel.listType == ListType.LINEAR -> {
                 mediaListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
