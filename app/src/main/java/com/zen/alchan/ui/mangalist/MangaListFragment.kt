@@ -46,10 +46,7 @@ import com.zen.alchan.ui.common.SetScoreDialog
 import com.zen.alchan.ui.common.customise.CustomiseListActivity
 import com.zen.alchan.ui.filter.MediaFilterActivity
 import com.zen.alchan.ui.mangalist.editor.MangaListEditorActivity
-import com.zen.alchan.ui.mangalist.list.MangaListGridRvAdapter
-import com.zen.alchan.ui.mangalist.list.MangaListListener
-import com.zen.alchan.ui.mangalist.list.MangaListRvAdapter
-import com.zen.alchan.ui.mangalist.list.MangaListSimplifiedRvAdapter
+import com.zen.alchan.ui.mangalist.list.*
 import kotlinx.android.synthetic.main.fragment_manga_list.*
 import kotlinx.android.synthetic.main.layout_empty.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -317,7 +314,7 @@ class MangaListFragment : Fragment() {
             }
             ListType.ALBUM -> {
                 mangaListRecyclerView.layoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.gridSpan), GridLayoutManager.VERTICAL, false)
-                MangaListGridRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
+                MangaListAlbumRvAdapter(activity!!, viewModel.currentList, viewModel.scoreFormat, viewModel.mangaListStyleLiveData.value, handleListAction())
             }
         }
 

@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
@@ -16,17 +15,16 @@ import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.roundToOneDecimal
 import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.helper.utils.DialogUtility
-import kotlinx.android.synthetic.main.list_manga_list_grid.view.*
+import kotlinx.android.synthetic.main.list_manga_list_album.view.*
 import kotlinx.android.synthetic.main.list_title.view.*
 import type.MediaFormat
 import type.ScoreFormat
 
-class MangaListGridRvAdapter(private val context: Context,
-                             private val list: List<MediaList>,
-                             private val scoreFormat: ScoreFormat,
-                             private val listStyle: ListStyle?,
-                             private val listener: MangaListListener
+class MangaListAlbumRvAdapter(private val context: Context,
+                              private val list: List<MediaList>,
+                              private val scoreFormat: ScoreFormat,
+                              private val listStyle: ListStyle?,
+                              private val listener: MangaListListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -35,11 +33,11 @@ class MangaListGridRvAdapter(private val context: Context,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_TITLE) {
+        return if (viewType == MangaListGridRvAdapter.VIEW_TYPE_TITLE) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.list_title, parent, false)
             TitleViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_manga_list_grid, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_manga_list_album, parent, false)
             ItemViewHolder(view)
         }
     }
@@ -56,7 +54,6 @@ class MangaListGridRvAdapter(private val context: Context,
 
             GlideApp.with(context).load(mediaList.media?.coverImage?.large).into(holder.mangaCoverImage)
             holder.mangaTitleText.text = mediaList.media?.title?.userPreferred
-            holder.mangaFormatText.text = mediaList.media?.format?.name?.replace('_', ' ')
 
             if (scoreFormat == ScoreFormat.POINT_3) {
                 GlideApp.with(context).load(AndroidUtility.getSmileyFromScore(mediaList.score)).into(holder.mangaStarIcon)
@@ -75,19 +72,40 @@ class MangaListGridRvAdapter(private val context: Context,
             holder.mangaProgressText.text = "${mediaList.progress}/${mediaList.media?.chapters ?: '?'}"
             holder.mangaProgressVolumesText.text = "${mediaList.progressVolumes}/${mediaList.media?.volumes ?: '?'}"
 
+            val hideManga = listOf(listStyle?.hideMangaVolume, listStyle?.hideMangaChapter)
+            val hideNovel = listOf(listStyle?.hideNovelVolume, listStyle?.hideNovelChapter)
+
             if (mediaList.media?.format == MediaFormat.MANGA || mediaList.media?.format == MediaFormat.ONE_SHOT) {
-                holder.mangaProgressVolumesLayout.visibility = if (listStyle?.hideMangaVolume == true) View.GONE else View.VISIBLE
-                holder.mangaProgressLayout.visibility = if (listStyle?.hideMangaChapter == true) View.GONE else View.VISIBLE
+                holder.mangaProgressVolumesText.visibility = if (listStyle?.hideMangaVolume == true) View.GONE else View.VISIBLE
+                holder.mangaProgressText.visibility = if (listStyle?.hideMangaChapter == true) View.GONE else View.VISIBLE
+                holder.mangaProgressMargin.visibility = if (hideManga.contains(true)) View.GONE else View.VISIBLE
+
+                if (hideManga.contains(true)) {
+                    holder.mangaTitleText.maxLines = 2
+                    holder.mangaTitleText.setLines(2)
+                } else {
+                    holder.mangaTitleText.maxLines = 1
+                    holder.mangaTitleText.setLines(1)
+                }
             } else if (mediaList.media?.format == MediaFormat.NOVEL) {
-                holder.mangaProgressVolumesLayout.visibility = if (listStyle?.hideNovelVolume == true) View.GONE else View.VISIBLE
-                holder.mangaProgressLayout.visibility = if (listStyle?.hideNovelChapter == true) View.GONE else View.VISIBLE
+                holder.mangaProgressVolumesText.visibility = if (listStyle?.hideNovelVolume == true) View.GONE else View.VISIBLE
+                holder.mangaProgressText.visibility = if (listStyle?.hideNovelChapter == true) View.GONE else View.VISIBLE
+                holder.mangaProgressMargin.visibility = if (hideNovel.contains(true)) View.GONE else View.VISIBLE
+
+                if (hideNovel.contains(true)) {
+                    holder.mangaTitleText.maxLines = 2
+                    holder.mangaTitleText.setLines(2)
+                } else {
+                    holder.mangaTitleText.maxLines = 1
+                    holder.mangaTitleText.setLines(1)
+                }
             }
 
-            holder.mangaProgressLayout.setOnClickListener {
+            holder.mangaProgressText.setOnClickListener {
                 listener.openProgressDialog(mediaList)
             }
 
-            holder.mangaProgressVolumesLayout.setOnClickListener {
+            holder.mangaProgressVolumesText.setOnClickListener {
                 listener.openProgressDialog(mediaList, true)
             }
 
@@ -99,7 +117,7 @@ class MangaListGridRvAdapter(private val context: Context,
                 listener.openEditor(mediaList.id)
             }
 
-            holder.mangaTitleLayout.setOnClickListener {
+            holder.mangaTitleText.setOnClickListener {
                 listener.openBrowsePage(mediaList.media!!)
             }
 
@@ -110,15 +128,6 @@ class MangaListGridRvAdapter(private val context: Context,
                 } else {
                     false
                 }
-            }
-
-            if (listStyle?.showNotesIndicator == true && !mediaList.notes.isNullOrBlank()) {
-                holder.mangaNotesLayout.visibility = View.VISIBLE
-                holder.mangaNotesLayout.setOnClickListener {
-                    DialogUtility.showInfoDialog(context, mediaList.notes ?: "")
-                }
-            } else {
-                holder.mangaNotesLayout.visibility = View.GONE
             }
 
             if (listStyle?.showPriorityIndicator == true && mediaList.priority != null && mediaList.priority != 0) {
@@ -136,23 +145,8 @@ class MangaListGridRvAdapter(private val context: Context,
                 holder.mangaRatingText.visibility = View.VISIBLE
             }
 
-            if (listStyle?.hideMediaFormat == true) {
-                holder.mangaFormatLayout.visibility = View.GONE
-            } else {
-                holder.mangaFormatLayout.visibility = View.VISIBLE
-            }
-
             if (listStyle?.cardColor != null) {
                 holder.listCardBackground.setCardBackgroundColor(Color.parseColor(listStyle.cardColor))
-
-                // 6 is color hex code length without the alpha
-                val transparentCardColor = Color.parseColor("#CC" + listStyle.cardColor?.substring(listStyle.cardColor?.length!! - 6))
-                holder.mangaTitleLayout.setCardBackgroundColor(transparentCardColor)
-                holder.mangaFormatLayout.setCardBackgroundColor(transparentCardColor)
-                holder.mangaScoreLayout.setCardBackgroundColor(transparentCardColor)
-                holder.mangaProgressLayout.setCardBackgroundColor(transparentCardColor)
-                holder.mangaProgressVolumesLayout.setCardBackgroundColor(transparentCardColor)
-                holder.mangaNotesLayout.setCardBackgroundColor(transparentCardColor)
             }
 
             if (listStyle?.primaryColor != null) {
@@ -160,14 +154,10 @@ class MangaListGridRvAdapter(private val context: Context,
                 holder.mangaRatingText.setTextColor(Color.parseColor(listStyle.primaryColor))
                 holder.mangaProgressText.setTextColor(Color.parseColor(listStyle.primaryColor))
                 holder.mangaProgressVolumesText.setTextColor(Color.parseColor(listStyle.primaryColor))
+
                 if (scoreFormat == ScoreFormat.POINT_3) {
                     holder.mangaStarIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.primaryColor))
                 }
-            }
-
-            if (listStyle?.textColor != null) {
-                holder.mangaFormatText.setTextColor(Color.parseColor(listStyle.textColor))
-                holder.mangaNotesIcon.imageTintList = ColorStateList.valueOf(Color.parseColor(listStyle.textColor))
             }
         }
     }
@@ -183,20 +173,14 @@ class MangaListGridRvAdapter(private val context: Context,
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val listCardBackground = view.listCardBackground!!
         val mangaTitleText = view.mangaTitleText!!
-        val mangaTitleLayout = view.mangaTitleLayout!!
         val mangaCoverImage = view.mangaCoverImage!!
-        val mangaFormatText = view.mangaFormatText!!
-        val mangaFormatLayout = view.mangaFormatLayout!!
         val mangaProgressText = view.mangaProgressText!!
         val mangaProgressVolumesText = view.mangaProgressVolumesText!!
+        val mangaProgressMargin = view.mangaProgressMargin!!
         val mangaScoreLayout = view.mangaScoreLayout!!
         val mangaStarIcon = view.mangaStarIcon!!
         val mangaRatingText = view.mangaRatingText!!
-        val mangaProgressLayout = view.mangaProgressLayout!!
-        val mangaProgressVolumesLayout = view.mangaProgressVolumesLayout!!
         val mangaPriorityIndicator = view.mangaPriorityIndicator!!
-        val mangaNotesLayout = view.mangaNotesLayout!!
-        val mangaNotesIcon = view.mangaNotesIcon!!
     }
 
     class TitleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
