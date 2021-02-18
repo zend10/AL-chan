@@ -1,8 +1,8 @@
 {
-    "id": "",
-    "from_date": "",
-    "until_date": "",
-    "message": "",
+    "id": "1",
+    "from_date": "2021-02-18",
+    "until_date": "2021-02-20",
+    "message": "AniList is current experiencing a DDOS attack! The app will be behaving weirdly. Sorry for the inconvenience.",
     "app_version": "",
     "required_update": ""
 }
