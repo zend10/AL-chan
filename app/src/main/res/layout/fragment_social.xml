@@ -1,56 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/socialLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.social.SocialFragment">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:visibility="gone"
-        android:id="@+id/socialDisabledText"
-        android:text="@string/social_feature_is_turned_off_however_if_you_want_to_use_it_you_can_enable_social_feature_by_n_ngo_to_profile_settings_app_settings_toggle_on_enable_social_feature"
-        android:textAlignment="center"
-        android:layout_centerInParent="true"
-        android:padding="@dimen/marginPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:visibility="visible"
-        android:id="@+id/socialRefreshLayout"
-        android:layout_below="@+id/toolbarLayout"
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/friendsActivityRecyclerView"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <include layout="@layout/layout_empty"/>
-
-        </RelativeLayout>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newActivityButton"
-        android:src="@drawable/ic_create"
-        app:tint="?themeBackgroundColor"
-        app:backgroundTint="?themeSecondaryColor"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/marginNormal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <include layout="@layout/layout_loading"/>
-
-</RelativeLayout>
+</FrameLayout>

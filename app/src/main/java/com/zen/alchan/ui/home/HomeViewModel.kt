@@ -1,109 +1,69 @@
 package com.zen.alchan.ui.home
 
-import androidx.lifecycle.ViewModel
-import com.zen.alchan.data.repository.AppSettingsRepository
-import com.zen.alchan.data.repository.MediaListRepository
-import com.zen.alchan.data.repository.MediaRepository
-import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.enums.BrowsePage
-import com.zen.alchan.helper.pojo.Review
-import com.zen.alchan.helper.utils.Utility
-import type.MediaListStatus
-import type.ReviewSort
+import com.zen.alchan.data.model.Media
+import com.zen.alchan.data.model.Review
+import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.ui.base.BaseViewModel
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 
-class HomeViewModel(private val userRepository: UserRepository,
-                    private val appSettingsRepository: AppSettingsRepository,
-                    private val mediaRepository: MediaRepository,
-                    private val mediaListRepository: MediaListRepository
-) : ViewModel() {
+class HomeViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
-    var isInit = false
-    var page = 1
-    var hasNextPage = true
-    var releasingTodayList = ArrayList<HomeFragment.ReleasingTodayItem>()
+    private val _loading = BehaviorSubject.createDefault(false)
+    private val _error = PublishSubject.create<Int>()
+    private val _trendingAnime = BehaviorSubject.createDefault(listOf<Media>())
+    private val _trendingManga = BehaviorSubject.createDefault(listOf<Media>())
+    private val _newAnime = BehaviorSubject.createDefault(listOf<Media>())
+    private val _newManga = BehaviorSubject.createDefault(listOf<Media>())
+    private val _review = BehaviorSubject.createDefault(listOf<Review>())
 
-    var trendingAnimeList = ArrayList<HomeFragment.TrendingMediaItem>()
-    var trendingMangaList = ArrayList<HomeFragment.TrendingMediaItem>()
-    var recentReviewsList = ArrayList<Review>()
 
-    var explorePageArray = arrayOf(
-        BrowsePage.ANIME.name, BrowsePage.MANGA.name, BrowsePage.CHARACTER.name, BrowsePage.STAFF.name, BrowsePage.STUDIO.name
-    )
+    val loading: Observable<Boolean>
+        get() = _loading
 
-    val viewerDataResponse by lazy {
-        userRepository.viewerDataResponse
-    }
+    val error: Observable<Int>
+        get() = _error
 
-    val viewerData by lazy {
-        userRepository.viewerData
-    }
+    val trendingAnime: Observable<List<Media>>
+        get() = _trendingAnime
 
-    val trendingAnimeData by lazy {
-        mediaRepository.trendingAnimeData
-    }
+    val trendingManga: Observable<List<Media>>
+        get() = _trendingManga
 
-    val trendingMangaData by lazy {
-        mediaRepository.trendingMangaData
-    }
+    val newAnime: Observable<List<Media>>
+        get() = _newAnime
 
-    val releasingTodayData by lazy {
-        mediaRepository.releasingTodayData
-    }
+    val newManga: Observable<List<Media>>
+        get() = _newManga
 
-    val recentReviewsData by lazy {
-        mediaRepository.recentReviewsData
-    }
+    val review: Observable<List<Review>>
+        get() = _review
 
-    val animeListData by lazy {
-        mediaListRepository.animeListData
-    }
 
-    val circularAvatar
-        get() = appSettingsRepository.appSettings.circularAvatar == true
+    fun getHomeData() {
+        _loading.onNext(true)
 
-    val whiteBackgroundAvatar
-        get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
-
-    val showRecentReviews: Boolean
-        get() = appSettingsRepository.appSettings.showRecentReviews == true
-
-    fun initData() {
-        userRepository.getViewerData()
-        mediaRepository.getTrendingAnime()
-        mediaRepository.getTrendingManga()
-
-        if (Utility.timeDiffMoreThanOneDay(userRepository.viewerDataLastRetrieved)) {
-            userRepository.retrieveViewerData()
-        }
-
-        if (Utility.timeDiffMoreThanOneDay(mediaRepository.genreListLastRetrieved) || mediaRepository.genreList.isNullOrEmpty()) {
-            mediaRepository.getGenre()
-        }
-
-        if (showRecentReviews) {
-            mediaRepository.getReviews(1, 10, null, listOf(ReviewSort.CREATED_AT_DESC), true)
-        }
-
-        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {
-            mediaRepository.getTag()
-        }
-    }
-
-    fun getReleasingToday() {
-        if (hasNextPage) mediaRepository.getReleasingToday(page)
-    }
-
-    fun getNotificationCount() {
-        userRepository.getNotificationCount()
-    }
-
-    fun updateAnimeProgress(
-        entryId: Int,
-        status: MediaListStatus,
-        repeat: Int,
-        progress: Int
-    ) {
-        mediaListRepository.updateAnimeProgress(entryId, status, repeat, progress)
+        disposables.add(
+            contentRepository.getHomeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally { _loading.onNext(false) }
+                .subscribe(
+                    {
+                        _trendingAnime.onNext(it.trendingAnime)
+                        _trendingManga.onNext(it.trendingManga)
+                        _newAnime.onNext(it.newAnime)
+                        _newManga.onNext(it.newManga)
+                        _review.onNext(it.review)
+                    },
+                    {
+                        _error.onNext(it.sendMessage())
+                    }
+                )
+        )
     }
 }

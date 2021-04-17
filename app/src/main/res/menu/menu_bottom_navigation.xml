@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menuHome"
+        android:orderInCategory="0"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home"/>
+    <item android:id="@+id/menuSocial"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_chat"
+        android:title="@string/social"/>
+    <item android:id="@+id/menuAnime"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_cinema"
+        android:title="@string/anime"/>
+    <item android:id="@+id/menuManga"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_book"
+        android:title="@string/manga"/>
+    <item android:id="@+id/menuProfile"
+        android:orderInCategory="4"
+        android:icon="@drawable/ic_person"
+        android:title="@string/profile"/>
+</menu>

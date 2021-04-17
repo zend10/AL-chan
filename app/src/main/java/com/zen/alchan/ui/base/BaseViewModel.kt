@@ -1,17 +1,14 @@
 package com.zen.alchan.ui.base
 
 import androidx.lifecycle.ViewModel
-import com.zen.alchan.data.repository.AppSettingsRepository
-import com.zen.alchan.data.repository.AuthRepository
-import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.helper.enums.AppColorTheme
+import io.reactivex.disposables.CompositeDisposable
 
-// view model for BaseActivity
-class BaseViewModel(private val appSettingsRepository: AppSettingsRepository) : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
-    val appColorThemeResource: Int
-        get() = appSettingsRepository.appColorThemeResource
+    protected val disposables = CompositeDisposable()
 
-    val appColorTheme: AppColorTheme?
-        get() = appSettingsRepository.appSettings.appTheme
+    override fun onCleared() {
+        super.onCleared()
+        disposables.dispose()
+    }
 }

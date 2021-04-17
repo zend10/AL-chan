@@ -11,14 +11,13 @@
     <dimen name="iconSmallSize">18dp</dimen>
     <dimen name="imageCircleSize">100dp</dimen>
 
-    <dimen name="marginPage">28dp</dimen>
+    <dimen name="marginPageNormal">16dp</dimen>
+    <dimen name="marginPageBig">28dp</dimen>
 
     <dimen name="marginClose">4dp</dimen>
     <dimen name="marginSmall">8dp</dimen>
     <dimen name="marginNormal">12dp</dimen>
     <dimen name="marginFar">56dp</dimen>
-
-    <dimen name="statusBarHeight">24dp</dimen>
 
     <dimen name="cornerNormal">4dp</dimen>
     <dimen name="elevationNormal">4dp</dimen>
@@ -26,4 +25,5 @@
     <dimen name="lineWidth">1dp</dimen>
     <dimen name="menuWidth">100dp</dimen>
     <dimen name="toolbarBigHeight">112dp</dimen>
+    <dimen name="statusBarHeight">24dp</dimen>
 </resources>

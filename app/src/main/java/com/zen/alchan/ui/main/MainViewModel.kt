@@ -1,54 +1,18 @@
 package com.zen.alchan.ui.main
 
-import android.view.WindowInsets
-import androidx.lifecycle.ViewModel
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.zen.alchan.data.repository.AppSettingsRepository
-import com.zen.alchan.data.repository.AuthRepository
-import com.zen.alchan.data.repository.MediaListRepository
-import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.pojo.InitialPadding
+import com.apollographql.apollo.exception.ApolloHttpException
+import com.zen.alchan.data.model.Media
+import com.zen.alchan.data.model.Review
+import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.ui.base.BaseViewModel
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 
-class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
-                    private val userRepository: UserRepository
-) : ViewModel() {
+class MainViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
-    val appColorThemeLiveData by lazy {
-        appSettingsRepository.appColorThemeLiveData
-    }
 
-    val listOrAniListSettingsChanged by lazy {
-        userRepository.listOrAniListSettingsChanged
-    }
-
-    val sessionResponse by lazy {
-        userRepository.sessionResponse
-    }
-
-    val notificationCount by lazy {
-        userRepository.notificationCount
-    }
-
-    val appColorTheme: AppColorTheme?
-        get() = appSettingsRepository.appSettings.appTheme
-
-    fun checkSession() {
-        userRepository.checkSession()
-    }
-
-    fun getNotificationCount() {
-        userRepository.getNotificationCount()
-    }
-
-    fun clearStorage() {
-        appSettingsRepository.clearStorage()
-    }
-
-    fun sendFirebaseToken(token: String?) {
-        if (!token.isNullOrBlank()) {
-            userRepository.sendFirebaseToken(token)
-        }
-    }
 }

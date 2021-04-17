@@ -2,78 +2,24 @@ package com.zen.alchan
 
 import android.app.Application
 import com.google.gson.GsonBuilder
-import com.zen.alchan.data.datasource.*
-import com.zen.alchan.data.localstorage.*
-import com.zen.alchan.data.network.*
-import com.zen.alchan.data.network.header.*
-import com.zen.alchan.data.network.service.*
-import com.zen.alchan.data.repository.*
+import com.zen.alchan.data.datasource.ContentDataSource
+import com.zen.alchan.data.datasource.ContentDataSourceImpl
+import com.zen.alchan.data.localstorage.SharedPreferencesManager
+import com.zen.alchan.data.localstorage.SharedPreferencesManagerImpl
+import com.zen.alchan.data.manager.UserManager
+import com.zen.alchan.data.manager.UserManagerImpl
+import com.zen.alchan.data.network.apollo.AniListApolloHandler
+import com.zen.alchan.data.network.apollo.ApolloHandler
+import com.zen.alchan.data.network.header.AniListHeaderInterceptorImpl
+import com.zen.alchan.data.network.header.HeaderInterceptor
+import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.data.repository.ContentRepositoryImpl
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.ui.main.MainViewModel
-import com.zen.alchan.ui.animelist.AnimeListViewModel
-import com.zen.alchan.ui.animelist.editor.AnimeListEditorViewModel
-import com.zen.alchan.ui.auth.LoginViewModel
-import com.zen.alchan.ui.base.BaseViewModel
-import com.zen.alchan.ui.auth.SplashViewModel
-import com.zen.alchan.ui.browse.activity.ActivityDetailViewModel
-import com.zen.alchan.ui.browse.activity.ActivityListViewModel
-import com.zen.alchan.ui.browse.character.CharacterViewModel
-import com.zen.alchan.ui.common.customise.CustomiseListViewModel
-import com.zen.alchan.ui.filter.MediaFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
-import com.zen.alchan.ui.mangalist.MangaListViewModel
-import com.zen.alchan.ui.mangalist.editor.MangaListEditorViewModel
-import com.zen.alchan.ui.browse.media.MediaViewModel
-import com.zen.alchan.ui.browse.media.characters.MediaCharactersViewModel
-import com.zen.alchan.ui.browse.media.overview.MediaOverviewViewModel
-import com.zen.alchan.ui.browse.media.reviews.MediaReviewsViewModel
-import com.zen.alchan.ui.browse.media.social.MediaSocialViewModel
-import com.zen.alchan.ui.browse.media.staffs.MediaStaffsViewModel
-import com.zen.alchan.ui.browse.media.stats.MediaStatsViewModel
-import com.zen.alchan.ui.browse.reviews.ReviewsReaderViewModel
-import com.zen.alchan.ui.browse.staff.StaffViewModel
-import com.zen.alchan.ui.browse.staff.anime.StaffAnimeViewModel
-import com.zen.alchan.ui.browse.staff.bio.StaffBioViewModel
-import com.zen.alchan.ui.browse.staff.manga.StaffMangaViewModel
-import com.zen.alchan.ui.browse.staff.voice.StaffVoiceViewModel
-import com.zen.alchan.ui.browse.studio.StudioViewModel
-import com.zen.alchan.ui.browse.BrowseViewModel
-import com.zen.alchan.ui.browse.character.FilterCharacterMediaViewModel
-import com.zen.alchan.ui.browse.media.overview.ThemesPlayerViewModel
-import com.zen.alchan.ui.browse.reviews.editor.ReviewEditorViewModel
-import com.zen.alchan.ui.browse.user.stats.UserStatsDetailViewModel
-import com.zen.alchan.ui.browse.user.UserViewModel
-import com.zen.alchan.ui.browse.user.list.UserMediaListViewModel
-import com.zen.alchan.ui.calendar.CalendarScheduleViewModel
-import com.zen.alchan.ui.calendar.CalendarViewModel
-import com.zen.alchan.ui.common.ChartViewModel
-import com.zen.alchan.ui.common.LikesViewModel
-import com.zen.alchan.ui.common.MediaListDetailDialogViewModel
-import com.zen.alchan.ui.common.TextEditorViewModel
-import com.zen.alchan.ui.explore.ExploreViewModel
-import com.zen.alchan.ui.filter.MediaFilterTagViewModel
-import com.zen.alchan.ui.notification.NotificationViewModel
+import com.zen.alchan.ui.main.MainViewModel
+import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
-import com.zen.alchan.ui.profile.bio.BioViewModel
-import com.zen.alchan.ui.profile.favorites.FavoritesViewModel
-import com.zen.alchan.ui.profile.favorites.reorder.ReorderFavoritesViewModel
-import com.zen.alchan.ui.profile.follows.FollowsViewModel
-import com.zen.alchan.ui.profile.reviews.UserReviewsViewModel
-import com.zen.alchan.ui.profile.stats.StatsViewModel
-import com.zen.alchan.ui.profile.stats.details.StatsDetailViewModel
-import com.zen.alchan.ui.reviews.ReviewsViewModel
-import com.zen.alchan.ui.search.SearchListViewModel
-import com.zen.alchan.ui.search.SearchViewModel
-import com.zen.alchan.ui.seasonal.SeasonalDialogViewModel
-import com.zen.alchan.ui.seasonal.SeasonalViewModel
-import com.zen.alchan.ui.settings.account.AccountSettingsViewModel
-import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
-import com.zen.alchan.ui.settings.app.AppSettingsViewModel
-import com.zen.alchan.ui.settings.list.ListSettingsViewModel
-import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
-import com.zen.alchan.ui.social.SocialViewModel
-import com.zen.alchan.ui.social.global.GlobalFeedFilterViewModel
-import com.zen.alchan.ui.social.global.GlobalFeedViewModel
+
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -85,147 +31,27 @@ class ALchanApplication : Application() {
     private val appModules = module {
         val gson = GsonBuilder().serializeSpecialFloatingPointValues().create()
 
-        single<LocalStorage> { LocalStorageImpl(this@ALchanApplication.applicationContext, Constant.SHARED_PREFERENCES_NAME, gson) }
-        single<AppSettingsManager> { AppSettingsManagerImpl(get()) }
+        // local storage
+        single<SharedPreferencesManager> { SharedPreferencesManagerImpl(this@ALchanApplication.applicationContext, Constant.SHARED_PREFERENCES_NAME, gson) }
+
+        // local storage manager
         single<UserManager> { UserManagerImpl(get()) }
-        single<MediaManager> { MediaManagerImpl(get()) }
-        single<ListStyleManager> { ListStyleManagerImpl(get()) }
-        single<InfoManager> { InfoManagerImpl(get()) }
-        single<TempStorageManager> { TempStorageManagerImpl() }
 
-        single<HeaderInterceptor> { HeaderInterceptorImpl(get()) }
-        single<SpotifyAuthHeaderInterceptor> { SpotifyAuthHeaderInterceptorImpl(get()) }
-        single<SpotifyHeaderInterceptor> { SpotifyHeaderInterceptorImpl(get()) }
+        // network
+        single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
+        single<ApolloHandler> { AniListApolloHandler(get()) }
 
-        single { ApolloHandler(get()) }
-        single { GithubRestService() }
-        single { JikanRestService() }
-        single { YouTubeRestService() }
-        single { SpotifyAuthRestService(get()) }
-        single { SpotifyRestService(get()) }
+        // data source
+        single<ContentDataSource> { ContentDataSourceImpl(get()) }
 
-        // AniList GraphQL data source
-        single<UserDataSource> { UserDataSourceImpl(get()) }
-        single<MediaListDataSource> { MediaListDataSourceImpl(get()) }
-        single<MediaDataSource> { MediaDataSourceImpl(get(), get()) }
-        single<BrowseDataSource> { BrowseDataSourceImpl(get()) }
-        single<SearchDataSource> { SearchDataSourceImpl(get()) }
-        single<UserStatisticDataSource> { UserStatisticDataSourceImpl(get()) }
-        single<SocialDataSource> { SocialDataSourceImpl(get()) }
+        // repository
+        single<ContentRepository> { ContentRepositoryImpl(get()) }
 
-        // REST API data source
-        single<InfoDataSource> { InfoDataSourceImpl(get(), get(), get(), get()) }
-
-        // AniList GraphQL repository
-        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-        single<UserRepository> { UserRepositoryImpl(get(), get()) }
-        single<AppSettingsRepository> { AppSettingsRepositoryImpl(get())}
-        single<MediaListRepository> { MediaListRepositoryImpl(get(), get(), gson) }
-        single<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
-        single<ListStyleRepository> { ListStyleRepositoryImpl(get()) }
-        single<BrowseRepository> { BrowseRepositoryImpl(get()) }
-        single<SearchRepository> { SearchRepositoryImpl(get()) }
-        single<UserStatisticRepository> { UserStatisticRepositoryImpl(get(), get(), get()) }
-        single<OtherUserRepository> { OtherUserRepositoryImpl(get()) }
-        single<OtherUserStatisticRepository> { OtherUserStatisticRepositoryImpl(get(), get()) }
-        single<SocialRepository> { SocialRepositoryImpl(get(), get()) }
-
-        // REST API repository
-        single<InfoRepository> { InfoRepositoryImpl(get(), get(), get()) }
-
-        // common
-        viewModel { BaseViewModel(get()) }
-        viewModel { MediaFilterViewModel(get(), get(), gson) }
-        viewModel { MediaFilterTagViewModel(get()) }
-        viewModel { CustomiseListViewModel(get()) }
-        viewModel { MediaListDetailDialogViewModel(gson) }
-        viewModel { TextEditorViewModel(get()) }
-        viewModel { LikesViewModel(gson) }
-        viewModel { ChartViewModel(gson) }
-
-        // auth
-        viewModel { SplashViewModel(get(), get(), get()) }
-        viewModel { LoginViewModel(get()) }
-
-        // main
-        viewModel { MainViewModel(get(), get()) }
-
-        // home, search, explore, seasonal, reviews
-        viewModel { HomeViewModel(get(), get(), get(), get()) }
-        viewModel { SearchViewModel() }
-        viewModel { SearchListViewModel(get()) }
-        viewModel { ExploreViewModel(get(), gson) }
-        viewModel { SeasonalViewModel(get(), get(), get(), get(), gson) }
-        viewModel { SeasonalDialogViewModel(gson) }
-        viewModel { ReviewsViewModel(get()) }
-        viewModel { CalendarViewModel(get()) }
-        viewModel { CalendarScheduleViewModel(get()) }
-
-        // anime list
-        viewModel { AnimeListViewModel(get(), get(), get(), get(), gson) }
-        viewModel { AnimeListEditorViewModel(get(), get(), gson) }
-
-        // manga list
-        viewModel { MangaListViewModel(get(), get(), get(), gson) }
-        viewModel { MangaListEditorViewModel(get(), get(), gson) }
-
-        // browse
-        viewModel { BrowseViewModel(get()) }
-
-        // browse media
-        viewModel { MediaViewModel(get(), get()) }
-        viewModel { MediaOverviewViewModel(get()) }
-        viewModel { ThemesPlayerViewModel(get())}
-        viewModel { MediaCharactersViewModel(get(), get()) }
-        viewModel { MediaStaffsViewModel(get()) }
-        viewModel { MediaStatsViewModel(get(), get(), gson) }
-        viewModel { MediaReviewsViewModel(get()) }
-        viewModel { ReviewEditorViewModel(get()) }
-        viewModel { MediaSocialViewModel(get()) }
-
-        // browse character, staff, studio
-        viewModel { CharacterViewModel(get(), get(), get(), gson) }
-        viewModel { FilterCharacterMediaViewModel(gson) }
-        viewModel { StaffViewModel(get(), get()) }
-        viewModel { StaffBioViewModel(get()) }
-        viewModel { StaffVoiceViewModel(get(), get()) }
-        viewModel { StaffAnimeViewModel(get(), get()) }
-        viewModel { StaffMangaViewModel(get(), get()) }
-        viewModel { StudioViewModel(get(), get()) }
-
-        // browse user
-        viewModel { UserViewModel(get(), get(), get()) }
-        viewModel { UserStatsDetailViewModel(get(), get(), gson) }
-        viewModel { UserMediaListViewModel(get(), get(), gson) }
-
-        // browse activity
-        viewModel { ActivityDetailViewModel(get(), get(), gson) }
-        viewModel { ActivityListViewModel(get(), get()) }
-
-        // browse review
-        viewModel { ReviewsReaderViewModel(get(), get()) }
-
-        // profile and settings
-        viewModel { ProfileViewModel(get(), get()) }
-        viewModel { BioViewModel(get(), get(), get()) }
-        viewModel { FavoritesViewModel(get(), get(), gson) }
-        viewModel { ReorderFavoritesViewModel(get(), gson) }
-        viewModel { StatsViewModel(get(), get(), get(), gson) }
-        viewModel { StatsDetailViewModel(get(), get(), gson) }
-        viewModel { UserReviewsViewModel(get(), get()) }
-        viewModel { FollowsViewModel(get(), get()) }
-        viewModel { AppSettingsViewModel(get()) }
-        viewModel { AniListSettingsViewModel(get()) }
-        viewModel { ListSettingsViewModel(get()) }
-        viewModel { NotificationsSettingsViewModel(get()) }
-        viewModel { AccountSettingsViewModel(get()) }
-        viewModel { NotificationViewModel(get()) }
-
-        // social
-        viewModel { SocialViewModel(get(), get(), get(), get()) }
-        viewModel { GlobalFeedViewModel(get(), get(), get()) }
-        viewModel { GlobalFeedFilterViewModel(get()) }
-
+        // view model
+        viewModel { MainViewModel(get()) }
+        viewModel { HomeViewModel(get()) }
+        viewModel { MediaListViewModel() }
+        viewModel { ProfileViewModel() }
     }
 
     override fun onCreate() {

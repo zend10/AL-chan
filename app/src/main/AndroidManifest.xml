@@ -4,8 +4,6 @@
     package="com.zen.alchan">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".ALchanApplication"
@@ -16,118 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.browse.reviews.editor.ReviewEditorActivity" />
-        <activity android:name=".ui.calendar.CalendarActivity" />
-        <service
-            android:name=".notifications.PushNotificationsService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".notifications.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notif" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/yellow" />
-
-        <activity android:name=".ui.filter.MediaFilterActivity" />
-        <activity android:name=".ui.reviews.ReviewsActivity" />
-        <activity android:name=".ui.social.global.GlobalFeedActivity" />
-        <activity android:name=".ui.common.TextEditorActivity" />
-        <activity
-            android:name=".ui.common.SpoilerActivity"
-            android:theme="@style/Theme.MaterialComponents.NoActionBar.Translucent">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="spoiler"
-                    android:pathPattern=".*"
-                    android:scheme="alchan" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.profile.follows.FollowsActivity" />
-        <activity android:name=".ui.notification.NotificationActivity" />
-        <activity android:name=".ui.profile.stats.details.StatsDetailActivity" />
-        <activity android:name=".ui.profile.favorites.reorder.ReorderFavoritesActivity" />
-        <activity android:name=".ui.seasonal.SeasonalActivity" />
-        <activity android:name=".ui.explore.ExploreActivity" />
-        <activity android:name=".ui.browse.BrowseActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/anime/.*"
-                    android:scheme="https" />
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/manga/.*"
-                    android:scheme="https" />
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/character/.*"
-                    android:scheme="https" />
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/staff/.*"
-                    android:scheme="https" />
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/studio/.*"
-                    android:scheme="https" />
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/user/.*"
-                    android:scheme="https" />
-                <data
-                    android:host="anilist.co"
-                    android:pathPattern="/review/.*"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.mangalist.editor.MangaListEditorActivity" />
-        <activity android:name=".ui.common.customise.CustomiseListActivity" />
-        <activity android:name=".ui.animelist.editor.AnimeListEditorActivity" />
-        <activity android:name=".ui.search.SearchActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.auth.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="login"
-                    android:pathPattern=".*"
-                    android:scheme="alchan" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.auth.SplashActivity">
+        <activity android:name=".ui.root.RootActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.main.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-
-
     </application>
 
 </manifest>
