@@ -1,9 +1,11 @@
 package com.zen.alchan.ui.home
 
-import com.zen.alchan.data.model.Media
-import com.zen.alchan.data.model.Review
+import com.zen.alchan.data.response.Media
+import com.zen.alchan.data.response.Review
 import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,55 +15,52 @@ import io.reactivex.subjects.PublishSubject
 
 class HomeViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
-    private val _loading = BehaviorSubject.createDefault(false)
-    private val _error = PublishSubject.create<Int>()
-    private val _trendingAnime = BehaviorSubject.createDefault(listOf<Media>())
-    private val _trendingManga = BehaviorSubject.createDefault(listOf<Media>())
-    private val _newAnime = BehaviorSubject.createDefault(listOf<Media>())
-    private val _newManga = BehaviorSubject.createDefault(listOf<Media>())
-    private val _review = BehaviorSubject.createDefault(listOf<Review>())
-
-
-    val loading: Observable<Boolean>
-        get() = _loading
+    private val errorSubject = PublishSubject.create<Int>()
+    private val loadingSubject = BehaviorSubject.createDefault(false)
+    private val homeItemListSubject = BehaviorSubject.createDefault(listOf<HomeItem>())
 
     val error: Observable<Int>
-        get() = _error
+        get() = errorSubject
 
-    val trendingAnime: Observable<List<Media>>
-        get() = _trendingAnime
+    val loading: Observable<Boolean>
+        get() = loadingSubject
 
-    val trendingManga: Observable<List<Media>>
-        get() = _trendingManga
+    val homeItemList: Observable<List<HomeItem>>
+        get() = homeItemListSubject
 
-    val newAnime: Observable<List<Media>>
-        get() = _newAnime
+    private var isLoaded = false
 
-    val newManga: Observable<List<Media>>
-        get() = _newManga
+    fun getHomeData(isReloading: Boolean = false) {
+        if (!isReloading && isLoaded) return
 
-    val review: Observable<List<Review>>
-        get() = _review
-
-
-    fun getHomeData() {
-        _loading.onNext(true)
+        if (isReloading)
+            loadingSubject.onNext(true)
+        else
+            homeItemListSubject.onNext(
+                listOf(HomeItem.ITEM_HEADER, HomeItem.ITEM_MENU, HomeItem.EMPTY_TRENDING_ANIME, HomeItem.EMPTY_TRENDING_MANGA)
+            )
 
         disposables.add(
             contentRepository.getHomeData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally { _loading.onNext(false) }
                 .subscribe(
                     {
-                        _trendingAnime.onNext(it.trendingAnime)
-                        _trendingManga.onNext(it.trendingManga)
-                        _newAnime.onNext(it.newAnime)
-                        _newManga.onNext(it.newManga)
-                        _review.onNext(it.review)
+                        homeItemListSubject.onNext(
+                            listOf(
+                                HomeItem.ITEM_HEADER,
+                                HomeItem.ITEM_MENU,
+                                HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
+                                HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
+                            )
+                        )
+                        loadingSubject.onNext(false)
+                        isLoaded = true
                     },
                     {
-                        _error.onNext(it.sendMessage())
+                        errorSubject.onNext(it.sendMessage())
+                        loadingSubject.onNext(false)
+                        isLoaded = true
                     }
                 )
         )

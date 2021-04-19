@@ -7,4 +7,12 @@
     <string name="profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="what_are_you_looking_for">What are you looking for?</string>
+    <string name="hello">Hello!</string>
+    <string name="seasonal">Seasonal</string>
+    <string name="explore">Explore</string>
+    <string name="reviews">Reviews</string>
+    <string name="calendar">Calendar</string>
+    <string name="trending_anime_right_now">Trending Anime Right Now</string>
+    <string name="trending_manga_right_now">Trending Manga Right Now</string>
 </resources>

@@ -67,6 +67,26 @@ fragment HomeMedia on Media {
   genres
   averageScore
   favourites
+  staff(sort:[RELEVANCE]) {
+    edges {
+      node {
+        id
+        name {
+          full
+        }
+      }
+      role
+    }
+  }
+  studios(isMain:true) {
+    edges {
+      node {
+        id
+        name
+      }
+      isMain
+    }
+  }
   startDate {
     year
     month

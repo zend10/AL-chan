@@ -1,6 +1,7 @@
 package com.zen.alchan.data.converter
 
-import com.zen.alchan.data.model.*
+import com.zen.alchan.data.response.*
+import com.zen.alchan.helper.pojo.Genre
 import fragment.HomeMedia
 
 fun HomeDataQuery.Data.convert(): HomeData {
@@ -63,8 +64,40 @@ private fun convertHomeMediaFragment(media: HomeMedia?): Media {
             media?.coverImage?.medium ?: ""
         ),
         bannerImage = media?.bannerImage ?: "",
-        genres = media?.genres?.filterNotNull() ?: listOf(),
+        genres = media?.genres?.mapNotNull { Genre(name = it ?: "") } ?: listOf(),
         averageScore = media?.averageScore ?: 0,
-        meanScore = media?.favourites ?: 0
+        favourites = media?.favourites ?: 0,
+        staffs = convertStaffConnection(media?.staff),
+        studios = convertStudioConnection(media?.studios)
+    )
+}
+
+private fun convertStaffConnection(staffs: HomeMedia.Staff?): StaffConnection {
+    return StaffConnection(
+        edges = staffs?.edges?.map {
+            StaffEdge(
+                node = Staff(
+                    id = it?.node?.id ?: 0,
+                    name = StaffName(
+                        full = it?.node?.name?.full ?: ""
+                    )
+                ),
+                role = it?.role ?: ""
+            )
+        } ?: listOf()
+    )
+}
+
+private fun convertStudioConnection(studios: HomeMedia.Studios?): StudioConnection {
+    return StudioConnection(
+        edges = studios?.edges?.map {
+            StudioEdge(
+                node = Studio(
+                    id = it?.node?.id ?: 0,
+                    name = it?.node?.name ?: ""
+                ),
+                isMain = it?.isMain ?: false
+            )
+        } ?: listOf()
     )
 }

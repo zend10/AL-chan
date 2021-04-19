@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.base
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
 
     protected val disposables = CompositeDisposable()
 
+    protected var screenWidth = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,13 +28,44 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupObserver()
+
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        screenWidth = displayMetrics.widthPixels
+
         setupLayout()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupInsets()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setupObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (disposables.isDisposed) {
+            setupObserver()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposables.clear()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposables.clear()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        disposables.dispose()
+        disposables.clear()
     }
 
     protected fun navigate(page: NavigationManager.Page) {

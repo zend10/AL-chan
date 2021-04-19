@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/marginPageBig"
+    android:layout_marginHorizontal="@dimen/marginPageNormal"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/seasonalMenu"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginEnd="@dimen/marginClose"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:background="@drawable/shape_oval_with_border"
+                android:backgroundTint="?themePrimaryColor"
+                android:padding="@dimen/lineWidth"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginNormal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <RelativeLayout
+                    android:background="@drawable/shape_oval_with_border"
+                    android:backgroundTint="?themeBackgroundColor"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_baseline_dashboard"
+                        app:tint="?themePrimaryColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/seasonal"
+            style="?themeSmallClickableFont"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:maxLines="2"
+            android:lines="2"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/exploreMenu"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/marginClose"
+        android:layout_marginEnd="@dimen/marginClose"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:background="@drawable/shape_oval_with_border"
+                android:backgroundTint="?themePrimaryColor"
+                android:padding="@dimen/lineWidth"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginNormal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <RelativeLayout
+                    android:background="@drawable/shape_oval_with_border"
+                    android:backgroundTint="?themeBackgroundColor"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_compass"
+                        app:tint="?themePrimaryColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/explore"
+            style="?themeSmallClickableFont"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:maxLines="2"
+            android:lines="2"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/reviewsMenu"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/marginClose"
+        android:layout_marginEnd="@dimen/marginClose"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:background="@drawable/shape_oval_with_border"
+                android:backgroundTint="?themePrimaryColor"
+                android:padding="@dimen/lineWidth"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginNormal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <RelativeLayout
+                    android:background="@drawable/shape_oval_with_border"
+                    android:backgroundTint="?themeBackgroundColor"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_inscription"
+                        app:tint="?themePrimaryColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/reviews"
+            style="?themeSmallClickableFont"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:maxLines="2"
+            android:lines="2"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/calendarMenu"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/marginClose"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:background="@drawable/shape_oval_with_border"
+                android:backgroundTint="?themePrimaryColor"
+                android:padding="@dimen/lineWidth"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_marginEnd="@dimen/marginNormal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <RelativeLayout
+                    android:background="@drawable/shape_oval_with_border"
+                    android:backgroundTint="?themeBackgroundColor"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        app:srcCompat="@drawable/ic_calendar"
+                        app:tint="?themePrimaryColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/calendar"
+            style="?themeSmallClickableFont"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:maxLines="2"
+            android:lines="2"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -4,16 +4,27 @@
     <color name="white">#FFFFFF</color>
     <color name="pureBlack">#000000</color>
 
+    <color name="blackTransparent50">#80212121</color>
+    <color name="whiteTransparent50">#80FFFFFF</color>
+    <color name="pureBlackTransparent50">#80000000</color>
+
     <color name="brightYellow">#F1C40F</color>
     <color name="brightRed">#E74C3C</color>
     <color name="brightGreen">#2ECC71</color>
 
+    <!-- Card Background -->
     <color name="blackLight">#2F2F2F</color>
     <color name="whiteLight">#F2F2F2</color>
     <color name="pureBlackLight">#0F0F0F</color>
 
+    <!-- For navigation bar -->
+    <color name="whiteTransparent70">#B3FFFFFF</color>
+    <color name="pureBlackTransparent70">#B3000000</color>
+
     <!-- Default Theme -->
+    <!-- Divider -->
     <color name="whiteTransparent12">#1FFFFFFF</color>
+    <!-- Bottom Navigation -->
     <color name="whiteTransparent36">#5CFFFFFF</color>
 
     <color name="yellow">#FCF1C2</color>

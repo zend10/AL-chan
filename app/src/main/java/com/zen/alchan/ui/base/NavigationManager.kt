@@ -6,6 +6,11 @@ interface NavigationManager {
 
     enum class Page {
         PAGE_MAIN,
+        PAGE_HOME,
+        PAGE_ANIME,
+        PAGE_MANGA,
+        PAGE_SOCIAL,
+        PAGE_PROFILE,
         PAGE_BROWSE
     }
 }

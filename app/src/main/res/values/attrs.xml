@@ -3,9 +3,24 @@
     <attr name="themePrimaryColor" format="reference"/>
     <attr name="themeSecondaryColor" format="reference"/>
     <attr name="themeNegativeColor" format="reference"/>
-    <attr name="themeBackgroundColor" format="reference"/>
+
     <attr name="themeCardColor" format="reference"/>
     <attr name="themeDividerColor" format="reference"/>
+
     <attr name="themeContentColor" format="reference"/>
     <attr name="themeContentTransparentColor" format="reference"/>
+
+    <attr name="themeBackgroundColor" format="reference"/>
+    <attr name="themeBackgroundTransparent50Color" format="reference"/>
+
+
+
+
+
+
+    <attr name="themeTitleFont" format="reference"/>
+    <attr name="themeRegularFont" format="reference"/>
+    <attr name="themeRegularBoldFont" format="reference"/>
+    <attr name="themeSmallFont" format="reference"/>
+    <attr name="themeSmallClickableFont" format="reference"/>
 </resources>
