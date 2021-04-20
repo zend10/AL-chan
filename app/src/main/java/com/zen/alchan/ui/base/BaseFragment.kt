@@ -68,7 +68,15 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
         disposables.clear()
     }
 
-    protected fun navigate(page: NavigationManager.Page) {
-        rootActivity.navigationManager.navigate(page)
+    protected fun navigate(page: NavigationManager.Page, vararg params: String = arrayOf()) {
+        rootActivity.navigationManager.navigate(page, params.toList())
+    }
+
+    protected fun openWebView(url: String) {
+        rootActivity.navigationManager.openWebView(url)
+    }
+
+    protected fun openWebView(url: NavigationManager.Url) {
+        rootActivity.navigationManager.openWebView(url)
     }
 }

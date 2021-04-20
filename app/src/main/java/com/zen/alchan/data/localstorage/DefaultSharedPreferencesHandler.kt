@@ -13,7 +13,12 @@ class DefaultSharedPreferencesHandler(
         get() = getData(BEARER_TOKEN)
         set(value) { setData(BEARER_TOKEN, value) }
 
+    override var guestLogin: Boolean?
+        get() = getData(GUEST_LOGIN).toBoolean()
+        set(value) { setData(GUEST_LOGIN, value.toString()) }
+
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
+        private const val GUEST_LOGIN = "guestLogin"
     }
 }

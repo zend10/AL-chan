@@ -4,9 +4,17 @@
     <color name="white">#FFFFFF</color>
     <color name="pureBlack">#000000</color>
 
+    <color name="blackTransparent86">#DB212121</color>
     <color name="blackTransparent50">#80212121</color>
+    <color name="blackTransparent36">#5C212121</color>
+
+    <color name="whiteTransparent86">#DBFFFFFF</color>
     <color name="whiteTransparent50">#80FFFFFF</color>
+    <color name="whiteTransparent36">#5CFFFFFF</color>
+
+    <color name="pureBlackTransparent86">#DB000000</color>
     <color name="pureBlackTransparent50">#80000000</color>
+    <color name="pureBlackTransparent36">#5C000000</color>
 
     <color name="brightYellow">#F1C40F</color>
     <color name="brightRed">#E74C3C</color>
@@ -24,8 +32,6 @@
     <!-- Default Theme -->
     <!-- Divider -->
     <color name="whiteTransparent12">#1FFFFFFF</color>
-    <!-- Bottom Navigation -->
-    <color name="whiteTransparent36">#5CFFFFFF</color>
 
     <color name="yellow">#FCF1C2</color>
     <color name="cyan">#DCFDF9</color>

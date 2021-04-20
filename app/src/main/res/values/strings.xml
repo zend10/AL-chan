@@ -15,4 +15,15 @@
     <string name="calendar">Calendar</string>
     <string name="trending_anime_right_now">Trending Anime Right Now</string>
     <string name="trending_manga_right_now">Trending Manga Right Now</string>
+    <string name="powered_by_anilist">Powered by AniList</string>
+    <string name="welcome_to_al_chan">Welcome to AL-chan</string>
+    <string name="al_chan_is_an_unofficial_client_for_anilist_a_place_where_you_can_track_share_discover_and_experience_anime_manga"><![CDATA[AL-chan is an unofficial client for AniList, a place where you can track, share, discover, and experience Anime & Manga.]]></string>
+    <string name="get_started">Get Started</string>
+    <string name="back">Back</string>
+    <string name="important_to_know">Important to Know</string>
+    <string name="you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password">You\'ll be redirected to anilist.co to login/register. Make sure the URL is anilist.co before entering your email and password.</string>
+    <string name="login">Login</string>
+    <string name="enter_without_login">Enter without login</string>
+    <string name="register">Register</string>
+    <string name="please_wait">Please Wait</string>
 </resources>

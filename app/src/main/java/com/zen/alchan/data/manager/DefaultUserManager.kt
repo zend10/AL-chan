@@ -9,5 +9,10 @@ class DefaultUserManager(private val sharedPreferencesManager: SharedPreferences
         get() = sharedPreferencesManager.bearerToken
         set(value) { sharedPreferencesManager.bearerToken = value }
 
-    override val isLoggedIn: Boolean = bearerToken != null
+    override val isLoggedIn: Boolean
+        get() = bearerToken != null
+
+    override var isLoggedInAsGuest: Boolean
+        get() = sharedPreferencesManager.guestLogin == true
+        set(value) { sharedPreferencesManager.guestLogin = value }
 }

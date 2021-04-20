@@ -1,20 +1,12 @@
 package com.zen.alchan.ui.home
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.base.NavigationManager
 import com.zen.alchan.ui.main.SharedMainViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -58,7 +50,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         )
 
         sharedDisposables.add(
-            sharedViewModel.getScrollToTopObservable(NavigationManager.Page.PAGE_HOME).subscribe {
+            sharedViewModel.getScrollToTopObservable(NavigationManager.Page.HOME).subscribe {
                 homeRecyclerView.smoothScrollToPosition(0)
             }
         )

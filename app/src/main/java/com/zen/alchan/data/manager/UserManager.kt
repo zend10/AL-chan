@@ -5,4 +5,5 @@ import io.reactivex.Observable
 interface UserManager {
     var bearerToken: String?
     val isLoggedIn: Boolean
+    var isLoggedInAsGuest: Boolean
 }

@@ -12,4 +12,11 @@ object ImageUtil {
             .centerCrop()
             .into(imageView)
     }
+
+    fun loadImage(context: Context, resourceId: Int, imageView: AppCompatImageView) {
+        Glide.with(context)
+            .load(resourceId)
+            .centerCrop()
+            .into(imageView)
+    }
 }

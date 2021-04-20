@@ -11,7 +11,15 @@ class DefaultAuthenticationRepository(
     private val userManager: UserManager
 ) : AuthenticationRepository {
 
+    override fun getIsLoggedIn(): Observable<Boolean> {
+        return Observable.just(userManager.isLoggedIn || userManager.isLoggedInAsGuest)
+    }
+
     override fun getViewerQuery(): Observable<User> {
         return authenticationDataSource.getViewerQuery().map { it.data?.convert() ?: User() }
+    }
+
+    override fun loginAsGuest() {
+        userManager.isLoggedInAsGuest = true
     }
 }

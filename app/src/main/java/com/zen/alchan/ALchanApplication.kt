@@ -2,8 +2,6 @@ package com.zen.alchan
 
 import android.app.Application
 import com.google.gson.GsonBuilder
-import com.zen.alchan.data.constant.AniListConstant
-import com.zen.alchan.data.constant.Constant
 import com.zen.alchan.data.datasource.AuthenticationDataSource
 import com.zen.alchan.data.datasource.ContentDataSource
 import com.zen.alchan.data.datasource.DefaultAuthenticationDataSource
@@ -20,12 +18,15 @@ import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.DefaultAuthenticationRepository
 import com.zen.alchan.data.repository.DefaultContentRepository
+import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.home.HomeViewModel
+import com.zen.alchan.ui.login.LoginViewModel
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
+import com.zen.alchan.ui.splash.SplashViewModel
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -39,14 +40,11 @@ class ALchanApplication : Application() {
     private val appModules = module {
         val gson = GsonBuilder().serializeSpecialFloatingPointValues().create()
 
-        // constant
-        single<Constant>(named("aniListConstant")) { AniListConstant() }
-
         // local storage
         single<SharedPreferencesHandler> {
             DefaultSharedPreferencesHandler(
                 this@ALchanApplication.applicationContext,
-                BuildConfig.APPLICATION_ID + ".LocalStorage",
+                Constant.SHARED_PREFERENCES_NAME,
                 gson
             )
         }
@@ -56,10 +54,7 @@ class ALchanApplication : Application() {
 
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
-        single<ApolloHandler> {
-            val baseUrl = get<Constant>(named("aniListConstant")).baseUrl
-            AniListApolloHandler(get(), baseUrl)
-        }
+        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
 
         // data source
         single<AuthenticationDataSource> { DefaultAuthenticationDataSource(get()) }
@@ -71,6 +66,9 @@ class ALchanApplication : Application() {
 
         // view model
         viewModel { BaseActivityViewModel() }
+
+        viewModel { SplashViewModel(get()) }
+        viewModel { LoginViewModel(get()) }
 
         viewModel { SharedMainViewModel() }
         viewModel { MainViewModel(get()) }

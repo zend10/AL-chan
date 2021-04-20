@@ -1,16 +1,31 @@
 package com.zen.alchan.ui.base
 
+import android.content.Context
+
 interface NavigationManager {
 
-    fun navigate(page: Page)
+    fun navigate(page: Page, params: List<String> = listOf())
+
+    fun openWebView(url: String)
+
+    fun openWebView(url: Url)
 
     enum class Page {
-        PAGE_MAIN,
-        PAGE_HOME,
-        PAGE_ANIME,
-        PAGE_MANGA,
-        PAGE_SOCIAL,
-        PAGE_PROFILE,
-        PAGE_BROWSE
+        SPLASH,
+        LANDING,
+        LOGIN,
+        MAIN,
+        HOME,
+        ANIME,
+        MANGA,
+        SOCIAL,
+        PROFILE,
+        BROWSE
+    }
+
+    enum class Url {
+        ANILIST_WEBSITE,
+        ANILIST_LOGIN,
+        ANILIST_REGISTER
     }
 }

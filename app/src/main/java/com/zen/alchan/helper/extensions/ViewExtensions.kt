@@ -14,3 +14,15 @@ fun View.applyTopPaddingInsets() {
     }
     requestApplyInsets()
 }
+
+fun View.applyTopBottomPaddingInsets() {
+    val initialPadding = InitialPadding(paddingTop = paddingTop, paddingBottom = paddingBottom)
+    setOnApplyWindowInsetsListener { view, windowInsets ->
+        view.updatePadding(
+            top = initialPadding.paddingTop + windowInsets.systemWindowInsetTop,
+            bottom = initialPadding.paddingBottom + windowInsets.systemWindowInsetBottom
+        )
+        windowInsets
+    }
+    requestApplyInsets()
+}

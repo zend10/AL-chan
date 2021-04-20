@@ -11,16 +11,22 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:overScrollMode">never</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="themeAppNameFont">@style/FontAppName</item>
         <item name="themeTitleFont">@style/FontTitle</item>
         <item name="themeRegularFont">@style/FontRegular</item>
+        <item name="themeRegularClickableFont">@style/FontRegularClickable</item>
         <item name="themeRegularBoldFont">@style/FontRegularBold</item>
         <item name="themeSmallFont">@style/FontSmall</item>
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
+        <item name="themePrimaryButton">@style/ButtonPrimary</item>
+        <item name="themePrimaryBorderButton">@style/ButtonPrimaryBorder</item>
     </style>
     
     <style name="DefaultAppTheme">
         <item name="themeBackgroundColor">@color/black</item>
+        <item name="themeBackgroundTransparent86Color">@color/blackTransparent86</item>
         <item name="themeBackgroundTransparent50Color">@color/blackTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/blackTransparent36</item>
         <item name="themeCardColor">@color/blackLight</item>
         <item name="themeDividerColor">@color/whiteTransparent12</item>
         <item name="themeContentColor">@color/white</item>
@@ -33,6 +39,12 @@
         <item name="themeNegativeColor">@color/magentaDark</item>
     </style>
 
+    <style name="FontAppName">
+        <item name="android:fontFamily">@font/ubuntu_medium</item>
+        <item name="android:textSize">@dimen/fontBig</item>
+        <item name="android:textColor">?themePrimaryColor</item>
+    </style>
+
     <style name="FontTitle">
         <item name="android:fontFamily">@font/ubuntu_medium</item>
         <item name="android:textSize">@dimen/fontBig</item>
@@ -43,6 +55,12 @@
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:textSize">@dimen/fontNormal</item>
         <item name="android:textColor">?themeContentColor</item>
+    </style>
+
+    <style name="FontRegularClickable">
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textSize">@dimen/fontNormal</item>
+        <item name="android:textColor">?themePrimaryColor</item>
     </style>
 
     <style name="FontRegularBold">
@@ -61,5 +79,23 @@
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:textSize">@dimen/fontSmall</item>
         <item name="android:textColor">?themePrimaryColor</item>
+    </style>
+
+    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">?themePrimaryColor</item>
+        <item name="android:textColor">?themeBackgroundColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="ButtonPrimaryBorder" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">@dimen/lineWidth</item>
+        <item name="strokeColor">?themePrimaryColor</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">?themePrimaryColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 </resources>

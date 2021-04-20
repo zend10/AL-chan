@@ -14,11 +14,11 @@ class SharedMainViewModel : BaseViewModel() {
     private val _scrollProfileToTop = PublishSubject.create<Unit>()
 
     private val scrollEventMap = linkedMapOf(
-        NavigationManager.Page.PAGE_HOME to _scrollAnimeToTop,
-        NavigationManager.Page.PAGE_ANIME to _scrollAnimeToTop,
-        NavigationManager.Page.PAGE_MANGA to _scrollMangaToTop,
-        NavigationManager.Page.PAGE_SOCIAL to _scrollSocialToTop,
-        NavigationManager.Page.PAGE_PROFILE to _scrollProfileToTop
+        NavigationManager.Page.HOME to _scrollAnimeToTop,
+        NavigationManager.Page.ANIME to _scrollAnimeToTop,
+        NavigationManager.Page.MANGA to _scrollMangaToTop,
+        NavigationManager.Page.SOCIAL to _scrollSocialToTop,
+        NavigationManager.Page.PROFILE to _scrollProfileToTop
     )
 
     fun scrollToTop(pageIndex: Int) {
