@@ -22,4 +22,8 @@ class DefaultAuthenticationRepository(
     override fun loginAsGuest() {
         userManager.isLoggedInAsGuest = true
     }
+
+    override fun saveBearerToken(newBearerToken: String?) {
+        userManager.bearerToken = newBearerToken
+    }
 }

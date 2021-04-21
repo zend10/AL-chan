@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract {
 
@@ -68,8 +69,8 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
         disposables.clear()
     }
 
-    protected fun navigate(page: NavigationManager.Page, vararg params: String = arrayOf()) {
-        rootActivity.navigationManager.navigate(page, params.toList())
+    protected fun navigate(page: NavigationManager.Page, params: List<String> = listOf()) {
+        rootActivity.navigationManager.navigate(page, params)
     }
 
     protected fun openWebView(url: String) {

@@ -23,16 +23,12 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     override fun setupLayout() {
         ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, loginBackgroundImage)
 
-        loginBackIcon.setOnClickListener { requireActivity().onBackPressed() }
+        loginBackIcon.setOnClickListener { viewModel.pressBack() }
 
-        registerButton.setOnClickListener { openWebView(NavigationManager.Url.ANILIST_REGISTER) }
-        loginButton.setOnClickListener { openWebView(NavigationManager.Url.ANILIST_LOGIN) }
+        registerButton.setOnClickListener { viewModel.pressRegister() }
+        loginButton.setOnClickListener { viewModel.pressLogin() }
 
-        enterWithoutLoginButton.setOnClickListener {
-            viewModel.loginAsGuest()
-            requireActivity().onBackPressed()
-            navigate(NavigationManager.Page.MAIN)
-        }
+        enterWithoutLoginButton.setOnClickListener { viewModel.pressEnterWithoutLogin() }
 
         val aniListText = "anilist.co"
         val noticeText= SpannableString(getString(R.string.you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password))
@@ -40,7 +36,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
         val endIndex = startIndex + aniListText.length
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                openWebView(NavigationManager.Url.ANILIST_WEBSITE)
+                viewModel.pressAniListLink()
             }
         }
         noticeText.setSpan(clickableSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -56,6 +52,30 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
         disposables.add(
             viewModel.loading.subscribe {
                 loadingLayout.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        )
+
+        disposables.add(
+            viewModel.error.subscribe {
+
+            }
+        )
+
+        disposables.add(
+            viewModel.navigation.subscribe {
+                navigate(it.first, it.second)
+            }
+        )
+
+        disposables.add(
+            viewModel.webUrl.subscribe {
+                openWebView(it)
+            }
+        )
+
+        disposables.add(
+            viewModel.backNavigation.subscribe {
+                requireActivity().onBackPressed()
             }
         )
 

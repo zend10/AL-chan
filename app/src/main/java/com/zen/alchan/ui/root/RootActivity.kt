@@ -3,6 +3,7 @@ package com.zen.alchan.ui.root
 import android.content.Intent
 import com.zen.alchan.R
 import com.zen.alchan.ui.base.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RootActivity : BaseActivity(R.layout.activity_root), ViewContract {
 
@@ -10,16 +11,16 @@ class RootActivity : BaseActivity(R.layout.activity_root), ViewContract {
     val dialogManager: DialogManager = DefaultDialogManager(this)
 
     override fun setupLayout() {
-        val appLinkData = intent?.data?.encodedFragment
-        val accessToken = appLinkData?.substring("access_token=".length, appLinkData.indexOf("&"))
-
-        if (!accessToken.isNullOrBlank())
-            navigationManager.navigate(NavigationManager.Page.LOGIN, listOf(accessToken))
-        else
-            navigationManager.navigate(NavigationManager.Page.SPLASH)
+        navigationManager.navigate(NavigationManager.Page.LANDING)
     }
 
     override fun setupObserver() {
+        val deepLink = intent.data?.encodedFragment
+        val accessToken = deepLink?.substring("access_token=".length, deepLink.indexOf("&"))
 
+        if (!accessToken.isNullOrBlank()) {
+            intent.data = null
+            navigationManager.navigate(NavigationManager.Page.LOGIN, listOf(accessToken))
+        }
     }
 }

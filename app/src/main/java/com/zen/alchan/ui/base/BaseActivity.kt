@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), ViewContract {
 
-    protected val viewModel by viewModel<BaseActivityViewModel>()
+    private val viewModel by viewModel<BaseActivityViewModel>()
     protected val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {

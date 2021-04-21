@@ -21,6 +21,7 @@ import com.zen.alchan.data.repository.DefaultContentRepository
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.home.HomeViewModel
+import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.login.LoginViewModel
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
@@ -32,7 +33,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 class ALchanApplication : Application() {
@@ -68,6 +68,7 @@ class ALchanApplication : Application() {
         viewModel { BaseActivityViewModel() }
 
         viewModel { SplashViewModel(get()) }
+        viewModel { LandingViewModel() }
         viewModel { LoginViewModel(get()) }
 
         viewModel { SharedMainViewModel() }
