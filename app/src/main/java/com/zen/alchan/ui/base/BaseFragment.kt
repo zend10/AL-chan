@@ -15,6 +15,14 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     private val rootActivity: RootActivity
         get() = activity as RootActivity
 
+    protected val navigation by lazy {
+        rootActivity.navigationManager
+    }
+
+    protected val dialog by lazy {
+        rootActivity.dialogManager
+    }
+
     protected val disposables = CompositeDisposable()
 
     protected var screenWidth = 0
@@ -69,15 +77,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
         disposables.clear()
     }
 
-    protected fun navigate(page: NavigationManager.Page, params: List<String> = listOf()) {
-        rootActivity.navigationManager.navigate(page, params)
-    }
-
-    protected fun openWebView(url: String) {
-        rootActivity.navigationManager.openWebView(url)
-    }
-
-    protected fun openWebView(url: NavigationManager.Url) {
-        rootActivity.navigationManager.openWebView(url)
+    protected fun goBack() {
+        rootActivity.onBackPressed()
     }
 }

@@ -6,7 +6,4 @@ import com.zen.alchan.ui.base.NavigationManager
 
 class LandingViewModel : BaseViewModel() {
 
-    fun pressGetStarted() {
-        navigationSubject.onNext(NavigationManager.Page.LOGIN to listOf())
-    }
 }

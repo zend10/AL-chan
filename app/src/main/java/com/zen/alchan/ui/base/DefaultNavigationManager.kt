@@ -19,14 +19,24 @@ class DefaultNavigationManager(
     private val layout: Int
 ) : NavigationManager {
 
-    override fun navigate(page: NavigationManager.Page, params: List<String>) {
-        when (page) {
-            NavigationManager.Page.SPLASH -> navigateToSplash()
-            NavigationManager.Page.LANDING -> navigateToLanding()
-            NavigationManager.Page.LOGIN -> if (params.isNotEmpty()) navigateToLogin(params[0]) else navigateToLogin()
-            NavigationManager.Page.MAIN -> navigateToMain()
-            NavigationManager.Page.BROWSE -> navigateToBrowse()
-        }
+    override fun navigateToSplash() {
+        swapPage(SplashFragment.newInstance(), true)
+    }
+
+    override fun navigateToLanding() {
+        swapPage(LandingFragment.newInstance(), true)
+    }
+
+    override fun navigateToLogin(bearerToken: String?) {
+        swapPage(LoginFragment.newInstance(bearerToken))
+    }
+
+    override fun navigateToMain() {
+        swapPage(MainFragment.newInstance(), true)
+    }
+
+    override fun navigateToBrowse() {
+        swapPage(BrowseFragment.newInstance(), true)
     }
 
     override fun openWebView(url: String) {
@@ -45,12 +55,12 @@ class DefaultNavigationManager(
         )
     }
 
-    private fun swapPage(fragment: Fragment, page: NavigationManager.Page, skipBackStack: Boolean = false) {
+    private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(layout, fragment)
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         if (!skipBackStack)
-            fragmentTransaction.addToBackStack(page.name)
+            fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
     }
 
@@ -58,25 +68,5 @@ class DefaultNavigationManager(
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(context, uri)
-    }
-
-    private fun navigateToSplash() {
-        swapPage(SplashFragment.newInstance(), NavigationManager.Page.SPLASH, true)
-    }
-
-    private fun navigateToLanding() {
-        swapPage(LandingFragment.newInstance(), NavigationManager.Page.LANDING, true)
-    }
-
-    private fun navigateToLogin(bearerToken: String? = null) {
-        swapPage(LoginFragment.newInstance(bearerToken), NavigationManager.Page.LOGIN)
-    }
-
-    private fun navigateToMain() {
-        swapPage(MainFragment.newInstance(), NavigationManager.Page.MAIN, true)
-    }
-
-    private fun navigateToBrowse() {
-        swapPage(BrowseFragment.newInstance(), NavigationManager.Page.BROWSE, true)
     }
 }

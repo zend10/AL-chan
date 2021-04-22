@@ -12,22 +12,10 @@ import io.reactivex.subjects.PublishSubject
 
 class LoginViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
 
-    private val loadingSubject = BehaviorSubject.createDefault(false)
-    private val errorSubject = PublishSubject.create<Int>()
-    private val webUrlSubject = PublishSubject.create<NavigationManager.Url>()
-    private val backNavigationSubject = PublishSubject.create<Unit>()
+    private val loginStatusSubject = PublishSubject.create<Boolean>()
 
-    val loading: Observable<Boolean>
-        get() = loadingSubject
-
-    val error: Observable<Int>
-        get() = errorSubject
-
-    val webUrl: Observable<NavigationManager.Url>
-        get() = webUrlSubject
-
-    val backNavigation: Observable<Unit>
-        get() = backNavigationSubject
+    val loginStatus: Observable<Boolean>
+        get() = loginStatusSubject
 
     fun login(bearerToken: String) {
         loadingSubject.onNext(true)
@@ -39,7 +27,7 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        navigationSubject.onNext(NavigationManager.Page.MAIN to listOf())
+                        loginStatusSubject.onNext(true)
                     },
                     {
                         errorSubject.onNext(it.sendMessage())
@@ -48,24 +36,8 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
         )
     }
 
-    fun pressEnterWithoutLogin() {
+    fun loginAsGuest() {
         authenticationRepository.loginAsGuest()
-        navigationSubject.onNext(NavigationManager.Page.MAIN to listOf())
-    }
-
-    fun pressRegister() {
-        webUrlSubject.onNext(NavigationManager.Url.ANILIST_REGISTER)
-    }
-
-    fun pressLogin() {
-        webUrlSubject.onNext(NavigationManager.Url.ANILIST_LOGIN)
-    }
-
-    fun pressAniListLink() {
-        webUrlSubject.onNext(NavigationManager.Url.ANILIST_WEBSITE)
-    }
-
-    fun pressBack() {
-        backNavigationSubject.onNext(Unit)
+        loginStatusSubject.onNext(true)
     }
 }

@@ -6,6 +6,10 @@ import android.view.WindowInsets
 import androidx.core.view.updatePadding
 import com.zen.alchan.helper.pojo.InitialPadding
 
+fun View.show(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
 fun View.applyTopPaddingInsets() {
     val initialPadding = InitialPadding(paddingTop = paddingTop)
     setOnApplyWindowInsetsListener { view, windowInsets ->

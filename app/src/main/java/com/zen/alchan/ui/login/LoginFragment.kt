@@ -8,6 +8,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.applyTopBottomPaddingInsets
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.libs.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.base.NavigationManager
@@ -23,12 +24,12 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     override fun setupLayout() {
         ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, loginBackgroundImage)
 
-        loginBackIcon.setOnClickListener { viewModel.pressBack() }
+        loginBackIcon.setOnClickListener { goBack() }
 
-        registerButton.setOnClickListener { viewModel.pressRegister() }
-        loginButton.setOnClickListener { viewModel.pressLogin() }
+        registerButton.setOnClickListener { navigation.openWebView(NavigationManager.Url.ANILIST_REGISTER) }
+        loginButton.setOnClickListener { navigation.openWebView(NavigationManager.Url.ANILIST_LOGIN) }
 
-        enterWithoutLoginButton.setOnClickListener { viewModel.pressEnterWithoutLogin() }
+        enterWithoutLoginButton.setOnClickListener { viewModel.loginAsGuest() }
 
         val aniListText = "anilist.co"
         val noticeText= SpannableString(getString(R.string.you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password))
@@ -36,7 +37,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
         val endIndex = startIndex + aniListText.length
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                viewModel.pressAniListLink()
+                navigation.openWebView(NavigationManager.Url.ANILIST_WEBSITE)
             }
         }
         noticeText.setSpan(clickableSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -51,31 +52,20 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     override fun setupObserver() {
         disposables.add(
             viewModel.loading.subscribe {
-                loadingLayout.visibility = if (it) View.VISIBLE else View.GONE
+                loadingLayout.show(it)
             }
         )
 
         disposables.add(
             viewModel.error.subscribe {
-
+                dialog.showToast(it)
             }
         )
 
         disposables.add(
-            viewModel.navigation.subscribe {
-                navigate(it.first, it.second)
-            }
-        )
-
-        disposables.add(
-            viewModel.webUrl.subscribe {
-                openWebView(it)
-            }
-        )
-
-        disposables.add(
-            viewModel.backNavigation.subscribe {
-                requireActivity().onBackPressed()
+            viewModel.loginStatus.subscribe {
+                goBack()
+                navigation.navigateToMain()
             }
         )
 

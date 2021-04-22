@@ -49,11 +49,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         )
 
-        sharedDisposables.add(
-            sharedViewModel.getScrollToTopObservable(NavigationManager.Page.HOME).subscribe {
-                homeRecyclerView.smoothScrollToPosition(0)
-            }
-        )
+//        sharedDisposables.add(
+//            sharedViewModel.getScrollToTopObservable(NavigationManager.Page.HOME).subscribe {
+//                homeRecyclerView.smoothScrollToPosition(0)
+//            }
+//        )
 
         viewModel.getHomeData()
     }

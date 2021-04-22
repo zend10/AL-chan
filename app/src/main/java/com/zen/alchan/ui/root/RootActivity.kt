@@ -11,7 +11,7 @@ class RootActivity : BaseActivity(R.layout.activity_root), ViewContract {
     val dialogManager: DialogManager = DefaultDialogManager(this)
 
     override fun setupLayout() {
-        navigationManager.navigate(NavigationManager.Page.LANDING)
+        navigationManager.navigateToSplash()
     }
 
     override fun setupObserver() {
@@ -20,7 +20,7 @@ class RootActivity : BaseActivity(R.layout.activity_root), ViewContract {
 
         if (!accessToken.isNullOrBlank()) {
             intent.data = null
-            navigationManager.navigate(NavigationManager.Page.LOGIN, listOf(accessToken))
+            navigationManager.navigateToLogin(accessToken)
         }
     }
 }

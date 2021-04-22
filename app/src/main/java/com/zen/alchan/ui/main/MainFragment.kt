@@ -53,7 +53,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         }
 
         mainBottomNavigation.setOnNavigationItemReselectedListener {
-            sharedViewModel.scrollToTop(it.order)
+//            sharedViewModel.scrollToTop(it.order)
         }
     }
 

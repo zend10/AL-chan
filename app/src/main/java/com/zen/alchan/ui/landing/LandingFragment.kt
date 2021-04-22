@@ -15,7 +15,7 @@ class LandingFragment : BaseFragment(R.layout.fragment_landing) {
 
     override fun setupLayout() {
         ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, landingBackgroundImage)
-        getStartedButton.setOnClickListener { viewModel.pressGetStarted() }
+        getStartedButton.setOnClickListener { navigation.navigateToLogin() }
     }
 
     override fun setupInsets() {
@@ -23,11 +23,7 @@ class LandingFragment : BaseFragment(R.layout.fragment_landing) {
     }
 
     override fun setupObserver() {
-        disposables.add(
-            viewModel.navigation.subscribe {
-                navigate(it.first, it.second)
-            }
-        )
+
     }
 
     companion object {

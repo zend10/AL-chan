@@ -15,15 +15,15 @@ import io.reactivex.subjects.PublishSubject
 
 class HomeViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
-    private val errorSubject = PublishSubject.create<Int>()
-    private val loadingSubject = BehaviorSubject.createDefault(false)
+//    private val errorSubject = PublishSubject.create<Int>()
+//    private val loadingSubject = BehaviorSubject.createDefault(false)
     private val homeItemListSubject = BehaviorSubject.createDefault(listOf<HomeItem>())
 
-    val error: Observable<Int>
-        get() = errorSubject
-
-    val loading: Observable<Boolean>
-        get() = loadingSubject
+//    val error: Observable<Int>
+//        get() = errorSubject
+//
+//    val loading: Observable<Boolean>
+//        get() = loadingSubject
 
     val homeItemList: Observable<List<HomeItem>>
         get() = homeItemListSubject

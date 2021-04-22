@@ -21,8 +21,11 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
     override fun setupObserver() {
         disposables.add(
-            viewModel.navigation.subscribe {
-                navigate(it.first, it.second)
+            viewModel.isLoggedIn.subscribe {
+                if (it)
+                    navigation.navigateToMain()
+                else
+                    navigation.navigateToLanding()
             }
         )
 
