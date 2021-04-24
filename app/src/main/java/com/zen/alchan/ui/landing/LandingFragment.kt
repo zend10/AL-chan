@@ -2,9 +2,8 @@ package com.zen.alchan.ui.landing
 
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.applyTopBottomPaddingInsets
-import com.zen.alchan.helper.libs.ImageUtil
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.base.NavigationManager
 import kotlinx.android.synthetic.main.fragment_landing.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

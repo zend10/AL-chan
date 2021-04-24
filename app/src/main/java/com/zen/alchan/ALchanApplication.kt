@@ -6,8 +6,12 @@ import com.zen.alchan.data.datasource.AuthenticationDataSource
 import com.zen.alchan.data.datasource.ContentDataSource
 import com.zen.alchan.data.datasource.DefaultAuthenticationDataSource
 import com.zen.alchan.data.datasource.DefaultContentDataSource
+import com.zen.alchan.data.localstorage.DefaultJsonStorageHandler
 import com.zen.alchan.data.localstorage.DefaultSharedPreferencesHandler
+import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
+import com.zen.alchan.data.manager.ContentManager
+import com.zen.alchan.data.manager.DefaultContentManager
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.manager.DefaultUserManager
 import com.zen.alchan.data.network.apollo.AniListApolloHandler
@@ -49,8 +53,16 @@ class ALchanApplication : Application() {
             )
         }
 
+        single<JsonStorageHandler> {
+            DefaultJsonStorageHandler(
+                this@ALchanApplication,
+                gson
+            )
+        }
+
         // local storage manager
         single<UserManager> { DefaultUserManager(get()) }
+        single<ContentManager> { DefaultContentManager(get()) }
 
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
@@ -62,7 +74,7 @@ class ALchanApplication : Application() {
 
         // repository
         single<AuthenticationRepository> { DefaultAuthenticationRepository(get(), get()) }
-        single<ContentRepository> { DefaultContentRepository(get()) }
+        single<ContentRepository> { DefaultContentRepository(get(), get()) }
 
         // view model
         viewModel { BaseActivityViewModel() }

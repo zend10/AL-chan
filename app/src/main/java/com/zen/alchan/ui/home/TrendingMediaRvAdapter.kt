@@ -10,7 +10,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.data.response.Media
 import com.zen.alchan.helper.extensions.getNumberFormatting
-import com.zen.alchan.helper.libs.ImageUtil
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.ui.common.GenreRvAdapter
 import kotlinx.android.synthetic.main.list_trending_media.view.*

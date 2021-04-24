@@ -33,7 +33,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override fun setupObserver() {
         disposables.add(
             viewModel.error.subscribe {
-
+                dialog.showToast(R.string.app_name)
             }
         )
 
@@ -49,11 +49,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         )
 
-//        sharedDisposables.add(
-//            sharedViewModel.getScrollToTopObservable(NavigationManager.Page.HOME).subscribe {
-//                homeRecyclerView.smoothScrollToPosition(0)
-//            }
-//        )
+        sharedDisposables.add(
+            sharedViewModel.getScrollToTopObservable(SharedMainViewModel.Page.HOME).subscribe {
+                homeRecyclerView.smoothScrollToPosition(0)
+            }
+        )
 
         viewModel.getHomeData()
     }

@@ -1,4 +1,4 @@
-package com.zen.alchan.helper.libs
+package com.zen.alchan.helper.utils
 
 import android.content.Context
 import androidx.appcompat.widget.AppCompatImageView
