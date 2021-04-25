@@ -1,6 +1,9 @@
 package com.zen.alchan.ui.splash
 
+import androidx.lifecycle.viewModelScope
 import com.zen.alchan.data.repository.AuthenticationRepository
+import com.zen.alchan.data.response.User
+import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.base.NavigationManager
 import io.reactivex.Observable
@@ -17,12 +20,31 @@ class SplashViewModel(private val authenticationRepository: AuthenticationReposi
 
     fun checkIsLoggedIn() {
         disposables.add(
-            authenticationRepository.getIsLoggedIn()
+            authenticationRepository.getIsAuthenticated()
+                .zipWith(authenticationRepository.getIsLoggedIn()) { isAuthenticated, isLoggedIn ->
+                    isAuthenticated to isLoggedIn
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    isLoggedInSubject.onNext(it)
+                    if (it.first)
+                        loadViewerData()
+                    else
+                        isLoggedInSubject.onNext(it.second)
                 }
         )
+    }
+
+    private fun loadViewerData() {
+        disposables.add(
+            authenticationRepository.viewer
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    isLoggedInSubject.onNext(it != User.EMPTY_USER)
+                }
+        )
+
+        authenticationRepository.getViewerData()
     }
 }

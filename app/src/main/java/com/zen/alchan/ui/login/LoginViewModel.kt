@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.login
 
 import com.zen.alchan.data.repository.AuthenticationRepository
+import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.base.NavigationManager
@@ -22,22 +23,22 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
         authenticationRepository.saveBearerToken(bearerToken)
 
         disposables.add(
-            authenticationRepository.getViewerQuery()
+            authenticationRepository.viewer
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
+                .subscribe{
+                    if (it != User.EMPTY_USER)
                         loginStatusSubject.onNext(true)
-                    },
-                    {
-                        errorSubject.onNext(it.sendMessage())
-                    }
-                )
+                    else
+                        errorSubject.onNext(0)
+                }
         )
+
+        authenticationRepository.getViewerData()
     }
 
     fun loginAsGuest() {
-        authenticationRepository.loginAsGuest()
+        authenticationRepository.loginAsGuest(true)
         loginStatusSubject.onNext(true)
     }
 }

@@ -34,7 +34,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         )
 
         mainViewPager.isUserInputEnabled = false
-        mainViewPager.offscreenPageLimit = fragmentList.size
+//        mainViewPager.offscreenPageLimit = fragmentList.size
         mainViewPager.adapter = MainViewPagerAdapter(this, fragmentList)
 
         mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -43,9 +43,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
                 mainBottomNavigation.menu[position].isChecked = true
             }
         })
-
-        mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = false
-        mainBottomNavigation.menu.findItem(R.id.menuManga).isVisible = false
 
         mainBottomNavigation.setOnNavigationItemSelectedListener {
             mainViewPager.setCurrentItem(it.order, true)
@@ -58,6 +55,14 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     }
 
     override fun setupObserver() {
+        disposables.add(
+            viewModel.isAuthenticated.subscribe {
+                mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = it
+                mainBottomNavigation.menu.findItem(R.id.menuManga).isVisible = it
+            }
+        )
+
+        viewModel.checkIsAuthenticated()
         viewModel.getViewerData()
     }
 

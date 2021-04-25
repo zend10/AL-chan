@@ -2,5 +2,65 @@ query ViewerQuery {
   Viewer {
     id
     name
+    about(asHtml: false)
+    avatar {
+      large
+      medium
+    }
+    bannerImage
+    options {
+      titleLanguage
+      displayAdultContent
+      airingNotifications
+      notificationOptions {
+        type
+        enabled
+      }
+      timezone
+      activityMergeTime
+    }
+    mediaListOptions {
+      scoreFormat
+      rowOrder
+      animeList {
+        sectionOrder
+        splitCompletedSectionByFormat
+        customLists
+        advancedScoring
+        advancedScoringEnabled
+      }
+      mangaList {
+        sectionOrder
+        splitCompletedSectionByFormat
+        customLists
+        advancedScoring
+        advancedScoringEnabled
+      }
+    }
+    statistics {
+      anime {
+        count
+        meanScore
+        standardDeviation
+        minutesWatched
+        episodesWatched
+        chaptersRead
+        volumesRead
+      }
+      manga {
+        count
+        meanScore
+        standardDeviation
+        minutesWatched
+        episodesWatched
+        chaptersRead
+        volumesRead
+      }
+    }
+    unreadNotificationCount
+    donatorTier
+    donatorBadge
+    moderatorStatus
+    siteUrl
   }
 }

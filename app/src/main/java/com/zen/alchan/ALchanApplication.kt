@@ -61,7 +61,7 @@ class ALchanApplication : Application() {
         }
 
         // local storage manager
-        single<UserManager> { DefaultUserManager(get()) }
+        single<UserManager> { DefaultUserManager(get(), get()) }
         single<ContentManager> { DefaultContentManager(get()) }
 
         // network
@@ -80,14 +80,14 @@ class ALchanApplication : Application() {
         viewModel { BaseActivityViewModel() }
 
         viewModel { SplashViewModel(get()) }
-        viewModel { LandingViewModel() }
+        viewModel { LandingViewModel(get()) }
         viewModel { LoginViewModel(get()) }
 
         viewModel { SharedMainViewModel() }
         viewModel { MainViewModel(get()) }
         viewModel { HomeViewModel(get()) }
         viewModel { MediaListViewModel() }
-        viewModel { ProfileViewModel() }
+        viewModel { ProfileViewModel(get()) }
     }
 
     override fun onCreate() {

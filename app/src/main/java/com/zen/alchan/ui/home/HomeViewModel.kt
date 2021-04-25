@@ -21,8 +21,6 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
     val homeItemList: Observable<List<HomeItem>>
         get() = homeItemListSubject
 
-    private var state = State.INIT
-
     fun getHomeData(isReloading: Boolean = false) {
         if (!isReloading && state == State.LOADED) return
 
@@ -67,12 +65,5 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
                     }
                 )
         )
-    }
-
-    private enum class State {
-        INIT,
-        LOADING,
-        LOADED,
-        ERROR
     }
 }

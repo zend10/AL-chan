@@ -11,8 +11,5 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler) : Conte
     override fun getHomeQuery(): Observable<Response<HomeDataQuery.Data>> {
         val query = HomeDataQuery()
         return apolloHandler.apolloClient.rxQuery(query)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .onErrorResumeNext(::handleApolloError)
     }
 }
