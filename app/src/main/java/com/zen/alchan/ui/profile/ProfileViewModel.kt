@@ -12,9 +12,13 @@ import io.reactivex.subjects.PublishSubject
 class ProfileViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
 
     private val userDataSubject = BehaviorSubject.createDefault(User.EMPTY_USER)
+    private val currentPageSubject = BehaviorSubject.createDefault(SharedProfileViewModel.Page.BIO)
 
     val userData: Observable<User>
         get() = userDataSubject
+
+    val currentPage: Observable<SharedProfileViewModel.Page>
+        get() = currentPageSubject
 
     var userId = 0
 
@@ -51,5 +55,9 @@ class ProfileViewModel(private val authenticationRepository: AuthenticationRepos
 
     fun logoutAsGuest() {
         authenticationRepository.loginAsGuest(false)
+    }
+
+    fun setCurrentPage(page: SharedProfileViewModel.Page) {
+        currentPageSubject.onNext(page)
     }
 }

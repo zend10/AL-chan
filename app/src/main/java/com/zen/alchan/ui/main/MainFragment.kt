@@ -25,7 +25,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     override fun setupLayout() {
-        val fragmentList = listOf(
+        val fragments = listOf(
             HomeFragment.newInstance(),
             SocialFragment.newInstance(),
             MediaListFragment.newInstance(MediaType.ANIME),
@@ -34,8 +34,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         )
 
         mainViewPager.isUserInputEnabled = false
-//        mainViewPager.offscreenPageLimit = fragmentList.size
-        mainViewPager.adapter = MainViewPagerAdapter(this, fragmentList)
+        mainViewPager.adapter = MainViewPagerAdapter(this, fragments)
 
         mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

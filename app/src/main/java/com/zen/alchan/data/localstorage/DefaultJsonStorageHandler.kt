@@ -18,7 +18,7 @@ class DefaultJsonStorageHandler(
         set(value) { setData(HOME_DATA, gson.toJson(value)) }
 
     override var viewerData: SaveItem<User>?
-        get() = gson.fromJson(getData(VIEWER_DATA), getType<SaveItem<HomeData>>())
+        get() = gson.fromJson(getData(VIEWER_DATA), getType<SaveItem<User>>())
         set(value) { setData(VIEWER_DATA, gson.toJson(value)) }
 
     companion object {

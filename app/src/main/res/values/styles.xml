@@ -98,4 +98,9 @@
         <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
         <item name="android:letterSpacing">0</item>
     </style>
+
+    <style name="PopupTheme" parent="Theme.AppCompat.DayNight">
+        <item name="android:colorBackground">?themeBackgroundColor</item>
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
 </resources>

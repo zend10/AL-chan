@@ -6,45 +6,417 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.profile.ProfileFragment">
 
-    <TextView
-        android:id="@+id/usernameText"
-        style="?themeRegularFont"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--        android:id="@+id/profileSwipeRefresh"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-    <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/notLoggedInLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="@dimen/marginPageBig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/profileAppBarLayout"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:text="@string/you_are_currently_not_logged_in_you_need_to_login_to_use_all_the_features_available"
-                style="?themeRegularFont"
-                android:textAlignment="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/profileCollapsingToolbar"
+                    app:toolbarId="@id/profileToolbar"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:contentScrim="@android:color/transparent"
+                    app:scrimAnimationDuration="200"
+                    android:backgroundTint="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/goToLoginButton"
-                android:text="@string/go_to_login_page"
-                style="?themePrimaryBorderButton"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                        <RelativeLayout
+                            android:layout_alignParentTop="true"
+                            android:layout_alignBottom="@id/profileBannerContentLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/profileBannerImage"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+
+                            <View
+                                android:background="@drawable/background_gradient_three"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+
+                        </RelativeLayout>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/profileBannerContentLayout"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/marginFar"
+                            android:gravity="center_horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <View
+                                android:id="@+id/profileHeaderGap"
+                                android:layout_width="match_parent"
+                                android:layout_height="?actionBarSize"/>
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/profileAvatarImage"
+                                android:layout_marginTop="@dimen/marginFar"
+                                android:adjustViewBounds="true"
+                                android:layout_width="@dimen/imageCircleSize"
+                                android:layout_height="@dimen/imageCircleSize"/>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/profileUsernameText"
+                                style="?themeTitleFont"
+                                android:layout_marginTop="@dimen/marginNormal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:visibility="gone"
+                                android:id="@+id/profileBadgeLayout"
+                                android:layout_marginTop="@dimen/marginNormal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:visibility="gone"
+                                    android:id="@+id/profileModCard"
+                                    app:cardElevation="0dp"
+                                    app:contentPadding="@dimen/marginClose"
+                                    app:cardBackgroundColor="?themeSecondaryColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/profileModText"
+                                        style="?themeSmallFont"
+                                        android:textColor="?themeBackgroundColor"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <View
+                                    android:visibility="gone"
+                                    android:id="@+id/profileBadgeSpace"
+                                    android:layout_width="@dimen/marginNormal"
+                                    android:layout_height="0dp"/>
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:visibility="gone"
+                                    android:id="@+id/profileDonatorCard"
+                                    app:cardElevation="0dp"
+                                    app:contentPadding="@dimen/marginClose"
+                                    app:cardBackgroundColor="?themeSecondaryColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/profileDonatorText"
+                                        style="?themeSmallFont"
+                                        android:textColor="?themeBackgroundColor"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:visibility="gone"
+                                android:id="@+id/profileFollowButton"
+                                style="?themePrimaryButton"
+                                android:text="@string/follow"
+                                android:layout_marginTop="@dimen/marginNormal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:id="@+id/profileNumberLayout"
+                                android:layout_marginTop="@dimen/marginNormal"
+                                android:layout_marginHorizontal="@dimen/marginPageBig"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/profileAnimeCountLayout"
+                                    android:foreground="?selectableItemBackground"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/marginNormal"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/profileAnimeCountText"
+                                        style="?themeAppNameFont"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="?themeSmallClickableFont"
+                                        android:text="@string/anime"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:layout_marginTop="@dimen/marginClose"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/profileMangaCountLayout"
+                                    android:foreground="?selectableItemBackground"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/marginNormal"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/profileMangaCountText"
+                                        style="?themeAppNameFont"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="?themeSmallClickableFont"
+                                        android:text="@string/manga"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:layout_marginTop="@dimen/marginClose"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/profileFollowingCountLayout"
+                                    android:foreground="?selectableItemBackground"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/marginNormal"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/profileFollowingCountText"
+                                        style="?themeAppNameFont"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="?themeSmallClickableFont"
+                                        android:text="@string/following"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:layout_marginTop="@dimen/marginClose"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/profileFollowersCountLayout"
+                                    android:foreground="?selectableItemBackground"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/marginNormal"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/profileFollowersCountText"
+                                        style="?themeAppNameFont"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="?themeSmallClickableFont"
+                                        android:text="@string/followers"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:layout_marginTop="@dimen/marginClose"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/profileToolbar"
+                        app:layout_collapseMode="pin"
+                        android:elevation="0dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:minHeight="@dimen/toolbarBigHeight"
+                        app:popupTheme="@style/PopupTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                app:cardBackgroundColor="?themeCardColor"
+                android:layout_marginHorizontal="@dimen/marginPageBig"
+                android:layout_marginBottom="@dimen/marginPageBig"
+                app:layout_anchor="@id/profileCollapsingToolbar"
+                app:layout_anchorGravity="bottom"
+                app:cardElevation="@dimen/elevationNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/profileBioLayout"
+                        android:foreground="?selectableItemBackground"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/profileBioIcon"
+                            app:srcCompat="@drawable/ic_contacts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/profileBioText"
+                            android:text="@string/bio"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/profileFavoritesLayout"
+                        android:foreground="?selectableItemBackground"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/profileFavoritesIcon"
+                            app:srcCompat="@drawable/ic_heart_outline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/profileFavoritesText"
+                            android:text="@string/favorites"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/profileStatsLayout"
+                        android:foreground="?selectableItemBackground"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/profileStatsIcon"
+                            app:srcCompat="@drawable/ic_bar_chart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/profileStatsText"
+                            android:text="@string/stats"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/profileActivitiesLayout"
+                        android:foreground="?selectableItemBackground"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/profileActivitiesIcon"
+                            app:srcCompat="@drawable/ic_baseline_chat_bubble"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/profileActivitiesText"
+                            android:text="@string/activities"
+                            style="?themeSmallFont"
+                            android:layout_marginTop="@dimen/marginClose"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/profileViewPager"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
+    <include layout="@layout/layout_not_logged_in"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -28,4 +28,13 @@
     <string name="please_wait">Please Wait</string>
     <string name="you_are_currently_not_logged_in_you_need_to_login_to_use_all_the_features_available">You are currently not logged in. You need to login to use all the features available.</string>
     <string name="go_to_login_page">Go to Login Page</string>
+    <string name="follow">Follow</string>
+    <string name="mutual">Mutual</string>
+    <string name="follows_you">Follows You</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="bio">Bio</string>
+    <string name="favorites">Favorites</string>
+    <string name="stats">Stats</string>
+    <string name="activities">Activities</string>
 </resources>
