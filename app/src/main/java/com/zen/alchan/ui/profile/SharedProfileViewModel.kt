@@ -139,7 +139,7 @@ class SharedProfileViewModel(
         var startYear = ""
         var completedSeriesPercentage = ""
 
-        val totalCount = statistics.count.toDouble()
+        val totalCount = statistics.statuses.filter { it.status != MediaListStatus.PLANNING }.sumBy { it.count }.toDouble()
 
         if (statistics.genres.isNotEmpty()) {
             val genreWeightedScores = statistics.genres.map {
@@ -188,12 +188,8 @@ class SharedProfileViewModel(
                 it.status == MediaListStatus.COMPLETED || it.status == MediaListStatus.REPEATING
             }.sumBy { it.count }
 
-            val othersTotal = statistics.statuses.filter {
-                it.status != MediaListStatus.PLANNING
-            }.sumBy { it.count }
-
-            if (othersTotal != 0) {
-                val completedPercentage = completedTotal.toDouble() / othersTotal.toDouble()
+            if (totalCount != 0.0) {
+                val completedPercentage = completedTotal.toDouble() / totalCount
                 completedSeriesPercentage = (completedPercentage * 100).formatTwoDecimal() + "%"
             }
         }
