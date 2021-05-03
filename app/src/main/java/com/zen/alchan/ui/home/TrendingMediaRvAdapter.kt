@@ -8,7 +8,7 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
-import com.zen.alchan.data.response.Media
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter

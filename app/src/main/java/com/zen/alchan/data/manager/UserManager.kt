@@ -1,6 +1,7 @@
 package com.zen.alchan.data.manager
 
-import com.zen.alchan.data.response.User
+import com.zen.alchan.data.response.ProfileData
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.pojo.SaveItem
 
 interface UserManager {
@@ -8,4 +9,5 @@ interface UserManager {
     val isLoggedIn: Boolean
     var isLoggedInAsGuest: Boolean
     var viewerData: SaveItem<User>?
+    var profileData: SaveItem<ProfileData>?
 }

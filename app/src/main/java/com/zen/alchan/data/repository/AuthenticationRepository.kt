@@ -1,7 +1,6 @@
 package com.zen.alchan.data.repository
 
-import com.zen.alchan.data.response.User
-import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.data.response.anilist.User
 import io.reactivex.Observable
 
 interface AuthenticationRepository {

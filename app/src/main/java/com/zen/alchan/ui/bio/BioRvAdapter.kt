@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.BioItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import kotlinx.android.synthetic.main.layout_bio_about.view.*
 
 class BioRvAdapter(
     private val context: Context,
@@ -20,13 +21,13 @@ class BioRvAdapter(
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_bio_affinity, parent, false)
                 return AffinityViewHolder(view)
             }
-            BioItem.VIEW_TYPE_BIO -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_bio_description, parent, false)
-                return BioViewHolder(view)
+            BioItem.VIEW_TYPE_ABOUT -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_bio_about, parent, false)
+                return AboutViewHolder(view)
             }
             else -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_bio_description, parent, false)
-                return BioViewHolder(view)
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_bio_about, parent, false)
+                return AboutViewHolder(view)
             }
         }
     }
@@ -34,7 +35,7 @@ class BioRvAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is AffinityViewHolder -> holder.bind(list[position].animeAffinity, list[position].mangaAffinity)
-            is BioViewHolder -> holder.bind(list[position].bioText)
+            is AboutViewHolder -> holder.bind(list[position].bioText)
         }
     }
 
@@ -48,9 +49,9 @@ class BioRvAdapter(
         }
     }
 
-    class BioViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(bioText: String?) {
-
+    class AboutViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(bioText: String) {
+            view.bioAboutText.text = bioText
         }
     }
 }

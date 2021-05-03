@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.pojo
 
-import com.zen.alchan.data.response.Media
-import com.zen.alchan.data.response.Review
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Review
 
 data class HomeItem(
     val media: List<Media> = listOf(),

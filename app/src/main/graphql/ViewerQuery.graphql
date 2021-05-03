@@ -37,26 +37,6 @@ query ViewerQuery {
         advancedScoringEnabled
       }
     }
-    statistics {
-      anime {
-        count
-        meanScore
-        standardDeviation
-        minutesWatched
-        episodesWatched
-        chaptersRead
-        volumesRead
-      }
-      manga {
-        count
-        meanScore
-        standardDeviation
-        minutesWatched
-        episodesWatched
-        chaptersRead
-        volumesRead
-      }
-    }
     unreadNotificationCount
     donatorTier
     donatorBadge

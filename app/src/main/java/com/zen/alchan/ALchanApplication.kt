@@ -2,10 +2,7 @@ package com.zen.alchan
 
 import android.app.Application
 import com.google.gson.GsonBuilder
-import com.zen.alchan.data.datasource.AuthenticationDataSource
-import com.zen.alchan.data.datasource.ContentDataSource
-import com.zen.alchan.data.datasource.DefaultAuthenticationDataSource
-import com.zen.alchan.data.datasource.DefaultContentDataSource
+import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.DefaultJsonStorageHandler
 import com.zen.alchan.data.localstorage.DefaultSharedPreferencesHandler
 import com.zen.alchan.data.localstorage.JsonStorageHandler
@@ -18,12 +15,10 @@ import com.zen.alchan.data.network.apollo.AniListApolloHandler
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.network.header.AniListHeaderInterceptorImpl
 import com.zen.alchan.data.network.header.HeaderInterceptor
-import com.zen.alchan.data.repository.AuthenticationRepository
-import com.zen.alchan.data.repository.ContentRepository
-import com.zen.alchan.data.repository.DefaultAuthenticationRepository
-import com.zen.alchan.data.repository.DefaultContentRepository
+import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
+import com.zen.alchan.ui.bio.BioViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.login.LoginViewModel
@@ -31,6 +26,7 @@ import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
+import com.zen.alchan.ui.profile.SharedProfileViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
 import org.koin.android.ext.koin.androidContext
@@ -71,10 +67,12 @@ class ALchanApplication : Application() {
         // data source
         single<AuthenticationDataSource> { DefaultAuthenticationDataSource(get()) }
         single<ContentDataSource> { DefaultContentDataSource(get()) }
+        single<UserDataSource> { DefaultUserDataSource(get()) }
 
         // repository
         single<AuthenticationRepository> { DefaultAuthenticationRepository(get(), get()) }
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
+        single<UserRepository> { DefaultUserRepository(get(), get()) }
 
         // view model
         viewModel { BaseActivityViewModel() }
@@ -85,9 +83,14 @@ class ALchanApplication : Application() {
 
         viewModel { SharedMainViewModel() }
         viewModel { MainViewModel(get()) }
+
         viewModel { HomeViewModel(get()) }
+
         viewModel { MediaListViewModel() }
+
         viewModel { ProfileViewModel(get()) }
+        viewModel { SharedProfileViewModel(get(), get()) }
+        viewModel { BioViewModel() }
     }
 
     override fun onCreate() {

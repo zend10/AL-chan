@@ -36,7 +36,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            viewModel.userId = it.getInt(USER_ID)
+            sharedViewModel.userId = it.getInt(USER_ID)
         }
     }
 
@@ -120,22 +120,44 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
         )
 
         disposables.add(
-            viewModel.userData.subscribe {
-                profileUsernameText.text = it.name
-                ImageUtil.loadImage(requireContext(), it.avatar.large, profileAvatarImage)
-                ImageUtil.loadImage(requireContext(), it.bannerImage, profileBannerImage)
-                profileAnimeCountText.text = it.statistics.anime.count.toString()
-                profileMangaCountText.text = it.statistics.manga.count.toString()
-            }
-        )
-
-        disposables.add(
             viewModel.currentPage.subscribe {
                 profileViewPager.setCurrentItem(it.ordinal, true)
             }
         )
 
-        viewModel.checkIsAuthenticated()
+        disposables.add(
+            sharedViewModel.userData.subscribe {
+                profileUsernameText.text = it.name
+                ImageUtil.loadImage(requireContext(), it.avatar.large, profileAvatarImage)
+                ImageUtil.loadImage(requireContext(), it.bannerImage, profileBannerImage)
+            }
+        )
+
+        disposables.add(
+            sharedViewModel.animeCount.subscribe {
+                profileAnimeCountText.text = it.toString()
+            }
+        )
+
+        disposables.add(
+            sharedViewModel.mangaCount.subscribe {
+                profileMangaCountText.text = it.toString()
+            }
+        )
+
+        disposables.add(
+            sharedViewModel.followingCount.subscribe {
+                profileFollowingCountText.text = it.toString()
+            }
+        )
+
+        disposables.add(
+            sharedViewModel.followersCount.subscribe {
+                profileFollowersCountText.text = it.toString()
+            }
+        )
+
+        sharedViewModel.checkIsAuthenticated()
     }
 
     companion object {

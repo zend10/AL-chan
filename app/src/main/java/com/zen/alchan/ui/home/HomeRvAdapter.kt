@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.data.response.Media
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.layout_home_header.view.*
 import kotlinx.android.synthetic.main.layout_home_menu.view.*
 import kotlinx.android.synthetic.main.layout_home_trending.view.*
-import type.MediaType
-import java.util.*
 
 class HomeRvAdapter(
     private val context: Context,

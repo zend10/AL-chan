@@ -1,14 +1,11 @@
 package com.zen.alchan.ui.login
 
 import com.zen.alchan.data.repository.AuthenticationRepository
-import com.zen.alchan.data.response.User
-import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.ui.base.BaseViewModel
-import com.zen.alchan.ui.base.NavigationManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 class LoginViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {

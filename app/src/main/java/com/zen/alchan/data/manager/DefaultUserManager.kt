@@ -2,9 +2,9 @@ package com.zen.alchan.data.manager
 
 import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
-import com.zen.alchan.data.response.User
+import com.zen.alchan.data.response.ProfileData
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.pojo.SaveItem
-import io.reactivex.Observable
 
 class DefaultUserManager(
     private val sharedPreferencesManager: SharedPreferencesHandler,
@@ -25,4 +25,8 @@ class DefaultUserManager(
     override var viewerData: SaveItem<User>?
         get() = jsonStorageHandler.viewerData
         set(value) { jsonStorageHandler.viewerData = value }
+
+    override var profileData: SaveItem<ProfileData>?
+        get() = jsonStorageHandler.profileData
+        set(value) { jsonStorageHandler.profileData = value }
 }

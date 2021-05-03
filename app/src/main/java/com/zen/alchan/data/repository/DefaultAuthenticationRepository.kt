@@ -1,13 +1,10 @@
 package com.zen.alchan.data.repository
 
-import android.annotation.SuppressLint
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.AuthenticationDataSource
 import com.zen.alchan.data.manager.UserManager
-import com.zen.alchan.data.response.User
-import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.pojo.SaveItem
-import com.zen.alchan.helper.utils.StorageException
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject

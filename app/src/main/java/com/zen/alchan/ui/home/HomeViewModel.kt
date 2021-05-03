@@ -1,9 +1,6 @@
 package com.zen.alchan.ui.home
 
-import com.zen.alchan.data.response.Media
-import com.zen.alchan.data.response.Review
 import com.zen.alchan.data.repository.ContentRepository
-import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.helper.pojo.HomeItem
@@ -12,7 +9,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 
 class HomeViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 

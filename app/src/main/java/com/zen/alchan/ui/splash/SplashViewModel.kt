@@ -1,11 +1,8 @@
 package com.zen.alchan.ui.splash
 
-import androidx.lifecycle.viewModelScope
 import com.zen.alchan.data.repository.AuthenticationRepository
-import com.zen.alchan.data.response.User
-import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.ui.base.BaseViewModel
-import com.zen.alchan.ui.base.NavigationManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
