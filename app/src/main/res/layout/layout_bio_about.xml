@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?themeCardColor"
+    app:contentPadding="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginPageBig"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.textview.MaterialTextView
@@ -10,4 +13,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-</FrameLayout>
+</com.google.android.material.card.MaterialCardView>

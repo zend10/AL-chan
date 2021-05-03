@@ -37,4 +37,14 @@
     <string name="favorites">Favorites</string>
     <string name="stats">Stats</string>
     <string name="activities">Activities</string>
+    <string name="anime_tendencies">Anime Tendencies</string>
+    <string name="manga_tendencies">Manga Tendencies</string>
+    <string name="seems_to_love_x">Seems to love %1$s</string>
+    <string name="seems_to_hate_x">Seems to hate %1$s</string>
+    <string name="tends_to_like_x">Tends to like %1$s</string>
+    <string name="love_x_series">Love %1$s series</string>
+    <string name="first_recorded_watching_anime_in_x">First recorded watching Anime in %1$s</string>
+    <string name="first_recorded_reading_manga_in_x">First recorded reading Manga in %1$s</string>
+    <string name="ends_up_completing_x_of_anime_started">Ends up completing %1$s of Anime started</string>
+    <string name="ends_up_completing_x_of_manga_started">Ends up completing %1$s of Manga started</string>
 </resources>

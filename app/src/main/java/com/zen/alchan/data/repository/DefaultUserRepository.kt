@@ -4,6 +4,7 @@ import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.ProfileData
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.SaveItem
@@ -11,9 +12,19 @@ import com.zen.alchan.helper.utils.StorageException
 import io.reactivex.Observable
 import type.UserStatisticsSort
 
-class DefaultUserRepository(private val userDataSource: UserDataSource, private val userManager: UserManager) : UserRepository {
+class DefaultUserRepository(
+    private val userDataSource: UserDataSource,
+    private val userManager: UserManager
+) : UserRepository {
+
+    private val viewer: User?
+        get() = userManager.viewerData?.data
 
     override fun getProfileData(userId: Int, sort: List<UserStatisticsSort>, source: Source?): Observable<ProfileData> {
+        if (viewer?.id != userId) {
+            return getProfileDataFromNetwork(userId, sort)
+        }
+
         return when (source) {
             Source.NETWORK -> getProfileDataFromNetwork(userId, sort)
             Source.CACHE -> getProfileDataFromCache()
@@ -31,7 +42,10 @@ class DefaultUserRepository(private val userDataSource: UserDataSource, private 
     private fun getProfileDataFromNetwork(userId: Int, sort: List<UserStatisticsSort>): Observable<ProfileData> {
         return userDataSource.getProfileQuery(userId, sort).map {
             val newProfileData = it.data?.convert() ?: ProfileData()
-            userManager.profileData = SaveItem(newProfileData)
+
+            if (viewer?.id == newProfileData.user.id)
+                userManager.profileData = SaveItem(newProfileData)
+
             newProfileData
         }
     }

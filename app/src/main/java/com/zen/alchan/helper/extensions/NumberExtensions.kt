@@ -10,3 +10,7 @@ fun Int.getNumberFormatting(): String {
 fun Long.moreThanADay(): Boolean {
     return TimeUtil.getCurrentTimeInMillis() > this + 24 * 60 * 60 * 1000
 }
+
+fun Double.formatTwoDecimal(): String {
+    return String.format("%.2f", this)
+}
