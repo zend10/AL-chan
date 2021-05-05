@@ -18,6 +18,7 @@ import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.BioItem
 import com.zen.alchan.helper.pojo.Tendency
+import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.layout_bio_about.view.*
 import kotlinx.android.synthetic.main.layout_bio_tendency.view.*
@@ -52,7 +53,7 @@ class BioRvAdapter(
         val item = list[position]
         when (holder) {
             is AffinityViewHolder -> holder.bind(item.animeAffinity, item.mangaAffinity)
-            is AboutViewHolder -> holder.bind(item.bioText)
+            is AboutViewHolder -> holder.bind(context, item.bioText)
             is TendencyViewHolder -> holder.bind(context, item.animeTendency, item.mangaTendency)
         }
     }
@@ -68,8 +69,8 @@ class BioRvAdapter(
     }
 
     class AboutViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(bioText: String) {
-            view.bioAboutText.text = bioText
+        fun bind(context: Context, bioText: String) {
+            MarkdownUtil.applyMarkdown(context, view.bioAboutText, bioText)
         }
     }
 
