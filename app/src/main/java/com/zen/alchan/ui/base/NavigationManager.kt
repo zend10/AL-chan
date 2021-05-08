@@ -10,6 +10,10 @@ interface NavigationManager {
     fun navigateToMain()
     fun navigateToBrowse()
 
+    fun navigateToActivities()
+    fun navigateToNotifications()
+    fun navigateToSettings()
+
     fun openWebView(url: String)
     fun openWebView(url: Url)
 

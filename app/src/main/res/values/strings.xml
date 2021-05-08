@@ -47,4 +47,10 @@
     <string name="first_recorded_reading_manga_in_x">First recorded reading Manga in %1$s</string>
     <string name="ends_up_completing_x_of_anime_started">Ends up completing %1$s of Anime started</string>
     <string name="ends_up_completing_x_of_manga_started">Ends up completing %1$s of Manga started</string>
+    <string name="notifications">Notifications</string>
+    <string name="settings">Settings</string>
+    <string name="view_on_anilist">View on AniList</string>
+    <string name="share_profile">Share Profile</string>
+    <string name="copy_link">Copy Link</string>
+    <string name="add_as_best_friend">Add as Best Friend</string>
 </resources>

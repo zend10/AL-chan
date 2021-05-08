@@ -21,19 +21,30 @@ class BioFragment : BaseFragment(R.layout.fragment_bio) {
     private val sharedViewModel by sharedViewModel<SharedProfileViewModel>()
 
     private val sharedDisposables = CompositeDisposable()
-    private lateinit var bioAdapter: BioRvAdapter
+    private var bioAdapter: BioRvAdapter? = null
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
         bioAdapter = BioRvAdapter(requireContext(), listOf())
         bioRecyclerView.adapter = bioAdapter
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         sharedDisposables.add(
-            sharedViewModel.bioItems.subscribe {
-                bioAdapter.updateData(it)
+            sharedViewModel.profileData.subscribe {
+                viewModel.getBioItems(it)
             }
         )
+
+        disposables.add(
+            viewModel.bioItems.subscribe {
+                bioAdapter?.updateData(it)
+            }
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bioAdapter = null
     }
 
     override fun onDestroy() {

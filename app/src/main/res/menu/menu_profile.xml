@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/itemActivities"
+        android:title="@string/activities"
+        android:icon="@drawable/ic_baseline_chat_bubble"
+        app:showAsAction="always"/>
+    <item android:id="@+id/itemNotifications"
+        android:title="@string/notifications"
+        android:icon="@drawable/ic_notification"
+        android:visible="false"
+        app:showAsAction="always"/>
+    <item android:id="@+id/itemAddAsBestFriend"
+        android:title="@string/add_as_best_friend"
+        android:visible="false"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemSettings"
+        android:title="@string/settings"
+        android:visible="false"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemViewOnAniList"
+        android:title="@string/view_on_anilist"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemShareProfile"
+        android:title="@string/share_profile"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemCopyLink"
+        android:title="@string/copy_link"
+        app:showAsAction="never"/>
+</menu>

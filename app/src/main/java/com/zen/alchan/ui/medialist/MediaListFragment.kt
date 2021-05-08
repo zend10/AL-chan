@@ -26,11 +26,11 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
         }
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
 
     }
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
 
     }
 

@@ -12,16 +12,16 @@ class LandingFragment : BaseFragment(R.layout.fragment_landing) {
 
     private val viewModel by viewModel<LandingViewModel>()
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
         ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, landingBackgroundImage)
         getStartedButton.setOnClickListener { navigation.navigateToLogin() }
     }
 
-    override fun setupInsets() {
+    override fun setUpInsets() {
         landingContentRoot.applyTopBottomPaddingInsets()
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
 
     }
 

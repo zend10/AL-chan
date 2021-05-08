@@ -270,6 +270,7 @@
                         android:backgroundTint="@android:color/transparent"
                         android:minHeight="@dimen/toolbarBigHeight"
                         app:popupTheme="@style/PopupTheme"
+                        app:menu="@menu/menu_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -376,7 +377,7 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/profileActivitiesLayout"
+                        android:id="@+id/profileReviewsLayout"
                         android:foreground="?selectableItemBackground"
                         android:orientation="vertical"
                         android:gravity="center"
@@ -386,14 +387,14 @@
                         android:layout_height="wrap_content">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/profileActivitiesIcon"
-                            app:srcCompat="@drawable/ic_baseline_chat_bubble"
+                            android:id="@+id/profileReviewsIcon"
+                            app:srcCompat="@drawable/ic_inscription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/profileActivitiesText"
-                            android:text="@string/activities"
+                            android:id="@+id/profileReviewsText"
+                            android:text="@string/reviews"
                             style="?themeSmallFont"
                             android:layout_marginTop="@dimen/marginClose"
                             android:maxLines="1"

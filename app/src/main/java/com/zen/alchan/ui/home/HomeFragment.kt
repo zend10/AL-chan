@@ -19,18 +19,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val sharedDisposables = CompositeDisposable()
     private lateinit var homeAdapter: HomeRvAdapter
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
         homeAdapter = HomeRvAdapter(requireContext(), listOf(), screenWidth, getHomeListener())
         homeRecyclerView.adapter = homeAdapter
 
         homeSwipeRefresh.setOnRefreshListener { viewModel.getHomeData(true) }
     }
 
-    override fun setupInsets() {
+    override fun setUpInsets() {
         homeRecyclerView.applyTopPaddingInsets()
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         disposables.add(
             viewModel.error.subscribe {
                 dialog.showToast(R.string.app_name)

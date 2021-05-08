@@ -7,4 +7,8 @@ data class ProfileData(
     val following: Page<User> = Page(),
     val followers: Page<User> = Page(),
     val user: User = User()
-)
+) {
+    companion object {
+        val EMPTY_PROFILE_DATA = ProfileData()
+    }
+}

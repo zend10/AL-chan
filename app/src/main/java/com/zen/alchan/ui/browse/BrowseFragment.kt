@@ -31,11 +31,11 @@ class BrowseFragment : BaseFragment(R.layout.fragment_browse) {
         }
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
 
     }
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
 
     }
 

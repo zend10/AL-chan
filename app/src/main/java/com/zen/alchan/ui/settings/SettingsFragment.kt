@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.social
+package com.zen.alchan.ui.settings
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,19 +8,18 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.ui.base.BaseFragment
 
-
-class SocialFragment : BaseFragment(R.layout.fragment_social) {
-
-    override fun setUpObserver() {
-
-    }
+class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
     override fun setUpLayout() {
 
     }
 
+    override fun setUpObserver() {
+
+    }
+
     companion object {
         @JvmStatic
-        fun newInstance() = SocialFragment()
+        fun newInstance() = SettingsFragment()
     }
 }

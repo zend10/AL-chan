@@ -10,11 +10,11 @@ class RootActivity : BaseActivity(R.layout.activity_root), ViewContract {
     val navigationManager: NavigationManager = DefaultNavigationManager(this, supportFragmentManager, R.id.rootLayout)
     val dialogManager: DialogManager = DefaultDialogManager(this)
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
         navigationManager.navigateToSplash()
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         val deepLink = intent.data?.encodedFragment
         val accessToken = deepLink?.substring("access_token=".length, deepLink.indexOf("&"))
 

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract {
 
@@ -42,23 +41,23 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         screenWidth = displayMetrics.widthPixels
 
-        setupLayout()
+        setUpLayout()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setupInsets()
+        setUpInsets()
     }
 
     override fun onStart() {
         super.onStart()
-        setupObserver()
+        setUpObserver()
     }
 
     override fun onResume() {
         super.onResume()
         if (disposables.isDisposed) {
-            setupObserver()
+            setUpObserver()
         }
     }
 

@@ -21,7 +21,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
     private val viewModel by viewModel<LoginViewModel>()
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
         ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, loginBackgroundImage)
 
         loginBackIcon.setOnClickListener { goBack() }
@@ -45,11 +45,11 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
         loginNoticeText.text = noticeText
     }
 
-    override fun setupInsets() {
+    override fun setUpInsets() {
         loginContentRoot.applyTopBottomPaddingInsets()
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         disposables.add(
             viewModel.loading.subscribe {
                 loadingLayout.show(it)

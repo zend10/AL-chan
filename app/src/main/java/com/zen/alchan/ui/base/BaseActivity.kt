@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.changeStatusBarColor
-import com.zen.alchan.ui.main.SharedMainViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,18 +54,18 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
             }
         }
 
-        setupLayout()
+        setUpLayout()
     }
 
     override fun onStart() {
         super.onStart()
-        setupObserver()
+        setUpObserver()
     }
 
     override fun onResume() {
         super.onResume()
         if (disposables.isDisposed) {
-            setupObserver()
+            setUpObserver()
         }
     }
 

@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.browse.BrowseFragment
 import com.zen.alchan.ui.landing.LandingFragment
 import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
+import com.zen.alchan.ui.settings.SettingsFragment
 import com.zen.alchan.ui.splash.SplashFragment
 
 class DefaultNavigationManager(
@@ -36,7 +38,19 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToBrowse() {
-        swapPage(BrowseFragment.newInstance(), true)
+        swapPage(BrowseFragment.newInstance())
+    }
+
+    override fun navigateToActivities() {
+        swapPage(ActivityFragment.newInstance())
+    }
+
+    override fun navigateToNotifications() {
+
+    }
+
+    override fun navigateToSettings() {
+        swapPage(SettingsFragment.newInstance())
     }
 
     override fun openWebView(url: String) {
@@ -65,6 +79,7 @@ class DefaultNavigationManager(
     }
 
     private fun launchWebView(uri: Uri) {
+        // TODO: fix crash issue
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(context, uri)

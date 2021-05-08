@@ -15,11 +15,11 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
     private val viewModel by viewModel<SplashViewModel>()
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
 
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         disposables.add(
             viewModel.isLoggedIn.subscribe {
                 if (it)

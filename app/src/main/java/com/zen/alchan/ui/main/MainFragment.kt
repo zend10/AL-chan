@@ -24,7 +24,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     private val viewModel by viewModel<MainViewModel>()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
-    override fun setupLayout() {
+    override fun setUpLayout() {
         val fragments = listOf(
             HomeFragment.newInstance(),
             SocialFragment.newInstance(),
@@ -53,7 +53,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         }
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         disposables.add(
             viewModel.isAuthenticated.subscribe {
                 mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = it

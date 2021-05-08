@@ -1,7 +1,7 @@
 package com.zen.alchan.ui.base
 
 interface ViewContract {
-    fun setupInsets() {}
-    fun setupLayout()
-    fun setupObserver()
+    fun setUpInsets() {}
+    fun setUpLayout()
+    fun setUpObserver()
 }

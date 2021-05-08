@@ -2,6 +2,7 @@ package com.zen.alchan.ui.profile
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
@@ -17,6 +18,7 @@ import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.bio.BioFragment
 import com.zen.alchan.ui.favorite.FavoriteFragment
+import com.zen.alchan.ui.review.ReviewFragment
 import com.zen.alchan.ui.stats.StatsFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_not_logged_in.*
@@ -29,9 +31,16 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
     private val viewModel by viewModel<ProfileViewModel>()
     private val sharedViewModel by sharedViewModel<SharedProfileViewModel>()
 
-    private lateinit var fragments: List<Fragment>
+    private var fragments: List<Fragment>? = null
+    private var cardMenu: List<Pair<AppCompatImageView, MaterialTextView>>? = null
 
-    private lateinit var cardMenu: List<Pair<AppCompatImageView, MaterialTextView>>
+    private var menuItemActivities: MenuItem? = null
+    private var menuItemNotifications: MenuItem? = null
+    private var menuItemAddAsBestFriend: MenuItem? = null
+    private var menuItemSettings: MenuItem? = null
+    private var menuItemViewOnAniList: MenuItem? = null
+    private var menuItemShareProfile: MenuItem? = null
+    private var menuItemCopyLink: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,27 +49,32 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
         }
     }
 
-    override fun setupLayout() {
-        goToLoginButton.setOnClickListener {
-            viewModel.logoutAsGuest()
-            navigation.navigateToLanding()
+    override fun setUpLayout() {
+        profileToolbar.menu.apply {
+            menuItemActivities = findItem(R.id.itemActivities)
+            menuItemNotifications = findItem(R.id.itemNotifications)
+            menuItemAddAsBestFriend = findItem(R.id.itemAddAsBestFriend)
+            menuItemSettings = findItem(R.id.itemSettings)
+            menuItemViewOnAniList = findItem(R.id.itemViewOnAniList)
+            menuItemShareProfile = findItem(R.id.itemShareProfile)
+            menuItemCopyLink = findItem(R.id.itemCopyLink)
         }
 
         fragments = listOf(
             BioFragment.newInstance(),
             FavoriteFragment.newInstance(),
             StatsFragment.newInstance(),
-            ActivityFragment.newInstance()
+            ReviewFragment.newInstance(true)
         )
 
         cardMenu = listOf(
             profileBioIcon to profileBioText,
             profileFavoritesIcon to profileFavoritesText,
             profileStatsIcon to profileStatsText,
-            profileActivitiesIcon to profileActivitiesText
+            profileReviewsIcon to profileReviewsText
         )
 
-        profileViewPager.adapter = ProfileViewPagerAdapter(this, fragments)
+        profileViewPager.adapter = ProfileViewPagerAdapter(this, fragments ?: listOf())
 
         profileViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -69,7 +83,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
                 val selectedColor = ColorStateList.valueOf(requireContext().getAttrValue(R.attr.themeSecondaryColor))
                 val unselectedColor = ColorStateList.valueOf(requireContext().getAttrValue(R.attr.themeContentColor))
 
-                cardMenu.toList().forEachIndexed { index, cardItem ->
+                cardMenu?.toList()?.forEachIndexed { index, cardItem ->
                     val cardIcon = cardItem.first
                     val cardText = cardItem.second
 
@@ -103,16 +117,36 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             viewModel.setCurrentPage(SharedProfileViewModel.Page.STATS)
         }
 
-        profileActivitiesLayout.setOnClickListener {
-            viewModel.setCurrentPage(SharedProfileViewModel.Page.ACTIVITY)
+        profileReviewsLayout.setOnClickListener {
+            viewModel.setCurrentPage(SharedProfileViewModel.Page.REVIEW)
+        }
+
+        goToLoginButton.setOnClickListener {
+            viewModel.logoutAsGuest()
+            navigation.navigateToLanding()
+        }
+
+        menuItemActivities?.setOnMenuItemClickListener {
+            navigation.navigateToActivities()
+            true
+        }
+
+        menuItemNotifications?.setOnMenuItemClickListener {
+            navigation.navigateToNotifications()
+            true
+        }
+
+        menuItemSettings?.setOnMenuItemClickListener {
+            navigation.navigateToSettings()
+            true
         }
     }
 
-    override fun setupInsets() {
+    override fun setUpInsets() {
         profileHeaderGap.applyTopPaddingInsets()
     }
 
-    override fun setupObserver() {
+    override fun setUpObserver() {
         disposables.add(
             viewModel.isAuthenticated.subscribe {
                 notLoggedInLayout.show(!it)
@@ -126,7 +160,13 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
         )
 
         disposables.add(
-            sharedViewModel.userData.subscribe {
+            sharedViewModel.isViewerProfile.subscribe {
+                showToolbarMenu(it)
+            }
+        )
+
+        disposables.add(
+            sharedViewModel.user.subscribe {
                 profileUsernameText.text = it.name
                 ImageUtil.loadImage(requireContext(), it.avatar.large, profileAvatarImage)
                 ImageUtil.loadImage(requireContext(), it.bannerImage, profileBannerImage)
@@ -158,6 +198,26 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
         )
 
         sharedViewModel.checkIsAuthenticated()
+        sharedViewModel.checkIsViewerProfile()
+    }
+
+    private fun showToolbarMenu(isViewerProfile: Boolean) {
+        menuItemNotifications?.isVisible = isViewerProfile
+        menuItemAddAsBestFriend?.isVisible = !isViewerProfile
+        menuItemSettings?.isVisible = isViewerProfile
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragments = null
+        cardMenu = null
+        menuItemActivities = null
+        menuItemNotifications = null
+        menuItemAddAsBestFriend = null
+        menuItemSettings = null
+        menuItemViewOnAniList = null
+        menuItemShareProfile = null
+        menuItemCopyLink = null
     }
 
     companion object {
