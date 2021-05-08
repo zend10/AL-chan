@@ -20,6 +20,10 @@ class SharedMainViewModel : BaseViewModel() {
         Page.PROFILE to scrollProfileToTopSubject
     )
 
+    override fun loadData() {
+        // do nothing
+    }
+
     fun scrollToTop(pageIndex: Int) {
         scrollEvents.toList()[pageIndex].second.onNext(Unit)
     }

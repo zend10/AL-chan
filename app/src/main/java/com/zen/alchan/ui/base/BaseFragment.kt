@@ -5,7 +5,9 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.zen.alchan.R
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
 
@@ -78,5 +80,18 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
 
     protected fun goBack() {
         rootActivity.onBackPressed()
+    }
+
+    protected fun setUpToolbar(
+        toolbar: Toolbar,
+        title: String,
+        icon: Int = R.drawable.ic_left,
+        action: () -> Unit = { goBack() }
+    ) {
+        toolbar.apply {
+            setTitle(title)
+            setNavigationIcon(icon)
+            setNavigationOnClickListener { action() }
+        }
     }
 }

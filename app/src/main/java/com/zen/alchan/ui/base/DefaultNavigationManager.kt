@@ -13,6 +13,7 @@ import com.zen.alchan.ui.landing.LandingFragment
 import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
 import com.zen.alchan.ui.settings.SettingsFragment
+import com.zen.alchan.ui.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.splash.SplashFragment
 
 class DefaultNavigationManager(
@@ -51,6 +52,10 @@ class DefaultNavigationManager(
 
     override fun navigateToSettings() {
         swapPage(SettingsFragment.newInstance())
+    }
+
+    override fun navigateToAppSettings() {
+        swapPage(AppSettingsFragment.newInstance())
     }
 
     override fun openWebView(url: String) {

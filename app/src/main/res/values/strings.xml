@@ -53,4 +53,18 @@
     <string name="share_profile">Share Profile</string>
     <string name="copy_link">Copy Link</string>
     <string name="add_as_best_friend">Add as Best Friend</string>
+    <string name="app_settings">App Settings</string>
+    <string name="personalise_al_chan_to_suit_your_taste">Personalise AL-chan to suit your taste</string>
+    <string name="anilist_settings">AniList Settings</string>
+    <string name="modify_anilist_settings">Modify AniList settings</string>
+    <string name="list_settings">List Settings</string>
+    <string name="configure_your_lists">Configure your lists</string>
+    <string name="notifications_settings">Notifications Settings</string>
+    <string name="set_how_you_want_to_be_notified">Set how you want to be notified</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="manage_your_account">Manage your account</string>
+    <string name="about_al_chan">About AL-chan</string>
+    <string name="know_more_about_al_chan">Know more about AL-chan</string>
+    <string name="theme">Theme</string>
+    <string name="selected_theme">Selected theme</string>
 </resources>

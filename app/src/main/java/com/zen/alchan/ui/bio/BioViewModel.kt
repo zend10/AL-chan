@@ -17,6 +17,10 @@ class BioViewModel : BaseViewModel() {
     val bioItems: Observable<List<BioItem>>
         get() = bioItemsSubject
 
+    override fun loadData() {
+        // do nothing
+    }
+
     fun getBioItems(profileData: ProfileData) {
         val bioItems = ArrayList<BioItem>()
         bioItems.add(BioItem(viewType = BioItem.VIEW_TYPE_ABOUT, bioText = profileData.user.about))

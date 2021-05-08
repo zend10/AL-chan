@@ -1,11 +1,13 @@
 package com.zen.alchan.ui.profile
 
+import android.util.Log
 import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserStatistics
 import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.helper.pojo.BioItem
@@ -15,6 +17,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 
 class SharedProfileViewModel(
@@ -22,7 +25,7 @@ class SharedProfileViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val isViewerProfileSubject = BehaviorSubject.createDefault(false)
+    private val isViewerProfileSubject = PublishSubject.create<Boolean>()
     private val userSubject = BehaviorSubject.createDefault(User.EMPTY_USER)
     private val profileDataSubject = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
 
@@ -54,15 +57,19 @@ class SharedProfileViewModel(
 
     var userId = 0
 
-    fun checkIsViewerProfile() {
+    override fun loadData() {
+        checkIsAuthenticated()
+        checkIsViewerProfile()
+    }
+
+    private fun checkIsViewerProfile() {
         isViewerProfileSubject.onNext(userId == 0)
     }
 
-    fun checkIsAuthenticated() {
+    private fun checkIsAuthenticated() {
         disposables.add(
             authenticationRepository.getIsAuthenticated()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .subscribe {
                     loadUserData()
                     isAuthenticatedSubject.onNext(it)
@@ -75,14 +82,10 @@ class SharedProfileViewModel(
 
         disposables.add(
             authenticationRepository.viewer
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .subscribe {
-                    userId = it.id
-                    loadProfileData(if (isReloading) Source.NETWORK else null)
-
+                    loadProfileData(it.id, if (isReloading) Source.NETWORK else null)
                     userSubject.onNext(it)
-
                     state = State.LOADED
                 }
         )
@@ -94,11 +97,10 @@ class SharedProfileViewModel(
         }
     }
 
-    private fun loadProfileData(source: Source?) {
+    private fun loadProfileData(userId: Int, source: Source?) {
         disposables.add(
             userRepository.getProfileData(userId, source = source)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .subscribe(
                     {
                         profileDataSubject.onNext(it)

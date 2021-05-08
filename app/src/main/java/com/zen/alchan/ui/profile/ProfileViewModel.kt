@@ -12,6 +12,10 @@ class ProfileViewModel(private val authenticationRepository: AuthenticationRepos
     val currentPage: Observable<SharedProfileViewModel.Page>
         get() = currentPageSubject
 
+    override fun loadData() {
+        // do nothing
+    }
+
     fun logoutAsGuest() {
         authenticationRepository.loginAsGuest(false)
     }

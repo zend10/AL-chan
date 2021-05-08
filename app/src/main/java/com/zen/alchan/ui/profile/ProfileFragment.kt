@@ -2,6 +2,7 @@ package com.zen.alchan.ui.profile
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
@@ -197,8 +198,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             }
         )
 
-        sharedViewModel.checkIsAuthenticated()
-        sharedViewModel.checkIsViewerProfile()
+        sharedViewModel.loadData()
     }
 
     private fun showToolbarMenu(isViewerProfile: Boolean) {

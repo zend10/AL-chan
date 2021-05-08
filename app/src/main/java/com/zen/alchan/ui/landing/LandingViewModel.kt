@@ -5,4 +5,7 @@ import com.zen.alchan.ui.base.BaseViewModel
 
 class LandingViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
 
+    override fun loadData() {
+        // do nothing
+    }
 }

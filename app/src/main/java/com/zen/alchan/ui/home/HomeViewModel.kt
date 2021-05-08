@@ -2,6 +2,7 @@ package com.zen.alchan.ui.home
 
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.ui.base.BaseViewModel
@@ -17,7 +18,15 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
     val homeItemList: Observable<List<HomeItem>>
         get() = homeItemListSubject
 
-    fun getHomeData(isReloading: Boolean = false) {
+    override fun loadData() {
+        getHomeData()
+    }
+
+    fun reloadData() {
+        getHomeData(true)
+    }
+
+    private fun getHomeData(isReloading: Boolean = false) {
         if (!isReloading && state == State.LOADED) return
 
         if (isReloading)
@@ -35,8 +44,7 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
 
         disposables.add(
             contentRepository.getHomeData(source)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .subscribe(
                     {
                         homeItemListSubject.onNext(

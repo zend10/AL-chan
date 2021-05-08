@@ -13,6 +13,7 @@ interface NavigationManager {
     fun navigateToActivities()
     fun navigateToNotifications()
     fun navigateToSettings()
+    fun navigateToAppSettings()
 
     fun openWebView(url: String)
     fun openWebView(url: Url)

@@ -29,7 +29,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             }
         )
 
-        viewModel.checkIsLoggedIn()
+        viewModel.loadData()
     }
 
     companion object {

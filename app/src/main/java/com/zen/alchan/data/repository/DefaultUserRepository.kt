@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.UserDataSource
+import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
@@ -53,5 +54,9 @@ class DefaultUserRepository(
     private fun getProfileDataFromCache(): Observable<ProfileData> {
         val savedItem = userManager.profileData?.data
         return if (savedItem != null) Observable.just(savedItem) else Observable.error(StorageException())
+    }
+
+    override fun getAppSetting(): Observable<AppSetting> {
+        return Observable.just(userManager.appSetting)
     }
 }

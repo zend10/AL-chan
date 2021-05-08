@@ -22,11 +22,11 @@ class DefaultAuthenticationRepository(
     private var viewerDisposable: Disposable? = null
 
     override fun getIsLoggedIn(): Observable<Boolean> {
-        return Observable.just(userManager.isLoggedIn || userManager.isLoggedInAsGuest)
+        return Observable.just(userManager.isAuthenticated || userManager.isLoggedInAsGuest)
     }
 
     override fun getIsAuthenticated(): Observable<Boolean> {
-        return Observable.just(userManager.isLoggedIn)
+        return Observable.just(userManager.isAuthenticated)
     }
 
     override fun getViewerData() {

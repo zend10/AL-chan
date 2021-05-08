@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.changeStatusBarColor
 import io.reactivex.disposables.CompositeDisposable
@@ -16,6 +17,7 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_ThemeDefaultYellow)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         super.onCreate(savedInstanceState)
         setContentView(layout)

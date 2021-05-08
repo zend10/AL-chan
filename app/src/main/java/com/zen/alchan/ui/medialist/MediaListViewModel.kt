@@ -7,4 +7,8 @@ class MediaListViewModel : BaseViewModel() {
 
     lateinit var mediaType: MediaType
     var userId = 0
+
+    override fun loadData() {
+
+    }
 }

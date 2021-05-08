@@ -8,7 +8,7 @@ class AniListHeaderInterceptorImpl(private val userManager: UserManager) : Heade
 
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         proceed(
-            if (userManager.isLoggedIn) {
+            if (userManager.isAuthenticated) {
                 request().newBuilder()
                     .addHeader("Authorization", "Bearer ${userManager.bearerToken}")
                     .addHeader("Accept", "application/json")

@@ -2,6 +2,7 @@ package com.zen.alchan.ui.login
 
 import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,14 +16,17 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
     val loginStatus: Observable<Boolean>
         get() = loginStatusSubject
 
+    override fun loadData() {
+        // do nothing
+    }
+
     fun login(bearerToken: String) {
         loadingSubject.onNext(true)
         authenticationRepository.saveBearerToken(bearerToken)
 
         disposables.add(
             authenticationRepository.viewer
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .subscribe{
                     if (it != User.EMPTY_USER)
                         loginStatusSubject.onNext(true)

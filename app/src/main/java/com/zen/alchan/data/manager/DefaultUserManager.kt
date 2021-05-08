@@ -1,5 +1,6 @@
 package com.zen.alchan.data.manager
 
+import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
 import com.zen.alchan.data.response.ProfileData
@@ -15,12 +16,16 @@ class DefaultUserManager(
         get() = sharedPreferencesManager.bearerToken
         set(value) { sharedPreferencesManager.bearerToken = value }
 
-    override val isLoggedIn: Boolean
+    override val isAuthenticated: Boolean
         get() = bearerToken != null
 
     override var isLoggedInAsGuest: Boolean
         get() = sharedPreferencesManager.guestLogin == true
         set(value) { sharedPreferencesManager.guestLogin = value }
+
+    override var appSetting: AppSetting
+        get() = sharedPreferencesManager.appSetting ?: AppSetting.EMPTY_APP_SETTING
+        set(value) { sharedPreferencesManager.appSetting = value }
 
     override var viewerData: SaveItem<User>?
         get() = jsonStorageHandler.viewerData

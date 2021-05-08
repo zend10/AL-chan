@@ -61,8 +61,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             }
         )
 
-        viewModel.checkIsAuthenticated()
-        viewModel.getViewerData()
+        viewModel.loadData()
     }
 
     companion object {

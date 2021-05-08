@@ -23,7 +23,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         homeAdapter = HomeRvAdapter(requireContext(), listOf(), screenWidth, getHomeListener())
         homeRecyclerView.adapter = homeAdapter
 
-        homeSwipeRefresh.setOnRefreshListener { viewModel.getHomeData(true) }
+        homeSwipeRefresh.setOnRefreshListener { viewModel.reloadData() }
     }
 
     override fun setUpInsets() {
@@ -55,7 +55,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         )
 
-        viewModel.getHomeData()
+        viewModel.loadData()
     }
 
     private fun getHomeListener(): HomeListener {
