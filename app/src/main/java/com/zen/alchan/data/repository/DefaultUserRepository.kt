@@ -21,6 +21,9 @@ class DefaultUserRepository(
     private val viewer: User?
         get() = userManager.viewerData?.data
 
+    override val appSetting: AppSetting
+        get() = userManager.appSetting
+
     override fun getProfileData(userId: Int, sort: List<UserStatisticsSort>, source: Source?): Observable<ProfileData> {
         if (viewer?.id != userId) {
             return getProfileDataFromNetwork(userId, sort)
@@ -58,5 +61,9 @@ class DefaultUserRepository(
 
     override fun getAppSetting(): Observable<AppSetting> {
         return Observable.just(userManager.appSetting)
+    }
+
+    override fun setAppSetting(newAppSetting: AppSetting?) {
+        userManager.appSetting = newAppSetting ?: AppSetting.EMPTY_APP_SETTING
     }
 }

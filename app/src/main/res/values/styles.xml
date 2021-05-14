@@ -11,6 +11,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:overScrollMode">never</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
         <item name="themeAppNameFont">@style/FontAppName</item>
         <item name="themeTitleFont">@style/FontTitle</item>
         <item name="themeRegularFont">@style/FontRegular</item>
@@ -32,11 +33,286 @@
         <item name="themeContentColor">@color/white</item>
         <item name="themeContentTransparentColor">@color/whiteTransparent36</item>
     </style>
-    
+
+    <style name="LightAppTheme">
+        <item name="themeBackgroundColor">@color/white</item>
+        <item name="themeBackgroundTransparent86Color">@color/whiteTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/whiteTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/whiteTransparent36</item>
+        <item name="themeCardColor">@color/whiteLight</item>
+        <item name="themeDividerColor">@color/blackTransparent12</item>
+        <item name="themeContentColor">@color/black</item>
+        <item name="themeContentTransparentColor">@color/blackTransparent36</item>
+    </style>
+
+    <style name="DarkAppTheme">
+        <item name="themeBackgroundColor">@color/pureBlack</item>
+        <item name="themeBackgroundTransparent86Color">@color/pureBlackTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/pureBlackTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/pureBlackTransparent36</item>
+        <item name="themeCardColor">@color/pureBlackLight</item>
+        <item name="themeDividerColor">@color/whiteTransparent12</item>
+        <item name="themeContentColor">@color/white</item>
+        <item name="themeContentTransparentColor">@color/whiteTransparent36</item>
+    </style>
+
+    <style name="AniListLightAppTheme">
+        <item name="themeBackgroundColor">@color/anilistPaleWhite</item>
+        <item name="themeBackgroundTransparent86Color">@color/anilistPaleWhiteTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/anilistPaleWhiteTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/anilistPaleWhiteTransparent36</item>
+        <item name="themeCardColor">@color/anilistWhite</item>
+        <item name="themeDividerColor">@color/anilistDarkBlueTransparent12</item>
+        <item name="themeContentColor">@color/anilistDarkBlue</item>
+        <item name="themeContentTransparentColor">@color/anilistDarkBlueTransparent36</item>
+    </style>
+
+    <style name="AniListDarkAppTheme">
+        <item name="themeBackgroundColor">@color/anilistVeryDeepBlue</item>
+        <item name="themeBackgroundTransparent86Color">@color/anilistVeryDeepBlueTransparent86</item>
+        <item name="themeBackgroundTransparent50Color">@color/anilistVeryDeepBlueTransparent50</item>
+        <item name="themeBackgroundTransparent36Color">@color/anilistVeryDeepBlueTransparent36</item>
+        <item name="themeCardColor">@color/anilistDeepBlue</item>
+        <item name="themeDividerColor">@color/anilistDarkWhiteTransparent12</item>
+        <item name="themeContentColor">@color/anilistDarkWhite</item>
+        <item name="themeContentTransparentColor">@color/anilistDarkWhiteTransparent36</item>
+    </style>
+
+    <!-- Default Theme -->
     <style name="AppTheme.ThemeDefaultYellow" parent="DefaultAppTheme">
         <item name="themePrimaryColor">@color/yellow</item>
         <item name="themeSecondaryColor">@color/cyan</item>
+        <item name="themeSecondaryTransparent50Color">@color/cyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/cyanTransparent20</item>
         <item name="themeNegativeColor">@color/magentaDark</item>
+    </style>
+
+    <style name="AppTheme.ThemeDefaultBlue" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/blue</item>
+        <item name="themeSecondaryColor">@color/cream</item>
+        <item name="themeSecondaryTransparent50Color">@color/creamTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/creamTransparent20</item>
+        <item name="themeNegativeColor">@color/gold</item>
+    </style>
+
+    <style name="AppTheme.ThemeDefaultGreen" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/green</item>
+        <item name="themeSecondaryColor">@color/lavender</item>
+        <item name="themeSecondaryTransparent50Color">@color/lavenderTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lavenderTransparent20</item>
+        <item name="themeNegativeColor">@color/brown</item>
+    </style>
+
+    <style name="AppTheme.ThemeDefaultRed" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/red</item>
+        <item name="themeSecondaryColor">@color/aloevera</item>
+        <item name="themeSecondaryTransparent50Color">@color/aloeveraTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/aloeveraTransparent20</item>
+        <item name="themeNegativeColor">@color/purple</item>
+    </style>
+
+    <style name="AppTheme.ThemeDefaultPink" parent="DefaultAppTheme">
+        <item name="themePrimaryColor">@color/pink</item>
+        <item name="themeSecondaryColor">@color/sunshine</item>
+        <item name="themeSecondaryTransparent50Color">@color/sunshineTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/sunshineTransparent20</item>
+        <item name="themeNegativeColor">@color/jade</item>
+    </style>
+
+    <!-- Light Theme -->
+    <style name="AppTheme.ThemeLightBlue" parent="LightAppTheme">
+        <item name="themePrimaryColor">@color/lightBlue</item>
+        <item name="themeSecondaryColor">@color/lightCream</item>
+        <item name="themeSecondaryTransparent50Color">@color/lightCreamTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightCreamTransparent20</item>
+        <item name="themeNegativeColor">@color/lightGold</item>
+    </style>
+
+    <style name="AppTheme.ThemeLightGreen" parent="LightAppTheme">
+        <item name="themePrimaryColor">@color/lightGreen</item>
+        <item name="themeSecondaryColor">@color/lightLavender</item>
+        <item name="themeSecondaryTransparent50Color">@color/lightLavenderTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightLavenderTransparent20</item>
+        <item name="themeNegativeColor">@color/lightBrown</item>
+    </style>
+
+    <style name="AppTheme.ThemeLightOrange" parent="LightAppTheme">
+        <item name="themePrimaryColor">@color/lightThemeYellow</item>
+        <item name="themeSecondaryColor">@color/lightThemeCyan</item>
+        <item name="themeSecondaryTransparent50Color">@color/lightThemeCyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightThemeCyanTransparent20</item>
+        <item name="themeNegativeColor">@color/lightThemeMagentaDark</item>
+    </style>
+
+    <style name="AppTheme.ThemeLightRed" parent="LightAppTheme">
+        <item name="themePrimaryColor">@color/lightRed</item>
+        <item name="themeSecondaryColor">@color/lightAloevera</item>
+        <item name="themeSecondaryTransparent50Color">@color/lightAloeveraTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightAloeveraTransparent20</item>
+        <item name="themeNegativeColor">@color/lightPurple</item>
+    </style>
+
+    <style name="AppTheme.ThemeLightPink" parent="LightAppTheme">
+        <item name="themePrimaryColor">@color/lightPink</item>
+        <item name="themeSecondaryColor">@color/lightSunshine</item>
+        <item name="themeSecondaryTransparent50Color">@color/lightSunshineTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lightSunshineTransparent20</item>
+        <item name="themeNegativeColor">@color/lightJade</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="AppTheme.ThemeDarkYellow" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/yellow</item>
+        <item name="themeSecondaryColor">@color/cyan</item>
+        <item name="themeSecondaryTransparent50Color">@color/cyanTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/cyanTransparent20</item>
+        <item name="themeNegativeColor">@color/magentaDark</item>
+    </style>
+
+    <style name="AppTheme.ThemeDarkBlue" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/blue</item>
+        <item name="themeSecondaryColor">@color/cream</item>
+        <item name="themeSecondaryTransparent50Color">@color/creamTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/creamTransparent20</item>
+        <item name="themeNegativeColor">@color/gold</item>
+    </style>
+
+    <style name="AppTheme.ThemeDarkGreen" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/green</item>
+        <item name="themeSecondaryColor">@color/lavender</item>
+        <item name="themeSecondaryTransparent50Color">@color/lavenderTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/lavenderTransparent20</item>
+        <item name="themeNegativeColor">@color/brown</item>
+    </style>
+
+    <style name="AppTheme.ThemeDarkRed" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/red</item>
+        <item name="themeSecondaryColor">@color/aloevera</item>
+        <item name="themeSecondaryTransparent50Color">@color/aloeveraTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/aloeveraTransparent20</item>
+        <item name="themeNegativeColor">@color/purple</item>
+    </style>
+
+    <style name="AppTheme.ThemeDarkPink" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/pink</item>
+        <item name="themeSecondaryColor">@color/sunshine</item>
+        <item name="themeSecondaryTransparent50Color">@color/sunshineTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/sunshineTransparent20</item>
+        <item name="themeNegativeColor">@color/jade</item>
+    </style>
+
+    <!-- AniList Light Theme -->
+    <style name="AppTheme.ThemeAniListLightBlue" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistBlue</item>
+        <item name="themeSecondaryColor">@color/anilistLightBlue</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightBlueTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightBlueTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrightRed</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListLightPurple" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistPurple</item>
+        <item name="themeSecondaryColor">@color/anilistLightPurple</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightPurpleTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightPurpleTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistPaleOrange</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListLightGreen" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistLightGreen</item>
+        <item name="themeSecondaryColor">@color/anilistLightGreen</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightGreenTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightGreenTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistDarkPurple</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListLightOrange" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistOrange</item>
+        <item name="themeSecondaryColor">@color/anilistLightOrange</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightOrangeTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightOrangeTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrightGreen</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListLightRed" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistRed</item>
+        <item name="themeSecondaryColor">@color/anilistLightRed</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightRedTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightRedTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrightYellow</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListLightPink" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistPink</item>
+        <item name="themeSecondaryColor">@color/anilistBrightPink</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistBrightPinkTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistBrightPinkTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistCyan</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListLightGrey" parent="AniListLightAppTheme">
+        <item name="themePrimaryColor">@color/anilistGrey</item>
+        <item name="themeSecondaryColor">@color/anilistBrightGrey</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistBrightGreyTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistBrightGreyTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrown</item>
+    </style>
+
+    <!-- AniList Dark Theme -->
+    <style name="AppTheme.ThemeAniListDarkBlue" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistBlue</item>
+        <item name="themeSecondaryColor">@color/anilistLightBlue</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightBlueTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightBlueTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrightRed</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListDarkPurple" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistPurple</item>
+        <item name="themeSecondaryColor">@color/anilistLightPurple</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightPurpleTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightPurpleTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistPaleOrange</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListDarkGreen" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistLightGreen</item>
+        <item name="themeSecondaryColor">@color/anilistLightGreen</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightGreenTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightGreenTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistDarkPurple</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListDarkOrange" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistOrange</item>
+        <item name="themeSecondaryColor">@color/anilistLightOrange</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightOrangeTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightOrangeTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrightGreen</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListDarkRed" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistRed</item>
+        <item name="themeSecondaryColor">@color/anilistLightRed</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistLightRedTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistLightRedTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrightYellow</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListDarkPink" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistPink</item>
+        <item name="themeSecondaryColor">@color/anilistBrightPink</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistBrightPinkTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistBrightPinkTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistCyan</item>
+    </style>
+
+    <style name="AppTheme.ThemeAniListDarkGrey" parent="AniListDarkAppTheme">
+        <item name="themePrimaryColor">@color/anilistGrey</item>
+        <item name="themeSecondaryColor">@color/anilistBrightGrey</item>
+        <item name="themeSecondaryTransparent50Color">@color/anilistBrightGreyTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/anilistBrightGreyTransparent20</item>
+        <item name="themeNegativeColor">@color/anilistBrown</item>
     </style>
 
     <style name="FontAppName">
@@ -102,5 +378,15 @@
     <style name="PopupTheme" parent="Theme.AppCompat.DayNight">
         <item name="android:colorBackground">?themeBackgroundColor</item>
         <item name="android:textColor">?themeContentColor</item>
+    </style>
+    
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetModalTheme</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/pureBlack</item>
+    </style>
+
+    <style name="BottomSheetModalTheme" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">?themeCardColor</item>
     </style>
 </resources>

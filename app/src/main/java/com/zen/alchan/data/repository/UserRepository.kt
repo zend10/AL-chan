@@ -8,6 +8,8 @@ import type.UserStatisticsSort
 
 interface UserRepository {
 
+    val appSetting: AppSetting
+
     fun getProfileData(
         userId: Int,
         sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC),
@@ -15,4 +17,6 @@ interface UserRepository {
     ): Observable<ProfileData>
 
     fun getAppSetting(): Observable<AppSetting>
+
+    fun setAppSetting(newAppSetting: AppSetting?)
 }

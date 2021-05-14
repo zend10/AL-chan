@@ -16,7 +16,7 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
     protected val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_ThemeDefaultYellow)
+        setTheme(viewModel.getAppThemeResource())
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         super.onCreate(savedInstanceState)

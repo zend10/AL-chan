@@ -103,7 +103,7 @@ class BioRvAdapter(
             textWithoutValue.forEachIndexed { index, it ->
                 spannableStringBuilder.append(it)
                 if (index == 0)
-                    spannableStringBuilder.color(context.getAttrValue(R.attr.themeNegativeColor)) { append(value) }
+                    spannableStringBuilder.color(context.getAttrValue(R.attr.themeSecondaryColor)) { append(value) }
             }
             return spannableStringBuilder
         }

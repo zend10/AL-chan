@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/divider"
+        android:id="@+id/upperHeaderDivider"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/headerText"
+        style="?themeRegularBoldFont"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/marginPageBig"
+        android:layout_marginBottom="@dimen/marginPageNormal"
+        android:layout_marginHorizontal="@dimen/marginPageNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <include layout="@layout/divider"
+        android:id="@+id/lowerHeaderDivider"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

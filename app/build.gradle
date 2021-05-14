@@ -44,6 +44,7 @@ dependencies {
 
     // Google Material
     implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     // JUnit4 for Instrumentation Test
     androidTestImplementation 'junit:junit:4.12'
