@@ -21,6 +21,8 @@
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
         <item name="themePrimaryButton">@style/ButtonPrimary</item>
         <item name="themePrimaryBorderButton">@style/ButtonPrimaryBorder</item>
+        <item name="themeNegativeBorderButton">@style/ButtonNegativeBorder</item>
+        <item name="themeRegularCheckBox">@style/CheckBoxTheme</item>
     </style>
     
     <style name="DefaultAppTheme">
@@ -375,6 +377,21 @@
         <item name="android:letterSpacing">0</item>
     </style>
 
+    <style name="ButtonNegativeBorder" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">@dimen/lineWidth</item>
+        <item name="strokeColor">?themeNegativeColor</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">?themeNegativeColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="CheckBoxTheme" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonCompat">@drawable/checkbox_circular</item>
+        <item name="android:buttonTint">?themePrimaryColor</item>
+    </style>
+
     <style name="PopupTheme" parent="Theme.AppCompat.DayNight">
         <item name="android:colorBackground">?themeBackgroundColor</item>
         <item name="android:textColor">?themeContentColor</item>
@@ -387,6 +404,6 @@
     </style>
 
     <style name="BottomSheetModalTheme" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">?themeCardColor</item>
+        <item name="android:background">@drawable/dialog_rounded_edge</item>
     </style>
 </resources>

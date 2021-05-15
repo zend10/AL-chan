@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textview.MaterialTextView
 import com.zen.alchan.R
@@ -32,8 +33,15 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
     private val viewModel by viewModel<ProfileViewModel>()
     private val sharedViewModel by sharedViewModel<SharedProfileViewModel>()
 
-    private var fragments: List<Fragment>? = null
+    private var viewPagerAdapter: FragmentStateAdapter? = null
+
+    private var fragments: List<Fragment?>? = null
     private var cardMenu: List<Pair<AppCompatImageView, MaterialTextView>>? = null
+
+    private var bioFragment: BioFragment? = null
+    private var favoriteFragment: FavoriteFragment? = null
+    private var statsFragment: StatsFragment? = null
+    private var reviewFragment: ReviewFragment? = null
 
     private var menuItemActivities: MenuItem? = null
     private var menuItemNotifications: MenuItem? = null
@@ -61,11 +69,16 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             menuItemCopyLink = findItem(R.id.itemCopyLink)
         }
 
+        bioFragment = BioFragment.newInstance()
+        favoriteFragment = FavoriteFragment.newInstance()
+        statsFragment = StatsFragment.newInstance()
+        reviewFragment = ReviewFragment.newInstance(true)
+
         fragments = listOf(
-            BioFragment.newInstance(),
-            FavoriteFragment.newInstance(),
-            StatsFragment.newInstance(),
-            ReviewFragment.newInstance(true)
+            bioFragment,
+            favoriteFragment,
+            statsFragment,
+            reviewFragment
         )
 
         cardMenu = listOf(
@@ -75,7 +88,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             profileReviewsIcon to profileReviewsText
         )
 
-        profileViewPager.adapter = ProfileViewPagerAdapter(this, fragments ?: listOf())
+        viewPagerAdapter = ProfileViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, fragments?.filterNotNull() ?: listOf())
+        profileViewPager.adapter = viewPagerAdapter
 
         profileViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -209,8 +223,13 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewPagerAdapter = null
         fragments = null
         cardMenu = null
+        bioFragment = null
+        favoriteFragment = null
+        statsFragment = null
+        reviewFragment = null
         menuItemActivities = null
         menuItemNotifications = null
         menuItemAddAsBestFriend = null

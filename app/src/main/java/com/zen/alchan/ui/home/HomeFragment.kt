@@ -17,7 +17,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     private val sharedDisposables = CompositeDisposable()
-    private lateinit var homeAdapter: HomeRvAdapter
+    private var homeAdapter: HomeRvAdapter? = null
 
     override fun setUpLayout() {
         homeAdapter = HomeRvAdapter(requireContext(), listOf(), screenWidth, getHomeListener())
@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         disposables.add(
             viewModel.homeItemList.subscribe {
-                homeAdapter.updateData(it)
+                homeAdapter?.updateData(it)
             }
         )
 
@@ -121,6 +121,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         return object : HomeListener.RecentReviewsListener {
 
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        homeAdapter = null
     }
 
     override fun onDestroy() {

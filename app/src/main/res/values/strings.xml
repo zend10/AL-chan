@@ -67,4 +67,18 @@
     <string name="know_more_about_al_chan">Know more about AL-chan</string>
     <string name="theme">Theme</string>
     <string name="selected_theme">Selected theme</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="reset_to_default">Reset to Default</string>
+    <string name="appearance">Appearance</string>
+    <string name="list">List</string>
+    <string name="quot_all_quot_anime_list_position">\"All\" Anime list position</string>
+    <string name="quot_all_quot_manga_list_position">\"All\" Manga list position</string>
+    <string name="naming">Naming</string>
+    <string name="use_relative_date_for_next_airing_episode">Use relative date for next airing episode</string>
+    <string name="display_character_name">Display Character name</string>
+    <string name="display_staff_name">Display Staff name</string>
+    <string name="display_japanese_media_title">Display Japanese media title</string>
+    <string name="display_korean_media_title">Display Korean media title</string>
+    <string name="display_chinese_media_title">Display Chinese media title</string>
+    <string name="display_taiwanese_media_title">Display Taiwanese media title</string>
 </resources>

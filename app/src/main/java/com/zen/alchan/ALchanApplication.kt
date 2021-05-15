@@ -28,7 +28,6 @@ import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
-import com.zen.alchan.ui.settings.app.AppThemeListViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
 import org.koin.android.ext.koin.androidContext
@@ -95,7 +94,6 @@ class ALchanApplication : Application() {
         viewModel { BioViewModel() }
 
         viewModel { AppSettingsViewModel(get()) }
-        viewModel { AppThemeListViewModel() }
     }
 
     override fun onCreate() {

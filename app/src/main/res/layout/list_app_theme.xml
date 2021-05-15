@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/appThemeLayout"
-    android:padding="@dimen/marginPageNormal"
+    android:paddingHorizontal="@dimen/marginPageBig"
+    android:paddingVertical="@dimen/marginSmall"
     android:foreground="?selectableItemBackground"
     android:background="?themeCardColor"
     xmlns:app="http://schemas.android.com/apk/res-auto">
