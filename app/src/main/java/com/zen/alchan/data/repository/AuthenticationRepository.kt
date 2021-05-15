@@ -8,6 +8,7 @@ interface AuthenticationRepository {
     fun getIsLoggedIn(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
     fun getViewerData()
+    fun getViewerDataFromCache(): Observable<User>
     fun loginAsGuest(shouldLogin: Boolean)
     fun saveBearerToken(newBearerToken: String?)
 }

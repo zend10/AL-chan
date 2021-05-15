@@ -1,84 +1,81 @@
 package com.zen.alchan.ui.settings.app
 
-import android.content.Intent
-import android.net.Uri
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetListDialog
+import com.zen.alchan.ui.common.TextRvAdapter
 import kotlinx.android.synthetic.main.fragment_app_settings.*
 import kotlinx.android.synthetic.main.toolbar_default.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
 
     private val viewModel by viewModel<AppSettingsViewModel>()
 
-    private var appThemeListDialog: BottomSheetListDialog? = null
-    private var appThemeAdapter: AppThemeAdapter? = null
+    private var bottomSheetListDialog: BottomSheetListDialog? = null
+    private var appThemeAdapter: AppThemeRvAdapter? = null
+    private var allListPositionAdapter: AllListPositionRvAdapter? = null
 
     override fun setUpLayout() {
         setUpToolbar(defaultToolbar, getString(R.string.app_settings))
 
-        appSettingsThemeText.clicks {
-            appThemeAdapter?.let { adapter ->
-                appThemeListDialog = BottomSheetListDialog.newInstance(adapter)
-                appThemeListDialog?.show(childFragmentManager, null)
-            }
+        appSettingsSelectedThemeLayout.clicks {
+            viewModel.getAppThemeItems()
         }
 
-        appSettingsCircularAvatarCheckBox.setOnClickListener {
+        appSettingsCircularAvatarCheckBox.clicks {
             viewModel.updateUseCircularAvatarForProfile(appSettingsCircularAvatarCheckBox.isChecked)
         }
 
-        appSettingsRecentReviewsCheckBox.setOnClickListener {
+        appSettingsRecentReviewsCheckBox.clicks {
             viewModel.updateShowRecentReviewsAtHome(appSettingsRecentReviewsCheckBox.isChecked)
         }
 
-        appSettingsAllAnimeText.setOnClickListener {
-
+        appSettingsAllAnimeLayout.clicks {
+            viewModel.getAllAnimeListNumbers()
         }
 
-        appSettingsAllMangaText.setOnClickListener {
-
+        appSettingsAllMangaLayout.clicks {
+            viewModel.getAllMangaListNumbers()
         }
 
-        appSettingsRelativeDateCheckBox.setOnClickListener {
+        appSettingsRelativeDateCheckBox.clicks {
             viewModel.updateUseRelativeDateForNextAiringEpisode(appSettingsRelativeDateCheckBox.isChecked)
         }
 
-        appSettingsCharacterNameText.setOnClickListener {
+        appSettingsCharacterNameLayout.clicks {
 
         }
 
-        appSettingsStaffNameText.setOnClickListener {
+        appSettingsStaffNameLayout.clicks {
 
         }
 
-        appSettingsJapaneseMediaText.setOnClickListener {
+        appSettingsJapaneseMediaLayout.clicks {
 
         }
 
-        appSettingsKoreanMediaText.setOnClickListener {
+        appSettingsKoreanMediaLayout.clicks {
 
         }
 
-        appSettingsChineseMediaText.setOnClickListener {
+        appSettingsChineseMediaLayout.clicks {
 
         }
 
-        appSettingsTaiwaneseMediaText.setOnClickListener {
+        appSettingsTaiwaneseMediaLayout.clicks {
 
         }
 
-        appSettingsSaveButton.setOnClickListener {
+        appSettingsSaveButton.clicks {
             viewModel.saveAppSettings()
             activity?.recreate()
         }
 
-        appSettingsResetButton.setOnClickListener {
+        appSettingsResetButton.clicks {
             viewModel.resetAppSettings()
             activity?.recreate()
         }
@@ -93,7 +90,7 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
     override fun setUpObserver() {
         disposables.add(
             viewModel.appTheme.subscribe {
-                appSettingsThemeText.text = it.name.convertFromSnakeCase()
+                appSettingsSelectedThemeText.text = it.name.convertFromSnakeCase()
             }
         )
 
@@ -165,21 +162,58 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
 
         disposables.add(
             viewModel.appThemeItems.subscribe {
-                appThemeAdapter = AppThemeAdapter(requireContext(), it, object : AppThemeAdapter.AppThemeListener {
+                appThemeAdapter = AppThemeRvAdapter(requireContext(), it, object : AppThemeRvAdapter.AppThemeListener {
                     override fun getSelectedAppTheme(appTheme: AppTheme) {
-                        appThemeListDialog?.dismiss()
+                        dismissListDialog()
                         viewModel.updateAppTheme(appTheme)
                     }
-                })
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
+        disposables.add(
+            viewModel.allAnimeListItems.subscribe {
+                allListPositionAdapter = AllListPositionRvAdapter(requireContext(), it, object : AllListPositionRvAdapter.AllListPositionListener {
+                    override fun getSelectedIndex(index: Int) {
+                        dismissListDialog()
+                        viewModel.updateAllAnimeListPosition(index)
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
+        disposables.add(
+            viewModel.allMangaListItems.subscribe {
+                allListPositionAdapter = AllListPositionRvAdapter(requireContext(), it, object : AllListPositionRvAdapter.AllListPositionListener {
+                    override fun getSelectedIndex(index: Int) {
+                        dismissListDialog()
+                        viewModel.updateAllMangaListPosition(index)
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
             }
         )
 
         viewModel.loadData()
     }
 
+    private fun showListDialog(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
+        bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
+        bottomSheetListDialog?.show(childFragmentManager, null)
+    }
+
+    private fun dismissListDialog() {
+        bottomSheetListDialog?.dismiss()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        appThemeListDialog = null
+        bottomSheetListDialog = null
         appThemeAdapter = null
     }
 

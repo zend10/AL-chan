@@ -34,26 +34,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsThemeLabel"
-                    android:text="@string/selected_theme"
-                    style="?themeRegularFont"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsSelectedThemeLayout"
                     app:layout_constraintTop_toBottomOf="@id/appSettingsThemeTitle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsThemeText"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsThemeText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsThemeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/selected_theme"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsSelectedThemeText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -73,45 +77,53 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsCircularAvatarLabel"
-                    android:text="Use circular avatar for Profile"
-                    style="?themeRegularFont"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsCircularAvatarLayout"
                     app:layout_constraintTop_toBottomOf="@id/appSettingsAppearanceTitle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsCircularAvatarCheckBox"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/appSettingsCircularAvatarCheckBox"
-                    style="?themeRegularCheckBox"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsCircularAvatarLabel"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/use_circular_avatar_for_profile"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsRecentReviewsLabel"
-                    android:text="Show Recent Reviews at Home"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsCircularAvatarLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsRecentReviewsCheckBox"
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsCircularAvatarCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsRecentReviewsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsCircularAvatarLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/appSettingsRecentReviewsCheckBox"
-                    style="?themeRegularCheckBox"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsRecentReviewsLabel"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/show_recent_reviews_at_home"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsRecentReviewsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -131,67 +143,79 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsAllAnimeLabel"
-                    android:text="@string/quot_all_quot_anime_list_position"
-                    style="?themeRegularFont"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsAllAnimeLayout"
                     app:layout_constraintTop_toBottomOf="@id/appSettingsListTitle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsAllAnimeText"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsAllAnimeText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsAllAnimeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/quot_all_quot_anime_list_position"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsAllMangaLabel"
-                    android:text="@string/quot_all_quot_manga_list_position"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsAllAnimeLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsAllMangaText"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsAllAnimeText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsAllMangaLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsAllAnimeLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsAllMangaText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsAllMangaLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/quot_all_quot_manga_list_position"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsRelativeDateLabel"
-                    android:text="@string/use_relative_date_for_next_airing_episode"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsAllMangaLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsRelativeDateCheckBox"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsAllMangaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <LinearLayout
+                    android:id="@+id/appSettingsRelativeDateLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsAllMangaLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/appSettingsRelativeDateCheckBox"
-                    style="?themeRegularCheckBox"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsRelativeDateLabel"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/use_relative_date_for_next_airing_episode"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsRelativeDateCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -211,134 +235,157 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsCharacterNameLabel"
-                    android:text="@string/display_character_name"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsNamingTitle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsCharacterNameText"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsCharacterNameLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsCharacterNameText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsCharacterNameLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_character_name"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsStaffNameLabel"
-                    android:text="@string/display_staff_name"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsCharacterNameLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsStaffNameText"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsCharacterNameText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsStaffNameLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsCharacterNameLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsStaffNameText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsStaffNameLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_staff_name"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsJapaneseMediaLabel"
-                    android:text="@string/display_japanese_media_title"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsStaffNameLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsJapaneseMediaText"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsStaffNameText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsJapaneseMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsStaffNameLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsJapaneseMediaText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsJapaneseMediaLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_japanese_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsKoreanMediaLabel"
-                    android:text="@string/display_korean_media_title"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsJapaneseMediaLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsKoreanMediaText"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsJapaneseMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsKoreanMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsJapaneseMediaLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsKoreanMediaText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsKoreanMediaLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_korean_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsChineseMediaLabel"
-                    android:text="@string/display_chinese_media_title"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsKoreanMediaLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsChineseMediaText"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsKoreanMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsChineseMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsKoreanMediaLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsChineseMediaText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsChineseMediaLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_chinese_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsTaiwaneseMediaLabel"
-                    android:text="@string/display_taiwanese_media_title"
-                    style="?themeRegularFont"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsChineseMediaLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appSettingsTaiwaneseMediaText"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsChineseMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsTaiwaneseMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsChineseMediaLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appSettingsTaiwaneseMediaText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/appSettingsTaiwaneseMediaLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_taiwanese_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsTaiwaneseMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/appSettingsSaveButton"

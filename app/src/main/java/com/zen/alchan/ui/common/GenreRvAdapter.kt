@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.helper.extensions.getHexColor
 import com.zen.alchan.helper.pojo.Genre
+import com.zen.alchan.helper.pojo.getHexColor
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.list_genre.view.*
 

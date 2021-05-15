@@ -81,4 +81,8 @@
     <string name="display_korean_media_title">Display Korean media title</string>
     <string name="display_chinese_media_title">Display Chinese media title</string>
     <string name="display_taiwanese_media_title">Display Taiwanese media title</string>
+    <string name="top_of_the_list">Top of the list</string>
+    <string name="below">Below</string>
+    <string name="use_circular_avatar_for_profile">Use circular avatar for Profile</string>
+    <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
 </resources>

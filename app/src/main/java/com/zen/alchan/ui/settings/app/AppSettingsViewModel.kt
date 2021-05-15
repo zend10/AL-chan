@@ -1,7 +1,9 @@
 package com.zen.alchan.ui.settings.app
 
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.CharacterNaming
 import com.zen.alchan.helper.enums.MediaNaming
@@ -14,11 +16,15 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.selects.select
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AppSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class AppSettingsViewModel(
+    private val userRepository: UserRepository,
+    private val authenticationRepository: AuthenticationRepository
+) : BaseViewModel() {
 
     private val appThemeSubject = BehaviorSubject.createDefault(AppTheme.DEFAULT_THEME_YELLOW)
     private val useCircularAvatarForProfileSubject = BehaviorSubject.createDefault(true)
@@ -33,7 +39,9 @@ class AppSettingsViewModel(private val userRepository: UserRepository) : BaseVie
     private val chineseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
     private val taiwaneseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
 
-    private val appThemeItemsSubject = BehaviorSubject.createDefault<List<AppThemeItem>>(listOf())
+    private val appThemeItemsSubject = PublishSubject.create<List<AppThemeItem>>()
+    private val allAnimeListItemsSubject = PublishSubject.create<List<String>>()
+    private val allMangaListItemsSubject = PublishSubject.create<List<String>>()
 
     val appTheme: Observable<AppTheme>
         get() = appThemeSubject
@@ -74,11 +82,25 @@ class AppSettingsViewModel(private val userRepository: UserRepository) : BaseVie
     val appThemeItems: Observable<List<AppThemeItem>>
         get() = appThemeItemsSubject
 
+    val allAnimeListItems: Observable<List<String>>
+        get() = allAnimeListItemsSubject
+
+    val allMangaListItems: Observable<List<String>>
+        get() = allMangaListItemsSubject
+
+    private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
 
     override fun loadData() {
+        disposables.add(
+            authenticationRepository.getViewerDataFromCache()
+                .applyScheduler()
+                .subscribe {
+                    viewer = it
+                }
+        )
+
         getAppSetting()
-        getAppThemeItems()
     }
 
     fun saveAppSettings() {
@@ -106,12 +128,12 @@ class AppSettingsViewModel(private val userRepository: UserRepository) : BaseVie
 
     fun updateAllAnimeListPosition(newPosition: Int) {
         currentAppSetting?.allAnimeListPosition = newPosition
-        allAnimeListPositionSubject.onNext(newPosition)
+        allAnimeListPositionSubject.onNext(newPosition + 1)
     }
 
     fun updateAllMangaListPosition(newPosition: Int) {
         currentAppSetting?.allMangaListPosition = newPosition
-        allMangaListPositionSubject.onNext(newPosition)
+        allMangaListPositionSubject.onNext(newPosition + 1)
     }
 
     fun updateUseRelativeDateForNextAiringEpisode(shouldUseRelativeDateForNextAiringEpisode: Boolean) {
@@ -175,7 +197,7 @@ class AppSettingsViewModel(private val userRepository: UserRepository) : BaseVie
         )
     }
 
-    private fun getAppThemeItems() {
+    fun getAppThemeItems() {
         val items = ArrayList<AppThemeItem>()
         var currentHeader = ""
         AppTheme.values().forEach {
@@ -192,5 +214,19 @@ class AppSettingsViewModel(private val userRepository: UserRepository) : BaseVie
             items.add(AppThemeItem(appTheme = it))
         }
         appThemeItemsSubject.onNext(items)
+    }
+
+    fun getAllAnimeListNumbers() {
+        val allAnimeListItems = ArrayList<String>()
+        allAnimeListItems.add("")
+        allAnimeListItems.addAll(viewer?.mediaListOptions?.animeList?.sectionOrder ?: listOf())
+        allAnimeListItemsSubject.onNext(allAnimeListItems)
+    }
+
+    fun getAllMangaListNumbers() {
+        val allMangaListItems = ArrayList<String>()
+        allMangaListItems.add("")
+        allMangaListItems.addAll(viewer?.mediaListOptions?.mangaList?.sectionOrder ?: listOf())
+        allMangaListItemsSubject.onNext(allMangaListItems)
     }
 }

@@ -16,7 +16,7 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.layout_header.view.*
 import kotlinx.android.synthetic.main.list_app_theme.view.*
 
-class AppThemeAdapter(
+class AppThemeRvAdapter(
     private val context: Context,
     list: List<AppThemeItem>,
     private val listener: AppThemeListener?

@@ -52,6 +52,10 @@ class DefaultAuthenticationRepository(
             )
     }
 
+    override fun getViewerDataFromCache(): Observable<User> {
+        return Observable.just(userManager.viewerData?.data)
+    }
+
     override fun loginAsGuest(shouldLogin: Boolean) {
         userManager.isLoggedInAsGuest = shouldLogin
     }

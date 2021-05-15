@@ -93,7 +93,7 @@ class ALchanApplication : Application() {
         viewModel { SharedProfileViewModel(get(), get()) }
         viewModel { BioViewModel() }
 
-        viewModel { AppSettingsViewModel(get()) }
+        viewModel { AppSettingsViewModel(get(), get()) }
     }
 
     override fun onCreate() {
