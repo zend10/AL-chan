@@ -35,6 +35,17 @@ class AppSettingsViewModel(
     private val koreanMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
     private val chineseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
     private val taiwaneseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
+    private val sendAiringPushNotificationsSubject = BehaviorSubject.createDefault(true)
+    private val sendActivityPushNotificationsSubject = BehaviorSubject.createDefault(true)
+    private val sendForumPushNotificationsSubject = BehaviorSubject.createDefault(true)
+    private val sendFollowsPushNotificationsSubject = BehaviorSubject.createDefault(true)
+    private val sendRelationsPushNotificationsSubject = BehaviorSubject.createDefault(true)
+    private val mergePushNotificationsSubject = BehaviorSubject.createDefault(false)
+    private val showPushNotificationsIntervalSubject = BehaviorSubject.createDefault(1)
+    private val useHighestQualityImageSubject = BehaviorSubject.createDefault(false)
+    private val enableSocialFeatureSubject = BehaviorSubject.createDefault(true)
+    private val showBioAutomaticallySubject = BehaviorSubject.createDefault(true)
+    private val showStatsChartAutomaticallySubject = BehaviorSubject.createDefault(true)
 
     private val appThemeItemsSubject = PublishSubject.create<List<AppThemeItem>>()
     private val allAnimeListItemsSubject = PublishSubject.create<List<String>>()
@@ -42,6 +53,7 @@ class AppSettingsViewModel(
     private val characterNamingsSubject = PublishSubject.create<List<CharacterNaming>>()
     private val staffNamingsSubject = PublishSubject.create<List<StaffNaming>>()
     private val mediaNamingsSubject = PublishSubject.create<Pair<List<MediaNaming>, Country>>()
+    private val pushNotificationsIntervalsSubject = PublishSubject.create<List<Int>>()
 
     val appTheme: Observable<AppTheme>
         get() = appThemeSubject
@@ -79,6 +91,39 @@ class AppSettingsViewModel(
     val taiwaneseMediaNaming: Observable<MediaNaming>
         get() = taiwaneseMediaNamingSubject
 
+    val sendAiringPushNotifications: Observable<Boolean>
+        get() = sendAiringPushNotificationsSubject
+
+    val sendActivityPushNotifications: Observable<Boolean>
+        get() = sendActivityPushNotificationsSubject
+
+    val sendForumPushNotifications: Observable<Boolean>
+        get() = sendForumPushNotificationsSubject
+
+    val sendFollowsPushNotifications: Observable<Boolean>
+        get() = sendFollowsPushNotificationsSubject
+
+    val sendRelationsPushNotifications: Observable<Boolean>
+        get() = sendRelationsPushNotificationsSubject
+
+    val mergePushNotifications: Observable<Boolean>
+        get() = mergePushNotificationsSubject
+
+    val showPushNotificationsInterval: Observable<Int>
+        get() = showPushNotificationsIntervalSubject
+
+    val useHighestQualityImage: Observable<Boolean>
+        get() = useHighestQualityImageSubject
+
+    val enableSocialFeature: Observable<Boolean>
+        get() = enableSocialFeatureSubject
+
+    val showBioAutomatically: Observable<Boolean>
+        get() = showBioAutomaticallySubject
+
+    val showStatsChartAutomatically: Observable<Boolean>
+        get() = showStatsChartAutomaticallySubject
+
     val appThemeItems: Observable<List<AppThemeItem>>
         get() = appThemeItemsSubject
 
@@ -96,6 +141,9 @@ class AppSettingsViewModel(
 
     val mediaNamings: Observable<Pair<List<MediaNaming>, Country>>
         get() = mediaNamingsSubject
+
+    val pushNotificationsIntervals: Observable<List<Int>>
+        get() = pushNotificationsIntervalsSubject
 
     private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
@@ -189,6 +237,61 @@ class AppSettingsViewModel(
         taiwaneseMediaNamingSubject.onNext(newMediaNaming)
     }
 
+    fun updateSendAiringPushNotifications(shouldSendAiringPushNotifications: Boolean) {
+        currentAppSetting?.sendAiringPushNotifications = shouldSendAiringPushNotifications
+        sendAiringPushNotificationsSubject.onNext(shouldSendAiringPushNotifications)
+    }
+
+    fun updateSendActivityPushNotifications(shouldSendActivityPushNotifications: Boolean) {
+        currentAppSetting?.sendActivityPushNotifications = shouldSendActivityPushNotifications
+        sendActivityPushNotificationsSubject.onNext(shouldSendActivityPushNotifications)
+    }
+
+    fun updateSendForumPushNotifications(shouldSendForumPushNotifications: Boolean) {
+        currentAppSetting?.sendForumPushNotifications = shouldSendForumPushNotifications
+        sendForumPushNotificationsSubject.onNext(shouldSendForumPushNotifications)
+    }
+
+    fun updateSendFollowsPushNotifications(shouldSendFollowsPushNotifications: Boolean) {
+        currentAppSetting?.sendFollowsPushNotifications = shouldSendFollowsPushNotifications
+        sendFollowsPushNotificationsSubject.onNext(shouldSendFollowsPushNotifications)
+    }
+
+    fun updateSendRelationsPushNotifications(shouldSendRelationsPushNotifications: Boolean) {
+        currentAppSetting?.sendRelationsPushNotifications = shouldSendRelationsPushNotifications
+        sendRelationsPushNotificationsSubject.onNext(shouldSendRelationsPushNotifications)
+    }
+
+    fun updateMergePushNotifications(shouldMergePushNotifications: Boolean) {
+        currentAppSetting?.mergePushNotifications = shouldMergePushNotifications
+        mergePushNotificationsSubject.onNext(shouldMergePushNotifications)
+    }
+
+    fun updateShowPushNotificationsInterval(newInterval: Int) {
+        currentAppSetting?.showPushNotificationsInterval = newInterval
+        showPushNotificationsIntervalSubject.onNext(newInterval)
+    }
+
+    fun updateUseHighestQualityImage(shouldUseHighestQualityImage: Boolean) {
+        currentAppSetting?.useHighestQualityImage = shouldUseHighestQualityImage
+        useHighestQualityImageSubject.onNext(shouldUseHighestQualityImage)
+    }
+
+    fun updateEnableSocialFeature(shouldEnableSocialFeature: Boolean) {
+        currentAppSetting?.enableSocialFeature = shouldEnableSocialFeature
+        enableSocialFeatureSubject.onNext(shouldEnableSocialFeature)
+    }
+
+    fun updateShowBioAutomatically(shouldShowBioAutomatically: Boolean) {
+        currentAppSetting?.showBioAutomatically = shouldShowBioAutomatically
+        showBioAutomaticallySubject.onNext(shouldShowBioAutomatically)
+    }
+
+    fun updateShowStatsChartAutomatically(shouldShowStatsChartAutomatically: Boolean) {
+        currentAppSetting?.showStatsChartAutomatically = shouldShowStatsChartAutomatically
+        showStatsChartAutomaticallySubject.onNext(shouldShowStatsChartAutomatically)
+    }
+
     private fun getAppSetting() {
         disposables.add(
             userRepository.getAppSetting()
@@ -211,6 +314,19 @@ class AppSettingsViewModel(
                     updateKoreanMediaNaming(it.koreanMediaNaming)
                     updateChineseMediaNaming(it.chineseMediaNaming)
                     updateTaiwaneseMediaNaming(it.taiwaneseMediaNaming)
+
+                    updateSendAiringPushNotifications(it.sendAiringPushNotifications)
+                    updateSendActivityPushNotifications(it.sendActivityPushNotifications)
+                    updateSendForumPushNotifications(it.sendForumPushNotifications)
+                    updateSendFollowsPushNotifications(it.sendFollowsPushNotifications)
+                    updateSendRelationsPushNotifications(it.sendRelationsPushNotifications)
+                    updateMergePushNotifications(it.mergePushNotifications)
+                    updateShowPushNotificationsInterval(it.showPushNotificationsInterval)
+
+                    updateUseHighestQualityImage(it.useHighestQualityImage)
+                    updateEnableSocialFeature(it.enableSocialFeature)
+                    updateShowBioAutomatically(it.showBioAutomatically)
+                    updateShowStatsChartAutomatically(it.showStatsChartAutomatically)
                 }
         )
     }
@@ -258,5 +374,9 @@ class AppSettingsViewModel(
 
     fun getMediaNamings(country: Country) {
         mediaNamingsSubject.onNext(MediaNaming.values().toList() to country)
+    }
+
+    fun getPushNotificationsIntervals() {
+        pushNotificationsIntervalsSubject.onNext((1..24).toList())
     }
 }

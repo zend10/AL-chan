@@ -24,10 +24,11 @@ data class AppSetting(
     var sendFollowsPushNotifications: Boolean = true,
     var sendRelationsPushNotifications: Boolean = true,
     var mergePushNotifications: Boolean = false,
-    var showPushNotificationsEveryHour: Int = 1,
+    var showPushNotificationsInterval: Int = 1,
+    var useHighestQualityImage: Boolean = false,
     var enableSocialFeature: Boolean = true,
     var showBioAutomatically: Boolean = true,
-    var showStatsAutomatically: Boolean = true
+    var showStatsChartAutomatically: Boolean = true,
 ) {
     companion object {
         val EMPTY_APP_SETTING = AppSetting()

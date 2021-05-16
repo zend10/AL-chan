@@ -17,7 +17,6 @@ import com.zen.alchan.data.network.header.AniListHeaderInterceptorImpl
 import com.zen.alchan.data.network.header.HeaderInterceptor
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.bio.BioViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.landing.LandingViewModel
@@ -27,6 +26,7 @@ import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
+import com.zen.alchan.ui.root.RootViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
@@ -79,7 +79,7 @@ class ALchanApplication : Application() {
         single<UserRepository> { DefaultUserRepository(get(), get()) }
 
         // view model
-        viewModel { BaseActivityViewModel(get()) }
+        viewModel { RootViewModel(get()) }
 
         viewModel { SplashViewModel(get()) }
         viewModel { LandingViewModel(get()) }

@@ -1,5 +1,10 @@
 package com.zen.alchan.ui.settings.app
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.*
@@ -19,6 +24,7 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
     private var appThemeAdapter: AppThemeRvAdapter? = null
     private var allListPositionAdapter: AllListPositionRvAdapter? = null
     private var namingAdapter: NamingRvAdapter? = null
+    private var pushNotificationsIntervalAdapter: PushNotificationsIntervalRvAdapter? = null
 
     override fun setUpLayout() {
         setUpToolbar(defaultToolbar, getString(R.string.app_settings))
@@ -71,15 +77,79 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
             viewModel.getMediaNamings(Country.TAIWAN)
         }
 
+        appSettingsAiringPushNotificationsCheckBox.clicks {
+            viewModel.updateSendAiringPushNotifications(appSettingsAiringPushNotificationsCheckBox.isChecked)
+        }
+
+        appSettingsActivityPushNotificationsCheckBox.clicks {
+            viewModel.updateSendActivityPushNotifications(appSettingsActivityPushNotificationsCheckBox.isChecked)
+        }
+
+        appSettingsForumPushNotificationsCheckBox.clicks {
+            viewModel.updateSendForumPushNotifications(appSettingsForumPushNotificationsCheckBox.isChecked)
+        }
+
+        appSettingsFollowsPushNotificationsCheckBox.clicks {
+            viewModel.updateSendFollowsPushNotifications(appSettingsFollowsPushNotificationsCheckBox.isChecked)
+        }
+
+        appSettingsRelationsPushNotificationsCheckBox.clicks {
+            viewModel.updateSendRelationsPushNotifications(appSettingsRelationsPushNotificationsCheckBox.isChecked)
+        }
+
+        appSettingsMergePushNotificationsCheckBox.clicks {
+            viewModel.updateMergePushNotifications(appSettingsMergePushNotificationsCheckBox.isChecked)
+        }
+
+        appSettingsShowPushNotificationsEveryHourLayout.clicks {
+            viewModel.getPushNotificationsIntervals()
+        }
+
+        appSettingsHighestQualityImageCheckBox.clicks {
+            viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
+        }
+
+        appSettingsSocialFeatureCheckBox.clicks {
+            viewModel.updateEnableSocialFeature(appSettingsSocialFeatureCheckBox.isChecked)
+        }
+
+        appSettingsShowBioAutomaticallyCheckBox.clicks {
+            viewModel.updateShowBioAutomatically(appSettingsShowBioAutomaticallyCheckBox.isChecked)
+        }
+
+        appSettingsShowStatsChartAutomaticallyCheckBox.clicks {
+            viewModel.updateShowStatsChartAutomatically(appSettingsShowStatsChartAutomaticallyCheckBox.isChecked)
+        }
+
         appSettingsSaveButton.clicks {
-            viewModel.saveAppSettings()
-            activity?.recreate()
+            dialog.showConfirmationDialog(
+                R.string.save_changes,
+                R.string.the_app_will_be_restarted_to_apply_the_change,
+                R.string.save,
+                {
+                    viewModel.saveAppSettings()
+                    activity?.recreate()        
+                },
+                R.string.cancel,
+                {}
+            )
         }
 
         appSettingsResetButton.clicks {
-            viewModel.resetAppSettings()
-            activity?.recreate()
+            dialog.showConfirmationDialog(
+                R.string.reset_to_default,
+                R.string.the_app_will_be_restarted_to_apply_the_change,
+                R.string.reset,
+                {
+                    viewModel.resetAppSettings()
+                    activity?.recreate()
+                },
+                R.string.cancel,
+                {}
+            )
         }
+
+        setPushNotificationsInfoTextLink()
     }
 
     override fun setUpInsets() {
@@ -158,6 +228,72 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         disposables.add(
             viewModel.taiwaneseMediaNaming.subscribe {
                 appSettingsTaiwaneseMediaText.text = it.name.convertFromSnakeCase()
+            }
+        )
+
+        disposables.add(
+            viewModel.sendAiringPushNotifications.subscribe {
+                appSettingsAiringPushNotificationsCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.sendActivityPushNotifications.subscribe {
+                appSettingsActivityPushNotificationsCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.sendForumPushNotifications.subscribe {
+                appSettingsForumPushNotificationsCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.sendFollowsPushNotifications.subscribe {
+                appSettingsFollowsPushNotificationsCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.sendRelationsPushNotifications.subscribe {
+                appSettingsRelationsPushNotificationsCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.mergePushNotifications.subscribe {
+                appSettingsMergePushNotificationsCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.showPushNotificationsInterval.subscribe {
+                appSettingsShowPushNotificationsEveryHourText.text = it.showUnit(requireContext(), R.plurals.hour)
+            }
+        )
+
+        disposables.add(
+            viewModel.useHighestQualityImage.subscribe {
+                appSettingsHighestQualityImageCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.enableSocialFeature.subscribe {
+                appSettingsSocialFeatureCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.showBioAutomatically.subscribe {
+                appSettingsShowBioAutomaticallyCheckBox.isChecked = it
+            }
+        )
+
+        disposables.add(
+            viewModel.showStatsChartAutomatically.subscribe {
+                appSettingsShowStatsChartAutomaticallyCheckBox.isChecked = it
             }
         )
 
@@ -245,6 +381,19 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
             }
         )
 
+        disposables.add(
+            viewModel.pushNotificationsIntervals.subscribe {
+                pushNotificationsIntervalAdapter = PushNotificationsIntervalRvAdapter(requireContext(), it, object : PushNotificationsIntervalRvAdapter.PushNotificationsIntervalListener {
+                    override fun getSelectedInterval(interval: Int) {
+                        dismissListDialog()
+                        viewModel.updateShowPushNotificationsInterval(interval)
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
         viewModel.loadData()
     }
 
@@ -257,11 +406,29 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         bottomSheetListDialog?.dismiss()
     }
 
+    private fun setPushNotificationsInfoTextLink() {
+        val dontKillMyAppText = "https://dontkillmyapp.com/"
+        val pushNotificationsInfoText = SpannableString(getString(R.string.important_to_know_n1_push_notifications_will_show_up_periodically_not_real_time_n2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com))
+        val startIndex = pushNotificationsInfoText.indexOf(dontKillMyAppText)
+        val endIndex = startIndex + dontKillMyAppText.length
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                navigation.openWebView(dontKillMyAppText)
+            }
+        }
+
+        pushNotificationsInfoText.setSpan(clickableSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        appSettingsPushNotificationsInfoText.movementMethod = LinkMovementMethod.getInstance()
+        appSettingsPushNotificationsInfoText.text = pushNotificationsInfoText
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         bottomSheetListDialog = null
         appThemeAdapter = null
         namingAdapter = null
+        pushNotificationsIntervalAdapter = null
     }
 
     companion object {

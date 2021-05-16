@@ -1,5 +1,7 @@
 package com.zen.alchan.helper.extensions
 
+import android.content.Context
+import androidx.annotation.PluralsRes
 import com.zen.alchan.helper.utils.TimeUtil
 import java.text.NumberFormat
 
@@ -13,4 +15,8 @@ fun Long.moreThanADay(): Boolean {
 
 fun Double.formatTwoDecimal(): String {
     return String.format("%.2f", this)
+}
+
+fun Int.showUnit(context: Context, @PluralsRes pluralResId: Int): String {
+    return "$this ${context.resources.getQuantityString(pluralResId, this)}"
 }

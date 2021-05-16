@@ -23,6 +23,7 @@
         <item name="themePrimaryBorderButton">@style/ButtonPrimaryBorder</item>
         <item name="themeNegativeBorderButton">@style/ButtonNegativeBorder</item>
         <item name="themeRegularCheckBox">@style/CheckBoxTheme</item>
+        <item name="colorBackgroundFloating">?themeCardColor</item>
     </style>
     
     <style name="DefaultAppTheme">

@@ -94,4 +94,28 @@
     <string name="use_media_english_name_format">Use English name (ex: Attack on Titan, Solo Leveling, The King\'s Avatar)</string>
     <string name="use_media_romaji_name_format">Use Romaji name (ex: Shingeki no Kyojin, Na Honjaman Level Up, Quanzhi Gaoshou)</string>
     <string name="use_media_native_name_format">Use Native name (ex: 進撃の巨人, 나 혼자만 레벨업, 全职高手)</string>
+    <string name="push_notifications">Push Notifications</string>
+    <string name="send_airing_push_notifications">Send Airing push notifications</string>
+    <string name="send_activity_push_notifications">Send Activity push notifications</string>
+    <string name="send_forum_push_notifications">Send Forum push notifications</string>
+    <string name="send_follows_push_notifications">Send Follows push notifications</string>
+    <string name="send_relations_push_notifications">Send Relations push notifications</string>
+    <string name="merge_activity_forum_follows_and_relations_push_notifications_into_one">Merge Activity, Forum, Follows, and Relations push notifications into one</string>
+    <string name="show_push_notifications_not_earlier_then_every">Show push notifications not earlier then every</string>
+    <string name="important_to_know_n1_push_notifications_will_show_up_periodically_not_real_time_n2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com">Important to know:\n1. Push notifications will show up periodically, not real time.\n2. Depending on your ROM and phone setting, it might not show up at all. (reference: https://dontkillmyapp.com/)</string>
+    <string name="memory_saver">Memory Saver</string>
+    <string name="use_the_highest_quality_image">Use the highest quality image</string>
+    <string name="enable_social_feature">Enable Social feature</string>
+    <string name="show_bio_automatically">Show Bio automatically</string>
+    <string name="these_features_are_not_suitable_for_devices_with_limited_memory_it_is_recommended_to_uncheck_all_for_better_performance_and_stability_sorry_for_the_inconvenience">These features are not suitable for devices with limited memory. It is recommended to uncheck all for better performance and stability. Sorry for the inconvenience.</string>
+    <string name="all_the_configurations_here_only_applies_to_al_chan_and_will_not_affect_the_website_anilist_co">All the configurations here only applies to AL-chan and will not affect the website anilist.co.</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="the_app_will_be_restarted_to_apply_the_change">"The app will be restarted to apply the change."</string>
+    <string name="reset">Reset</string>
+
+    <plurals name="hour">
+        <item quantity="one">Hour</item>
+        <item quantity="other">Hours</item>
+    </plurals>
 </resources>
