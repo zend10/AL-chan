@@ -39,7 +39,10 @@ import org.koin.dsl.module
 class ALchanApplication : Application() {
 
     private val appModules = module {
-        val gson = GsonBuilder().serializeSpecialFloatingPointValues().create()
+        val gson = GsonBuilder()
+            .setLenient()
+            .serializeSpecialFloatingPointValues()
+            .create()
 
         // local storage
         single<SharedPreferencesHandler> {

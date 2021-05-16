@@ -76,7 +76,7 @@
     <string name="naming">Naming</string>
     <string name="use_relative_date_for_next_airing_episode">Use relative date for next airing episode</string>
     <string name="display_character_name">Display Character name</string>
-    <string name="display_staff_name">Display Staff name</string>
+    <string name="display_japanese_staff_name">Display Japanese staff name</string>
     <string name="display_japanese_media_title">Display Japanese media title</string>
     <string name="display_korean_media_title">Display Korean media title</string>
     <string name="display_chinese_media_title">Display Chinese media title</string>
@@ -85,4 +85,13 @@
     <string name="below">Below</string>
     <string name="use_circular_avatar_for_profile">Use circular avatar for Profile</string>
     <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
+    <string name="follow_anilist_setting">Follow AniList setting</string>
+    <string name="native_name">Native name</string>
+    <string name="use_character_first_middle_last_name_format">Use First Middle Last name format (ex: Naruto Uzumaki, Kaguya Shinomiya, Eren Yeager, Violet Evergarden)</string>
+    <string name="use_character_last_middle_first_name_format">Use Last Middle First name format (ex: Uzumaki Naruto, Shinomiya Kaguya, Yeager Eren, Evergarden Violet)</string>
+    <string name="use_staff_first_middle_last_name_format">Use First Middle Last name format (ex: Miku Hatsune, Hayao Miyazaki, Kana Hanazawa)</string>
+    <string name="use_staff_last_middle_first_name_format">Use Last Middle First name format (ex: Hatsune Miku, Miyazaki Hayao, Hanazawa Kana)</string>
+    <string name="use_media_english_name_format">Use English name (ex: Attack on Titan, Solo Leveling, The King\'s Avatar)</string>
+    <string name="use_media_romaji_name_format">Use Romaji name (ex: Shingeki no Kyojin, Na Honjaman Level Up, Quanzhi Gaoshou)</string>
+    <string name="use_media_native_name_format">Use Native name (ex: 進撃の巨人, 나 혼자만 레벨업, 全职高手)</string>
 </resources>

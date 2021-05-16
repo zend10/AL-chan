@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.ui.common.TextRvAdapter
 import kotlinx.android.synthetic.main.list_text.view.*
@@ -35,7 +36,7 @@ class AllListPositionRvAdapter(
             } else {
                 view.itemText.text = "$ordinalNumber ${context.getString(R.string.below)} $content"
             }
-            view.itemLayout.setOnClickListener {
+            view.itemLayout.clicks {
                 listener.getSelectedIndex(index)
             }
         }

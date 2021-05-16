@@ -2,17 +2,15 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <include layout="@layout/divider"
-        android:id="@+id/upperHeaderDivider"/>
+        android:id="@+id/upperHeaderDivider"
+        android:visibility="gone"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/headerText"
         style="?themeRegularBoldFont"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="@dimen/marginPageBig"
         android:layout_marginBottom="@dimen/marginPageNormal"
         android:layout_marginHorizontal="@dimen/marginPageNormal"
@@ -20,6 +18,7 @@
         android:layout_height="wrap_content"/>
 
     <include layout="@layout/divider"
-        android:id="@+id/lowerHeaderDivider"/>
+        android:id="@+id/lowerHeaderDivider"
+        android:visibility="gone"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

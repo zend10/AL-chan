@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.getColorName
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.AppThemeItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -49,7 +50,7 @@ class AppThemeRvAdapter(
     inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(appThemeItem: AppThemeItem) {
             view.headerText.text = appThemeItem.header
-            view.lowerHeaderDivider.show(false)
+            view.upperHeaderDivider.show(true)
         }
     }
 
@@ -61,7 +62,7 @@ class AppThemeRvAdapter(
             view.appThemeSecondaryColor.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, appTheme.colors.second))
             view.appThemeNegativeColor.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, appTheme.colors.third))
 
-            view.appThemeLayout.setOnClickListener {
+            view.appThemeLayout.clicks {
                 listener?.getSelectedAppTheme(appTheme)
             }
         }

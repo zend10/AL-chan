@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/display_staff_name"
+                        android:text="@string/display_japanese_staff_name"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"

@@ -2,7 +2,7 @@ package com.zen.alchan.ui.settings.app
 
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.helper.enums.AppTheme
+import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetListDialog
@@ -18,6 +18,7 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
     private var bottomSheetListDialog: BottomSheetListDialog? = null
     private var appThemeAdapter: AppThemeRvAdapter? = null
     private var allListPositionAdapter: AllListPositionRvAdapter? = null
+    private var namingAdapter: NamingRvAdapter? = null
 
     override fun setUpLayout() {
         setUpToolbar(defaultToolbar, getString(R.string.app_settings))
@@ -47,27 +48,27 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         }
 
         appSettingsCharacterNameLayout.clicks {
-
+            viewModel.getCharacterNamings()
         }
 
         appSettingsStaffNameLayout.clicks {
-
+            viewModel.getStaffNamings()
         }
 
         appSettingsJapaneseMediaLayout.clicks {
-
+            viewModel.getMediaNamings(Country.JAPAN)
         }
 
         appSettingsKoreanMediaLayout.clicks {
-
+            viewModel.getMediaNamings(Country.SOUTH_KOREA)
         }
 
         appSettingsChineseMediaLayout.clicks {
-
+            viewModel.getMediaNamings(Country.CHINA)
         }
 
         appSettingsTaiwaneseMediaLayout.clicks {
-
+            viewModel.getMediaNamings(Country.TAIWAN)
         }
 
         appSettingsSaveButton.clicks {
@@ -126,37 +127,37 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
 
         disposables.add(
             viewModel.characterNaming.subscribe {
-                appSettingsCharacterNameText.text = it.name
+                appSettingsCharacterNameText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.staffNaming.subscribe {
-                appSettingsStaffNameText.text = it.name
+                appSettingsStaffNameText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.japaneseMediaNaming.subscribe {
-                appSettingsJapaneseMediaText.text = it.name
+                appSettingsJapaneseMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.koreanMediaNaming.subscribe {
-                appSettingsKoreanMediaText.text = it.name
+                appSettingsKoreanMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.chineseMediaNaming.subscribe {
-                appSettingsChineseMediaText.text = it.name
+                appSettingsChineseMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.taiwaneseMediaNaming.subscribe {
-                appSettingsTaiwaneseMediaText.text = it.name
+                appSettingsTaiwaneseMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
@@ -199,6 +200,51 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
             }
         )
 
+        disposables.add(
+            viewModel.characterNamings.subscribe {
+                namingAdapter = NamingRvAdapter(requireContext(), it, object : NamingRvAdapter.NamingListener {
+                    override fun getSelectedNaming(naming: Naming) {
+                        if (naming is CharacterNaming) {
+                            dismissListDialog()
+                            viewModel.updateCharacterNaming(naming)
+                        }
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
+        disposables.add(
+            viewModel.staffNamings.subscribe {
+                namingAdapter = NamingRvAdapter(requireContext(), it, object : NamingRvAdapter.NamingListener {
+                    override fun getSelectedNaming(naming: Naming) {
+                        if (naming is StaffNaming) {
+                            dismissListDialog()
+                            viewModel.updateStaffNaming(naming)
+                        }
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
+        disposables.add(
+            viewModel.mediaNamings.subscribe { (list, country) ->
+                namingAdapter = NamingRvAdapter(requireContext(), list, object : NamingRvAdapter.NamingListener {
+                    override fun getSelectedNaming(naming: Naming) {
+                        if (naming is MediaNaming) {
+                            dismissListDialog()
+                            viewModel.updateMediaNaming(naming, country)
+                        }
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
         viewModel.loadData()
     }
 
@@ -215,6 +261,7 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         super.onDestroyView()
         bottomSheetListDialog = null
         appThemeAdapter = null
+        namingAdapter = null
     }
 
     companion object {

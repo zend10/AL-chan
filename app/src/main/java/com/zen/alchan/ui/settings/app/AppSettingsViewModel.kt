@@ -4,10 +4,7 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.helper.enums.AppTheme
-import com.zen.alchan.helper.enums.CharacterNaming
-import com.zen.alchan.helper.enums.MediaNaming
-import com.zen.alchan.helper.enums.StaffNaming
+import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.helper.pojo.AppThemeItem
@@ -42,6 +39,9 @@ class AppSettingsViewModel(
     private val appThemeItemsSubject = PublishSubject.create<List<AppThemeItem>>()
     private val allAnimeListItemsSubject = PublishSubject.create<List<String>>()
     private val allMangaListItemsSubject = PublishSubject.create<List<String>>()
+    private val characterNamingsSubject = PublishSubject.create<List<CharacterNaming>>()
+    private val staffNamingsSubject = PublishSubject.create<List<StaffNaming>>()
+    private val mediaNamingsSubject = PublishSubject.create<Pair<List<MediaNaming>, Country>>()
 
     val appTheme: Observable<AppTheme>
         get() = appThemeSubject
@@ -87,6 +87,15 @@ class AppSettingsViewModel(
 
     val allMangaListItems: Observable<List<String>>
         get() = allMangaListItemsSubject
+
+    val characterNamings: Observable<List<CharacterNaming>>
+        get() = characterNamingsSubject
+
+    val staffNamings: Observable<List<StaffNaming>>
+        get() = staffNamingsSubject
+
+    val mediaNamings: Observable<Pair<List<MediaNaming>, Country>>
+        get() = mediaNamingsSubject
 
     private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
@@ -151,22 +160,31 @@ class AppSettingsViewModel(
         staffNamingSubject.onNext(newStaffNaming)
     }
 
-    fun updateJapaneseMediaNaming(newMediaNaming: MediaNaming) {
+    fun updateMediaNaming(newMediaNaming: MediaNaming, country: Country) {
+        when (country) {
+            Country.JAPAN -> updateJapaneseMediaNaming(newMediaNaming)
+            Country.SOUTH_KOREA -> updateKoreanMediaNaming(newMediaNaming)
+            Country.CHINA -> updateChineseMediaNaming(newMediaNaming)
+            Country.TAIWAN -> updateTaiwaneseMediaNaming(newMediaNaming)
+        }
+    }
+
+    private fun updateJapaneseMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.japaneseMediaNaming = newMediaNaming
         japaneseMediaNamingSubject.onNext(newMediaNaming)
     }
 
-    fun updateKoreanMediaNaming(newMediaNaming: MediaNaming) {
+    private fun updateKoreanMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.koreanMediaNaming = newMediaNaming
         koreanMediaNamingSubject.onNext(newMediaNaming)
     }
 
-    fun updateChineseMediaNaming(newMediaNaming: MediaNaming) {
+    private fun updateChineseMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.chineseMediaNaming = newMediaNaming
         chineseMediaNamingSubject.onNext(newMediaNaming)
     }
 
-    fun updateTaiwaneseMediaNaming(newMediaNaming: MediaNaming) {
+    private fun updateTaiwaneseMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.taiwaneseMediaNaming = newMediaNaming
         taiwaneseMediaNamingSubject.onNext(newMediaNaming)
     }
@@ -228,5 +246,17 @@ class AppSettingsViewModel(
         allMangaListItems.add("")
         allMangaListItems.addAll(viewer?.mediaListOptions?.mangaList?.sectionOrder ?: listOf())
         allMangaListItemsSubject.onNext(allMangaListItems)
+    }
+
+    fun getCharacterNamings() {
+        characterNamingsSubject.onNext(CharacterNaming.values().toList())
+    }
+
+    fun getStaffNamings() {
+        staffNamingsSubject.onNext(StaffNaming.values().toList())
+    }
+
+    fun getMediaNamings(country: Country) {
+        mediaNamingsSubject.onNext(MediaNaming.values().toList() to country)
     }
 }

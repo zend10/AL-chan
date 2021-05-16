@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.common
 
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.ui.base.BaseDialogFragment
