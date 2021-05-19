@@ -1,17 +1,16 @@
-package com.zen.alchan.ui.root
+package com.zen.alchan.ui.base
 
 import com.zen.alchan.R
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppTheme
-import com.zen.alchan.ui.base.BaseViewModel
 
-class RootViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class BaseActivityViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
     private val appTheme: AppTheme
         get() = userRepository.appSetting.appTheme
 
     override fun loadData() {
-        // do nothing
+        TODO("Not yet implemented")
     }
 
     fun isLightMode(): Boolean {

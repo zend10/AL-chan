@@ -3,7 +3,6 @@ package com.zen.alchan.ui.base
 import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class DefaultDialogManager(private val context: Context) : DialogManager {
 
@@ -12,7 +11,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     }
 
     override fun showMessageDialog(title: Int, message: Int, positiveButton: Int) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButton, null)
@@ -28,7 +27,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         negativeButton: Int,
         negativeAction: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
