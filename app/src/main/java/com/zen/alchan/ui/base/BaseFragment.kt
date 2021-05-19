@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.zen.alchan.R
+import com.zen.alchan.ui.launch.LaunchActivity
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
 
@@ -93,5 +95,11 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
             setNavigationIcon(icon)
             setNavigationOnClickListener { action() }
         }
+    }
+
+    protected fun restartApp() {
+        startActivity(Intent(rootActivity, LaunchActivity::class.java))
+        rootActivity.overridePendingTransition(0, 0)
+        rootActivity.finish()
     }
 }

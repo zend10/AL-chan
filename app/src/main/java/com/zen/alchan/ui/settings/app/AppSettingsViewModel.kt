@@ -55,6 +55,10 @@ class AppSettingsViewModel(
     private val mediaNamingsSubject = PublishSubject.create<Pair<List<MediaNaming>, Country>>()
     private val pushNotificationsIntervalsSubject = PublishSubject.create<List<Int>>()
 
+    private val _appSettingsSaved = PublishSubject.create<Unit>()
+    val appSettingsSaved: Observable<Unit>
+        get() = _appSettingsSaved
+
     val appTheme: Observable<AppTheme>
         get() = appThemeSubject
 
@@ -162,10 +166,12 @@ class AppSettingsViewModel(
 
     fun saveAppSettings() {
         userRepository.setAppSetting(currentAppSetting)
+        _appSettingsSaved.onNext(Unit)
     }
 
     fun resetAppSettings() {
         userRepository.setAppSetting(null)
+        _appSettingsSaved.onNext(Unit)
     }
 
     fun updateAppTheme(newAppTheme: AppTheme) {

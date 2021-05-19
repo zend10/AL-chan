@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.settings.app
 
+import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
@@ -12,6 +13,7 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetListDialog
 import com.zen.alchan.ui.common.TextRvAdapter
+import com.zen.alchan.ui.launch.LaunchActivity
 import kotlinx.android.synthetic.main.fragment_app_settings.*
 import kotlinx.android.synthetic.main.toolbar_default.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -128,7 +130,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
                 R.string.save,
                 {
                     viewModel.saveAppSettings()
-                    activity?.recreate()        
                 },
                 R.string.cancel,
                 {}
@@ -142,7 +143,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
                 R.string.reset,
                 {
                     viewModel.resetAppSettings()
-                    activity?.recreate()
                 },
                 R.string.cancel,
                 {}
@@ -391,6 +391,12 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
                 }).also { adapter ->
                     showListDialog(adapter)
                 }
+            }
+        )
+
+        disposables.add(
+            viewModel.appSettingsSaved.subscribe {
+                restartApp()
             }
         )
 
