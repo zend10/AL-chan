@@ -11,17 +11,16 @@ import io.reactivex.subjects.PublishSubject
 
 class LoginViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
 
-    private val loginStatusSubject = PublishSubject.create<Boolean>()
-
+    private val _loginStatus = PublishSubject.create<Boolean>()
     val loginStatus: Observable<Boolean>
-        get() = loginStatusSubject
+        get() = _loginStatus
 
     override fun loadData() {
         // do nothing
     }
 
     fun login(bearerToken: String) {
-        loadingSubject.onNext(true)
+        _loading.onNext(true)
         authenticationRepository.saveBearerToken(bearerToken)
 
         disposables.add(
@@ -29,9 +28,9 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
                 .applyScheduler()
                 .subscribe{
                     if (it != User.EMPTY_USER)
-                        loginStatusSubject.onNext(true)
+                        _loginStatus.onNext(true)
                     else
-                        errorSubject.onNext(0)
+                        _error.onNext(0)
                 }
         )
 
@@ -40,6 +39,6 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
 
     fun loginAsGuest() {
         authenticationRepository.loginAsGuest(true)
-        loginStatusSubject.onNext(true)
+        _loginStatus.onNext(true)
     }
 }

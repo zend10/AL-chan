@@ -12,10 +12,10 @@ import type.MediaListStatus
 
 class BioViewModel : BaseViewModel() {
 
-    private val bioItemsSubject = BehaviorSubject.createDefault(listOf<BioItem>())
+    private val _bioItems = BehaviorSubject.createDefault(listOf<BioItem>())
 
     val bioItems: Observable<List<BioItem>>
-        get() = bioItemsSubject
+        get() = _bioItems
 
     override fun loadData() {
         // do nothing
@@ -36,7 +36,7 @@ class BioViewModel : BaseViewModel() {
                 )
             )
         }
-        bioItemsSubject.onNext(bioItems)
+        _bioItems.onNext(bioItems)
     }
 
     private fun getTendency(statistics: UserStatistics): Tendency? {

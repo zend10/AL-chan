@@ -10,7 +10,7 @@ class BaseActivityViewModel(private val userRepository: UserRepository) : BaseVi
         get() = userRepository.appSetting.appTheme
 
     override fun loadData() {
-        TODO("Not yet implemented")
+        // do nothing
     }
 
     fun isLightMode(): Boolean {

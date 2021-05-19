@@ -10,20 +10,17 @@ abstract class BaseViewModel : ViewModel(), ViewModelContract {
 
     protected val disposables = CompositeDisposable()
 
-    protected val loadingSubject = BehaviorSubject.createDefault(false)
-
-    protected val errorSubject = PublishSubject.create<Int>()
-
-    protected val isAuthenticatedSubject = PublishSubject.create<Boolean>()
-
+    protected val _loading = BehaviorSubject.createDefault(false)
     val loading: Observable<Boolean>
-        get() = loadingSubject
+        get() = _loading
 
+    protected val _error = PublishSubject.create<Int>()
     val error: Observable<Int>
-        get() = errorSubject
+        get() = _error
 
+    protected val _isAuthenticated = PublishSubject.create<Boolean>()
     val isAuthenticated: Observable<Boolean>
-        get() = isAuthenticatedSubject
+        get() = _isAuthenticated
 
     protected var state = State.INIT
 

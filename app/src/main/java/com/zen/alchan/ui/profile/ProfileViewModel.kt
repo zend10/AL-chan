@@ -7,10 +7,10 @@ import io.reactivex.subjects.BehaviorSubject
 
 class ProfileViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
 
-    private val currentPageSubject = BehaviorSubject.createDefault(SharedProfileViewModel.Page.BIO)
+    private val _currentPage = BehaviorSubject.createDefault(SharedProfileViewModel.Page.BIO)
 
     val currentPage: Observable<SharedProfileViewModel.Page>
-        get() = currentPageSubject
+        get() = _currentPage
 
     override fun loadData() {
         // do nothing
@@ -21,6 +21,6 @@ class ProfileViewModel(private val authenticationRepository: AuthenticationRepos
     }
 
     fun setCurrentPage(page: SharedProfileViewModel.Page) {
-        currentPageSubject.onNext(page)
+        _currentPage.onNext(page)
     }
 }

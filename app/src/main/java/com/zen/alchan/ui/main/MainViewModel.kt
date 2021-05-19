@@ -20,7 +20,7 @@ class MainViewModel(
             authenticationRepository.getIsAuthenticated()
                 .applyScheduler()
                 .subscribe {
-                    isAuthenticatedSubject.onNext(it)
+                    _isAuthenticated.onNext(it)
                 }
         )
     }

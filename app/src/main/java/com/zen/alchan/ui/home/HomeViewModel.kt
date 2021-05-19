@@ -13,10 +13,9 @@ import io.reactivex.subjects.BehaviorSubject
 
 class HomeViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
-    private val homeItemListSubject = BehaviorSubject.createDefault(listOf<HomeItem>())
-
+    private val _homeItemList = BehaviorSubject.createDefault(listOf<HomeItem>())
     val homeItemList: Observable<List<HomeItem>>
-        get() = homeItemListSubject
+        get() = _homeItemList
 
     override fun loadData() {
         getHomeData()
@@ -30,9 +29,9 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
         if (!isReloading && state == State.LOADED) return
 
         if (isReloading)
-            loadingSubject.onNext(true)
+            _loading.onNext(true)
         else
-            homeItemListSubject.onNext(
+            _homeItemList.onNext(
                 listOf(HomeItem.ITEM_HEADER, HomeItem.ITEM_MENU, HomeItem.EMPTY_TRENDING_ANIME, HomeItem.EMPTY_TRENDING_MANGA)
             )
 
@@ -47,7 +46,7 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
                 .applyScheduler()
                 .subscribe(
                     {
-                        homeItemListSubject.onNext(
+                        _homeItemList.onNext(
                             listOf(
                                 HomeItem.ITEM_HEADER,
                                 HomeItem.ITEM_MENU,
@@ -55,13 +54,13 @@ class HomeViewModel(private val contentRepository: ContentRepository) : BaseView
                                 HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
                             )
                         )
-                        loadingSubject.onNext(false)
+                        _loading.onNext(false)
                         state = State.LOADED
                     },
                     {
                         if (source == Source.CACHE) {
-                            errorSubject.onNext(it.sendMessage())
-                            loadingSubject.onNext(false)
+                            _error.onNext(it.sendMessage())
+                            _loading.onNext(false)
                             state = State.ERROR
                         } else {
                             requestHomeData(Source.CACHE)

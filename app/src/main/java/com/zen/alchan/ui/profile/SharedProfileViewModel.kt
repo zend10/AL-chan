@@ -25,35 +25,35 @@ class SharedProfileViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val isViewerProfileSubject = PublishSubject.create<Boolean>()
-    private val userSubject = BehaviorSubject.createDefault(User.EMPTY_USER)
-    private val profileDataSubject = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
+    private val _isViewerProfile = PublishSubject.create<Boolean>()
+    private val _user = BehaviorSubject.createDefault(User.EMPTY_USER)
+    private val _profileData = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
 
-    private val animeCountSubject = BehaviorSubject.createDefault(0)
-    private val mangaCountSubject = BehaviorSubject.createDefault(0)
-    private val followingCountSubject = BehaviorSubject.createDefault(0)
-    private val followersCountSubject = BehaviorSubject.createDefault(0)
+    private val _animeCount = BehaviorSubject.createDefault(0)
+    private val _mangaCount = BehaviorSubject.createDefault(0)
+    private val _followingCount = BehaviorSubject.createDefault(0)
+    private val _followersCount = BehaviorSubject.createDefault(0)
 
     val isViewerProfile: Observable<Boolean>
-        get() = isViewerProfileSubject
+        get() = _isViewerProfile
 
     val user: Observable<User>
-        get() = userSubject
+        get() = _user
 
     val profileData: Observable<ProfileData>
-        get() = profileDataSubject
+        get() = _profileData
 
     val animeCount: Observable<Int>
-        get() = animeCountSubject
+        get() = _animeCount
 
     val mangaCount: Observable<Int>
-        get() = mangaCountSubject
+        get() = _mangaCount
 
     val followingCount: Observable<Int>
-        get() = followingCountSubject
+        get() = _followingCount
 
     val followersCount: Observable<Int>
-        get() = followersCountSubject
+        get() = _followersCount
 
     var userId = 0
 
@@ -63,7 +63,7 @@ class SharedProfileViewModel(
     }
 
     private fun checkIsViewerProfile() {
-        isViewerProfileSubject.onNext(userId == 0)
+        _isViewerProfile.onNext(userId == 0)
     }
 
     private fun checkIsAuthenticated() {
@@ -72,7 +72,7 @@ class SharedProfileViewModel(
                 .applyScheduler()
                 .subscribe {
                     loadUserData()
-                    isAuthenticatedSubject.onNext(it)
+                    _isAuthenticated.onNext(it)
                 }
         )
     }
@@ -85,7 +85,7 @@ class SharedProfileViewModel(
                 .applyScheduler()
                 .subscribe {
                     loadProfileData(it.id, if (isReloading) Source.NETWORK else null)
-                    userSubject.onNext(it)
+                    _user.onNext(it)
                     state = State.LOADED
                 }
         )
@@ -103,23 +103,23 @@ class SharedProfileViewModel(
                 .applyScheduler()
                 .subscribe(
                     {
-                        profileDataSubject.onNext(it)
+                        _profileData.onNext(it)
 
-                        animeCountSubject.onNext(
+                        _animeCount.onNext(
                             it.user.statistics.anime.statuses.find { anime ->
                                 anime.status == MediaListStatus.COMPLETED
                             }?.count ?: 0
                         )
-                        mangaCountSubject.onNext(
+                        _mangaCount.onNext(
                             it.user.statistics.manga.statuses.find { manga ->
                                 manga.status == MediaListStatus.COMPLETED
                             }?.count ?: 0
                         )
-                        followingCountSubject.onNext(it.following.pageInfo.total)
-                        followersCountSubject.onNext(it.followers.pageInfo.total)
+                        _followingCount.onNext(it.following.pageInfo.total)
+                        _followersCount.onNext(it.followers.pageInfo.total)
                     },
                     {
-                        errorSubject.onNext(it.sendMessage())
+                        _error.onNext(it.sendMessage())
                     }
                 )
         )

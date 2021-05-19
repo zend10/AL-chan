@@ -6,18 +6,18 @@ import io.reactivex.subjects.PublishSubject
 
 class SharedMainViewModel : BaseViewModel() {
 
-    private val scrollHomeToTopSubject = PublishSubject.create<Unit>()
-    private val scrollAnimeToTopSubject = PublishSubject.create<Unit>()
-    private val scrollMangaToTopSubject = PublishSubject.create<Unit>()
-    private val scrollSocialToTopSubject = PublishSubject.create<Unit>()
-    private val scrollProfileToTopSubject = PublishSubject.create<Unit>()
+    private val _scrollHomeToTop = PublishSubject.create<Unit>()
+    private val _scrollAnimeToTop = PublishSubject.create<Unit>()
+    private val _scrollMangaToTop = PublishSubject.create<Unit>()
+    private val _scrollSocialToTop = PublishSubject.create<Unit>()
+    private val _scrollProfileToTop = PublishSubject.create<Unit>()
 
     private val scrollEvents = linkedMapOf(
-        Page.HOME to scrollAnimeToTopSubject,
-        Page.SOCIAL to scrollSocialToTopSubject,
-        Page.ANIME to scrollAnimeToTopSubject,
-        Page.MANGA to scrollMangaToTopSubject,
-        Page.PROFILE to scrollProfileToTopSubject
+        Page.HOME to _scrollAnimeToTop,
+        Page.SOCIAL to _scrollSocialToTop,
+        Page.ANIME to _scrollAnimeToTop,
+        Page.MANGA to _scrollMangaToTop,
+        Page.PROFILE to _scrollProfileToTop
     )
 
     override fun loadData() {
@@ -29,7 +29,7 @@ class SharedMainViewModel : BaseViewModel() {
     }
 
     fun getScrollToTopObservable(page: Page): Observable<Unit> {
-        return scrollEvents[page] ?: scrollHomeToTopSubject
+        return scrollEvents[page] ?: _scrollHomeToTop
     }
 
     enum class Page {

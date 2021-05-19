@@ -23,131 +23,129 @@ class AppSettingsViewModel(
     private val authenticationRepository: AuthenticationRepository
 ) : BaseViewModel() {
 
-    private val appThemeSubject = BehaviorSubject.createDefault(AppTheme.DEFAULT_THEME_YELLOW)
-    private val useCircularAvatarForProfileSubject = BehaviorSubject.createDefault(true)
-    private val showRecentReviewsAtHomeSubject = BehaviorSubject.createDefault(true)
-    private val allAnimeListPositionSubject = BehaviorSubject.createDefault(0)
-    private val allMangaListPositionSubject = BehaviorSubject.createDefault(0)
-    private val useRelativeDateForNextAiringEpisodeSubject = BehaviorSubject.createDefault(false)
-    private val characterNamingSubject = BehaviorSubject.createDefault(CharacterNaming.FOLLOW_ANILIST)
-    private val staffNamingSubject = BehaviorSubject.createDefault(StaffNaming.FOLLOW_ANILIST)
-    private val japaneseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
-    private val koreanMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
-    private val chineseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
-    private val taiwaneseMediaNamingSubject = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
-    private val sendAiringPushNotificationsSubject = BehaviorSubject.createDefault(true)
-    private val sendActivityPushNotificationsSubject = BehaviorSubject.createDefault(true)
-    private val sendForumPushNotificationsSubject = BehaviorSubject.createDefault(true)
-    private val sendFollowsPushNotificationsSubject = BehaviorSubject.createDefault(true)
-    private val sendRelationsPushNotificationsSubject = BehaviorSubject.createDefault(true)
-    private val mergePushNotificationsSubject = BehaviorSubject.createDefault(false)
-    private val showPushNotificationsIntervalSubject = BehaviorSubject.createDefault(1)
-    private val useHighestQualityImageSubject = BehaviorSubject.createDefault(false)
-    private val enableSocialFeatureSubject = BehaviorSubject.createDefault(true)
-    private val showBioAutomaticallySubject = BehaviorSubject.createDefault(true)
-    private val showStatsChartAutomaticallySubject = BehaviorSubject.createDefault(true)
+    private val _appTheme = BehaviorSubject.createDefault(AppTheme.DEFAULT_THEME_YELLOW)
+    val appTheme: Observable<AppTheme>
+        get() = _appTheme
 
-    private val appThemeItemsSubject = PublishSubject.create<List<AppThemeItem>>()
-    private val allAnimeListItemsSubject = PublishSubject.create<List<String>>()
-    private val allMangaListItemsSubject = PublishSubject.create<List<String>>()
-    private val characterNamingsSubject = PublishSubject.create<List<CharacterNaming>>()
-    private val staffNamingsSubject = PublishSubject.create<List<StaffNaming>>()
-    private val mediaNamingsSubject = PublishSubject.create<Pair<List<MediaNaming>, Country>>()
-    private val pushNotificationsIntervalsSubject = PublishSubject.create<List<Int>>()
+    private val _useCircularAvatarForProfile = BehaviorSubject.createDefault(true)
+    val useCircularAvatarForProfile: Observable<Boolean>
+        get() = _useCircularAvatarForProfile
+
+    private val _showRecentReviewsAtHome = BehaviorSubject.createDefault(true)
+    val showRecentReviewsAtHome: Observable<Boolean>
+        get() = _showRecentReviewsAtHome
+
+    private val _allAnimeListPosition = BehaviorSubject.createDefault(0)
+    val allAnimeListPosition: Observable<Int>
+        get() = _allAnimeListPosition
+
+    private val _allMangaListPosition = BehaviorSubject.createDefault(0)
+    val allMangaListPosition: Observable<Int>
+        get() = _allMangaListPosition
+
+    private val _useRelativeDateForNextAiringEpisode = BehaviorSubject.createDefault(false)
+    val useRelativeDateForNextAiringEpisode: Observable<Boolean>
+        get() = _useRelativeDateForNextAiringEpisode
+
+    private val _characterNaming = BehaviorSubject.createDefault(CharacterNaming.FOLLOW_ANILIST)
+    val characterNaming: Observable<CharacterNaming>
+        get() = _characterNaming
+
+    private val _staffNaming = BehaviorSubject.createDefault(StaffNaming.FOLLOW_ANILIST)
+    val staffNaming: Observable<StaffNaming>
+        get() = _staffNaming
+
+    private val _japaneseMediaNaming = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
+    val japaneseMediaNaming: Observable<MediaNaming>
+        get() = _japaneseMediaNaming
+
+    private val _koreanMediaNaming = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
+    val koreanMediaNaming: Observable<MediaNaming>
+        get() = _koreanMediaNaming
+
+    private val _chineseMediaNaming = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
+    val chineseMediaNaming: Observable<MediaNaming>
+        get() = _chineseMediaNaming
+
+    private val _taiwaneseMediaNaming = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
+    val taiwaneseMediaNaming: Observable<MediaNaming>
+        get() = _taiwaneseMediaNaming
+
+    private val _sendAiringPushNotifications = BehaviorSubject.createDefault(true)
+    val sendAiringPushNotifications: Observable<Boolean>
+        get() = _sendAiringPushNotifications
+
+    private val _sendActivityPushNotifications = BehaviorSubject.createDefault(true)
+    val sendActivityPushNotifications: Observable<Boolean>
+        get() = _sendActivityPushNotifications
+
+    private val _sendForumPushNotifications = BehaviorSubject.createDefault(true)
+    val sendForumPushNotifications: Observable<Boolean>
+        get() = _sendForumPushNotifications
+
+    private val _sendFollowsPushNotifications = BehaviorSubject.createDefault(true)
+    val sendFollowsPushNotifications: Observable<Boolean>
+        get() = _sendFollowsPushNotifications
+
+    private val _sendRelationsPushNotifications = BehaviorSubject.createDefault(true)
+    val sendRelationsPushNotifications: Observable<Boolean>
+        get() = _sendRelationsPushNotifications
+
+    private val _mergePushNotifications = BehaviorSubject.createDefault(false)
+    val mergePushNotifications: Observable<Boolean>
+        get() = _mergePushNotifications
+
+    private val _showPushNotificationsInterval = BehaviorSubject.createDefault(1)
+    val showPushNotificationsInterval: Observable<Int>
+        get() = _showPushNotificationsInterval
+
+    private val _useHighestQualityImage = BehaviorSubject.createDefault(false)
+    val useHighestQualityImage: Observable<Boolean>
+        get() = _useHighestQualityImage
+
+    private val _enableSocialFeature = BehaviorSubject.createDefault(true)
+    val enableSocialFeature: Observable<Boolean>
+        get() = _enableSocialFeature
+
+    private val _showBioAutomatically = BehaviorSubject.createDefault(true)
+    val showBioAutomatically: Observable<Boolean>
+        get() = _showBioAutomatically
+
+    private val _showStatsChartAutomatically = BehaviorSubject.createDefault(true)
+    val showStatsChartAutomatically: Observable<Boolean>
+        get() = _showStatsChartAutomatically
 
     private val _appSettingsSaved = PublishSubject.create<Unit>()
     val appSettingsSaved: Observable<Unit>
         get() = _appSettingsSaved
 
-    val appTheme: Observable<AppTheme>
-        get() = appThemeSubject
-
-    val useCircularAvatarForProfile: Observable<Boolean>
-        get() = useCircularAvatarForProfileSubject
-
-    val showRecentReviewsAtHome: Observable<Boolean>
-        get() = showRecentReviewsAtHomeSubject
-
-    val allAnimeListPosition: Observable<Int>
-        get() = allAnimeListPositionSubject
-
-    val allMangaListPosition: Observable<Int>
-        get() = allMangaListPositionSubject
-
-    val useRelativeDateForNextAiringEpisode: Observable<Boolean>
-        get() = useRelativeDateForNextAiringEpisodeSubject
-
-    val characterNaming: Observable<CharacterNaming>
-        get() = characterNamingSubject
-
-    val staffNaming: Observable<StaffNaming>
-        get() = staffNamingSubject
-
-    val japaneseMediaNaming: Observable<MediaNaming>
-        get() = japaneseMediaNamingSubject
-
-    val koreanMediaNaming: Observable<MediaNaming>
-        get() = koreanMediaNamingSubject
-
-    val chineseMediaNaming: Observable<MediaNaming>
-        get() = chineseMediaNamingSubject
-
-    val taiwaneseMediaNaming: Observable<MediaNaming>
-        get() = taiwaneseMediaNamingSubject
-
-    val sendAiringPushNotifications: Observable<Boolean>
-        get() = sendAiringPushNotificationsSubject
-
-    val sendActivityPushNotifications: Observable<Boolean>
-        get() = sendActivityPushNotificationsSubject
-
-    val sendForumPushNotifications: Observable<Boolean>
-        get() = sendForumPushNotificationsSubject
-
-    val sendFollowsPushNotifications: Observable<Boolean>
-        get() = sendFollowsPushNotificationsSubject
-
-    val sendRelationsPushNotifications: Observable<Boolean>
-        get() = sendRelationsPushNotificationsSubject
-
-    val mergePushNotifications: Observable<Boolean>
-        get() = mergePushNotificationsSubject
-
-    val showPushNotificationsInterval: Observable<Int>
-        get() = showPushNotificationsIntervalSubject
-
-    val useHighestQualityImage: Observable<Boolean>
-        get() = useHighestQualityImageSubject
-
-    val enableSocialFeature: Observable<Boolean>
-        get() = enableSocialFeatureSubject
-
-    val showBioAutomatically: Observable<Boolean>
-        get() = showBioAutomaticallySubject
-
-    val showStatsChartAutomatically: Observable<Boolean>
-        get() = showStatsChartAutomaticallySubject
-
+    private val _appThemeItems = PublishSubject.create<List<AppThemeItem>>()
     val appThemeItems: Observable<List<AppThemeItem>>
-        get() = appThemeItemsSubject
+        get() = _appThemeItems
 
+    private val _allAnimeListItems = PublishSubject.create<List<String>>()
     val allAnimeListItems: Observable<List<String>>
-        get() = allAnimeListItemsSubject
+        get() = _allAnimeListItems
 
+    private val _allMangaListItems = PublishSubject.create<List<String>>()
     val allMangaListItems: Observable<List<String>>
-        get() = allMangaListItemsSubject
+        get() = _allMangaListItems
 
+    private val _characterNamings = PublishSubject.create<List<CharacterNaming>>()
     val characterNamings: Observable<List<CharacterNaming>>
-        get() = characterNamingsSubject
+        get() = _characterNamings
 
+    private val _staffNamings = PublishSubject.create<List<StaffNaming>>()
     val staffNamings: Observable<List<StaffNaming>>
-        get() = staffNamingsSubject
+        get() = _staffNamings
 
+    private val _mediaNamings = PublishSubject.create<Pair<List<MediaNaming>, Country>>()
     val mediaNamings: Observable<Pair<List<MediaNaming>, Country>>
-        get() = mediaNamingsSubject
+        get() = _mediaNamings
 
+    private val _pushNotificationsIntervals = PublishSubject.create<List<Int>>()
     val pushNotificationsIntervals: Observable<List<Int>>
-        get() = pushNotificationsIntervalsSubject
+        get() = _pushNotificationsIntervals
 
     private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
@@ -176,42 +174,42 @@ class AppSettingsViewModel(
 
     fun updateAppTheme(newAppTheme: AppTheme) {
         currentAppSetting?.appTheme = newAppTheme
-        appThemeSubject.onNext(newAppTheme)
+        _appTheme.onNext(newAppTheme)
     }
 
     fun updateUseCircularAvatarForProfile(shouldUseCircularAvatarForProfile: Boolean) {
         currentAppSetting?.useCircularAvatarForProfile = shouldUseCircularAvatarForProfile
-        useCircularAvatarForProfileSubject.onNext(shouldUseCircularAvatarForProfile)
+        _useCircularAvatarForProfile.onNext(shouldUseCircularAvatarForProfile)
     }
 
     fun updateShowRecentReviewsAtHome(shouldShowRecentReviewsAtHome: Boolean) {
         currentAppSetting?.showRecentReviewsAtHome = shouldShowRecentReviewsAtHome
-        showRecentReviewsAtHomeSubject.onNext(shouldShowRecentReviewsAtHome)
+        _showRecentReviewsAtHome.onNext(shouldShowRecentReviewsAtHome)
     }
 
     fun updateAllAnimeListPosition(newPosition: Int) {
         currentAppSetting?.allAnimeListPosition = newPosition
-        allAnimeListPositionSubject.onNext(newPosition + 1)
+        _allAnimeListPosition.onNext(newPosition + 1)
     }
 
     fun updateAllMangaListPosition(newPosition: Int) {
         currentAppSetting?.allMangaListPosition = newPosition
-        allMangaListPositionSubject.onNext(newPosition + 1)
+        _allMangaListPosition.onNext(newPosition + 1)
     }
 
     fun updateUseRelativeDateForNextAiringEpisode(shouldUseRelativeDateForNextAiringEpisode: Boolean) {
         currentAppSetting?.useRelativeDateForNextAiringEpisode = shouldUseRelativeDateForNextAiringEpisode
-        useRelativeDateForNextAiringEpisodeSubject.onNext(shouldUseRelativeDateForNextAiringEpisode)
+        _useRelativeDateForNextAiringEpisode.onNext(shouldUseRelativeDateForNextAiringEpisode)
     }
 
     fun updateCharacterNaming(newCharacterNaming: CharacterNaming) {
         currentAppSetting?.characterNaming = newCharacterNaming
-        characterNamingSubject.onNext(newCharacterNaming)
+        _characterNaming.onNext(newCharacterNaming)
     }
 
     fun updateStaffNaming(newStaffNaming: StaffNaming) {
         currentAppSetting?.staffNaming = newStaffNaming
-        staffNamingSubject.onNext(newStaffNaming)
+        _staffNaming.onNext(newStaffNaming)
     }
 
     fun updateMediaNaming(newMediaNaming: MediaNaming, country: Country) {
@@ -225,77 +223,77 @@ class AppSettingsViewModel(
 
     private fun updateJapaneseMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.japaneseMediaNaming = newMediaNaming
-        japaneseMediaNamingSubject.onNext(newMediaNaming)
+        _japaneseMediaNaming.onNext(newMediaNaming)
     }
 
     private fun updateKoreanMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.koreanMediaNaming = newMediaNaming
-        koreanMediaNamingSubject.onNext(newMediaNaming)
+        _koreanMediaNaming.onNext(newMediaNaming)
     }
 
     private fun updateChineseMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.chineseMediaNaming = newMediaNaming
-        chineseMediaNamingSubject.onNext(newMediaNaming)
+        _chineseMediaNaming.onNext(newMediaNaming)
     }
 
     private fun updateTaiwaneseMediaNaming(newMediaNaming: MediaNaming) {
         currentAppSetting?.taiwaneseMediaNaming = newMediaNaming
-        taiwaneseMediaNamingSubject.onNext(newMediaNaming)
+        _taiwaneseMediaNaming.onNext(newMediaNaming)
     }
 
     fun updateSendAiringPushNotifications(shouldSendAiringPushNotifications: Boolean) {
         currentAppSetting?.sendAiringPushNotifications = shouldSendAiringPushNotifications
-        sendAiringPushNotificationsSubject.onNext(shouldSendAiringPushNotifications)
+        _sendAiringPushNotifications.onNext(shouldSendAiringPushNotifications)
     }
 
     fun updateSendActivityPushNotifications(shouldSendActivityPushNotifications: Boolean) {
         currentAppSetting?.sendActivityPushNotifications = shouldSendActivityPushNotifications
-        sendActivityPushNotificationsSubject.onNext(shouldSendActivityPushNotifications)
+        _sendActivityPushNotifications.onNext(shouldSendActivityPushNotifications)
     }
 
     fun updateSendForumPushNotifications(shouldSendForumPushNotifications: Boolean) {
         currentAppSetting?.sendForumPushNotifications = shouldSendForumPushNotifications
-        sendForumPushNotificationsSubject.onNext(shouldSendForumPushNotifications)
+        _sendForumPushNotifications.onNext(shouldSendForumPushNotifications)
     }
 
     fun updateSendFollowsPushNotifications(shouldSendFollowsPushNotifications: Boolean) {
         currentAppSetting?.sendFollowsPushNotifications = shouldSendFollowsPushNotifications
-        sendFollowsPushNotificationsSubject.onNext(shouldSendFollowsPushNotifications)
+        _sendFollowsPushNotifications.onNext(shouldSendFollowsPushNotifications)
     }
 
     fun updateSendRelationsPushNotifications(shouldSendRelationsPushNotifications: Boolean) {
         currentAppSetting?.sendRelationsPushNotifications = shouldSendRelationsPushNotifications
-        sendRelationsPushNotificationsSubject.onNext(shouldSendRelationsPushNotifications)
+        _sendRelationsPushNotifications.onNext(shouldSendRelationsPushNotifications)
     }
 
     fun updateMergePushNotifications(shouldMergePushNotifications: Boolean) {
         currentAppSetting?.mergePushNotifications = shouldMergePushNotifications
-        mergePushNotificationsSubject.onNext(shouldMergePushNotifications)
+        _mergePushNotifications.onNext(shouldMergePushNotifications)
     }
 
     fun updateShowPushNotificationsInterval(newInterval: Int) {
         currentAppSetting?.showPushNotificationsInterval = newInterval
-        showPushNotificationsIntervalSubject.onNext(newInterval)
+        _showPushNotificationsInterval.onNext(newInterval)
     }
 
     fun updateUseHighestQualityImage(shouldUseHighestQualityImage: Boolean) {
         currentAppSetting?.useHighestQualityImage = shouldUseHighestQualityImage
-        useHighestQualityImageSubject.onNext(shouldUseHighestQualityImage)
+        _useHighestQualityImage.onNext(shouldUseHighestQualityImage)
     }
 
     fun updateEnableSocialFeature(shouldEnableSocialFeature: Boolean) {
         currentAppSetting?.enableSocialFeature = shouldEnableSocialFeature
-        enableSocialFeatureSubject.onNext(shouldEnableSocialFeature)
+        _enableSocialFeature.onNext(shouldEnableSocialFeature)
     }
 
     fun updateShowBioAutomatically(shouldShowBioAutomatically: Boolean) {
         currentAppSetting?.showBioAutomatically = shouldShowBioAutomatically
-        showBioAutomaticallySubject.onNext(shouldShowBioAutomatically)
+        _showBioAutomatically.onNext(shouldShowBioAutomatically)
     }
 
     fun updateShowStatsChartAutomatically(shouldShowStatsChartAutomatically: Boolean) {
         currentAppSetting?.showStatsChartAutomatically = shouldShowStatsChartAutomatically
-        showStatsChartAutomaticallySubject.onNext(shouldShowStatsChartAutomatically)
+        _showStatsChartAutomatically.onNext(shouldShowStatsChartAutomatically)
     }
 
     private fun getAppSetting() {
@@ -353,36 +351,36 @@ class AppSettingsViewModel(
             }
             items.add(AppThemeItem(appTheme = it))
         }
-        appThemeItemsSubject.onNext(items)
+        _appThemeItems.onNext(items)
     }
 
     fun getAllAnimeListNumbers() {
         val allAnimeListItems = ArrayList<String>()
         allAnimeListItems.add("")
         allAnimeListItems.addAll(viewer?.mediaListOptions?.animeList?.sectionOrder ?: listOf())
-        allAnimeListItemsSubject.onNext(allAnimeListItems)
+        _allAnimeListItems.onNext(allAnimeListItems)
     }
 
     fun getAllMangaListNumbers() {
         val allMangaListItems = ArrayList<String>()
         allMangaListItems.add("")
         allMangaListItems.addAll(viewer?.mediaListOptions?.mangaList?.sectionOrder ?: listOf())
-        allMangaListItemsSubject.onNext(allMangaListItems)
+        _allMangaListItems.onNext(allMangaListItems)
     }
 
     fun getCharacterNamings() {
-        characterNamingsSubject.onNext(CharacterNaming.values().toList())
+        _characterNamings.onNext(CharacterNaming.values().toList())
     }
 
     fun getStaffNamings() {
-        staffNamingsSubject.onNext(StaffNaming.values().toList())
+        _staffNamings.onNext(StaffNaming.values().toList())
     }
 
     fun getMediaNamings(country: Country) {
-        mediaNamingsSubject.onNext(MediaNaming.values().toList() to country)
+        _mediaNamings.onNext(MediaNaming.values().toList() to country)
     }
 
     fun getPushNotificationsIntervals() {
-        pushNotificationsIntervalsSubject.onNext((1..24).toList())
+        _pushNotificationsIntervals.onNext((1..24).toList())
     }
 }

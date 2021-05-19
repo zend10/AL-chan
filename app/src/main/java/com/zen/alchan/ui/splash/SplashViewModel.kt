@@ -11,10 +11,9 @@ import io.reactivex.subjects.PublishSubject
 
 class SplashViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
 
-    private val isLoggedInSubject = PublishSubject.create<Boolean>()
-
+    private val _isLoggedIn = PublishSubject.create<Boolean>()
     val isLoggedIn: Observable<Boolean>
-        get() = isLoggedInSubject
+        get() = _isLoggedIn
 
     override fun loadData() {
         checkIsLoggedIn()
@@ -31,7 +30,7 @@ class SplashViewModel(private val authenticationRepository: AuthenticationReposi
                     if (isAuthenticated)
                         loadViewerData()
                     else
-                        isLoggedInSubject.onNext(isLoggedIn)
+                        _isLoggedIn.onNext(isLoggedIn)
                 }
         )
     }
@@ -41,7 +40,7 @@ class SplashViewModel(private val authenticationRepository: AuthenticationReposi
             authenticationRepository.viewer
                 .applyScheduler()
                 .subscribe {
-                    isLoggedInSubject.onNext(it != User.EMPTY_USER)
+                    _isLoggedIn.onNext(it != User.EMPTY_USER)
                 }
         )
 
