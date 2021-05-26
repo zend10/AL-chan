@@ -4,13 +4,20 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.textview.MaterialTextView
+import com.stfalcon.imageviewer.loader.ImageLoader
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.getAttrValue
@@ -26,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_not_logged_in.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.math.abs
 
 
 class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
@@ -51,6 +59,9 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
     private var menuItemShareProfile: MenuItem? = null
     private var menuItemCopyLink: MenuItem? = null
 
+    private var scaleUpAnimation: Animation? = null
+    private var scaleDownAnimation: Animation? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -59,6 +70,9 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
     }
 
     override fun setUpLayout() {
+        scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
+        scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+
         profileToolbar.menu.apply {
             menuItemActivities = findItem(R.id.itemActivities)
             menuItemNotifications = findItem(R.id.itemNotifications)
@@ -159,6 +173,26 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             navigation.navigateToSettings()
             true
         }
+
+        profileAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            profileSwipeRefresh?.isEnabled = verticalOffset == 0
+
+            if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
+                if (profileNumberLayout?.isVisible == true) {
+                    profileNumberLayout?.startAnimation(scaleDownAnimation)
+                    profileNumberLayout?.visibility = View.INVISIBLE
+                }
+            } else {
+                if (profileNumberLayout?.isInvisible == true) {
+                    profileNumberLayout?.startAnimation(scaleUpAnimation)
+                    profileNumberLayout?.show(true)
+                }
+            }
+        })
+
+        profileSwipeRefresh.setOnRefreshListener {
+            sharedViewModel.reloadData()
+        }
     }
 
     override fun setUpInsets() {
@@ -185,10 +219,18 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
         )
 
         disposables.add(
-            sharedViewModel.user.subscribe {
-                profileUsernameText.text = it.name
-                ImageUtil.loadImage(requireContext(), it.avatar.large, profileAvatarImage)
-                ImageUtil.loadImage(requireContext(), it.bannerImage, profileBannerImage)
+            sharedViewModel.userAndAppSetting.subscribe { (user, appSetting) ->
+                profileUsernameText.text = user.name
+
+                if (appSetting.useCircularAvatarForProfile)
+                    ImageUtil.loadCircleImage(requireContext(), user.avatar.large, profileAvatarCircleImage)
+                else
+                    ImageUtil.loadRectangleImage(requireContext(), user.avatar.large, profileAvatarRectangleImage)
+
+                profileAvatarCircleImage.show(appSetting.useCircularAvatarForProfile)
+                profileAvatarRectangleImage.show(appSetting.useCircularAvatarForProfile)
+
+                ImageUtil.loadImage(requireContext(), user.bannerImage, profileBannerImage)
             }
         )
 

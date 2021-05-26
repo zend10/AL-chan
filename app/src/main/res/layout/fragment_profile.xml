@@ -6,10 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.profile.ProfileFragment">
 
-<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--        android:id="@+id/profileSwipeRefresh"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/profileSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -68,12 +68,27 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="?actionBarSize"/>
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/profileAvatarImage"
-                                android:layout_marginTop="@dimen/marginFar"
-                                android:adjustViewBounds="true"
-                                android:layout_width="@dimen/imageCircleSize"
-                                android:layout_height="@dimen/imageCircleSize"/>
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:visibility="invisible"
+                                    android:id="@+id/profileAvatarCircleImage"
+                                    android:layout_marginTop="@dimen/marginFar"
+                                    android:adjustViewBounds="true"
+                                    android:layout_width="@dimen/imageCircleSize"
+                                    android:layout_height="@dimen/imageCircleSize"/>
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:visibility="invisible"
+                                    android:id="@+id/profileAvatarRectangleImage"
+                                    android:layout_marginTop="@dimen/marginFar"
+                                    android:adjustViewBounds="true"
+                                    android:layout_width="@dimen/imageCircleSize"
+                                    android:layout_height="@dimen/imageCircleSize"/>
+
+                            </RelativeLayout>
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/profileUsernameText"
@@ -416,7 +431,7 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/layout_not_logged_in"/>
 

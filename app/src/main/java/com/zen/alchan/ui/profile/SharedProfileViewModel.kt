@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.profile
 
+import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
@@ -17,40 +18,57 @@ class SharedProfileViewModel(
 ) : BaseViewModel() {
 
     private val _isViewerProfile = PublishSubject.create<Boolean>()
-    private val _user = BehaviorSubject.createDefault(User.EMPTY_USER)
-    private val _profileData = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
-
-    private val _animeCount = BehaviorSubject.createDefault(0)
-    private val _mangaCount = BehaviorSubject.createDefault(0)
-    private val _followingCount = BehaviorSubject.createDefault(0)
-    private val _followersCount = BehaviorSubject.createDefault(0)
-
     val isViewerProfile: Observable<Boolean>
         get() = _isViewerProfile
 
-    val user: Observable<User>
-        get() = _user
+    private val _userAndAppSetting = BehaviorSubject.createDefault(User.EMPTY_USER to AppSetting.EMPTY_APP_SETTING)
+    val userAndAppSetting: Observable<Pair<User, AppSetting>>
+        get() = _userAndAppSetting
 
+    private val _appSetting = PublishSubject.create<AppSetting>()
+    val appSetting: Observable<AppSetting>
+        get() = _appSetting
+
+    private val _profileData = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
     val profileData: Observable<ProfileData>
         get() = _profileData
 
+    private val _animeCount = BehaviorSubject.createDefault(0)
     val animeCount: Observable<Int>
         get() = _animeCount
 
+    private val _mangaCount = BehaviorSubject.createDefault(0)
     val mangaCount: Observable<Int>
         get() = _mangaCount
 
+    private val _followingCount = BehaviorSubject.createDefault(0)
     val followingCount: Observable<Int>
         get() = _followingCount
 
+    private val _followersCount = BehaviorSubject.createDefault(0)
     val followersCount: Observable<Int>
         get() = _followersCount
 
     var userId = 0
+    var currentAppSetting: AppSetting = AppSetting.EMPTY_APP_SETTING
 
     override fun loadData() {
-        checkIsAuthenticated()
-        checkIsViewerProfile()
+        disposables.add(
+            userRepository.appSetting
+                .applyScheduler()
+                .subscribe {
+                    currentAppSetting = it
+
+                    checkIsAuthenticated()
+                    checkIsViewerProfile()
+                }
+        )
+
+        userRepository.loadAppSetting()
+    }
+
+    fun reloadData() {
+        loadUserData(true)
     }
 
     private fun checkIsViewerProfile() {
@@ -76,7 +94,7 @@ class SharedProfileViewModel(
                 .applyScheduler()
                 .subscribe {
                     loadProfileData(it.id, if (isReloading) Source.NETWORK else null)
-                    _user.onNext(it)
+                    _userAndAppSetting.onNext(it to currentAppSetting)
                     state = State.LOADED
                 }
         )

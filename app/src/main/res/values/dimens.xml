@@ -17,6 +17,7 @@
     <dimen name="marginClose">4dp</dimen>
     <dimen name="marginSmall">8dp</dimen>
     <dimen name="marginNormal">12dp</dimen>
+    <dimen name="marginBig">20dp</dimen>
     <dimen name="marginFar">56dp</dimen>
 
     <dimen name="cornerNormal">4dp</dimen>
