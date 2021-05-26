@@ -13,6 +13,7 @@ import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.StorageException
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.UserStatisticsSort
 
@@ -21,13 +22,9 @@ class DefaultUserRepository(
     private val userManager: UserManager
 ) : UserRepository {
 
-    private val _viewer = PublishSubject.create<User>()
-    override val viewer: Observable<User>
-        get() = _viewer
-
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    override val appSetting: Observable<AppSetting>
-        get() = _appSetting
+    private val _viewerAndAppSetting = BehaviorSubject.create<Pair<User, AppSetting>>()
+    override val viewerAndAppSetting: Observable<Pair<User, AppSetting>>
+        get() = _viewerAndAppSetting
 
     private var viewerDisposable: Disposable? = null
 
@@ -39,35 +36,73 @@ class DefaultUserRepository(
         return Observable.just(userManager.isAuthenticated)
     }
 
-    override fun loadViewer(source: Source?) {
+    override fun loadViewerAndAppSetting() {
+        if (viewerDisposable?.isDisposed == false)
+            return
+
+        viewerDisposable = userDataSource.getViewerQuery()
+            .subscribe(
+                {
+                    val newViewer = it.data?.convert()
+
+                    if (newViewer != null) {
+                        userManager.viewerData = SaveItem(newViewer)
+                        _viewerAndAppSetting.onNext(newViewer to userManager.appSetting)
+                    } else {
+                        throw Throwable()
+                    }
+
+                    viewerDisposable?.dispose()
+                },
+                {
+                    val savedViewer = userManager.viewerData?.data
+                    _viewerAndAppSetting.onNext((savedViewer ?: User.EMPTY_USER) to userManager.appSetting)
+                    viewerDisposable?.dispose()
+                }
+            )
+    }
+
+    override fun getViewer(source: Source?): Observable<User> {
         when (source) {
             Source.CACHE -> {
-                val savedViewer = userManager.viewerData?.data
-                _viewer.onNext(savedViewer ?: User.EMPTY_USER)
+                return Observable.create { emitter ->
+                    val savedViewer = userManager.viewerData?.data
+                    if (savedViewer != null) {
+                        emitter.onNext(savedViewer)
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(StorageException())
+                    }
+                }
             }
             else -> {
-                if (viewerDisposable?.isDisposed == false)
-                    return
-
-                viewerDisposable = userDataSource.getViewerQuery()
-                    .subscribe(
+                return Observable.create { emitter ->
+                    userDataSource.getViewerQuery().subscribe(
                         {
                             val newViewer = it.data?.convert()
 
-                            if (newViewer != null)
+                            if (newViewer != null) {
                                 userManager.viewerData = SaveItem(newViewer)
-
-                            _viewer.onNext(newViewer ?: User.EMPTY_USER)
-
-                            viewerDisposable?.dispose()
+                                _viewerAndAppSetting.onNext(newViewer to userManager.appSetting)
+                                emitter.onNext(newViewer)
+                                emitter.onComplete()
+                            } else {
+                                throw Throwable()
+                            }
                         },
                         {
                             val savedViewer = userManager.viewerData?.data
-                            _viewer.onNext(savedViewer ?: User.EMPTY_USER)
 
-                            viewerDisposable?.dispose()
+                            if (savedViewer != null) {
+                                _viewerAndAppSetting.onNext(savedViewer to userManager.appSetting)
+                                emitter.onNext(savedViewer)
+                                emitter.onComplete()
+                            } else {
+                                emitter.onError(StorageException())
+                            }
                         }
                     )
+                }
             }
         }
     }
@@ -125,8 +160,8 @@ class DefaultUserRepository(
         }
     }
 
-    override fun loadAppSetting() {
-        _appSetting.onNext(userManager.appSetting)
+    override fun getAppSetting(): Observable<AppSetting> {
+        return Observable.just(userManager.appSetting)
     }
 
     override fun setAppSetting(newAppSetting: AppSetting?) {

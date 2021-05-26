@@ -24,16 +24,16 @@ class MediaListViewModel(
 
     override fun loadData() {
         if (userId == 0) {
-            disposables.add(
-                userRepository.viewer
-                    .applyScheduler()
-                    .subscribe {
-                        userId = it.id
-                        getMediaListCollection()
-                    }
-            )
-
-            userRepository.loadViewer(Source.CACHE)
+//            disposables.add(
+//                userRepository.viewer
+//                    .applyScheduler()
+//                    .subscribe {
+//                        userId = it.id
+//                        getMediaListCollection()
+//                    }
+//            )
+//
+//            userRepository.loadViewer(Source.CACHE)
         } else {
             getMediaListCollection()
         }

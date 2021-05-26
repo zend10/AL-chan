@@ -35,13 +35,16 @@ class SplashViewModel(private val userRepository: UserRepository) : BaseViewMode
 
     private fun loadViewerData() {
         disposables.add(
-            userRepository.viewer
+            userRepository.getViewer()
                 .applyScheduler()
-                .subscribe {
-                    _isLoggedIn.onNext(it != User.EMPTY_USER)
-                }
+                .subscribe(
+                    {
+                        _isLoggedIn.onNext(true)
+                    },
+                    {
+                        _isLoggedIn.onNext(false)
+                    }
+                )
         )
-
-        userRepository.loadViewer()
     }
 }

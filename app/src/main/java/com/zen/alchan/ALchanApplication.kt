@@ -88,7 +88,7 @@ class ALchanApplication : Application() {
         viewModel { SharedMainViewModel() }
         viewModel { MainViewModel(get()) }
 
-        viewModel { HomeViewModel(get()) }
+        viewModel { HomeViewModel(get(), get()) }
 
         viewModel { MediaListViewModel(get(), get()) }
 

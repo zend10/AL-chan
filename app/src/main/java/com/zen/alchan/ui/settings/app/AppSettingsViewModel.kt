@@ -147,52 +147,42 @@ class AppSettingsViewModel(
 
     override fun loadData() {
         disposables.add(
-            userRepository.viewer
+            userRepository.viewerAndAppSetting
                 .applyScheduler()
-                .subscribe {
-                    viewer = it
+                .subscribe { (user, appSetting) ->
+                    viewer = user
+                    currentAppSetting = appSetting
+
+                    updateAppTheme(appSetting.appTheme)
+
+                    updateUseCircularAvatarForProfile(appSetting.useCircularAvatarForProfile)
+                    updateShowRecentReviewsAtHome(appSetting.showRecentReviewsAtHome)
+
+                    updateAllAnimeListPosition(appSetting.allAnimeListPosition)
+                    updateAllMangaListPosition(appSetting.allMangaListPosition)
+                    updateUseRelativeDateForNextAiringEpisode(appSetting.useRelativeDateForNextAiringEpisode)
+
+                    updateCharacterNaming(appSetting.characterNaming)
+                    updateStaffNaming(appSetting.staffNaming)
+                    updateJapaneseMediaNaming(appSetting.japaneseMediaNaming)
+                    updateKoreanMediaNaming(appSetting.koreanMediaNaming)
+                    updateChineseMediaNaming(appSetting.chineseMediaNaming)
+                    updateTaiwaneseMediaNaming(appSetting.taiwaneseMediaNaming)
+
+                    updateSendAiringPushNotifications(appSetting.sendAiringPushNotifications)
+                    updateSendActivityPushNotifications(appSetting.sendActivityPushNotifications)
+                    updateSendForumPushNotifications(appSetting.sendForumPushNotifications)
+                    updateSendFollowsPushNotifications(appSetting.sendFollowsPushNotifications)
+                    updateSendRelationsPushNotifications(appSetting.sendRelationsPushNotifications)
+                    updateMergePushNotifications(appSetting.mergePushNotifications)
+                    updateShowPushNotificationsInterval(appSetting.showPushNotificationsInterval)
+
+                    updateUseHighestQualityImage(appSetting.useHighestQualityImage)
+                    updateEnableSocialFeature(appSetting.enableSocialFeature)
+                    updateShowBioAutomatically(appSetting.showBioAutomatically)
+                    updateShowStatsChartAutomatically(appSetting.showStatsChartAutomatically)
                 }
         )
-
-        disposables.add(
-            userRepository.appSetting
-                .applyScheduler()
-                .subscribe {
-                    currentAppSetting = it
-
-                    updateAppTheme(it.appTheme)
-
-                    updateUseCircularAvatarForProfile(it.useCircularAvatarForProfile)
-                    updateShowRecentReviewsAtHome(it.showRecentReviewsAtHome)
-
-                    updateAllAnimeListPosition(it.allAnimeListPosition)
-                    updateAllMangaListPosition(it.allMangaListPosition)
-                    updateUseRelativeDateForNextAiringEpisode(it.useRelativeDateForNextAiringEpisode)
-
-                    updateCharacterNaming(it.characterNaming)
-                    updateStaffNaming(it.staffNaming)
-                    updateJapaneseMediaNaming(it.japaneseMediaNaming)
-                    updateKoreanMediaNaming(it.koreanMediaNaming)
-                    updateChineseMediaNaming(it.chineseMediaNaming)
-                    updateTaiwaneseMediaNaming(it.taiwaneseMediaNaming)
-
-                    updateSendAiringPushNotifications(it.sendAiringPushNotifications)
-                    updateSendActivityPushNotifications(it.sendActivityPushNotifications)
-                    updateSendForumPushNotifications(it.sendForumPushNotifications)
-                    updateSendFollowsPushNotifications(it.sendFollowsPushNotifications)
-                    updateSendRelationsPushNotifications(it.sendRelationsPushNotifications)
-                    updateMergePushNotifications(it.mergePushNotifications)
-                    updateShowPushNotificationsInterval(it.showPushNotificationsInterval)
-
-                    updateUseHighestQualityImage(it.useHighestQualityImage)
-                    updateEnableSocialFeature(it.enableSocialFeature)
-                    updateShowBioAutomatically(it.showBioAutomatically)
-                    updateShowStatsChartAutomatically(it.showStatsChartAutomatically)
-                }
-        )
-
-        userRepository.loadViewer(Source.CACHE)
-        userRepository.loadAppSetting()
     }
 
     fun saveAppSettings() {

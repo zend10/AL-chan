@@ -25,10 +25,6 @@ class SharedProfileViewModel(
     val userAndAppSetting: Observable<Pair<User, AppSetting>>
         get() = _userAndAppSetting
 
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    val appSetting: Observable<AppSetting>
-        get() = _appSetting
-
     private val _profileData = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
     val profileData: Observable<ProfileData>
         get() = _profileData
@@ -50,21 +46,10 @@ class SharedProfileViewModel(
         get() = _followersCount
 
     var userId = 0
-    var currentAppSetting: AppSetting = AppSetting.EMPTY_APP_SETTING
 
     override fun loadData() {
-        disposables.add(
-            userRepository.appSetting
-                .applyScheduler()
-                .subscribe {
-                    currentAppSetting = it
-
-                    checkIsAuthenticated()
-                    checkIsViewerProfile()
-                }
-        )
-
-        userRepository.loadAppSetting()
+        checkIsAuthenticated()
+        checkIsViewerProfile()
     }
 
     fun reloadData() {
@@ -89,19 +74,17 @@ class SharedProfileViewModel(
     private fun loadUserData(isReloading: Boolean = false) {
         if (!isReloading && state == State.LOADED) return
 
-        disposables.add(
-            userRepository.viewer
-                .applyScheduler()
-                .subscribe {
-                    loadProfileData(it.id, if (isReloading) Source.NETWORK else null)
-                    _userAndAppSetting.onNext(it to currentAppSetting)
-                    state = State.LOADED
-                }
-        )
-
-        if (userId == 0)
-            userRepository.loadViewer()
-        else {
+        if (userId == 0) {
+            disposables.add(
+                userRepository.viewerAndAppSetting
+                    .applyScheduler()
+                    .subscribe { (user, appSetting) ->
+                        loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
+                        _userAndAppSetting.onNext(user to appSetting)
+                        state = State.LOADED
+                    }
+            )
+        } else {
             // TODO: update this to be able to get user data of other user as well
         }
     }

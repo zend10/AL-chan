@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.home
 
 import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.sendMessage
@@ -11,7 +12,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
-class HomeViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
+class HomeViewModel(
+    private val contentRepository: ContentRepository,
+    private val userRepository: UserRepository
+) : BaseViewModel() {
 
     private val _homeItemList = BehaviorSubject.createDefault(listOf<HomeItem>())
     val homeItemList: Observable<List<HomeItem>>

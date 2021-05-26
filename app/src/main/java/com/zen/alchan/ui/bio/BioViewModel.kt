@@ -13,7 +13,6 @@ import type.MediaListStatus
 class BioViewModel : BaseViewModel() {
 
     private val _bioItems = BehaviorSubject.createDefault(listOf<BioItem>())
-
     val bioItems: Observable<List<BioItem>>
         get() = _bioItems
 

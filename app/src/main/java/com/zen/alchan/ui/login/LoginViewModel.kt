@@ -3,6 +3,7 @@ package com.zen.alchan.ui.login
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -22,17 +23,20 @@ class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel
         userRepository.saveBearerToken(bearerToken)
 
         disposables.add(
-            userRepository.viewer
+            userRepository.getViewer()
                 .applyScheduler()
-                .subscribe{
-                    if (it != User.EMPTY_USER)
-                        _loginStatus.onNext(Unit)
-                    else
-                        _error.onNext(0)
+                .doFinally {
+                    _loading.onNext(false)
                 }
+                .subscribe(
+                    {
+                        _loginStatus.onNext(Unit)
+                    },
+                    {
+                        _error.onNext(it.sendMessage())
+                    }
+                )
         )
-
-        userRepository.loadViewer()
     }
 
     fun loginAsGuest() {

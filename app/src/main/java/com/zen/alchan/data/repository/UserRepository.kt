@@ -10,12 +10,12 @@ import type.UserStatisticsSort
 
 interface UserRepository {
 
-    val viewer: Observable<User>
-    val appSetting: Observable<AppSetting>
+    val viewerAndAppSetting: Observable<Pair<User, AppSetting>>
 
     fun getIsLoggedIn(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
-    fun loadViewer(source: Source? = null)
+    fun loadViewerAndAppSetting()
+    fun getViewer(source: Source? = null): Observable<User>
     fun loginAsGuest()
     fun logout()
     fun saveBearerToken(newBearerToken: String?)
@@ -26,7 +26,7 @@ interface UserRepository {
         source: Source?
     ): Observable<ProfileData>
 
-    fun loadAppSetting()
+    fun getAppSetting(): Observable<AppSetting>
     fun setAppSetting(newAppSetting: AppSetting?)
 
     fun getAppTheme(): AppTheme
