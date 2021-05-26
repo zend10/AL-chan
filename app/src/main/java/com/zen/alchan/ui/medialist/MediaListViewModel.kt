@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.medialist
 
+import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.Source
@@ -24,16 +25,14 @@ class MediaListViewModel(
 
     override fun loadData() {
         if (userId == 0) {
-//            disposables.add(
-//                userRepository.viewer
-//                    .applyScheduler()
-//                    .subscribe {
-//                        userId = it.id
-//                        getMediaListCollection()
-//                    }
-//            )
-//
-//            userRepository.loadViewer(Source.CACHE)
+            disposables.add(
+                userRepository.viewerAndAppSetting
+                    .applyScheduler()
+                    .subscribe { (user, appSetting) ->
+                        userId = user.id
+                        getMediaListCollection()
+                    }
+            )
         } else {
             getMediaListCollection()
         }

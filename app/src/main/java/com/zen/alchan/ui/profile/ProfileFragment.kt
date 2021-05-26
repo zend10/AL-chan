@@ -29,6 +29,7 @@ import com.zen.alchan.ui.bio.BioFragment
 import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.review.ReviewFragment
 import com.zen.alchan.ui.stats.StatsFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_not_logged_in.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -212,13 +213,19 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             }
         )
 
-        disposables.add(
+        sharedDisposables.add(
+            sharedViewModel.loading.subscribe {
+                profileSwipeRefresh.isRefreshing = it
+            }
+        )
+
+        sharedDisposables.add(
             sharedViewModel.isViewerProfile.subscribe {
                 showToolbarMenu(it)
             }
         )
 
-        disposables.add(
+        sharedDisposables.add(
             sharedViewModel.userAndAppSetting.subscribe { (user, appSetting) ->
                 profileUsernameText.text = user.name
 
@@ -234,25 +241,25 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             }
         )
 
-        disposables.add(
+        sharedDisposables.add(
             sharedViewModel.animeCount.subscribe {
                 profileAnimeCountText.text = it.toString()
             }
         )
 
-        disposables.add(
+        sharedDisposables.add(
             sharedViewModel.mangaCount.subscribe {
                 profileMangaCountText.text = it.toString()
             }
         )
 
-        disposables.add(
+        sharedDisposables.add(
             sharedViewModel.followingCount.subscribe {
                 profileFollowingCountText.text = it.toString()
             }
         )
 
-        disposables.add(
+        sharedDisposables.add(
             sharedViewModel.followersCount.subscribe {
                 profileFollowersCountText.text = it.toString()
             }

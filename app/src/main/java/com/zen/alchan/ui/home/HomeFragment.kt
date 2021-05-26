@@ -16,7 +16,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val viewModel by viewModel<HomeViewModel>()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
-    private val sharedDisposables = CompositeDisposable()
     private var homeAdapter: HomeRvAdapter? = null
 
     override fun setUpLayout() {
@@ -126,11 +125,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override fun onDestroyView() {
         super.onDestroyView()
         homeAdapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        sharedDisposables.clear()
     }
 
     companion object {

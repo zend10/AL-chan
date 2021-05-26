@@ -74,15 +74,26 @@ class SharedProfileViewModel(
     private fun loadUserData(isReloading: Boolean = false) {
         if (!isReloading && state == State.LOADED) return
 
+        _loading.onNext(true)
+
         if (userId == 0) {
             disposables.add(
-                userRepository.viewerAndAppSetting
-                    .applyScheduler()
-                    .subscribe { (user, appSetting) ->
-                        loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
-                        _userAndAppSetting.onNext(user to appSetting)
-                        state = State.LOADED
+                userRepository.getViewer()
+                    .zipWith(userRepository.getAppSetting()) { user, appSetting ->
+                        return@zipWith user to appSetting
                     }
+                    .applyScheduler()
+                    .subscribe(
+                        { (user, appSetting) ->
+                            loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
+                            _userAndAppSetting.onNext(user to appSetting)
+                            state = State.LOADED
+                        },
+                        {
+                            _loading.onNext(false)
+                            _error.onNext(it.sendMessage())
+                        }
+                    )
             )
         } else {
             // TODO: update this to be able to get user data of other user as well
@@ -93,6 +104,9 @@ class SharedProfileViewModel(
         disposables.add(
             userRepository.getProfileData(userId, source = source)
                 .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
                 .subscribe(
                     {
                         _profileData.onNext(it)

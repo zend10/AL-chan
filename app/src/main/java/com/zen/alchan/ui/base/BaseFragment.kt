@@ -27,6 +27,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     }
 
     protected val disposables = CompositeDisposable()
+    protected val sharedDisposables = CompositeDisposable()
 
     protected var screenWidth = 0
 
@@ -60,7 +61,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
 
     override fun onResume() {
         super.onResume()
-        if (disposables.isDisposed) {
+        if (disposables.isDisposed || disposables.size() == 0) {
             setUpObserver()
         }
     }
@@ -78,6 +79,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     override fun onDestroy() {
         super.onDestroy()
         disposables.clear()
+        sharedDisposables.clear()
     }
 
     protected fun goBack() {

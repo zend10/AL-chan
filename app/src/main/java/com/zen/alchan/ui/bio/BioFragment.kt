@@ -20,7 +20,6 @@ class BioFragment : BaseFragment(R.layout.fragment_bio) {
     private val viewModel by viewModel<BioViewModel>()
     private val sharedViewModel by sharedViewModel<SharedProfileViewModel>()
 
-    private val sharedDisposables = CompositeDisposable()
     private var bioAdapter: BioRvAdapter? = null
 
     override fun setUpLayout() {
@@ -45,11 +44,6 @@ class BioFragment : BaseFragment(R.layout.fragment_bio) {
     override fun onDestroyView() {
         super.onDestroyView()
         bioAdapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        sharedDisposables.clear()
     }
 
     companion object {
