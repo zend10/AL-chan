@@ -1,18 +1,16 @@
 package com.zen.alchan.ui.login
 
-import com.zen.alchan.data.repository.AuthenticationRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
-class LoginViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
+class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
-    private val _loginStatus = PublishSubject.create<Boolean>()
-    val loginStatus: Observable<Boolean>
+    private val _loginStatus = PublishSubject.create<Unit>()
+    val loginStatus: Observable<Unit>
         get() = _loginStatus
 
     override fun loadData() {
@@ -21,24 +19,24 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
 
     fun login(bearerToken: String) {
         _loading.onNext(true)
-        authenticationRepository.saveBearerToken(bearerToken)
+        userRepository.saveBearerToken(bearerToken)
 
         disposables.add(
-            authenticationRepository.viewer
+            userRepository.viewer
                 .applyScheduler()
                 .subscribe{
                     if (it != User.EMPTY_USER)
-                        _loginStatus.onNext(true)
+                        _loginStatus.onNext(Unit)
                     else
                         _error.onNext(0)
                 }
         )
 
-        authenticationRepository.getViewerData()
+        userRepository.loadViewer()
     }
 
     fun loginAsGuest() {
-        authenticationRepository.loginAsGuest(true)
-        _loginStatus.onNext(true)
+        userRepository.loginAsGuest()
+        _loginStatus.onNext(Unit)
     }
 }

@@ -1,15 +1,13 @@
 package com.zen.alchan.ui.splash
 
-import com.zen.alchan.data.repository.AuthenticationRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
-class SplashViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
+class SplashViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
     private val _isLoggedIn = PublishSubject.create<Boolean>()
     val isLoggedIn: Observable<Boolean>
@@ -21,8 +19,8 @@ class SplashViewModel(private val authenticationRepository: AuthenticationReposi
 
     private fun checkIsLoggedIn() {
         disposables.add(
-            authenticationRepository.getIsAuthenticated()
-                .zipWith(authenticationRepository.getIsLoggedIn()) { isAuthenticated, isLoggedIn ->
+            userRepository.getIsAuthenticated()
+                .zipWith(userRepository.getIsLoggedIn()) { isAuthenticated, isLoggedIn ->
                     isAuthenticated to isLoggedIn
                 }
                 .applyScheduler()
@@ -37,13 +35,13 @@ class SplashViewModel(private val authenticationRepository: AuthenticationReposi
 
     private fun loadViewerData() {
         disposables.add(
-            authenticationRepository.viewer
+            userRepository.viewer
                 .applyScheduler()
                 .subscribe {
                     _isLoggedIn.onNext(it != User.EMPTY_USER)
                 }
         )
 
-        authenticationRepository.getViewerData()
+        userRepository.loadViewer()
     }
 }

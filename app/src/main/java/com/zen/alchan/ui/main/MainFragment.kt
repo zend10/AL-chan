@@ -51,7 +51,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             profileFragment
         )
 
-        viewPagerAdapter = MainViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle,fragments?.filterNotNull() ?: listOf())
+        viewPagerAdapter = MainViewPagerAdapter(
+            childFragmentManager,
+            viewLifecycleOwner.lifecycle,
+            fragments?.filterNotNull() ?: listOf()
+        )
         mainViewPager.isUserInputEnabled = false
         mainViewPager.adapter = viewPagerAdapter
 

@@ -88,7 +88,11 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
             profileReviewsIcon to profileReviewsText
         )
 
-        viewPagerAdapter = ProfileViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, fragments?.filterNotNull() ?: listOf())
+        viewPagerAdapter = ProfileViewPagerAdapter(
+            childFragmentManager,
+            viewLifecycleOwner.lifecycle,
+            fragments?.filterNotNull() ?: listOf()
+        )
         profileViewPager.adapter = viewPagerAdapter
 
         profileViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -137,7 +141,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
         }
 
         goToLoginButton.setOnClickListener {
-            viewModel.logoutAsGuest()
+            viewModel.logout()
             navigation.navigateToLanding()
         }
 

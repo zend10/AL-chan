@@ -17,13 +17,13 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
     protected val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(viewModel.getAppThemeResource())
+        val appThemeResource = viewModel.getAppThemeResource()
+        val isLightMode = viewModel.isLightMode()
+
+        setTheme(appThemeResource)
 
         AppCompatDelegate.setDefaultNightMode(
-            if (viewModel.isLightMode())
-                AppCompatDelegate.MODE_NIGHT_NO
-            else
-                AppCompatDelegate.MODE_NIGHT_YES
+            if (isLightMode) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_YES
         )
 
         super.onCreate(savedInstanceState)
@@ -36,11 +36,11 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
         val flags = window.decorView.systemUiVisibility
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            if (viewModel.isLightMode()) {
+            if (isLightMode) {
                 changeStatusBarColor(R.color.black)
             }
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            if (viewModel.isLightMode()) {
+            if (isLightMode) {
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 window.navigationBarColor = getColor(R.color.whiteTransparent70)
             } else {
@@ -48,7 +48,7 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (viewModel.isLightMode()) {
+            if (isLightMode) {
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 window.navigationBarColor = getColor(R.color.whiteTransparent70)
             } else {
@@ -56,7 +56,7 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
                 window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
             }
         } else {
-            if (viewModel.isLightMode()) {
+            if (isLightMode) {
                 window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             } else {
                 window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
@@ -64,6 +64,9 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
         }
 
         setUpLayout()
+
+
+
     }
 
     override fun onStart() {

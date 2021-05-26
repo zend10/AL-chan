@@ -6,7 +6,7 @@ import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Observable
 
-class DefaultContentDataSource(private val apolloHandler: ApolloHandler) : ContentDataSource, BaseDataSource() {
+class DefaultContentDataSource(private val apolloHandler: ApolloHandler) : ContentDataSource {
 
     override fun getHomeQuery(): Observable<Response<HomeDataQuery.Data>> {
         val query = HomeDataQuery()

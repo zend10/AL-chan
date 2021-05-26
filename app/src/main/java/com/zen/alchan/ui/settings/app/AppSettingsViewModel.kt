@@ -1,26 +1,21 @@
 package com.zen.alchan.ui.settings.app
 
+import androidx.lifecycle.viewModelScope
 import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.applyScheduler
-import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.helper.pojo.AppThemeItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import kotlinx.coroutines.selects.select
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AppSettingsViewModel(
-    private val userRepository: UserRepository,
-    private val authenticationRepository: AuthenticationRepository
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     private val _appTheme = BehaviorSubject.createDefault(AppTheme.DEFAULT_THEME_YELLOW)
@@ -152,14 +147,52 @@ class AppSettingsViewModel(
 
     override fun loadData() {
         disposables.add(
-            authenticationRepository.getViewerDataFromCache()
+            userRepository.viewer
                 .applyScheduler()
                 .subscribe {
                     viewer = it
                 }
         )
 
-        getAppSetting()
+        disposables.add(
+            userRepository.appSetting
+                .applyScheduler()
+                .subscribe {
+                    currentAppSetting = it
+
+                    updateAppTheme(it.appTheme)
+
+                    updateUseCircularAvatarForProfile(it.useCircularAvatarForProfile)
+                    updateShowRecentReviewsAtHome(it.showRecentReviewsAtHome)
+
+                    updateAllAnimeListPosition(it.allAnimeListPosition)
+                    updateAllMangaListPosition(it.allMangaListPosition)
+                    updateUseRelativeDateForNextAiringEpisode(it.useRelativeDateForNextAiringEpisode)
+
+                    updateCharacterNaming(it.characterNaming)
+                    updateStaffNaming(it.staffNaming)
+                    updateJapaneseMediaNaming(it.japaneseMediaNaming)
+                    updateKoreanMediaNaming(it.koreanMediaNaming)
+                    updateChineseMediaNaming(it.chineseMediaNaming)
+                    updateTaiwaneseMediaNaming(it.taiwaneseMediaNaming)
+
+                    updateSendAiringPushNotifications(it.sendAiringPushNotifications)
+                    updateSendActivityPushNotifications(it.sendActivityPushNotifications)
+                    updateSendForumPushNotifications(it.sendForumPushNotifications)
+                    updateSendFollowsPushNotifications(it.sendFollowsPushNotifications)
+                    updateSendRelationsPushNotifications(it.sendRelationsPushNotifications)
+                    updateMergePushNotifications(it.mergePushNotifications)
+                    updateShowPushNotificationsInterval(it.showPushNotificationsInterval)
+
+                    updateUseHighestQualityImage(it.useHighestQualityImage)
+                    updateEnableSocialFeature(it.enableSocialFeature)
+                    updateShowBioAutomatically(it.showBioAutomatically)
+                    updateShowStatsChartAutomatically(it.showStatsChartAutomatically)
+                }
+        )
+
+        userRepository.loadViewer(Source.CACHE)
+        userRepository.loadAppSetting()
     }
 
     fun saveAppSettings() {
@@ -294,45 +327,6 @@ class AppSettingsViewModel(
     fun updateShowStatsChartAutomatically(shouldShowStatsChartAutomatically: Boolean) {
         currentAppSetting?.showStatsChartAutomatically = shouldShowStatsChartAutomatically
         _showStatsChartAutomatically.onNext(shouldShowStatsChartAutomatically)
-    }
-
-    private fun getAppSetting() {
-        disposables.add(
-            userRepository.getAppSetting()
-                .applyScheduler()
-                .subscribe {
-                    currentAppSetting = it
-
-                    updateAppTheme(it.appTheme)
-
-                    updateUseCircularAvatarForProfile(it.useCircularAvatarForProfile)
-                    updateShowRecentReviewsAtHome(it.showRecentReviewsAtHome)
-
-                    updateAllAnimeListPosition(it.allAnimeListPosition)
-                    updateAllMangaListPosition(it.allMangaListPosition)
-                    updateUseRelativeDateForNextAiringEpisode(it.useRelativeDateForNextAiringEpisode)
-
-                    updateCharacterNaming(it.characterNaming)
-                    updateStaffNaming(it.staffNaming)
-                    updateJapaneseMediaNaming(it.japaneseMediaNaming)
-                    updateKoreanMediaNaming(it.koreanMediaNaming)
-                    updateChineseMediaNaming(it.chineseMediaNaming)
-                    updateTaiwaneseMediaNaming(it.taiwaneseMediaNaming)
-
-                    updateSendAiringPushNotifications(it.sendAiringPushNotifications)
-                    updateSendActivityPushNotifications(it.sendActivityPushNotifications)
-                    updateSendForumPushNotifications(it.sendForumPushNotifications)
-                    updateSendFollowsPushNotifications(it.sendFollowsPushNotifications)
-                    updateSendRelationsPushNotifications(it.sendRelationsPushNotifications)
-                    updateMergePushNotifications(it.mergePushNotifications)
-                    updateShowPushNotificationsInterval(it.showPushNotificationsInterval)
-
-                    updateUseHighestQualityImage(it.useHighestQualityImage)
-                    updateEnableSocialFeature(it.enableSocialFeature)
-                    updateShowBioAutomatically(it.showBioAutomatically)
-                    updateShowStatsChartAutomatically(it.showStatsChartAutomatically)
-                }
-        )
     }
 
     fun getAppThemeItems() {

@@ -1,27 +1,18 @@
 package com.zen.alchan.ui.profile
 
-import android.util.Log
-import com.zen.alchan.data.repository.AuthenticationRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.data.response.anilist.UserStatistics
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
-import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.sendMessage
-import com.zen.alchan.helper.pojo.BioItem
-import com.zen.alchan.helper.pojo.Tendency
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 
 class SharedProfileViewModel(
-    private val authenticationRepository: AuthenticationRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
@@ -68,7 +59,7 @@ class SharedProfileViewModel(
 
     private fun checkIsAuthenticated() {
         disposables.add(
-            authenticationRepository.getIsAuthenticated()
+            userRepository.getIsAuthenticated()
                 .applyScheduler()
                 .subscribe {
                     loadUserData()
@@ -81,7 +72,7 @@ class SharedProfileViewModel(
         if (!isReloading && state == State.LOADED) return
 
         disposables.add(
-            authenticationRepository.viewer
+            userRepository.viewer
                 .applyScheduler()
                 .subscribe {
                     loadProfileData(it.id, if (isReloading) Source.NETWORK else null)
@@ -91,7 +82,7 @@ class SharedProfileViewModel(
         )
 
         if (userId == 0)
-            authenticationRepository.getViewerData()
+            userRepository.loadViewer()
         else {
             // TODO: update this to be able to get user data of other user as well
         }

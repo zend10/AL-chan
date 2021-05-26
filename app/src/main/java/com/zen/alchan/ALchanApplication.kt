@@ -69,12 +69,10 @@ class ALchanApplication : Application() {
         single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
 
         // data source
-        single<AuthenticationDataSource> { DefaultAuthenticationDataSource(get()) }
         single<ContentDataSource> { DefaultContentDataSource(get()) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
 
         // repository
-        single<AuthenticationRepository> { DefaultAuthenticationRepository(get(), get()) }
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
         single<UserRepository> { DefaultUserRepository(get(), get()) }
 
@@ -82,7 +80,7 @@ class ALchanApplication : Application() {
         viewModel { BaseActivityViewModel(get()) }
 
         viewModel { SplashViewModel(get()) }
-        viewModel { LandingViewModel(get()) }
+        viewModel { LandingViewModel() }
         viewModel { LoginViewModel(get()) }
 
         viewModel { SharedMainViewModel() }
@@ -93,10 +91,10 @@ class ALchanApplication : Application() {
         viewModel { MediaListViewModel() }
 
         viewModel { ProfileViewModel(get()) }
-        viewModel { SharedProfileViewModel(get(), get()) }
+        viewModel { SharedProfileViewModel(get()) }
         viewModel { BioViewModel() }
 
-        viewModel { AppSettingsViewModel(get(), get()) }
+        viewModel { AppSettingsViewModel(get()) }
     }
 
     override fun onCreate() {

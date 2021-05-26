@@ -1,11 +1,11 @@
 package com.zen.alchan.ui.profile
 
-import com.zen.alchan.data.repository.AuthenticationRepository
+import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
-class ProfileViewModel(private val authenticationRepository: AuthenticationRepository) : BaseViewModel() {
+class ProfileViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
     private val _currentPage = BehaviorSubject.createDefault(SharedProfileViewModel.Page.BIO)
 
@@ -16,8 +16,8 @@ class ProfileViewModel(private val authenticationRepository: AuthenticationRepos
         // do nothing
     }
 
-    fun logoutAsGuest() {
-        authenticationRepository.loginAsGuest(false)
+    fun logout() {
+        userRepository.logout()
     }
 
     fun setCurrentPage(page: SharedProfileViewModel.Page) {
