@@ -9,8 +9,8 @@ data class HomeItem(
     val viewType: Int = 0
 ) {
     companion object {
-        const val VIEW_TYPE_HEADER = 101
-        const val VIEW_TYPE_MENU = 102
+        const val VIEW_TYPE_HEADER = 100
+        const val VIEW_TYPE_MENU = 101
         const val VIEW_TYPE_RELEASING_TODAY = 200
         const val VIEW_TYPE_TRENDING_ANIME = 300
         const val VIEW_TYPE_TRENDING_MANGA = 301

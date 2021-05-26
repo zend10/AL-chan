@@ -1,0 +1,101 @@
+query MediaListCollectionQuery($userId:Int, $type:MediaType, $version:Int) {
+  MediaListCollection(userId:$userId, type:$type) {
+    lists {
+      entries {
+        id
+        status
+        score
+        progress
+        progressVolumes
+        repeat
+        priority
+        private
+        notes
+        hiddenFromStatusLists
+        customLists
+        advancedScores
+        startedAt {
+          year
+          month
+          day
+        }
+        completedAt {
+          year
+          month
+          day
+        }
+        updatedAt
+        createdAt
+        media {
+          id
+          idMal
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          type
+          format
+          status(version:$version)
+          startDate {
+            year
+            month
+            day
+          }
+          endDate {
+            year
+            month
+            day
+          }
+          season
+          seasonYear
+          episodes
+          duration
+          chapters
+          volumes
+          countryOfOrigin
+          source(version:$version)
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          bannerImage
+          genres
+          synonyms
+          averageScore
+          meanScore
+          popularity
+          tags {
+            id
+            name
+            description
+            category
+            rank
+            isGeneralSpoiler
+            isMediaSpoiler
+            isAdult
+          }
+          isFavourite
+          isAdult
+          nextAiringEpisode {
+            id
+            airingAt
+            timeUntilAiring
+            episode
+          }
+          externalLinks {
+            id
+            url
+            site
+          }
+        }
+      }
+      name
+      isCustomList
+      isSplitCompletedList
+      status
+    }
+  }
+}

@@ -9,8 +9,8 @@ data class BioItem(
     val viewType: Int = 0
 ) {
     companion object {
-        const val VIEW_TYPE_AFFINITY = 101
-        const val VIEW_TYPE_ABOUT = 201
-        const val VIEW_TYPE_TENDENCY = 301
+        const val VIEW_TYPE_AFFINITY = 100
+        const val VIEW_TYPE_ABOUT = 200
+        const val VIEW_TYPE_TENDENCY = 300
     }
 }

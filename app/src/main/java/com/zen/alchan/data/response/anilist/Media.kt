@@ -1,9 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.helper.pojo.Genre
-import type.MediaFormat
-import type.MediaStatus
-import type.MediaType
+import type.*
 
 data class Media(
     val idAniList: Int = 0,
@@ -15,14 +13,14 @@ data class Media(
     val description: String = "",
     val startDate: FuzzyDate? = null,
     val endDate: FuzzyDate? = null,
-//    val season: MediaSeason? = null,
+    val season: MediaSeason? = null,
     val seasonYear: Int? = null,
     val episodes: Int? = null,
     val duration: Int? = null,
     val chapters: Int? = null,
     val volumes: Int? = null,
-//    val countryOfOrigin: CountryCode? = null,
-//    val source: MediaSource? = null,
+    val countryOfOrigin: String? = null,
+    val source: MediaSource? = null,
 //    val trailer: MediaTrailer? = null,
     val coverImage: MediaCoverImage = MediaCoverImage(),
     val bannerImage: String = "",
@@ -35,7 +33,9 @@ data class Media(
     val staffs: StaffConnection = StaffConnection(),
     val studios: StudioConnection = StudioConnection(),
     val favourites: Int = 0,
-//    val tags: List<MediaTag> = listOf(),
+    val tags: List<MediaTag> = listOf(),
     val isFavourite: Boolean = false,
-    val isAdult: Boolean = false
+    val isAdult: Boolean = false,
+    val nextAiringEpisode: AiringSchedule? = null,
+    val externalLinks: List<MediaExternalLink> = listOf()
 )

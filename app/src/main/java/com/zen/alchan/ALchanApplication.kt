@@ -66,15 +66,17 @@ class ALchanApplication : Application() {
 
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
-        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
+        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL, Constant.ANILIST_API_VERSION) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get()) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
+        single<MediaListDataSource> { DefaultMediaListDataSource(get()) }
 
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
         single<UserRepository> { DefaultUserRepository(get(), get()) }
+        single<MediaListRepository> { DefaultMediaListRepository(get()) }
 
         // view model
         viewModel { BaseActivityViewModel(get()) }
@@ -88,7 +90,7 @@ class ALchanApplication : Application() {
 
         viewModel { HomeViewModel(get()) }
 
-        viewModel { MediaListViewModel() }
+        viewModel { MediaListViewModel(get(), get()) }
 
         viewModel { ProfileViewModel(get()) }
         viewModel { SharedProfileViewModel(get()) }

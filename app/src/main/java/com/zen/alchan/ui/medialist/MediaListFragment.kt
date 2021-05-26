@@ -5,8 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaTitle
+import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import kotlinx.android.synthetic.main.fragment_media_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
 
@@ -18,6 +25,8 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
 
     private val viewModel by viewModel<MediaListViewModel>()
 
+    private var adapter: BaseRecyclerViewAdapter<MediaListItem>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -26,12 +35,25 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
         }
     }
 
-    override fun setUpObserver() {
+    override fun setUpLayout() {
+        adapter = MediaListLinearRvAdapter(requireContext(), listOf())
+        mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        mediaListRecyclerView.adapter = adapter
 
+        viewModel.loadData()
     }
 
-    override fun setUpLayout() {
+    override fun setUpObserver() {
+        disposables.add(
+            viewModel.mediaListItems.subscribe {
+                adapter?.updateData(it)
+            }
+        )
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
     }
 
     companion object {

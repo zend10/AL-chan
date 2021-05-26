@@ -14,8 +14,6 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     val currentPage: Observable<SharedProfileViewModel.Page>
         get() = _currentPage
 
-
-
     override fun loadData() {
 
     }
