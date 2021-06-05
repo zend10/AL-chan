@@ -15,8 +15,9 @@
         <item name="themeAppNameFont">@style/FontAppName</item>
         <item name="themeTitleFont">@style/FontTitle</item>
         <item name="themeRegularFont">@style/FontRegular</item>
-        <item name="themeRegularClickableFont">@style/FontRegularClickable</item>
         <item name="themeRegularBoldFont">@style/FontRegularBold</item>
+        <item name="themeRegularClickableFont">@style/FontRegularClickable</item>
+        <item name="themeRegularClickableBoldFont">@style/FontRegularClickableBold</item>
         <item name="themeSmallFont">@style/FontSmall</item>
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
         <item name="themePrimaryButton">@style/ButtonPrimary</item>
@@ -336,16 +337,22 @@
         <item name="android:textColor">?themeContentColor</item>
     </style>
 
+    <style name="FontRegularBold">
+        <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:textSize">@dimen/fontNormal</item>
+        <item name="android:textColor">?themeContentColor</item>
+    </style>
+
     <style name="FontRegularClickable">
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:textSize">@dimen/fontNormal</item>
         <item name="android:textColor">?themePrimaryColor</item>
     </style>
 
-    <style name="FontRegularBold">
+    <style name="FontRegularClickableBold">
         <item name="android:fontFamily">@font/sourcesanspro_semibold</item>
         <item name="android:textSize">@dimen/fontNormal</item>
-        <item name="android:textColor">?themeContentColor</item>
+        <item name="android:textColor">?themePrimaryColor</item>
     </style>
 
     <style name="FontSmall">

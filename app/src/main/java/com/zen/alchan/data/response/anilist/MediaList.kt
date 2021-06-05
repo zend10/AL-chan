@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import type.MediaListStatus
+import type.MediaType
 
 data class MediaList(
     val id: Int = 0,
@@ -19,5 +20,22 @@ data class MediaList(
     val completedAt: FuzzyDate? = null,
     val updatedAt: Int = 0,
     val createdAt: Int = 0,
-    val media: Media? = null
-)
+    val media: Media = Media.EMPTY_MEDIA
+) {
+    fun generateProgressAndMaxProgressText(showVolumeProgress: Boolean = false): String {
+        return when (media.type) {
+            MediaType.ANIME -> {
+                "$progress / ${media.episodes ?: "?"}"
+            }
+            MediaType.MANGA -> {
+                if (showVolumeProgress)
+                    "$progressVolumes / ${media.volumes ?: "?"}"
+                else
+                    "$progress / ${media.chapters ?: "?"}"
+            }
+            else -> {
+                "$progress / ?"
+            }
+        }
+    }
+}

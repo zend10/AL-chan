@@ -5,6 +5,7 @@ import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.SaveItem
 
 class DefaultUserManager(
@@ -22,6 +23,14 @@ class DefaultUserManager(
     override var isLoggedInAsGuest: Boolean
         get() = sharedPreferencesManager.guestLogin == true
         set(value) { sharedPreferencesManager.guestLogin = value }
+
+    override var animeListStyle: ListStyle
+        get() = sharedPreferencesManager.animeListStyle ?: ListStyle.EMPTY_LIST_STYLE
+        set(value) { sharedPreferencesManager.animeListStyle = value }
+
+    override var mangaListStyle: ListStyle
+        get() = sharedPreferencesManager.mangaListStyle ?: ListStyle.EMPTY_LIST_STYLE
+        set(value) { sharedPreferencesManager.mangaListStyle = value }
 
     override var appSetting: AppSetting
         get() = sharedPreferencesManager.appSetting ?: AppSetting.EMPTY_APP_SETTING

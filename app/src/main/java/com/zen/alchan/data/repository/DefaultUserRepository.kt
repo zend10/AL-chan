@@ -9,12 +9,14 @@ import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
+import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.StorageException
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.MediaType
 import type.UserStatisticsSort
 
 class DefaultUserRepository(
@@ -25,6 +27,14 @@ class DefaultUserRepository(
     private val _viewerAndAppSetting = BehaviorSubject.create<Pair<User, AppSetting>>()
     override val viewerAndAppSetting: Observable<Pair<User, AppSetting>>
         get() = _viewerAndAppSetting
+
+    private val _animeListStyle = BehaviorSubject.createDefault(userManager.animeListStyle)
+    private val animeListStyle: Observable<ListStyle>
+        get() = _animeListStyle
+
+    private val _mangaListStyle = BehaviorSubject.createDefault(userManager.mangaListStyle)
+    private val mangaListStyle: Observable<ListStyle>
+        get() = _mangaListStyle
 
     private var viewerDisposable: Disposable? = null
 
@@ -156,6 +166,27 @@ class DefaultUserRepository(
                 it.onComplete()
             } else {
                 it.onError(StorageException())
+            }
+        }
+    }
+
+    override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
+        return when (mediaType) {
+            MediaType.ANIME -> animeListStyle
+            MediaType.MANGA -> mangaListStyle
+            else -> animeListStyle
+        }
+    }
+
+    override fun setListStyle(mediaType: MediaType, newListStyle: ListStyle) {
+        when (mediaType) {
+            MediaType.ANIME -> {
+                userManager.animeListStyle = newListStyle
+                _animeListStyle.onNext(newListStyle)
+            }
+            MediaType.MANGA -> {
+                userManager.mangaListStyle = newListStyle
+                _mangaListStyle.onNext(newListStyle)
             }
         }
     }

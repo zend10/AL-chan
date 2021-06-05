@@ -1,5 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
+import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.pojo.Genre
 import type.*
 
@@ -38,4 +39,12 @@ data class Media(
     val isAdult: Boolean = false,
     val nextAiringEpisode: AiringSchedule? = null,
     val externalLinks: List<MediaExternalLink> = listOf()
-)
+) {
+    fun getFormattedMediaFormat(toUpper: Boolean = false): String {
+        return format?.name?.convertFromSnakeCase(toUpper) ?: ""
+    }
+
+    companion object {
+        val EMPTY_MEDIA = Media()
+    }
+}

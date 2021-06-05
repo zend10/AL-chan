@@ -10,10 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaTitle
+import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import com.zen.alchan.ui.main.SharedMainViewModel
 import kotlinx.android.synthetic.main.fragment_media_list.*
+import kotlinx.android.synthetic.main.layout_loading.*
+import kotlinx.android.synthetic.main.toolbar_default.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaType
 
@@ -24,6 +30,7 @@ private const val USER_ID = "userId"
 class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
 
     private val viewModel by viewModel<MediaListViewModel>()
+    private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     private var adapter: BaseRecyclerViewAdapter<MediaListItem>? = null
 
@@ -36,19 +43,44 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
     }
 
     override fun setUpLayout() {
-        adapter = MediaListLinearRvAdapter(requireContext(), listOf())
-        mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        mediaListRecyclerView.adapter = adapter
+        mediaListSwipeRefresh.setOnRefreshListener {
+            viewModel.reloadData()
+        }
+    }
 
-        viewModel.loadData()
+    override fun setUpInsets() {
+        mediaListRootLayout.applyTopPaddingInsets()
     }
 
     override fun setUpObserver() {
+        disposables.add(
+            viewModel.loading.subscribe {
+                loadingLayout.show(it)
+                mediaListSwipeRefresh.isRefreshing = false
+            }
+        )
+
+        disposables.add(
+            viewModel.listStyleAndAppSetting.subscribe { (listStyle, appSetting) ->
+                adapter = MediaListLinearRvAdapter(requireContext(), listOf(), listStyle, appSetting)
+                mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                mediaListRecyclerView.adapter = adapter
+            }
+        )
+
         disposables.add(
             viewModel.mediaListItems.subscribe {
                 adapter?.updateData(it)
             }
         )
+
+        sharedDisposables.add(
+            sharedViewModel.getScrollToTopObservable(SharedMainViewModel.Page.ANIME).subscribe {
+                mediaListRecyclerView.smoothScrollToPosition(0)
+            }
+        )
+
+        viewModel.loadData()
     }
 
     override fun onDestroyView() {

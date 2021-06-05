@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.annotation.PluralsRes
 import com.zen.alchan.helper.utils.TimeUtil
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun Int.getNumberFormatting(): String {
     return NumberFormat.getIntegerInstance().format(this)
@@ -19,4 +21,22 @@ fun Double.formatTwoDecimal(): String {
 
 fun Int.showUnit(context: Context, @PluralsRes pluralResId: Int): String {
     return "$this ${context.resources.getQuantityString(pluralResId, this)}"
+}
+
+fun Int.displaySecondsInDayDateTimeFormat(): String {
+    val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.getDefault())
+    val date = Date(this * 1000L)
+    return dateFormat.format(date)
+}
+
+fun Int.convertSecondsToDays(): Int {
+    return this / 3600 / 24 + 1
+}
+
+fun Int.convertSecondsToHours(): Int {
+    return this / 3600
+}
+
+fun Int.convertSecondsToMinutes(): Int {
+    return this / 60
 }

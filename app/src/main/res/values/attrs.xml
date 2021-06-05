@@ -24,8 +24,9 @@
     <attr name="themeAppNameFont" format="reference"/>
     <attr name="themeTitleFont" format="reference"/>
     <attr name="themeRegularFont" format="reference"/>
-    <attr name="themeRegularClickableFont" format="reference"/>
     <attr name="themeRegularBoldFont" format="reference"/>
+    <attr name="themeRegularClickableFont" format="reference"/>
+    <attr name="themeRegularClickableBoldFont" format="reference"/>
     <attr name="themeSmallFont" format="reference"/>
     <attr name="themeSmallClickableFont" format="reference"/>
     
@@ -35,4 +36,6 @@
     <attr name="themeNegativeBorderButton" format="reference"/>
     
     <attr name="themeRegularCheckBox" format="reference"/>
+    
+    <fraction name="listImageRatio">0.25</fraction>
 </resources>
