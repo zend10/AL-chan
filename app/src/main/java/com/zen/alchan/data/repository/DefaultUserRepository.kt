@@ -18,6 +18,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaType
 import type.UserStatisticsSort
+import type.UserTitleLanguage
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
@@ -201,5 +202,22 @@ class DefaultUserRepository(
 
     override fun getAppTheme(): AppTheme {
         return userManager.appSetting.appTheme
+    }
+
+    override fun updateAniListSettings(
+        titleLanguage: UserTitleLanguage,
+        activityMergeTime: Int,
+        displayAdultContent: Boolean,
+        airingNotifications: Boolean
+    ): Observable<User> {
+        return userDataSource.updateAniListSettings(titleLanguage, activityMergeTime, displayAdultContent, airingNotifications)
+            .toObservable()
+            .map {
+                val newViewer = it.data?.convert()
+                if (newViewer != null) {
+                    userManager.viewerData = SaveItem(newViewer)
+                }
+                newViewer
+            }
     }
 }

@@ -120,7 +120,21 @@
     <string name="ep_x_on_y">Ep. %1$d on %2$s.</string>
     <string name="ep_x_in_y">Ep. %1$d in %2$s.</string>
     <string name="you_are_x_behind">You are %1$s behind.</string>
+    <string name="title_language">Title Language</string>
+    <string name="default_media_title_language">Default media title language</string>
+    <string name="activity_merge_time">Activity Merge Time</string>
+    <string name="progress_activity_created_within_this_time_period_will_be_merged_together">Progress activity created within this time period will be merged together</string>
+    <string name="_18_content">18+ Content</string>
+    <string name="show_18_content_because_i_m_a_responsible_adult">Show 18+ content because I\'m a responsible adult</string>
+    <string name="receive_airing_anime_notifications">Receive airing anime notifications</string>
+    <string name="always">Always</string>
+    <string name="never">Never</string>
+    <string name="settings_saved">Settings saved</string>
 
+    <plurals name="minute">
+        <item quantity="one">minute</item>
+        <item quantity="other">minutes</item>
+    </plurals>
     <plurals name="hour">
         <item quantity="one">hour</item>
         <item quantity="other">hours</item>
@@ -129,9 +143,9 @@
         <item quantity="one">day</item>
         <item quantity="other">days</item>
     </plurals>
-    <plurals name="minute">
-        <item quantity="one">minute</item>
-        <item quantity="other">minutes</item>
+    <plurals name="week">
+        <item quantity="one">week</item>
+        <item quantity="other">weeks</item>
     </plurals>
     <plurals name="episode">
         <item quantity="one">episode</item>

@@ -14,6 +14,10 @@ abstract class BaseViewModel : ViewModel(), ViewModelContract {
     val loading: Observable<Boolean>
         get() = _loading
 
+    protected val _success = PublishSubject.create<Int>()
+    val success: Observable<Int>
+        get() = _success
+
     protected val _error = PublishSubject.create<Int>()
     val error: Observable<Int>
         get() = _error

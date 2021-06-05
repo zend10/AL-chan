@@ -14,6 +14,11 @@ interface NavigationManager {
     fun navigateToNotifications()
     fun navigateToSettings()
     fun navigateToAppSettings()
+    fun navigateToAniListSettings()
+    fun navigateToListsSettings()
+    fun navigateToNotificationsSettings()
+    fun navigateToAccountSettings()
+    fun navigateToAbout()
 
     fun openWebView(url: String)
     fun openWebView(url: Url)

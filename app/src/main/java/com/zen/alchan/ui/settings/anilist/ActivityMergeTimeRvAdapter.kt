@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.settings.app
+package com.zen.alchan.ui.settings.anilist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.ActivityMergeTime
+import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.showUnit
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.list_text.view.*
 
-class AllListPositionRvAdapter(
+class ActivityMergeTimeRvAdapter(
     private val context: Context,
-    list: List<String>,
-    private val listener: AllListPositionListener
-) : BaseRecyclerViewAdapter<String>(list) {
+    list: List<ActivityMergeTime>,
+    private val listener: ActivityMergeTimeListener
+) : BaseRecyclerViewAdapter<ActivityMergeTime>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
@@ -22,26 +25,19 @@ class AllListPositionRvAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
-            holder.bind(list[position], position)
-        }
+        if (holder is ViewHolder) holder.bind(list[position])
     }
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(content: String, index: Int) {
-            val ordinalNumber = "${index + 1} -"
-            if (content == "") {
-                view.itemText.text = "$ordinalNumber ${context.getString(R.string.top_of_the_list)}"
-            } else {
-                view.itemText.text = "$ordinalNumber ${context.getString(R.string.below)} $content"
-            }
+        fun bind(activityMergeTime: ActivityMergeTime) {
+            view.itemText.text = activityMergeTime.getString(context)
             view.itemLayout.clicks {
-                listener.getSelectedIndex(index)
+                listener.passSelectedMinute(activityMergeTime.minute)
             }
         }
     }
 
-    interface AllListPositionListener {
-        fun getSelectedIndex(index: Int)
+    interface ActivityMergeTimeListener {
+        fun passSelectedMinute(minute: Int)
     }
 }

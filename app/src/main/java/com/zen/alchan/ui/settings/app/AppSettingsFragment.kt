@@ -1,19 +1,14 @@
 package com.zen.alchan.ui.settings.app
 
-import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.common.BottomSheetListDialog
-import com.zen.alchan.ui.common.TextRvAdapter
-import com.zen.alchan.ui.launch.LaunchActivity
 import kotlinx.android.synthetic.main.fragment_app_settings.*
 import kotlinx.android.synthetic.main.toolbar_default.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +17,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
 
     private val viewModel by viewModel<AppSettingsViewModel>()
 
-    private var bottomSheetListDialog: BottomSheetListDialog? = null
     private var appThemeAdapter: AppThemeRvAdapter? = null
     private var allListPositionAdapter: AllListPositionRvAdapter? = null
     private var namingAdapter: NamingRvAdapter? = null
@@ -403,15 +397,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         viewModel.loadData()
     }
 
-    private fun showListDialog(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
-        bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
-        bottomSheetListDialog?.show(childFragmentManager, null)
-    }
-
-    private fun dismissListDialog() {
-        bottomSheetListDialog?.dismiss()
-    }
-
     private fun setPushNotificationsInfoTextLink() {
         val dontKillMyAppText = "https://dontkillmyapp.com/"
         val pushNotificationsInfoText = SpannableString(getString(R.string.important_to_know_n1_push_notifications_will_show_up_periodically_not_real_time_n2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com))
@@ -431,7 +416,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        bottomSheetListDialog = null
         appThemeAdapter = null
         namingAdapter = null
         pushNotificationsIntervalAdapter = null

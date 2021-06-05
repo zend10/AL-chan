@@ -9,6 +9,7 @@ import com.zen.alchan.helper.pojo.ListStyle
 import io.reactivex.Observable
 import type.MediaType
 import type.UserStatisticsSort
+import type.UserTitleLanguage
 
 interface UserRepository {
 
@@ -35,4 +36,11 @@ interface UserRepository {
     fun setAppSetting(newAppSetting: AppSetting?)
 
     fun getAppTheme(): AppTheme
+
+    fun updateAniListSettings(
+        titleLanguage: UserTitleLanguage,
+        activityMergeTime: Int,
+        displayAdultContent: Boolean,
+        airingNotifications: Boolean
+    ): Observable<User>
 }

@@ -27,6 +27,7 @@ import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
+import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
@@ -97,6 +98,7 @@ class ALchanApplication : Application() {
         viewModel { BioViewModel() }
 
         viewModel { AppSettingsViewModel(get()) }
+        viewModel { AniListSettingsViewModel(get()) }
     }
 
     override fun onCreate() {

@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.ui.common.BottomSheetListDialog
 import com.zen.alchan.ui.launch.LaunchActivity
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
@@ -30,6 +32,8 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     protected val sharedDisposables = CompositeDisposable()
 
     protected var screenWidth = 0
+
+    protected var bottomSheetListDialog: BottomSheetListDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +80,11 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
         disposables.clear()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bottomSheetListDialog = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         disposables.clear()
@@ -97,6 +106,15 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
             setNavigationIcon(icon)
             setNavigationOnClickListener { action() }
         }
+    }
+
+    protected fun showListDialog(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
+        bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
+        bottomSheetListDialog?.show(childFragmentManager, null)
+    }
+
+    protected fun dismissListDialog() {
+        bottomSheetListDialog?.dismiss()
     }
 
     protected fun restartApp() {

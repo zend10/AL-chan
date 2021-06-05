@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.anilist.AniListSettingsFragment">
+
+    <include layout="@layout/toolbar_default"/>
+
+    <androidx.core.widget.NestedScrollView
+        app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="@dimen/marginPageBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/aniListSettingsTitleLanguageLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/aniListSettingsLanguageTitle"
+                    android:text="@string/title_language"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/aniListSettingsSelectedLanguageLayout"
+                    app:layout_constraintTop_toBottomOf="@id/aniListSettingsLanguageTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/default_media_title_language"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/aniListSettingsSelectedLanguageText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/aniListSettingsActivityMergeTimeLayout"
+                app:layout_constraintTop_toBottomOf="@id/aniListSettingsTitleLanguageLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/aniListSettingsActivityMergeTimeTitle"
+                    android:text="@string/activity_merge_time"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/aniListSettingsSelectedMergeTimeLayout"
+                    app:layout_constraintTop_toBottomOf="@id/aniListSettingsActivityMergeTimeTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/progress_activity_created_within_this_time_period_will_be_merged_together"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/aniListSettingsSelectedMergeTimeText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/aniListSettingsAdultContentLayout"
+                app:layout_constraintTop_toBottomOf="@id/aniListSettingsActivityMergeTimeLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/aniListSettingsAdultContentTitle"
+                    android:text="@string/_18_content"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/aniListSettingsShowAdultContentLayout"
+                    app:layout_constraintTop_toBottomOf="@id/aniListSettingsAdultContentTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/show_18_content_because_i_m_a_responsible_adult"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/aniListSettingsShowAdultContentCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/aniListSettingsNotificationsLayout"
+                app:layout_constraintTop_toBottomOf="@id/aniListSettingsAdultContentLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/aniListSettingsNotificationsTitle"
+                    android:text="@string/notifications"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/aniListSettingsReceiveAiringNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/aniListSettingsNotificationsTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/receive_airing_anime_notifications"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/aniListSettingsReceiveAiringNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aniListSettingsSaveButton"
+                android:text="@string/save_changes"
+                style="?themePrimaryButton"
+                app:layout_constraintTop_toBottomOf="@id/aniListSettingsNotificationsLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/layout_loading"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
