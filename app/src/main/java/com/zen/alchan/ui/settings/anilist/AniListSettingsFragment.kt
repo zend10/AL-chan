@@ -1,27 +1,18 @@
 package com.zen.alchan.ui.settings.anilist
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.getString
-import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.extensions.clicks
-import com.zen.alchan.helper.extensions.convertFromSnakeCase
-import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.common.BottomSheetListDialog
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.fragment_ani_list_settings.*
+import kotlinx.android.synthetic.main.fragment_anilist_settings.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.toolbar_default.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.UserTitleLanguage
 
 
-class AniListSettingsFragment : BaseFragment(R.layout.fragment_ani_list_settings) {
+class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings) {
 
     private val viewModel by viewModel<AniListSettingsViewModel>()
 
@@ -54,6 +45,7 @@ class AniListSettingsFragment : BaseFragment(R.layout.fragment_ani_list_settings
 
     override fun setUpInsets() {
         defaultToolbar.applyTopPaddingInsets()
+        aniListSettingsLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {

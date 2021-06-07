@@ -5,5 +5,5 @@ data class MediaListTypeOptions(
     val splitCompletedSectionByFormat: Boolean = false,
     val customLists: List<String> = listOf(),
     val advancedScoring: List<String> = listOf(),
-    val advancedScoringEnabled: Boolean = false
+    var advancedScoringEnabled: Boolean = false
 )

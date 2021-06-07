@@ -58,6 +58,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         )
         mainViewPager.isUserInputEnabled = false
         mainViewPager.adapter = viewPagerAdapter
+        mainViewPager.offscreenPageLimit = 4
 
         mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

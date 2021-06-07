@@ -29,14 +29,13 @@ class MediaTitleLanguageRvAdapter(
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(userTitleLanguage: UserTitleLanguage) {
-            view.itemText.text = context.getString(
-                when (userTitleLanguage) {
-                    UserTitleLanguage.ROMAJI -> R.string.use_media_romaji_name_format
-                    UserTitleLanguage.ENGLISH -> R.string.use_media_english_name_format
-                    UserTitleLanguage.NATIVE -> R.string.use_media_native_name_format
-                    else -> R.string.use_media_romaji_name_format
-                }
-            )
+            view.itemText.text = when (userTitleLanguage) {
+                UserTitleLanguage.ROMAJI -> context.getString(R.string.use_media_romaji_name_format)
+                UserTitleLanguage.ENGLISH -> context.getString(R.string.use_media_english_name_format)
+                UserTitleLanguage.NATIVE -> context.getString(R.string.use_media_native_name_format)
+                else -> userTitleLanguage.name.convertFromSnakeCase()
+            }
+
             view.itemLayout.clicks { listener.getSelectedLanguage(userTitleLanguage) }
         }
     }

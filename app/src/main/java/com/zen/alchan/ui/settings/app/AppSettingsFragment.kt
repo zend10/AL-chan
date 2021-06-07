@@ -147,7 +147,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
     }
 
     override fun setUpInsets() {
-        super.setUpInsets()
         defaultToolbar.applyTopPaddingInsets()
         appSettingsLayout.applyBottomPaddingInsets()
     }

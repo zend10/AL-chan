@@ -130,6 +130,19 @@
     <string name="always">Always</string>
     <string name="never">Never</string>
     <string name="settings_saved">Settings saved</string>
+    <string name="scoring">Scoring</string>
+    <string name="scoring_system">Scoring system</string>
+    <string name="default_list_order">Default list order</string>
+    <string name="split_anime_completed_list_section_by_format">Split Anime completed list section by format</string>
+    <string name="split_manga_completed_list_section_by_format">Split Manga completed list section by format</string>
+    <string name="use_advanced_scoring">Use advanced scoring</string>
+    <string name="advanced_scoring_criteria">Advanced Scoring Criteria</string>
+    <string name="custom_anime_lists">Custom Anime Lists</string>
+    <string name="custom_manga_lists">Custom Manga Lists</string>
+    <string name="add_more">Add more</string>
+    <string name="anime_section_order">Anime Section Order</string>
+    <string name="start_reorder">Start Reorder</string>
+    <string name="manga_section_order">Manga Section Order</string>
 
     <plurals name="minute">
         <item quantity="one">minute</item>

@@ -29,6 +29,7 @@ import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
+import com.zen.alchan.ui.settings.list.ListSettingsViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
 import org.koin.android.ext.koin.androidContext
@@ -99,6 +100,7 @@ class ALchanApplication : Application() {
 
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
+        viewModel { ListSettingsViewModel(get()) }
     }
 
     override fun onCreate() {
