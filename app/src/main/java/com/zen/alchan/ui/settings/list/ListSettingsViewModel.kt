@@ -21,6 +21,10 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     val useAdvancedScoring: Observable<Boolean>
         get() = _useAdvancedScoring
 
+    private val _advancedScoringCriteria = BehaviorSubject.createDefault<List<String>>(listOf())
+    val advancedScoringCriteria: Observable<List<String>>
+        get() = _advancedScoringCriteria
+
     private val _scoreFormats = PublishSubject.create<List<ScoreFormat>>()
     val scoreFormats: Observable<List<ScoreFormat>>
         get() = _scoreFormats
@@ -29,6 +33,9 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     val useAdvancedScoringVisibility: Observable<Boolean>
         get() = _useAdvancedScoringVisibility
 
+    private val _advancedScoringCriteriaVisibility = BehaviorSubject.createDefault(false)
+    val advancedScoringCriteriaVisibility: Observable<Boolean>
+        get() = _advancedScoringCriteriaVisibility
 
     private var viewer: User? = null
     private var currentListsSettings: MediaListOptions? = null
@@ -45,6 +52,7 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
 
                     updateScoringSystem(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
                     updateUseAdvancedScoring(mediaListOptions.animeList.advancedScoringEnabled)
+                    updateAdvancedScoringCriteria(mediaListOptions.animeList.advancedScoring)
                 }
         )
     }
@@ -62,15 +70,30 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                 _useAdvancedScoring.onNext(false)
             }
         }
+
+        handleAdvancedScoringCriteriaVisibility()
     }
 
     fun updateUseAdvancedScoring(shouldUseAdvancedScoring: Boolean) {
         currentListsSettings?.animeList?.advancedScoringEnabled = shouldUseAdvancedScoring
         currentListsSettings?.mangaList?.advancedScoringEnabled = shouldUseAdvancedScoring
         _useAdvancedScoring.onNext(shouldUseAdvancedScoring)
+
+        handleAdvancedScoringCriteriaVisibility()
+    }
+
+    fun updateAdvancedScoringCriteria(newAdvancedScoringCriteria: List<String>) {
+        _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
     }
 
     fun getScoreFormats() {
         _scoreFormats.onNext(ScoreFormat.values().toList().filterNot { it == ScoreFormat.UNKNOWN__ })
+    }
+
+    private fun handleAdvancedScoringCriteriaVisibility() {
+        _advancedScoringCriteriaVisibility.onNext(
+            (_scoringSystem.value == ScoreFormat.POINT_100 || _scoringSystem.value == ScoreFormat.POINT_10_DECIMAL) &&
+            _useAdvancedScoring.value == true
+        )
     }
 }

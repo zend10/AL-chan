@@ -29,6 +29,7 @@
     <attr name="themeRegularClickableBoldFont" format="reference"/>
     <attr name="themeSmallFont" format="reference"/>
     <attr name="themeSmallClickableFont" format="reference"/>
+    <attr name="themeSmallNegativeFont" format="reference"/>
     
     
     <attr name="themePrimaryButton" format="reference"/>

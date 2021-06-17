@@ -3,6 +3,7 @@ package com.zen.alchan.ui.settings.list
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.common.ChipRvAdapter
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list_settings.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -15,9 +16,21 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
     private val viewModel by viewModel<ListSettingsViewModel>()
 
     private var scoreFormatAdapter: ScoreFormatRvAdapter? = null
+    private var advancedScoringCriteriaAdapter: ChipRvAdapter? = null
 
     override fun setUpLayout() {
         setUpToolbar(defaultToolbar, getString(R.string.list_settings))
+
+        advancedScoringCriteriaAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+            override fun getSelectedItem(item: String, index: Int) {
+
+            }
+
+            override fun deleteItem(index: Int) {
+
+            }
+        })
+        listSettingsAdvancedScoringCriteriaRecyclerView.adapter = advancedScoringCriteriaAdapter
 
         listSettingsScoringSystemLayout.clicks {
             viewModel.getScoreFormats()
@@ -102,7 +115,12 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
             }
         )
 
+        disposables.add(
+            viewModel.advancedScoringCriteria.subscribe {
+                advancedScoringCriteriaAdapter?.updateData(it)
 
+            }
+        )
 
         disposables.add(
             viewModel.scoreFormats.subscribe {
@@ -123,12 +141,19 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
             }
         )
 
+        disposables.add(
+            viewModel.advancedScoringCriteriaVisibility.subscribe {
+                listSettingsAdvancedScoringCriteriaLayout.show(it)
+            }
+        )
+
         viewModel.loadData()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         scoreFormatAdapter = null
+        advancedScoringCriteriaAdapter = null
     }
 
     companion object {

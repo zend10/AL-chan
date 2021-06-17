@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/chipLayout"
+    app:strokeColor="?themePrimaryColor"
+    app:strokeWidth="@dimen/lineWidth"
+    app:contentPaddingLeft="@dimen/marginClose"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    android:layout_marginEnd="@dimen/marginSmall"
+    android:layout_marginBottom="@dimen/marginSmall"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/chipText"
+            style="?themeSmallClickableFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/chipDeleteIcon"
+            app:srcCompat="@drawable/ic_cancel"
+            app:tint="?themePrimaryColor"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/iconPadding"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

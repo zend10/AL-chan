@@ -118,6 +118,18 @@
 
                 </LinearLayout>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/listSettingsAdvancedScoringCriteriaNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallNegativeFont"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsAdvancedScoringCriteriaTitleLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listSettingsAdvancedScoringCriteriaRecyclerView"
                     app:layout_constraintTop_toBottomOf="@id/listSettingsAdvancedScoringCriteriaTitleLayout"

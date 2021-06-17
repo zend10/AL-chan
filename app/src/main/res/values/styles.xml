@@ -20,6 +20,7 @@
         <item name="themeRegularClickableBoldFont">@style/FontRegularClickableBold</item>
         <item name="themeSmallFont">@style/FontSmall</item>
         <item name="themeSmallClickableFont">@style/FontSmallClickable</item>
+        <item name="themeSmallNegativeFont">@style/FontSmallNegative</item>
         <item name="themePrimaryButton">@style/ButtonPrimary</item>
         <item name="themePrimaryBorderButton">@style/ButtonPrimaryBorder</item>
         <item name="themeNegativeBorderButton">@style/ButtonNegativeBorder</item>
@@ -365,6 +366,12 @@
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:textSize">@dimen/fontSmall</item>
         <item name="android:textColor">?themePrimaryColor</item>
+    </style>
+
+    <style name="FontSmallNegative">
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textSize">@dimen/fontSmall</item>
+        <item name="android:textColor">?themeNegativeColor</item>
     </style>
 
     <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">

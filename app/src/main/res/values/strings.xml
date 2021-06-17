@@ -143,6 +143,7 @@
     <string name="anime_section_order">Anime Section Order</string>
     <string name="start_reorder">Start Reorder</string>
     <string name="manga_section_order">Manga Section Order</string>
+    <string name="no_item">No Item</string>
 
     <plurals name="minute">
         <item quantity="one">minute</item>

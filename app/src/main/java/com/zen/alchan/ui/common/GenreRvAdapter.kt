@@ -25,7 +25,7 @@ class GenreRvAdapter(private val context: Context, list: List<Genre>) : BaseRecy
         if (holder is ViewHolder) holder.bind(list[position])
     }
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(genre: Genre) {
             view.genreText.text = genre.name
             view.genreCard.setCardBackgroundColor(Color.parseColor(genre.getHexColor()))
