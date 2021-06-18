@@ -17,6 +17,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaType
+import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
 
@@ -206,11 +207,18 @@ class DefaultUserRepository(
 
     override fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
+        staffNameLanguage: UserStaffNameLanguage,
         activityMergeTime: Int,
         displayAdultContent: Boolean,
         airingNotifications: Boolean
     ): Observable<User> {
-        return userDataSource.updateAniListSettings(titleLanguage, activityMergeTime, displayAdultContent, airingNotifications)
+        return userDataSource.updateAniListSettings(
+            titleLanguage,
+            staffNameLanguage,
+            activityMergeTime,
+            displayAdultContent,
+            airingNotifications
+        )
             .toObservable()
             .map {
                 val newViewer = it.data?.convert()

@@ -12,6 +12,7 @@ import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
 
@@ -32,12 +33,14 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
 
     override fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
+        staffNameLanguage: UserStaffNameLanguage,
         activityMergeTime: Int,
         displayAdultContent: Boolean,
         airingNotifications: Boolean
     ): Single<Response<UpdateUserMutation.Data>> {
         val mutation = UpdateUserMutation(
             titleLanguage = Input.fromNullable(titleLanguage),
+            staffNameLanguage = Input.fromNullable(staffNameLanguage),
             activityMergeTime = Input.fromNullable(activityMergeTime),
             displayAdultContent = Input.fromNullable(displayAdultContent),
             airingNotifications = Input.fromNullable(airingNotifications)

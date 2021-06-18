@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.fragment_anilist_settings.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.toolbar_default.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.UserStaffNameLanguage
 import type.UserTitleLanguage
 
 
@@ -17,6 +18,7 @@ class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings)
     private val viewModel by viewModel<AniListSettingsViewModel>()
 
     private var mediaTitleLanguageAdapter: MediaTitleLanguageRvAdapter? = null
+    private var staffCharacterNamingAdapter: StaffCharacterNamingRvAdapter? = null
     private var activityMergeTimeAdapter: ActivityMergeTimeRvAdapter? = null
 
     override fun setUpLayout() {
@@ -24,6 +26,10 @@ class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings)
 
         aniListSettingsSelectedLanguageLayout.clicks {
             viewModel.getMediaTitleLanguages()
+        }
+
+        aniListSettingsSelectedNamingLayout.clicks {
+            viewModel.getStaffCharacterNamings()
         }
 
         aniListSettingsSelectedMergeTimeLayout.clicks {
@@ -68,6 +74,12 @@ class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings)
         )
 
         disposables.add(
+            viewModel.staffCharacterNaming.subscribe {
+                aniListSettingsSelectedNamingText.text = it.name.convertFromSnakeCase()
+            }
+        )
+
+        disposables.add(
             viewModel.progressActivityMergeTime.subscribe {
                 aniListSettingsSelectedMergeTimeText.text = it.getString(requireContext())
             }
@@ -91,6 +103,19 @@ class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings)
                     override fun getSelectedLanguage(userTitleLanguage: UserTitleLanguage) {
                         dismissListDialog()
                         viewModel.updateMediaTitleLanguage(userTitleLanguage)
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
+        disposables.add(
+            viewModel.staffCharacterNameLanguages.subscribe {
+                staffCharacterNamingAdapter = StaffCharacterNamingRvAdapter(requireContext(), it, object : StaffCharacterNamingRvAdapter.StaffCharacterNamingListener {
+                    override fun getSelectedNaming(userStaffNameLanguage: UserStaffNameLanguage) {
+                        dismissListDialog()
+                        viewModel.updateStaffCharacterNaming(userStaffNameLanguage)
                     }
                 }).also { adapter ->
                     showListDialog(adapter)

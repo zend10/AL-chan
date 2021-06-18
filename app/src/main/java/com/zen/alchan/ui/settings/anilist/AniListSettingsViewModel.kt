@@ -12,6 +12,7 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.UserStaffNameLanguage
 import type.UserTitleLanguage
 
 class AniListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
@@ -19,6 +20,10 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
     private val _mediaTitleLanguage = BehaviorSubject.createDefault(UserTitleLanguage.ROMAJI)
     val mediaTitleLanguage: Observable<UserTitleLanguage>
         get() = _mediaTitleLanguage
+
+    private val _staffCharacterNaming = BehaviorSubject.createDefault(UserStaffNameLanguage.ROMAJI_WESTERN)
+    val staffCharacterNaming: Observable<UserStaffNameLanguage>
+        get() = _staffCharacterNaming
 
     private val _progressActivityMergeTime = BehaviorSubject.createDefault(ActivityMergeTime.NEVER)
     val progressActivityMergeTime: Observable<ActivityMergeTime>
@@ -35,6 +40,10 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
     private val _mediaTitleLanguages = PublishSubject.create<List<UserTitleLanguage>>()
     val mediaTitleLanguages: Observable<List<UserTitleLanguage>>
         get() = _mediaTitleLanguages
+
+    private val _staffCharacterNameLanguages = PublishSubject.create<List<UserStaffNameLanguage>>()
+    val staffCharacterNameLanguages: Observable<List<UserStaffNameLanguage>>
+        get() = _staffCharacterNameLanguages
 
     private val _activityMergeTimes = PublishSubject.create<List<ActivityMergeTime>>()
     val activityMergeTimes: Observable<List<ActivityMergeTime>>
@@ -53,6 +62,7 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
                     val userOptions = it.options
                     currentAniListSetting = userOptions
                     updateMediaTitleLanguage(userOptions.titleLanguage ?: UserTitleLanguage.ROMAJI)
+                    updateStaffCharacterNaming(userOptions.staffNameLanguage ?: UserStaffNameLanguage.ROMAJI_WESTERN)
                     updateProgressActivityMergeTime(userOptions.activityMergeTime)
                     updateShowAdultContent(userOptions.displayAdultContent)
                     updateReceiveAiringNotifications(userOptions.airingNotifications)
@@ -63,6 +73,11 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
     fun updateMediaTitleLanguage(newMediaTitleLanguage: UserTitleLanguage) {
         currentAniListSetting?.titleLanguage = newMediaTitleLanguage
         _mediaTitleLanguage.onNext(newMediaTitleLanguage)
+    }
+
+    fun updateStaffCharacterNaming(newStaffCharacterNaming: UserStaffNameLanguage) {
+        currentAniListSetting?.staffNameLanguage = newStaffCharacterNaming
+        _staffCharacterNaming.onNext(newStaffCharacterNaming)
     }
 
     fun updateProgressActivityMergeTime(newProgressActivityMergeTime: Int) {
@@ -91,6 +106,14 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
         _mediaTitleLanguages.onNext(userTitleLanguages)
     }
 
+    fun getStaffCharacterNamings() {
+        val userStaffNameLanguages = ArrayList<UserStaffNameLanguage>()
+        userStaffNameLanguages.add(UserStaffNameLanguage.ROMAJI_WESTERN)
+        userStaffNameLanguages.add(UserStaffNameLanguage.ROMAJI)
+        userStaffNameLanguages.add(UserStaffNameLanguage.NATIVE)
+        _staffCharacterNameLanguages.onNext(userStaffNameLanguages)
+    }
+
     fun getActivityMergeTimes() {
         _activityMergeTimes.onNext(ActivityMergeTime.values().toList())
     }
@@ -102,6 +125,7 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
             disposables.add(
                 userRepository.updateAniListSettings(
                     titleLanguage ?: UserTitleLanguage.ROMAJI,
+                    staffNameLanguage ?: UserStaffNameLanguage.ROMAJI_WESTERN,
                     activityMergeTime,
                     displayAdultContent,
                     airingNotifications

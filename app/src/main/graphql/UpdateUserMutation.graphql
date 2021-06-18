@@ -8,7 +8,8 @@ mutation UpdateUserMutation(
   $timezone:String,
   $activityMergeTime:Int,
   $animeListOptions:MediaListOptionsInput,
-  $mangaListOptions:MediaListOptionsInput
+  $mangaListOptions:MediaListOptionsInput,
+  $staffNameLanguage:UserStaffNameLanguage
 ) {
   UpdateUser(
     titleLanguage:$titleLanguage,
@@ -20,7 +21,8 @@ mutation UpdateUserMutation(
     timezone:$timezone,
     activityMergeTime:$activityMergeTime,
     animeListOptions:$animeListOptions,
-    mangaListOptions:$mangaListOptions
+    mangaListOptions:$mangaListOptions,
+    staffNameLanguage:$staffNameLanguage
   ) {
     id
     name
@@ -40,6 +42,7 @@ mutation UpdateUserMutation(
       }
       timezone
       activityMergeTime
+      staffNameLanguage
     }
     mediaListOptions {
       scoreFormat

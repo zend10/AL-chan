@@ -23,7 +23,8 @@ fun ViewerQuery.Data.convert(): User {
                 )
             } ?: listOf(),
             timezone = viewer?.options?.timezone,
-            activityMergeTime = viewer?.options?.activityMergeTime ?: 0
+            activityMergeTime = viewer?.options?.activityMergeTime ?: 0,
+            staffNameLanguage = viewer?.options?.staffNameLanguage
         ),
         mediaListOptions = MediaListOptions(
             scoreFormat = viewer?.mediaListOptions?.scoreFormat,

@@ -23,7 +23,8 @@ fun UpdateUserMutation.Data.convert(): User {
                 )
             } ?: listOf(),
             timezone = updateUser?.options?.timezone,
-            activityMergeTime = updateUser?.options?.activityMergeTime ?: 0
+            activityMergeTime = updateUser?.options?.activityMergeTime ?: 0,
+            staffNameLanguage = updateUser?.options?.staffNameLanguage
         ),
         mediaListOptions = MediaListOptions(
             scoreFormat = updateUser?.mediaListOptions?.scoreFormat,

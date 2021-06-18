@@ -8,6 +8,7 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.pojo.ListStyle
 import io.reactivex.Observable
 import type.MediaType
+import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
 
@@ -39,6 +40,7 @@ interface UserRepository {
 
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
+        staffNameLanguage: UserStaffNameLanguage,
         activityMergeTime: Int,
         displayAdultContent: Boolean,
         airingNotifications: Boolean
