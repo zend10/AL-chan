@@ -49,10 +49,6 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
             viewModel.updateUseRelativeDateForNextAiringEpisode(appSettingsRelativeDateCheckBox.isChecked)
         }
 
-        appSettingsCharacterNameLayout.clicks {
-            viewModel.getCharacterNamings()
-        }
-
         appSettingsStaffNameLayout.clicks {
             viewModel.getStaffNamings()
         }
@@ -189,13 +185,7 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         )
 
         disposables.add(
-            viewModel.characterNaming.subscribe {
-                appSettingsCharacterNameText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
-            viewModel.staffNaming.subscribe {
+            viewModel.japaneseStaffNaming.subscribe {
                 appSettingsStaffNameText.text = it.name.convertFromSnakeCase()
             }
         )
@@ -330,27 +320,12 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         )
 
         disposables.add(
-            viewModel.characterNamings.subscribe {
-                namingAdapter = NamingRvAdapter(requireContext(), it, object : NamingRvAdapter.NamingListener {
-                    override fun getSelectedNaming(naming: Naming) {
-                        if (naming is CharacterNaming) {
-                            dismissListDialog()
-                            viewModel.updateCharacterNaming(naming)
-                        }
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
-                }
-            }
-        )
-
-        disposables.add(
             viewModel.staffNamings.subscribe {
                 namingAdapter = NamingRvAdapter(requireContext(), it, object : NamingRvAdapter.NamingListener {
                     override fun getSelectedNaming(naming: Naming) {
                         if (naming is StaffNaming) {
                             dismissListDialog()
-                            viewModel.updateStaffNaming(naming)
+                            viewModel.updateJapaneseStaffNaming(naming)
                         }
                     }
                 }).also { adapter ->

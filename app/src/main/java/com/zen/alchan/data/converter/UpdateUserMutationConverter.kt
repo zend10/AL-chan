@@ -47,6 +47,6 @@ fun UpdateUserMutation.Data.convert(): User {
         siteUrl = updateUser?.siteUrl ?: "",
         donatorTier = updateUser?.donatorTier ?: 0,
         donatorBadge = updateUser?.donatorBadge ?: "",
-        moderatorStatus = updateUser?.moderatorStatus ?: ""
+        moderatorRoles = updateUser?.moderatorRoles?.filterNotNull() ?: listOf()
     )
 }

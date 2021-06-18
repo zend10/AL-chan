@@ -42,13 +42,9 @@ class AppSettingsViewModel(
     val useRelativeDateForNextAiringEpisode: Observable<Boolean>
         get() = _useRelativeDateForNextAiringEpisode
 
-    private val _characterNaming = BehaviorSubject.createDefault(CharacterNaming.FOLLOW_ANILIST)
-    val characterNaming: Observable<CharacterNaming>
-        get() = _characterNaming
-
-    private val _staffNaming = BehaviorSubject.createDefault(StaffNaming.FOLLOW_ANILIST)
-    val staffNaming: Observable<StaffNaming>
-        get() = _staffNaming
+    private val _japaneseStaffNaming = BehaviorSubject.createDefault(StaffNaming.FOLLOW_ANILIST)
+    val japaneseStaffNaming: Observable<StaffNaming>
+        get() = _japaneseStaffNaming
 
     private val _japaneseMediaNaming = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
     val japaneseMediaNaming: Observable<MediaNaming>
@@ -126,10 +122,6 @@ class AppSettingsViewModel(
     val allMangaListItems: Observable<List<String>>
         get() = _allMangaListItems
 
-    private val _characterNamings = PublishSubject.create<List<CharacterNaming>>()
-    val characterNamings: Observable<List<CharacterNaming>>
-        get() = _characterNamings
-
     private val _staffNamings = PublishSubject.create<List<StaffNaming>>()
     val staffNamings: Observable<List<StaffNaming>>
         get() = _staffNamings
@@ -162,8 +154,7 @@ class AppSettingsViewModel(
                     updateAllMangaListPosition(appSetting.allMangaListPosition)
                     updateUseRelativeDateForNextAiringEpisode(appSetting.useRelativeDateForNextAiringEpisode)
 
-                    updateCharacterNaming(appSetting.characterNaming)
-                    updateStaffNaming(appSetting.staffNaming)
+                    updateJapaneseStaffNaming(appSetting.japaneseStaffNaming)
                     updateJapaneseMediaNaming(appSetting.japaneseMediaNaming)
                     updateKoreanMediaNaming(appSetting.koreanMediaNaming)
                     updateChineseMediaNaming(appSetting.chineseMediaNaming)
@@ -225,14 +216,9 @@ class AppSettingsViewModel(
         _useRelativeDateForNextAiringEpisode.onNext(shouldUseRelativeDateForNextAiringEpisode)
     }
 
-    fun updateCharacterNaming(newCharacterNaming: CharacterNaming) {
-        currentAppSetting?.characterNaming = newCharacterNaming
-        _characterNaming.onNext(newCharacterNaming)
-    }
-
-    fun updateStaffNaming(newStaffNaming: StaffNaming) {
-        currentAppSetting?.staffNaming = newStaffNaming
-        _staffNaming.onNext(newStaffNaming)
+    fun updateJapaneseStaffNaming(newJapaneseStaffNaming: StaffNaming) {
+        currentAppSetting?.japaneseStaffNaming = newJapaneseStaffNaming
+        _japaneseStaffNaming.onNext(newJapaneseStaffNaming)
     }
 
     fun updateMediaNaming(newMediaNaming: MediaNaming, country: Country) {
@@ -350,10 +336,6 @@ class AppSettingsViewModel(
         allMangaListItems.add("")
         allMangaListItems.addAll(viewer?.mediaListOptions?.mangaList?.sectionOrder ?: listOf())
         _allMangaListItems.onNext(allMangaListItems)
-    }
-
-    fun getCharacterNamings() {
-        _characterNamings.onNext(CharacterNaming.values().toList())
     }
 
     fun getStaffNamings() {

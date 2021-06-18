@@ -47,6 +47,6 @@ fun ViewerQuery.Data.convert(): User {
         siteUrl = viewer?.siteUrl ?: "",
         donatorTier = viewer?.donatorTier ?: 0,
         donatorBadge = viewer?.donatorBadge ?: "",
-        moderatorStatus = viewer?.moderatorStatus ?: ""
+        moderatorRoles = viewer?.moderatorRoles?.filterNotNull() ?: listOf()
     )
 }

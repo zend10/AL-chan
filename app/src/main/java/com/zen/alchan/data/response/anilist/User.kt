@@ -1,5 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
+import type.ModRole
+
 data class User(
     val id: Int = 0,
     val name: String = "",
@@ -14,7 +16,7 @@ data class User(
     val siteUrl: String = "",
     val donatorTier: Int = 0,
     val donatorBadge: String = "",
-    val moderatorStatus: String = ""
+    val moderatorRoles: List<ModRole> = listOf()
 ) {
     companion object {
         val EMPTY_USER = User()

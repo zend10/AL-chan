@@ -1,7 +1,6 @@
 package com.zen.alchan.data.entitiy
 
 import com.zen.alchan.helper.enums.AppTheme
-import com.zen.alchan.helper.enums.CharacterNaming
 import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.enums.StaffNaming
 
@@ -12,8 +11,7 @@ data class AppSetting(
     var allAnimeListPosition: Int = 0,
     var allMangaListPosition: Int = 0,
     var useRelativeDateForNextAiringEpisode: Boolean = false,
-    var characterNaming: CharacterNaming = CharacterNaming.FOLLOW_ANILIST,
-    var staffNaming: StaffNaming = StaffNaming.FOLLOW_ANILIST,
+    var japaneseStaffNaming: StaffNaming = StaffNaming.FOLLOW_ANILIST,
     var japaneseMediaNaming: MediaNaming = MediaNaming.FOLLOW_ANILIST,
     var koreanMediaNaming: MediaNaming = MediaNaming.FOLLOW_ANILIST,
     var chineseMediaNaming: MediaNaming = MediaNaming.FOLLOW_ANILIST,

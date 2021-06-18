@@ -245,33 +245,8 @@
                     android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/appSettingsCharacterNameLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/display_character_name"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginNormal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/appSettingsCharacterNameText"
-                        style="?themeRegularClickableFont"
-                        android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/appSettingsStaffNameLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/appSettingsCharacterNameLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
                     android:layout_marginTop="@dimen/marginNormal"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"

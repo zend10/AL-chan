@@ -20,7 +20,6 @@ class NamingRvAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
         return when (viewType) {
-            VIEW_TYPE_CHARACTER_NAMING -> CharacterViewHolder(view)
             VIEW_TYPE_STAFF_NAMING -> StaffViewHolder(view)
             VIEW_TYPE_MEDIA_NAMING -> MediaViewHolder(view)
             else -> MediaViewHolder(view)
@@ -29,25 +28,8 @@ class NamingRvAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when {
-            holder is CharacterViewHolder && list[position] is CharacterNaming -> holder.bind(list[position] as CharacterNaming)
             holder is StaffViewHolder && list[position] is StaffNaming -> holder.bind(list[position] as StaffNaming)
             holder is MediaViewHolder && list[position] is MediaNaming -> holder.bind(list[position] as MediaNaming)
-        }
-    }
-
-    inner class CharacterViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(characterNaming: CharacterNaming) {
-            view.itemText.text = context.getString(
-                when (characterNaming) {
-                    CharacterNaming.FOLLOW_ANILIST -> R.string.follow_anilist_setting
-                    CharacterNaming.FIRST_MIDDLE_LAST -> R.string.use_character_first_middle_last_name_format
-                    CharacterNaming.LAST_MIDDLE_FIRST -> R.string.use_character_last_middle_first_name_format
-                    CharacterNaming.NATIVE -> R.string.native_name
-                }
-            )
-            view.itemLayout.clicks {
-                listener.getSelectedNaming(characterNaming)
-            }
         }
     }
 
@@ -85,7 +67,6 @@ class NamingRvAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (list[position]) {
-            is CharacterNaming -> VIEW_TYPE_CHARACTER_NAMING
             is StaffNaming -> VIEW_TYPE_STAFF_NAMING
             is MediaNaming -> VIEW_TYPE_MEDIA_NAMING
             else -> VIEW_TYPE_MEDIA_NAMING
@@ -97,9 +78,8 @@ class NamingRvAdapter(
     }
 
     companion object {
-        private const val VIEW_TYPE_CHARACTER_NAMING = 100
-        private const val VIEW_TYPE_STAFF_NAMING = 200
-        private const val VIEW_TYPE_MEDIA_NAMING = 300
+        private const val VIEW_TYPE_STAFF_NAMING = 100
+        private const val VIEW_TYPE_MEDIA_NAMING = 200
 
     }
 }

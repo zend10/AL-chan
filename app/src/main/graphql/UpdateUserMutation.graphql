@@ -62,7 +62,7 @@ mutation UpdateUserMutation(
     unreadNotificationCount
     donatorTier
     donatorBadge
-    moderatorStatus
+    moderatorRoles
     siteUrl
   }
 }

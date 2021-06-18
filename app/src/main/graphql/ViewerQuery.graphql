@@ -18,6 +18,7 @@ query ViewerQuery {
       }
       timezone
       activityMergeTime
+      staffNameLanguage
     }
     mediaListOptions {
       scoreFormat
@@ -40,7 +41,7 @@ query ViewerQuery {
     unreadNotificationCount
     donatorTier
     donatorBadge
-    moderatorStatus
+    moderatorRoles
     siteUrl
   }
 }
