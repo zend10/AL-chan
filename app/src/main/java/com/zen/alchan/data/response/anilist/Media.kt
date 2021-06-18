@@ -1,5 +1,8 @@
 package com.zen.alchan.data.response.anilist
 
+import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.helper.enums.Country
+import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.pojo.Genre
 import type.*
@@ -42,6 +45,25 @@ data class Media(
 ) {
     fun getFormattedMediaFormat(toUpper: Boolean = false): String {
         return format?.name?.convertFromSnakeCase(toUpper) ?: ""
+    }
+
+    fun getTitle(appSetting: AppSetting): String {
+        return when (countryOfOrigin) {
+            Country.JAPAN.iso -> getPreferredNaming(appSetting.japaneseMediaNaming)
+            Country.SOUTH_KOREA.iso -> getPreferredNaming(appSetting.koreanMediaNaming)
+            Country.CHINA.iso -> getPreferredNaming(appSetting.chineseMediaNaming)
+            Country.TAIWAN.iso -> getPreferredNaming(appSetting.taiwaneseMediaNaming)
+            else -> getPreferredNaming(MediaNaming.FOLLOW_ANILIST)
+        }
+    }
+
+    private fun getPreferredNaming(naming: MediaNaming): String {
+        return when (naming) {
+            MediaNaming.FOLLOW_ANILIST -> title.userPreferred
+            MediaNaming.ROMAJI -> title.romaji
+            MediaNaming.ENGLISH -> title.english
+            MediaNaming.NATIVE -> title.native
+        }
     }
 
     companion object {

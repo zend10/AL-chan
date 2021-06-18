@@ -32,7 +32,7 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
     private val viewModel by viewModel<MediaListViewModel>()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
-    private var adapter: BaseRecyclerViewAdapter<MediaListItem>? = null
+    private var adapter: BaseMediaListRvAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,10 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
     }
 
     override fun setUpLayout() {
+        adapter = MediaListLinearRvAdapter(requireContext(), listOf())
+        mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        mediaListRecyclerView.adapter = adapter
+
         mediaListSwipeRefresh.setOnRefreshListener {
             viewModel.reloadData()
         }
@@ -61,16 +65,11 @@ class MediaListFragment : BaseFragment(R.layout.fragment_media_list) {
         )
 
         disposables.add(
-            viewModel.listStyleAndAppSetting.subscribe { (listStyle, appSetting) ->
-                adapter = MediaListLinearRvAdapter(requireContext(), listOf(), listStyle, appSetting)
-                mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                mediaListRecyclerView.adapter = adapter
-            }
-        )
-
-        disposables.add(
-            viewModel.mediaListItems.subscribe {
-                adapter?.updateData(it)
+            viewModel.mediaListAdapterComponent.subscribe {
+                adapter?.applyAppSetting(it.appSetting)
+                adapter?.applyListStyle(it.listStyle)
+                adapter?.applyMediaListOptions(it.mediaListOptions)
+                adapter?.updateData(it.mediaListItems)
             }
         )
 

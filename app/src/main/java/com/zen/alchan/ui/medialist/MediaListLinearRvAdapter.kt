@@ -10,6 +10,7 @@ import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.MediaListItem
@@ -21,10 +22,8 @@ import type.MediaType
 
 class MediaListLinearRvAdapter(
     private val context: Context,
-    list: List<MediaListItem>,
-    private val listStyle: ListStyle,
-    private val appSetting: AppSetting
-) : BaseRecyclerViewAdapter<MediaListItem>(list) {
+    list: List<MediaListItem>
+) : BaseMediaListRvAdapter(context, list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -63,7 +62,7 @@ class MediaListLinearRvAdapter(
             view.apply {
                 ImageUtil.loadImage(context, media.coverImage.extraLarge, mediaListCoverImage)
 
-                mediaListTitleText.text = media.title.userPreferred
+                mediaListTitleText.text = media.getTitle(appSetting)
                 mediaListFormatText.text = media.getFormattedMediaFormat(true)
 
                 // airing indicator
@@ -80,11 +79,11 @@ class MediaListLinearRvAdapter(
                 mediaListScoreSmiley.show(false)
 
                 // progress
-                mediaListProgressText.text = mediaList.generateProgressAndMaxProgressText()
+                mediaListProgressText.text = generateProgressAndMaxProgressText(mediaList)
                 mediaListIncrementProgressButton.text = getProgressButtonText(media)
 
                 // progress volume
-                mediaListProgressVolumeText.text = mediaList.generateProgressAndMaxProgressText(true)
+                mediaListProgressVolumeText.text = generateProgressAndMaxProgressText(mediaList, true)
                 mediaListProgressVolumeText.show(shouldShowVolumeProgress(media))
                 mediaListIncrementProgressVolumeButton.show(shouldShowVolumeProgress(media))
 
@@ -146,6 +145,23 @@ class MediaListLinearRvAdapter(
                         mediaList.progress * 2
                     else
                         mediaList.media.episodes
+                }
+            }
+        }
+
+        fun generateProgressAndMaxProgressText(mediaList: MediaList, showVolumeProgress: Boolean = false): String {
+            return when (mediaList.media.type) {
+                MediaType.ANIME -> {
+                    "${mediaList.progress} / ${mediaList.media.episodes ?: "?"}"
+                }
+                MediaType.MANGA -> {
+                    if (showVolumeProgress)
+                        "${mediaList.progressVolumes} / ${mediaList.media.volumes ?: "?"}"
+                    else
+                        "${mediaList.progress} / ${mediaList.media.chapters ?: "?"}"
+                }
+                else -> {
+                    "${mediaList.progress} / ?"
                 }
             }
         }

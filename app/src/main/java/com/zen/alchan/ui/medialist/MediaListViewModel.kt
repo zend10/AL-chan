@@ -1,11 +1,15 @@
 package com.zen.alchan.ui.medialist
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -18,16 +22,14 @@ class MediaListViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val _mediaListItems = BehaviorSubject.createDefault(listOf<MediaListItem>())
-    val mediaListItems: Observable<List<MediaListItem>>
-        get() = _mediaListItems
-
-    private val _listStyleAndAppSetting = PublishSubject.create<Pair<ListStyle, AppSetting>>()
-    val listStyleAndAppSetting: Observable<Pair<ListStyle, AppSetting>>
-        get() = _listStyleAndAppSetting
+    private val _mediaListAdapterComponent = BehaviorSubject.createDefault(MediaListAdapterComponent.EMPTY_MEDIA_LIST_ADAPTER_COMPONENT)
+    val mediaListAdapterComponent: Observable<MediaListAdapterComponent>
+        get() = _mediaListAdapterComponent
 
     var mediaType: MediaType? = null
     var userId = 0
+    var user = User.EMPTY_USER
+    var listStyle = ListStyle.EMPTY_LIST_STYLE
     var appSetting = AppSetting.EMPTY_APP_SETTING
 
     override fun loadData() {
@@ -37,25 +39,22 @@ class MediaListViewModel(
 
         mediaType?.let { mediaType ->
             disposables.add(
-                userRepository.getListStyle(mediaType)
-                    .zipWith(
-                        Observable.zip(
-                            userRepository.getAppSetting(),
-                            userRepository.getViewer(Source.CACHE)
-                        ) { appSetting, user ->
-                            return@zip appSetting to user
-                        }
-                    ) { listStyle, appSettingAndUser ->
-                        return@zipWith listStyle to appSettingAndUser
-                    }
+                Observable.zip(
+                    userRepository.getListStyle(mediaType),
+                    userRepository.getAppSetting(),
+                    userRepository.getViewer(Source.CACHE)
+                ) { listStyle, appSetting, user ->
+                    return@zip Triple(listStyle, appSetting, user)
+                }
                     .applyScheduler()
-                    .subscribe { (listStyle, appSettingAndUser) ->
+                    .subscribe { (listStyle, appSetting, user) ->
                         if (userId == 0) {
-                            userId = appSettingAndUser.second.id
+                            userId = user.id
                         }
 
-                        appSetting = appSettingAndUser.first
-                        _listStyleAndAppSetting.onNext(listStyle to appSetting)
+                        this.user = user
+                        this.listStyle = listStyle
+                        this.appSetting = appSetting
 
                         getMediaListCollection(state == State.LOADED || state == State.ERROR)
                     }
@@ -85,7 +84,7 @@ class MediaListViewModel(
                                 tempList.add(MediaListItem(mediaList= mediaList, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST))
                             }
                         }
-                        _mediaListItems.onNext(tempList)
+                        _mediaListAdapterComponent.onNext(MediaListAdapterComponent(listStyle, appSetting, user.mediaListOptions, tempList))
 
                         state = State.LOADED
                     },
