@@ -37,10 +37,17 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     val advancedScoringCriteriaVisibility: Observable<Boolean>
         get() = _advancedScoringCriteriaVisibility
 
+    private val _advancedScoringNoItemTextVisibility = BehaviorSubject.createDefault(false)
+    val advancedScoringNoItemTextVisibility: Observable<Boolean>
+        get() = _advancedScoringNoItemTextVisibility
+
     private var viewer: User? = null
     private var currentListsSettings: MediaListOptions? = null
 
     override fun loadData() {
+        if (state == State.LOADED)
+            return
+
         disposables.add(
             userRepository.getViewer(Source.CACHE)
                 .applyScheduler()
@@ -53,6 +60,8 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     updateScoringSystem(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
                     updateUseAdvancedScoring(mediaListOptions.animeList.advancedScoringEnabled)
                     updateAdvancedScoringCriteria(mediaListOptions.animeList.advancedScoring)
+
+                    state = State.LOADED
                 }
         )
     }
@@ -83,7 +92,35 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     }
 
     fun updateAdvancedScoringCriteria(newAdvancedScoringCriteria: List<String>) {
+        _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isEmpty())
         _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+    }
+
+    fun addAdvancedScoringCriteria(newAdvancedScoring: String) {
+        val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
+        newAdvancedScoringCriteria?.let {
+            newAdvancedScoringCriteria.add(newAdvancedScoring)
+            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
+            _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+        }
+    }
+
+    fun editAdvancedScoringCriteria(newAdvancedScoring: String, index: Int) {
+        val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
+        newAdvancedScoringCriteria?.let {
+            newAdvancedScoringCriteria[index] = newAdvancedScoring
+            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
+            _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+        }
+    }
+
+    fun deleteAdvancedScoringCriteria(index: Int) {
+        val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
+        newAdvancedScoringCriteria?.let {
+            newAdvancedScoringCriteria.removeAt(index)
+            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
+            _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+        }
     }
 
     fun getScoreFormats() {

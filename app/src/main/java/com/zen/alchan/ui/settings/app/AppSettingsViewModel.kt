@@ -138,6 +138,9 @@ class AppSettingsViewModel(
     private var currentAppSetting: AppSetting? = null
 
     override fun loadData() {
+        if (state == State.LOADED)
+            return
+
         disposables.add(
             userRepository.viewerAndAppSetting
                 .applyScheduler()
@@ -172,6 +175,8 @@ class AppSettingsViewModel(
                     updateEnableSocialFeature(appSetting.enableSocialFeature)
                     updateShowBioAutomatically(appSetting.showBioAutomatically)
                     updateShowStatsChartAutomatically(appSetting.showStatsChartAutomatically)
+
+                    state = State.LOADED
                 }
         )
     }

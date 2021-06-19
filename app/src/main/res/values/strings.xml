@@ -151,6 +151,7 @@
     <string name="ten_point">10 Point (5/10)</string>
     <string name="five_star">5 Star (3/5)</string>
     <string name="three_point_smiley">3 Point Smiley :)</string>
+    <string name="type_here">Type here</string>
 
 
     <plurals name="minute">

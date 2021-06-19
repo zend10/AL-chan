@@ -10,7 +10,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.common.BottomSheetListDialog
+import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.launch.LaunchActivity
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
@@ -34,6 +36,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     protected var screenWidth = 0
 
     protected var bottomSheetListDialog: BottomSheetListDialog? = null
+    protected var bottomSheetTextInputDialog: BottomSheetTextInputDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,6 +86,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     override fun onDestroyView() {
         super.onDestroyView()
         bottomSheetListDialog = null
+        bottomSheetTextInputDialog = null
     }
 
     override fun onDestroy() {
@@ -115,6 +119,15 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
 
     protected fun dismissListDialog() {
         bottomSheetListDialog?.dismiss()
+    }
+
+    protected fun showTextInputDialog(currentText: String, textInputSetting: TextInputSetting, listener: BottomSheetTextInputDialog.BottomSheetTextInputListener) {
+        bottomSheetTextInputDialog = BottomSheetTextInputDialog.newInstance(currentText, textInputSetting, listener)
+        bottomSheetTextInputDialog?.show(childFragmentManager, null)
+    }
+
+    protected fun dismissTextInputDialog() {
+        bottomSheetTextInputDialog?.dismiss()
     }
 
     protected fun restartApp() {

@@ -53,6 +53,9 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
     private var currentAniListSetting: UserOptions? = null
 
     override fun loadData() {
+        if (state == State.LOADED)
+            return
+
         disposables.add(
             userRepository.getViewer(Source.CACHE)
                 .applyScheduler()
@@ -66,6 +69,8 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
                     updateProgressActivityMergeTime(userOptions.activityMergeTime)
                     updateShowAdultContent(userOptions.displayAdultContent)
                     updateReceiveAiringNotifications(userOptions.airingNotifications)
+
+                    state = State.LOADED
                 }
         )
     }
