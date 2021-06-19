@@ -3,6 +3,7 @@ package com.zen.alchan.ui.settings.list
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
@@ -25,6 +26,10 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     val advancedScoringCriteria: Observable<List<String>>
         get() = _advancedScoringCriteria
 
+    private val _defaultListOrder = BehaviorSubject.createDefault(ListOrder.TITLE)
+    val defaultListOrder: Observable<ListOrder>
+        get() = _defaultListOrder
+
     private val _scoreFormats = PublishSubject.create<List<ScoreFormat>>()
     val scoreFormats: Observable<List<ScoreFormat>>
         get() = _scoreFormats
@@ -40,6 +45,10 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     private val _advancedScoringNoItemTextVisibility = BehaviorSubject.createDefault(false)
     val advancedScoringNoItemTextVisibility: Observable<Boolean>
         get() = _advancedScoringNoItemTextVisibility
+
+    private val _listOrders = PublishSubject.create<List<ListOrder>>()
+    val listOrders: Observable<List<ListOrder>>
+        get() = _listOrders
 
     private var viewer: User? = null
     private var currentListsSettings: MediaListOptions? = null
@@ -60,6 +69,13 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     updateScoringSystem(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
                     updateUseAdvancedScoring(mediaListOptions.animeList.advancedScoringEnabled)
                     updateAdvancedScoringCriteria(mediaListOptions.animeList.advancedScoring)
+
+                    try {
+                        val listOrder = ListOrder.valueOf(mediaListOptions.rowOrder)
+                        updateDefaultListOrder(listOrder)
+                    } catch (e: IllegalArgumentException) {
+                        updateDefaultListOrder(ListOrder.TITLE)
+                    }
 
                     state = State.LOADED
                 }
@@ -123,8 +139,17 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         }
     }
 
+    fun updateDefaultListOrder(newDefaultListOrder: ListOrder) {
+        currentListsSettings?.rowOrder = newDefaultListOrder.value
+        _defaultListOrder.onNext(newDefaultListOrder)
+    }
+
     fun getScoreFormats() {
         _scoreFormats.onNext(ScoreFormat.values().toList().filterNot { it == ScoreFormat.UNKNOWN__ })
+    }
+
+    fun getListOrders() {
+        _listOrders.onNext(ListOrder.values().toList())
     }
 
     private fun handleAdvancedScoringCriteriaVisibility() {

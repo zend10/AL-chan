@@ -2,6 +2,7 @@ package com.zen.alchan.ui.settings.list
 
 import android.text.InputType
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseFragment
@@ -20,6 +21,7 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
 
     private var scoreFormatAdapter: ScoreFormatRvAdapter? = null
     private var advancedScoringCriteriaAdapter: ChipRvAdapter? = null
+    private var listOrderAdapter: ListOrderRvAdapter? = null
 
     private var textInputSetting = TextInputSetting(InputType.TYPE_TEXT_FLAG_CAP_WORDS, true, 30)
 
@@ -50,7 +52,7 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
         }
 
         listSettingsDefaultListOrderLayout.clicks {
-
+            viewModel.getListOrders()
         }
 
         listSettingsSplitAnimeCompletedCheckBox.clicks {
@@ -127,6 +129,11 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
             }
         )
 
+        disposables.add(
+            viewModel.defaultListOrder.subscribe {
+                listSettingsDefaultListOrderText.text = it.name.convertFromSnakeCase()
+            }
+        )
 
 
 
@@ -162,6 +169,19 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
             }
         )
 
+        disposables.add(
+            viewModel.listOrders.subscribe {
+                listOrderAdapter = ListOrderRvAdapter(requireContext(), it, object : ListOrderRvAdapter.ListOrderListener {
+                    override fun getSelectedListOrder(listOrder: ListOrder) {
+                        dismissListDialog()
+                        viewModel.updateDefaultListOrder(listOrder)
+                    }
+                }).also { adapter ->
+                    showListDialog(adapter)
+                }
+            }
+        )
+
         viewModel.loadData()
     }
 
@@ -180,6 +200,7 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
         super.onDestroyView()
         scoreFormatAdapter = null
         advancedScoringCriteriaAdapter = null
+        listOrderAdapter = null
     }
 
     companion object {
