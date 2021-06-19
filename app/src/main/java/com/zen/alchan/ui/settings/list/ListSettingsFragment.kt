@@ -105,7 +105,7 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
 
         disposables.add(
             viewModel.scoringSystem.subscribe {
-                listSettingsScoringSystemText.text = it.name.convertFromSnakeCase()
+                listSettingsScoringSystemText.text = it.getString(requireContext())
             }
         )
 

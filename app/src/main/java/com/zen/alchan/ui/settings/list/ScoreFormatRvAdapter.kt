@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
+import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.list_text.view.*
 import type.ScoreFormat
@@ -29,7 +30,7 @@ class ScoreFormatRvAdapter(
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(scoreFormat: ScoreFormat) {
-            view.itemText.text = scoreFormat.name.convertFromSnakeCase()
+            view.itemText.text = scoreFormat.getString(context)
             view.itemLayout.clicks { listener.getSelectedScoreFormat(scoreFormat) }
         }
     }

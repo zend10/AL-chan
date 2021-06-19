@@ -146,6 +146,11 @@
     <string name="use_staff_character_romaji_western_name_format">Use Romaji, Western Order name (ex: Hayao Miyazaki, Miku Hatsune, Naruto Uzumaki, Killua Zoldyck)</string>
     <string name="use_staff_character_romaji_name_format">Use Romaji name (ex: Miyazaki Hayao, Hatsune Miku, Uzumaki Naruto, Zoldyck Killua)</string>
     <string name="use_staff_character_native_name_format">Use Native name (ex: 宮崎駿, 初音ミク, うずまきナルト, キルア=ゾルディック)</string>
+    <string name="hundred_point">100 Point (55/100)</string>
+    <string name="ten_point_decimal">10 Point Decimal (5.5/10)</string>
+    <string name="ten_point">10 Point (5/10)</string>
+    <string name="five_star">5 Star (3/5)</string>
+    <string name="three_point_smiley">3 Point Smiley :)</string>
 
 
     <plurals name="minute">
