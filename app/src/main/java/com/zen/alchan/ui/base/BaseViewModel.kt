@@ -28,6 +28,13 @@ abstract class BaseViewModel : ViewModel(), ViewModelContract {
 
     protected var state = State.INIT
 
+    override fun loadData() {
+        if (state != State.INIT)
+            return
+
+        state = State.LOADING
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposables.clear()

@@ -14,6 +14,7 @@ class SplashViewModel(private val userRepository: UserRepository) : BaseViewMode
         get() = _isLoggedIn
 
     override fun loadData() {
+        super.loadData()
         checkIsLoggedIn()
     }
 

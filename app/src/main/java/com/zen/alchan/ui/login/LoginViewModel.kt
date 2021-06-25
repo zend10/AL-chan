@@ -10,13 +10,9 @@ import io.reactivex.subjects.PublishSubject
 
 class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
-    private val _loginStatus = PublishSubject.create<Unit>()
-    val loginStatus: Observable<Unit>
-        get() = _loginStatus
-
-    override fun loadData() {
-        // do nothing
-    }
+    private val _loginTrigger = PublishSubject.create<Unit>()
+    val loginTrigger: Observable<Unit>
+        get() = _loginTrigger
 
     fun login(bearerToken: String) {
         _loading.onNext(true)
@@ -30,7 +26,7 @@ class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel
                 }
                 .subscribe(
                     {
-                        _loginStatus.onNext(Unit)
+                        _loginTrigger.onNext(Unit)
                     },
                     {
                         _error.onNext(it.sendMessage())
@@ -41,6 +37,6 @@ class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel
 
     fun loginAsGuest() {
         userRepository.loginAsGuest()
-        _loginStatus.onNext(Unit)
+        _loginTrigger.onNext(Unit)
     }
 }

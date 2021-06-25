@@ -47,7 +47,6 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_alignParentBottom="true"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"

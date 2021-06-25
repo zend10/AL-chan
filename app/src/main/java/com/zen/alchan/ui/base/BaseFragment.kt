@@ -18,7 +18,6 @@ import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.launch.LaunchActivity
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment(), ViewContract {
 
@@ -97,13 +96,13 @@ abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment(), ViewCo
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         bottomSheetListDialog = null
         bottomSheetTextInputDialog = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
         disposables.clear()
         sharedDisposables.clear()
     }

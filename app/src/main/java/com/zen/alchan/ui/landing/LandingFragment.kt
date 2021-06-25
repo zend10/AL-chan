@@ -25,6 +25,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding, LandingViewModel>()
     override fun setUpLayout() {
         binding.apply {
             ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, landingBackgroundImage)
+
             landingGetStartedButton.clicks {
                 navigation.navigateToLogin()
             }

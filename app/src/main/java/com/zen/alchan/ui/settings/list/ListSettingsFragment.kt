@@ -109,7 +109,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
     override fun setUpObserver() {
         disposables.add(
             viewModel.loading.subscribe {
-                binding.loadingLayout.loadingLayout.show(it)
+                binding.loadingLayout.loadingContentRoot.show(it)
             }
         )
 

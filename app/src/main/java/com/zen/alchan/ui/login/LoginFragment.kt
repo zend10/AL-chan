@@ -38,7 +38,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 goBack()
             }
 
-            registerButton.clicks {
+            loginRegisterButton.clicks {
                 navigation.openWebView(NavigationManager.Url.ANILIST_REGISTER)
             }
 
@@ -46,7 +46,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 navigation.openWebView(NavigationManager.Url.ANILIST_LOGIN)
             }
 
-            enterWithoutLoginButton.clicks {
+            loginEnterAsGuestButton.clicks {
                 viewModel.loginAsGuest()
             }
 
@@ -72,12 +72,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun setUpObserver() {
         disposables.addAll(
             viewModel.loading.subscribe {
-                binding.loadingLayout.loadingLayout.show(it)
+                binding.loadingLayout.loadingContentRoot.show(it)
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
-            viewModel.loginStatus.subscribe {
+            viewModel.loginTrigger.subscribe {
+                // call back here first to remove LoginFragment from back stack
                 goBack()
                 navigation.navigateToMain()
             }

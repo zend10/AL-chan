@@ -58,7 +58,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     override fun setUpObserver() {
         disposables.add(
             viewModel.loading.subscribe {
-                binding.loadingLayout.loadingLayout.show(it)
+                binding.loadingLayout.loadingContentRoot.show(it)
                 binding.mediaListSwipeRefresh.isRefreshing = false
             }
         )

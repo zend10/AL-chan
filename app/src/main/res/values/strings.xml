@@ -23,7 +23,7 @@
     <string name="important_to_know">Important to Know</string>
     <string name="you_ll_be_redirected_to_anilist_co_to_login_register_make_sure_the_url_is_anilist_co_before_entering_your_email_and_password">You\'ll be redirected to anilist.co to login/register. Make sure the URL is anilist.co before entering your email and password.</string>
     <string name="login">Login</string>
-    <string name="enter_without_login">Enter without login</string>
+    <string name="login_as_guest">Login as Guest</string>
     <string name="register">Register</string>
     <string name="please_wait">Please Wait</string>
     <string name="you_are_currently_not_logged_in_you_need_to_login_to_use_all_the_features_available">You are currently not logged in. You need to login to use all the features available.</string>
