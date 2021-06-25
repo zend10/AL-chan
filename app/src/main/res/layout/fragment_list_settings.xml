@@ -265,6 +265,18 @@
 
                 </LinearLayout>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/listSettingsCustomAnimeListsNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallNegativeFont"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsCustomAnimeListsTitleLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listSettingsCustomAnimeListsRecyclerView"
                     app:layout_constraintTop_toBottomOf="@id/listSettingsCustomAnimeListsTitleLayout"
@@ -308,6 +320,18 @@
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/listSettingsCustomMangaListsNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallNegativeFont"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsCustomMangaListsTitleLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listSettingsCustomMangaListsRecyclerView"

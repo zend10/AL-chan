@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.common
 
 import android.content.Context
+import android.os.Handler
 import android.text.InputFilter
 import android.view.inputmethod.InputMethodManager
 import com.zen.alchan.R
@@ -8,6 +9,7 @@ import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_text_input.*
+import java.lang.ref.WeakReference
 
 class BottomSheetTextInputDialog : BaseDialogFragment(R.layout.dialog_bottom_sheet_text_input) {
 
@@ -30,7 +32,6 @@ class BottomSheetTextInputDialog : BaseDialogFragment(R.layout.dialog_bottom_she
             if (newText.isNotBlank()) {
                 listener?.getNewText(newText)
             }
-            dismiss()
         }
 
         dialogEditText.requestFocus()
@@ -47,6 +48,7 @@ class BottomSheetTextInputDialog : BaseDialogFragment(R.layout.dialog_bottom_she
     override fun onDestroyView() {
         super.onDestroyView()
         listener = null
+        dialogEditText.removeCallbacks(null)
     }
 
     companion object {

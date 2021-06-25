@@ -55,11 +55,11 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
             viewModel.getListOrders()
         }
 
-        listSettingsSplitAnimeCompletedCheckBox.clicks {
+        listSettingsSplitAnimeCompletedCheckBox.setOnClickListener {
 
         }
 
-        listSettingsSplitMangaCompletedCheckBox.clicks {
+        listSettingsSplitMangaCompletedCheckBox.setOnClickListener {
 
         }
 
@@ -192,6 +192,8 @@ class ListSettingsFragment : BaseFragment(R.layout.fragment_list_settings) {
                     viewModel.editAdvancedScoringCriteria(newText, index)
                 else
                     viewModel.addAdvancedScoringCriteria(newText)
+
+                dismissTextInputDialog()
             }
         })
     }

@@ -30,6 +30,12 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     val defaultListOrder: Observable<ListOrder>
         get() = _defaultListOrder
 
+    private val _animeCustomLists = BehaviorSubject.createDefault<List<String>>(listOf())
+    val animeCustomLists: Observable<List<String>>
+        get() = _animeCustomLists
+
+
+
     private val _scoreFormats = PublishSubject.create<List<ScoreFormat>>()
     val scoreFormats: Observable<List<ScoreFormat>>
         get() = _scoreFormats
@@ -108,6 +114,8 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     }
 
     fun updateAdvancedScoringCriteria(newAdvancedScoringCriteria: List<String>) {
+        currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
+        currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
         _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isEmpty())
         _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
     }
@@ -116,6 +124,8 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
         newAdvancedScoringCriteria?.let {
             newAdvancedScoringCriteria.add(newAdvancedScoring)
+            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
+            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
             _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
             _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
         }
@@ -125,6 +135,8 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
         newAdvancedScoringCriteria?.let {
             newAdvancedScoringCriteria[index] = newAdvancedScoring
+            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
+            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
             _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
             _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
         }
@@ -134,6 +146,8 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
         newAdvancedScoringCriteria?.let {
             newAdvancedScoringCriteria.removeAt(index)
+            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
+            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
             _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
             _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
         }
@@ -142,6 +156,10 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     fun updateDefaultListOrder(newDefaultListOrder: ListOrder) {
         currentListsSettings?.rowOrder = newDefaultListOrder.value
         _defaultListOrder.onNext(newDefaultListOrder)
+    }
+
+    fun updateAnimeCustomLists(newCustomLists: List<String>) {
+        currentListsSettings?.animeList?.customLists = newCustomLists
     }
 
     fun getScoreFormats() {
