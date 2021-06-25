@@ -19,16 +19,19 @@ class SplashViewModel(private val userRepository: UserRepository) : BaseViewMode
 
     private fun checkIsLoggedIn() {
         disposables.add(
-            userRepository.getIsAuthenticated()
-                .zipWith(userRepository.getIsLoggedIn()) { isAuthenticated, isLoggedIn ->
-                    isAuthenticated to isLoggedIn
-                }
+            Observable.zip(
+                userRepository.getIsAuthenticated(),
+                userRepository.getIsLoggedInAsGuest()
+            ) { isAuthenticated, isLoggedInAsGuest ->
+                isAuthenticated to isLoggedInAsGuest
+            }
                 .applyScheduler()
-                .subscribe { (isAuthenticated, isLoggedIn) ->
-                    if (isAuthenticated)
+                .subscribe { (isAuthenticated, isLoggedInAsGuest) ->
+                    if (isAuthenticated) {
                         loadViewerData()
-                    else
-                        _isLoggedIn.onNext(isLoggedIn)
+                    } else {
+                        _isLoggedIn.onNext(isLoggedInAsGuest)
+                    }
                 }
         )
     }

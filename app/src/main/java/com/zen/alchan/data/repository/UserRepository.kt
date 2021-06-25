@@ -16,7 +16,7 @@ interface UserRepository {
 
     val viewerAndAppSetting: Observable<Pair<User, AppSetting>>
 
-    fun getIsLoggedIn(): Observable<Boolean>
+    fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
     fun loadViewerAndAppSetting()
     fun getViewer(source: Source? = null): Observable<User>

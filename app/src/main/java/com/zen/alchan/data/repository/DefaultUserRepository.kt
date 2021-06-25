@@ -40,7 +40,7 @@ class DefaultUserRepository(
 
     private var viewerDisposable: Disposable? = null
 
-    override fun getIsLoggedIn(): Observable<Boolean> {
+    override fun getIsLoggedInAsGuest(): Observable<Boolean> {
         return Observable.just(userManager.isLoggedInAsGuest)
     }
 

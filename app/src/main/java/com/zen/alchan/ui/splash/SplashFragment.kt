@@ -25,10 +25,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun setUpObserver() {
         disposables.add(
             viewModel.isLoggedIn.subscribe {
-                if (it)
+                if (it) {
                     navigation.navigateToMain()
-                else
+                } else {
                     navigation.navigateToLanding()
+                }
             }
         )
 
