@@ -1,24 +1,38 @@
 package com.zen.alchan.ui.landing
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentLandingBinding
 import com.zen.alchan.helper.extensions.applyTopBottomPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_landing.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LandingFragment : BaseFragment(R.layout.fragment_landing) {
+class LandingFragment : BaseFragment<FragmentLandingBinding, LandingViewModel>() {
 
-    private val viewModel by viewModel<LandingViewModel>()
+    override val viewModel: LandingViewModel by viewModel()
+
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentLandingBinding {
+        return FragmentLandingBinding.inflate(inflater, container, false)
+    }
 
     override fun setUpLayout() {
-        ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, landingBackgroundImage)
-        getStartedButton.setOnClickListener { navigation.navigateToLogin() }
+        binding.apply {
+            ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, landingBackgroundImage)
+            landingGetStartedButton.clicks {
+                navigation.navigateToLogin()
+            }
+        }
     }
 
     override fun setUpInsets() {
-        landingContentRoot.applyTopBottomPaddingInsets()
+        binding.landingContentRoot.applyTopBottomPaddingInsets()
     }
 
     override fun setUpObserver() {

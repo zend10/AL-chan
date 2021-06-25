@@ -2,19 +2,27 @@ package com.zen.alchan.ui.base
 
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.changeStatusBarColor
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), ViewContract {
+abstract class BaseActivity<T: ViewBinding> : AppCompatActivity(), ViewContract {
 
     private val viewModel by viewModel<BaseActivityViewModel>()
 
     protected val disposables = CompositeDisposable()
+
+    private var _binding: T? = null
+    protected val binding: T
+        get() = _binding!!
+
+    abstract fun generateViewBinding(): T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appThemeResource = viewModel.getAppThemeResource()
@@ -27,7 +35,8 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
         )
 
         super.onCreate(savedInstanceState)
-        setContentView(layout)
+        _binding = generateViewBinding()
+        setContentView(binding.root)
 
         window.decorView.systemUiVisibility = (
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -64,9 +73,6 @@ abstract class BaseActivity(private val layout: Int) : AppCompatActivity(), View
         }
 
         setUpLayout()
-
-
-
     }
 
     override fun onStart() {

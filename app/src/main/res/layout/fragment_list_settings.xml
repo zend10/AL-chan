@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.list.ListSettingsFragment">
 
-    <include layout="@layout/toolbar_default"/>
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_below="@+id/defaultToolbar"
@@ -463,6 +464,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/layout_loading"/>
+    <include layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"/>
 
 </RelativeLayout>

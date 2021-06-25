@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zen.alchan.R
-import kotlinx.android.synthetic.main.fragment_profile.*
 
 object ImageUtil {
 

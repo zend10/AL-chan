@@ -1,63 +1,72 @@
 package com.zen.alchan.ui.settings.anilist
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentAnilistSettingsBinding
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.fragment_anilist_settings.*
-import kotlinx.android.synthetic.main.layout_loading.*
-import kotlinx.android.synthetic.main.toolbar_default.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.UserStaffNameLanguage
 import type.UserTitleLanguage
 
 
-class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings) {
+class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, AniListSettingsViewModel>() {
 
-    private val viewModel by viewModel<AniListSettingsViewModel>()
+    override val viewModel: AniListSettingsViewModel by viewModel()
 
     private var mediaTitleLanguageAdapter: MediaTitleLanguageRvAdapter? = null
     private var staffCharacterNamingAdapter: StaffCharacterNamingRvAdapter? = null
     private var activityMergeTimeAdapter: ActivityMergeTimeRvAdapter? = null
 
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAnilistSettingsBinding {
+        return FragmentAnilistSettingsBinding.inflate(inflater, container, false)
+    }
+
     override fun setUpLayout() {
-        setUpToolbar(defaultToolbar, getString(R.string.anilist_settings))
+        binding.apply {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.anilist_settings))
 
-        aniListSettingsSelectedLanguageLayout.clicks {
-            viewModel.getMediaTitleLanguages()
-        }
+            aniListSettingsSelectedLanguageLayout.clicks {
+                viewModel.getMediaTitleLanguages()
+            }
 
-        aniListSettingsSelectedNamingLayout.clicks {
-            viewModel.getStaffCharacterNamings()
-        }
+            aniListSettingsSelectedNamingLayout.clicks {
+                viewModel.getStaffCharacterNamings()
+            }
 
-        aniListSettingsSelectedMergeTimeLayout.clicks {
-            viewModel.getActivityMergeTimes()
-        }
+            aniListSettingsSelectedMergeTimeLayout.clicks {
+                viewModel.getActivityMergeTimes()
+            }
 
-        aniListSettingsShowAdultContentCheckBox.clicks {
-            viewModel.updateShowAdultContent(aniListSettingsShowAdultContentCheckBox.isChecked)
-        }
+            aniListSettingsShowAdultContentCheckBox.clicks {
+                viewModel.updateShowAdultContent(aniListSettingsShowAdultContentCheckBox.isChecked)
+            }
 
-        aniListSettingsReceiveAiringNotificationsCheckBox.clicks {
-            viewModel.updateReceiveAiringNotifications(aniListSettingsReceiveAiringNotificationsCheckBox.isChecked)
-        }
+            aniListSettingsReceiveAiringNotificationsCheckBox.clicks {
+                viewModel.updateReceiveAiringNotifications(aniListSettingsReceiveAiringNotificationsCheckBox.isChecked)
+            }
 
-        aniListSettingsSaveButton.clicks {
-            viewModel.saveAniListSettings()
+            aniListSettingsSaveButton.clicks {
+                viewModel.saveAniListSettings()
+            }
         }
     }
 
     override fun setUpInsets() {
-        defaultToolbar.applyTopPaddingInsets()
-        aniListSettingsLayout.applyBottomPaddingInsets()
+        binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.aniListSettingsLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {
         disposables.add(
             viewModel.loading.subscribe {
-                loadingLayout.show(it)
+                binding.loadingLayout.loadingLayout.show(it)
             }
         )
 
@@ -69,31 +78,31 @@ class AniListSettingsFragment : BaseFragment(R.layout.fragment_anilist_settings)
 
         disposables.add(
             viewModel.mediaTitleLanguage.subscribe {
-                aniListSettingsSelectedLanguageText.text = it.name.convertFromSnakeCase()
+                binding.aniListSettingsSelectedLanguageText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.staffCharacterNaming.subscribe {
-                aniListSettingsSelectedNamingText.text = it.name.convertFromSnakeCase()
+                binding.aniListSettingsSelectedNamingText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.progressActivityMergeTime.subscribe {
-                aniListSettingsSelectedMergeTimeText.text = it.getString(requireContext())
+                binding.aniListSettingsSelectedMergeTimeText.text = it.getString(requireContext())
             }
         )
 
         disposables.add(
             viewModel.showAdultContent.subscribe {
-                aniListSettingsShowAdultContentCheckBox.isChecked = it
+                binding.aniListSettingsShowAdultContentCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.receiveAiringNotifications.subscribe {
-                aniListSettingsReceiveAiringNotificationsCheckBox.isChecked = it
+                binding.aniListSettingsReceiveAiringNotificationsCheckBox.isChecked = it
             }
         )
 

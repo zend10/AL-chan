@@ -1,15 +1,22 @@
 package com.zen.alchan.ui.social
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentSocialBinding
 import com.zen.alchan.ui.base.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SocialFragment : BaseFragment(R.layout.fragment_social) {
+class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
+
+    override val viewModel: SocialViewModel by viewModel()
+
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSocialBinding {
+        return FragmentSocialBinding.inflate(inflater, container, false)
+    }
 
     override fun setUpObserver() {
 

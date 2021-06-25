@@ -1,13 +1,11 @@
 package com.zen.alchan.ui.common
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zen.alchan.R
+import com.zen.alchan.databinding.ListChipBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.list_chip.view.*
 
 class ChipRvAdapter(
     list: List<String>,
@@ -15,7 +13,7 @@ class ChipRvAdapter(
 ) : BaseRecyclerViewAdapter<String>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_chip, parent, false)
+        val view = ListChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -23,11 +21,11 @@ class ChipRvAdapter(
         if (holder is ViewHolder) holder.bind(list[position], position)
     }
 
-    inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ListChipBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String, index: Int) {
-            view.chipText.text = item
-            view.chipDeleteIcon.clicks { listener.deleteItem(index) }
-            view.chipLayout.clicks { listener.getSelectedItem(item, index) }
+            binding.chipText.text = item
+            binding.chipDeleteIcon.clicks { listener.deleteItem(index) }
+            binding.chipLayout.clicks { listener.getSelectedItem(item, index) }
         }
     }
 

@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.databinding.LayoutHomeHeaderBinding
+import com.zen.alchan.databinding.LayoutHomeMenuBinding
+import com.zen.alchan.databinding.LayoutHomeTrendingBinding
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.layout_home_header.view.*
-import kotlinx.android.synthetic.main.layout_home_menu.view.*
-import kotlinx.android.synthetic.main.layout_home_trending.view.*
 
 class HomeRvAdapter(
     private val context: Context,
@@ -21,21 +22,22 @@ class HomeRvAdapter(
 ) : BaseRecyclerViewAdapter<HomeItem>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
             HomeItem.VIEW_TYPE_HEADER -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_home_header, parent, false)
+                val view = LayoutHomeHeaderBinding.inflate(inflater, parent, false)
                 return HeaderViewHolder(view)
             }
             HomeItem.VIEW_TYPE_MENU -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_home_menu, parent, false)
+                val view = LayoutHomeMenuBinding.inflate(inflater, parent, false)
                 return MenuViewHolder(view)
             }
             HomeItem.VIEW_TYPE_TRENDING_ANIME, HomeItem.VIEW_TYPE_TRENDING_MANGA -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_home_trending, parent, false)
+                val view = LayoutHomeTrendingBinding.inflate(inflater, parent, false)
                 return TrendingMediaViewHolder(view)
             }
             else -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_home_header, parent, false)
+                val view = LayoutHomeHeaderBinding.inflate(inflater, parent, false)
                 return HeaderViewHolder(view)
             }
         }
@@ -53,34 +55,38 @@ class HomeRvAdapter(
         return list[position].viewType
     }
 
-    class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class HeaderViewHolder(private val binding: LayoutHomeHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(listener: HomeListener.HeaderListener) {
-            view.searchLayout.setOnClickListener { listener.navigateToSearch() }
+            binding.searchLayout.clicks { listener.navigateToSearch() }
         }
     }
 
-    class MenuViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class MenuViewHolder(private val binding: LayoutHomeMenuBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(listener: HomeListener.MenuListener) {
-            view.seasonalMenu.setOnClickListener { listener.navigateToSeasonal() }
-            view.exploreMenu.setOnClickListener { listener.showExploreDialog() }
-            view.reviewsMenu.setOnClickListener { listener.navigateToReviews() }
-            view.calendarMenu.setOnClickListener { listener.navigateToCalendar() }
+            binding.apply {
+                seasonalMenu.clicks { listener.navigateToSeasonal() }
+                exploreMenu.clicks { listener.showExploreDialog() }
+                reviewsMenu.clicks { listener.navigateToReviews() }
+                calendarMenu.clicks { listener.navigateToCalendar() }
+            }
         }
     }
 
-    class TrendingMediaViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class TrendingMediaViewHolder(private val binding: LayoutHomeTrendingBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(context: Context, trendingMedia: List<Media>, viewType: Int, width: Int, listener: HomeListener.TrendingMediaListener) {
-            view.trendingRightNowText.text = when (viewType) {
-                HomeItem.VIEW_TYPE_TRENDING_ANIME -> context.getString(R.string.trending_anime_right_now)
-                HomeItem.VIEW_TYPE_TRENDING_MANGA -> context.getString(R.string.trending_manga_right_now)
-                else -> ""
-            }
+            binding.apply {
+                trendingRightNowText.text = when (viewType) {
+                    HomeItem.VIEW_TYPE_TRENDING_ANIME -> context.getString(R.string.trending_anime_right_now)
+                    HomeItem.VIEW_TYPE_TRENDING_MANGA -> context.getString(R.string.trending_manga_right_now)
+                    else -> ""
+                }
 
-            if (trendingMedia.isNotEmpty()) {
-                view.trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, trendingMedia, width, listener)
-                view.trendingProgressBar.visibility = View.GONE
-            } else {
-                view.trendingProgressBar.visibility = View.VISIBLE
+                if (trendingMedia.isNotEmpty()) {
+                    trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, trendingMedia, width, listener)
+                    trendingProgressBar.visibility = View.GONE
+                } else {
+                    trendingProgressBar.visibility = View.VISIBLE
+                }
             }
         }
     }

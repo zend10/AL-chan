@@ -1,6 +1,5 @@
 package com.zen.alchan.ui.base
 
-import android.content.Context
 
 interface NavigationManager {
 

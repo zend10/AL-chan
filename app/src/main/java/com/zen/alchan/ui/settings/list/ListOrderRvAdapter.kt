@@ -2,15 +2,13 @@ package com.zen.alchan.ui.settings.list
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zen.alchan.R
+import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.list_text.view.*
 
 class ListOrderRvAdapter(
     private val context: Context,
@@ -19,7 +17,7 @@ class ListOrderRvAdapter(
 ) : BaseRecyclerViewAdapter<ListOrder>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
+        val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -27,10 +25,10 @@ class ListOrderRvAdapter(
         if (holder is ViewHolder) holder.bind(list[position])
     }
 
-    inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(listOrder: ListOrder) {
-            view.itemText.text = listOrder.name.convertFromSnakeCase()
-            view.itemLayout.clicks { listener.getSelectedListOrder(listOrder) }
+            binding.itemText.text = listOrder.name.convertFromSnakeCase()
+            binding.itemLayout.clicks { listener.getSelectedListOrder(listOrder) }
         }
     }
 

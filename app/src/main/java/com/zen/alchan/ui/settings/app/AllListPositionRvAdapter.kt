@@ -2,13 +2,12 @@ package com.zen.alchan.ui.settings.app
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.list_text.view.*
 
 class AllListPositionRvAdapter(
     private val context: Context,
@@ -17,7 +16,7 @@ class AllListPositionRvAdapter(
 ) : BaseRecyclerViewAdapter<String>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
+        val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -27,15 +26,15 @@ class AllListPositionRvAdapter(
         }
     }
 
-    inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(content: String, index: Int) {
             val ordinalNumber = "${index + 1} -"
             if (content == "") {
-                view.itemText.text = "$ordinalNumber ${context.getString(R.string.top_of_the_list)}"
+                binding.itemText.text = "$ordinalNumber ${context.getString(R.string.top_of_the_list)}"
             } else {
-                view.itemText.text = "$ordinalNumber ${context.getString(R.string.below)} $content"
+                binding.itemText.text = "$ordinalNumber ${context.getString(R.string.below)} $content"
             }
-            view.itemLayout.clicks {
+            binding.itemLayout.clicks {
                 listener.getSelectedIndex(index)
             }
         }

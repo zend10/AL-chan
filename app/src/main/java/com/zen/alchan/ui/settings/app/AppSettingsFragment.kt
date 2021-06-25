@@ -4,279 +4,289 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentAppSettingsBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_app_settings.*
-import kotlinx.android.synthetic.main.toolbar_default.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
+class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettingsViewModel>() {
 
-    private val viewModel by viewModel<AppSettingsViewModel>()
+    override val viewModel: AppSettingsViewModel by viewModel()
 
     private var appThemeAdapter: AppThemeRvAdapter? = null
     private var allListPositionAdapter: AllListPositionRvAdapter? = null
     private var namingAdapter: NamingRvAdapter? = null
     private var pushNotificationsIntervalAdapter: PushNotificationsIntervalRvAdapter? = null
 
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAppSettingsBinding {
+        return FragmentAppSettingsBinding.inflate(inflater, container, false)
+    }
+
     override fun setUpLayout() {
-        setUpToolbar(defaultToolbar, getString(R.string.app_settings))
+        binding.apply {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.app_settings))
 
-        appSettingsSelectedThemeLayout.clicks {
-            viewModel.getAppThemeItems()
+            appSettingsSelectedThemeLayout.clicks {
+                viewModel.getAppThemeItems()
+            }
+
+            appSettingsCircularAvatarCheckBox.clicks {
+                viewModel.updateUseCircularAvatarForProfile(appSettingsCircularAvatarCheckBox.isChecked)
+            }
+
+            appSettingsRecentReviewsCheckBox.clicks {
+                viewModel.updateShowRecentReviewsAtHome(appSettingsRecentReviewsCheckBox.isChecked)
+            }
+
+            appSettingsAllAnimeLayout.clicks {
+                viewModel.getAllAnimeListNumbers()
+            }
+
+            appSettingsAllMangaLayout.clicks {
+                viewModel.getAllMangaListNumbers()
+            }
+
+            appSettingsRelativeDateCheckBox.clicks {
+                viewModel.updateUseRelativeDateForNextAiringEpisode(appSettingsRelativeDateCheckBox.isChecked)
+            }
+
+            appSettingsStaffNameLayout.clicks {
+                viewModel.getStaffNamings()
+            }
+
+            appSettingsJapaneseMediaLayout.clicks {
+                viewModel.getMediaNamings(Country.JAPAN)
+            }
+
+            appSettingsKoreanMediaLayout.clicks {
+                viewModel.getMediaNamings(Country.SOUTH_KOREA)
+            }
+
+            appSettingsChineseMediaLayout.clicks {
+                viewModel.getMediaNamings(Country.CHINA)
+            }
+
+            appSettingsTaiwaneseMediaLayout.clicks {
+                viewModel.getMediaNamings(Country.TAIWAN)
+            }
+
+            appSettingsAiringPushNotificationsCheckBox.clicks {
+                viewModel.updateSendAiringPushNotifications(appSettingsAiringPushNotificationsCheckBox.isChecked)
+            }
+
+            appSettingsActivityPushNotificationsCheckBox.clicks {
+                viewModel.updateSendActivityPushNotifications(appSettingsActivityPushNotificationsCheckBox.isChecked)
+            }
+
+            appSettingsForumPushNotificationsCheckBox.clicks {
+                viewModel.updateSendForumPushNotifications(appSettingsForumPushNotificationsCheckBox.isChecked)
+            }
+
+            appSettingsFollowsPushNotificationsCheckBox.clicks {
+                viewModel.updateSendFollowsPushNotifications(appSettingsFollowsPushNotificationsCheckBox.isChecked)
+            }
+
+            appSettingsRelationsPushNotificationsCheckBox.clicks {
+                viewModel.updateSendRelationsPushNotifications(appSettingsRelationsPushNotificationsCheckBox.isChecked)
+            }
+
+            appSettingsMergePushNotificationsCheckBox.clicks {
+                viewModel.updateMergePushNotifications(appSettingsMergePushNotificationsCheckBox.isChecked)
+            }
+
+            appSettingsShowPushNotificationsEveryHourLayout.clicks {
+                viewModel.getPushNotificationsIntervals()
+            }
+
+            appSettingsHighestQualityImageCheckBox.clicks {
+                viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
+            }
+
+            appSettingsSocialFeatureCheckBox.clicks {
+                viewModel.updateEnableSocialFeature(appSettingsSocialFeatureCheckBox.isChecked)
+            }
+
+            appSettingsShowBioAutomaticallyCheckBox.clicks {
+                viewModel.updateShowBioAutomatically(appSettingsShowBioAutomaticallyCheckBox.isChecked)
+            }
+
+            appSettingsShowStatsChartAutomaticallyCheckBox.clicks {
+                viewModel.updateShowStatsChartAutomatically(appSettingsShowStatsChartAutomaticallyCheckBox.isChecked)
+            }
+
+            appSettingsSaveButton.clicks {
+                dialog.showConfirmationDialog(
+                    R.string.save_changes,
+                    R.string.the_app_will_be_restarted_to_apply_the_change,
+                    R.string.save,
+                    {
+                        viewModel.saveAppSettings()
+                    },
+                    R.string.cancel,
+                    {}
+                )
+            }
+
+            appSettingsResetButton.clicks {
+                dialog.showConfirmationDialog(
+                    R.string.reset_to_default,
+                    R.string.the_app_will_be_restarted_to_apply_the_change,
+                    R.string.reset,
+                    {
+                        viewModel.resetAppSettings()
+                    },
+                    R.string.cancel,
+                    {}
+                )
+            }
+
+            setPushNotificationsInfoTextLink()
         }
-
-        appSettingsCircularAvatarCheckBox.clicks {
-            viewModel.updateUseCircularAvatarForProfile(appSettingsCircularAvatarCheckBox.isChecked)
-        }
-
-        appSettingsRecentReviewsCheckBox.clicks {
-            viewModel.updateShowRecentReviewsAtHome(appSettingsRecentReviewsCheckBox.isChecked)
-        }
-
-        appSettingsAllAnimeLayout.clicks {
-            viewModel.getAllAnimeListNumbers()
-        }
-
-        appSettingsAllMangaLayout.clicks {
-            viewModel.getAllMangaListNumbers()
-        }
-
-        appSettingsRelativeDateCheckBox.clicks {
-            viewModel.updateUseRelativeDateForNextAiringEpisode(appSettingsRelativeDateCheckBox.isChecked)
-        }
-
-        appSettingsStaffNameLayout.clicks {
-            viewModel.getStaffNamings()
-        }
-
-        appSettingsJapaneseMediaLayout.clicks {
-            viewModel.getMediaNamings(Country.JAPAN)
-        }
-
-        appSettingsKoreanMediaLayout.clicks {
-            viewModel.getMediaNamings(Country.SOUTH_KOREA)
-        }
-
-        appSettingsChineseMediaLayout.clicks {
-            viewModel.getMediaNamings(Country.CHINA)
-        }
-
-        appSettingsTaiwaneseMediaLayout.clicks {
-            viewModel.getMediaNamings(Country.TAIWAN)
-        }
-
-        appSettingsAiringPushNotificationsCheckBox.clicks {
-            viewModel.updateSendAiringPushNotifications(appSettingsAiringPushNotificationsCheckBox.isChecked)
-        }
-
-        appSettingsActivityPushNotificationsCheckBox.clicks {
-            viewModel.updateSendActivityPushNotifications(appSettingsActivityPushNotificationsCheckBox.isChecked)
-        }
-
-        appSettingsForumPushNotificationsCheckBox.clicks {
-            viewModel.updateSendForumPushNotifications(appSettingsForumPushNotificationsCheckBox.isChecked)
-        }
-
-        appSettingsFollowsPushNotificationsCheckBox.clicks {
-            viewModel.updateSendFollowsPushNotifications(appSettingsFollowsPushNotificationsCheckBox.isChecked)
-        }
-
-        appSettingsRelationsPushNotificationsCheckBox.clicks {
-            viewModel.updateSendRelationsPushNotifications(appSettingsRelationsPushNotificationsCheckBox.isChecked)
-        }
-
-        appSettingsMergePushNotificationsCheckBox.clicks {
-            viewModel.updateMergePushNotifications(appSettingsMergePushNotificationsCheckBox.isChecked)
-        }
-
-        appSettingsShowPushNotificationsEveryHourLayout.clicks {
-            viewModel.getPushNotificationsIntervals()
-        }
-
-        appSettingsHighestQualityImageCheckBox.clicks {
-            viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
-        }
-
-        appSettingsSocialFeatureCheckBox.clicks {
-            viewModel.updateEnableSocialFeature(appSettingsSocialFeatureCheckBox.isChecked)
-        }
-
-        appSettingsShowBioAutomaticallyCheckBox.clicks {
-            viewModel.updateShowBioAutomatically(appSettingsShowBioAutomaticallyCheckBox.isChecked)
-        }
-
-        appSettingsShowStatsChartAutomaticallyCheckBox.clicks {
-            viewModel.updateShowStatsChartAutomatically(appSettingsShowStatsChartAutomaticallyCheckBox.isChecked)
-        }
-
-        appSettingsSaveButton.clicks {
-            dialog.showConfirmationDialog(
-                R.string.save_changes,
-                R.string.the_app_will_be_restarted_to_apply_the_change,
-                R.string.save,
-                {
-                    viewModel.saveAppSettings()
-                },
-                R.string.cancel,
-                {}
-            )
-        }
-
-        appSettingsResetButton.clicks {
-            dialog.showConfirmationDialog(
-                R.string.reset_to_default,
-                R.string.the_app_will_be_restarted_to_apply_the_change,
-                R.string.reset,
-                {
-                    viewModel.resetAppSettings()
-                },
-                R.string.cancel,
-                {}
-            )
-        }
-
-        setPushNotificationsInfoTextLink()
     }
 
     override fun setUpInsets() {
-        defaultToolbar.applyTopPaddingInsets()
-        appSettingsLayout.applyBottomPaddingInsets()
+        binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.appSettingsLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {
         disposables.add(
             viewModel.appTheme.subscribe {
-                appSettingsSelectedThemeText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsSelectedThemeText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.useCircularAvatarForProfile.subscribe {
-                appSettingsCircularAvatarCheckBox.isChecked = it
+                binding.appSettingsCircularAvatarCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.showRecentReviewsAtHome.subscribe {
-                appSettingsRecentReviewsCheckBox.isChecked = it
+                binding.appSettingsRecentReviewsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.allAnimeListPosition.subscribe {
-                appSettingsAllAnimeText.text = it.toString()
+                binding.appSettingsAllAnimeText.text = it.toString()
             }
         )
 
         disposables.add(
             viewModel.allMangaListPosition.subscribe {
-                appSettingsAllMangaText.text = it.toString()
+                binding.appSettingsAllMangaText.text = it.toString()
             }
         )
 
         disposables.add(
             viewModel.useRelativeDateForNextAiringEpisode.subscribe {
-                appSettingsRelativeDateCheckBox.isChecked = it
+                binding.appSettingsRelativeDateCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.japaneseStaffNaming.subscribe {
-                appSettingsStaffNameText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsStaffNameText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.japaneseMediaNaming.subscribe {
-                appSettingsJapaneseMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsJapaneseMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.koreanMediaNaming.subscribe {
-                appSettingsKoreanMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsKoreanMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.chineseMediaNaming.subscribe {
-                appSettingsChineseMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsChineseMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.taiwaneseMediaNaming.subscribe {
-                appSettingsTaiwaneseMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsTaiwaneseMediaText.text = it.name.convertFromSnakeCase()
             }
         )
 
         disposables.add(
             viewModel.sendAiringPushNotifications.subscribe {
-                appSettingsAiringPushNotificationsCheckBox.isChecked = it
+                binding.appSettingsAiringPushNotificationsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.sendActivityPushNotifications.subscribe {
-                appSettingsActivityPushNotificationsCheckBox.isChecked = it
+                binding.appSettingsActivityPushNotificationsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.sendForumPushNotifications.subscribe {
-                appSettingsForumPushNotificationsCheckBox.isChecked = it
+                binding.appSettingsForumPushNotificationsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.sendFollowsPushNotifications.subscribe {
-                appSettingsFollowsPushNotificationsCheckBox.isChecked = it
+                binding.appSettingsFollowsPushNotificationsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.sendRelationsPushNotifications.subscribe {
-                appSettingsRelationsPushNotificationsCheckBox.isChecked = it
+                binding.appSettingsRelationsPushNotificationsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.mergePushNotifications.subscribe {
-                appSettingsMergePushNotificationsCheckBox.isChecked = it
+                binding.appSettingsMergePushNotificationsCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.showPushNotificationsInterval.subscribe {
-                appSettingsShowPushNotificationsEveryHourText.text = it.showUnit(requireContext(), R.plurals.hour)
+                binding.appSettingsShowPushNotificationsEveryHourText.text = it.showUnit(requireContext(), R.plurals.hour)
             }
         )
 
         disposables.add(
             viewModel.useHighestQualityImage.subscribe {
-                appSettingsHighestQualityImageCheckBox.isChecked = it
+                binding.appSettingsHighestQualityImageCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.enableSocialFeature.subscribe {
-                appSettingsSocialFeatureCheckBox.isChecked = it
+                binding.appSettingsSocialFeatureCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.showBioAutomatically.subscribe {
-                appSettingsShowBioAutomaticallyCheckBox.isChecked = it
+                binding.appSettingsShowBioAutomaticallyCheckBox.isChecked = it
             }
         )
 
         disposables.add(
             viewModel.showStatsChartAutomatically.subscribe {
-                appSettingsShowStatsChartAutomaticallyCheckBox.isChecked = it
+                binding.appSettingsShowStatsChartAutomaticallyCheckBox.isChecked = it
             }
         )
 
@@ -384,8 +394,8 @@ class AppSettingsFragment : BaseFragment(R.layout.fragment_app_settings) {
         }
 
         pushNotificationsInfoText.setSpan(clickableSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        appSettingsPushNotificationsInfoText.movementMethod = LinkMovementMethod.getInstance()
-        appSettingsPushNotificationsInfoText.text = pushNotificationsInfoText
+        binding.appSettingsPushNotificationsInfoText.movementMethod = LinkMovementMethod.getInstance()
+        binding.appSettingsPushNotificationsInfoText.text = pushNotificationsInfoText
     }
 
     override fun onDestroyView() {

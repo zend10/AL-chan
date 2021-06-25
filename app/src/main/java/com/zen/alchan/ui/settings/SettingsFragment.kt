@@ -1,51 +1,57 @@
 package com.zen.alchan.ui.settings
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentSettingsBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.toolbar_default.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>() {
+
+    override val viewModel: SettingsViewModel by viewModel()
+
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSettingsBinding {
+        return FragmentSettingsBinding.inflate(inflater, container, false)
+    }
 
     override fun setUpLayout() {
-        setUpToolbar(defaultToolbar, getString(R.string.settings), R.drawable.ic_delete)
+        binding.apply {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.settings), R.drawable.ic_delete)
 
-        appSettingsLayout.clicks {
-            navigation.navigateToAppSettings()
-        }
+            appSettingsLayout.clicks {
+                navigation.navigateToAppSettings()
+            }
 
-        aniListSettingsLayout.clicks {
-            navigation.navigateToAniListSettings()
-        }
+            aniListSettingsLayout.clicks {
+                navigation.navigateToAniListSettings()
+            }
 
-        listSettingsLayout.clicks {
-            navigation.navigateToListsSettings()
-        }
+            listSettingsLayout.clicks {
+                navigation.navigateToListsSettings()
+            }
 
-        notificationsSettingsLayout.clicks {
-            navigation.navigateToNotificationsSettings()
-        }
+            notificationsSettingsLayout.clicks {
+                navigation.navigateToNotificationsSettings()
+            }
 
-        accountSettingsLayout.clicks {
-            navigation.navigateToAccountSettings()
-        }
+            accountSettingsLayout.clicks {
+                navigation.navigateToAccountSettings()
+            }
 
-        aboutLayout.clicks {
-            navigation.navigateToAbout()
+            aboutLayout.clicks {
+                navigation.navigateToAbout()
+            }
         }
     }
 
     override fun setUpInsets() {
-        super.setUpInsets()
-        defaultToolbar.applyTopPaddingInsets()
+        binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
     }
 
     override fun setUpObserver() {

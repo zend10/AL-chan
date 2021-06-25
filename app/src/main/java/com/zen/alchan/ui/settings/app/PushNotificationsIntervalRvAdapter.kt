@@ -2,14 +2,13 @@ package com.zen.alchan.ui.settings.app
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.showUnit
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.list_text.view.*
 
 class PushNotificationsIntervalRvAdapter(
     private val context: Context,
@@ -18,7 +17,7 @@ class PushNotificationsIntervalRvAdapter(
 ) : BaseRecyclerViewAdapter<Int>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
+        val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -28,10 +27,10 @@ class PushNotificationsIntervalRvAdapter(
         }
     }
 
-    inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(interval: Int) {
-            view.itemText.text = interval.showUnit(context, R.plurals.hour)
-            view.itemLayout.clicks {
+            binding.itemText.text = interval.showUnit(context, R.plurals.hour)
+            binding.itemLayout.clicks {
                 listener.getSelectedInterval(interval)
             }
         }

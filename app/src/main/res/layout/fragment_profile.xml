@@ -433,6 +433,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/layout_not_logged_in"/>
+    <include layout="@layout/layout_not_logged_in"
+        android:id="@+id/layoutNotLoggedIn"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

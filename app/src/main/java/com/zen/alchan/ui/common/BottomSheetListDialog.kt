@@ -1,17 +1,24 @@
 package com.zen.alchan.ui.common
 
-import androidx.recyclerview.widget.DividerItemDecoration
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zen.alchan.R
+import com.zen.alchan.databinding.DialogBottomSheetListBinding
 import com.zen.alchan.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_list.*
 
-class BottomSheetListDialog : BaseDialogFragment(R.layout.dialog_bottom_sheet_list) {
+class BottomSheetListDialog : BaseDialogFragment<DialogBottomSheetListBinding>() {
 
     private var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
 
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): DialogBottomSheetListBinding {
+        return DialogBottomSheetListBinding.inflate(inflater, container, false)
+    }
+
     override fun setUpLayout() {
-        dialogRecyclerView.adapter = adapter
+        binding.dialogRecyclerView.adapter = adapter
     }
 
     override fun setUpObserver() {

@@ -4,10 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseDialogFragment(private val layout: Int) : BottomSheetDialogFragment(), ViewContract {
+abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment(), ViewContract {
+
+    private var _binding: VB? = null
+    protected val binding: VB
+        get() = _binding!!
+
+    abstract fun generateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     protected val disposables = CompositeDisposable()
 
@@ -16,7 +23,8 @@ abstract class BaseDialogFragment(private val layout: Int) : BottomSheetDialogFr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layout, container, false)
+        _binding = generateViewBinding(inflater, container)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

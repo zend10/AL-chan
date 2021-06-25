@@ -1,32 +1,41 @@
 package com.zen.alchan.ui.home
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentHomeBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.base.NavigationManager
 import com.zen.alchan.ui.main.SharedMainViewModel
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class HomeFragment : BaseFragment(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
-    private val viewModel by viewModel<HomeViewModel>()
+    override val viewModel: HomeViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     private var homeAdapter: HomeRvAdapter? = null
 
-    override fun setUpLayout() {
-        homeAdapter = HomeRvAdapter(requireContext(), listOf(), screenWidth, getHomeListener())
-        homeRecyclerView.adapter = homeAdapter
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentHomeBinding {
+        return FragmentHomeBinding.inflate(inflater, container, false)
+    }
 
-        homeSwipeRefresh.setOnRefreshListener { viewModel.reloadData() }
+    override fun setUpLayout() {
+        binding.apply {
+            homeAdapter = HomeRvAdapter(requireContext(), listOf(), screenWidth, getHomeListener())
+            homeRecyclerView.adapter = homeAdapter
+
+            homeSwipeRefresh.setOnRefreshListener { viewModel.reloadData() }
+        }
     }
 
     override fun setUpInsets() {
-        homeRecyclerView.applyTopPaddingInsets()
+        binding.homeRecyclerView.applyTopPaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -38,7 +47,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         disposables.add(
             viewModel.loading.subscribe {
-                homeSwipeRefresh.isRefreshing = it
+                binding.homeSwipeRefresh.isRefreshing = it
             }
         )
 
@@ -50,7 +59,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         sharedDisposables.add(
             sharedViewModel.getScrollToTopObservable(SharedMainViewModel.Page.HOME).subscribe {
-                homeRecyclerView.smoothScrollToPosition(0)
+                binding.homeRecyclerView.smoothScrollToPosition(0)
             }
         )
 

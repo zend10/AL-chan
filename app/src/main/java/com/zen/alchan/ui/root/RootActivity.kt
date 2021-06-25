@@ -3,15 +3,26 @@ package com.zen.alchan.ui.root
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.zen.alchan.R
+import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.ui.base.*
 import io.reactivex.disposables.CompositeDisposable
 
-class RootActivity : BaseActivity(R.layout.activity_root) {
+class RootActivity : BaseActivity<ActivityRootBinding>() {
 
-    val navigationManager: NavigationManager = DefaultNavigationManager(this, supportFragmentManager, R.id.rootLayout)
-    val dialogManager: DialogManager = DefaultDialogManager(this)
+    lateinit var navigationManager: NavigationManager
+        private set
+
+    lateinit var dialogManager: DialogManager
+        private set
+
+    override fun generateViewBinding(): ActivityRootBinding {
+        return ActivityRootBinding.inflate(layoutInflater)
+    }
 
     override fun setUpLayout() {
+        navigationManager = DefaultNavigationManager(this, supportFragmentManager, binding.rootLayout)
+        dialogManager = DefaultDialogManager(this)
+
         navigationManager.navigateToSplash()
     }
 

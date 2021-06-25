@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.common.BottomSheetListDialog
@@ -16,8 +18,9 @@ import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.launch.LaunchActivity
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract {
+abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment(), ViewContract {
 
     private val rootActivity: RootActivity
         get() = activity as RootActivity
@@ -29,6 +32,14 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
     protected val dialog by lazy {
         rootActivity.dialogManager
     }
+
+    protected abstract val viewModel: VM
+
+    private var _binding: VB? = null
+    protected val binding: VB
+        get() = _binding!!
+
+    protected abstract fun generateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     protected val disposables = CompositeDisposable()
     protected val sharedDisposables = CompositeDisposable()
@@ -43,7 +54,8 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layout, container, false)
+        _binding = generateViewBinding(inflater, container)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,6 +103,7 @@ abstract class BaseFragment(private val layout: Int) : Fragment(), ViewContract 
 
     override fun onDestroy() {
         super.onDestroy()
+        _binding = null
         disposables.clear()
         sharedDisposables.clear()
     }

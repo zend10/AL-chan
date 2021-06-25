@@ -2,14 +2,13 @@ package com.zen.alchan.ui.settings.app
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
+import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.list_text.view.*
 
 class NamingRvAdapter(
     private val context: Context,
@@ -18,7 +17,7 @@ class NamingRvAdapter(
 ) : BaseRecyclerViewAdapter<Naming>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
+        val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return when (viewType) {
             VIEW_TYPE_STAFF_NAMING -> StaffViewHolder(view)
             VIEW_TYPE_MEDIA_NAMING -> MediaViewHolder(view)
@@ -33,9 +32,9 @@ class NamingRvAdapter(
         }
     }
 
-    inner class StaffViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class StaffViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(staffNaming: StaffNaming) {
-            view.itemText.text = context.getString(
+            binding.itemText.text = context.getString(
                 when (staffNaming) {
                     StaffNaming.FOLLOW_ANILIST -> R.string.follow_anilist_setting
                     StaffNaming.FIRST_MIDDLE_LAST -> R.string.use_staff_first_middle_last_name_format
@@ -43,15 +42,15 @@ class NamingRvAdapter(
                     StaffNaming.NATIVE -> R.string.native_name
                 }
             )
-            view.itemLayout.clicks {
+            binding.itemLayout.clicks {
                 listener.getSelectedNaming(staffNaming)
             }
         }
     }
 
-    inner class MediaViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class MediaViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(mediaNaming: MediaNaming) {
-            view.itemText.text = context.getString(
+            binding.itemText.text = context.getString(
                 when (mediaNaming) {
                     MediaNaming.FOLLOW_ANILIST -> R.string.follow_anilist_setting
                     MediaNaming.ENGLISH -> R.string.use_media_english_name_format
@@ -59,7 +58,7 @@ class NamingRvAdapter(
                     MediaNaming.NATIVE -> R.string.use_media_native_name_format
                 }
             )
-            view.itemLayout.clicks {
+            binding.itemLayout.clicks {
                 listener.getSelectedNaming(mediaNaming)
             }
         }

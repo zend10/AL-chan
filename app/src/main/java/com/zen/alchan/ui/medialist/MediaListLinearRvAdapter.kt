@@ -2,22 +2,16 @@ package com.zen.alchan.ui.medialist
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.stfalcon.imageviewer.loader.ImageLoader
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
-import com.zen.alchan.data.response.anilist.MediaListOptions
+import com.zen.alchan.databinding.ListMediaListLinearBinding
+import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.helper.extensions.*
-import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
-import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.list_media_list_linear.view.*
-import kotlinx.android.synthetic.main.list_text.view.*
 import type.MediaType
 
 class MediaListLinearRvAdapter(
@@ -26,13 +20,14 @@ class MediaListLinearRvAdapter(
 ) : BaseMediaListRvAdapter(context, list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             MediaListItem.VIEW_TYPE_TITLE -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.list_text, parent, false)
+                val view = ListTextBinding.inflate(inflater, parent, false)
                 TitleViewHolder(view)
             }
             else -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.list_media_list_linear, parent, false)
+                val view = ListMediaListLinearBinding.inflate(inflater, parent, false)
                 ItemViewHolder(view)
             }
         }
@@ -50,16 +45,16 @@ class MediaListLinearRvAdapter(
         return list[position].viewType
     }
 
-    inner class TitleViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class TitleViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(title: String) {
-            view.itemText.text = title
+            binding.itemText.text = title
         }
     }
 
-    inner class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemViewHolder(private val binding: ListMediaListLinearBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(mediaList: MediaList) {
             val media = mediaList.media
-            view.apply {
+            binding.apply {
                 ImageUtil.loadImage(context, media.coverImage.extraLarge, mediaListCoverImage)
 
                 mediaListTitleText.text = media.getTitle(appSetting)

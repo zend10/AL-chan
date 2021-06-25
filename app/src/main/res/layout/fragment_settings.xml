@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
-    <include layout="@layout/toolbar_default"/>
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"

@@ -27,9 +27,12 @@ import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
+import com.zen.alchan.ui.review.ReviewViewModel
+import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
+import com.zen.alchan.ui.social.SocialViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
 import org.koin.android.ext.koin.androidContext
@@ -94,10 +97,14 @@ class ALchanApplication : Application() {
 
         viewModel { MediaListViewModel(get(), get()) }
 
+        viewModel { SocialViewModel() }
+
         viewModel { ProfileViewModel(get()) }
         viewModel { SharedProfileViewModel(get()) }
         viewModel { BioViewModel() }
+        viewModel { ReviewViewModel() }
 
+        viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }

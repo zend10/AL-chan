@@ -6,9 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentReviewBinding
 import com.zen.alchan.ui.base.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReviewFragment : BaseFragment(R.layout.fragment_review) {
+class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
+
+    override val viewModel: ReviewViewModel by viewModel()
+
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentReviewBinding {
+        return FragmentReviewBinding.inflate(inflater, container, false)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

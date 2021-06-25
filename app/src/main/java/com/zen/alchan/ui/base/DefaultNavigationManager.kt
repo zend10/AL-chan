@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.helper.Constant
@@ -21,7 +22,7 @@ import com.zen.alchan.ui.splash.SplashFragment
 class DefaultNavigationManager(
     private val context: Context,
     private val fragmentManager: FragmentManager,
-    private val layout: Int
+    private val layout: FragmentContainerView
 ) : NavigationManager {
 
     override fun navigateToSplash() {
@@ -98,7 +99,7 @@ class DefaultNavigationManager(
 
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(layout, fragment)
+        fragmentTransaction.replace(layout.id, fragment)
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         if (!skipBackStack)
             fragmentTransaction.addToBackStack(fragment.toString())
