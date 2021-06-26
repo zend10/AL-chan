@@ -39,14 +39,18 @@ class MediaListViewModel(
 
         mediaType?.let { mediaType ->
             disposables.add(
-                Observable.zip(
-                    userRepository.getListStyle(mediaType),
-                    userRepository.getAppSetting(),
-                    userRepository.getViewer(Source.CACHE)
-                ) { listStyle, appSetting, user ->
-                    return@zip Triple(listStyle, appSetting, user)
-                }
+                userRepository.getIsAuthenticated()
                     .applyScheduler()
+                    .filter { it }
+                    .flatMap {
+                        Observable.zip(
+                            userRepository.getListStyle(mediaType),
+                            userRepository.getAppSetting(),
+                            userRepository.getViewer(Source.CACHE)
+                        ) { listStyle, appSetting, user ->
+                            return@zip Triple(listStyle, appSetting, user)
+                        }
+                    }
                     .subscribe { (listStyle, appSetting, user) ->
                         if (userId == 0) {
                             userId = user.id

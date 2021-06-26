@@ -26,9 +26,9 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     private var fragments: List<Fragment?>? = null
     private var homeFragment: HomeFragment? = null
-    private var socialFragment: SocialFragment? = null
     private var animeListFragment: MediaListFragment? = null
     private var mangaListFragment: MediaListFragment? = null
+    private var socialFragment: SocialFragment? = null
     private var profileFragment: ProfileFragment? = null
 
     override fun generateViewBinding(
@@ -46,21 +46,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             mangaListFragment = MediaListFragment.newInstance(MediaType.MANGA)
             profileFragment = ProfileFragment.newInstance()
 
-            fragments = listOf(
-                homeFragment,
-                socialFragment,
-                animeListFragment,
-                mangaListFragment,
-                profileFragment
-            )
-
-            viewPagerAdapter = MainViewPagerAdapter(
-                childFragmentManager,
-                viewLifecycleOwner.lifecycle,
-                fragments?.filterNotNull() ?: listOf()
-            )
             mainViewPager.isUserInputEnabled = false
-            mainViewPager.adapter = viewPagerAdapter
             mainViewPager.offscreenPageLimit = 4
 
             mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -71,7 +57,18 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             })
 
             mainBottomNavigation.setOnNavigationItemSelectedListener {
-                mainViewPager.setCurrentItem(it.order, true)
+                val index = if (fragments?.size == mainBottomNavigation.menu.size()) {
+                    it.order
+                } else {
+                    // manually manage the order
+                    when (it.itemId) {
+                        R.id.menuHome -> 0
+                        R.id.menuSocial -> 1
+                        R.id.menuProfile -> 2
+                        else -> 0
+                    }
+                }
+                mainViewPager.setCurrentItem(index, true)
                 true
             }
 
@@ -84,6 +81,30 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     override fun setUpObserver() {
         disposables.add(
             viewModel.isAuthenticated.subscribe {
+                fragments = if (it) {
+                    listOf(
+                        homeFragment,
+                        animeListFragment,
+                        mangaListFragment,
+                        socialFragment,
+                        profileFragment
+                    )
+                } else {
+                    listOf(
+                        homeFragment,
+                        socialFragment,
+                        profileFragment
+                    )
+                }
+
+                viewPagerAdapter = MainViewPagerAdapter(
+                    childFragmentManager,
+                    viewLifecycleOwner.lifecycle,
+                    fragments?.filterNotNull() ?: listOf()
+                )
+
+                binding.mainViewPager.adapter = viewPagerAdapter
+
                 binding.mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = it
                 binding.mainBottomNavigation.menu.findItem(R.id.menuManga).isVisible = it
             }

@@ -28,11 +28,12 @@ abstract class BaseViewModel : ViewModel(), ViewModelContract {
 
     protected var state = State.INIT
 
-    override fun loadData() {
+    protected fun load(action: () -> Unit) {
         if (state != State.INIT)
             return
 
         state = State.LOADING
+        action()
     }
 
     override fun onCleared() {

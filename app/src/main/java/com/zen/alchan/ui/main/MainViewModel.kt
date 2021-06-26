@@ -9,7 +9,9 @@ class MainViewModel(
 ) : BaseViewModel() {
 
     override fun loadData() {
-        checkIsAuthenticated()
+        load {
+            checkIsAuthenticated()
+        }
     }
 
     private fun checkIsAuthenticated() {
@@ -18,6 +20,7 @@ class MainViewModel(
                 .applyScheduler()
                 .subscribe {
                     _isAuthenticated.onNext(it)
+                    state = State.LOADED
                 }
         )
     }

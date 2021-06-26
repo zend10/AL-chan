@@ -14,6 +14,10 @@ class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel
     val loginTrigger: Observable<Unit>
         get() = _loginTrigger
 
+    override fun loadData() {
+        // do nothing
+    }
+
     fun login(bearerToken: String) {
         _loading.onNext(true)
         userRepository.saveBearerToken(bearerToken)

@@ -14,9 +14,9 @@ class SharedMainViewModel : BaseViewModel() {
 
     private val scrollEvents = linkedMapOf(
         Page.HOME to _scrollAnimeToTop,
-        Page.SOCIAL to _scrollSocialToTop,
         Page.ANIME to _scrollAnimeToTop,
         Page.MANGA to _scrollMangaToTop,
+        Page.SOCIAL to _scrollSocialToTop,
         Page.PROFILE to _scrollProfileToTop
     )
 
@@ -34,9 +34,9 @@ class SharedMainViewModel : BaseViewModel() {
 
     enum class Page {
         HOME,
-        SOCIAL,
         ANIME,
         MANGA,
+        SOCIAL,
         PROFILE
     }
 }
