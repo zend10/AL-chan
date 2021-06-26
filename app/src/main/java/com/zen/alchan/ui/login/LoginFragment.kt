@@ -34,10 +34,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         binding.apply {
             ImageUtil.loadImage(requireContext(), R.drawable.landing_wallpaper, loginBackgroundImage)
 
-            loginBackIcon.clicks {
-                goBack()
-            }
-
             loginRegisterButton.clicks {
                 navigation.openWebView(NavigationManager.Url.ANILIST_REGISTER)
             }
@@ -78,8 +74,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 dialog.showToast(it)
             },
             viewModel.loginTrigger.subscribe {
-                // call back here first to remove LoginFragment from back stack
-                goBack()
                 navigation.navigateToMain()
             }
         )

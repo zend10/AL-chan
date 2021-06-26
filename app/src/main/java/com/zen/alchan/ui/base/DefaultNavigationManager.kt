@@ -34,7 +34,7 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToLogin(bearerToken: String?) {
-        swapPage(LoginFragment.newInstance(bearerToken))
+        swapPage(LoginFragment.newInstance(bearerToken), true)
     }
 
     override fun navigateToMain() {

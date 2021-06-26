@@ -29,16 +29,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/loginBackIcon"
-                android:text="@string/back"
-                app:drawableStartCompat="@drawable/ic_long_arrow_left"
-                app:drawableTint="?themeContentColor"
-                style="?themeRegularFont"
-                android:gravity="center_vertical"
-                android:drawablePadding="@dimen/marginNormal"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/app_name"
+                    style="?themeAppNameFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/powered_by_anilist"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View
                 android:layout_weight="1"
