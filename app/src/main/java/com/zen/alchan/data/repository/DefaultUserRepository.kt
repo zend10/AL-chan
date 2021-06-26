@@ -123,7 +123,7 @@ class DefaultUserRepository(
         userManager.isLoggedInAsGuest = true
     }
 
-    override fun logout() {
+    override fun logoutAsGuest() {
         userManager.isLoggedInAsGuest = false
     }
 

@@ -19,7 +19,7 @@ import com.zen.alchan.ui.launch.LaunchActivity
 import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseFragment<VB: ViewBinding, VM: ViewModel> : Fragment(), ViewContract {
+abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), ViewContract {
 
     private val rootActivity: RootActivity
         get() = activity as RootActivity

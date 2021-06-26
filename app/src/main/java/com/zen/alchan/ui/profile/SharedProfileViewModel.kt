@@ -48,8 +48,10 @@ class SharedProfileViewModel(
     var userId = 0
 
     override fun loadData() {
-        checkIsAuthenticated()
-        checkIsViewerProfile()
+        load {
+//            checkIsAuthenticated()
+            checkIsViewerProfile()
+        }
     }
 
     fun reloadData() {
@@ -65,8 +67,10 @@ class SharedProfileViewModel(
             userRepository.getIsAuthenticated()
                 .applyScheduler()
                 .subscribe {
-                    loadUserData()
                     _isAuthenticated.onNext(it)
+
+                    if (it)
+                        loadUserData()
                 }
         )
     }

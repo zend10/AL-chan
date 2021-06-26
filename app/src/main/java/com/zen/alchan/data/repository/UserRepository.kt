@@ -21,7 +21,7 @@ interface UserRepository {
     fun loadViewerAndAppSetting()
     fun getViewer(source: Source? = null): Observable<User>
     fun loginAsGuest()
-    fun logout()
+    fun logoutAsGuest()
     fun saveBearerToken(newBearerToken: String?)
 
     fun getProfileData(

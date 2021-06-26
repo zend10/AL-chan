@@ -5,7 +5,7 @@
     android:elevation="12dp"
     android:clickable="true"
     android:focusable="true"
-    android:id="@+id/loadingContentRoot"
+    android:id="@+id/loadingLayout"
     android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="match_parent">

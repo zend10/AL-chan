@@ -158,7 +158,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 viewModel.setCurrentPage(SharedProfileViewModel.Page.REVIEW)
             }
 
-            layoutNotLoggedIn.goToLoginButton.setOnClickListener {
+            notLoggedInLayout.goToLoginButton.setOnClickListener {
                 viewModel.logout()
                 navigation.navigateToLanding()
             }
@@ -207,7 +207,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     override fun setUpObserver() {
         disposables.add(
             viewModel.isAuthenticated.subscribe {
-                binding.layoutNotLoggedIn.notLoggedInLayout.show(!it)
+                binding.notLoggedInLayout.notLoggedInLayout.show(!it)
+                binding.profileSwipeRefresh.show(it)
             }
         )
 
@@ -269,6 +270,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
         )
 
+        viewModel.loadData()
         sharedViewModel.loadData()
     }
 

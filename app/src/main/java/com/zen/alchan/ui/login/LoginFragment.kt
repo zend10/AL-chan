@@ -72,7 +72,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun setUpObserver() {
         disposables.addAll(
             viewModel.loading.subscribe {
-                binding.loadingLayout.loadingContentRoot.show(it)
+                binding.loadingLayout.loadingLayout.show(it)
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)

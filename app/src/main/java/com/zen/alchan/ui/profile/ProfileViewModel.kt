@@ -15,14 +15,26 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
         get() = _currentPage
 
     override fun loadData() {
-
+        load {
+            checkIsAuthenticated()
+        }
     }
 
     fun logout() {
-        userRepository.logout()
+        userRepository.logoutAsGuest()
     }
 
     fun setCurrentPage(page: SharedProfileViewModel.Page) {
         _currentPage.onNext(page)
+    }
+
+    private fun checkIsAuthenticated() {
+        disposables.add(
+            userRepository.getIsAuthenticated()
+                .applyScheduler()
+                .subscribe {
+                    _isAuthenticated.onNext(it)
+                }
+        )
     }
 }
