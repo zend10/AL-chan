@@ -237,9 +237,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 binding.profileUsernameText.text = user.name
 
                 if (appSetting.useCircularAvatarForProfile)
-                    ImageUtil.loadCircleImage(requireContext(), user.avatar.getImageUrl(appSetting), binding.profileAvatarCircleImage)
+                    ImageUtil.loadCircleImage(requireContext(), user.avatar.large, binding.profileAvatarCircleImage)
                 else
-                    ImageUtil.loadRectangleImage(requireContext(), user.avatar.getImageUrl(appSetting), binding.profileAvatarRectangleImage)
+                    ImageUtil.loadRectangleImage(requireContext(), user.avatar.large, binding.profileAvatarRectangleImage)
 
                 binding.profileAvatarCircleImage.show(appSetting.useCircularAvatarForProfile)
                 binding.profileAvatarRectangleImage.show(appSetting.useCircularAvatarForProfile)
