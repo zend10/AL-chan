@@ -68,6 +68,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            viewModel.userId = it.getInt(USER_ID)
             sharedViewModel.userId = it.getInt(USER_ID)
         }
     }
@@ -111,7 +112,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 viewLifecycleOwner.lifecycle,
                 fragments?.filterNotNull() ?: listOf()
             )
+
             profileViewPager.adapter = viewPagerAdapter
+            profileViewPager.isUserInputEnabled = false
+            profileViewPager.offscreenPageLimit = 3
 
             profileViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -137,25 +141,25 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
                     if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                        viewModel.setCurrentPage(SharedProfileViewModel.Page.values()[profileViewPager.currentItem])
+                        viewModel.setCurrentPage(ProfileViewModel.Page.values()[profileViewPager.currentItem])
                     }
                 }
             })
 
             profileBioLayout.setOnClickListener {
-                viewModel.setCurrentPage(SharedProfileViewModel.Page.BIO)
+                viewModel.setCurrentPage(ProfileViewModel.Page.BIO)
             }
 
             profileFavoritesLayout.setOnClickListener {
-                viewModel.setCurrentPage(SharedProfileViewModel.Page.FAVORITE)
+                viewModel.setCurrentPage(ProfileViewModel.Page.FAVORITE)
             }
 
             profileStatsLayout.setOnClickListener {
-                viewModel.setCurrentPage(SharedProfileViewModel.Page.STATS)
+                viewModel.setCurrentPage(ProfileViewModel.Page.STATS)
             }
 
             profileReviewsLayout.setOnClickListener {
-                viewModel.setCurrentPage(SharedProfileViewModel.Page.REVIEW)
+                viewModel.setCurrentPage(ProfileViewModel.Page.REVIEW)
             }
 
             notLoggedInLayout.goToLoginButton.setOnClickListener {
@@ -179,17 +183,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             profileAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                profileSwipeRefresh?.isEnabled = verticalOffset == 0
+                profileSwipeRefresh.isEnabled = verticalOffset == 0
 
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
-                    if (profileNumberLayout?.isVisible == true) {
-                        profileNumberLayout?.startAnimation(scaleDownAnimation)
-                        profileNumberLayout?.visibility = View.INVISIBLE
+                    if (profileNumberLayout.isVisible) {
+                        profileNumberLayout.startAnimation(scaleDownAnimation)
+                        profileNumberLayout.visibility = View.INVISIBLE
                     }
                 } else {
-                    if (profileNumberLayout?.isInvisible == true) {
-                        profileNumberLayout?.startAnimation(scaleUpAnimation)
-                        profileNumberLayout?.show(true)
+                    if (profileNumberLayout.isInvisible) {
+                        profileNumberLayout.startAnimation(scaleUpAnimation)
+                        profileNumberLayout.visibility = View.VISIBLE
                     }
                 }
             })
@@ -205,14 +209,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.isAuthenticated.subscribe {
                 binding.notLoggedInLayout.notLoggedInLayout.show(!it)
                 binding.profileSwipeRefresh.show(it)
-            }
-        )
 
-        disposables.add(
+                if (it) sharedViewModel.loadData()
+            },
+            viewModel.isViewerProfile.subscribe {
+                menuItemNotifications?.isVisible = it
+                menuItemAddAsBestFriend?.isVisible = !it
+                menuItemSettings?.isVisible = it
+            },
             viewModel.currentPage.subscribe {
                 binding.profileViewPager.setCurrentItem(it.ordinal, true)
             }
@@ -224,60 +232,35 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
         )
 
-        sharedDisposables.add(
-            sharedViewModel.isViewerProfile.subscribe {
-                showToolbarMenu(it)
-            }
-        )
-
-        sharedDisposables.add(
+        sharedDisposables.addAll(
             sharedViewModel.userAndAppSetting.subscribe { (user, appSetting) ->
                 binding.profileUsernameText.text = user.name
 
                 if (appSetting.useCircularAvatarForProfile)
-                    ImageUtil.loadCircleImage(requireContext(), user.avatar.large, binding.profileAvatarCircleImage)
+                    ImageUtil.loadCircleImage(requireContext(), user.avatar.getImageUrl(appSetting), binding.profileAvatarCircleImage)
                 else
-                    ImageUtil.loadRectangleImage(requireContext(), user.avatar.large, binding.profileAvatarRectangleImage)
+                    ImageUtil.loadRectangleImage(requireContext(), user.avatar.getImageUrl(appSetting), binding.profileAvatarRectangleImage)
 
                 binding.profileAvatarCircleImage.show(appSetting.useCircularAvatarForProfile)
                 binding.profileAvatarRectangleImage.show(appSetting.useCircularAvatarForProfile)
 
                 ImageUtil.loadImage(requireContext(), user.bannerImage, binding.profileBannerImage)
-            }
-        )
-
-        sharedDisposables.add(
-            sharedViewModel.animeCount.subscribe {
+            },
+            sharedViewModel.animeCompletedCount.subscribe {
                 binding.profileAnimeCountText.text = it.toString()
-            }
-        )
-
-        sharedDisposables.add(
-            sharedViewModel.mangaCount.subscribe {
+            },
+            sharedViewModel.mangaCompletedCount.subscribe {
                 binding.profileMangaCountText.text = it.toString()
-            }
-        )
-
-        sharedDisposables.add(
+            },
             sharedViewModel.followingCount.subscribe {
                 binding.profileFollowingCountText.text = it.toString()
-            }
-        )
-
-        sharedDisposables.add(
+            },
             sharedViewModel.followersCount.subscribe {
                 binding.profileFollowersCountText.text = it.toString()
             }
         )
 
         viewModel.loadData()
-        sharedViewModel.loadData()
-    }
-
-    private fun showToolbarMenu(isViewerProfile: Boolean) {
-        menuItemNotifications?.isVisible = isViewerProfile
-        menuItemAddAsBestFriend?.isVisible = !isViewerProfile
-        menuItemSettings?.isVisible = isViewerProfile
     }
 
     override fun onDestroyView() {

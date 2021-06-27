@@ -10,16 +10,11 @@ import com.zen.alchan.helper.extensions.sendMessage
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 
 class SharedProfileViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
-
-    private val _isViewerProfile = PublishSubject.create<Boolean>()
-    val isViewerProfile: Observable<Boolean>
-        get() = _isViewerProfile
 
     private val _userAndAppSetting = BehaviorSubject.createDefault(User.EMPTY_USER to AppSetting.EMPTY_APP_SETTING)
     val userAndAppSetting: Observable<Pair<User, AppSetting>>
@@ -29,13 +24,13 @@ class SharedProfileViewModel(
     val profileData: Observable<ProfileData>
         get() = _profileData
 
-    private val _animeCount = BehaviorSubject.createDefault(0)
-    val animeCount: Observable<Int>
-        get() = _animeCount
+    private val _animeCompletedCount = BehaviorSubject.createDefault(0)
+    val animeCompletedCount: Observable<Int>
+        get() = _animeCompletedCount
 
-    private val _mangaCount = BehaviorSubject.createDefault(0)
-    val mangaCount: Observable<Int>
-        get() = _mangaCount
+    private val _mangaCompletedCount = BehaviorSubject.createDefault(0)
+    val mangaCompletedCount: Observable<Int>
+        get() = _mangaCompletedCount
 
     private val _followingCount = BehaviorSubject.createDefault(0)
     val followingCount: Observable<Int>
@@ -49,8 +44,7 @@ class SharedProfileViewModel(
 
     override fun loadData() {
         load {
-//            checkIsAuthenticated()
-            checkIsViewerProfile()
+            loadUserData()
         }
     }
 
@@ -58,26 +52,7 @@ class SharedProfileViewModel(
         loadUserData(true)
     }
 
-    private fun checkIsViewerProfile() {
-        _isViewerProfile.onNext(userId == 0)
-    }
-
-    private fun checkIsAuthenticated() {
-        disposables.add(
-            userRepository.getIsAuthenticated()
-                .applyScheduler()
-                .subscribe {
-                    _isAuthenticated.onNext(it)
-
-                    if (it)
-                        loadUserData()
-                }
-        )
-    }
-
     private fun loadUserData(isReloading: Boolean = false) {
-        if (!isReloading && state == State.LOADED) return
-
         _loading.onNext(true)
 
         if (userId == 0) {
@@ -91,11 +66,11 @@ class SharedProfileViewModel(
                         { (user, appSetting) ->
                             loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
                             _userAndAppSetting.onNext(user to appSetting)
-                            state = State.LOADED
                         },
                         {
                             _loading.onNext(false)
                             _error.onNext(it.sendMessage())
+                            state = State.ERROR
                         }
                     )
             )
@@ -115,30 +90,25 @@ class SharedProfileViewModel(
                     {
                         _profileData.onNext(it)
 
-                        _animeCount.onNext(
+                        _animeCompletedCount.onNext(
                             it.user.statistics.anime.statuses.find { anime ->
                                 anime.status == MediaListStatus.COMPLETED
                             }?.count ?: 0
                         )
-                        _mangaCount.onNext(
+                        _mangaCompletedCount.onNext(
                             it.user.statistics.manga.statuses.find { manga ->
                                 manga.status == MediaListStatus.COMPLETED
                             }?.count ?: 0
                         )
                         _followingCount.onNext(it.following.pageInfo.total)
                         _followersCount.onNext(it.followers.pageInfo.total)
+                        state = State.LOADED
                     },
                     {
                         _error.onNext(it.sendMessage())
+                        state = State.ERROR
                     }
                 )
         )
-    }
-
-    enum class Page {
-        BIO,
-        FAVORITE,
-        STATS,
-        REVIEW
     }
 }
