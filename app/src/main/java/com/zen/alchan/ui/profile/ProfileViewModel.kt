@@ -13,7 +13,7 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     val currentPage: Observable<Page>
         get() = _currentPage
 
-    private val _isViewerProfile = PublishSubject.create<Boolean>()
+    private val _isViewerProfile = BehaviorSubject.createDefault(false)
     val isViewerProfile: Observable<Boolean>
         get() = _isViewerProfile
 

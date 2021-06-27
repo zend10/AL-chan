@@ -22,7 +22,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     override val viewModel: MainViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
-    private var viewPagerAdapter: FragmentStateAdapter? = null
+    private var viewPagerAdapter: MainViewPagerAdapter? = null
 
     private var fragments: List<Fragment?>? = null
     private var homeFragment: HomeFragment? = null
@@ -40,14 +40,42 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     override fun setUpLayout() {
         binding.apply {
+            val isViewerAuthenticated = viewModel.isViewerAuthenticated
+
             homeFragment = HomeFragment.newInstance()
             socialFragment = SocialFragment.newInstance()
             animeListFragment = MediaListFragment.newInstance(MediaType.ANIME)
             mangaListFragment = MediaListFragment.newInstance(MediaType.MANGA)
             profileFragment = ProfileFragment.newInstance()
 
+            fragments = if (isViewerAuthenticated) {
+                listOf(
+                    homeFragment,
+                    animeListFragment,
+                    mangaListFragment,
+                    socialFragment,
+                    profileFragment
+                )
+            } else {
+                listOf(
+                    homeFragment,
+                    socialFragment,
+                    profileFragment
+                )
+            }
+
+            viewPagerAdapter = MainViewPagerAdapter(
+                childFragmentManager,
+                viewLifecycleOwner.lifecycle,
+                fragments?.filterNotNull() ?: listOf()
+            )
+
+            binding.mainViewPager.adapter = viewPagerAdapter
             mainViewPager.isUserInputEnabled = false
             mainViewPager.offscreenPageLimit = 4
+
+            binding.mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = isViewerAuthenticated
+            binding.mainBottomNavigation.menu.findItem(R.id.menuManga).isVisible = isViewerAuthenticated
 
             mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -79,38 +107,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     }
 
     override fun setUpObserver() {
-        disposables.add(
-            viewModel.isAuthenticated.subscribe {
-                fragments = if (it) {
-                    listOf(
-                        homeFragment,
-                        animeListFragment,
-                        mangaListFragment,
-                        socialFragment,
-                        profileFragment
-                    )
-                } else {
-                    listOf(
-                        homeFragment,
-                        socialFragment,
-                        profileFragment
-                    )
-                }
-
-                viewPagerAdapter = MainViewPagerAdapter(
-                    childFragmentManager,
-                    viewLifecycleOwner.lifecycle,
-                    fragments?.filterNotNull() ?: listOf()
-                )
-
-                binding.mainViewPager.adapter = viewPagerAdapter
-
-                binding.mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = it
-                binding.mainBottomNavigation.menu.findItem(R.id.menuManga).isVisible = it
-            }
-        )
-
-        viewModel.loadData()
+        // do nothing
     }
 
     override fun onDestroyView() {

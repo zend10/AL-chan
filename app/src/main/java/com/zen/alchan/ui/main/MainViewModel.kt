@@ -8,20 +8,10 @@ class MainViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    override fun loadData() {
-        load {
-            checkIsAuthenticated()
-        }
-    }
+    val isViewerAuthenticated: Boolean
+        get() = userRepository.getIsAuthenticated().blockingFirst()
 
-    private fun checkIsAuthenticated() {
-        disposables.add(
-            userRepository.getIsAuthenticated()
-                .applyScheduler()
-                .subscribe {
-                    _isAuthenticated.onNext(it)
-                    state = State.LOADED
-                }
-        )
+    override fun loadData() {
+        // do nothing
     }
 }
