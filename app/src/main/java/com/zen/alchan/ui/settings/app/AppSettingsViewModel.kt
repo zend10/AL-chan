@@ -315,7 +315,7 @@ class AppSettingsViewModel(
         _showStatsChartAutomatically.onNext(shouldShowStatsChartAutomatically)
     }
 
-    fun getAppThemeItems() {
+    fun loadAppThemeItems() {
         val items = ArrayList<AppThemeItem>()
         var currentHeader = ""
         AppTheme.values().forEach {
@@ -334,11 +334,11 @@ class AppSettingsViewModel(
         _appThemeItems.onNext(items)
     }
 
-    fun getAllListPositionItems(mediaType: MediaType) {
-        val allListPositionItems = ArrayList<ListItem<Int>>()
+    fun loadAllListPositionItems(mediaType: MediaType) {
+        val items = ArrayList<ListItem<Int>>()
 
         var counter = 0
-        allListPositionItems.add(ListItem("${counter + 1} - {0}", listOf(R.string.top_of_the_list), counter))
+        items.add(ListItem("${counter + 1} - {0}", listOf(R.string.top_of_the_list), counter))
         counter++
 
         val sectionOrder = if (mediaType == MediaType.MANGA) {
@@ -348,44 +348,44 @@ class AppSettingsViewModel(
         }
 
         sectionOrder?.forEach {
-            allListPositionItems.add(ListItem("${counter + 1} - {0} $it", listOf(R.string.below), counter))
+            items.add(ListItem("${counter + 1} - {0} $it", listOf(R.string.below), counter))
             counter++
         }
 
         if (mediaType == MediaType.MANGA) {
-            _allMangaListPositionItems.onNext(allListPositionItems)
+            _allMangaListPositionItems.onNext(items)
         } else {
-            _allAnimeListPositionItems.onNext(allListPositionItems)
+            _allAnimeListPositionItems.onNext(items)
         }
     }
 
-    fun getStaffNamingItems() {
-        val staffNamingItems = ArrayList<ListItem<StaffNaming>>()
-        staffNamingItems.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), StaffNaming.FOLLOW_ANILIST))
-        staffNamingItems.add(ListItem("{0}", listOf(R.string.use_staff_first_middle_last_name_format), StaffNaming.FIRST_MIDDLE_LAST))
-        staffNamingItems.add(ListItem("{0}", listOf(R.string.use_staff_last_middle_first_name_format), StaffNaming.LAST_MIDDLE_FIRST))
-        staffNamingItems.add(ListItem("{0}", listOf(R.string.native_name), StaffNaming.NATIVE))
-        _staffNamingItems.onNext(staffNamingItems)
+    fun loadStaffNamingItems() {
+        val items = ArrayList<ListItem<StaffNaming>>()
+        items.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), StaffNaming.FOLLOW_ANILIST))
+        items.add(ListItem("{0}", listOf(R.string.use_staff_first_middle_last_name_format), StaffNaming.FIRST_MIDDLE_LAST))
+        items.add(ListItem("{0}", listOf(R.string.use_staff_last_middle_first_name_format), StaffNaming.LAST_MIDDLE_FIRST))
+        items.add(ListItem("{0}", listOf(R.string.native_name), StaffNaming.NATIVE))
+        _staffNamingItems.onNext(items)
     }
 
-    fun getMediaNamingItems(country: Country) {
-        val mediaNamingItems = ArrayList<ListItem<MediaNaming>>()
-        mediaNamingItems.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), MediaNaming.FOLLOW_ANILIST))
-        mediaNamingItems.add(ListItem("{0}", listOf(R.string.use_media_english_name_format), MediaNaming.ENGLISH))
-        mediaNamingItems.add(ListItem("{0}", listOf(R.string.use_media_romaji_name_format), MediaNaming.ROMAJI))
-        mediaNamingItems.add(ListItem("{0}", listOf(R.string.use_media_native_name_format), MediaNaming.NATIVE))
-        _mediaNamingItems.onNext(mediaNamingItems to country)
+    fun loadMediaNamingItems(country: Country) {
+        val items = ArrayList<ListItem<MediaNaming>>()
+        items.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), MediaNaming.FOLLOW_ANILIST))
+        items.add(ListItem("{0}", listOf(R.string.use_media_english_name_format), MediaNaming.ENGLISH))
+        items.add(ListItem("{0}", listOf(R.string.use_media_romaji_name_format), MediaNaming.ROMAJI))
+        items.add(ListItem("{0}", listOf(R.string.use_media_native_name_format), MediaNaming.NATIVE))
+        _mediaNamingItems.onNext(items to country)
     }
 
-    fun getPushNotificationsIntervals() {
-        val pushNotificationIntervalItems = ArrayList<ListItem<Int>>()
+    fun loadPushNotificationsIntervalItems() {
+        val items = ArrayList<ListItem<Int>>()
         (1..24).forEach {
             if (it == 1) {
-                pushNotificationIntervalItems.add(ListItem("$it {0}", listOf(R.string.hour), it))
+                items.add(ListItem("$it {0}", listOf(R.string.hour), it))
             } else {
-                pushNotificationIntervalItems.add(ListItem("$it {0}", listOf(R.string.hours), it))
+                items.add(ListItem("$it {0}", listOf(R.string.hours), it))
             }
         }
-        _pushNotificationsIntervalItems.onNext(pushNotificationIntervalItems)
+        _pushNotificationsIntervalItems.onNext(items)
     }
 }

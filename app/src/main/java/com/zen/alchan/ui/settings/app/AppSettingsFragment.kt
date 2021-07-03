@@ -35,7 +35,7 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.app_settings))
 
             appSettingsSelectedThemeLayout.clicks {
-                viewModel.getAppThemeItems()
+                viewModel.loadAppThemeItems()
             }
 
             appSettingsCircularAvatarCheckBox.setOnClickListener {
@@ -47,11 +47,11 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             }
 
             appSettingsAllAnimeLayout.clicks {
-                viewModel.getAllListPositionItems(MediaType.ANIME)
+                viewModel.loadAllListPositionItems(MediaType.ANIME)
             }
 
             appSettingsAllMangaLayout.clicks {
-                viewModel.getAllListPositionItems(MediaType.MANGA)
+                viewModel.loadAllListPositionItems(MediaType.MANGA)
             }
 
             appSettingsRelativeDateCheckBox.setOnClickListener {
@@ -59,23 +59,23 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             }
 
             appSettingsStaffNameLayout.clicks {
-                viewModel.getStaffNamingItems()
+                viewModel.loadStaffNamingItems()
             }
 
             appSettingsJapaneseMediaLayout.clicks {
-                viewModel.getMediaNamingItems(Country.JAPAN)
+                viewModel.loadMediaNamingItems(Country.JAPAN)
             }
 
             appSettingsKoreanMediaLayout.clicks {
-                viewModel.getMediaNamingItems(Country.SOUTH_KOREA)
+                viewModel.loadMediaNamingItems(Country.SOUTH_KOREA)
             }
 
             appSettingsChineseMediaLayout.clicks {
-                viewModel.getMediaNamingItems(Country.CHINA)
+                viewModel.loadMediaNamingItems(Country.CHINA)
             }
 
             appSettingsTaiwaneseMediaLayout.clicks {
-                viewModel.getMediaNamingItems(Country.TAIWAN)
+                viewModel.loadMediaNamingItems(Country.TAIWAN)
             }
 
             appSettingsAiringPushNotificationsCheckBox.setOnClickListener {
@@ -103,7 +103,7 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             }
 
             appSettingsShowPushNotificationsEveryHourLayout.clicks {
-                viewModel.getPushNotificationsIntervals()
+                viewModel.loadPushNotificationsIntervalItems()
             }
 
             appSettingsHighestQualityImageCheckBox.setOnClickListener {

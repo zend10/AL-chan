@@ -77,6 +77,33 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
         }
     }
 
+    fun saveAniListSettings() {
+        _loading.onNext(true)
+
+        currentAniListSetting?.apply {
+            disposables.add(
+                userRepository.updateAniListSettings(
+                    titleLanguage ?: UserTitleLanguage.ROMAJI,
+                    staffNameLanguage ?: UserStaffNameLanguage.ROMAJI_WESTERN,
+                    activityMergeTime,
+                    displayAdultContent,
+                    airingNotifications
+                )
+                    .applyScheduler()
+                    .doFinally { _loading.onNext(false) }
+                    .subscribe(
+                        {
+                            viewer = it
+                            _success.onNext(R.string.settings_saved)
+                        },
+                        {
+                            _error.onNext(it.sendMessage())
+                        }
+                    )
+            )
+        }
+    }
+
     fun updateTitleLanguage(newTitleLanguage: UserTitleLanguage) {
         currentAniListSetting?.titleLanguage = newTitleLanguage
         _titleLanguage.onNext(newTitleLanguage)
@@ -106,23 +133,23 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
     }
 
     fun loadUserTitleLanguageItems() {
-        val userTitleLanguageItems = ArrayList<ListItem<UserTitleLanguage>>()
-        userTitleLanguageItems.add(ListItem(R.string.use_media_romaji_name_format, UserTitleLanguage.ROMAJI))
-        userTitleLanguageItems.add(ListItem(R.string.use_media_english_name_format, UserTitleLanguage.ENGLISH))
-        userTitleLanguageItems.add(ListItem(R.string.use_media_native_name_format, UserTitleLanguage.NATIVE))
-        _userTitleLanguageItems.onNext(userTitleLanguageItems)
+        val items = ArrayList<ListItem<UserTitleLanguage>>()
+        items.add(ListItem(R.string.use_media_romaji_name_format, UserTitleLanguage.ROMAJI))
+        items.add(ListItem(R.string.use_media_english_name_format, UserTitleLanguage.ENGLISH))
+        items.add(ListItem(R.string.use_media_native_name_format, UserTitleLanguage.NATIVE))
+        _userTitleLanguageItems.onNext(items)
     }
 
     fun loadUserStaffNameLanguageItems() {
-        val userStaffNameLanguageItems = ArrayList<ListItem<UserStaffNameLanguage>>()
-        userStaffNameLanguageItems.add(ListItem(R.string.use_staff_character_romaji_western_name_format, UserStaffNameLanguage.ROMAJI_WESTERN))
-        userStaffNameLanguageItems.add(ListItem(R.string.use_staff_character_romaji_name_format, UserStaffNameLanguage.ROMAJI))
-        userStaffNameLanguageItems.add(ListItem(R.string.use_staff_character_native_name_format, UserStaffNameLanguage.NATIVE))
-        _userStaffNameLanguageItems.onNext(userStaffNameLanguageItems)
+        val items = ArrayList<ListItem<UserStaffNameLanguage>>()
+        items.add(ListItem(R.string.use_staff_character_romaji_western_name_format, UserStaffNameLanguage.ROMAJI_WESTERN))
+        items.add(ListItem(R.string.use_staff_character_romaji_name_format, UserStaffNameLanguage.ROMAJI))
+        items.add(ListItem(R.string.use_staff_character_native_name_format, UserStaffNameLanguage.NATIVE))
+        _userStaffNameLanguageItems.onNext(items)
     }
 
     fun loadActivityMergeTimeItems() {
-        val activityMergeTimeItems = ArrayList<ListItem<ActivityMergeTime>>()
+        val items = ArrayList<ListItem<ActivityMergeTime>>()
 
         ActivityMergeTime.values().forEach {
             val (text, stringResource) = when (it) {
@@ -159,38 +186,9 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
                 }
             }
 
-            activityMergeTimeItems.add(
-                ListItem(text, listOf(stringResource), it)
-            )
+            items.add(ListItem(text, listOf(stringResource), it))
         }
 
-        _activityMergeTimeItems.onNext(activityMergeTimeItems)
-    }
-
-    fun saveAniListSettings() {
-        _loading.onNext(true)
-
-        currentAniListSetting?.apply {
-            disposables.add(
-                userRepository.updateAniListSettings(
-                    titleLanguage ?: UserTitleLanguage.ROMAJI,
-                    staffNameLanguage ?: UserStaffNameLanguage.ROMAJI_WESTERN,
-                    activityMergeTime,
-                    displayAdultContent,
-                    airingNotifications
-                )
-                    .applyScheduler()
-                    .doFinally { _loading.onNext(false) }
-                    .subscribe(
-                        {
-                            viewer = it
-                            _success.onNext(R.string.settings_saved)
-                        },
-                        {
-                            _error.onNext(it.sendMessage())
-                        }
-                    )
-            )
-        }
+        _activityMergeTimeItems.onNext(items)
     }
 }
