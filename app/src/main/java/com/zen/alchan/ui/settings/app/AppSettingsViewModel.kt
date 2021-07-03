@@ -1,16 +1,19 @@
 package com.zen.alchan.ui.settings.app
 
 import androidx.lifecycle.viewModelScope
+import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.pojo.AppThemeItem
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.MediaType
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -114,71 +117,73 @@ class AppSettingsViewModel(
     val appThemeItems: Observable<List<AppThemeItem>>
         get() = _appThemeItems
 
-    private val _allAnimeListItems = PublishSubject.create<List<String>>()
-    val allAnimeListItems: Observable<List<String>>
-        get() = _allAnimeListItems
+    private val _allAnimeListPositionItems = PublishSubject.create<List<ListItem<Int>>>()
+    val allAnimeListPositionItems: Observable<List<ListItem<Int>>>
+        get() = _allAnimeListPositionItems
 
-    private val _allMangaListItems = PublishSubject.create<List<String>>()
-    val allMangaListItems: Observable<List<String>>
-        get() = _allMangaListItems
+    private val _allMangaListPositionItems = PublishSubject.create<List<ListItem<Int>>>()
+    val allMangaListPositionItems: Observable<List<ListItem<Int>>>
+        get() = _allMangaListPositionItems
 
-    private val _staffNamings = PublishSubject.create<List<StaffNaming>>()
-    val staffNamings: Observable<List<StaffNaming>>
-        get() = _staffNamings
+    private val _staffNamingItems = PublishSubject.create<List<ListItem<StaffNaming>>>()
+    val staffNamingItems: Observable<List<ListItem<StaffNaming>>>
+        get() = _staffNamingItems
 
-    private val _mediaNamings = PublishSubject.create<Pair<List<MediaNaming>, Country>>()
-    val mediaNamings: Observable<Pair<List<MediaNaming>, Country>>
-        get() = _mediaNamings
+    private val _mediaNamingItems = PublishSubject.create<Pair<List<ListItem<MediaNaming>>, Country>>()
+    val mediaNamingItems: Observable<Pair<List<ListItem<MediaNaming>>, Country>>
+        get() = _mediaNamingItems
 
-    private val _pushNotificationsIntervals = PublishSubject.create<List<Int>>()
-    val pushNotificationsIntervals: Observable<List<Int>>
-        get() = _pushNotificationsIntervals
+    private val _pushNotificationsIntervalItems = PublishSubject.create<List<ListItem<Int>>>()
+    val pushNotificationsIntervalItems: Observable<List<ListItem<Int>>>
+        get() = _pushNotificationsIntervalItems
 
     private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
 
     override fun loadData() {
-        if (state == State.LOADED)
-            return
+        loadOnce {
+            disposables.add(
+                userRepository.getViewer(Source.CACHE)
+                    .zipWith(userRepository.getAppSetting()) { user, appSetting ->
+                        return@zipWith user to appSetting
+                    }
+                    .applyScheduler()
+                    .subscribe { (user, appSetting) ->
+                        viewer = user
+                        currentAppSetting = appSetting
 
-        disposables.add(
-            userRepository.viewerAndAppSetting
-                .applyScheduler()
-                .subscribe { (user, appSetting) ->
-                    viewer = user
-                    currentAppSetting = appSetting
+                        updateAppTheme(appSetting.appTheme)
 
-                    updateAppTheme(appSetting.appTheme)
+                        updateUseCircularAvatarForProfile(appSetting.useCircularAvatarForProfile)
+                        updateShowRecentReviewsAtHome(appSetting.showRecentReviewsAtHome)
 
-                    updateUseCircularAvatarForProfile(appSetting.useCircularAvatarForProfile)
-                    updateShowRecentReviewsAtHome(appSetting.showRecentReviewsAtHome)
+                        updateAllAnimeListPosition(appSetting.allAnimeListPosition)
+                        updateAllMangaListPosition(appSetting.allMangaListPosition)
+                        updateUseRelativeDateForNextAiringEpisode(appSetting.useRelativeDateForNextAiringEpisode)
 
-                    updateAllAnimeListPosition(appSetting.allAnimeListPosition)
-                    updateAllMangaListPosition(appSetting.allMangaListPosition)
-                    updateUseRelativeDateForNextAiringEpisode(appSetting.useRelativeDateForNextAiringEpisode)
+                        updateJapaneseStaffNaming(appSetting.japaneseStaffNaming)
+                        updateJapaneseMediaNaming(appSetting.japaneseMediaNaming)
+                        updateKoreanMediaNaming(appSetting.koreanMediaNaming)
+                        updateChineseMediaNaming(appSetting.chineseMediaNaming)
+                        updateTaiwaneseMediaNaming(appSetting.taiwaneseMediaNaming)
 
-                    updateJapaneseStaffNaming(appSetting.japaneseStaffNaming)
-                    updateJapaneseMediaNaming(appSetting.japaneseMediaNaming)
-                    updateKoreanMediaNaming(appSetting.koreanMediaNaming)
-                    updateChineseMediaNaming(appSetting.chineseMediaNaming)
-                    updateTaiwaneseMediaNaming(appSetting.taiwaneseMediaNaming)
+                        updateSendAiringPushNotifications(appSetting.sendAiringPushNotifications)
+                        updateSendActivityPushNotifications(appSetting.sendActivityPushNotifications)
+                        updateSendForumPushNotifications(appSetting.sendForumPushNotifications)
+                        updateSendFollowsPushNotifications(appSetting.sendFollowsPushNotifications)
+                        updateSendRelationsPushNotifications(appSetting.sendRelationsPushNotifications)
+                        updateMergePushNotifications(appSetting.mergePushNotifications)
+                        updateShowPushNotificationsInterval(appSetting.showPushNotificationsInterval)
 
-                    updateSendAiringPushNotifications(appSetting.sendAiringPushNotifications)
-                    updateSendActivityPushNotifications(appSetting.sendActivityPushNotifications)
-                    updateSendForumPushNotifications(appSetting.sendForumPushNotifications)
-                    updateSendFollowsPushNotifications(appSetting.sendFollowsPushNotifications)
-                    updateSendRelationsPushNotifications(appSetting.sendRelationsPushNotifications)
-                    updateMergePushNotifications(appSetting.mergePushNotifications)
-                    updateShowPushNotificationsInterval(appSetting.showPushNotificationsInterval)
+                        updateUseHighestQualityImage(appSetting.useHighestQualityImage)
+                        updateEnableSocialFeature(appSetting.enableSocialFeature)
+                        updateShowBioAutomatically(appSetting.showBioAutomatically)
+                        updateShowStatsChartAutomatically(appSetting.showStatsChartAutomatically)
 
-                    updateUseHighestQualityImage(appSetting.useHighestQualityImage)
-                    updateEnableSocialFeature(appSetting.enableSocialFeature)
-                    updateShowBioAutomatically(appSetting.showBioAutomatically)
-                    updateShowStatsChartAutomatically(appSetting.showStatsChartAutomatically)
-
-                    state = State.LOADED
-                }
-        )
+                        state = State.LOADED
+                    }
+            )
+        }
     }
 
     fun saveAppSettings() {
@@ -329,29 +334,58 @@ class AppSettingsViewModel(
         _appThemeItems.onNext(items)
     }
 
-    fun getAllAnimeListNumbers() {
-        val allAnimeListItems = ArrayList<String>()
-        allAnimeListItems.add("")
-        allAnimeListItems.addAll(viewer?.mediaListOptions?.animeList?.sectionOrder ?: listOf())
-        _allAnimeListItems.onNext(allAnimeListItems)
+    fun getAllListPositionItems(mediaType: MediaType) {
+        val allListPositionItems = ArrayList<ListItem<Int>>()
+
+        var counter = 0
+        allListPositionItems.add(ListItem("${counter + 1} - {0}", listOf(R.string.top_of_the_list), counter))
+        counter++
+
+        val sectionOrder = if (mediaType == MediaType.MANGA) {
+            viewer?.mediaListOptions?.mangaList?.sectionOrder
+        } else {
+            viewer?.mediaListOptions?.animeList?.sectionOrder
+        }
+
+        sectionOrder?.forEach {
+            allListPositionItems.add(ListItem("${counter + 1} - {0} $it", listOf(R.string.below), counter))
+            counter++
+        }
+
+        if (mediaType == MediaType.MANGA) {
+            _allMangaListPositionItems.onNext(allListPositionItems)
+        } else {
+            _allAnimeListPositionItems.onNext(allListPositionItems)
+        }
     }
 
-    fun getAllMangaListNumbers() {
-        val allMangaListItems = ArrayList<String>()
-        allMangaListItems.add("")
-        allMangaListItems.addAll(viewer?.mediaListOptions?.mangaList?.sectionOrder ?: listOf())
-        _allMangaListItems.onNext(allMangaListItems)
+    fun getStaffNamingItems() {
+        val staffNamingItems = ArrayList<ListItem<StaffNaming>>()
+        staffNamingItems.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), StaffNaming.FOLLOW_ANILIST))
+        staffNamingItems.add(ListItem("{0}", listOf(R.string.use_staff_first_middle_last_name_format), StaffNaming.FIRST_MIDDLE_LAST))
+        staffNamingItems.add(ListItem("{0}", listOf(R.string.use_staff_last_middle_first_name_format), StaffNaming.LAST_MIDDLE_FIRST))
+        staffNamingItems.add(ListItem("{0}", listOf(R.string.native_name), StaffNaming.NATIVE))
+        _staffNamingItems.onNext(staffNamingItems)
     }
 
-    fun getStaffNamings() {
-        _staffNamings.onNext(StaffNaming.values().toList())
-    }
-
-    fun getMediaNamings(country: Country) {
-        _mediaNamings.onNext(MediaNaming.values().toList() to country)
+    fun getMediaNamingItems(country: Country) {
+        val mediaNamingItems = ArrayList<ListItem<MediaNaming>>()
+        mediaNamingItems.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), MediaNaming.FOLLOW_ANILIST))
+        mediaNamingItems.add(ListItem("{0}", listOf(R.string.use_media_english_name_format), MediaNaming.ENGLISH))
+        mediaNamingItems.add(ListItem("{0}", listOf(R.string.use_media_romaji_name_format), MediaNaming.ROMAJI))
+        mediaNamingItems.add(ListItem("{0}", listOf(R.string.use_media_native_name_format), MediaNaming.NATIVE))
+        _mediaNamingItems.onNext(mediaNamingItems to country)
     }
 
     fun getPushNotificationsIntervals() {
-        _pushNotificationsIntervals.onNext((1..24).toList())
+        val pushNotificationIntervalItems = ArrayList<ListItem<Int>>()
+        (1..24).forEach {
+            if (it == 1) {
+                pushNotificationIntervalItems.add(ListItem("$it {0}", listOf(R.string.hour), it))
+            } else {
+                pushNotificationIntervalItems.add(ListItem("$it {0}", listOf(R.string.hours), it))
+            }
+        }
+        _pushNotificationsIntervalItems.onNext(pushNotificationIntervalItems)
     }
 }

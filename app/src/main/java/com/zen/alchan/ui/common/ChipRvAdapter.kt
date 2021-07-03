@@ -10,19 +10,15 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 class ChipRvAdapter(
     list: List<String>,
     private val listener: ChipListener
-) : BaseRecyclerViewAdapter<String>(list) {
+) : BaseRecyclerViewAdapter<String, ListChipBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) holder.bind(list[position], position)
-    }
-
-    inner class ViewHolder(private val binding: ListChipBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: String, index: Int) {
+    inner class ItemViewHolder(private val binding: ListChipBinding) : ViewHolder(binding) {
+        override fun bind(item: String, index: Int) {
             binding.chipText.text = item
             binding.chipDeleteIcon.clicks { listener.deleteItem(index) }
             binding.chipLayout.clicks { listener.getSelectedItem(item, index) }

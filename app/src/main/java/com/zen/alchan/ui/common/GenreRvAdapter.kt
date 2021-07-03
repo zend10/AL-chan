@@ -10,21 +10,20 @@ import com.zen.alchan.helper.pojo.Genre
 import com.zen.alchan.helper.pojo.getHexColor
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
-class GenreRvAdapter(private val context: Context, list: List<Genre>) : BaseRecyclerViewAdapter<Genre>(list) {
+class GenreRvAdapter(
+    private val context: Context,
+    list: List<Genre>
+) : BaseRecyclerViewAdapter<Genre, ListGenreBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) holder.bind(list[position])
-    }
-
-    inner class ViewHolder(private val binding: ListGenreBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(genre: Genre) {
-            binding.genreText.text = genre.name
-            binding.genreCard.setCardBackgroundColor(Color.parseColor(genre.getHexColor()))
+    inner class ItemViewHolder(private val binding: ListGenreBinding) : ViewHolder(binding) {
+        override fun bind(item: Genre, index: Int) {
+            binding.genreText.text = item.name
+            binding.genreCard.setCardBackgroundColor(Color.parseColor(item.getHexColor()))
         }
     }
 }

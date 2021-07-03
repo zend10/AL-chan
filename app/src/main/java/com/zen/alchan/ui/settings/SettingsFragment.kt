@@ -55,7 +55,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     }
 
     override fun setUpObserver() {
-
+        // do nothing
     }
 
     companion object {

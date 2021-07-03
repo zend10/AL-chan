@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.zen.alchan.databinding.LayoutHeaderBinding
 import com.zen.alchan.databinding.ListAppThemeBinding
 import com.zen.alchan.helper.enums.AppTheme
@@ -19,9 +20,9 @@ class AppThemeRvAdapter(
     private val context: Context,
     list: List<AppThemeItem>,
     private val listener: AppThemeListener?
-) : BaseRecyclerViewAdapter<AppThemeItem>(list) {
+) : BaseRecyclerViewAdapter<AppThemeItem, ViewBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_HEADER -> {
@@ -35,26 +36,20 @@ class AppThemeRvAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is HeaderViewHolder -> holder.bind(list[position])
-            is AppThemeViewHolder -> holder.bind(list[position].appTheme ?: AppTheme.DEFAULT_THEME_YELLOW)
-        }
-    }
-
     override fun getItemViewType(position: Int): Int {
         return if (list[position].header != null) VIEW_TYPE_HEADER else VIEW_TYPE_APP_THEME
     }
 
-    inner class HeaderViewHolder(private val binding: LayoutHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(appThemeItem: AppThemeItem) {
-            binding.headerText.text = appThemeItem.header
+    inner class HeaderViewHolder(private val binding: LayoutHeaderBinding) : ViewHolder(binding) {
+        override fun bind(item: AppThemeItem, index: Int) {
+            binding.headerText.text = item.header
             binding.upperHeaderDivider.root.show(true)
         }
     }
 
-    inner class AppThemeViewHolder(private val binding: ListAppThemeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(appTheme: AppTheme) {
+    inner class AppThemeViewHolder(private val binding: ListAppThemeBinding) : ViewHolder(binding) {
+        override fun bind(item: AppThemeItem, index: Int) {
+            val appTheme = item.appTheme ?: AppTheme.DEFAULT_THEME_YELLOW
             binding.apply {
                 appThemeText.text = appTheme.getColorName()
 

@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.medialist
 
 import android.content.Context
+import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.MediaListItem
@@ -9,7 +10,7 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 abstract class BaseMediaListRvAdapter(
     private val context: Context,
     list: List<MediaListItem>
-) : BaseRecyclerViewAdapter<MediaListItem>(list) {
+) : BaseRecyclerViewAdapter<MediaListItem, ViewBinding>(list) {
 
     protected var listStyle = ListStyle.EMPTY_LIST_STYLE
     protected var mediaListOptions = MediaListOptions()

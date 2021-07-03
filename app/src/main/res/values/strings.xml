@@ -85,7 +85,7 @@
     <string name="use_circular_avatar_for_profile">Use circular avatar for Profile</string>
     <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
     <string name="follow_anilist_setting">Follow AniList setting</string>
-    <string name="native_name">Native name</string>
+    <string name="native_name">Native name (ex: 初音ミク, 宮崎駿, 花澤香菜)</string>
     <string name="use_staff_first_middle_last_name_format">Use First Middle Last name format (ex: Miku Hatsune, Hayao Miyazaki, Kana Hanazawa)</string>
     <string name="use_staff_last_middle_first_name_format">Use Last Middle First name format (ex: Hatsune Miku, Miyazaki Hayao, Hanazawa Kana)</string>
     <string name="use_media_english_name_format">Use English name (ex: Attack on Titan, Solo Leveling, The King\'s Avatar)</string>
@@ -152,6 +152,8 @@
     <string name="five_star">5 Star (3/5)</string>
     <string name="three_point_smiley">3 Point Smiley :)</string>
     <string name="type_here">Type here</string>
+    <string name="hour">hour</string>
+    <string name="hours">hours</string>
 
 
     <plurals name="minute">

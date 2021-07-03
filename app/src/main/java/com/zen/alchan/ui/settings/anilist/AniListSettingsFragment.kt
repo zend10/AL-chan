@@ -106,44 +106,44 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
             }
         )
 
-        disposables.add(
-            viewModel.mediaTitleLanguages.subscribe {
-                mediaTitleLanguageAdapter = MediaTitleLanguageRvAdapter(requireContext(), it, object : MediaTitleLanguageRvAdapter.MediaTitleLanguageListener {
-                    override fun getSelectedLanguage(userTitleLanguage: UserTitleLanguage) {
-                        dismissListDialog()
-                        viewModel.updateMediaTitleLanguage(userTitleLanguage)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
-                }
-            }
-        )
-
-        disposables.add(
-            viewModel.staffCharacterNameLanguages.subscribe {
-                staffCharacterNamingAdapter = StaffCharacterNamingRvAdapter(requireContext(), it, object : StaffCharacterNamingRvAdapter.StaffCharacterNamingListener {
-                    override fun getSelectedNaming(userStaffNameLanguage: UserStaffNameLanguage) {
-                        dismissListDialog()
-                        viewModel.updateStaffCharacterNaming(userStaffNameLanguage)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
-                }
-            }
-        )
-
-        disposables.add(
-            viewModel.activityMergeTimes.subscribe {
-                activityMergeTimeAdapter = ActivityMergeTimeRvAdapter(requireContext(), it, object : ActivityMergeTimeRvAdapter.ActivityMergeTimeListener {
-                    override fun passSelectedMinute(minute: Int) {
-                        dismissListDialog()
-                        viewModel.updateProgressActivityMergeTime(minute)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
-                }
-            }
-        )
+//        disposables.add(
+//            viewModel.mediaTitleLanguages.subscribe {
+//                mediaTitleLanguageAdapter = MediaTitleLanguageRvAdapter(requireContext(), it, object : MediaTitleLanguageRvAdapter.MediaTitleLanguageListener {
+//                    override fun getSelectedLanguage(userTitleLanguage: UserTitleLanguage) {
+//                        dismissListDialog()
+//                        viewModel.updateMediaTitleLanguage(userTitleLanguage)
+//                    }
+//                }).also { adapter ->
+//                    showListDialog(adapter)
+//                }
+//            }
+//        )
+//
+//        disposables.add(
+//            viewModel.staffCharacterNameLanguages.subscribe {
+//                staffCharacterNamingAdapter = StaffCharacterNamingRvAdapter(requireContext(), it, object : StaffCharacterNamingRvAdapter.StaffCharacterNamingListener {
+//                    override fun getSelectedNaming(userStaffNameLanguage: UserStaffNameLanguage) {
+//                        dismissListDialog()
+//                        viewModel.updateStaffCharacterNaming(userStaffNameLanguage)
+//                    }
+//                }).also { adapter ->
+//                    showListDialog(adapter)
+//                }
+//            }
+//        )
+//
+//        disposables.add(
+//            viewModel.activityMergeTimes.subscribe {
+//                activityMergeTimeAdapter = ActivityMergeTimeRvAdapter(requireContext(), it, object : ActivityMergeTimeRvAdapter.ActivityMergeTimeListener {
+//                    override fun passSelectedMinute(minute: Int) {
+//                        dismissListDialog()
+//                        viewModel.updateProgressActivityMergeTime(minute)
+//                    }
+//                }).also { adapter ->
+//                    showListDialog(adapter)
+//                }
+//            }
+//        )
 
         viewModel.loadData()
     }

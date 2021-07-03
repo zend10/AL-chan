@@ -14,22 +14,18 @@ class ActivityMergeTimeRvAdapter(
     private val context: Context,
     list: List<ActivityMergeTime>,
     private val listener: ActivityMergeTimeListener
-) : BaseRecyclerViewAdapter<ActivityMergeTime>(list) {
+) : BaseRecyclerViewAdapter<ActivityMergeTime, ListTextBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) holder.bind(list[position])
-    }
-
-    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(activityMergeTime: ActivityMergeTime) {
-            binding.itemText.text = activityMergeTime.getString(context)
+    inner class ItemViewHolder(private val binding: ListTextBinding) : ViewHolder(binding) {
+        override fun bind(item: ActivityMergeTime, index: Int) {
+            binding.itemText.text = item.getString(context)
             binding.itemLayout.clicks {
-                listener.passSelectedMinute(activityMergeTime.minute)
+                listener.passSelectedMinute(item.minute)
             }
         }
     }

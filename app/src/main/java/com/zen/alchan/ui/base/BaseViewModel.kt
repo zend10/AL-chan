@@ -22,13 +22,13 @@ abstract class BaseViewModel : ViewModel(), ViewModelContract {
     val error: Observable<Int>
         get() = _error
 
-    protected val _isAuthenticated = PublishSubject.create<Boolean>()
+    protected val _isAuthenticated = BehaviorSubject.createDefault(false)
     val isAuthenticated: Observable<Boolean>
         get() = _isAuthenticated
 
     protected var state = State.INIT
 
-    protected fun load(action: () -> Unit) {
+    protected fun loadOnce(action: () -> Unit) {
         if (state != State.INIT)
             return
 

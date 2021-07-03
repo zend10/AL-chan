@@ -147,18 +147,18 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
 
 
-        disposables.add(
-            viewModel.scoreFormats.subscribe {
-                scoreFormatAdapter = ScoreFormatRvAdapter(requireContext(), it, object : ScoreFormatRvAdapter.ScoreFormatListener {
-                    override fun getSelectedScoreFormat(scoreFormat: ScoreFormat) {
-                        dismissListDialog()
-                        viewModel.updateScoringSystem(scoreFormat)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
-                }
-            }
-        )
+//        disposables.add(
+//            viewModel.scoreFormats.subscribe {
+//                scoreFormatAdapter = ScoreFormatRvAdapter(requireContext(), it, object : ScoreFormatRvAdapter.ScoreFormatListener {
+//                    override fun getSelectedScoreFormat(scoreFormat: ScoreFormat) {
+//                        dismissListDialog()
+//                        viewModel.updateScoringSystem(scoreFormat)
+//                    }
+//                }).also { adapter ->
+//                    showListDialog(adapter)
+//                }
+//            }
+//        )
 
         disposables.add(
             viewModel.useAdvancedScoringVisibility.subscribe {
@@ -178,33 +178,33 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
         )
 
-        disposables.add(
-            viewModel.listOrders.subscribe {
-                listOrderAdapter = ListOrderRvAdapter(requireContext(), it, object : ListOrderRvAdapter.ListOrderListener {
-                    override fun getSelectedListOrder(listOrder: ListOrder) {
-                        dismissListDialog()
-                        viewModel.updateDefaultListOrder(listOrder)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
-                }
-            }
-        )
+//        disposables.add(
+//            viewModel.listOrders.subscribe {
+//                listOrderAdapter = ListOrderRvAdapter(requireContext(), it, object : ListOrderRvAdapter.ListOrderListener {
+//                    override fun getSelectedListOrder(listOrder: ListOrder) {
+//                        dismissListDialog()
+//                        viewModel.updateDefaultListOrder(listOrder)
+//                    }
+//                }).also { adapter ->
+//                    showListDialog(adapter)
+//                }
+//            }
+//        )
 
         viewModel.loadData()
     }
 
     private fun showAdvancedScoringDialog(currentText: String, index: Int? = null) {
-        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
-            override fun getNewText(newText: String) {
-                if (index != null)
-                    viewModel.editAdvancedScoringCriteria(newText, index)
-                else
-                    viewModel.addAdvancedScoringCriteria(newText)
-
-                dismissTextInputDialog()
-            }
-        })
+//        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
+//            override fun getNewText(newText: String) {
+//                if (index != null)
+//                    viewModel.editAdvancedScoringCriteria(newText, index)
+//                else
+//                    viewModel.addAdvancedScoringCriteria(newText)
+//
+//                dismissTextInputDialog()
+//            }
+//        })
     }
 
     override fun onDestroyView() {

@@ -19,7 +19,7 @@ class MediaListLinearRvAdapter(
     list: List<MediaListItem>
 ) : BaseMediaListRvAdapter(context, list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             MediaListItem.VIEW_TYPE_TITLE -> {
@@ -34,25 +34,19 @@ class MediaListLinearRvAdapter(
 
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is TitleViewHolder -> holder.bind(list[position].title)
-            is ItemViewHolder -> holder.bind(list[position].mediaList)
-        }
-    }
-
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
     }
 
-    inner class TitleViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(title: String) {
-            binding.itemText.text = title
+    inner class TitleViewHolder(private val binding: ListTextBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaListItem, index: Int) {
+            binding.itemText.text = item.title
         }
     }
 
-    inner class ItemViewHolder(private val binding: ListMediaListLinearBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(mediaList: MediaList) {
+    inner class ItemViewHolder(private val binding: ListMediaListLinearBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaListItem, index: Int) {
+            val mediaList = item.mediaList
             val media = mediaList.media
             binding.apply {
                 ImageUtil.loadImage(context, media.coverImage.extraLarge, mediaListCoverImage)

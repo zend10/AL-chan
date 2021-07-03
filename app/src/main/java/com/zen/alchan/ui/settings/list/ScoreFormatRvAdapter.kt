@@ -14,21 +14,17 @@ class ScoreFormatRvAdapter(
     private val context: Context,
     list: List<ScoreFormat>,
     private val listener: ScoreFormatListener
-) : BaseRecyclerViewAdapter<ScoreFormat>(list) {
+) : BaseRecyclerViewAdapter<ScoreFormat, ListTextBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) holder.bind(list[position])
-    }
-
-    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(scoreFormat: ScoreFormat) {
-            binding.itemText.text = scoreFormat.getString(context)
-            binding.itemLayout.clicks { listener.getSelectedScoreFormat(scoreFormat) }
+    inner class ItemViewHolder(private val binding: ListTextBinding) : ViewHolder(binding) {
+        override fun bind(item: ScoreFormat, index: Int) {
+            binding.itemText.text = item.getString(context)
+            binding.itemLayout.clicks { listener.getSelectedScoreFormat(item) }
         }
     }
 

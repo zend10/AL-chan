@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.ListTrendingMediaBinding
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -19,34 +20,27 @@ class TrendingMediaRvAdapter(
     list: List<Media>,
     private val width: Int,
     private val listener: HomeListener.TrendingMediaListener
-) : BaseRecyclerViewAdapter<Media>(list) {
+) : BaseRecyclerViewAdapter<Media, ListTrendingMediaBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListTrendingMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         view.root.layoutParams.width = (width.toDouble() / 1.3).toInt()
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
-            holder.bind(context, list[position])
-            holder.itemView.setOnClickListener { listener.navigateToMedia() }
-        }
-    }
-
-    class ViewHolder(private val binding: ListTrendingMediaBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(context: Context, media: Media) {
+    inner class ItemViewHolder(private val binding: ListTrendingMediaBinding) : ViewHolder(binding) {
+        override fun bind(item: Media, index: Int) {
             binding.apply {
-                ImageUtil.loadImage(context, media.bannerImage, trendingBannerImage)
-                ImageUtil.loadImage(context, media.coverImage.extraLarge, trendingCoverImage)
+                ImageUtil.loadImage(context, item.bannerImage, trendingBannerImage)
+                ImageUtil.loadImage(context, item.coverImage.extraLarge, trendingCoverImage)
 
-                trendingMediaTitleText.text = media.title.userPreferred
-                trendingMediaProducerText.text = if (media.type == MediaType.ANIME) {
-                    media.studios.edges
+                trendingMediaTitleText.text = item.title.userPreferred
+                trendingMediaProducerText.text = if (item.type == MediaType.ANIME) {
+                    item.studios.edges
                         .filter { it.isMain }
                         .joinToString(", ") { it.node.name }
                 } else {
-                    media.staffs.edges
+                    item.staffs.edges
                         .filter {
                             it.role.contains("art", true) ||
                                     it.role.contains("story", true) ||
@@ -55,13 +49,15 @@ class TrendingMediaRvAdapter(
                         }
                         .joinToString(", ") { it.node.name.full }
                 }
-                trendingMediaScoreText.text = media.averageScore.getNumberFormatting()
-                trendingMediaFavouriteText.text = media.favourites.getNumberFormatting()
+                trendingMediaScoreText.text = item.averageScore.getNumberFormatting()
+                trendingMediaFavouriteText.text = item.favourites.getNumberFormatting()
 
-                trendingMediaGenreRecyclerView.adapter = GenreRvAdapter(context, media.genres)
+                trendingMediaGenreRecyclerView.adapter = GenreRvAdapter(context, item.genres)
                 (trendingMediaGenreRecyclerView.layoutManager as? FlexboxLayoutManager)?.maxLine = 1
 
-                trendingMediaDescriptionText.text = HtmlCompat.fromHtml(media.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                trendingMediaDescriptionText.text = HtmlCompat.fromHtml(item.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+                root.clicks { listener.navigateToMedia() }
             }
         }
     }

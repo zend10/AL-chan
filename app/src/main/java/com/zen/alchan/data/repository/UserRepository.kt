@@ -14,11 +14,8 @@ import type.UserTitleLanguage
 
 interface UserRepository {
 
-    val viewerAndAppSetting: Observable<Pair<User, AppSetting>>
-
     fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
-    fun loadViewerAndAppSetting()
     fun getViewer(source: Source? = null): Observable<User>
     fun loginAsGuest()
     fun logoutAsGuest()

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.color
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.databinding.LayoutBioAboutBinding
 import com.zen.alchan.databinding.LayoutBioAffinityBinding
@@ -21,9 +22,9 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 class BioRvAdapter(
     private val context: Context,
     list: List<BioItem>
-) : BaseRecyclerViewAdapter<BioItem>(list) {
+) : BaseRecyclerViewAdapter<BioItem, ViewBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
             BioItem.VIEW_TYPE_AFFINITY -> {
@@ -45,33 +46,26 @@ class BioRvAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = list[position]
-        when (holder) {
-            is AffinityViewHolder -> holder.bind(item.animeAffinity, item.mangaAffinity)
-            is AboutViewHolder -> holder.bind(context, item.bioText)
-            is TendencyViewHolder -> holder.bind(context, item.animeTendency, item.mangaTendency)
-        }
-    }
-
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
     }
 
-    class AffinityViewHolder(private val binding: LayoutBioAffinityBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(animeAffinity: Double?, mangaAffinity: Double?) {
+    inner class AffinityViewHolder(private val binding: LayoutBioAffinityBinding) : ViewHolder(binding) {
+        override fun bind(item: BioItem, index: Int) {
 
         }
     }
 
-    class AboutViewHolder(private val binding: LayoutBioAboutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(context: Context, bioText: String) {
-            MarkdownUtil.applyMarkdown(context, binding.bioAboutText, bioText)
+    inner class AboutViewHolder(private val binding: LayoutBioAboutBinding) : ViewHolder(binding) {
+        override fun bind(item: BioItem, index: Int) {
+            MarkdownUtil.applyMarkdown(context, binding.bioAboutText, item.bioText)
         }
     }
 
-    class TendencyViewHolder(private val binding: LayoutBioTendencyBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(context: Context, animeTendency: Tendency?, mangaTendency: Tendency?) {
+    inner class TendencyViewHolder(private val binding: LayoutBioTendencyBinding) : ViewHolder(binding) {
+        override fun bind(item: BioItem, index: Int) {
+            val animeTendency = item.animeTendency
+            val mangaTendency = item.mangaTendency
             binding.apply {
                 tendencyAnimeLayout.show(animeTendency != null)
                 tendencyAnimeMostFavoriteGenre.text = getSpanned(context, R.string.seems_to_love_x, animeTendency?.mostFavoriteGenres)

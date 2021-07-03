@@ -5,7 +5,6 @@ import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 
 class ProfileViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
@@ -20,7 +19,7 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     var userId = 0
 
     override fun loadData() {
-        load {
+        loadOnce {
             checkIsAuthenticated()
             checkIsViewerProfile()
         }

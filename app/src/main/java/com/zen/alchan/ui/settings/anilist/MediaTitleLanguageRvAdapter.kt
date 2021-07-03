@@ -15,27 +15,23 @@ class MediaTitleLanguageRvAdapter(
     private val context: Context,
     list: List<UserTitleLanguage>,
     private val listener: MediaTitleLanguageListener
-) : BaseRecyclerViewAdapter<UserTitleLanguage>(list) {
+) : BaseRecyclerViewAdapter<UserTitleLanguage, ListTextBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) holder.bind(list[position])
-    }
-
-    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(userTitleLanguage: UserTitleLanguage) {
-            binding.itemText.text = when (userTitleLanguage) {
+    inner class ItemViewHolder(private val binding: ListTextBinding) : ViewHolder(binding) {
+        override fun bind(item: UserTitleLanguage, index: Int) {
+            binding.itemText.text = when (item) {
                 UserTitleLanguage.ROMAJI -> context.getString(R.string.use_media_romaji_name_format)
                 UserTitleLanguage.ENGLISH -> context.getString(R.string.use_media_english_name_format)
                 UserTitleLanguage.NATIVE -> context.getString(R.string.use_media_native_name_format)
-                else -> userTitleLanguage.name.convertFromSnakeCase()
+                else -> item.name.convertFromSnakeCase()
             }
 
-            binding.itemLayout.clicks { listener.getSelectedLanguage(userTitleLanguage) }
+            binding.itemLayout.clicks { listener.getSelectedLanguage(item) }
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.LayoutHomeHeaderBinding
@@ -19,9 +20,9 @@ class HomeRvAdapter(
     list: List<HomeItem>,
     private val width: Int,
     private val listener: HomeListener
-) : BaseRecyclerViewAdapter<HomeItem>(list) {
+) : BaseRecyclerViewAdapter<HomeItem, ViewBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
             HomeItem.VIEW_TYPE_HEADER -> {
@@ -43,46 +44,38 @@ class HomeRvAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is HeaderViewHolder -> holder.bind(listener.headerListener)
-            is MenuViewHolder -> holder.bind(listener.menuListener)
-            is TrendingMediaViewHolder -> holder.bind(context, list[position].media, list[position].viewType, width, listener.trendingMediaListener)
-        }
-    }
-
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
     }
 
-    class HeaderViewHolder(private val binding: LayoutHomeHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(listener: HomeListener.HeaderListener) {
-            binding.searchLayout.clicks { listener.navigateToSearch() }
+    inner class HeaderViewHolder(private val binding: LayoutHomeHeaderBinding) : ViewHolder(binding) {
+        override fun bind(item: HomeItem, index: Int) {
+            binding.searchLayout.clicks { listener.headerListener.navigateToSearch() }
         }
     }
 
-    class MenuViewHolder(private val binding: LayoutHomeMenuBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(listener: HomeListener.MenuListener) {
+    inner class MenuViewHolder(private val binding: LayoutHomeMenuBinding) : ViewHolder(binding) {
+        override fun bind(item: HomeItem, index: Int) {
             binding.apply {
-                seasonalMenu.clicks { listener.navigateToSeasonal() }
-                exploreMenu.clicks { listener.showExploreDialog() }
-                reviewsMenu.clicks { listener.navigateToReviews() }
-                calendarMenu.clicks { listener.navigateToCalendar() }
+                seasonalMenu.clicks { listener.menuListener.navigateToSeasonal() }
+                exploreMenu.clicks { listener.menuListener.showExploreDialog() }
+                reviewsMenu.clicks { listener.menuListener.navigateToReviews() }
+                calendarMenu.clicks { listener.menuListener.navigateToCalendar() }
             }
         }
     }
 
-    class TrendingMediaViewHolder(private val binding: LayoutHomeTrendingBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(context: Context, trendingMedia: List<Media>, viewType: Int, width: Int, listener: HomeListener.TrendingMediaListener) {
+    inner class TrendingMediaViewHolder(private val binding: LayoutHomeTrendingBinding) : ViewHolder(binding) {
+        override fun bind(item: HomeItem, index: Int) {
             binding.apply {
-                trendingRightNowText.text = when (viewType) {
+                trendingRightNowText.text = when (item.viewType) {
                     HomeItem.VIEW_TYPE_TRENDING_ANIME -> context.getString(R.string.trending_anime_right_now)
                     HomeItem.VIEW_TYPE_TRENDING_MANGA -> context.getString(R.string.trending_manga_right_now)
                     else -> ""
                 }
 
-                if (trendingMedia.isNotEmpty()) {
-                    trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, trendingMedia, width, listener)
+                if (item.media.isNotEmpty()) {
+                    trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, item.media, width, listener.trendingMediaListener)
                     trendingProgressBar.visibility = View.GONE
                 } else {
                     trendingProgressBar.visibility = View.VISIBLE

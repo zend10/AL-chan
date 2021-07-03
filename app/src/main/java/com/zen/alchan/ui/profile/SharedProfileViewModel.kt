@@ -43,7 +43,7 @@ class SharedProfileViewModel(
     var userId = 0
 
     override fun loadData() {
-        load {
+        loadOnce {
             loadUserData()
         }
     }

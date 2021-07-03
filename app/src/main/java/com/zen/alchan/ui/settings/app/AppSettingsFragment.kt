@@ -11,17 +11,17 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentAppSettingsBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.common.BottomSheetListRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaType
 
 class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettingsViewModel>() {
 
     override val viewModel: AppSettingsViewModel by viewModel()
 
     private var appThemeAdapter: AppThemeRvAdapter? = null
-    private var allListPositionAdapter: AllListPositionRvAdapter? = null
-    private var namingAdapter: NamingRvAdapter? = null
-    private var pushNotificationsIntervalAdapter: PushNotificationsIntervalRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -38,67 +38,67 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 viewModel.getAppThemeItems()
             }
 
-            appSettingsCircularAvatarCheckBox.clicks {
+            appSettingsCircularAvatarCheckBox.setOnClickListener {
                 viewModel.updateUseCircularAvatarForProfile(appSettingsCircularAvatarCheckBox.isChecked)
             }
 
-            appSettingsRecentReviewsCheckBox.clicks {
+            appSettingsRecentReviewsCheckBox.setOnClickListener {
                 viewModel.updateShowRecentReviewsAtHome(appSettingsRecentReviewsCheckBox.isChecked)
             }
 
             appSettingsAllAnimeLayout.clicks {
-                viewModel.getAllAnimeListNumbers()
+                viewModel.getAllListPositionItems(MediaType.ANIME)
             }
 
             appSettingsAllMangaLayout.clicks {
-                viewModel.getAllMangaListNumbers()
+                viewModel.getAllListPositionItems(MediaType.MANGA)
             }
 
-            appSettingsRelativeDateCheckBox.clicks {
+            appSettingsRelativeDateCheckBox.setOnClickListener {
                 viewModel.updateUseRelativeDateForNextAiringEpisode(appSettingsRelativeDateCheckBox.isChecked)
             }
 
             appSettingsStaffNameLayout.clicks {
-                viewModel.getStaffNamings()
+                viewModel.getStaffNamingItems()
             }
 
             appSettingsJapaneseMediaLayout.clicks {
-                viewModel.getMediaNamings(Country.JAPAN)
+                viewModel.getMediaNamingItems(Country.JAPAN)
             }
 
             appSettingsKoreanMediaLayout.clicks {
-                viewModel.getMediaNamings(Country.SOUTH_KOREA)
+                viewModel.getMediaNamingItems(Country.SOUTH_KOREA)
             }
 
             appSettingsChineseMediaLayout.clicks {
-                viewModel.getMediaNamings(Country.CHINA)
+                viewModel.getMediaNamingItems(Country.CHINA)
             }
 
             appSettingsTaiwaneseMediaLayout.clicks {
-                viewModel.getMediaNamings(Country.TAIWAN)
+                viewModel.getMediaNamingItems(Country.TAIWAN)
             }
 
-            appSettingsAiringPushNotificationsCheckBox.clicks {
+            appSettingsAiringPushNotificationsCheckBox.setOnClickListener {
                 viewModel.updateSendAiringPushNotifications(appSettingsAiringPushNotificationsCheckBox.isChecked)
             }
 
-            appSettingsActivityPushNotificationsCheckBox.clicks {
+            appSettingsActivityPushNotificationsCheckBox.setOnClickListener {
                 viewModel.updateSendActivityPushNotifications(appSettingsActivityPushNotificationsCheckBox.isChecked)
             }
 
-            appSettingsForumPushNotificationsCheckBox.clicks {
+            appSettingsForumPushNotificationsCheckBox.setOnClickListener {
                 viewModel.updateSendForumPushNotifications(appSettingsForumPushNotificationsCheckBox.isChecked)
             }
 
-            appSettingsFollowsPushNotificationsCheckBox.clicks {
+            appSettingsFollowsPushNotificationsCheckBox.setOnClickListener {
                 viewModel.updateSendFollowsPushNotifications(appSettingsFollowsPushNotificationsCheckBox.isChecked)
             }
 
-            appSettingsRelationsPushNotificationsCheckBox.clicks {
+            appSettingsRelationsPushNotificationsCheckBox.setOnClickListener {
                 viewModel.updateSendRelationsPushNotifications(appSettingsRelationsPushNotificationsCheckBox.isChecked)
             }
 
-            appSettingsMergePushNotificationsCheckBox.clicks {
+            appSettingsMergePushNotificationsCheckBox.setOnClickListener {
                 viewModel.updateMergePushNotifications(appSettingsMergePushNotificationsCheckBox.isChecked)
             }
 
@@ -106,19 +106,19 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 viewModel.getPushNotificationsIntervals()
             }
 
-            appSettingsHighestQualityImageCheckBox.clicks {
+            appSettingsHighestQualityImageCheckBox.setOnClickListener {
                 viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
             }
 
-            appSettingsSocialFeatureCheckBox.clicks {
+            appSettingsSocialFeatureCheckBox.setOnClickListener {
                 viewModel.updateEnableSocialFeature(appSettingsSocialFeatureCheckBox.isChecked)
             }
 
-            appSettingsShowBioAutomaticallyCheckBox.clicks {
+            appSettingsShowBioAutomaticallyCheckBox.setOnClickListener {
                 viewModel.updateShowBioAutomatically(appSettingsShowBioAutomaticallyCheckBox.isChecked)
             }
 
-            appSettingsShowStatsChartAutomaticallyCheckBox.clicks {
+            appSettingsShowStatsChartAutomaticallyCheckBox.setOnClickListener {
                 viewModel.updateShowStatsChartAutomatically(appSettingsShowStatsChartAutomaticallyCheckBox.isChecked)
             }
 
@@ -158,139 +158,73 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.appTheme.subscribe {
                 binding.appSettingsSelectedThemeText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.useCircularAvatarForProfile.subscribe {
                 binding.appSettingsCircularAvatarCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.showRecentReviewsAtHome.subscribe {
                 binding.appSettingsRecentReviewsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.allAnimeListPosition.subscribe {
                 binding.appSettingsAllAnimeText.text = it.toString()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.allMangaListPosition.subscribe {
                 binding.appSettingsAllMangaText.text = it.toString()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.useRelativeDateForNextAiringEpisode.subscribe {
                 binding.appSettingsRelativeDateCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.japaneseStaffNaming.subscribe {
                 binding.appSettingsStaffNameText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.japaneseMediaNaming.subscribe {
                 binding.appSettingsJapaneseMediaText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.koreanMediaNaming.subscribe {
                 binding.appSettingsKoreanMediaText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.chineseMediaNaming.subscribe {
                 binding.appSettingsChineseMediaText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.taiwaneseMediaNaming.subscribe {
                 binding.appSettingsTaiwaneseMediaText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.sendAiringPushNotifications.subscribe {
                 binding.appSettingsAiringPushNotificationsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.sendActivityPushNotifications.subscribe {
                 binding.appSettingsActivityPushNotificationsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.sendForumPushNotifications.subscribe {
                 binding.appSettingsForumPushNotificationsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.sendFollowsPushNotifications.subscribe {
                 binding.appSettingsFollowsPushNotificationsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.sendRelationsPushNotifications.subscribe {
                 binding.appSettingsRelationsPushNotificationsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.mergePushNotifications.subscribe {
                 binding.appSettingsMergePushNotificationsCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.showPushNotificationsInterval.subscribe {
                 binding.appSettingsShowPushNotificationsEveryHourText.text = it.showUnit(requireContext(), R.plurals.hour)
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.useHighestQualityImage.subscribe {
                 binding.appSettingsHighestQualityImageCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.enableSocialFeature.subscribe {
                 binding.appSettingsSocialFeatureCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.showBioAutomatically.subscribe {
                 binding.appSettingsShowBioAutomaticallyCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.showStatsChartAutomatically.subscribe {
                 binding.appSettingsShowStatsChartAutomaticallyCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.appThemeItems.subscribe {
                 appThemeAdapter = AppThemeRvAdapter(requireContext(), it, object : AppThemeRvAdapter.AppThemeListener {
                     override fun getSelectedAppTheme(appTheme: AppTheme) {
@@ -300,79 +234,32 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 }).also { adapter ->
                     showListDialog(adapter)
                 }
-            }
-        )
-
-        disposables.add(
-            viewModel.allAnimeListItems.subscribe {
-                allListPositionAdapter = AllListPositionRvAdapter(requireContext(), it, object : AllListPositionRvAdapter.AllListPositionListener {
-                    override fun getSelectedIndex(index: Int) {
-                        dismissListDialog()
-                        viewModel.updateAllAnimeListPosition(index)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
+            },
+            viewModel.allAnimeListPositionItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateAllAnimeListPosition(data)
                 }
-            }
-        )
-
-        disposables.add(
-            viewModel.allMangaListItems.subscribe {
-                allListPositionAdapter = AllListPositionRvAdapter(requireContext(), it, object : AllListPositionRvAdapter.AllListPositionListener {
-                    override fun getSelectedIndex(index: Int) {
-                        dismissListDialog()
-                        viewModel.updateAllMangaListPosition(index)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
+            },
+            viewModel.allMangaListPositionItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateAllMangaListPosition(data)
                 }
-            }
-        )
-
-        disposables.add(
-            viewModel.staffNamings.subscribe {
-                namingAdapter = NamingRvAdapter(requireContext(), it, object : NamingRvAdapter.NamingListener {
-                    override fun getSelectedNaming(naming: Naming) {
-                        if (naming is StaffNaming) {
-                            dismissListDialog()
-                            viewModel.updateJapaneseStaffNaming(naming)
-                        }
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
+            },
+            viewModel.staffNamingItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateJapaneseStaffNaming(data)
                 }
-            }
-        )
-
-        disposables.add(
-            viewModel.mediaNamings.subscribe { (list, country) ->
-                namingAdapter = NamingRvAdapter(requireContext(), list, object : NamingRvAdapter.NamingListener {
-                    override fun getSelectedNaming(naming: Naming) {
-                        if (naming is MediaNaming) {
-                            dismissListDialog()
-                            viewModel.updateMediaNaming(naming, country)
-                        }
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
+            },
+            viewModel.mediaNamingItems.subscribe { (list, country) ->
+                showListDialog(list) { data, _ ->
+                    viewModel.updateMediaNaming(data, country)
                 }
-            }
-        )
-
-        disposables.add(
-            viewModel.pushNotificationsIntervals.subscribe {
-                pushNotificationsIntervalAdapter = PushNotificationsIntervalRvAdapter(requireContext(), it, object : PushNotificationsIntervalRvAdapter.PushNotificationsIntervalListener {
-                    override fun getSelectedInterval(interval: Int) {
-                        dismissListDialog()
-                        viewModel.updateShowPushNotificationsInterval(interval)
-                    }
-                }).also { adapter ->
-                    showListDialog(adapter)
+            },
+            viewModel.pushNotificationsIntervalItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateShowPushNotificationsInterval(data)
                 }
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.appSettingsSaved.subscribe {
                 restartApp()
             }
@@ -401,8 +288,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
     override fun onDestroyView() {
         super.onDestroyView()
         appThemeAdapter = null
-        namingAdapter = null
-        pushNotificationsIntervalAdapter = null
     }
 
     companion object {

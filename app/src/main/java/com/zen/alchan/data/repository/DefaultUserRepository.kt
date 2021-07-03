@@ -26,10 +26,6 @@ class DefaultUserRepository(
     private val userManager: UserManager
 ) : UserRepository {
 
-    private val _viewerAndAppSetting = BehaviorSubject.create<Pair<User, AppSetting>>()
-    override val viewerAndAppSetting: Observable<Pair<User, AppSetting>>
-        get() = _viewerAndAppSetting
-
     private val _animeListStyle = BehaviorSubject.createDefault(userManager.animeListStyle)
     private val animeListStyle: Observable<ListStyle>
         get() = _animeListStyle
@@ -38,40 +34,12 @@ class DefaultUserRepository(
     private val mangaListStyle: Observable<ListStyle>
         get() = _mangaListStyle
 
-    private var viewerDisposable: Disposable? = null
-
     override fun getIsLoggedInAsGuest(): Observable<Boolean> {
         return Observable.just(userManager.isLoggedInAsGuest)
     }
 
     override fun getIsAuthenticated(): Observable<Boolean> {
         return Observable.just(userManager.isAuthenticated)
-    }
-
-    override fun loadViewerAndAppSetting() {
-        if (viewerDisposable?.isDisposed == false)
-            return
-
-        viewerDisposable = userDataSource.getViewerQuery()
-            .subscribe(
-                {
-                    val newViewer = it.data?.convert()
-
-                    if (newViewer != null) {
-                        userManager.viewerData = SaveItem(newViewer)
-                        _viewerAndAppSetting.onNext(newViewer to userManager.appSetting)
-                    } else {
-                        throw Throwable()
-                    }
-
-                    viewerDisposable?.dispose()
-                },
-                {
-                    val savedViewer = userManager.viewerData?.data
-                    _viewerAndAppSetting.onNext((savedViewer ?: User.EMPTY_USER) to userManager.appSetting)
-                    viewerDisposable?.dispose()
-                }
-            )
     }
 
     override fun getViewer(source: Source?): Observable<User> {
@@ -95,7 +63,6 @@ class DefaultUserRepository(
 
                             if (newViewer != null) {
                                 userManager.viewerData = SaveItem(newViewer)
-                                _viewerAndAppSetting.onNext(newViewer to userManager.appSetting)
                                 emitter.onNext(newViewer)
                                 emitter.onComplete()
                             } else {
@@ -106,7 +73,6 @@ class DefaultUserRepository(
                             val savedViewer = userManager.viewerData?.data
 
                             if (savedViewer != null) {
-                                _viewerAndAppSetting.onNext(savedViewer to userManager.appSetting)
                                 emitter.onNext(savedViewer)
                                 emitter.onComplete()
                             } else {

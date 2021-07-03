@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.splash
 
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -14,7 +13,7 @@ class SplashViewModel(private val userRepository: UserRepository) : BaseViewMode
         get() = _isLoggedIn
 
     override fun loadData() {
-        load {
+        loadOnce {
             checkIsLoggedIn()
         }
     }

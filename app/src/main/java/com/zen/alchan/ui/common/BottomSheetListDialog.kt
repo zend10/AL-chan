@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.databinding.DialogBottomSheetListBinding
 import com.zen.alchan.ui.base.BaseDialogFragment
+import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class BottomSheetListDialog : BaseDialogFragment<DialogBottomSheetListBinding>() {
 
-    private var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
+    private var adapter: BaseRecyclerViewAdapter<*, *>? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -31,7 +32,7 @@ class BottomSheetListDialog : BaseDialogFragment<DialogBottomSheetListBinding>()
     }
 
     companion object {
-        fun newInstance(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) =
+        fun newInstance(adapter: BaseRecyclerViewAdapter<*, *>) =
             BottomSheetListDialog().apply {
                 this.adapter = adapter
             }

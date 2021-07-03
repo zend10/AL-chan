@@ -15,26 +15,22 @@ class StaffCharacterNamingRvAdapter(
     private val context: Context,
     list: List<UserStaffNameLanguage>,
     private val listener: StaffCharacterNamingListener
-) : BaseRecyclerViewAdapter<UserStaffNameLanguage>(list) {
+) : BaseRecyclerViewAdapter<UserStaffNameLanguage, ListTextBinding>(list) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) holder.bind(list[position])
-    }
-
-    inner class ViewHolder(private val binding: ListTextBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(userStaffNameLanguage: UserStaffNameLanguage) {
-            binding.itemText.text = when (userStaffNameLanguage) {
+    inner class ItemViewHolder(private val binding: ListTextBinding) : ViewHolder(binding) {
+        override fun bind(item: UserStaffNameLanguage, index: Int) {
+            binding.itemText.text = when (item) {
                 UserStaffNameLanguage.ROMAJI_WESTERN -> context.getString(R.string.use_staff_character_romaji_western_name_format)
                 UserStaffNameLanguage.ROMAJI -> context.getString(R.string.use_staff_character_romaji_name_format)
                 UserStaffNameLanguage.NATIVE -> context.getString(R.string.use_staff_character_native_name_format)
-                else -> userStaffNameLanguage.name.convertFromSnakeCase()
+                else -> item.name.convertFromSnakeCase()
             }
-            binding.itemLayout.clicks { listener.getSelectedNaming(userStaffNameLanguage) }
+            binding.itemLayout.clicks { listener.getSelectedNaming(item) }
         }
     }
 
