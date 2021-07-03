@@ -7,7 +7,7 @@ import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.SaveItem
-import com.zen.alchan.helper.utils.StorageException
+import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
 
 class DefaultContentRepository(
@@ -40,6 +40,6 @@ class DefaultContentRepository(
 
     private fun getHomeDataFromCache(): Observable<HomeData> {
         val savedItem = contentManager.homeData?.data
-        return if (savedItem != null) Observable.just(savedItem) else Observable.error(StorageException())
+        return if (savedItem != null) Observable.just(savedItem) else Observable.error(NotInStorageException())
     }
 }

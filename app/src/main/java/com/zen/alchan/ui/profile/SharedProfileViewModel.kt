@@ -6,7 +6,7 @@ import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
-import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -69,7 +69,7 @@ class SharedProfileViewModel(
                         },
                         {
                             _loading.onNext(false)
-                            _error.onNext(it.sendMessage())
+                            _error.onNext(it.getStringResource())
                             state = State.ERROR
                         }
                     )
@@ -105,7 +105,7 @@ class SharedProfileViewModel(
                         state = State.LOADED
                     },
                     {
-                        _error.onNext(it.sendMessage())
+                        _error.onNext(it.getStringResource())
                         state = State.ERROR
                     }
                 )

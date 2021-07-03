@@ -6,10 +6,8 @@ import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserOptions
 import com.zen.alchan.helper.enums.ActivityMergeTime
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.applyScheduler
-import com.zen.alchan.helper.extensions.sendMessage
-import com.zen.alchan.helper.extensions.showUnit
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -97,7 +95,7 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
                             _success.onNext(R.string.settings_saved)
                         },
                         {
-                            _error.onNext(it.sendMessage())
+                            _error.onNext(it.getStringResource())
                         }
                     )
             )

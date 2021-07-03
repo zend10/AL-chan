@@ -1,9 +1,9 @@
 package com.zen.alchan.helper.extensions
 
 import com.apollographql.apollo.exception.ApolloHttpException
-import com.zen.alchan.helper.utils.StorageException
+import com.zen.alchan.helper.utils.NotInStorageException
 
-fun Throwable.sendMessage(): Int {
+fun Throwable.getStringResource(): Int {
     return when(this) {
         is ApolloHttpException -> {
             when (this.code()) {
@@ -14,7 +14,7 @@ fun Throwable.sendMessage(): Int {
                 else -> 4
             }
         }
-        is StorageException -> 5
+        is NotInStorageException -> 5
         else -> 6
     }
 }

@@ -11,11 +11,9 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.SaveItem
-import com.zen.alchan.helper.utils.StorageException
+import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import type.MediaType
 import type.UserStaffNameLanguage
 import type.UserStatisticsSort
@@ -51,7 +49,7 @@ class DefaultUserRepository(
                         emitter.onNext(savedViewer)
                         emitter.onComplete()
                     } else {
-                        emitter.onError(StorageException())
+                        emitter.onError(NotInStorageException())
                     }
                 }
             }
@@ -76,7 +74,7 @@ class DefaultUserRepository(
                                 emitter.onNext(savedViewer)
                                 emitter.onComplete()
                             } else {
-                                emitter.onError(StorageException())
+                                emitter.onError(NotInStorageException())
                             }
                         }
                     )
@@ -133,7 +131,7 @@ class DefaultUserRepository(
                 it.onNext(savedItem)
                 it.onComplete()
             } else {
-                it.onError(StorageException())
+                it.onError(NotInStorageException())
             }
         }
     }

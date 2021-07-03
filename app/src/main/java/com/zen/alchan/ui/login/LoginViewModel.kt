@@ -1,9 +1,8 @@
 package com.zen.alchan.ui.login
 
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.extensions.applyScheduler
-import com.zen.alchan.helper.extensions.sendMessage
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -33,7 +32,7 @@ class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel
                         _loginTrigger.onNext(Unit)
                     },
                     {
-                        _error.onNext(it.sendMessage())
+                        _error.onNext(it.getStringResource())
                     }
                 )
         )
