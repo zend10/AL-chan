@@ -17,10 +17,6 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
 
     override val viewModel: AniListSettingsViewModel by viewModel()
 
-    private var mediaTitleLanguageAdapter: MediaTitleLanguageRvAdapter? = null
-    private var staffCharacterNamingAdapter: StaffCharacterNamingRvAdapter? = null
-    private var activityMergeTimeAdapter: ActivityMergeTimeRvAdapter? = null
-
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -33,23 +29,23 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.anilist_settings))
 
             aniListSettingsSelectedLanguageLayout.clicks {
-                viewModel.getMediaTitleLanguages()
+                viewModel.loadUserTitleLanguageItems()
             }
 
             aniListSettingsSelectedNamingLayout.clicks {
-                viewModel.getStaffCharacterNamings()
+                viewModel.loadUserStaffNameLanguageItems()
             }
 
             aniListSettingsSelectedMergeTimeLayout.clicks {
-                viewModel.getActivityMergeTimes()
+                viewModel.loadActivityMergeTimeItems()
             }
 
-            aniListSettingsShowAdultContentCheckBox.clicks {
-                viewModel.updateShowAdultContent(aniListSettingsShowAdultContentCheckBox.isChecked)
+            aniListSettingsShowAdultContentCheckBox.setOnClickListener {
+                viewModel.updateDisplayAdultContent(aniListSettingsShowAdultContentCheckBox.isChecked)
             }
 
-            aniListSettingsReceiveAiringNotificationsCheckBox.clicks {
-                viewModel.updateReceiveAiringNotifications(aniListSettingsReceiveAiringNotificationsCheckBox.isChecked)
+            aniListSettingsReceiveAiringNotificationsCheckBox.setOnClickListener {
+                viewModel.updateAiringNotifications(aniListSettingsReceiveAiringNotificationsCheckBox.isChecked)
             }
 
             aniListSettingsSaveButton.clicks {
@@ -64,94 +60,46 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.loading.subscribe {
                 binding.loadingLayout.loadingLayout.show(it)
-            }
-        )
-
-        disposables.add(
+            },
             Observable.merge(viewModel.success, viewModel.error).subscribe {
                 dialog.showToast(it)
-            }
-        )
-
-        disposables.add(
-            viewModel.mediaTitleLanguage.subscribe {
+            },
+            viewModel.titleLanguage.subscribe {
                 binding.aniListSettingsSelectedLanguageText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
-            viewModel.staffCharacterNaming.subscribe {
+            },
+            viewModel.staffNameLanguage.subscribe {
                 binding.aniListSettingsSelectedNamingText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-        disposables.add(
-            viewModel.progressActivityMergeTime.subscribe {
+            },
+            viewModel.activityMergeTime.subscribe {
                 binding.aniListSettingsSelectedMergeTimeText.text = it.getString(requireContext())
-            }
-        )
-
-        disposables.add(
-            viewModel.showAdultContent.subscribe {
+            },
+            viewModel.displayAdultContent.subscribe {
                 binding.aniListSettingsShowAdultContentCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
-            viewModel.receiveAiringNotifications.subscribe {
+            },
+            viewModel.airingNotifications.subscribe {
                 binding.aniListSettingsReceiveAiringNotificationsCheckBox.isChecked = it
+            },
+            viewModel.userTitleLanguageItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateTitleLanguage(data)
+                }
+            },
+            viewModel.userStaffNameLanguageItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateStaffNameLanguage(data)
+                }
+            },
+            viewModel.activityMergeTimeItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateActivityMergeTime(data.minute)
+                }
             }
         )
-
-//        disposables.add(
-//            viewModel.mediaTitleLanguages.subscribe {
-//                mediaTitleLanguageAdapter = MediaTitleLanguageRvAdapter(requireContext(), it, object : MediaTitleLanguageRvAdapter.MediaTitleLanguageListener {
-//                    override fun getSelectedLanguage(userTitleLanguage: UserTitleLanguage) {
-//                        dismissListDialog()
-//                        viewModel.updateMediaTitleLanguage(userTitleLanguage)
-//                    }
-//                }).also { adapter ->
-//                    showListDialog(adapter)
-//                }
-//            }
-//        )
-//
-//        disposables.add(
-//            viewModel.staffCharacterNameLanguages.subscribe {
-//                staffCharacterNamingAdapter = StaffCharacterNamingRvAdapter(requireContext(), it, object : StaffCharacterNamingRvAdapter.StaffCharacterNamingListener {
-//                    override fun getSelectedNaming(userStaffNameLanguage: UserStaffNameLanguage) {
-//                        dismissListDialog()
-//                        viewModel.updateStaffCharacterNaming(userStaffNameLanguage)
-//                    }
-//                }).also { adapter ->
-//                    showListDialog(adapter)
-//                }
-//            }
-//        )
-//
-//        disposables.add(
-//            viewModel.activityMergeTimes.subscribe {
-//                activityMergeTimeAdapter = ActivityMergeTimeRvAdapter(requireContext(), it, object : ActivityMergeTimeRvAdapter.ActivityMergeTimeListener {
-//                    override fun passSelectedMinute(minute: Int) {
-//                        dismissListDialog()
-//                        viewModel.updateProgressActivityMergeTime(minute)
-//                    }
-//                }).also { adapter ->
-//                    showListDialog(adapter)
-//                }
-//            }
-//        )
 
         viewModel.loadData()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mediaTitleLanguageAdapter = null
-        activityMergeTimeAdapter = null
     }
 
     companion object {

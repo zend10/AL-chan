@@ -152,8 +152,15 @@
     <string name="five_star">5 Star (3/5)</string>
     <string name="three_point_smiley">3 Point Smiley :)</string>
     <string name="type_here">Type here</string>
+    <string name="minute">minute</string>
+    <string name="minutes">minutes</string>
     <string name="hour">hour</string>
     <string name="hours">hours</string>
+    <string name="day">day</string>
+    <string name="days">days</string>
+    <string name="week">week</string>
+    <string name="weeks">weeks</string>
+
 
 
     <plurals name="minute">
