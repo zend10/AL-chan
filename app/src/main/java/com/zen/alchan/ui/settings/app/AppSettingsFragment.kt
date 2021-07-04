@@ -261,6 +261,7 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 }
             },
             viewModel.appSettingsSaved.subscribe {
+                // TODO: need to handle the navigation
                 restartApp()
             }
         )

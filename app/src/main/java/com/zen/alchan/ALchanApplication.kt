@@ -27,6 +27,8 @@ import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
+import com.zen.alchan.ui.reorder.ReorderViewModel
+import com.zen.alchan.ui.reorder.SharedReorderViewModel
 import com.zen.alchan.ui.review.ReviewViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -108,6 +110,9 @@ class ALchanApplication : Application() {
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }
+
+        viewModel { ReorderViewModel() }
+        viewModel { SharedReorderViewModel() }
     }
 
     override fun onCreate() {

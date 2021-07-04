@@ -26,12 +26,12 @@ class AppThemeRvAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_HEADER -> {
-                val view = LayoutHeaderBinding.inflate(inflater, parent, false)
-                HeaderViewHolder(view)
+                val binding = LayoutHeaderBinding.inflate(inflater, parent, false)
+                HeaderViewHolder(binding)
             }
             else -> {
-                val view = ListAppThemeBinding.inflate(inflater, parent, false)
-                AppThemeViewHolder(view)
+                val binding = ListAppThemeBinding.inflate(inflater, parent, false)
+                AppThemeViewHolder(binding)
             }
         }
     }

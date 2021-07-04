@@ -19,6 +19,8 @@ interface NavigationManager {
     fun navigateToAccountSettings()
     fun navigateToAbout()
 
+    fun navigateToReorder()
+
     fun openWebView(url: String)
     fun openWebView(url: Url)
 

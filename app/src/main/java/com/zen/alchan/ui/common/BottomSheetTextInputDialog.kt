@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.common
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Handler
 import android.text.InputFilter
 import android.view.LayoutInflater
@@ -51,6 +52,11 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
 
     override fun setUpObserver() {
         // do nothing
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        inputMethodManager?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 
     override fun onDestroyView() {

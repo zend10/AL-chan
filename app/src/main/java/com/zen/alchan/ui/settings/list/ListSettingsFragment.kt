@@ -11,15 +11,21 @@ import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.common.ChipRvAdapter
+import com.zen.alchan.ui.reorder.SharedReorderViewModel
 import io.reactivex.Observable
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaType
 import type.ScoreFormat
 
 class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSettingsViewModel>() {
 
     override val viewModel: ListSettingsViewModel by viewModel()
+    private val sharedViewModel by sharedViewModel<SharedReorderViewModel>()
 
-    private var advancedScoringCriteriaAdapter: ChipRvAdapter? = null
+    private var advancedScoringAdapter: ChipRvAdapter? = null
+    private var animeCustomListsAdapter: ChipRvAdapter? = null
+    private var mangaCustomListsAdapter: ChipRvAdapter? = null
 
     private var textInputSetting = TextInputSetting(InputType.TYPE_TEXT_FLAG_CAP_WORDS, true, 30)
 
@@ -34,7 +40,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.list_settings))
 
-            advancedScoringCriteriaAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+            advancedScoringAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
                 override fun getSelectedItem(item: String, index: Int) {
                     showAdvancedScoringDialog(item, index)
                 }
@@ -43,7 +49,29 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                     viewModel.deleteAdvancedScoringCriteria(index)
                 }
             })
-            listSettingsAdvancedScoringCriteriaRecyclerView.adapter = advancedScoringCriteriaAdapter
+            listSettingsAdvancedScoringCriteriaRecyclerView.adapter = advancedScoringAdapter
+
+            animeCustomListsAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+                override fun getSelectedItem(item: String, index: Int) {
+                    showCustomListsDialog(MediaType.ANIME, item, index)
+                }
+
+                override fun deleteItem(index: Int) {
+                    viewModel.deleteCustomLists(MediaType.ANIME, index)
+                }
+            })
+            listSettingsCustomAnimeListsRecyclerView.adapter = animeCustomListsAdapter
+
+            mangaCustomListsAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+                override fun getSelectedItem(item: String, index: Int) {
+                    showCustomListsDialog(MediaType.MANGA, item, index)
+                }
+
+                override fun deleteItem(index: Int) {
+                    viewModel.deleteCustomLists(MediaType.MANGA, index)
+                }
+            })
+            listSettingsCustomMangaListsRecyclerView.adapter = mangaCustomListsAdapter
 
             listSettingsScoringSystemLayout.clicks {
                 viewModel.loadScoreFormatItems()
@@ -58,7 +86,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsDefaultListOrderLayout.clicks {
-                viewModel.getListOrders()
+                viewModel.loadListOrderItems()
             }
 
             listSettingsSplitAnimeCompletedCheckBox.setOnClickListener {
@@ -70,11 +98,11 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsCustomAnimeListsAddMoreText.clicks {
-
+                showCustomListsDialog(MediaType.ANIME, "")
             }
 
             listSettingsCustomMangaListsAddMoreText.clicks {
-
+                showCustomListsDialog(MediaType.MANGA, "")
             }
 
             listSettingsAnimeSectionOrderResetText.clicks {
@@ -82,7 +110,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsAnimeSectionOrderReorderText.clicks {
-
+                viewModel.loadSectionOrderItems(MediaType.ANIME)
             }
 
             listSettingsMangaSectionOrderResetText.clicks {
@@ -90,12 +118,13 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsMangaSectionOrderReorderText.clicks {
-
+                viewModel.loadSectionOrderItems(MediaType.MANGA)
             }
 
             listSettingsSaveButton.clicks {
 
             }
+
         }
     }
 
@@ -119,11 +148,27 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 binding.listSettingsUseAdvancedScoringCheckBox.isChecked = it
             },
             viewModel.advancedScoring.subscribe {
-                advancedScoringCriteriaAdapter?.updateData(it)
+                advancedScoringAdapter?.updateData(it)
             },
             viewModel.rowOrder.subscribe {
                 binding.listSettingsDefaultListOrderText.text = getString(viewModel.getListOrderStringResource(it))
             },
+            viewModel.splitCompletedAnimeSectionByFormat.subscribe {
+                binding.listSettingsSplitAnimeCompletedCheckBox.isChecked = it
+            },
+            viewModel.splitCompletedMangaSectionByFormat.subscribe {
+                binding.listSettingsSplitMangaCompletedCheckBox.isChecked = it
+            },
+            viewModel.animeCustomLists.subscribe {
+                animeCustomListsAdapter?.updateData(it)
+            },
+            viewModel.mangaCustomLists.subscribe {
+                mangaCustomListsAdapter?.updateData(it)
+            },
+
+
+
+
             viewModel.scoreFormatItems.subscribe {
                 showListDialog(it) { data, _ ->
                     viewModel.updateScoreFormat(data)
@@ -142,6 +187,26 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 showListDialog(it) { data, _ ->
                     viewModel.updateRowOrder(data)
                 }
+            },
+            viewModel.animeCustomListsNoItemTextVisibility.subscribe {
+                binding.listSettingsCustomAnimeListsNoItemText.show(it)
+            },
+            viewModel.mangaCustomListsNoItemTextVisibility.subscribe {
+                binding.listSettingsCustomMangaListsNoItemText.show(it)
+            },
+            viewModel.animeSectionOrderItems.subscribe {
+                sharedViewModel.updateUnorderedList(it, SharedReorderViewModel.ReorderList.ANIME_SECTION_ORDER)
+                navigation.navigateToReorder()
+            },
+            viewModel.mangaSectionOrderItems.subscribe {
+                sharedViewModel.updateUnorderedList(it, SharedReorderViewModel.ReorderList.MANGA_SECTION_ORDER)
+                navigation.navigateToReorder()
+            }
+        )
+
+        sharedDisposables.addAll(
+            sharedViewModel.orderedList.subscribe {
+
             }
         )
 
@@ -151,10 +216,28 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
     private fun showAdvancedScoringDialog(currentText: String, index: Int? = null) {
         showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
             override fun getNewText(newText: String) {
-                if (index != null)
-                    viewModel.editAdvancedScoring(newText, index)
-                else
-                    viewModel.addAdvancedScoring(newText)
+                if (newText.isNotBlank()) {
+                    if (index != null)
+                        viewModel.editAdvancedScoring(newText, index)
+                    else
+                        viewModel.addAdvancedScoring(newText)
+                }
+
+
+                dismissTextInputDialog()
+            }
+        })
+    }
+
+    private fun showCustomListsDialog(mediaType: MediaType, currentText: String, index: Int? = null) {
+        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
+            override fun getNewText(newText: String) {
+                if (newText.isNotBlank()) {
+                    if (index != null)
+                        viewModel.editCustomLists(mediaType, newText, index)
+                    else
+                        viewModel.addCustomLists(mediaType, newText)
+                }
 
                 dismissTextInputDialog()
             }
@@ -163,7 +246,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
     override fun onDestroyView() {
         super.onDestroyView()
-        advancedScoringCriteriaAdapter = null
+        advancedScoringAdapter = null
     }
 
     companion object {

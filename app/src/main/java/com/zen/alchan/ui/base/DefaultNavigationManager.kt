@@ -13,6 +13,7 @@ import com.zen.alchan.ui.browse.BrowseFragment
 import com.zen.alchan.ui.landing.LandingFragment
 import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
+import com.zen.alchan.ui.reorder.ReorderFragment
 import com.zen.alchan.ui.settings.SettingsFragment
 import com.zen.alchan.ui.settings.anilist.AniListSettingsFragment
 import com.zen.alchan.ui.settings.app.AppSettingsFragment
@@ -81,6 +82,10 @@ class DefaultNavigationManager(
 
     }
 
+    override fun navigateToReorder() {
+        stackPage(ReorderFragment.newInstance())
+    }
+
     override fun openWebView(url: String) {
         launchWebView(Uri.parse(url))
     }
@@ -103,6 +108,14 @@ class DefaultNavigationManager(
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         if (!skipBackStack)
             fragmentTransaction.addToBackStack(fragment.toString())
+        fragmentTransaction.commit()
+    }
+
+    private fun stackPage(fragment: Fragment) {
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(layout.id, fragment)
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
     }
 
