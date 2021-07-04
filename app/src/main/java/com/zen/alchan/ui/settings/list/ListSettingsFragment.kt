@@ -19,9 +19,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
     override val viewModel: ListSettingsViewModel by viewModel()
 
-    private var scoreFormatAdapter: ScoreFormatRvAdapter? = null
     private var advancedScoringCriteriaAdapter: ChipRvAdapter? = null
-    private var listOrderAdapter: ListOrderRvAdapter? = null
 
     private var textInputSetting = TextInputSetting(InputType.TYPE_TEXT_FLAG_CAP_WORDS, true, 30)
 
@@ -48,11 +46,11 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             listSettingsAdvancedScoringCriteriaRecyclerView.adapter = advancedScoringCriteriaAdapter
 
             listSettingsScoringSystemLayout.clicks {
-                viewModel.getScoreFormats()
+                viewModel.loadScoreFormatItems()
             }
 
             listSettingsUseAdvancedScoringCheckBox.setOnClickListener {
-                viewModel.updateUseAdvancedScoring(listSettingsUseAdvancedScoringCheckBox.isChecked)
+                viewModel.updateAdvancedScoringEnabled(listSettingsUseAdvancedScoringCheckBox.isChecked)
             }
 
             listSettingsAdvancedScoringCriteriaAddMoreText.clicks {
@@ -107,111 +105,65 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.loading.subscribe {
                 binding.loadingLayout.loadingLayout.show(it)
-            }
-        )
-
-        disposables.add(
+            },
             Observable.merge(viewModel.success, viewModel.error).subscribe {
                 dialog.showToast(it)
-            }
-        )
-
-        disposables.add(
-            viewModel.scoringSystem.subscribe {
-                binding.listSettingsScoringSystemText.text = it.getString(requireContext())
-            }
-        )
-
-        disposables.add(
-            viewModel.useAdvancedScoring.subscribe {
+            },
+            viewModel.scoreFormat.subscribe {
+                binding.listSettingsScoringSystemText.text = getString(viewModel.getScoreFormatStringResource(it))
+            },
+            viewModel.advancedScoringEnabled.subscribe {
                 binding.listSettingsUseAdvancedScoringCheckBox.isChecked = it
-            }
-        )
-
-        disposables.add(
-            viewModel.advancedScoringCriteria.subscribe {
+            },
+            viewModel.advancedScoring.subscribe {
                 advancedScoringCriteriaAdapter?.updateData(it)
-
-            }
-        )
-
-        disposables.add(
-            viewModel.defaultListOrder.subscribe {
-                binding.listSettingsDefaultListOrderText.text = it.name.convertFromSnakeCase()
-            }
-        )
-
-
-
-
-//        disposables.add(
-//            viewModel.scoreFormats.subscribe {
-//                scoreFormatAdapter = ScoreFormatRvAdapter(requireContext(), it, object : ScoreFormatRvAdapter.ScoreFormatListener {
-//                    override fun getSelectedScoreFormat(scoreFormat: ScoreFormat) {
-//                        dismissListDialog()
-//                        viewModel.updateScoringSystem(scoreFormat)
-//                    }
-//                }).also { adapter ->
-//                    showListDialog(adapter)
-//                }
-//            }
-//        )
-
-        disposables.add(
+            },
+            viewModel.rowOrder.subscribe {
+                binding.listSettingsDefaultListOrderText.text = getString(viewModel.getListOrderStringResource(it))
+            },
+            viewModel.scoreFormatItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateScoreFormat(data)
+                }
+            },
             viewModel.useAdvancedScoringVisibility.subscribe {
                 binding.listSettingsUseAdvancedScoringLayout.show(it)
-            }
-        )
-
-        disposables.add(
-            viewModel.advancedScoringCriteriaVisibility.subscribe {
+            },
+            viewModel.advancedScoringVisibility.subscribe {
                 binding.listSettingsAdvancedScoringCriteriaLayout.show(it)
-            }
-        )
-
-        disposables.add(
+            },
             viewModel.advancedScoringNoItemTextVisibility.subscribe {
                 binding.listSettingsAdvancedScoringCriteriaNoItemText.show(it)
+            },
+            viewModel.listOrderItems.subscribe {
+                showListDialog(it) { data, _ ->
+                    viewModel.updateRowOrder(data)
+                }
             }
         )
-
-//        disposables.add(
-//            viewModel.listOrders.subscribe {
-//                listOrderAdapter = ListOrderRvAdapter(requireContext(), it, object : ListOrderRvAdapter.ListOrderListener {
-//                    override fun getSelectedListOrder(listOrder: ListOrder) {
-//                        dismissListDialog()
-//                        viewModel.updateDefaultListOrder(listOrder)
-//                    }
-//                }).also { adapter ->
-//                    showListDialog(adapter)
-//                }
-//            }
-//        )
 
         viewModel.loadData()
     }
 
     private fun showAdvancedScoringDialog(currentText: String, index: Int? = null) {
-//        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
-//            override fun getNewText(newText: String) {
-//                if (index != null)
-//                    viewModel.editAdvancedScoringCriteria(newText, index)
-//                else
-//                    viewModel.addAdvancedScoringCriteria(newText)
-//
-//                dismissTextInputDialog()
-//            }
-//        })
+        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
+            override fun getNewText(newText: String) {
+                if (index != null)
+                    viewModel.editAdvancedScoring(newText, index)
+                else
+                    viewModel.addAdvancedScoring(newText)
+
+                dismissTextInputDialog()
+            }
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        scoreFormatAdapter = null
         advancedScoringCriteriaAdapter = null
-        listOrderAdapter = null
     }
 
     companion object {

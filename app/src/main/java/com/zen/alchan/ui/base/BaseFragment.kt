@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.ListItem
@@ -134,27 +132,37 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
             }
         })
         bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
+        bottomSheetListDialog?.dialog?.setOnCancelListener {
+            bottomSheetListDialog = null
+        }
         bottomSheetListDialog?.show(childFragmentManager, null)
     }
 
     protected fun showListDialog(adapter: BaseRecyclerViewAdapter<*, *>) {
         bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
+        bottomSheetListDialog?.dialog?.setOnCancelListener {
+            bottomSheetListDialog = null
+        }
         bottomSheetListDialog?.show(childFragmentManager, null)
     }
 
     protected fun dismissListDialog() {
         bottomSheetListDialog?.dismiss()
+        bottomSheetListDialog = null
     }
 
-//
-//    protected fun showTextInputDialog(currentText: String, textInputSetting: TextInputSetting, listener: BottomSheetTextInputDialog.BottomSheetTextInputListener) {
-//        bottomSheetTextInputDialog = BottomSheetTextInputDialog.newInstance(currentText, textInputSetting, listener)
-//        bottomSheetTextInputDialog?.show(childFragmentManager, null)
-//    }
-//
-//    protected fun dismissTextInputDialog() {
-//        bottomSheetTextInputDialog?.dismiss()
-//    }
+    protected fun showTextInputDialog(currentText: String, textInputSetting: TextInputSetting, listener: BottomSheetTextInputDialog.BottomSheetTextInputListener) {
+        bottomSheetTextInputDialog = BottomSheetTextInputDialog.newInstance(currentText, textInputSetting, listener)
+        bottomSheetTextInputDialog?.dialog?.setOnCancelListener {
+            bottomSheetTextInputDialog = null
+        }
+        bottomSheetTextInputDialog?.show(childFragmentManager, null)
+    }
+
+    protected fun dismissTextInputDialog() {
+        bottomSheetTextInputDialog?.dismiss()
+        bottomSheetTextInputDialog = null
+    }
 
     protected fun restartApp() {
         val intent = Intent(rootActivity, LaunchActivity::class.java)

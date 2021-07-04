@@ -1,11 +1,13 @@
 package com.zen.alchan.ui.settings.list
 
+import com.zen.alchan.R
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -14,47 +16,53 @@ import type.ScoreFormat
 
 class ListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
-    private val _scoringSystem = BehaviorSubject.createDefault(ScoreFormat.POINT_100)
-    val scoringSystem: Observable<ScoreFormat>
-        get() = _scoringSystem
+    private val _scoreFormat = BehaviorSubject.createDefault(ScoreFormat.POINT_100)
+    val scoreFormat: Observable<ScoreFormat>
+        get() = _scoreFormat
 
-    private val _useAdvancedScoring = BehaviorSubject.createDefault(false)
-    val useAdvancedScoring: Observable<Boolean>
-        get() = _useAdvancedScoring
+    private val _advancedScoringEnabled = BehaviorSubject.createDefault(false)
+    val advancedScoringEnabled: Observable<Boolean>
+        get() = _advancedScoringEnabled
 
-    private val _advancedScoringCriteria = BehaviorSubject.createDefault<List<String>>(listOf())
-    val advancedScoringCriteria: Observable<List<String>>
-        get() = _advancedScoringCriteria
+    private val _advancedScoring = BehaviorSubject.createDefault<List<String>>(listOf())
+    val advancedScoring: Observable<List<String>>
+        get() = _advancedScoring
 
-    private val _defaultListOrder = BehaviorSubject.createDefault(ListOrder.TITLE)
-    val defaultListOrder: Observable<ListOrder>
-        get() = _defaultListOrder
+    private val _rowOrder = BehaviorSubject.createDefault(ListOrder.TITLE)
+    val rowOrder: Observable<ListOrder>
+        get() = _rowOrder
 
     private val _animeCustomLists = BehaviorSubject.createDefault<List<String>>(listOf())
     val animeCustomLists: Observable<List<String>>
         get() = _animeCustomLists
 
+    private val _mangaCustomLists = BehaviorSubject.createDefault<List<String>>(listOf())
+    val mangaCustomLists: Observable<List<String>>
+        get() = _mangaCustomLists
 
 
-    private val _scoreFormats = PublishSubject.create<List<ScoreFormat>>()
-    val scoreFormats: Observable<List<ScoreFormat>>
-        get() = _scoreFormats
+
+
+
+    private val _scoreFormatItems = PublishSubject.create<List<ListItem<ScoreFormat>>>()
+    val scoreFormatItems: Observable<List<ListItem<ScoreFormat>>>
+        get() = _scoreFormatItems
 
     private val _useAdvancedScoringVisibility = BehaviorSubject.createDefault(false)
     val useAdvancedScoringVisibility: Observable<Boolean>
         get() = _useAdvancedScoringVisibility
 
-    private val _advancedScoringCriteriaVisibility = BehaviorSubject.createDefault(false)
-    val advancedScoringCriteriaVisibility: Observable<Boolean>
-        get() = _advancedScoringCriteriaVisibility
+    private val _advancedScoringVisibility = BehaviorSubject.createDefault(false)
+    val advancedScoringVisibility: Observable<Boolean>
+        get() = _advancedScoringVisibility
 
     private val _advancedScoringNoItemTextVisibility = BehaviorSubject.createDefault(false)
     val advancedScoringNoItemTextVisibility: Observable<Boolean>
         get() = _advancedScoringNoItemTextVisibility
 
-    private val _listOrders = PublishSubject.create<List<ListOrder>>()
-    val listOrders: Observable<List<ListOrder>>
-        get() = _listOrders
+    private val _listOrderItems = PublishSubject.create<List<ListItem<ListOrder>>>()
+    val listOrderItems: Observable<List<ListItem<ListOrder>>>
+        get() = _listOrderItems
 
     private var viewer: User? = null
     private var currentListsSettings: MediaListOptions? = null
@@ -72,108 +80,146 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     val mediaListOptions = it.mediaListOptions
                     currentListsSettings = mediaListOptions
 
-                    updateScoringSystem(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
-                    updateUseAdvancedScoring(mediaListOptions.animeList.advancedScoringEnabled)
-                    updateAdvancedScoringCriteria(mediaListOptions.animeList.advancedScoring)
+                    updateScoreFormat(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
+                    updateAdvancedScoringEnabled(mediaListOptions.animeList.advancedScoringEnabled)
+                    updateAdvancedScoring(mediaListOptions.animeList.advancedScoring)
 
                     try {
                         val listOrder = ListOrder.valueOf(mediaListOptions.rowOrder)
-                        updateDefaultListOrder(listOrder)
+                        updateRowOrder(listOrder)
                     } catch (e: IllegalArgumentException) {
-                        updateDefaultListOrder(ListOrder.TITLE)
+                        updateRowOrder(ListOrder.TITLE)
                     }
+
+                    updateAnimeCustomLists(mediaListOptions.animeList.customLists)
+                    updateMangaCustomLists(mediaListOptions.mangaList.customLists)
 
                     state = State.LOADED
                 }
         )
     }
 
-    fun updateScoringSystem(newScoringSystem: ScoreFormat) {
-        currentListsSettings?.scoreFormat = newScoringSystem
-        _scoringSystem.onNext(newScoringSystem)
+    fun updateScoreFormat(newScoreFormat: ScoreFormat) {
+        currentListsSettings?.scoreFormat = newScoreFormat
+        _scoreFormat.onNext(newScoreFormat)
 
-        when (newScoringSystem) {
+        when (newScoreFormat) {
             ScoreFormat.POINT_100, ScoreFormat.POINT_10_DECIMAL -> {
                 _useAdvancedScoringVisibility.onNext(true)
             }
             else -> {
                 _useAdvancedScoringVisibility.onNext(false)
-                _useAdvancedScoring.onNext(false)
+                _advancedScoringEnabled.onNext(false)
             }
         }
 
-        handleAdvancedScoringCriteriaVisibility()
+        handleAdvancedScoringVisibility()
     }
 
-    fun updateUseAdvancedScoring(shouldUseAdvancedScoring: Boolean) {
+    fun updateAdvancedScoringEnabled(shouldUseAdvancedScoring: Boolean) {
         currentListsSettings?.animeList?.advancedScoringEnabled = shouldUseAdvancedScoring
         currentListsSettings?.mangaList?.advancedScoringEnabled = shouldUseAdvancedScoring
-        _useAdvancedScoring.onNext(shouldUseAdvancedScoring)
+        _advancedScoringEnabled.onNext(shouldUseAdvancedScoring)
 
-        handleAdvancedScoringCriteriaVisibility()
+        handleAdvancedScoringVisibility()
     }
 
-    fun updateAdvancedScoringCriteria(newAdvancedScoringCriteria: List<String>) {
-        currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
-        currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
-        _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isEmpty())
-        _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+    fun updateAdvancedScoring(newAdvancedScoring: List<String>) {
+        currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
+        currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+        _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isEmpty())
+        _advancedScoring.onNext(newAdvancedScoring)
     }
 
-    fun addAdvancedScoringCriteria(newAdvancedScoring: String) {
-        val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
-        newAdvancedScoringCriteria?.let {
-            newAdvancedScoringCriteria.add(newAdvancedScoring)
-            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
-            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
-            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
-            _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+    fun addAdvancedScoring(newAdvancedScoringItem: String) {
+        val newAdvancedScoring = _advancedScoring.value?.toMutableList()
+        newAdvancedScoring?.let {
+            newAdvancedScoring.add(newAdvancedScoringItem)
+            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
+            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isNullOrEmpty())
+            _advancedScoring.onNext(newAdvancedScoring)
         }
     }
 
-    fun editAdvancedScoringCriteria(newAdvancedScoring: String, index: Int) {
-        val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
-        newAdvancedScoringCriteria?.let {
-            newAdvancedScoringCriteria[index] = newAdvancedScoring
-            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
-            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
-            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
-            _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+    fun editAdvancedScoring(newAdvancedScoringItem: String, index: Int) {
+        val newAdvancedScoring = _advancedScoring.value?.toMutableList()
+        newAdvancedScoring?.let {
+            newAdvancedScoring[index] = newAdvancedScoringItem
+            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
+            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isNullOrEmpty())
+            _advancedScoring.onNext(newAdvancedScoring)
         }
     }
 
     fun deleteAdvancedScoringCriteria(index: Int) {
-        val newAdvancedScoringCriteria = _advancedScoringCriteria.value?.toMutableList()
-        newAdvancedScoringCriteria?.let {
-            newAdvancedScoringCriteria.removeAt(index)
-            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoringCriteria
-            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoringCriteria
-            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoringCriteria.isNullOrEmpty())
-            _advancedScoringCriteria.onNext(newAdvancedScoringCriteria)
+        val newAdvancedScoring = _advancedScoring.value?.toMutableList()
+        newAdvancedScoring?.let {
+            newAdvancedScoring.removeAt(index)
+            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
+            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+            _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isNullOrEmpty())
+            _advancedScoring.onNext(newAdvancedScoring)
         }
     }
 
-    fun updateDefaultListOrder(newDefaultListOrder: ListOrder) {
-        currentListsSettings?.rowOrder = newDefaultListOrder.value
-        _defaultListOrder.onNext(newDefaultListOrder)
+    fun updateRowOrder(newRowOrder: ListOrder) {
+        currentListsSettings?.rowOrder = newRowOrder.value
+        _rowOrder.onNext(newRowOrder)
     }
 
     fun updateAnimeCustomLists(newCustomLists: List<String>) {
         currentListsSettings?.animeList?.customLists = newCustomLists
     }
 
-    fun getScoreFormats() {
-        _scoreFormats.onNext(ScoreFormat.values().toList().filterNot { it == ScoreFormat.UNKNOWN__ })
+    fun updateMangaCustomLists(newCustomLists: List<String>) {
+        currentListsSettings?.mangaList?.customLists = newCustomLists
+    }
+
+    fun loadScoreFormatItems() {
+        val items = ArrayList<ListItem<ScoreFormat>>()
+        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_100), ScoreFormat.POINT_100))
+        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_10_DECIMAL), ScoreFormat.POINT_10_DECIMAL))
+        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_10), ScoreFormat.POINT_10))
+        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_5), ScoreFormat.POINT_5))
+        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_3), ScoreFormat.POINT_3))
+        _scoreFormatItems.onNext(items)
     }
 
     fun getListOrders() {
-        _listOrders.onNext(ListOrder.values().toList())
+        val items = ArrayList<ListItem<ListOrder>>()
+        items.add(ListItem(getListOrderStringResource(ListOrder.SCORE), ListOrder.SCORE))
+        items.add(ListItem(getListOrderStringResource(ListOrder.TITLE), ListOrder.TITLE))
+        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_UPDATED), ListOrder.LAST_UPDATED))
+        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_ADDED), ListOrder.LAST_ADDED))
+        _listOrderItems.onNext(items)
     }
 
-    private fun handleAdvancedScoringCriteriaVisibility() {
-        _advancedScoringCriteriaVisibility.onNext(
-            (_scoringSystem.value == ScoreFormat.POINT_100 || _scoringSystem.value == ScoreFormat.POINT_10_DECIMAL) &&
-            _useAdvancedScoring.value == true
+    private fun handleAdvancedScoringVisibility() {
+        _advancedScoringVisibility.onNext(
+            (_scoreFormat.value == ScoreFormat.POINT_100 || _scoreFormat.value == ScoreFormat.POINT_10_DECIMAL) &&
+            _advancedScoringEnabled.value == true
         )
+    }
+
+    fun getScoreFormatStringResource(scoreFormat: ScoreFormat): Int {
+        return when (scoreFormat) {
+            ScoreFormat.POINT_100 -> R.string.hundred_point
+            ScoreFormat.POINT_10_DECIMAL -> R.string.ten_point_decimal
+            ScoreFormat.POINT_10 -> R.string.ten_point
+            ScoreFormat.POINT_5 -> R.string.five_star
+            ScoreFormat.POINT_3 -> R.string.three_point_smiley
+            else -> R.string.hundred_point
+        }
+    }
+
+    fun getListOrderStringResource(listOrder: ListOrder): Int {
+        return when (listOrder) {
+            ListOrder.SCORE -> R.string.score
+            ListOrder.TITLE -> R.string.title
+            ListOrder.LAST_UPDATED -> R.string.last_updated
+            ListOrder.LAST_ADDED -> R.string.last_added
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.common
 
 import android.content.Context
+import android.os.Handler
 import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
     private var listener: BottomSheetTextInputListener? = null
     private var currentText = ""
     private var textInputSetting = TextInputSetting.DEFAULT_TEXT_INPUT_SETTING
+
+    private var inputMethodManager: InputMethodManager? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -36,16 +39,13 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
 
             dialogSaveButton.clicks {
                 val newText = dialogEditText.text?.toString()?.trim() ?: ""
-                if (newText.isNotBlank()) {
-                    listener?.getNewText(newText)
-                }
+                listener?.getNewText(newText)
             }
 
             dialogEditText.requestFocus()
-            dialogEditText.postDelayed({
-                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.showSoftInput(dialogEditText, 0)
-            }, 200)
+
+            inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
     }
 
@@ -56,7 +56,7 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
     override fun onDestroyView() {
         super.onDestroyView()
         listener = null
-        binding.dialogEditText.removeCallbacks(null)
+        inputMethodManager = null
     }
 
     companion object {

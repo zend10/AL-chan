@@ -160,6 +160,10 @@
     <string name="days">days</string>
     <string name="week">week</string>
     <string name="weeks">weeks</string>
+    <string name="score">Score</string>
+    <string name="title">Title</string>
+    <string name="last_updated">Last updated</string>
+    <string name="last_added">Last added</string>
 
 
 
