@@ -11,6 +11,7 @@ import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.common.ChipRvAdapter
+import com.zen.alchan.ui.reorder.ReorderRvAdapter
 import com.zen.alchan.ui.reorder.SharedReorderViewModel
 import io.reactivex.Observable
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -26,6 +27,8 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
     private var advancedScoringAdapter: ChipRvAdapter? = null
     private var animeCustomListsAdapter: ChipRvAdapter? = null
     private var mangaCustomListsAdapter: ChipRvAdapter? = null
+    private var animeSectionOrderAdapter: ReorderRvAdapter? = null
+    private var mangaSectionOrderAdapter: ReorderRvAdapter? = null
 
     private var textInputSetting = TextInputSetting(InputType.TYPE_TEXT_FLAG_CAP_WORDS, true, 30)
 
@@ -72,6 +75,12 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 }
             })
             listSettingsCustomMangaListsRecyclerView.adapter = mangaCustomListsAdapter
+
+            animeSectionOrderAdapter = ReorderRvAdapter(listOf(), null)
+            listSettingsAnimeSectionOrderRecyclerView.adapter = animeSectionOrderAdapter
+
+            mangaSectionOrderAdapter = ReorderRvAdapter(listOf(), null)
+            listSettingsMangaSectionOrderRecyclerView.adapter = mangaSectionOrderAdapter
 
             listSettingsScoringSystemLayout.clicks {
                 viewModel.loadScoreFormatItems()
@@ -165,6 +174,12 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             viewModel.mangaCustomLists.subscribe {
                 mangaCustomListsAdapter?.updateData(it)
             },
+            viewModel.animeSectionOrder.subscribe {
+                animeSectionOrderAdapter?.updateData(it)
+            },
+            viewModel.mangaSectionOrder.subscribe {
+                mangaSectionOrderAdapter?.updateData(it)
+            },
 
 
 
@@ -205,8 +220,15 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
         )
 
         sharedDisposables.addAll(
-            sharedViewModel.orderedList.subscribe {
-
+            sharedViewModel.orderedList.subscribe { (orderedList, reorderList) ->
+                when (reorderList) {
+                    SharedReorderViewModel.ReorderList.ANIME_SECTION_ORDER -> {
+                        viewModel.updateSectionOrder(MediaType.ANIME, orderedList)
+                    }
+                    SharedReorderViewModel.ReorderList.MANGA_SECTION_ORDER -> {
+                        viewModel.updateSectionOrder(MediaType.MANGA, orderedList)
+                    }
+                }
             }
         )
 
@@ -247,6 +269,10 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
     override fun onDestroyView() {
         super.onDestroyView()
         advancedScoringAdapter = null
+        animeCustomListsAdapter = null
+        mangaCustomListsAdapter = null
+        animeSectionOrderAdapter = null
+        mangaSectionOrderAdapter = null
     }
 
     companion object {

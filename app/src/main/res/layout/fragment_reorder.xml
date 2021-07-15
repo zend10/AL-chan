@@ -15,6 +15,7 @@
     <androidx.core.widget.NestedScrollView
         app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
         app:layout_constraintBottom_toTopOf="@+id/reorderSaveLayout"
+        android:layout_marginBottom="@dimen/lineWidth"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
@@ -37,7 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="@dimen/marginPageNormal"
         android:background="?themeCardColor"
-        android:elevation="@dimen/elevationNormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

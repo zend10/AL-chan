@@ -28,7 +28,10 @@ class SharedReorderViewModel : BaseViewModel() {
     }
 
     fun updateOrderedList() {
-
+        val savedList = _unorderedList.value ?: listOf()
+        currentReorderList?.let {
+            _orderedList.onNext(savedList to it)
+        }
     }
 
     enum class ReorderList {

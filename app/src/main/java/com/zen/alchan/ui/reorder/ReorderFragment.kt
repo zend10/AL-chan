@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentReorderBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,6 +22,7 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
     private val sharedViewModel by sharedViewModel<SharedReorderViewModel>()
 
     private var reorderAdapter: ReorderRvAdapter? = null
+    private var itemTouchHelper: ItemTouchHelper? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -34,8 +38,19 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
                 setNavigationOnClickListener { goBack() }
             }
 
-            reorderAdapter = ReorderRvAdapter(requireContext(), listOf())
+            reorderAdapter = ReorderRvAdapter(listOf(), object : DragListener {
+                override fun onStartDrag(viewHolder: BaseRecyclerViewAdapter<*, *>.ViewHolder) {
+                    itemTouchHelper?.startDrag(viewHolder)
+                }
+            })
+            itemTouchHelper = ItemTouchHelper(ItemMoveCallback(reorderAdapter))
+            itemTouchHelper?.attachToRecyclerView(reorderRecyclerView)
             reorderRecyclerView.adapter = reorderAdapter
+
+            reorderSaveButton.clicks {
+                sharedViewModel.updateOrderedList()
+                goBack()
+            }
         }
     }
 

@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/reorderIcon"
             app:srcCompat="@drawable/ic_drag_reorder"
             app:tint="?themeContentColor"
             app:layout_constraintEnd_toEndOf="parent"
