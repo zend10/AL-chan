@@ -9,8 +9,6 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import io.reactivex.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.UserStaffNameLanguage
-import type.UserTitleLanguage
 
 
 class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, AniListSettingsViewModel>() {

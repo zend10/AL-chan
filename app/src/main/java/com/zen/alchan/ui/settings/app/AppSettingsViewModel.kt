@@ -13,7 +13,7 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import type.MediaType
+import com.zen.alchan.helper.enums.MediaType
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -341,10 +341,9 @@ class AppSettingsViewModel(
         items.add(ListItem("${counter + 1} - {0}", listOf(R.string.top_of_the_list), counter))
         counter++
 
-        val sectionOrder = if (mediaType == MediaType.MANGA) {
-            viewer?.mediaListOptions?.mangaList?.sectionOrder
-        } else {
-            viewer?.mediaListOptions?.animeList?.sectionOrder
+        val sectionOrder = when (mediaType) {
+            MediaType.ANIME -> viewer?.mediaListOptions?.animeList?.sectionOrder
+            MediaType.MANGA -> viewer?.mediaListOptions?.mangaList?.sectionOrder
         }
 
         sectionOrder?.forEach {
@@ -352,10 +351,9 @@ class AppSettingsViewModel(
             counter++
         }
 
-        if (mediaType == MediaType.MANGA) {
-            _allMangaListPositionItems.onNext(items)
-        } else {
-            _allAnimeListPositionItems.onNext(items)
+        when (mediaType) {
+            MediaType.ANIME -> _allAnimeListPositionItems.onNext(items)
+            MediaType.MANGA -> _allMangaListPositionItems.onNext(items)
         }
     }
 

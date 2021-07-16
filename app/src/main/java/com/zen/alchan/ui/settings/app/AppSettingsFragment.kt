@@ -15,7 +15,7 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetListRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaType
+import com.zen.alchan.helper.enums.MediaType
 
 class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettingsViewModel>() {
 
