@@ -1,8 +1,14 @@
 package com.zen.alchan.ui.common
 
+import android.app.Dialog
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.zen.alchan.databinding.DialogBottomSheetListBinding
 import com.zen.alchan.ui.base.BaseDialogFragment
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -10,6 +16,18 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 class BottomSheetListDialog : BaseDialogFragment<DialogBottomSheetListBinding>() {
 
     private var adapter: BaseRecyclerViewAdapter<*, *>? = null
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            val bottomSheetDialog = dialog as BottomSheetDialog
+            val bottomSheet = bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.let {
+                BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+        return dialog
+    }
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
