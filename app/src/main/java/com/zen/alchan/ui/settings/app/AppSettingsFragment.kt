@@ -122,7 +122,8 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 viewModel.updateShowStatsChartAutomatically(appSettingsShowStatsChartAutomaticallyCheckBox.isChecked)
             }
 
-            appSettingsSaveButton.clicks {
+            appSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
+            appSettingsSaveLayout.positiveButton.clicks {
                 dialog.showConfirmationDialog(
                     R.string.save_changes,
                     R.string.the_app_will_be_restarted_to_apply_the_change,
@@ -135,7 +136,8 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 )
             }
 
-            appSettingsResetButton.clicks {
+            appSettingsSaveLayout.negativeButton.text = getString(R.string.reset_to_default)
+            appSettingsSaveLayout.negativeButton.clicks {
                 dialog.showConfirmationDialog(
                     R.string.reset_to_default,
                     R.string.the_app_will_be_restarted_to_apply_the_change,
@@ -154,7 +156,7 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.appSettingsLayout.applyBottomPaddingInsets()
+        binding.appSettingsSaveLayout.twoButtonsLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {

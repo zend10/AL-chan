@@ -47,7 +47,8 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
             itemTouchHelper?.attachToRecyclerView(reorderRecyclerView)
             reorderRecyclerView.adapter = reorderAdapter
 
-            reorderSaveButton.clicks {
+            reorderSaveLayout.positiveButton.text = getString(R.string.save_changes)
+            reorderSaveLayout.positiveButton.clicks {
                 sharedViewModel.updateOrderedList()
                 goBack()
             }
@@ -56,7 +57,7 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.reorderSaveLayout.applyBottomPaddingInsets()
+        binding.reorderSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {

@@ -15,7 +15,6 @@
     <androidx.core.widget.NestedScrollView
         app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
         app:layout_constraintBottom_toTopOf="@+id/reorderSaveLayout"
-        android:layout_marginBottom="@dimen/lineWidth"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
@@ -33,21 +32,10 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <FrameLayout
+    <include layout="@layout/layout_one_button"
         android:id="@+id/reorderSaveLayout"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="@dimen/marginPageNormal"
-        android:background="?themeCardColor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/reorderSaveButton"
-            android:text="@string/save_changes"
-            style="?themePrimaryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </FrameLayout>
+        android:layout_height="wrap_content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

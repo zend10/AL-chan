@@ -48,7 +48,8 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
                 viewModel.updateAiringNotifications(aniListSettingsReceiveAiringNotificationsCheckBox.isChecked)
             }
 
-            aniListSettingsSaveButton.clicks {
+            aniListSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
+            aniListSettingsSaveLayout.positiveButton.clicks {
                 viewModel.saveAniListSettings()
             }
         }
@@ -56,7 +57,7 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.aniListSettingsLayout.applyBottomPaddingInsets()
+        binding.aniListSettingsSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {

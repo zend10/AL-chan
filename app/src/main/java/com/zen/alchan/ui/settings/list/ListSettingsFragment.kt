@@ -130,7 +130,8 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 viewModel.loadSectionOrderItems(MediaType.MANGA)
             }
 
-            listSettingsSaveButton.clicks {
+            listSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
+            listSettingsSaveLayout.positiveButton.clicks {
 
             }
 
@@ -139,7 +140,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.listSettingsLayout.applyBottomPaddingInsets()
+        binding.listSettingsSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {
