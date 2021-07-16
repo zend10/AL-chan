@@ -5,14 +5,15 @@ import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListOrder
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import type.MediaType
 import type.ScoreFormat
 
 class ListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
@@ -94,7 +95,7 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         get() = _mangaSectionOrderItems
 
     private var viewer: User? = null
-    private var currentListsSettings: MediaListOptions? = null
+    private var currentListSettings: MediaListOptions? = null
 
     override fun loadData() {
         if (state == State.LOADED)
@@ -107,18 +108,14 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     viewer = it
 
                     val mediaListOptions = it.mediaListOptions
-                    currentListsSettings = mediaListOptions
+                    currentListSettings = mediaListOptions
 
                     updateScoreFormat(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
                     updateAdvancedScoringEnabled(mediaListOptions.animeList.advancedScoringEnabled)
                     updateAdvancedScoring(mediaListOptions.animeList.advancedScoring)
 
-                    try {
-                        val listOrder = ListOrder.valueOf(mediaListOptions.rowOrder)
-                        updateRowOrder(listOrder)
-                    } catch (e: IllegalArgumentException) {
-                        updateRowOrder(ListOrder.TITLE)
-                    }
+                    val listOrder = ListOrder.values().find { listOrder -> listOrder.value == mediaListOptions.rowOrder } ?: ListOrder.TITLE
+                    updateRowOrder(listOrder)
 
                     updateSplitCompletedAnimeSectionByFormat(mediaListOptions.animeList.splitCompletedSectionByFormat)
                     updateSplitCompletedMangaSectionByFormat(mediaListOptions.mangaList.splitCompletedSectionByFormat)
@@ -134,8 +131,34 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         )
     }
 
+    fun saveListSettings() {
+        _loading.onNext(true)
+
+        currentListSettings?.apply {
+            disposables.add(
+                userRepository.updateListSettings(
+                    scoreFormat ?: ScoreFormat.POINT_100,
+                    rowOrder,
+                    animeList,
+                    mangaList
+                )
+                    .applyScheduler()
+                    .doFinally { _loading.onNext(false) }
+                    .subscribe(
+                        {
+                            viewer = it
+                            _success.onNext(R.string.settings_saved)
+                        },
+                        {
+                            _error.onNext(it.getStringResource())
+                        }
+                    )
+            )
+        }
+    }
+
     fun updateScoreFormat(newScoreFormat: ScoreFormat) {
-        currentListsSettings?.scoreFormat = newScoreFormat
+        currentListSettings?.scoreFormat = newScoreFormat
         _scoreFormat.onNext(newScoreFormat)
 
         when (newScoreFormat) {
@@ -152,102 +175,113 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     }
 
     fun updateAdvancedScoringEnabled(shouldUseAdvancedScoring: Boolean) {
-        currentListsSettings?.animeList?.advancedScoringEnabled = shouldUseAdvancedScoring
-        currentListsSettings?.mangaList?.advancedScoringEnabled = shouldUseAdvancedScoring
+        currentListSettings?.animeList?.advancedScoringEnabled = shouldUseAdvancedScoring
+        currentListSettings?.mangaList?.advancedScoringEnabled = shouldUseAdvancedScoring
         _advancedScoringEnabled.onNext(shouldUseAdvancedScoring)
 
         handleAdvancedScoringVisibility()
     }
 
     fun updateAdvancedScoring(newAdvancedScoring: List<String>) {
-        currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
-        currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+        currentListSettings?.animeList?.advancedScoring = newAdvancedScoring
+        currentListSettings?.mangaList?.advancedScoring = newAdvancedScoring
         _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isEmpty())
         _advancedScoring.onNext(newAdvancedScoring)
     }
 
     fun addAdvancedScoring(newAdvancedScoringItem: String) {
-        val newAdvancedScoring = _advancedScoring.value?.toMutableList()
+        val newAdvancedScoring = currentListSettings?.animeList?.advancedScoring?.toMutableList()
         newAdvancedScoring?.let {
             newAdvancedScoring.add(newAdvancedScoringItem)
-            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
-            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+            currentListSettings?.animeList?.advancedScoring = newAdvancedScoring
+            currentListSettings?.mangaList?.advancedScoring = newAdvancedScoring
             _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isNullOrEmpty())
             _advancedScoring.onNext(newAdvancedScoring)
         }
     }
 
     fun editAdvancedScoring(newAdvancedScoringItem: String, index: Int) {
-        val newAdvancedScoring = _advancedScoring.value?.toMutableList()
+        val newAdvancedScoring = currentListSettings?.animeList?.advancedScoring?.toMutableList()
         newAdvancedScoring?.let {
             newAdvancedScoring[index] = newAdvancedScoringItem
-            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
-            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+            currentListSettings?.animeList?.advancedScoring = newAdvancedScoring
+            currentListSettings?.mangaList?.advancedScoring = newAdvancedScoring
             _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isNullOrEmpty())
             _advancedScoring.onNext(newAdvancedScoring)
         }
     }
 
     fun deleteAdvancedScoringCriteria(index: Int) {
-        val newAdvancedScoring = _advancedScoring.value?.toMutableList()
+        val newAdvancedScoring = currentListSettings?.animeList?.advancedScoring?.toMutableList()
         newAdvancedScoring?.let {
             newAdvancedScoring.removeAt(index)
-            currentListsSettings?.animeList?.advancedScoring = newAdvancedScoring
-            currentListsSettings?.mangaList?.advancedScoring = newAdvancedScoring
+            currentListSettings?.animeList?.advancedScoring = newAdvancedScoring
+            currentListSettings?.mangaList?.advancedScoring = newAdvancedScoring
             _advancedScoringNoItemTextVisibility.onNext(newAdvancedScoring.isNullOrEmpty())
             _advancedScoring.onNext(newAdvancedScoring)
         }
     }
 
     fun updateRowOrder(newRowOrder: ListOrder) {
-        currentListsSettings?.rowOrder = newRowOrder.value
+        currentListSettings?.rowOrder = newRowOrder.value
         _rowOrder.onNext(newRowOrder)
     }
 
     fun updateSplitCompletedAnimeSectionByFormat(shouldSplitCompletedAnimeSectionByFormat: Boolean) {
-        currentListsSettings?.animeList?.splitCompletedSectionByFormat = shouldSplitCompletedAnimeSectionByFormat
-        _splitCompletedMangaSectionByFormat.onNext(shouldSplitCompletedAnimeSectionByFormat)
+        currentListSettings?.animeList?.splitCompletedSectionByFormat = shouldSplitCompletedAnimeSectionByFormat
+        _splitCompletedAnimeSectionByFormat.onNext(shouldSplitCompletedAnimeSectionByFormat)
     }
 
     fun updateSplitCompletedMangaSectionByFormat(shouldSplitCompletedMangaSectionByFormat: Boolean) {
-        currentListsSettings?.mangaList?.splitCompletedSectionByFormat = shouldSplitCompletedMangaSectionByFormat
+        currentListSettings?.mangaList?.splitCompletedSectionByFormat = shouldSplitCompletedMangaSectionByFormat
         _splitCompletedMangaSectionByFormat.onNext(shouldSplitCompletedMangaSectionByFormat)
     }
 
     fun updateCustomLists(mediaType: MediaType, newCustomLists: List<String>) {
         when (mediaType) {
             MediaType.ANIME -> {
-                currentListsSettings?.animeList?.customLists = newCustomLists
+                currentListSettings?.animeList?.customLists = newCustomLists
                 _animeCustomListsNoItemTextVisibility.onNext(newCustomLists.isEmpty())
                 _animeCustomLists.onNext(newCustomLists)
             }
             MediaType.MANGA -> {
-                currentListsSettings?.mangaList?.customLists = newCustomLists
+                currentListSettings?.mangaList?.customLists = newCustomLists
                 _mangaCustomListsNoItemTextVisibility.onNext(newCustomLists.isEmpty())
                 _mangaCustomLists.onNext(newCustomLists)
             }
         }
-
     }
 
     fun addCustomLists(mediaType: MediaType, newCustomListItem: String) {
         when (mediaType) {
             MediaType.ANIME -> {
-                val newCustomLists = _animeCustomLists.value?.toMutableList()
+                val newCustomLists = currentListSettings?.animeList?.customLists?.toMutableList()
                 newCustomLists?.let {
                     newCustomLists.add(newCustomListItem)
-                    currentListsSettings?.animeList?.customLists = newCustomLists
+                    currentListSettings?.animeList?.customLists = newCustomLists
                     _animeCustomListsNoItemTextVisibility.onNext(newCustomLists.isNullOrEmpty())
                     _animeCustomLists.onNext(newCustomLists)
                 }
+
+                val newSectionOrder = currentListSettings?.animeList?.sectionOrder?.toMutableList()
+                newSectionOrder?.let {
+                    newSectionOrder.add(newCustomListItem)
+                    updateSectionOrder(MediaType.ANIME, newSectionOrder)
+                }
             }
             MediaType.MANGA -> {
-                val newCustomLists = _mangaCustomLists.value?.toMutableList()
+                val newCustomLists = currentListSettings?.mangaList?.customLists?.toMutableList()
                 newCustomLists?.let {
                     newCustomLists.add(newCustomListItem)
-                    currentListsSettings?.mangaList?.customLists = newCustomLists
+                    currentListSettings?.mangaList?.customLists = newCustomLists
                     _mangaCustomListsNoItemTextVisibility.onNext(newCustomLists.isNullOrEmpty())
                     _mangaCustomLists.onNext(newCustomLists)
+                }
+
+                val newSectionOrder = currentListSettings?.mangaList?.sectionOrder?.toMutableList()
+                newSectionOrder?.let {
+                    newSectionOrder.add(newCustomListItem)
+                    updateSectionOrder(MediaType.MANGA, newSectionOrder)
                 }
             }
         }
@@ -256,21 +290,39 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     fun editCustomLists(mediaType: MediaType, newCustomListItem: String, index: Int) {
         when (mediaType) {
             MediaType.ANIME -> {
-                val newCustomLists = _animeCustomLists.value?.toMutableList()
+                val newCustomLists = currentListSettings?.animeList?.customLists?.toMutableList()
+                val currentCustomListItem = currentListSettings?.animeList?.customLists?.get(index)
                 newCustomLists?.let {
                     newCustomLists[index] = newCustomListItem
-                    currentListsSettings?.animeList?.customLists= newCustomLists
+                    currentListSettings?.animeList?.customLists= newCustomLists
                     _animeCustomListsNoItemTextVisibility.onNext(newCustomLists.isNullOrEmpty())
                     _animeCustomLists.onNext(newCustomLists)
                 }
+
+                val newSectionOrder = currentListSettings?.animeList?.sectionOrder?.toMutableList()
+                newSectionOrder?.let {
+                    val indexAtSectionOrder = newSectionOrder.indexOf(currentCustomListItem)
+                    if (indexAtSectionOrder != -1)
+                        newSectionOrder[indexAtSectionOrder] = newCustomListItem
+                    updateSectionOrder(MediaType.ANIME, newSectionOrder)
+                }
             }
             MediaType.MANGA -> {
-                val newCustomLists = _mangaCustomLists.value?.toMutableList()
+                val newCustomLists = currentListSettings?.mangaList?.customLists?.toMutableList()
+                val currentCustomListItem = currentListSettings?.mangaList?.customLists?.get(index)
                 newCustomLists?.let {
                     newCustomLists[index] = newCustomListItem
-                    currentListsSettings?.mangaList?.customLists = newCustomLists
+                    currentListSettings?.mangaList?.customLists = newCustomLists
                     _mangaCustomListsNoItemTextVisibility.onNext(newCustomLists.isNullOrEmpty())
                     _mangaCustomLists.onNext(newCustomLists)
+                }
+
+                val newSectionOrder = currentListSettings?.mangaList?.sectionOrder?.toMutableList()
+                newSectionOrder?.let {
+                    val indexAtSectionOrder = newSectionOrder.indexOf(currentCustomListItem)
+                    if (indexAtSectionOrder != -1)
+                        newSectionOrder[indexAtSectionOrder] = newCustomListItem
+                    updateSectionOrder(MediaType.MANGA, newSectionOrder)
                 }
             }
         }
@@ -279,37 +331,52 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     fun deleteCustomLists(mediaType: MediaType, index: Int) {
         when (mediaType) {
             MediaType.ANIME -> {
-                val newCustomLists = _animeCustomLists.value?.toMutableList()
+                val newCustomLists = currentListSettings?.animeList?.customLists?.toMutableList()
+                val currentCustomListItem = currentListSettings?.animeList?.customLists?.get(index)
                 newCustomLists?.let {
                     newCustomLists.removeAt(index)
-                    currentListsSettings?.animeList?.customLists = newCustomLists
+                    currentListSettings?.animeList?.customLists = newCustomLists
                     _animeCustomListsNoItemTextVisibility.onNext(newCustomLists.isNullOrEmpty())
                     _animeCustomLists.onNext(newCustomLists)
                 }
+
+                val newSectionOrder = currentListSettings?.animeList?.sectionOrder?.toMutableList()
+                newSectionOrder?.let {
+                    val indexAtSectionOrder = newSectionOrder.indexOf(currentCustomListItem)
+                    if (indexAtSectionOrder != -1)
+                        newSectionOrder.removeAt(indexAtSectionOrder)
+                    updateSectionOrder(MediaType.ANIME, newSectionOrder)
+                }
             }
             MediaType.MANGA -> {
-                val newCustomLists = _mangaCustomLists.value?.toMutableList()
+                val newCustomLists = currentListSettings?.mangaList?.customLists?.toMutableList()
+                val currentCustomListItem = currentListSettings?.mangaList?.customLists?.get(index)
                 newCustomLists?.let {
                     newCustomLists.removeAt(index)
-                    currentListsSettings?.mangaList?.customLists = newCustomLists
+                    currentListSettings?.mangaList?.customLists = newCustomLists
                     _mangaCustomListsNoItemTextVisibility.onNext(newCustomLists.isNullOrEmpty())
                     _mangaCustomLists.onNext(newCustomLists)
+                }
+
+                val newSectionOrder = currentListSettings?.mangaList?.sectionOrder?.toMutableList()
+                newSectionOrder?.let {
+                    val indexAtSectionOrder = newSectionOrder.indexOf(currentCustomListItem)
+                    if (indexAtSectionOrder != -1)
+                        newSectionOrder.removeAt(indexAtSectionOrder)
+                    updateSectionOrder(MediaType.MANGA, newSectionOrder)
                 }
             }
         }
     }
 
     fun updateSectionOrder(mediaType: MediaType, newSectionOrder: List<String>) {
-
-        // TODO: need to handle broken section order
-
         when (mediaType) {
             MediaType.ANIME -> {
-                currentListsSettings?.animeList?.sectionOrder = newSectionOrder
+                currentListSettings?.animeList?.sectionOrder = newSectionOrder
                 _animeSectionOrder.onNext(newSectionOrder)
             }
             MediaType.MANGA -> {
-                currentListsSettings?.mangaList?.sectionOrder = newSectionOrder
+                currentListSettings?.mangaList?.sectionOrder = newSectionOrder
                 _mangaSectionOrder.onNext(newSectionOrder)
             }
         }
@@ -325,37 +392,6 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         _scoreFormatItems.onNext(items)
     }
 
-    fun loadListOrderItems() {
-        val items = ArrayList<ListItem<ListOrder>>()
-        items.add(ListItem(getListOrderStringResource(ListOrder.SCORE), ListOrder.SCORE))
-        items.add(ListItem(getListOrderStringResource(ListOrder.TITLE), ListOrder.TITLE))
-        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_UPDATED), ListOrder.LAST_UPDATED))
-        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_ADDED), ListOrder.LAST_ADDED))
-        _listOrderItems.onNext(items)
-    }
-
-    fun loadSectionOrderItems(mediaType: MediaType) {
-        when (mediaType) {
-            MediaType.ANIME -> {
-                _animeSectionOrder.value?.let {
-                    _animeSectionOrderItems.onNext(it)
-                }
-            }
-            MediaType.MANGA -> {
-                _mangaSectionOrder.value?.let {
-                    _mangaSectionOrderItems.onNext(it)
-                }
-            }
-        }
-    }
-
-    private fun handleAdvancedScoringVisibility() {
-        _advancedScoringVisibility.onNext(
-            (_scoreFormat.value == ScoreFormat.POINT_100 || _scoreFormat.value == ScoreFormat.POINT_10_DECIMAL) &&
-            _advancedScoringEnabled.value == true
-        )
-    }
-
     fun getScoreFormatStringResource(scoreFormat: ScoreFormat): Int {
         return when (scoreFormat) {
             ScoreFormat.POINT_100 -> R.string.hundred_point
@@ -367,6 +403,15 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
         }
     }
 
+    fun loadListOrderItems() {
+        val items = ArrayList<ListItem<ListOrder>>()
+        items.add(ListItem(getListOrderStringResource(ListOrder.SCORE), ListOrder.SCORE))
+        items.add(ListItem(getListOrderStringResource(ListOrder.TITLE), ListOrder.TITLE))
+        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_UPDATED), ListOrder.LAST_UPDATED))
+        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_ADDED), ListOrder.LAST_ADDED))
+        _listOrderItems.onNext(items)
+    }
+
     fun getListOrderStringResource(listOrder: ListOrder): Int {
         return when (listOrder) {
             ListOrder.SCORE -> R.string.score
@@ -374,5 +419,94 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
             ListOrder.LAST_UPDATED -> R.string.last_updated
             ListOrder.LAST_ADDED -> R.string.last_added
         }
+    }
+
+    fun loadSectionOrderItems(mediaType: MediaType) {
+        when (mediaType) {
+            MediaType.ANIME -> {
+                currentListSettings?.animeList?.sectionOrder?.let {
+                    _animeSectionOrderItems.onNext(it)
+                }
+            }
+            MediaType.MANGA -> {
+                currentListSettings?.mangaList?.sectionOrder?.let {
+                    _mangaSectionOrderItems.onNext(it)
+                }
+            }
+        }
+    }
+
+    fun resetSectionOrder(mediaType: MediaType) {
+        val defaultSectionOrder = ArrayList<String>()
+
+        when (mediaType) {
+            MediaType.ANIME -> {
+                defaultSectionOrder.addAll(
+                    if (currentListSettings?.animeList?.splitCompletedSectionByFormat == true) {
+                        listOf(
+                            "Watching",
+                            "Rewatching",
+                            "Completed TV",
+                            "Completed Movie",
+                            "Completed OVA",
+                            "Completed ONA",
+                            "Completed TV Short",
+                            "Completed Special",
+                            "Completed Music",
+                            "Paused",
+                            "Dropped",
+                            "Planning"
+                        )
+                    } else {
+                        listOf(
+                            "Watching",
+                            "Rewatching",
+                            "Completed",
+                            "Paused",
+                            "Dropped",
+                            "Planning"
+                        )
+                    }
+                )
+
+                defaultSectionOrder.addAll(currentListSettings?.animeList?.customLists ?: listOf())
+            }
+            MediaType.MANGA -> {
+                defaultSectionOrder.addAll(
+                    if (currentListSettings?.mangaList?.splitCompletedSectionByFormat == true) {
+                        listOf(
+                            "Reading",
+                            "Rereading",
+                            "Completed Manga",
+                            "Completed Novel",
+                            "Completed One Shot",
+                            "Paused",
+                            "Dropped",
+                            "Planning"
+                        )
+                    } else {
+                        listOf(
+                            "Reading",
+                            "Rereading",
+                            "Completed",
+                            "Paused",
+                            "Dropped",
+                            "Planning"
+                        )
+                    }
+                )
+
+                defaultSectionOrder.addAll(currentListSettings?.mangaList?.customLists ?: listOf())
+            }
+        }
+
+        updateSectionOrder(mediaType, defaultSectionOrder)
+    }
+
+    private fun handleAdvancedScoringVisibility() {
+        _advancedScoringVisibility.onNext(
+            (currentListSettings?.scoreFormat == ScoreFormat.POINT_100 || currentListSettings?.scoreFormat == ScoreFormat.POINT_10_DECIMAL) &&
+                    currentListSettings?.animeList?.advancedScoringEnabled == true
+        )
     }
 }

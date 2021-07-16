@@ -5,6 +5,7 @@ import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.ProfileData
+import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
@@ -14,10 +15,7 @@ import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import type.MediaType
-import type.UserStaffNameLanguage
-import type.UserStatisticsSort
-import type.UserTitleLanguage
+import type.*
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
@@ -182,6 +180,25 @@ class DefaultUserRepository(
             activityMergeTime,
             displayAdultContent,
             airingNotifications
+        )
+            .toObservable()
+            .map {
+                val newViewer = it.data?.convert()
+                if (newViewer != null) {
+                    userManager.viewerData = SaveItem(newViewer)
+                }
+                newViewer
+            }
+    }
+
+    override fun updateListSettings(
+        scoreFormat: ScoreFormat,
+        rowOrder: String,
+        animeListOptions: MediaListTypeOptions,
+        mangaListOptions: MediaListTypeOptions
+    ): Observable<User> {
+        return userDataSource.updateListSettings(
+            scoreFormat, rowOrder, animeListOptions, mangaListOptions
         )
             .toObservable()
             .map {

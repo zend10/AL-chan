@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentListSettingsBinding
 import com.zen.alchan.helper.enums.ListOrder
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseFragment
@@ -16,7 +17,7 @@ import com.zen.alchan.ui.reorder.SharedReorderViewModel
 import io.reactivex.Observable
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaType
+
 import type.ScoreFormat
 
 class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSettingsViewModel>() {
@@ -99,11 +100,35 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsSplitAnimeCompletedCheckBox.setOnClickListener {
-
+                dialog.showConfirmationDialog(
+                    R.string.reset_anime_section_order,
+                    R.string.by_changing_this_setting_your_anime_section_order_will_be_reset,
+                    R.string.proceed,
+                    {
+                        viewModel.updateSplitCompletedAnimeSectionByFormat(listSettingsSplitAnimeCompletedCheckBox.isChecked)
+                        viewModel.resetSectionOrder(MediaType.ANIME)
+                    },
+                    R.string.cancel,
+                    {
+                        listSettingsSplitAnimeCompletedCheckBox.isChecked = !listSettingsSplitAnimeCompletedCheckBox.isChecked
+                    }
+                )
             }
 
             listSettingsSplitMangaCompletedCheckBox.setOnClickListener {
-
+                dialog.showConfirmationDialog(
+                    R.string.reset_manga_section_order,
+                    R.string.by_changing_this_setting_your_manga_section_order_will_be_reset,
+                    R.string.proceed,
+                    {
+                        viewModel.updateSplitCompletedMangaSectionByFormat(listSettingsSplitMangaCompletedCheckBox.isChecked)
+                        viewModel.resetSectionOrder(MediaType.MANGA)
+                    },
+                    R.string.cancel,
+                    {
+                        listSettingsSplitMangaCompletedCheckBox.isChecked = !listSettingsSplitMangaCompletedCheckBox.isChecked
+                    }
+                )
             }
 
             listSettingsCustomAnimeListsAddMoreText.clicks {
@@ -115,7 +140,14 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsAnimeSectionOrderResetText.clicks {
-
+                dialog.showConfirmationDialog(
+                    R.string.reset_anime_section_order,
+                    R.string.are_you_sure_you_want_to_reset_your_anime_section_order,
+                    R.string.reset,
+                    { viewModel.resetSectionOrder(MediaType.ANIME) },
+                    R.string.cancel,
+                    { }
+                )
             }
 
             listSettingsAnimeSectionOrderReorderText.clicks {
@@ -123,7 +155,14 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
 
             listSettingsMangaSectionOrderResetText.clicks {
-
+                dialog.showConfirmationDialog(
+                    R.string.reset_manga_section_order,
+                    R.string.are_you_sure_you_want_to_reset_your_manga_section_order,
+                    R.string.reset,
+                    { viewModel.resetSectionOrder(MediaType.MANGA) },
+                    R.string.cancel,
+                    { }
+                )
             }
 
             listSettingsMangaSectionOrderReorderText.clicks {
@@ -132,9 +171,8 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
             listSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
             listSettingsSaveLayout.positiveButton.clicks {
-
+                viewModel.saveListSettings()
             }
-
         }
     }
 
@@ -181,10 +219,6 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             viewModel.mangaSectionOrder.subscribe {
                 mangaSectionOrderAdapter?.updateData(it)
             },
-
-
-
-
             viewModel.scoreFormatItems.subscribe {
                 showListDialog(it) { data, _ ->
                     viewModel.updateScoreFormat(data)

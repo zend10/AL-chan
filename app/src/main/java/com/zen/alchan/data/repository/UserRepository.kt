@@ -2,15 +2,13 @@ package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.ProfileData
+import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.pojo.ListStyle
 import io.reactivex.Observable
-import type.MediaType
-import type.UserStaffNameLanguage
-import type.UserStatisticsSort
-import type.UserTitleLanguage
+import type.*
 
 interface UserRepository {
 
@@ -41,5 +39,12 @@ interface UserRepository {
         activityMergeTime: Int,
         displayAdultContent: Boolean,
         airingNotifications: Boolean
+    ): Observable<User>
+
+    fun updateListSettings(
+        scoreFormat: ScoreFormat,
+        rowOrder: String,
+        animeListOptions: MediaListTypeOptions,
+        mangaListOptions: MediaListTypeOptions
     ): Observable<User>
 }

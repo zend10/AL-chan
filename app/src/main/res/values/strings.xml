@@ -164,6 +164,14 @@
     <string name="title">Title</string>
     <string name="last_updated">Last updated</string>
     <string name="last_added">Last added</string>
+    <string name="reset_order">Reset Order</string>
+    <string name="are_you_sure_you_want_to_reset_your_anime_section_order">Are you sure you want to reset your Anime section order?</string>
+    <string name="are_you_sure_you_want_to_reset_your_manga_section_order">Are you sure you want to reset your Manga section order?</string>
+    <string name="reset_anime_section_order">Reset Anime Section Order</string>
+    <string name="reset_manga_section_order">Reset Manga Section Order</string>
+    <string name="by_changing_this_setting_your_anime_section_order_will_be_reset">By changing this setting, your Anime section order will be reset.</string>
+    <string name="by_changing_this_setting_your_manga_section_order_will_be_reset">By changing this setting, your Manga section order will be reset.</string>
+    <string name="proceed">Proceed</string>
 
 
     <plurals name="minute">
