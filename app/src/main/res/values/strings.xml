@@ -172,6 +172,20 @@
     <string name="by_changing_this_setting_your_anime_section_order_will_be_reset">By changing this setting, your Anime section order will be reset.</string>
     <string name="by_changing_this_setting_your_manga_section_order_will_be_reset">By changing this setting, your Manga section order will be reset.</string>
     <string name="proceed">Proceed</string>
+    <string name="activity_subscription">Activity Subscription</string>
+    <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
+    <string name="when_someone_follows_me">When someone follows me</string>
+    <string name="when_i_receive_message">When I receive message</string>
+    <string name="when_i_am_mentioned_in_an_activity_or_activity_reply">When I am @ mentioned in an activity or activity reply</string>
+    <string name="when_someone_likes_my_activity">When someone likes my activity</string>
+    <string name="when_someone_likes_my_activity_reply">When someone likes my activity reply</string>
+    <string name="when_someone_replies_to_my_forum_comment">When someone replies to my forum comment</string>
+    <string name="when_i_am_mentioned_in_a_forum_comment">When I am @ mentioned in a forum comment</string>
+    <string name="when_someone_likes_my_forum_comment">When someone likes my forum comment</string>
+    <string name="when_someone_replies_to_a_forum_thread_i_m_subscribed_to">When someone replies to a forum thread I\'m subscribed to</string>
+    <string name="when_someone_likes_my_forum_thread">When someone likes my forum thread</string>
+    <string name="custom_lists_feature_is_a_bit_glitchy_if_your_custom_lists_are_not_showing_in_your_list_you_can_try_clicking_on_reset_to_default_and_save_changes">Custom Lists feature is a bit glitchy. If your Custom Lists are not showing in your list, you can try clicking on Reset to Default and Save Changes.</string>
 
 
     <plurals name="minute">

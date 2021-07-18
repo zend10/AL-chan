@@ -6,6 +6,7 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
@@ -200,6 +201,18 @@ class DefaultUserRepository(
         return userDataSource.updateListSettings(
             scoreFormat, rowOrder, animeListOptions, mangaListOptions
         )
+            .toObservable()
+            .map {
+                val newViewer = it.data?.convert()
+                if (newViewer != null) {
+                    userManager.viewerData = SaveItem(newViewer)
+                }
+                newViewer
+            }
+    }
+
+    override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>): Observable<User> {
+        return userDataSource.updateNotificationsSettings(notificationOptions)
             .toObservable()
             .map {
                 val newViewer = it.data?.convert()

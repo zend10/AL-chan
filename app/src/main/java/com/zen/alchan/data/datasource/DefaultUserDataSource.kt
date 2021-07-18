@@ -10,6 +10,7 @@ import com.apollographql.apollo.rx2.rxPrefetch
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -74,6 +75,15 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
                     advancedScoringEnabled = Input.fromNullable(mangaListOptions.advancedScoringEnabled)
                 )
             )
+        )
+        return apolloHandler.apolloClient.rxMutate(mutation)
+    }
+
+    override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>): Single<Response<UpdateUserMutation.Data>> {
+        val mutation = UpdateUserMutation(
+            notificationOptions = Input.fromNullable(notificationOptions.map {
+                NotificationOptionInput(Input.fromNullable(it.type), Input.fromNullable(it.enabled))
+            })
         )
         return apolloHandler.apolloClient.rxMutate(mutation)
     }

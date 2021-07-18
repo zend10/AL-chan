@@ -18,6 +18,7 @@ import com.zen.alchan.ui.settings.SettingsFragment
 import com.zen.alchan.ui.settings.anilist.AniListSettingsFragment
 import com.zen.alchan.ui.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.settings.list.ListSettingsFragment
+import com.zen.alchan.ui.settings.notifications.NotificationsSettingsFragment
 import com.zen.alchan.ui.splash.SplashFragment
 
 class DefaultNavigationManager(
@@ -66,12 +67,12 @@ class DefaultNavigationManager(
         swapPage(AniListSettingsFragment.newInstance())
     }
 
-    override fun navigateToListsSettings() {
+    override fun navigateToListSettings() {
         swapPage(ListSettingsFragment.newInstance())
     }
 
     override fun navigateToNotificationsSettings() {
-
+        swapPage(NotificationsSettingsFragment.newInstance())
     }
 
     override fun navigateToAccountSettings() {

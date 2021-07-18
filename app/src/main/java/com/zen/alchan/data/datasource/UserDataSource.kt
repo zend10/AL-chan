@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
 import io.reactivex.Observable
 import io.reactivex.Single
 import type.ScoreFormat
@@ -25,5 +26,8 @@ interface UserDataSource {
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions
+    ): Single<Response<UpdateUserMutation.Data>>
+    fun updateNotificationsSettings(
+        notificationOptions: List<NotificationOption>
     ): Single<Response<UpdateUserMutation.Data>>
 }

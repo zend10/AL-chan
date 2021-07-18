@@ -33,7 +33,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
             }
 
             listSettingsLayout.clicks {
-                navigation.navigateToListsSettings()
+                navigation.navigateToListSettings()
             }
 
             notificationsSettingsLayout.clicks {

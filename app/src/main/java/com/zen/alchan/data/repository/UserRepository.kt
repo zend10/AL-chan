@@ -3,6 +3,7 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
@@ -46,5 +47,9 @@ interface UserRepository {
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions
+    ): Observable<User>
+
+    fun updateNotificationsSettings(
+        notificationOptions: List<NotificationOption>
     ): Observable<User>
 }

@@ -34,6 +34,7 @@ import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
 import com.zen.alchan.ui.settings.app.AppSettingsViewModel
 import com.zen.alchan.ui.settings.list.ListSettingsViewModel
+import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
 import com.zen.alchan.ui.social.SocialViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 
@@ -110,6 +111,7 @@ class ALchanApplication : Application() {
         viewModel { AppSettingsViewModel(get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }
+        viewModel { NotificationsSettingsViewModel(get()) }
 
         viewModel { ReorderViewModel() }
         viewModel { SharedReorderViewModel() }

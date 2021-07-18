@@ -457,6 +457,14 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/custom_lists_feature_is_a_bit_glitchy_if_your_custom_lists_are_not_showing_in_your_list_you_can_try_clicking_on_reset_to_default_and_save_changes"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toBottomOf="@+id/listSettingsMangaSectionOrderLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

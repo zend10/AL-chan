@@ -14,7 +14,7 @@ interface NavigationManager {
     fun navigateToSettings()
     fun navigateToAppSettings()
     fun navigateToAniListSettings()
-    fun navigateToListsSettings()
+    fun navigateToListSettings()
     fun navigateToNotificationsSettings()
     fun navigateToAccountSettings()
     fun navigateToAbout()
