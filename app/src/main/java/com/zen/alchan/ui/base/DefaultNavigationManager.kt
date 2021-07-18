@@ -15,6 +15,7 @@ import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
 import com.zen.alchan.ui.settings.SettingsFragment
+import com.zen.alchan.ui.settings.account.AccountSettingsFragment
 import com.zen.alchan.ui.settings.anilist.AniListSettingsFragment
 import com.zen.alchan.ui.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.settings.list.ListSettingsFragment
@@ -76,7 +77,7 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToAccountSettings() {
-
+        swapPage(AccountSettingsFragment.newInstance())
     }
 
     override fun navigateToAbout() {
@@ -98,6 +99,11 @@ class DefaultNavigationManager(
                     NavigationManager.Url.ANILIST_WEBSITE -> Constant.ANILIST_WEBSITE_URL
                     NavigationManager.Url.ANILIST_LOGIN -> Constant.ANILIST_LOGIN_URL
                     NavigationManager.Url.ANILIST_REGISTER -> Constant.ANILIST_REGISTER_URL
+                    NavigationManager.Url.ANILIST_PROFILE_SETTINGS -> Constant.ANILIST_PROFILE_SETTINGS_URL
+                    NavigationManager.Url.ANILIST_ACCOUNT_SETTINGS -> Constant.ANILIST_ACCOUNT_SETTINGS_URL
+                    NavigationManager.Url.ANILIST_LISTS_SETTINGS -> Constant.ANILIST_LISTS_SETTINGS_URL
+                    NavigationManager.Url.ANILIST_IMPORT_LISTS -> Constant.ANILIST_IMPORT_LISTS_URL
+                    NavigationManager.Url.ANILIST_CONNECT_WITH_TWITTER -> Constant.ANILIST_CONNECT_WITH_TWITTER_URL
                 }
             )
         )

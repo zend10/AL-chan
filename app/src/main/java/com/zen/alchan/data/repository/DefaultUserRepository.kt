@@ -90,6 +90,12 @@ class DefaultUserRepository(
         userManager.isLoggedInAsGuest = false
     }
 
+    override fun logout() {
+        userManager.bearerToken = null
+        userManager.viewerData = null
+        userManager.profileData = null
+    }
+
     override fun saveBearerToken(newBearerToken: String?) {
         userManager.bearerToken = newBearerToken
     }

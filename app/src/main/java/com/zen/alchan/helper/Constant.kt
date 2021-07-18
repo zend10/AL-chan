@@ -10,6 +10,11 @@ object Constant {
     private const val ANILIST_CLIENT_ID = 1988
     const val ANILIST_LOGIN_URL = "$ANILIST_WEBSITE_URL/api/v2/oauth/authorize?client_id=$ANILIST_CLIENT_ID&response_type=token"
     const val ANILIST_REGISTER_URL = "$ANILIST_WEBSITE_URL/signup"
+    const val ANILIST_PROFILE_SETTINGS_URL = "$ANILIST_WEBSITE_URL/settings"
+    const val ANILIST_ACCOUNT_SETTINGS_URL = "$ANILIST_PROFILE_SETTINGS_URL/account"
+    const val ANILIST_LISTS_SETTINGS_URL = "$ANILIST_PROFILE_SETTINGS_URL/lists"
+    const val ANILIST_IMPORT_LISTS_URL = "$ANILIST_PROFILE_SETTINGS_URL/import"
+    const val ANILIST_CONNECT_WITH_TWITTER_URL = "$ANILIST_PROFILE_SETTINGS_URL/twitter"
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
 }

@@ -27,6 +27,11 @@ interface NavigationManager {
     enum class Url {
         ANILIST_WEBSITE,
         ANILIST_LOGIN,
-        ANILIST_REGISTER
+        ANILIST_REGISTER,
+        ANILIST_PROFILE_SETTINGS,
+        ANILIST_ACCOUNT_SETTINGS,
+        ANILIST_LISTS_SETTINGS,
+        ANILIST_IMPORT_LISTS,
+        ANILIST_CONNECT_WITH_TWITTER
     }
 }

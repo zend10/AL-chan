@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.account.AccountSettingsFragment">
+
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
+
+    <androidx.core.widget.NestedScrollView
+        app:layout_constraintTop_toBottomOf="@id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@+id/accountSettingsLogoutLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="@dimen/marginPageBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/accountSettingsInfoText"
+                android:text="@string/account_settings_can_only_be_managed_on_the_web_make_sure_the_url_is_anilist_co_before_doing_anything"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/accountSettingsUpdateProfileLayout"
+                app:layout_constraintTop_toBottomOf="@id/accountSettingsInfoText"
+                app:cardBackgroundColor="?themeCardColor"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/update_profile"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/accountSettingsUpdateAccountLayout"
+                app:layout_constraintTop_toBottomOf="@id/accountSettingsUpdateProfileLayout"
+                app:cardBackgroundColor="?themeCardColor"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/update_account"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/accountSettingsForceUpdateStatsLayout"
+                app:layout_constraintTop_toBottomOf="@id/accountSettingsUpdateAccountLayout"
+                app:cardBackgroundColor="?themeCardColor"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/force_update_stats"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/accountSettingsImportListsLayout"
+                app:layout_constraintTop_toBottomOf="@id/accountSettingsForceUpdateStatsLayout"
+                app:cardBackgroundColor="?themeCardColor"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/import_lists"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/accountSettingsConnectWithTwitterLayout"
+                app:layout_constraintTop_toBottomOf="@id/accountSettingsImportListsLayout"
+                app:cardBackgroundColor="?themeCardColor"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/connect_account_with_twitter"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/accountSettingsLogoutLayout"
+        android:background="?themeBackgroundColor"
+        android:paddingTop="@dimen/lineWidth"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/divider"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/accountSettingsLogoutButton"
+            style="?themeNegativeBorderButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/marginPageNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
