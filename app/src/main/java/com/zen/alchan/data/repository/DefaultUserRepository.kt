@@ -9,6 +9,7 @@ import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.ListStyle
@@ -16,7 +17,10 @@ import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import type.*
+import type.ScoreFormat
+import type.UserStaffNameLanguage
+import type.UserStatisticsSort
+import type.UserTitleLanguage
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
@@ -145,7 +149,6 @@ class DefaultUserRepository(
         return when (mediaType) {
             MediaType.ANIME -> animeListStyle
             MediaType.MANGA -> mangaListStyle
-            else -> animeListStyle
         }
     }
 
@@ -166,8 +169,16 @@ class DefaultUserRepository(
         return Observable.just(userManager.appSetting)
     }
 
-    override fun setAppSetting(newAppSetting: AppSetting?) {
-        userManager.appSetting = newAppSetting ?: AppSetting.EMPTY_APP_SETTING
+    override fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit> {
+        return Observable.create {
+            try {
+                userManager.appSetting = newAppSetting ?: AppSetting.EMPTY_APP_SETTING
+                it.onNext(Unit)
+                it.onComplete()
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }
     }
 
     override fun getAppTheme(): AppTheme {

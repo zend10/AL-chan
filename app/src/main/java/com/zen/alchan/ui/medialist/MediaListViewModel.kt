@@ -1,10 +1,8 @@
 package com.zen.alchan.ui.medialist
 
-import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.*
@@ -14,7 +12,6 @@ import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import type.MediaType
 
 class MediaListViewModel(
@@ -44,7 +41,7 @@ class MediaListViewModel(
                     .filter { it }
                     .flatMap {
                         Observable.zip(
-                            userRepository.getListStyle(mediaType),
+                            userRepository.getListStyle(com.zen.alchan.helper.enums.MediaType.valueOf(mediaType.name)),
                             userRepository.getAppSetting(),
                             userRepository.getViewer(Source.CACHE)
                         ) { listStyle, appSetting, user ->

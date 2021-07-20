@@ -19,6 +19,12 @@ import com.zen.alchan.helper.enums.MediaType
 
 class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettingsViewModel>() {
 
+    /**
+     * TODO:
+     * Ask for rating
+     * Starting tab
+     */
+
     override val viewModel: AppSettingsViewModel by viewModel()
 
     private var appThemeAdapter: AppThemeRvAdapter? = null

@@ -6,10 +6,14 @@ import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.pojo.ListStyle
 import io.reactivex.Observable
-import type.*
+import type.ScoreFormat
+import type.UserStaffNameLanguage
+import type.UserStatisticsSort
+import type.UserTitleLanguage
 
 interface UserRepository {
 
@@ -31,7 +35,7 @@ interface UserRepository {
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)
 
     fun getAppSetting(): Observable<AppSetting>
-    fun setAppSetting(newAppSetting: AppSetting?)
+    fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>
 
     fun getAppTheme(): AppTheme
 

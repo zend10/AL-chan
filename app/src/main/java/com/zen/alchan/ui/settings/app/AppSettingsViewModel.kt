@@ -187,13 +187,23 @@ class AppSettingsViewModel(
     }
 
     fun saveAppSettings() {
-        userRepository.setAppSetting(currentAppSetting)
-        _appSettingsSaved.onNext(Unit)
+        disposables.add(
+            userRepository.setAppSetting(currentAppSetting)
+                .applyScheduler()
+                .subscribe{
+                    _appSettingsSaved.onNext(Unit)
+                }
+        )
     }
 
     fun resetAppSettings() {
-        userRepository.setAppSetting(null)
-        _appSettingsSaved.onNext(Unit)
+        disposables.add(
+            userRepository.setAppSetting(null)
+                .applyScheduler()
+                .subscribe {
+                    _appSettingsSaved.onNext(Unit)
+                }
+        )
     }
 
     fun updateAppTheme(newAppTheme: AppTheme) {
