@@ -4,8 +4,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.changeStatusBarColor
@@ -38,38 +41,25 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity(), ViewContract 
         _binding = generateViewBinding()
         setContentView(binding.root)
 
-        window.decorView.systemUiVisibility = (
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        )
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val flags = window.decorView.systemUiVisibility
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (isLightMode) {
+                // TODO: thinking if still need to support API below 23
                 changeStatusBarColor(R.color.black)
             }
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            if (isLightMode) {
-                window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.navigationBarColor = getColor(R.color.whiteTransparent70)
-            } else {
-                window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-                window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
-            }
+            controller.isAppearanceLightStatusBars = isLightMode
+            window.navigationBarColor = getColor(R.color.pureBlack)
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (isLightMode) {
-                window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                window.navigationBarColor = getColor(R.color.whiteTransparent70)
-            } else {
-                window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
-                window.navigationBarColor = getColor(R.color.pureBlackTransparent70)
-            }
+            controller.isAppearanceLightStatusBars = isLightMode
+            controller.isAppearanceLightNavigationBars = isLightMode
+            window.navigationBarColor = getColor(if (isLightMode) R.color.whiteTransparent70 else R.color.pureBlackTransparent70)
         } else {
-            if (isLightMode) {
-                window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            } else {
-                window.decorView.systemUiVisibility = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
-            }
+            controller.isAppearanceLightStatusBars = isLightMode
+            controller.isAppearanceLightNavigationBars = isLightMode
         }
 
         setUpLayout()

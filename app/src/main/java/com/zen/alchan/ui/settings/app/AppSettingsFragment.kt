@@ -156,7 +156,8 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.appSettingsSaveLayout.twoButtonsLayout.applyBottomPaddingInsets()
+        binding.appSettingsLayout.applySidePaddingInsets()
+        binding.appSettingsSaveLayout.twoButtonsLayout.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {

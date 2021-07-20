@@ -1,9 +1,8 @@
 package com.zen.alchan.helper.extensions
 
-import android.annotation.SuppressLint
-import android.os.Build
 import android.view.View
-import android.view.WindowInsets
+import androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.jakewharton.rxbinding2.view.RxView
 import com.zen.alchan.helper.pojo.InitialPadding
@@ -17,20 +16,8 @@ fun View.show(isVisible: Boolean) {
 
 fun View.applyTopPaddingInsets() {
     val initialPadding = InitialPadding(paddingTop = paddingTop)
-    setOnApplyWindowInsetsListener { view, windowInsets ->
-        view.updatePadding(top = initialPadding.paddingTop + windowInsets.systemWindowInsetTop)
-        windowInsets
-    }
-    requestApplyInsets()
-}
-
-fun View.applyTopBottomPaddingInsets() {
-    val initialPadding = InitialPadding(paddingTop = paddingTop, paddingBottom = paddingBottom)
-    setOnApplyWindowInsetsListener { view, windowInsets ->
-        view.updatePadding(
-            top = initialPadding.paddingTop + windowInsets.systemWindowInsetTop,
-            bottom = initialPadding.paddingBottom + windowInsets.systemWindowInsetBottom
-        )
+    setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        view.updatePadding(top = initialPadding.paddingTop + windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
         windowInsets
     }
     requestApplyInsets()
@@ -38,8 +25,45 @@ fun View.applyTopBottomPaddingInsets() {
 
 fun View.applyBottomPaddingInsets() {
     val initialPadding = InitialPadding(paddingBottom = paddingBottom)
-    setOnApplyWindowInsetsListener { view, windowInsets ->
-        view.updatePadding(bottom = initialPadding.paddingBottom + windowInsets.systemWindowInsetBottom)
+    setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        view.updatePadding(bottom = initialPadding.paddingBottom + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
+        windowInsets
+    }
+    requestApplyInsets()
+}
+
+fun View.applySidePaddingInsets() {
+    val initialPadding = InitialPadding(paddingLeft = paddingLeft, paddingRight = paddingRight)
+    setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        view.updatePadding(
+            left = initialPadding.paddingLeft + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).left,
+            right = initialPadding.paddingRight + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).right
+        )
+        windowInsets
+    }
+    requestApplyInsets()
+}
+
+fun View.applyTopBottomPaddingInsets() {
+    val initialPadding = InitialPadding(paddingTop = paddingTop, paddingBottom = paddingBottom)
+    setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        view.updatePadding(
+            top = initialPadding.paddingTop + windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).top,
+            bottom = initialPadding.paddingBottom + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+        )
+        windowInsets
+    }
+    requestApplyInsets()
+}
+
+fun View.applyBottomSidePaddingInsets() {
+    val initialPadding = InitialPadding(paddingBottom = paddingBottom, paddingLeft = paddingLeft, paddingRight = paddingRight)
+    setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        view.updatePadding(
+            bottom = initialPadding.paddingBottom + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom,
+            left = initialPadding.paddingLeft + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).left,
+            right = initialPadding.paddingRight + windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).right
+        )
         windowInsets
     }
     requestApplyInsets()
