@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentAccountSettingsBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
+import com.zen.alchan.helper.extensions.applySidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseFragment
@@ -66,6 +67,7 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding, Acc
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.accountSettingsLayout.applySidePaddingInsets()
         binding.accountSettingsLogoutLayout.applyBottomPaddingInsets()
     }
 

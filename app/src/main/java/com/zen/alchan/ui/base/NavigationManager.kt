@@ -23,6 +23,7 @@ interface NavigationManager {
 
     fun openWebView(url: String)
     fun openWebView(url: Url)
+    fun openEmailClient()
 
     enum class Url {
         ANILIST_WEBSITE,
@@ -32,6 +33,11 @@ interface NavigationManager {
         ANILIST_ACCOUNT_SETTINGS,
         ANILIST_LISTS_SETTINGS,
         ANILIST_IMPORT_LISTS,
-        ANILIST_CONNECT_WITH_TWITTER
+        ANILIST_CONNECT_WITH_TWITTER,
+        ALCHAN_FORUM_THREAD,
+        ALCHAN_GITHUB,
+        ALCHAN_PLAY_STORE,
+        ALCHAN_TWITTER,
+        ALCHAN_PRIVACY_POLICY
     }
 }

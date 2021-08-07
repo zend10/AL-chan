@@ -178,6 +178,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.listSettingsLayout.applySidePaddingInsets()
         binding.listSettingsSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
     }
 

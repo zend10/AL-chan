@@ -195,6 +195,15 @@
     <string name="logout">Logout</string>
     <string name="logout_from_alchan">Logout from AL-chan</string>
     <string name="logging_out_from_alchan_doesnt_mean_logging_out_from_anilist">Logging out from AL-chan doesn\'t mean logging out from AniList. If you also want to logout from AniList, you have to logout from the web.</string>
+    <string name="important_links">Important Links</string>
+    <string name="anilist">AniList</string>
+    <string name="github">GitHub</string>
+    <string name="alchanapp_gmail_com">alchanapp@gmail.com</string>
+    <string name="play_store">Play Store</string>
+    <string name="alchan_app">\@alchan_app</string>
+    <string name="al_chan_is_an_unofficial_app_for_anilist_this_app_exists_with_the_purpose_to_help_manage_your_anilist_account">AL-chan is an unofficial app for AniList. This app exists with the purpose to help manage your AniList account.</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="the_privacy_policy_of_this_app_can_be_read_fully_here">The privacy policy of this app can be read fully here.</string>
 
 
     <plurals name="minute">

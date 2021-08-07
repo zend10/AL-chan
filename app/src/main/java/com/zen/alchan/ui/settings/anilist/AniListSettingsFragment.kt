@@ -55,6 +55,7 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.aniListSettingsLayout.applySidePaddingInsets()
         binding.aniListSettingsSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
     }
 

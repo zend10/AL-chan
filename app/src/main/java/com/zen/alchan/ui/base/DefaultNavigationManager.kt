@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.base
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
 import com.zen.alchan.ui.settings.SettingsFragment
+import com.zen.alchan.ui.settings.about.AboutFragment
 import com.zen.alchan.ui.settings.account.AccountSettingsFragment
 import com.zen.alchan.ui.settings.anilist.AniListSettingsFragment
 import com.zen.alchan.ui.settings.app.AppSettingsFragment
@@ -81,7 +83,7 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToAbout() {
-
+        swapPage(AboutFragment.newInstance())
     }
 
     override fun navigateToReorder() {
@@ -104,9 +106,19 @@ class DefaultNavigationManager(
                     NavigationManager.Url.ANILIST_LISTS_SETTINGS -> Constant.ANILIST_LISTS_SETTINGS_URL
                     NavigationManager.Url.ANILIST_IMPORT_LISTS -> Constant.ANILIST_IMPORT_LISTS_URL
                     NavigationManager.Url.ANILIST_CONNECT_WITH_TWITTER -> Constant.ANILIST_CONNECT_WITH_TWITTER_URL
+                    NavigationManager.Url.ALCHAN_FORUM_THREAD -> Constant.ALCHAN_FORUM_THREAD_URL
+                    NavigationManager.Url.ALCHAN_GITHUB -> Constant.ALCHAN_GITHUB_URL
+                    NavigationManager.Url.ALCHAN_PLAY_STORE -> Constant.ALCHAN_PLAY_STORE_URL
+                    NavigationManager.Url.ALCHAN_TWITTER -> Constant.ALCHAN_TWITTER_URL
+                    NavigationManager.Url.ALCHAN_PRIVACY_POLICY -> Constant.ALCHAN_PRIVACY_POLICY_URL
                 }
             )
         )
+    }
+
+    override fun openEmailClient() {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", Constant.ALCHAN_EMAIL_ADDRESS, null))
+        context.startActivity(intent)
     }
 
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false) {

@@ -4,10 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentNotificationsSettingsBinding
-import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
-import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.extensions.clicks
-import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import io.reactivex.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -85,6 +82,7 @@ class NotificationsSettingsFragment : BaseFragment<FragmentNotificationsSettings
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.notificationSettingsLayout.applySidePaddingInsets()
         binding.notificationsSettingsSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
     }
 
