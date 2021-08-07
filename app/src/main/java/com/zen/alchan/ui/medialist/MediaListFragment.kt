@@ -2,20 +2,21 @@ package com.zen.alchan.ui.medialist
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentMediaListBinding
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.extensions.applySidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaType
-
-
-private const val MEDIA_TYPE = "mediaType"
-private const val USER_ID = "userId"
 
 class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewModel>() {
 
@@ -23,6 +24,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     private var adapter: BaseMediaListRvAdapter? = null
+
+    private var menuItemSearch: MenuItem? = null
+    private var menuItemCustomiseList: MenuItem? = null
+    private var menuItemFilter: MenuItem? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -41,6 +46,13 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     override fun setUpLayout() {
         binding.apply {
+            defaultToolbar.defaultToolbar.apply {
+                inflateMenu(R.menu.menu_media_list)
+                menuItemSearch = menu.findItem(R.id.itemSearch)
+                menuItemCustomiseList = menu.findItem(R.id.itemCustomiseList)
+                menuItemFilter = menu.findItem(R.id.itemFilter)
+            }
+
             adapter = MediaListLinearRvAdapter(requireContext(), listOf())
             mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             mediaListRecyclerView.adapter = adapter
@@ -48,27 +60,45 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             mediaListSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
             }
+
+            menuItemCustomiseList?.setOnMenuItemClickListener {
+                // navigate to customise list
+                true
+            }
+
+            menuItemFilter?.setOnMenuItemClickListener {
+                // navigate to filter
+                true
+            }
+
+            mediaListSwitchListButton.clicks {
+
+            }
         }
     }
 
     override fun setUpInsets() {
         binding.mediaListRootLayout.applyTopPaddingInsets()
+        binding.mediaListRecyclerView.applySidePaddingInsets()
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.loading.subscribe {
                 binding.loadingLayout.loadingLayout.show(it)
                 binding.mediaListSwipeRefresh.isRefreshing = false
-            }
-        )
-
-        disposables.add(
+            },
+            viewModel.toolbarTitle.subscribe {
+                binding.defaultToolbar.defaultToolbar.setTitle(it)
+            },
             viewModel.mediaListAdapterComponent.subscribe {
                 adapter?.applyAppSetting(it.appSetting)
                 adapter?.applyListStyle(it.listStyle)
                 adapter?.applyMediaListOptions(it.mediaListOptions)
                 adapter?.updateData(it.mediaListItems)
+            },
+            viewModel.listStyle.subscribe {
+                modifyLayoutStyle(it)
             }
         )
 
@@ -81,12 +111,19 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         viewModel.loadData()
     }
 
+    private fun modifyLayoutStyle(listStyle: ListStyle) {
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
     }
 
     companion object {
+        private const val MEDIA_TYPE = "mediaType"
+        private const val USER_ID = "userId"
+
         @JvmStatic
         fun newInstance(mediaType: MediaType, userId: Int = 0) =
             MediaListFragment().apply {

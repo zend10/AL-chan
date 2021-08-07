@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentMainBinding
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
@@ -14,7 +15,6 @@ import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaType
 
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {

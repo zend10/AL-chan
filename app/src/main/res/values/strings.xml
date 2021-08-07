@@ -111,6 +111,7 @@
     <string name="the_app_will_be_restarted_to_apply_the_change">"The app will be restarted to apply the change."</string>
     <string name="reset">Reset</string>
     <string name="anime_list">Anime List</string>
+    <string name="manga_list">Manga List</string>
     <string name="plus_one_ch">+1 CH</string>
     <string name="plus_one_ep">+1 EP</string>
     <string name="plus_one_vo">+1 VO</string>
@@ -204,6 +205,9 @@
     <string name="al_chan_is_an_unofficial_app_for_anilist_this_app_exists_with_the_purpose_to_help_manage_your_anilist_account">AL-chan is an unofficial app for AniList. This app exists with the purpose to help manage your AniList account.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="the_privacy_policy_of_this_app_can_be_read_fully_here">The privacy policy of this app can be read fully here.</string>
+    <string name="filter">Filter</string>
+    <string name="customise_list">Customise List</string>
+    <string name="search">Search</string>
 
 
     <plurals name="minute">

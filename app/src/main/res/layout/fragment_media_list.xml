@@ -8,7 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.medialist.MediaListFragment">
 
-    <include layout="@layout/toolbar_default"/>
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/mediaListSwipeRefresh"
