@@ -9,6 +9,54 @@ import type.MediaType
 
 class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataSource) : MediaListRepository {
 
+    override val defaultAnimeList: List<String>
+        get() = listOf(
+            "Watching",
+            "Rewatching",
+            "Completed",
+            "Paused",
+            "Dropped",
+            "Planning"
+        )
+
+    override val defaultAnimeListSplitCompletedSectionByFormat: List<String>
+        get() = listOf(
+            "Watching",
+            "Rewatching",
+            "Completed TV",
+            "Completed Movie",
+            "Completed OVA",
+            "Completed ONA",
+            "Completed TV Short",
+            "Completed Special",
+            "Completed Music",
+            "Paused",
+            "Dropped",
+            "Planning"
+        )
+
+    override val defaultMangaList: List<String>
+        get() = listOf(
+            "Reading",
+            "Rereading",
+            "Completed",
+            "Paused",
+            "Dropped",
+            "Planning"
+        )
+
+    override val defaultMangaListSplitCompletedSectionByFormat: List<String>
+        get() = listOf(
+            "Reading",
+            "Rereading",
+            "Completed Manga",
+            "Completed Novel",
+            "Completed One Shot",
+            "Paused",
+            "Dropped",
+            "Planning"
+        )
+
     override fun getMediaListCollection(
         userId: Int,
         mediaType: MediaType

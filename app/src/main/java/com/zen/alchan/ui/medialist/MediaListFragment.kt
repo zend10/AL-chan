@@ -72,7 +72,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             mediaListSwitchListButton.clicks {
-
+                // open bottom sheet
             }
         }
     }
@@ -103,7 +103,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         )
 
         sharedDisposables.add(
-            sharedViewModel.getScrollToTopObservable(SharedMainViewModel.Page.ANIME).subscribe {
+            sharedViewModel.getScrollToTopObservable(sharedViewModel.getPageFromMediaType(viewModel.mediaType)).subscribe {
                 binding.mediaListRecyclerView.smoothScrollToPosition(0)
             }
         )

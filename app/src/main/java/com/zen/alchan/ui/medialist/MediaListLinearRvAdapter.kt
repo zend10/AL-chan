@@ -9,6 +9,7 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.databinding.ListMediaListLinearBinding
 import com.zen.alchan.databinding.ListTextBinding
+import com.zen.alchan.databinding.ListTitleBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
@@ -23,24 +24,13 @@ class MediaListLinearRvAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             MediaListItem.VIEW_TYPE_TITLE -> {
-                val view = ListTextBinding.inflate(inflater, parent, false)
+                val view = ListTitleBinding.inflate(inflater, parent, false)
                 TitleViewHolder(view)
             }
             else -> {
                 val view = ListMediaListLinearBinding.inflate(inflater, parent, false)
                 ItemViewHolder(view)
             }
-        }
-
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return list[position].viewType
-    }
-
-    inner class TitleViewHolder(private val binding: ListTextBinding) : ViewHolder(binding) {
-        override fun bind(item: MediaListItem, index: Int) {
-            binding.itemText.text = item.title
         }
     }
 

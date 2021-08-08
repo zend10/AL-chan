@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.main
 
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -30,6 +31,13 @@ class SharedMainViewModel : BaseViewModel() {
 
     fun getScrollToTopObservable(page: Page): Observable<Unit> {
         return scrollEvents[page] ?: _scrollHomeToTop
+    }
+
+    fun getPageFromMediaType(mediaType: MediaType): Page {
+        return when (mediaType) {
+            MediaType.ANIME -> Page.ANIME
+            MediaType.MANGA -> Page.MANGA
+        }
     }
 
     enum class Page {
