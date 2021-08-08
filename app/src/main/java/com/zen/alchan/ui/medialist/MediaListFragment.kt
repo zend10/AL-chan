@@ -72,7 +72,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             mediaListSwitchListButton.clicks {
-                // open bottom sheet
+                viewModel.loadListSections()
             }
         }
     }
@@ -99,6 +99,11 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             },
             viewModel.listStyle.subscribe {
                 modifyLayoutStyle(it)
+            },
+            viewModel.listSections.subscribe {
+                showListDialog(it) { _, index ->
+                    viewModel.showSelectedSectionMediaList(index)
+                }
             }
         )
 

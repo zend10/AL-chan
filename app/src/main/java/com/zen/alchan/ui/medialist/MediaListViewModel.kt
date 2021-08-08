@@ -13,12 +13,14 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.enums.getAniListMediaType
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,6 +33,10 @@ class MediaListViewModel(
     val toolbarTitle: Observable<Int>
         get() = _toolbarTitle
 
+    private val _toolbarSubtitle = BehaviorSubject.createDefault("")
+    val toolbarSubtitle: Observable<String>
+        get() = _toolbarSubtitle
+
     private val _mediaListAdapterComponent = BehaviorSubject.createDefault(MediaListAdapterComponent.EMPTY_MEDIA_LIST_ADAPTER_COMPONENT)
     val mediaListAdapterComponent: Observable<MediaListAdapterComponent>
         get() = _mediaListAdapterComponent
@@ -39,6 +45,10 @@ class MediaListViewModel(
     val listStyle: Observable<ListStyle>
         get() = _listStyle
 
+    private val _listSections = PublishSubject.create<List<ListItem<String>>>()
+    val listSections: Observable<List<ListItem<String>>>
+        get() = _listSections
+
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
@@ -46,6 +56,7 @@ class MediaListViewModel(
     private var appSetting = AppSetting.EMPTY_APP_SETTING
 
     private var rawMediaListCollection: MediaListCollection? = null
+    private var currentMediaListCollection: MediaListCollection? = null
 
     override fun loadData() {
         loadOnce {
@@ -88,6 +99,32 @@ class MediaListViewModel(
 
     fun reloadData() {
         getMediaListCollection(true)
+    }
+
+    fun loadListSections() {
+        currentMediaListCollection?.lists?.let { groups ->
+            _listSections.onNext(
+                groups.map {
+                    val formattedTitle = "${it.name} (${it.entries.size})"
+                    ListItem(text = formattedTitle, data = formattedTitle)
+                }
+            )
+        }
+    }
+
+    fun showSelectedSectionMediaList(index: Int) {
+        val currentGroups = currentMediaListCollection?.lists ?: listOf()
+        if (index >= 0 && index < currentGroups.size) {
+            _mediaListAdapterComponent.value?.let {
+                _mediaListAdapterComponent.onNext(
+                    it.copy(
+                        mediaListItems = currentGroups[index].entries.map { mediaList ->
+                            MediaListItem(mediaList = mediaList, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST)
+                        }
+                    )
+                )
+            }
+        }
     }
 
     private fun getMediaListCollection(isReloading: Boolean = false) {
@@ -189,8 +226,6 @@ class MediaListViewModel(
         // use to prevent duplication
         val addedGroups = mutableSetOf<MediaListGroup>()
 
-        // TODO: implement not "All" list
-
         sectionOrder.forEach { section ->
             val group = groups.find { it.name == section }
             if (group != null && addedGroups.add(group)) {
@@ -214,6 +249,8 @@ class MediaListViewModel(
                 list.addAll(group.entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
             }
         }
+
+        currentMediaListCollection = MediaListCollection(addedGroups.toList())
 
         return list
     }
