@@ -33,13 +33,13 @@ class AppSettingsViewModel(
     val showRecentReviewsAtHome: Observable<Boolean>
         get() = _showRecentReviewsAtHome
 
-    private val _allAnimeListPosition = BehaviorSubject.createDefault(0)
-    val allAnimeListPosition: Observable<Int>
-        get() = _allAnimeListPosition
+    private val _isAllAnimeListPositionAtTop = BehaviorSubject.createDefault(true)
+    val isAllAnimeListPositionAtTop: Observable<Boolean>
+        get() = _isAllAnimeListPositionAtTop
 
-    private val _allMangaListPosition = BehaviorSubject.createDefault(0)
-    val allMangaListPosition: Observable<Int>
-        get() = _allMangaListPosition
+    private val _isAllMangaListPositionAtTop = BehaviorSubject.createDefault(true)
+    val isAllMangaListPositionAtTop: Observable<Boolean>
+        get() = _isAllMangaListPositionAtTop
 
     private val _useRelativeDateForNextAiringEpisode = BehaviorSubject.createDefault(false)
     val useRelativeDateForNextAiringEpisode: Observable<Boolean>
@@ -117,12 +117,12 @@ class AppSettingsViewModel(
     val appThemeItems: Observable<List<AppThemeItem>>
         get() = _appThemeItems
 
-    private val _allAnimeListPositionItems = PublishSubject.create<List<ListItem<Int>>>()
-    val allAnimeListPositionItems: Observable<List<ListItem<Int>>>
+    private val _allAnimeListPositionItems = PublishSubject.create<List<ListItem<Boolean>>>()
+    val allAnimeListPositionItems: Observable<List<ListItem<Boolean>>>
         get() = _allAnimeListPositionItems
 
-    private val _allMangaListPositionItems = PublishSubject.create<List<ListItem<Int>>>()
-    val allMangaListPositionItems: Observable<List<ListItem<Int>>>
+    private val _allMangaListPositionItems = PublishSubject.create<List<ListItem<Boolean>>>()
+    val allMangaListPositionItems: Observable<List<ListItem<Boolean>>>
         get() = _allMangaListPositionItems
 
     private val _staffNamingItems = PublishSubject.create<List<ListItem<StaffNaming>>>()
@@ -157,8 +157,8 @@ class AppSettingsViewModel(
                         updateUseCircularAvatarForProfile(appSetting.useCircularAvatarForProfile)
                         updateShowRecentReviewsAtHome(appSetting.showRecentReviewsAtHome)
 
-                        updateAllAnimeListPosition(appSetting.allAnimeListPosition)
-                        updateAllMangaListPosition(appSetting.allMangaListPosition)
+                        updateIsAllAnimeListPositionAtTop(appSetting.isAllAnimeListPositionAtTop)
+                        updateIsAllMangaListPositionAtTop(appSetting.isAllMangaListPositionAtTop)
                         updateUseRelativeDateForNextAiringEpisode(appSetting.useRelativeDateForNextAiringEpisode)
 
                         updateJapaneseStaffNaming(appSetting.japaneseStaffNaming)
@@ -221,14 +221,14 @@ class AppSettingsViewModel(
         _showRecentReviewsAtHome.onNext(shouldShowRecentReviewsAtHome)
     }
 
-    fun updateAllAnimeListPosition(newPosition: Int) {
-        currentAppSetting?.allAnimeListPosition = newPosition
-        _allAnimeListPosition.onNext(newPosition + 1)
+    fun updateIsAllAnimeListPositionAtTop(isAtTop: Boolean) {
+        currentAppSetting?.isAllAnimeListPositionAtTop = isAtTop
+        _isAllAnimeListPositionAtTop.onNext(isAtTop)
     }
 
-    fun updateAllMangaListPosition(newPosition: Int) {
-        currentAppSetting?.allMangaListPosition = newPosition
-        _allMangaListPosition.onNext(newPosition + 1)
+    fun updateIsAllMangaListPositionAtTop(isAtTop: Boolean) {
+        currentAppSetting?.isAllMangaListPositionAtTop = isAtTop
+        _isAllMangaListPositionAtTop.onNext(isAtTop)
     }
 
     fun updateUseRelativeDateForNextAiringEpisode(shouldUseRelativeDateForNextAiringEpisode: Boolean) {
@@ -345,22 +345,9 @@ class AppSettingsViewModel(
     }
 
     fun loadAllListPositionItems(mediaType: MediaType) {
-        val items = ArrayList<ListItem<Int>>()
-
-        var counter = 0
-        items.add(ListItem("${counter + 1} - {0}", listOf(R.string.top_of_the_list), counter))
-        counter++
-
-        val sectionOrder = when (mediaType) {
-            MediaType.ANIME -> viewer?.mediaListOptions?.animeList?.sectionOrder
-            MediaType.MANGA -> viewer?.mediaListOptions?.mangaList?.sectionOrder
-        }
-
-        sectionOrder?.forEach {
-            items.add(ListItem("${counter + 1} - {0} $it", listOf(R.string.below), counter))
-            counter++
-        }
-
+        val items = ArrayList<ListItem<Boolean>>()
+        items.add(ListItem(R.string.top_of_the_list, true))
+        items.add(ListItem(R.string.bottom_of_the_list, false))
         when (mediaType) {
             MediaType.ANIME -> _allAnimeListPositionItems.onNext(items)
             MediaType.MANGA -> _allMangaListPositionItems.onNext(items)

@@ -91,6 +91,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             viewModel.toolbarTitle.subscribe {
                 binding.defaultToolbar.defaultToolbar.setTitle(it)
             },
+            viewModel.toolbarSubtitle.subscribe {
+                binding.defaultToolbar.defaultToolbar.subtitle = it
+            },
             viewModel.mediaListAdapterComponent.subscribe {
                 adapter?.applyAppSetting(it.appSetting)
                 adapter?.applyListStyle(it.listStyle)

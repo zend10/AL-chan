@@ -177,11 +177,19 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.showRecentReviewsAtHome.subscribe {
                 binding.appSettingsRecentReviewsCheckBox.isChecked = it
             },
-            viewModel.allAnimeListPosition.subscribe {
-                binding.appSettingsAllAnimeText.text = it.toString()
+            viewModel.isAllAnimeListPositionAtTop.subscribe {
+                binding.appSettingsAllAnimeText.text = if (it) {
+                    getString(R.string.top_of_the_list)
+                } else {
+                    getString(R.string.bottom_of_the_list)
+                }
             },
-            viewModel.allMangaListPosition.subscribe {
-                binding.appSettingsAllMangaText.text = it.toString()
+            viewModel.isAllMangaListPositionAtTop.subscribe {
+                binding.appSettingsAllMangaText.text = if (it) {
+                    getString(R.string.top_of_the_list)
+                } else {
+                    getString(R.string.bottom_of_the_list)
+                }
             },
             viewModel.useRelativeDateForNextAiringEpisode.subscribe {
                 binding.appSettingsRelativeDateCheckBox.isChecked = it
@@ -246,12 +254,12 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             },
             viewModel.allAnimeListPositionItems.subscribe {
                 showListDialog(it) { data, _ ->
-                    viewModel.updateAllAnimeListPosition(data)
+                    viewModel.updateIsAllAnimeListPositionAtTop(data)
                 }
             },
             viewModel.allMangaListPositionItems.subscribe {
                 showListDialog(it) { data, _ ->
-                    viewModel.updateAllMangaListPosition(data)
+                    viewModel.updateIsAllMangaListPositionAtTop(data)
                 }
             },
             viewModel.staffNamingItems.subscribe {

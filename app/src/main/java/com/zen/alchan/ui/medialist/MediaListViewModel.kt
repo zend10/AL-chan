@@ -54,9 +54,12 @@ class MediaListViewModel(
 
     private var user = User.EMPTY_USER
     private var appSetting = AppSetting.EMPTY_APP_SETTING
+    private var isAllListPositionAtTop = true
 
     private var rawMediaListCollection: MediaListCollection? = null
     private var currentMediaListCollection: MediaListCollection? = null
+
+    private var selectedSectionIndex = 0
 
     override fun loadData() {
         loadOnce {
@@ -91,6 +94,11 @@ class MediaListViewModel(
                         this.appSetting = appSetting
                         _listStyle.onNext(listStyle)
 
+                        isAllListPositionAtTop = when (mediaType) {
+                            MediaType.ANIME -> appSetting.isAllAnimeListPositionAtTop
+                            MediaType.MANGA -> appSetting.isAllMangaListPositionAtTop
+                        }
+
                         getMediaListCollection(state == State.LOADED || state == State.ERROR)
                     }
             )
@@ -98,32 +106,38 @@ class MediaListViewModel(
     }
 
     fun reloadData() {
+        // TODO: need to handle selected section
         getMediaListCollection(true)
     }
 
     fun loadListSections() {
         currentMediaListCollection?.lists?.let { groups ->
-            _listSections.onNext(
-                groups.map {
-                    val formattedTitle = "${it.name} (${it.entries.size})"
-                    ListItem(text = formattedTitle, data = formattedTitle)
-                }
-            )
+            val sections = ArrayList<ListItem<String>>()
+            var totalEntries = 0
+            val listFromCurrentGroups = groups.map {
+                totalEntries += it.entries.size
+                val formattedTitle = "${it.name} (${it.entries.size})"
+                ListItem(text = formattedTitle, data = formattedTitle)
+            }
+            sections.addAll(listFromCurrentGroups)
+
+            val allListItem = ListItem(text = "All ($totalEntries)", data = "All")
+            if (isAllListPositionAtTop) {
+                sections.add(0, allListItem)
+            } else {
+                sections.add(allListItem)
+            }
+
+            _listSections.onNext(sections)
         }
     }
 
     fun showSelectedSectionMediaList(index: Int) {
         val currentGroups = currentMediaListCollection?.lists ?: listOf()
-        if (index >= 0 && index < currentGroups.size) {
-            _mediaListAdapterComponent.value?.let {
-                _mediaListAdapterComponent.onNext(
-                    it.copy(
-                        mediaListItems = currentGroups[index].entries.map { mediaList ->
-                            MediaListItem(mediaList = mediaList, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST)
-                        }
-                    )
-                )
-            }
+        selectedSectionIndex = index
+        val mediaListItems = getMediaListItems(currentGroups, index)
+        _mediaListAdapterComponent.value?.let {
+            _mediaListAdapterComponent.onNext(it.copy(mediaListItems = mediaListItems))
         }
     }
 
@@ -164,8 +178,8 @@ class MediaListViewModel(
             val filteredEntries = getFilteredEntries(sortedEntries)
             groupWithSortedAndFilteredEntries.add(mediaListGroup.copy(entries = filteredEntries))
         }
-
-        list.addAll(convertMediaListGroupToMediaListItem(groupWithSortedAndFilteredEntries))
+        val sortedGroups = getSortedGroups(groupWithSortedAndFilteredEntries)
+        list.addAll(getMediaListItems(sortedGroups, selectedSectionIndex))
 
         return list
     }
@@ -197,9 +211,7 @@ class MediaListViewModel(
         return entries
     }
 
-    private fun convertMediaListGroupToMediaListItem(groups: List<MediaListGroup>): List<MediaListItem> {
-        val list = ArrayList<MediaListItem>()
-
+    private fun getSortedGroups(groups: List<MediaListGroup>): List<MediaListGroup> {
         val (sectionOrder, customList, defaultList) = when (mediaType) {
             MediaType.ANIME -> {
                 Triple(
@@ -223,34 +235,55 @@ class MediaListViewModel(
             }
         }
 
-        // use to prevent duplication
-        val addedGroups = mutableSetOf<MediaListGroup>()
+        val normalizedGroups = mutableSetOf<MediaListGroup>()
 
         sectionOrder.forEach { section ->
             val group = groups.find { it.name == section }
-            if (group != null && addedGroups.add(group)) {
-                list.add(MediaListItem(title = group.name, viewType = MediaListItem.VIEW_TYPE_TITLE))
-                list.addAll(group.entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
-            }
+            if (group != null) normalizedGroups.add(group)
         }
 
         customList.forEach { custom ->
             val group = groups.find { it.name == custom && it.isCustomList }
-            if (group != null && addedGroups.add(group)) {
-                list.add(MediaListItem(title = group.name, viewType = MediaListItem.VIEW_TYPE_TITLE))
-                list.addAll(group.entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
-            }
+            if (group != null) { normalizedGroups.add(group) }
         }
 
         defaultList.forEach { default ->
             val group = groups.find { it.name == default && !it.isCustomList }
-            if (group != null && addedGroups.add(group)) {
+            if (group != null) normalizedGroups.add(group)
+        }
+
+        currentMediaListCollection = MediaListCollection(normalizedGroups.toList())
+
+        return normalizedGroups.toList()
+    }
+
+    private fun getMediaListItems(groups: List<MediaListGroup>, index: Int = 0): List<MediaListItem> {
+        val list = ArrayList<MediaListItem>()
+
+        val isAllList = if (isAllListPositionAtTop) {
+            index == 0
+        } else {
+            index == groups.size
+        }
+
+        if (isAllList) {
+            groups.forEach { group ->
                 list.add(MediaListItem(title = group.name, viewType = MediaListItem.VIEW_TYPE_TITLE))
                 list.addAll(group.entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
             }
-        }
 
-        currentMediaListCollection = MediaListCollection(addedGroups.toList())
+            _toolbarSubtitle.onNext("All (${list.count { it.viewType == MediaListItem.VIEW_TYPE_MEDIA_LIST }})")
+        } else {
+            // "All" list is just for display, not actually stored
+            // It does not exist in "groups"
+            // That is why we should calculate the actual index without "All" list
+            var selectedIndex = if (isAllListPositionAtTop) index - 1 else index
+            if (selectedIndex >= groups.size)
+                selectedIndex = groups.lastIndex
+            list.addAll(groups[selectedIndex].entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
+
+            _toolbarSubtitle.onNext("${groups[selectedIndex].name} (${list.size})")
+        }
 
         return list
     }
