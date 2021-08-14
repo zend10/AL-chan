@@ -4,10 +4,7 @@ import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.anilist.MediaList
-import com.zen.alchan.data.response.anilist.MediaListCollection
-import com.zen.alchan.data.response.anilist.MediaListGroup
-import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
@@ -56,10 +53,12 @@ class MediaListViewModel(
     private var appSetting = AppSetting.EMPTY_APP_SETTING
     private var isAllListPositionAtTop = true
 
-    private var rawMediaListCollection: MediaListCollection? = null
-    private var currentMediaListCollection: MediaListCollection? = null
+    private var rawMediaListCollection: MediaListCollection? = null // needed when applying filter
+    private var currentMediaListCollection: MediaListCollection? = null // needed to show number of entries in each section
+    private var currentMediaListItems: List<MediaListItem> = listOf() // needed for search
 
     private var selectedSectionIndex = 0
+    private var searchKeyword = ""
 
     override fun loadData() {
         loadOnce {
@@ -106,7 +105,6 @@ class MediaListViewModel(
     }
 
     fun reloadData() {
-        // TODO: need to handle selected section
         getMediaListCollection(true)
     }
 
@@ -139,6 +137,40 @@ class MediaListViewModel(
         _mediaListAdapterComponent.value?.let {
             _mediaListAdapterComponent.onNext(it.copy(mediaListItems = mediaListItems))
         }
+
+        if (searchKeyword.isNotBlank())
+            filterByText(searchKeyword)
+    }
+
+    fun filterByText(query: String) {
+        searchKeyword = query
+        val filteredMediaListItems = ArrayList<MediaListItem>()
+
+        var isLastItemTitle = false
+        currentMediaListItems.forEachIndexed { index, mediaListItem ->
+            if (mediaListItem.viewType == MediaListItem.VIEW_TYPE_TITLE) {
+                if (isLastItemTitle) {
+                    filteredMediaListItems.removeAt(filteredMediaListItems.lastIndex)
+                }
+                filteredMediaListItems.add(mediaListItem)
+                isLastItemTitle = true
+            } else if (
+                mediaListItem.mediaList.media.title.romaji.contains(query, true) ||
+                mediaListItem.mediaList.media.title.english.contains(query, true) ||
+                mediaListItem.mediaList.media.title.native.contains(query, true) ||
+                mediaListItem.mediaList.media.synonyms.find { synonym -> synonym.contains(query, true) } != null ||
+                mediaListItem.mediaList.notes.contains(query, true)
+            ) {
+                filteredMediaListItems.add(mediaListItem)
+                isLastItemTitle = false
+            } else if (index == currentMediaListItems.lastIndex && isLastItemTitle) {
+                filteredMediaListItems.removeAt(filteredMediaListItems.lastIndex)
+            }
+        }
+
+        _mediaListAdapterComponent.value?.let {
+            _mediaListAdapterComponent.onNext(it.copy(mediaListItems = filteredMediaListItems))
+        }
     }
 
     private fun getMediaListCollection(isReloading: Boolean = false) {
@@ -159,6 +191,9 @@ class MediaListViewModel(
                             user.mediaListOptions,
                             filteredAndSortedList
                         ))
+
+                        if (searchKeyword.isNotBlank())
+                            filterByText(searchKeyword)
 
                         state = State.LOADED
                     },
@@ -284,6 +319,8 @@ class MediaListViewModel(
 
             _toolbarSubtitle.onNext("${groups[selectedIndex].name} (${list.size})")
         }
+
+        currentMediaListItems = list
 
         return list
     }

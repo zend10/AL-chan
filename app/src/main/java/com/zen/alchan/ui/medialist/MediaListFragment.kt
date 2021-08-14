@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentMediaListBinding
@@ -29,6 +30,8 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     private var menuItemCustomiseList: MenuItem? = null
     private var menuItemFilter: MenuItem? = null
 
+    private var searchView: SearchView? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -53,6 +56,19 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 menuItemFilter = menu.findItem(R.id.itemFilter)
             }
 
+            searchView = menuItemSearch?.actionView as? SearchView
+            searchView?.queryHint = getString(R.string.search)
+            searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    viewModel.filterByText(newText)
+                    return true
+                }
+            })
+
             adapter = MediaListLinearRvAdapter(requireContext(), listOf())
             mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             mediaListRecyclerView.adapter = adapter
@@ -74,6 +90,8 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             mediaListSwitchListButton.clicks {
                 viewModel.loadListSections()
             }
+
+
         }
     }
 
@@ -126,6 +144,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        menuItemSearch = null
+        menuItemCustomiseList = null
+        menuItemFilter = null
+        searchView = null
     }
 
     companion object {
