@@ -9,8 +9,10 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.browse.BrowseFragment
+import com.zen.alchan.ui.filter.FilterFragment
 import com.zen.alchan.ui.landing.LandingFragment
 import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
@@ -88,6 +90,10 @@ class DefaultNavigationManager(
 
     override fun navigateToReorder() {
         stackPage(ReorderFragment.newInstance())
+    }
+
+    override fun navigateToFilter(mediaType: MediaType, isUserList: Boolean) {
+        stackPage(FilterFragment.newInstance(mediaType, isUserList))
     }
 
     override fun openWebView(url: String) {

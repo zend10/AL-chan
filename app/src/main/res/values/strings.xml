@@ -208,6 +208,32 @@
     <string name="filter">Filter</string>
     <string name="customise_list">Customise List</string>
     <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by">Sort by</string>
+    <string name="order_by">Order by</string>
+    <string name="media_filter">Media Filter</string>
+    <string name="format">Format</string>
+    <string name="status">Status</string>
+    <string name="source">Source</string>
+    <string name="country">Country</string>
+    <string name="season">Season</string>
+    <string name="release_year">Release Year</string>
+    <string name="episodes">Episodes</string>
+    <string name="duration">Duration</string>
+    <string name="average_score">Average Score</string>
+    <string name="popularity">Popularity</string>
+    <string name="tags">Tags</string>
+    <string name="exclude">Exclude</string>
+    <string name="include">Include</string>
+    <string name="genres">Genres</string>
+    <string name="include_these_genres">Include these genres</string>
+    <string name="exclude_these_genres">Exclude these genres</string>
+    <string name="include_these_tags">Include these tags</string>
+    <string name="exclude_these_tags">Exclude these tags</string>
+    <string name="user_list_filter">User List Filter</string>
+    <string name="start_year">Start Year</string>
+    <string name="completed_year">Completed Year</string>
+    <string name="priority">Priority</string>
 
 
     <plurals name="minute">

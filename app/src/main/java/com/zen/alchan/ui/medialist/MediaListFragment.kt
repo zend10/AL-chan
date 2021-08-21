@@ -15,6 +15,7 @@ import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,6 +24,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     override val viewModel: MediaListViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
+    private val sharedFilterViewModel by sharedViewModel<SharedFilterViewModel>()
 
     private var adapter: BaseMediaListRvAdapter? = null
 
@@ -83,7 +85,8 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemFilter?.setOnMenuItemClickListener {
-                // navigate to filter
+                // TODO: pass current filter as well
+                navigation.navigateToFilter(viewModel.mediaType, true)
                 true
             }
 
@@ -128,11 +131,24 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
         )
 
-        sharedDisposables.add(
+        sharedDisposables.addAll(
             sharedViewModel.getScrollToTopObservable(sharedViewModel.getPageFromMediaType(viewModel.mediaType)).subscribe {
                 binding.mediaListRecyclerView.smoothScrollToPosition(0)
+            },
+
+            sharedFilterViewModel.mediaFilterResult.subscribe {
+                when (it.second) {
+                    SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST -> {
+
+                    }
+                    SharedFilterViewModel.FilterList.MANGA_MEDIA_LIST -> {
+
+                    }
+                }
             }
         )
+
+
 
         viewModel.loadData()
     }

@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.base
 
+import com.zen.alchan.helper.enums.MediaType
+
 
 interface NavigationManager {
 
@@ -20,6 +22,7 @@ interface NavigationManager {
     fun navigateToAbout()
 
     fun navigateToReorder()
+    fun navigateToFilter(mediaType: MediaType, isUserList: Boolean)
 
     fun openWebView(url: String)
     fun openWebView(url: Url)
