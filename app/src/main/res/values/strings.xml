@@ -234,6 +234,16 @@
     <string name="start_year">Start Year</string>
     <string name="completed_year">Completed Year</string>
     <string name="priority">Priority</string>
+    <string name="apply">Apply</string>
+    <string name="descending">Descending</string>
+    <string name="ascending">Ascending</string>
+    <string name="follow_list_settings">Follow List Settings</string>
+    <string name="progress">Progress</string>
+    <string name="start_date">Start Date</string>
+    <string name="completed_date">Completed Date</string>
+    <string name="release_date">Release Date</string>
+    <string name="next_airing">Next Airing</string>
+    <string name="persist_filter_on_app_restart">Persist filter on app restart</string>
 
 
     <plurals name="minute">

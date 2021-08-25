@@ -25,8 +25,49 @@
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/filterSortLayout"
+                android:id="@+id/filterSettingsLayout"
                 app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterSettingsTitle"
+                    android:text="@string/settings"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    app:layout_constraintTop_toBottomOf="@id/filterSettingsTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/persist_filter_on_app_restart"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/filterPersistCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/filterSortLayout"
+                app:layout_constraintTop_toBottomOf="@+id/filterSettingsLayout"
+                android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -43,7 +84,6 @@
                     android:id="@+id/filterSortByLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterSortTitle"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -59,7 +99,8 @@
                         android:id="@+id/filterSortByText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -68,7 +109,6 @@
                     android:id="@+id/filterOrderByLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterSortByLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -84,7 +124,8 @@
                         android:id="@+id/filterOrderByText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -111,7 +152,6 @@
                     android:id="@+id/filterFormatLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterMediaTitle"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -127,7 +167,8 @@
                         android:id="@+id/filterFormatText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -136,7 +177,6 @@
                     android:id="@+id/filterStatusLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterFormatLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -152,7 +192,8 @@
                         android:id="@+id/filterStatusText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -161,7 +202,6 @@
                     android:id="@+id/filterSourceLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterStatusLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -177,7 +217,8 @@
                         android:id="@+id/filterSourceText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -187,7 +228,6 @@
                     android:id="@+id/filterCountryLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterSourceLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -203,7 +243,8 @@
                         android:id="@+id/filterCountryText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -213,7 +254,6 @@
                     android:id="@+id/filterSeasonLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterCountryLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -229,7 +269,8 @@
                         android:id="@+id/filterSeasonText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -238,7 +279,6 @@
                     android:id="@+id/filterReleaseYearLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterSeasonLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -254,7 +294,8 @@
                         android:id="@+id/filterReleaseYearText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -263,7 +304,6 @@
                     android:id="@+id/filterEpisodesLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterReleaseYearLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -279,7 +319,8 @@
                         android:id="@+id/filterEpisodesText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -288,7 +329,6 @@
                     android:id="@+id/filterDurationLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterEpisodesLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -304,7 +344,8 @@
                         android:id="@+id/filterDurationText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -313,7 +354,6 @@
                     android:id="@+id/filterAverageScoreLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterDurationLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -329,7 +369,8 @@
                         android:id="@+id/filterAverageScoreText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -338,7 +379,6 @@
                     android:id="@+id/filterPopularityLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterAverageScoreLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -354,7 +394,8 @@
                         android:id="@+id/filterPopularityText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -601,7 +642,6 @@
                     android:id="@+id/filterScoreLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterUserListTitle"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -617,7 +657,8 @@
                         android:id="@+id/filterScoreText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -626,7 +667,6 @@
                     android:id="@+id/filterStartYearLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterScoreLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -642,7 +682,8 @@
                         android:id="@+id/filterStartYearText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -651,7 +692,6 @@
                     android:id="@+id/filterCompletedYearLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterStartYearLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -667,7 +707,8 @@
                         android:id="@+id/filterCompletedYearText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -676,7 +717,6 @@
                     android:id="@+id/filterPriorityLayout"
                     app:layout_constraintTop_toBottomOf="@id/filterCompletedYearLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -692,7 +732,8 @@
                         android:id="@+id/filterPriorityText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

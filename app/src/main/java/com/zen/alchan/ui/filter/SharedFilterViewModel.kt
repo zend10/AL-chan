@@ -1,6 +1,8 @@
 package com.zen.alchan.ui.filter
 
 import com.zen.alchan.data.entitiy.MediaFilter
+import com.zen.alchan.helper.enums.*
+import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -8,13 +10,13 @@ import io.reactivex.subjects.PublishSubject
 
 class SharedFilterViewModel : BaseViewModel() {
 
-    private val _mediaFilterResult = PublishSubject.create<Pair<MediaFilter, FilterList>>()
-    val mediaFilterResult: Observable<Pair<MediaFilter, FilterList>>
-        get() = _mediaFilterResult
+    private val _newMediaFilter = PublishSubject.create<Pair<MediaFilter, FilterList>>()
+    val newMediaFilter: Observable<Pair<MediaFilter, FilterList>>
+        get() = _newMediaFilter
 
-    private val _mediaFilter = BehaviorSubject.createDefault(MediaFilter.EMPTY_MEDIA_FILTER)
-    val mediaFilter: Observable<MediaFilter>
-        get() = _mediaFilter
+    private val _oldMediaFilter = BehaviorSubject.createDefault(MediaFilter.EMPTY_MEDIA_FILTER)
+    val oldMediaFilter: Observable<MediaFilter>
+        get() = _oldMediaFilter
 
     private var currentFilterList: FilterList? = null
 
@@ -22,15 +24,14 @@ class SharedFilterViewModel : BaseViewModel() {
         // do nothing
     }
 
-    fun updateMediaFilter(newMediaFilter: MediaFilter, filterList: FilterList) {
+    fun updateMediaFilter(mediaFilter: MediaFilter, filterList: FilterList) {
         currentFilterList = filterList
-        _mediaFilter.onNext(newMediaFilter)
+        _oldMediaFilter.onNext(mediaFilter)
     }
 
-    fun updateMediaFilterResult() {
-        val savedFilter = _mediaFilter.value ?: MediaFilter.EMPTY_MEDIA_FILTER
+    fun updateMediaFilterResult(newMediaFilter: MediaFilter) {
         currentFilterList?.let {
-            _mediaFilterResult.onNext(savedFilter to it)
+            _newMediaFilter.onNext(newMediaFilter to it)
         }
     }
 

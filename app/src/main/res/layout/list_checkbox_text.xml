@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/itemLayout"
+    android:orientation="vertical"
+    android:foreground="?selectableItemBackground">
+
+    <include layout="@layout/divider"
+        android:id="@+id/upperItemDivider"
+        android:visibility="gone"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_marginVertical="@dimen/marginPageNormal"
+        android:layout_marginHorizontal="@dimen/marginPageNormal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/itemCheckbox"
+            style="?themeRegularCheckBox"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/itemText"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include layout="@layout/divider"
+        android:id="@+id/lowerItemDivider"
+        android:visibility="gone"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -136,7 +136,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 binding.mediaListRecyclerView.smoothScrollToPosition(0)
             },
 
-            sharedFilterViewModel.mediaFilterResult.subscribe {
+            sharedFilterViewModel.newMediaFilter.subscribe {
                 when (it.second) {
                     SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST -> {
 
