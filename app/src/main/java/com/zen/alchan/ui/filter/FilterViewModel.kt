@@ -5,10 +5,13 @@ import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
+import com.zen.alchan.helper.pojo.SliderItem
+import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import kotlin.math.min
 
 class FilterViewModel : BaseViewModel() {
 
@@ -113,6 +116,42 @@ class FilterViewModel : BaseViewModel() {
     val mediaSeasonList: Observable<Pair<List<ListItem<MediaSeason>>, ArrayList<Int>>>
         get() = _mediaSeasonList
 
+    private val _releaseYearsSliderItem = PublishSubject.create<SliderItem>()
+    val releaseYearsSliderItem: Observable<SliderItem>
+        get() = _releaseYearsSliderItem
+
+    private val _episodesSliderItem = PublishSubject.create<SliderItem>()
+    val episodesSliderItem: Observable<SliderItem>
+        get() = _episodesSliderItem
+
+    private val _durationsSliderItem = PublishSubject.create<SliderItem>()
+    val durationsSliderItem: Observable<SliderItem>
+        get() = _durationsSliderItem
+
+    private val _averageScoresSliderItem = PublishSubject.create<SliderItem>()
+    val averageScoresSliderItem: Observable<SliderItem>
+        get() = _averageScoresSliderItem
+
+    private val _popularitySliderItem = PublishSubject.create<SliderItem>()
+    val popularitySliderItem: Observable<SliderItem>
+        get() = _popularitySliderItem
+
+    private val _scoresSliderItem = PublishSubject.create<SliderItem>()
+    val scoresSliderItem: Observable<SliderItem>
+        get() = _scoresSliderItem
+
+    private val _startYearsSliderItem = PublishSubject.create<SliderItem>()
+    val startYearsSliderItem: Observable<SliderItem>
+        get() = _startYearsSliderItem
+
+    private val _completedYearsSliderItem = PublishSubject.create<SliderItem>()
+    val completedYearsSliderItem: Observable<SliderItem>
+        get() = _completedYearsSliderItem
+
+    private val _prioritiesYearsSliderItem = PublishSubject.create<SliderItem>()
+    val prioritiesYearsSliderItem: Observable<SliderItem>
+        get() = _prioritiesYearsSliderItem
+
     var mediaType: MediaType = MediaType.MANGA
     var isUserList: Boolean = true
 
@@ -162,6 +201,132 @@ class FilterViewModel : BaseViewModel() {
     fun updateMediaSeasons(newSeasons: List<MediaSeason>) {
         currentMediaFilter.mediaSeasons = newSeasons.map { it.getAniListMediaSeason() }
         _mediaSeasons.onNext(newSeasons)
+    }
+
+    fun updateReleaseYears(minYear: Int?, maxYear: Int?) {
+        val releaseYears = if (minYear == null || maxYear == null) {
+            currentMediaFilter.minYear = null
+            currentMediaFilter.maxYear = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minYear = minYear
+            currentMediaFilter.maxYear = maxYear
+            NullableItem(Pair(minYear, maxYear))
+        }
+
+        _releaseYears.onNext(releaseYears)
+    }
+
+    fun updateEpisodes(minEpisode: Int?, maxEpisode: Int?) {
+        val episodes = if (minEpisode == null || maxEpisode == null) {
+            currentMediaFilter.minEpisodes = null
+            currentMediaFilter.maxEpisodes = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minEpisodes = minEpisode
+            currentMediaFilter.maxEpisodes = maxEpisode
+            NullableItem(Pair(minEpisode, maxEpisode))
+        }
+
+        _episodes.onNext(episodes)
+    }
+
+    fun updateDurations(minDuration: Int?, maxDuration: Int?) {
+        val durations = if (minDuration == null || maxDuration == null) {
+            currentMediaFilter.minDuration = null
+            currentMediaFilter.maxDuration = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minDuration = minDuration
+            currentMediaFilter.maxDuration = maxDuration
+            NullableItem(Pair(minDuration, maxDuration))
+        }
+
+        _durations.onNext(durations)
+    }
+
+    fun updateAverageScores(minAverageScore: Int?, maxAverageScore: Int?) {
+        val averageScores = if (minAverageScore == null || maxAverageScore == null) {
+            currentMediaFilter.minAverageScore = null
+            currentMediaFilter.maxAverageScore = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minAverageScore = minAverageScore
+            currentMediaFilter.maxAverageScore = maxAverageScore
+            NullableItem(Pair(minAverageScore, maxAverageScore))
+        }
+
+        _averageScores.onNext(averageScores)
+    }
+
+    fun updatePopularity(minPopularity: Int?, maxPopularity: Int?) {
+        val popularity = if (minPopularity == null || maxPopularity == null) {
+            currentMediaFilter.minPopularity = null
+            currentMediaFilter.maxPopularity = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minPopularity = minPopularity
+            currentMediaFilter.maxPopularity = maxPopularity
+            NullableItem(Pair(minPopularity, maxPopularity))
+        }
+
+        _popularity.onNext(popularity)
+    }
+
+    fun updateScores(minScore: Int?, maxScore: Int?) {
+        val scores = if (minScore == null || maxScore == null) {
+            currentMediaFilter.minUserScore = null
+            currentMediaFilter.maxUserScore = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minUserScore = minScore
+            currentMediaFilter.maxUserScore = maxScore
+            NullableItem(Pair(minScore, maxScore))
+        }
+
+        _scores.onNext(scores)
+    }
+
+    fun updateStartYears(minStartYear: Int?, maxStartYear: Int?) {
+        val startYears = if (minStartYear == null || maxStartYear == null) {
+            currentMediaFilter.minUserStartYear = null
+            currentMediaFilter.maxUserStartYear = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minUserStartYear = minStartYear
+            currentMediaFilter.maxUserStartYear = maxStartYear
+            NullableItem(Pair(minStartYear, maxStartYear))
+        }
+
+        _startYears.onNext(startYears)
+    }
+
+    fun updateCompletedYears(minCompletedYear: Int?, maxCompletedYear: Int?) {
+        val completedYears = if (minCompletedYear == null || maxCompletedYear == null) {
+            currentMediaFilter.minUserCompletedYear = null
+            currentMediaFilter.maxUserCompletedYear = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minUserCompletedYear = minCompletedYear
+            currentMediaFilter.maxUserCompletedYear = maxCompletedYear
+            NullableItem(Pair(minCompletedYear, maxCompletedYear))
+        }
+
+        _completedYears.onNext(completedYears)
+    }
+
+    fun updatePriorities(minPriority: Int?, maxPriority: Int?) {
+        val priorities = if (minPriority == null || maxPriority == null) {
+            currentMediaFilter.minUserPriority = null
+            currentMediaFilter.maxUserPriority = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minUserPriority = minPriority
+            currentMediaFilter.maxUserPriority = maxPriority
+            NullableItem(Pair(minPriority, maxPriority))
+        }
+
+        _priorities.onNext(priorities)
     }
 
     fun loadSortByList() {
@@ -268,5 +433,99 @@ class FilterViewModel : BaseViewModel() {
         }
 
         _mediaSeasonList.onNext(seasons to selectedIndex)
+    }
+
+    fun loadReleaseYearsSliderItem() {
+        val sliderItem = SliderItem(
+            1950,
+            getYearSliderMaxValue(),
+            currentMediaFilter.minYear,
+            currentMediaFilter.maxYear
+        )
+        _releaseYearsSliderItem.onNext(sliderItem)
+    }
+
+    fun loadEpisodesSliderItem() {
+        val sliderItem = SliderItem(
+            0,
+            150,
+            currentMediaFilter.minEpisodes,
+            currentMediaFilter.maxEpisodes
+        )
+        _episodesSliderItem.onNext(sliderItem)
+    }
+
+    fun loadDurationsSliderItem() {
+        val sliderItem = SliderItem(
+            0,
+            180,
+            currentMediaFilter.minDuration,
+            currentMediaFilter.maxDuration
+        )
+        _durationsSliderItem.onNext(sliderItem)
+    }
+
+    fun loadAverageScoresSliderItem() {
+        val sliderItem = SliderItem(
+            0,
+            180,
+            currentMediaFilter.minAverageScore,
+            currentMediaFilter.maxAverageScore
+        )
+        _averageScoresSliderItem.onNext(sliderItem)
+    }
+
+    fun loadPopularitySliderItem() {
+        val sliderItem = SliderItem(
+            0,
+            300000,
+            currentMediaFilter.minPopularity,
+            currentMediaFilter.maxPopularity
+        )
+        _popularitySliderItem.onNext(sliderItem)
+    }
+
+    fun loadUserScoresSliderItem() {
+        val sliderItem = SliderItem(
+            0,
+            100,
+            currentMediaFilter.minUserScore,
+            currentMediaFilter.maxUserScore
+        )
+        _scoresSliderItem.onNext(sliderItem)
+    }
+
+    fun loadUserStartYearsSliderItem() {
+        val sliderItem = SliderItem(
+            1950,
+            getYearSliderMaxValue(),
+            currentMediaFilter.minUserStartYear,
+            currentMediaFilter.maxUserStartYear
+        )
+        _startYearsSliderItem.onNext(sliderItem)
+    }
+
+    fun loadUserCompletedYearsSliderItem() {
+        val sliderItem = SliderItem(
+            1950,
+            getYearSliderMaxValue(),
+            currentMediaFilter.minUserCompletedYear,
+            currentMediaFilter.maxUserCompletedYear
+        )
+        _completedYearsSliderItem.onNext(sliderItem)
+    }
+
+    fun loadUserPrioritiesSliderItem() {
+        val sliderItem = SliderItem(
+            0,
+            5,
+            currentMediaFilter.minUserPriority,
+            currentMediaFilter.maxUserPriority
+        )
+        _prioritiesYearsSliderItem.onNext(sliderItem)
+    }
+
+    private fun getYearSliderMaxValue(): Int {
+        return TimeUtil.getCurrentYear() + 1
     }
 }

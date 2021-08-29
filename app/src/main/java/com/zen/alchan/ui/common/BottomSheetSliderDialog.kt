@@ -6,6 +6,7 @@ import com.google.android.material.slider.RangeSlider
 import com.zen.alchan.R
 import com.zen.alchan.databinding.DialogBottomSheetSliderBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.ui.base.BaseDialogFragment
 
 class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBinding>() {
@@ -26,12 +27,6 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
 
     override fun setUpLayout() {
         binding.apply {
-            if (minValue < sliderMinValue)
-                minValue = sliderMinValue
-
-            if (maxValue < sliderMaxValue)
-                maxValue = sliderMaxValue
-
             dialogRangeSlider.valueFrom = sliderMinValue.toFloat()
             dialogRangeSlider.valueTo = sliderMaxValue.toFloat()
             dialogRangeSlider.values = listOf(minValue.toFloat(), maxValue.toFloat())
@@ -52,13 +47,18 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
             }
 
             dialogSaveButton.clicks {
-                listener?.getNewValues(minValue, maxValue)
+                if (minValue == sliderMinValue && maxValue == sliderMaxValue)
+                    listener?.getNewValues(null, null)
+                else
+                    listener?.getNewValues(minValue, maxValue)
+
+                dismiss()
             }
         }
     }
 
     override fun setUpObserver() {
-
+        // do nothing
     }
     
     private fun updateRangeText() {
@@ -77,15 +77,28 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
         private const val MIN_THUMB = 0
         private const val MAX_THUMB = 1
 
-        fun newInstance(sliderMinValue: Int, sliderMaxValue: Int, minValue: Int, maxValue: Int) = BottomSheetSliderDialog().apply {
-            this.sliderMinValue = sliderMinValue
-            this.sliderMaxValue = sliderMaxValue
-            this.minValue = minValue
-            this.maxValue = maxValue
+        fun newInstance(
+            sliderItem: SliderItem,
+            listener: BottomSheetSliderListener
+        ) = BottomSheetSliderDialog().apply {
+            this.sliderMinValue = sliderItem.sliderMinValue
+            this.sliderMaxValue = sliderItem.sliderMaxValue
+
+            this.minValue = if (sliderItem.minValue == null || sliderItem.minValue < sliderItem.sliderMinValue)
+                sliderItem.sliderMinValue
+            else
+                sliderItem.minValue
+
+            this.maxValue = if (sliderItem.maxValue == null || sliderItem.maxValue > sliderItem.sliderMaxValue)
+                sliderItem.sliderMaxValue
+            else
+                sliderItem.maxValue
+
+            this.listener = listener
         }
     }
 
     interface BottomSheetSliderListener {
-        fun getNewValues(minValue: Int, maxValue: Int)
+        fun getNewValues(minValue: Int?, maxValue: Int?)
     }
 }

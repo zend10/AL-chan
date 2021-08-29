@@ -10,6 +10,7 @@ import com.zen.alchan.databinding.FragmentFilterBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetMultiSelectRvAdapter
 import com.zen.alchan.ui.common.BottomSheetSliderDialog
@@ -23,6 +24,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
     private val sharedViewModel by sharedViewModel<SharedFilterViewModel>()
 
     private var multiSelectAdapter: BottomSheetMultiSelectRvAdapter<*>? = null
+    private var sliderDialog: BottomSheetSliderDialog? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -76,24 +78,23 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             }
 
             filterReleaseYearLayout.clicks {
-                val dialog = BottomSheetSliderDialog.newInstance(1950, 2022, 1950, 2022)
-                dialog.show(childFragmentManager, null)
+                viewModel.loadReleaseYearsSliderItem()
             }
 
             filterEpisodesLayout.clicks {
-
+                viewModel.loadEpisodesSliderItem()
             }
 
             filterDurationLayout.clicks {
-
+                viewModel.loadDurationsSliderItem()
             }
 
             filterAverageScoreLayout.clicks {
-
+                viewModel.loadAverageScoresSliderItem()
             }
 
             filterPopularityLayout.clicks {
-
+                viewModel.loadPopularitySliderItem()
             }
 
             filterGenresIncludeLayout.clicks {
@@ -113,19 +114,19 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             }
 
             filterScoreLayout.clicks {
-
+                viewModel.loadUserScoresSliderItem()
             }
 
             filterStartYearLayout.clicks {
-
+                viewModel.loadUserStartYearsSliderItem()
             }
 
             filterCompletedYearLayout.clicks {
-
+                viewModel.loadUserCompletedYearsSliderItem()
             }
 
             filterPriorityLayout.clicks {
-
+                viewModel.loadUserPrioritiesSliderItem()
             }
 
             filterApplyLayout.positiveButton.text = getString(R.string.apply)
@@ -174,7 +175,33 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.mediaSeasons.subscribe {
                 binding.filterSeasonText.text = getJointString(it) { season -> season.getSeasonName() }
             },
-
+            viewModel.releaseYears.subscribe {
+                binding.filterReleaseYearText.text = getPairString(it.data)
+            },
+            viewModel.episodes.subscribe {
+                binding.filterEpisodesText.text = getPairString(it.data)
+            },
+            viewModel.durations.subscribe {
+                binding.filterDurationText.text = getPairString(it.data)
+            },
+            viewModel.averageScores.subscribe {
+                binding.filterAverageScoreText.text = getPairString(it.data)
+            },
+            viewModel.popularity.subscribe {
+                binding.filterPopularityText.text = getPairString(it.data)
+            },
+            viewModel.scores.subscribe {
+                binding.filterScoreText.text = getPairString(it.data)
+            },
+            viewModel.startYears.subscribe {
+                binding.filterStartYearText.text = getPairString(it.data)
+            },
+            viewModel.completedYears.subscribe {
+                binding.filterCompletedYearText.text = getPairString(it.data)
+            },
+            viewModel.priorities.subscribe {
+                binding.filterPriorityText.text = getPairString(it.data)
+            },
 
 
 
@@ -216,10 +243,51 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                     viewModel.updateMediaSeasons(data)
                 }
             },
-
-
-
-
+            viewModel.releaseYearsSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateReleaseYears(minValue, maxValue)
+                }
+            },
+            viewModel.episodesSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateEpisodes(minValue, maxValue)
+                }
+            },
+            viewModel.durationsSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateDurations(minValue, maxValue)
+                }
+            },
+            viewModel.averageScoresSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateAverageScores(minValue, maxValue)
+                }
+            },
+            viewModel.popularitySliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updatePopularity(minValue, maxValue)
+                }
+            },
+            viewModel.scoresSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateScores(minValue, maxValue)
+                }
+            },
+            viewModel.startYearsSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateStartYears(minValue, maxValue)
+                }
+            },
+            viewModel.completedYearsSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateCompletedYears(minValue, maxValue)
+                }
+            },
+            viewModel.prioritiesYearsSliderItem.subscribe {
+                showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updatePriorities(minValue, maxValue)
+                }
+            }
         )
 
         sharedDisposables.addAll(
@@ -227,8 +295,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
             }
         )
-
-
     }
 
     private fun <T> showMultiSelectDialog(
@@ -250,6 +316,23 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             }
     }
 
+    private fun showSliderDialog(
+        sliderItem: SliderItem,
+        action: (minValue: Int?, maxValue: Int?) -> Unit
+    ) {
+        sliderDialog = BottomSheetSliderDialog.newInstance(
+            sliderItem,
+            object : BottomSheetSliderDialog.BottomSheetSliderListener {
+                override fun getNewValues(minValue: Int?, maxValue: Int?) {
+                    action(minValue, maxValue)
+                }
+            })
+        sliderDialog?.dialog?.setOnCancelListener {
+            sliderDialog = null
+        }
+        sliderDialog?.show(childFragmentManager, null)
+    }
+
     private fun <T> getJointString(list: List<T>, action: (data: T) -> String): String {
         return if (list.isEmpty())
             "-"
@@ -257,10 +340,17 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             list.joinToString(", ") { action(it) }
     }
 
+    private fun getPairString(integerPair: Pair<Int, Int>?): String {
+        return if (integerPair == null)
+            "-"
+        else
+            "${integerPair.first} - ${integerPair.second}"
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         multiSelectAdapter = null
+        sliderDialog = null
     }
 
     companion object {
