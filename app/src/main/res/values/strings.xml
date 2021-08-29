@@ -244,6 +244,10 @@
     <string name="release_date">Release Date</string>
     <string name="next_airing">Next Airing</string>
     <string name="persist_filter_on_app_restart">Persist filter on app restart</string>
+    <string name="min_value">Min value</string>
+    <string name="max_value">Max value</string>
+    <string name="select_range">Select range</string>
+    <string name="range_min_to_max">Range %1$d - %2$d</string>
 
 
     <plurals name="minute">

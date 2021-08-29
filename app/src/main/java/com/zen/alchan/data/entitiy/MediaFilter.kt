@@ -9,7 +9,7 @@ import type.MediaSource
 import type.MediaStatus
 
 data class MediaFilter(
-    var persistChange: Boolean = false,
+    var persistFilter: Boolean = false,
     var sort: Sort? = null,
     var orderByDescending: Boolean = true,
     var mediaFormats: List<MediaFormat> = listOf(),

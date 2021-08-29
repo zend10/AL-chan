@@ -53,7 +53,7 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = generateViewBinding(inflater, container)
+        _binding = generateViewBinding(activity?.layoutInflater ?: inflater, container)
         return binding.root
     }
 

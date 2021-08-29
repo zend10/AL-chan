@@ -23,7 +23,7 @@ abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment()
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = generateViewBinding(inflater, container)
+        _binding = generateViewBinding(activity?.layoutInflater ?: inflater, container)
         return binding.root
     }
 

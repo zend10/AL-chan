@@ -12,6 +12,10 @@ import io.reactivex.subjects.PublishSubject
 
 class FilterViewModel : BaseViewModel() {
 
+    private val _persistFilter = BehaviorSubject.createDefault(false)
+    val persistFilter: Observable<Boolean>
+        get() = _persistFilter
+
     private val _sortBy = BehaviorSubject.createDefault(Sort.FOLLOW_LIST_SETTINGS)
     val sortBy: Observable<Sort>
         get() = _sortBy
@@ -118,6 +122,11 @@ class FilterViewModel : BaseViewModel() {
         loadOnce {
 
         }
+    }
+
+    fun updatePersistFilter(shouldPersist: Boolean) {
+        currentMediaFilter.persistFilter = shouldPersist
+        _persistFilter.onNext(shouldPersist)
     }
 
     fun updateSortBy(newSort: Sort) {

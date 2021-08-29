@@ -12,6 +12,7 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetMultiSelectRvAdapter
+import com.zen.alchan.ui.common.BottomSheetSliderDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,6 +43,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.filter))
 
+            filterPersistCheckBox.setOnClickListener {
+                viewModel.updatePersistFilter(filterPersistCheckBox.isChecked)
+            }
+
             filterSortByLayout.clicks {
                 viewModel.loadSortByList()
             }
@@ -71,7 +76,8 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             }
 
             filterReleaseYearLayout.clicks {
-
+                val dialog = BottomSheetSliderDialog.newInstance(1950, 2022, 1950, 2022)
+                dialog.show(childFragmentManager, null)
             }
 
             filterEpisodesLayout.clicks {
@@ -144,6 +150,37 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.persistFilter.subscribe {
+                binding.filterPersistCheckBox.isChecked = it
+            },
+            viewModel.sortBy.subscribe {
+                binding.filterSortByText.text = getString(it.getStringResource())
+            },
+            viewModel.orderByDescending.subscribe {
+                binding.filterOrderByText.text = getString(if (it) R.string.descending else R.string.ascending)
+            },
+            viewModel.mediaFormats.subscribe {
+                binding.filterFormatText.text = getJointString(it) { format -> format.getFormatName() }
+            },
+            viewModel.mediaStatuses.subscribe {
+                binding.filterStatusText.text = getJointString(it) { status -> status.getStatusName() }
+            },
+            viewModel.mediaSources.subscribe {
+                binding.filterSourceText.text = getJointString(it) { source -> source.getSourceName() }
+            },
+            viewModel.countries.subscribe {
+                binding.filterCountryText.text = getJointString(it) { country -> country.getCountryName() }
+            },
+            viewModel.mediaSeasons.subscribe {
+                binding.filterSeasonText.text = getJointString(it) { season -> season.getSeasonName() }
+            },
+
+
+
+
+
+
+
             viewModel.sortByList.subscribe {
                 showListDialog(it) { data, _ ->
                     viewModel.updateSortBy(data)
@@ -182,27 +219,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
 
 
-            viewModel.sortBy.subscribe {
-                binding.filterSortByText.text = getString(it.getStringResource())
-            },
-            viewModel.orderByDescending.subscribe {
-                binding.filterOrderByText.text = getString(if (it) R.string.descending else R.string.ascending)
-            },
-            viewModel.mediaFormats.subscribe {
-                binding.filterFormatText.text = getJointString(it) { format -> format.getFormatName() }
-            },
-            viewModel.mediaStatuses.subscribe {
-                binding.filterStatusText.text = getJointString(it) { status -> status.getStatusName() }
-            },
-            viewModel.mediaSources.subscribe {
-                binding.filterSourceText.text = getJointString(it) { source -> source.getSourceName() }
-            },
-            viewModel.countries.subscribe {
-                binding.filterCountryText.text = getJointString(it) { country -> country.getCountryName() }
-            },
-            viewModel.mediaSeasons.subscribe {
-                binding.filterSeasonText.text = getJointString(it) { season -> season.getSeasonName() }
-            },
+
         )
 
         sharedDisposables.addAll(

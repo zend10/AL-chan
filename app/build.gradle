@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.apollo'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 //apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.zen.alchan"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 200000
         versionName "2.0.0"
@@ -90,8 +90,8 @@ dependencies {
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_version"
-    compileOnly "org.jetbrains:annotations:16.0.1"
-    testCompileOnly "org.jetbrains:annotations:16.0.1"
+//    compileOnly "org.jetbrains:annotations:16.0.1"
+//    testCompileOnly "org.jetbrains:annotations:16.0.1"
 
     // Retrofit
     def retrofit_version = "2.9.0"
@@ -113,8 +113,8 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.github.zend10:OverlapImageListView:v1.0.1'
-    implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'
-    implementation 'com.crystal:crystalrangeseekbar:1.1.3'
+//    implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'
+//    implementation 'com.crystal:crystalrangeseekbar:1.1.3'
 
     def markwon_version = "4.6.2"
     implementation "io.noties.markwon:core:$markwon_version"

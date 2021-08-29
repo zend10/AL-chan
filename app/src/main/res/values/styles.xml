@@ -388,7 +388,6 @@
         <item name="android:textColor">?themeContentColor</item>
     </style>
 
-
     <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?themePrimaryColor</item>
         <item name="android:textColor">?themeBackgroundColor</item>

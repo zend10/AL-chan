@@ -32,8 +32,7 @@
     <attr name="themeSmallClickableFont" format="reference"/>
     <attr name="themeSmallNegativeFont" format="reference"/>
     <attr name="themeBigFont" format="reference"/>
-    
-    
+
     <attr name="themePrimaryButton" format="reference"/>
     <attr name="themePrimaryBorderButton" format="reference"/>
     <attr name="themeNegativeBorderButton" format="reference"/>
