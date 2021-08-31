@@ -107,7 +107,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     }
 
     override fun setUpObserver() {
-        // do nothing
+        viewModel.loadData()
     }
 
     override fun onDestroyView() {

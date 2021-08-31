@@ -4,10 +4,9 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.databinding.ListGenreBinding
-import com.zen.alchan.helper.pojo.Genre
-import com.zen.alchan.helper.pojo.getHexColor
+import com.zen.alchan.data.response.Genre
+import com.zen.alchan.data.response.getHexColor
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class GenreRvAdapter(

@@ -2,7 +2,7 @@ package com.zen.alchan.data.converter
 
 import com.zen.alchan.data.response.*
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.helper.pojo.Genre
+import com.zen.alchan.data.response.Genre
 import fragment.HomeMedia
 
 fun HomeDataQuery.Data.convert(): HomeData {

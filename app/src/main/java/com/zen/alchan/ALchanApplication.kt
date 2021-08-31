@@ -97,7 +97,7 @@ class ALchanApplication : Application() {
         viewModel { LoginViewModel(get()) }
 
         viewModel { SharedMainViewModel() }
-        viewModel { MainViewModel(get()) }
+        viewModel { MainViewModel(get(), get()) }
 
         viewModel { HomeViewModel(get(), get()) }
 

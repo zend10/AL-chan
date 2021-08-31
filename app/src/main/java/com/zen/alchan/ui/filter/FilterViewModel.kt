@@ -51,6 +51,22 @@ class FilterViewModel : BaseViewModel() {
     val releaseYears: Observable<NullableItem<Pair<Int, Int>>>
         get() = _releaseYears
 
+    private val _includedGenres = BehaviorSubject.createDefault(listOf<String>())
+    val includedGenres: Observable<List<String>>
+        get() = _includedGenres
+
+    private val _excludedGenres = BehaviorSubject.createDefault(listOf<String>())
+    val excludedGenres: Observable<List<String>>
+        get() = _excludedGenres
+
+    private val _includedTags = BehaviorSubject.createDefault(listOf<String>())
+    val includedTags: Observable<List<String>>
+        get() = _includedTags
+
+    private val _excludedTags = BehaviorSubject.createDefault(listOf<String>())
+    val excludedTags: Observable<List<String>>
+        get() = _excludedTags
+
     private val _episodes = BehaviorSubject.createDefault(NullableItem<Pair<Int, Int>>())
     val episodes: Observable<NullableItem<Pair<Int, Int>>>
         get() = _episodes

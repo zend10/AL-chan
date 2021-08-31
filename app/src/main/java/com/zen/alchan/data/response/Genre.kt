@@ -1,4 +1,4 @@
-package com.zen.alchan.helper.pojo
+package com.zen.alchan.data.response
 
 data class Genre(
     val name: String = ""

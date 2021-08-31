@@ -4,7 +4,7 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.helper.enums.Country
 import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
-import com.zen.alchan.helper.pojo.Genre
+import com.zen.alchan.data.response.Genre
 import type.*
 
 data class Media(

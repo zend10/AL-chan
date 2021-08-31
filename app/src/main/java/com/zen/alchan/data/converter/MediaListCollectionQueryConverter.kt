@@ -1,7 +1,7 @@
 package com.zen.alchan.data.converter
 
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.helper.pojo.Genre
+import com.zen.alchan.data.response.Genre
 
 fun MediaListCollectionQuery.Data.convert(): MediaListCollection {
     return MediaListCollection(
