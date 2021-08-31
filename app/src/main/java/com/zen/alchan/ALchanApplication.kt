@@ -120,7 +120,7 @@ class ALchanApplication : Application() {
         viewModel { ReorderViewModel() }
         viewModel { SharedReorderViewModel() }
 
-        viewModel { FilterViewModel() }
+        viewModel { FilterViewModel(get()) }
         viewModel { SharedFilterViewModel() }
     }
 

@@ -15,8 +15,13 @@ class MainViewModel(
 
     override fun loadData() {
         loadOnce {
-            contentRepository.getGenres().subscribe({}, {})
-            contentRepository.getTags().subscribe({}, {})
+            disposables.add(
+                contentRepository.getGenres().subscribe({}, {})
+            )
+
+            disposables.add(
+                contentRepository.getTags().subscribe({}, {})
+            )
         }
     }
 }

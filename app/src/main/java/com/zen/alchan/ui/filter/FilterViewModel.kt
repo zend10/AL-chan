@@ -2,6 +2,9 @@ package com.zen.alchan.ui.filter
 
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.MediaFilter
+import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.data.response.Genre
+import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
@@ -13,7 +16,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import kotlin.math.min
 
-class FilterViewModel : BaseViewModel() {
+class FilterViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
     private val _persistFilter = BehaviorSubject.createDefault(false)
     val persistFilter: Observable<Boolean>
@@ -99,6 +102,29 @@ class FilterViewModel : BaseViewModel() {
     val priorities: Observable<NullableItem<Pair<Int, Int>>>
         get() = _priorities
 
+    private val _includedGenresLayoutVisibility = BehaviorSubject.createDefault(false)
+    val includedGenresLayoutVisibility: Observable<Boolean>
+        get() = _includedGenresLayoutVisibility
+
+    private val _excludedGenresLayoutVisibility = BehaviorSubject.createDefault(false)
+    val excludedGenresLayoutVisibility: Observable<Boolean>
+        get() = _excludedGenresLayoutVisibility
+
+    private val _noItemGenreLayoutVisibility = BehaviorSubject.createDefault(false)
+    val noItemGenreLayoutVisibility: Observable<Boolean>
+        get() = _noItemGenreLayoutVisibility
+
+    private val _includedTagsLayoutVisibility = BehaviorSubject.createDefault(false)
+    val includedTagsLayoutVisibility: Observable<Boolean>
+        get() = _includedTagsLayoutVisibility
+
+    private val _excludedTagsLayoutVisibility = BehaviorSubject.createDefault(false)
+    val excludedTagsLayoutVisibility: Observable<Boolean>
+        get() = _excludedTagsLayoutVisibility
+
+    private val _noItemTagLayoutVisibility = BehaviorSubject.createDefault(false)
+    val noItemTagLayoutVisibility: Observable<Boolean>
+        get() = _noItemTagLayoutVisibility
 
 
 
@@ -136,6 +162,22 @@ class FilterViewModel : BaseViewModel() {
     val releaseYearsSliderItem: Observable<SliderItem>
         get() = _releaseYearsSliderItem
 
+    private val _includedGenreList = PublishSubject.create<Pair<List<ListItem<String>>, ArrayList<Int>>>()
+    val includedGenreList: Observable<Pair<List<ListItem<String>>, ArrayList<Int>>>
+        get() = _includedGenreList
+
+    private val _excludedGenreList = PublishSubject.create<Pair<List<ListItem<String>>, ArrayList<Int>>>()
+    val excludedGenreList: Observable<Pair<List<ListItem<String>>, ArrayList<Int>>>
+        get() = _excludedGenreList
+
+    private val _includedTagList = PublishSubject.create<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>()
+    val includedTagList: Observable<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>
+        get() = _includedTagList
+
+    private val _excludedTagList = PublishSubject.create<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>()
+    val excludedTagList: Observable<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>
+        get() = _excludedTagList
+
     private val _episodesSliderItem = PublishSubject.create<SliderItem>()
     val episodesSliderItem: Observable<SliderItem>
         get() = _episodesSliderItem
@@ -171,11 +213,28 @@ class FilterViewModel : BaseViewModel() {
     var mediaType: MediaType = MediaType.MANGA
     var isUserList: Boolean = true
 
+    private var genres: List<Genre> = listOf()
+    private var tags: List<MediaTag> = listOf()
     private var currentMediaFilter = MediaFilter.EMPTY_MEDIA_FILTER
 
     override fun loadData() {
         loadOnce {
+            disposables.add(
+                contentRepository.getGenres()
+                    .subscribe {
+                        genres = it
+                    }
+            )
 
+            disposables.add(
+                contentRepository.getTags()
+                    .subscribe {
+                        tags = it
+                    }
+            )
+
+            handleGenreLayoutVisibility()
+            handleTagLayoutVisibility()
         }
     }
 
@@ -231,6 +290,98 @@ class FilterViewModel : BaseViewModel() {
         }
 
         _releaseYears.onNext(releaseYears)
+    }
+
+    fun updateIncludedGenres(newGenres: List<String>) {
+        currentMediaFilter.includedGenres = newGenres
+        _includedGenres.onNext(newGenres)
+
+        val excludedGenres = ArrayList(_excludedGenres.value ?: listOf())
+        excludedGenres.removeAll(newGenres)
+        _excludedGenres.onNext(excludedGenres)
+
+        handleGenreLayoutVisibility()
+    }
+
+    fun removeIncludedGenre(index: Int) {
+        val currentGenres = ArrayList(_includedGenres.value ?: listOf())
+        currentGenres.removeAt(index)
+        currentMediaFilter.includedGenres = currentGenres
+        _includedGenres.onNext(currentGenres)
+
+        handleGenreLayoutVisibility()
+    }
+
+    fun updateExcludedGenres(newGenres: List<String>) {
+        currentMediaFilter.excludedGenres = newGenres
+        _excludedGenres.onNext(newGenres)
+
+        val includedGenres = ArrayList(_includedGenres.value ?: listOf())
+        includedGenres.removeAll(newGenres)
+        _includedGenres.onNext(includedGenres)
+
+        handleGenreLayoutVisibility()
+    }
+
+    fun removeExcludedGenre(index: Int) {
+        val currentGenres = ArrayList(_excludedGenres.value ?: listOf())
+        currentGenres.removeAt(index)
+        currentMediaFilter.excludedGenres = currentGenres
+        _excludedGenres.onNext(currentGenres)
+
+        handleGenreLayoutVisibility()
+    }
+
+    private fun handleGenreLayoutVisibility() {
+        _includedGenresLayoutVisibility.onNext(!_includedGenres.value.isNullOrEmpty())
+        _excludedGenresLayoutVisibility.onNext(!_excludedGenres.value.isNullOrEmpty())
+        _noItemGenreLayoutVisibility.onNext(_includedGenres.value.isNullOrEmpty() && _excludedGenres.value.isNullOrEmpty())
+    }
+
+    fun updateIncludedTags(newTags: List<String>) {
+        currentMediaFilter.includedTags = newTags
+        _includedTags.onNext(newTags)
+
+        val excludedTags = ArrayList(_excludedTags.value ?: listOf())
+        excludedTags.removeAll(newTags)
+        _excludedTags.onNext(excludedTags)
+
+        handleTagLayoutVisibility()
+    }
+
+    fun removeIncludedTag(index: Int) {
+        val currentTags = ArrayList(_includedTags.value ?: listOf())
+        currentTags.removeAt(index)
+        currentMediaFilter.includedTags = currentTags
+        _includedTags.onNext(currentTags)
+
+        handleTagLayoutVisibility()
+    }
+
+    fun updateExcludedTags(newTags: List<String>) {
+        currentMediaFilter.excludedTags = newTags
+        _excludedTags.onNext(newTags)
+
+        val includedTags = ArrayList(_includedTags.value ?: listOf())
+        includedTags.removeAll(newTags)
+        _includedTags.onNext(includedTags)
+
+        handleTagLayoutVisibility()
+    }
+
+    fun removeExcludedTag(index: Int) {
+        val currentTags = ArrayList(_excludedTags.value ?: listOf())
+        currentTags.removeAt(index)
+        currentMediaFilter.excludedTags = currentTags
+        _excludedTags.onNext(currentTags)
+
+        handleTagLayoutVisibility()
+    }
+
+    private fun handleTagLayoutVisibility() {
+        _includedTagsLayoutVisibility.onNext(!_includedTags.value.isNullOrEmpty())
+        _excludedTagsLayoutVisibility.onNext(!_excludedTags.value.isNullOrEmpty())
+        _noItemTagLayoutVisibility.onNext(_includedTags.value.isNullOrEmpty() && _excludedTags.value.isNullOrEmpty())
     }
 
     fun updateEpisodes(minEpisode: Int?, maxEpisode: Int?) {
@@ -452,91 +603,124 @@ class FilterViewModel : BaseViewModel() {
     }
 
     fun loadReleaseYearsSliderItem() {
+        val releaseYears = _releaseYears.value?.data
         val sliderItem = SliderItem(
             1950,
             getYearSliderMaxValue(),
-            currentMediaFilter.minYear,
-            currentMediaFilter.maxYear
+            releaseYears?.first,
+            releaseYears?.second
         )
         _releaseYearsSliderItem.onNext(sliderItem)
     }
 
+    fun loadIncludedGenres() {
+        val genreList = genres.map { ListItem(it.name, listOf(), it.name) }
+        val selectedIndex = ArrayList<Int>()
+        _includedGenres.value?.forEach {
+            val index = genres.indexOfFirst { genre -> genre.name == it }
+            if (index != -1)
+                selectedIndex.add(index)
+        }
+
+        _includedGenreList.onNext(genreList to selectedIndex)
+    }
+
+    fun loadExcludedGenres() {
+        val genreList = genres.map { ListItem(it.name, listOf(), it.name) }
+        val selectedIndex = ArrayList<Int>()
+        _excludedGenres.value?.forEach {
+            val index = genres.indexOfFirst { genre -> genre.name == it }
+            if (index != -1)
+                selectedIndex.add(index)
+        }
+
+        _excludedGenreList.onNext(genreList to selectedIndex)
+    }
+
     fun loadEpisodesSliderItem() {
+        val episodes = _releaseYears.value?.data
         val sliderItem = SliderItem(
             0,
             150,
-            currentMediaFilter.minEpisodes,
-            currentMediaFilter.maxEpisodes
+            episodes?.first,
+            episodes?.second
         )
         _episodesSliderItem.onNext(sliderItem)
     }
 
     fun loadDurationsSliderItem() {
+        val durations = _durations.value?.data
         val sliderItem = SliderItem(
             0,
             180,
-            currentMediaFilter.minDuration,
-            currentMediaFilter.maxDuration
+            durations?.first,
+            durations?.second
         )
         _durationsSliderItem.onNext(sliderItem)
     }
 
     fun loadAverageScoresSliderItem() {
+        val averageScores = _averageScores.value?.data
         val sliderItem = SliderItem(
             0,
             180,
-            currentMediaFilter.minAverageScore,
-            currentMediaFilter.maxAverageScore
+            averageScores?.first,
+            averageScores?.second
         )
         _averageScoresSliderItem.onNext(sliderItem)
     }
 
     fun loadPopularitySliderItem() {
+        val popularity = _popularity.value?.data
         val sliderItem = SliderItem(
             0,
             300000,
-            currentMediaFilter.minPopularity,
-            currentMediaFilter.maxPopularity
+            popularity?.first,
+            popularity?.second
         )
         _popularitySliderItem.onNext(sliderItem)
     }
 
     fun loadUserScoresSliderItem() {
+        val scores = _scores.value?.data
         val sliderItem = SliderItem(
             0,
             100,
-            currentMediaFilter.minUserScore,
-            currentMediaFilter.maxUserScore
+            scores?.first,
+            scores?.second
         )
         _scoresSliderItem.onNext(sliderItem)
     }
 
     fun loadUserStartYearsSliderItem() {
+        val startYears = _startYears.value?.data
         val sliderItem = SliderItem(
             1950,
             getYearSliderMaxValue(),
-            currentMediaFilter.minUserStartYear,
-            currentMediaFilter.maxUserStartYear
+            startYears?.first,
+            startYears?.second
         )
         _startYearsSliderItem.onNext(sliderItem)
     }
 
     fun loadUserCompletedYearsSliderItem() {
+        val completedYears = _completedYears.value?.data
         val sliderItem = SliderItem(
             1950,
             getYearSliderMaxValue(),
-            currentMediaFilter.minUserCompletedYear,
-            currentMediaFilter.maxUserCompletedYear
+            completedYears?.first,
+            completedYears?.second
         )
         _completedYearsSliderItem.onNext(sliderItem)
     }
 
     fun loadUserPrioritiesSliderItem() {
+        val priorities = _priorities.value?.data
         val sliderItem = SliderItem(
             0,
             5,
-            currentMediaFilter.minUserPriority,
-            currentMediaFilter.maxUserPriority
+            priorities?.first,
+            priorities?.second
         )
         _prioritiesYearsSliderItem.onNext(sliderItem)
     }

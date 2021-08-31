@@ -14,6 +14,7 @@ import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.BottomSheetMultiSelectRvAdapter
 import com.zen.alchan.ui.common.BottomSheetSliderDialog
+import com.zen.alchan.ui.common.ChipRvAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,6 +26,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
     private var multiSelectAdapter: BottomSheetMultiSelectRvAdapter<*>? = null
     private var sliderDialog: BottomSheetSliderDialog? = null
+
+    private var includedGenresAdapter: ChipRvAdapter? = null
+    private var excludedGenresAdapter: ChipRvAdapter? = null
+    private var includedTagsAdapter: ChipRvAdapter? = null
+    private var excludedTagsAdapter: ChipRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -44,6 +50,28 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.filter))
+
+            includedGenresAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+                override fun getSelectedItem(item: String, index: Int) {
+                    viewModel.loadIncludedGenres()
+                }
+
+                override fun deleteItem(index: Int) {
+                    viewModel.removeIncludedGenre(index)
+                }
+            })
+            filterGenresIncludeRecyclerView.adapter = includedGenresAdapter
+
+            excludedGenresAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+                override fun getSelectedItem(item: String, index: Int) {
+                    viewModel.loadExcludedGenres()
+                }
+
+                override fun deleteItem(index: Int) {
+                    viewModel.removeExcludedGenre(index)
+                }
+            })
+            filterGenresExcludeRecyclerView.adapter = excludedGenresAdapter
 
             filterPersistCheckBox.setOnClickListener {
                 viewModel.updatePersistFilter(filterPersistCheckBox.isChecked)
@@ -97,19 +125,19 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 viewModel.loadPopularitySliderItem()
             }
 
-            filterGenresIncludeLayout.clicks {
+            filterGenresIncludeText.clicks {
+                viewModel.loadIncludedGenres()
+            }
+
+            filterGenresExcludeText.clicks {
+                viewModel.loadExcludedGenres()
+            }
+
+            filterTagsIncludeText.clicks {
 
             }
 
-            filterGenresExcludeLayout.clicks {
-
-            }
-
-            filterTagsIncludeLayout.clicks {
-
-            }
-
-            filterTagsExcludeLayout.clicks {
+            filterTagsExcludeText.clicks {
 
             }
 
@@ -178,6 +206,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.releaseYears.subscribe {
                 binding.filterReleaseYearText.text = getPairString(it.data)
             },
+            viewModel.includedGenres.subscribe {
+                includedGenresAdapter?.updateData(it)
+            },
+            viewModel.excludedGenres.subscribe {
+                excludedGenresAdapter?.updateData(it)
+            },
             viewModel.episodes.subscribe {
                 binding.filterEpisodesText.text = getPairString(it.data)
             },
@@ -205,6 +239,24 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
 
 
+            viewModel.includedGenresLayoutVisibility.subscribe {
+                binding.filterGenresIncludeLayout.show(it)
+            },
+            viewModel.excludedGenresLayoutVisibility.subscribe {
+                binding.filterGenresExcludeLayout.show(it)
+            },
+            viewModel.noItemGenreLayoutVisibility.subscribe {
+                binding.filterGenresNoItemText.show(it)
+            },
+            viewModel.includedTagsLayoutVisibility.subscribe {
+                binding.filterTagsIncludeLayout.show(it)
+            },
+            viewModel.excludedTagsLayoutVisibility.subscribe {
+                binding.filterTagsExcludeLayout.show(it)
+            },
+            viewModel.noItemTagLayoutVisibility.subscribe {
+                binding.filterTagsNoItemText.show(it)
+            },
 
 
 
@@ -246,6 +298,16 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.releaseYearsSliderItem.subscribe {
                 showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateReleaseYears(minValue, maxValue)
+                }
+            },
+            viewModel.includedGenreList.subscribe {
+                showMultiSelectDialog(it.first, it.second) { data ->
+                    viewModel.updateIncludedGenres(data)
+                }
+            },
+            viewModel.excludedGenreList.subscribe {
+                showMultiSelectDialog(it.first, it.second) { data ->
+                    viewModel.updateExcludedGenres(data)
                 }
             },
             viewModel.episodesSliderItem.subscribe {
@@ -295,6 +357,8 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
             }
         )
+
+        viewModel.loadData()
     }
 
     private fun <T> showMultiSelectDialog(

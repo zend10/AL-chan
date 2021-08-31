@@ -1,5 +1,7 @@
 package com.zen.alchan.data.entitiy
 
+import com.zen.alchan.data.response.Genre
+import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.Country
 import com.zen.alchan.helper.enums.OtherLink
 import com.zen.alchan.helper.enums.Sort
