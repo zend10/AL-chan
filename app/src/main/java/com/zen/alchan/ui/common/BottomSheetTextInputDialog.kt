@@ -41,6 +41,7 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
             dialogSaveButton.clicks {
                 val newText = dialogEditText.text?.toString()?.trim() ?: ""
                 listener?.getNewText(newText)
+                dismiss()
             }
 
             dialogEditText.requestFocus()

@@ -245,35 +245,35 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.appThemeItems.subscribe {
                 appThemeAdapter = AppThemeRvAdapter(requireContext(), it, object : AppThemeRvAdapter.AppThemeListener {
                     override fun getSelectedAppTheme(appTheme: AppTheme) {
-                        dismissListDialog()
+                        dialog.dismissListDialog()
                         viewModel.updateAppTheme(appTheme)
                     }
                 }).also { adapter ->
-                    showListDialog(adapter)
+                    dialog.showListDialog(adapter)
                 }
             },
             viewModel.allAnimeListPositionItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateIsAllAnimeListPositionAtTop(data)
                 }
             },
             viewModel.allMangaListPositionItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateIsAllMangaListPositionAtTop(data)
                 }
             },
             viewModel.staffNamingItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateJapaneseStaffNaming(data)
                 }
             },
             viewModel.mediaNamingItems.subscribe { (list, country) ->
-                showListDialog(list) { data, _ ->
+                dialog.showListDialog(list) { data, _ ->
                     viewModel.updateMediaNaming(data, country)
                 }
             },
             viewModel.pushNotificationsIntervalItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateShowPushNotificationsInterval(data)
                 }
             },

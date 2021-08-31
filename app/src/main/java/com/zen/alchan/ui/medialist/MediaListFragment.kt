@@ -125,7 +125,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 modifyLayoutStyle(it)
             },
             viewModel.listSections.subscribe {
-                showListDialog(it) { _, index ->
+                dialog.showListDialog(it) { _, index ->
                     viewModel.showSelectedSectionMediaList(index)
                 }
             }

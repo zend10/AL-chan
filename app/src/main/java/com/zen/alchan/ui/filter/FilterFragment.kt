@@ -24,9 +24,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
     override val viewModel: FilterViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedFilterViewModel>()
 
-    private var multiSelectAdapter: BottomSheetMultiSelectRvAdapter<*>? = null
-    private var sliderDialog: BottomSheetSliderDialog? = null
-
     private var includedGenresAdapter: ChipRvAdapter? = null
     private var excludedGenresAdapter: ChipRvAdapter? = null
     private var includedTagsAdapter: ChipRvAdapter? = null
@@ -261,92 +258,92 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
 
             viewModel.sortByList.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateSortBy(data)
                 }
             },
             viewModel.orderByList.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateOrderBy(data)
                 }
             },
             viewModel.mediaFormatList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateMediaFormats(data)
                 }
             },
             viewModel.mediaStatusList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateMediaStatuses(data)
                 }
             },
             viewModel.mediaSourceList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateMediaSources(data)
                 }
             },
             viewModel.countryList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateCountries(data)
                 }
             },
             viewModel.mediaSeasonList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateMediaSeasons(data)
                 }
             },
             viewModel.releaseYearsSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateReleaseYears(minValue, maxValue)
                 }
             },
             viewModel.includedGenreList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateIncludedGenres(data)
                 }
             },
             viewModel.excludedGenreList.subscribe {
-                showMultiSelectDialog(it.first, it.second) { data ->
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateExcludedGenres(data)
                 }
             },
             viewModel.episodesSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateEpisodes(minValue, maxValue)
                 }
             },
             viewModel.durationsSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateDurations(minValue, maxValue)
                 }
             },
             viewModel.averageScoresSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateAverageScores(minValue, maxValue)
                 }
             },
             viewModel.popularitySliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updatePopularity(minValue, maxValue)
                 }
             },
             viewModel.scoresSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateScores(minValue, maxValue)
                 }
             },
             viewModel.startYearsSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateStartYears(minValue, maxValue)
                 }
             },
             viewModel.completedYearsSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updateCompletedYears(minValue, maxValue)
                 }
             },
             viewModel.prioritiesYearsSliderItem.subscribe {
-                showSliderDialog(it) { minValue, maxValue ->
+                dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updatePriorities(minValue, maxValue)
                 }
             }
@@ -361,42 +358,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
         viewModel.loadData()
     }
 
-    private fun <T> showMultiSelectDialog(
-        list: List<ListItem<T>>,
-        selectedIndex: ArrayList<Int>,
-        action: (data: List<T>) -> Unit
-    ) {
-        multiSelectAdapter =  BottomSheetMultiSelectRvAdapter(
-            requireContext(),
-            list,
-            selectedIndex,
-            object : BottomSheetMultiSelectRvAdapter.BottomSheetMultiSelectListener<T> {
-                override fun getSelectedItems(data: List<T>, index: List<Int>) {
-                    action(data)
-                }
-            })
-            .also { adapter ->
-                showListDialog(adapter)
-            }
-    }
-
-    private fun showSliderDialog(
-        sliderItem: SliderItem,
-        action: (minValue: Int?, maxValue: Int?) -> Unit
-    ) {
-        sliderDialog = BottomSheetSliderDialog.newInstance(
-            sliderItem,
-            object : BottomSheetSliderDialog.BottomSheetSliderListener {
-                override fun getNewValues(minValue: Int?, maxValue: Int?) {
-                    action(minValue, maxValue)
-                }
-            })
-        sliderDialog?.dialog?.setOnCancelListener {
-            sliderDialog = null
-        }
-        sliderDialog?.show(childFragmentManager, null)
-    }
-
     private fun <T> getJointString(list: List<T>, action: (data: T) -> String): String {
         return if (list.isEmpty())
             "-"
@@ -409,12 +370,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             "-"
         else
             "${integerPair.first} - ${integerPair.second}"
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        multiSelectAdapter = null
-        sliderDialog = null
     }
 
     companion object {

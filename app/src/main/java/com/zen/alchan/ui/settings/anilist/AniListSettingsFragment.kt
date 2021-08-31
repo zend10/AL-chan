@@ -83,17 +83,17 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
                 binding.aniListSettingsReceiveAiringNotificationsCheckBox.isChecked = it
             },
             viewModel.userTitleLanguageItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateTitleLanguage(data)
                 }
             },
             viewModel.userStaffNameLanguageItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateStaffNameLanguage(data)
                 }
             },
             viewModel.activityMergeTimeItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateActivityMergeTime(data.minute)
                 }
             }

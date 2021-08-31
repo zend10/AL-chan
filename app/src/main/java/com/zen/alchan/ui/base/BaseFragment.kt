@@ -45,9 +45,6 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
 
     protected var screenWidth = 0
 
-    protected var bottomSheetListDialog: BottomSheetListDialog? = null
-    protected var bottomSheetTextInputDialog: BottomSheetTextInputDialog? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -97,8 +94,6 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        bottomSheetListDialog = null
-        bottomSheetTextInputDialog = null
     }
 
     override fun onDestroy() {
@@ -122,46 +117,6 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
             setNavigationIcon(icon)
             setNavigationOnClickListener { action() }
         }
-    }
-
-    protected fun <T> showListDialog(list: List<ListItem<T>>, action: (data: T, index: Int) -> Unit) {
-        val adapter = BottomSheetListRvAdapter(requireContext(), list, object : BottomSheetListRvAdapter.BottomSheetListListener<T> {
-            override fun getSelectedItem(data: T, index: Int) {
-                dismissListDialog()
-                action(data, index)
-            }
-        })
-        bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
-        bottomSheetListDialog?.dialog?.setOnCancelListener {
-            bottomSheetListDialog = null
-        }
-        bottomSheetListDialog?.show(childFragmentManager, null)
-    }
-
-    protected fun showListDialog(adapter: BaseRecyclerViewAdapter<*, *>) {
-        bottomSheetListDialog = BottomSheetListDialog.newInstance(adapter)
-        bottomSheetListDialog?.dialog?.setOnCancelListener {
-            bottomSheetListDialog = null
-        }
-        bottomSheetListDialog?.show(childFragmentManager, null)
-    }
-
-    protected fun dismissListDialog() {
-        bottomSheetListDialog?.dismiss()
-        bottomSheetListDialog = null
-    }
-
-    protected fun showTextInputDialog(currentText: String, textInputSetting: TextInputSetting, listener: BottomSheetTextInputDialog.BottomSheetTextInputListener) {
-        bottomSheetTextInputDialog = BottomSheetTextInputDialog.newInstance(currentText, textInputSetting, listener)
-        bottomSheetTextInputDialog?.dialog?.setOnCancelListener {
-            bottomSheetTextInputDialog = null
-        }
-        bottomSheetTextInputDialog?.show(childFragmentManager, null)
-    }
-
-    protected fun dismissTextInputDialog() {
-        bottomSheetTextInputDialog?.dismiss()
-        bottomSheetTextInputDialog = null
     }
 
     protected fun restartApp() {

@@ -221,7 +221,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 mangaSectionOrderAdapter?.updateData(it)
             },
             viewModel.scoreFormatItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateScoreFormat(data)
                 }
             },
@@ -235,7 +235,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 binding.listSettingsAdvancedScoringCriteriaNoItemText.show(it)
             },
             viewModel.listOrderItems.subscribe {
-                showListDialog(it) { data, _ ->
+                dialog.showListDialog(it) { data, _ ->
                     viewModel.updateRowOrder(data)
                 }
             },
@@ -272,34 +272,25 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
     }
 
     private fun showAdvancedScoringDialog(currentText: String, index: Int? = null) {
-        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
-            override fun getNewText(newText: String) {
-                if (newText.isNotBlank()) {
-                    if (index != null)
-                        viewModel.editAdvancedScoring(newText, index)
-                    else
-                        viewModel.addAdvancedScoring(newText)
-                }
-
-
-                dismissTextInputDialog()
+        dialog.showTextInputDialog(currentText, textInputSetting) { newText ->
+            if (newText.isNotBlank()) {
+                if (index != null)
+                    viewModel.editAdvancedScoring(newText, index)
+                else
+                    viewModel.addAdvancedScoring(newText)
             }
-        })
+        }
     }
 
     private fun showCustomListsDialog(mediaType: MediaType, currentText: String, index: Int? = null) {
-        showTextInputDialog(currentText, textInputSetting, object : BottomSheetTextInputDialog.BottomSheetTextInputListener {
-            override fun getNewText(newText: String) {
-                if (newText.isNotBlank()) {
-                    if (index != null)
-                        viewModel.editCustomLists(mediaType, newText, index)
-                    else
-                        viewModel.addCustomLists(mediaType, newText)
-                }
-
-                dismissTextInputDialog()
+        dialog.showTextInputDialog(currentText, textInputSetting) { newText ->
+            if (newText.isNotBlank()) {
+                if (index != null)
+                    viewModel.editCustomLists(mediaType, newText, index)
+                else
+                    viewModel.addCustomLists(mediaType, newText)
             }
-        })
+        }
     }
 
     override fun onDestroyView() {
