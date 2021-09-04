@@ -5,5 +5,4 @@ import okhttp3.OkHttpClient
 
 interface ApolloHandler {
     val apolloClient: ApolloClient
-    val apiVersion: Int
 }

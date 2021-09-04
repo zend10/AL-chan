@@ -3,15 +3,12 @@ package com.zen.alchan.ui.filter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.android.material.chip.Chip
 import com.zen.alchan.R
-import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.databinding.FragmentFilterBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.ChipRvAdapter
-import com.zen.alchan.ui.common.TagRvAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -205,19 +202,19 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 binding.filterOrderByText.text = getString(if (it) R.string.descending else R.string.ascending)
             },
             viewModel.mediaFormats.subscribe {
-                binding.filterFormatText.text = getJointString(it) { format -> format.getFormatName() }
+                binding.filterFormatText.text = getJointString(it) { format -> format.getString() }
             },
             viewModel.mediaStatuses.subscribe {
-                binding.filterStatusText.text = getJointString(it) { status -> status.getStatusName() }
+                binding.filterStatusText.text = getJointString(it) { status -> status.getString() }
             },
             viewModel.mediaSources.subscribe {
-                binding.filterSourceText.text = getJointString(it) { source -> source.getSourceName() }
+                binding.filterSourceText.text = getJointString(it) { source -> source.getString() }
             },
             viewModel.countries.subscribe {
-                binding.filterCountryText.text = getJointString(it) { country -> country.getCountryName() }
+                binding.filterCountryText.text = getJointString(it) { country -> country.getString() }
             },
             viewModel.mediaSeasons.subscribe {
-                binding.filterSeasonText.text = getJointString(it) { season -> season.getSeasonName() }
+                binding.filterSeasonText.text = getJointString(it) { season -> season.getString() }
             },
             viewModel.releaseYears.subscribe {
                 binding.filterReleaseYearText.text = getPairString(it.data)

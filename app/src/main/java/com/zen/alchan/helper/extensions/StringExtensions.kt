@@ -2,9 +2,6 @@ package com.zen.alchan.helper.extensions
 
 import java.util.*
 
-fun String.replaceUnderscore(): String {
-    return replace("_", " ")
-}
 
 fun String.convertFromSnakeCase(toUpper: Boolean = false): String {
     val splitText = this.split("_")

@@ -77,12 +77,12 @@ class ALchanApplication : Application() {
 
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
-        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL, Constant.ANILIST_API_VERSION) }
+        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get()) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
-        single<MediaListDataSource> { DefaultMediaListDataSource(get()) }
+        single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
 
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }

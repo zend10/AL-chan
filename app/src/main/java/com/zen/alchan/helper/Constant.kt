@@ -4,7 +4,8 @@ import com.zen.alchan.BuildConfig
 
 object Constant {
     const val ANILIST_API_BASE_URL = "https://graphql.anilist.co"
-    const val ANILIST_API_VERSION = 2
+    const val ANILIST_API_STATUS_VERSION = 2
+    const val ANILIST_API_SOURCE_VERSION = 3
     const val ANILIST_WEBSITE_URL = "https://anilist.co"
 
     private const val ANILIST_CLIENT_ID = 1988

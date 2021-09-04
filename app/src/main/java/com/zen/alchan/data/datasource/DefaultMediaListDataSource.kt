@@ -8,7 +8,11 @@ import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Observable
 import type.MediaType
 
-class DefaultMediaListDataSource(private val apolloHandler: ApolloHandler) : MediaListDataSource {
+class DefaultMediaListDataSource(
+    private val apolloHandler: ApolloHandler,
+    private val statusVersion: Int,
+    private val sourceVersion: Int
+) : MediaListDataSource {
 
     override fun getMediaListCollectionQuery(
         userId: Int,
@@ -17,7 +21,8 @@ class DefaultMediaListDataSource(private val apolloHandler: ApolloHandler) : Med
         val query = MediaListCollectionQuery(
             Input.fromNullable(userId),
             Input.fromNullable(mediaType),
-            Input.fromNullable(apolloHandler.apiVersion)
+            Input.fromNullable(statusVersion),
+            Input.fromNullable(sourceVersion)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

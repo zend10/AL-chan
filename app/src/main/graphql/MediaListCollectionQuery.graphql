@@ -1,4 +1,4 @@
-query MediaListCollectionQuery($userId:Int, $type:MediaType, $version:Int) {
+query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int, $sourceVersion: Int) {
   MediaListCollection(userId:$userId, type:$type) {
     lists {
       entries {
@@ -37,7 +37,7 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $version:Int) {
           }
           type
           format
-          status(version:$version)
+          status(version:$statusVersion)
           startDate {
             year
             month
@@ -55,7 +55,7 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $version:Int) {
           chapters
           volumes
           countryOfOrigin
-          source(version:$version)
+          source(version:$sourceVersion)
           coverImage {
             extraLarge
             large

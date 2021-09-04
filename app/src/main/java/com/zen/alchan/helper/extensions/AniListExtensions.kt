@@ -1,8 +1,9 @@
 package com.zen.alchan.helper.extensions
 
 import android.content.Context
+import com.apollographql.apollo.api.EnumValue
 import com.zen.alchan.R
-import type.ScoreFormat
+import type.*
 
 fun ScoreFormat.getString(context: Context): String {
     return when (this) {
@@ -13,4 +14,24 @@ fun ScoreFormat.getString(context: Context): String {
         ScoreFormat.POINT_3 -> context.getString(R.string.three_point_smiley)
         else -> this.name.convertFromSnakeCase()
     }
+}
+
+fun MediaFormat.getString(): String {
+    return name.convertFromSnakeCase(true)
+}
+
+fun MediaSeason.getString(): String {
+    return name.convertFromSnakeCase(true)
+}
+
+fun MediaSource.getString(): String {
+    return name.convertFromSnakeCase(true)
+}
+
+fun MediaStatus.getString(): String {
+    return name.convertFromSnakeCase(true)
+}
+
+inline fun <reified T: Enum<*>> getNonUnknownValues(): List<T> {
+    return enumValues<T>().filter { it.name != "UNKNOWN__" }
 }

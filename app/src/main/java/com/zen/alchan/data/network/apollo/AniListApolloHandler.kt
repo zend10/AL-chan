@@ -8,8 +8,7 @@ import type.CustomType
 
 class AniListApolloHandler(
     private val headerInterceptor: HeaderInterceptor,
-    private val baseUrl: String,
-    private val version: Int
+    private val baseUrl: String
 ) : BaseApolloHandler(headerInterceptor) {
 
     override val apolloClient: ApolloClient = ApolloClient.builder()
@@ -18,6 +17,4 @@ class AniListApolloHandler(
         .addCustomTypeAdapter(CustomType.JSON, JsonAdapter())
         .addCustomTypeAdapter(CustomType.COUNTRYCODE, CountryCodeAdapter())
         .build()
-
-    override val apiVersion: Int = version
 }

@@ -9,6 +9,6 @@ enum class Country(val iso: String) {
     TAIWAN("TW")
 }
 
-fun Country.getCountryName(): String {
+fun Country.getString(): String {
     return this.name.convertFromSnakeCase(true)
 }

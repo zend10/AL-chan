@@ -6,6 +6,8 @@ import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.*
+import com.zen.alchan.helper.extensions.getNonUnknownValues
+import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SliderItem
@@ -14,7 +16,10 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import kotlin.math.min
+import type.MediaFormat
+import type.MediaSeason
+import type.MediaSource
+import type.MediaStatus
 
 class FilterViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
@@ -263,17 +268,17 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun updateMediaFormats(newMediaFormats: List<MediaFormat>) {
-        currentMediaFilter.mediaFormats = newMediaFormats.map { it.getAniListMediaFormat() }
+        currentMediaFilter.mediaFormats = newMediaFormats
         _mediaFormats.onNext(newMediaFormats)
     }
 
     fun updateMediaStatuses(newMediaStatuses: List<MediaStatus>) {
-        currentMediaFilter.mediaStatuses = newMediaStatuses.map { it.getAniListMediaStatus() }
+        currentMediaFilter.mediaStatuses = newMediaStatuses
         _mediaStatuses.onNext(newMediaStatuses)
     }
 
     fun updateMediaSources(newMediaSources: List<MediaSource>) {
-        currentMediaFilter.mediaSources = newMediaSources.map { it.getAniListMediaSource() }
+        currentMediaFilter.mediaSources = newMediaSources
         _mediaSources.onNext(newMediaSources)
     }
 
@@ -283,7 +288,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun updateMediaSeasons(newSeasons: List<MediaSeason>) {
-        currentMediaFilter.mediaSeasons = newSeasons.map { it.getAniListMediaSeason() }
+        currentMediaFilter.mediaSeasons = newSeasons
         _mediaSeasons.onNext(newSeasons)
     }
 
@@ -541,7 +546,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         }
 
         val formats = ArrayList<ListItem<MediaFormat>>()
-        formats.addAll(mediaFormats.map { ListItem(it.getFormatName(), listOf(), it) })
+        formats.addAll(mediaFormats.map { ListItem(it.getString(), listOf(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaFormats.value?.forEach {
@@ -554,9 +559,9 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun loadMediaStatuses() {
-        val mediaStatuses = MediaStatus.values()
+        val mediaStatuses = getNonUnknownValues<MediaStatus>()
         val statuses = ArrayList<ListItem<MediaStatus>>()
-        statuses.addAll(mediaStatuses.map { ListItem(it.getStatusName(), listOf(), it) })
+        statuses.addAll(mediaStatuses.map { ListItem(it.getString(), listOf(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaStatuses.value?.forEach {
@@ -569,9 +574,9 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun loadMediaSources() {
-        val mediaSources = MediaSource.values()
+        val mediaSources = getNonUnknownValues<MediaSource>()
         val sources = ArrayList<ListItem<MediaSource>>()
-        sources.addAll(mediaSources.map { ListItem(it.getSourceName(), listOf(), it) })
+        sources.addAll(mediaSources.map { ListItem(it.getString(), listOf(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaSources.value?.forEach {
@@ -586,7 +591,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     fun loadCountries() {
         val mediaCountries = Country.values()
         val countries = ArrayList<ListItem<Country>>()
-        countries.addAll(mediaCountries.map { ListItem(it.getCountryName(), listOf(), it) })
+        countries.addAll(mediaCountries.map { ListItem(it.getString(), listOf(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _countries.value?.forEach {
@@ -599,9 +604,9 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun loadMediaSeasons() {
-        val mediaSeasons = MediaSeason.values()
+        val mediaSeasons = getNonUnknownValues<MediaSeason>()
         val seasons = ArrayList<ListItem<MediaSeason>>()
-        seasons.addAll(mediaSeasons.map { ListItem(it.getSeasonName(), listOf(), it) })
+        seasons.addAll(mediaSeasons.map { ListItem(it.getString(), listOf(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaSeasons.value?.forEach {
