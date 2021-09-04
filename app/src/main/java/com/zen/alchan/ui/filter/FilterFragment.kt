@@ -1,20 +1,17 @@
 package com.zen.alchan.ui.filter
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.chip.Chip
 import com.zen.alchan.R
+import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.databinding.FragmentFilterBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
-import com.zen.alchan.helper.pojo.ListItem
-import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.common.BottomSheetMultiSelectRvAdapter
-import com.zen.alchan.ui.common.BottomSheetSliderDialog
 import com.zen.alchan.ui.common.ChipRvAdapter
+import com.zen.alchan.ui.common.TagRvAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,6 +66,28 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 }
             })
             filterGenresExcludeRecyclerView.adapter = excludedGenresAdapter
+
+            includedTagsAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+                override fun getSelectedItem(item: String, index: Int) {
+                    viewModel.loadIncludedTags()
+                }
+
+                override fun deleteItem(index: Int) {
+                    viewModel.removeIncludedTag(index)
+                }
+            })
+            filterTagsIncludeRecyclerView.adapter = includedTagsAdapter
+
+            excludedTagsAdapter = ChipRvAdapter(listOf(), object : ChipRvAdapter.ChipListener {
+                override fun getSelectedItem(item: String, index: Int) {
+                    viewModel.loadExcludedTags()
+                }
+
+                override fun deleteItem(index: Int) {
+                    viewModel.removeExcludedTag(index)
+                }
+            })
+            filterTagsExcludeRecyclerView.adapter = excludedTagsAdapter
 
             filterPersistCheckBox.setOnClickListener {
                 viewModel.updatePersistFilter(filterPersistCheckBox.isChecked)
@@ -131,11 +150,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             }
 
             filterTagsIncludeText.clicks {
-
+                viewModel.loadIncludedTags()
             }
 
             filterTagsExcludeText.clicks {
-
+                viewModel.loadExcludedTags()
             }
 
             filterScoreLayout.clicks {
@@ -208,6 +227,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             },
             viewModel.excludedGenres.subscribe {
                 excludedGenresAdapter?.updateData(it)
+            },
+            viewModel.includedTags.subscribe {
+                includedTagsAdapter?.updateData(it)
+            },
+            viewModel.excludedTags.subscribe {
+                excludedTagsAdapter?.updateData(it)
             },
             viewModel.episodes.subscribe {
                 binding.filterEpisodesText.text = getPairString(it.data)
@@ -305,6 +330,16 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.excludedGenreList.subscribe {
                 dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateExcludedGenres(data)
+                }
+            },
+            viewModel.includedTagList.subscribe {
+                dialog.showTagDialog(it.first, it.second) { data ->
+                    viewModel.updateIncludedTags(data)
+                }
+            },
+            viewModel.excludedTagList.subscribe {
+                dialog.showTagDialog(it.first, it.second) { data ->
+                    viewModel.updateExcludedTags(data)
                 }
             },
             viewModel.episodesSliderItem.subscribe {

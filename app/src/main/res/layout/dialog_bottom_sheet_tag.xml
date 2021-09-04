@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/dragIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?themeDividerColor"
+        android:layout_marginTop="@dimen/marginPageBig"
+        android:layout_width="@dimen/marginFar"
+        android:layout_height="@dimen/marginClose"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/dialogEditText"
+        style="?themeRegularFont"
+        android:hint="@string/search"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="@dimen/marginNormal"
+        app:layout_constraintTop_toBottomOf="@id/dragIcon"
+        android:layout_marginTop="@dimen/marginPageBig"
+        android:layout_marginHorizontal="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <include layout="@layout/divider"
+        android:layout_marginTop="@dimen/marginPageBig"
+        app:layout_constraintTop_toBottomOf="@+id/dialogEditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lineWidth"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialogRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/dialogEditText"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

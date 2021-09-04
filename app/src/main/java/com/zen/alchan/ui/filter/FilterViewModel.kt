@@ -170,12 +170,12 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val excludedGenreList: Observable<Pair<List<ListItem<String>>, ArrayList<Int>>>
         get() = _excludedGenreList
 
-    private val _includedTagList = PublishSubject.create<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>()
-    val includedTagList: Observable<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>
+    private val _includedTagList = PublishSubject.create<Pair<List<ListItem<MediaTag?>>, ArrayList<Int>>>()
+    val includedTagList: Observable<Pair<List<ListItem<MediaTag?>>, ArrayList<Int>>>
         get() = _includedTagList
 
-    private val _excludedTagList = PublishSubject.create<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>()
-    val excludedTagList: Observable<Pair<List<ListItem<MediaTag>>, ArrayList<Int>>>
+    private val _excludedTagList = PublishSubject.create<Pair<List<ListItem<MediaTag?>>, ArrayList<Int>>>()
+    val excludedTagList: Observable<Pair<List<ListItem<MediaTag?>>, ArrayList<Int>>>
         get() = _excludedTagList
 
     private val _episodesSliderItem = PublishSubject.create<SliderItem>()
@@ -215,6 +215,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
 
     private var genres: List<Genre> = listOf()
     private var tags: List<MediaTag> = listOf()
+    private var tagList: List<ListItem<MediaTag?>> = listOf()
     private var currentMediaFilter = MediaFilter.EMPTY_MEDIA_FILTER
 
     override fun loadData() {
@@ -230,6 +231,14 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
                 contentRepository.getTags()
                     .subscribe {
                         tags = it
+
+                        val tagMap = tags.groupBy { tag -> tag.category }
+                        val tagList = ArrayList<ListItem<MediaTag?>>()
+                        tagMap.forEach { (category, tags) ->
+                            tagList.add(ListItem(category, listOf(), null))
+                            tagList.addAll(tags.map { tag -> ListItem(tag.name, listOf(), tag) })
+                        }
+                        this.tagList = tagList
                     }
             )
 
@@ -338,12 +347,13 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         _noItemGenreLayoutVisibility.onNext(_includedGenres.value.isNullOrEmpty() && _excludedGenres.value.isNullOrEmpty())
     }
 
-    fun updateIncludedTags(newTags: List<String>) {
-        currentMediaFilter.includedTags = newTags
-        _includedTags.onNext(newTags)
+    fun updateIncludedTags(newTags: List<MediaTag>) {
+        val tagNames = newTags.map { it.name }
+        currentMediaFilter.includedTags = tagNames
+        _includedTags.onNext(tagNames)
 
         val excludedTags = ArrayList(_excludedTags.value ?: listOf())
-        excludedTags.removeAll(newTags)
+        excludedTags.removeAll(tagNames)
         _excludedTags.onNext(excludedTags)
 
         handleTagLayoutVisibility()
@@ -358,12 +368,13 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         handleTagLayoutVisibility()
     }
 
-    fun updateExcludedTags(newTags: List<String>) {
-        currentMediaFilter.excludedTags = newTags
-        _excludedTags.onNext(newTags)
+    fun updateExcludedTags(newTags: List<MediaTag>) {
+        val tagNames = newTags.map { it.name }
+        currentMediaFilter.excludedTags = tagNames
+        _excludedTags.onNext(tagNames)
 
         val includedTags = ArrayList(_includedTags.value ?: listOf())
-        includedTags.removeAll(newTags)
+        includedTags.removeAll(tagNames)
         _includedTags.onNext(includedTags)
 
         handleTagLayoutVisibility()
@@ -635,6 +646,30 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         }
 
         _excludedGenreList.onNext(genreList to selectedIndex)
+    }
+
+    fun loadIncludedTags() {
+        val selectedTagIds = ArrayList<Int>()
+        _includedTags.value?.forEach {
+            val tag = tagList.find { tag -> tag.data?.name == it }?.data
+            tag?.let {
+                selectedTagIds.add(tag.id)
+            }
+        }
+
+        _includedTagList.onNext(tagList to selectedTagIds)
+    }
+
+    fun loadExcludedTags() {
+        val selectedTagIds = ArrayList<Int>()
+        _excludedTags.value?.forEach {
+            val tag = tagList.find { tag -> tag.data?.name == it }?.data
+            tag?.let {
+                selectedTagIds.add(tag.id)
+            }
+        }
+
+        _excludedTagList.onNext(tagList to selectedTagIds)
     }
 
     fun loadEpisodesSliderItem() {

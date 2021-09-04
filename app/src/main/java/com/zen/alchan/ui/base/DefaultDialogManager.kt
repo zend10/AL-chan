@@ -4,16 +4,20 @@ import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.common.*
+import com.zen.alchan.ui.common.BottomSheetTagDialog
+import com.zen.alchan.ui.common.TagRvAdapter
 
 class DefaultDialogManager(private val context: Context) : DialogManager {
 
     private var bottomSheetListDialog: BottomSheetListDialog? = null
     private var bottomSheetTextInputDialog: BottomSheetTextInputDialog? = null
     private var bottomSheetSliderDialog: BottomSheetSliderDialog? = null
+    private var bottomSheetTagDialog: BottomSheetTagDialog? = null
 
     override fun showToast(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -130,6 +134,24 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         }
         (context as? AppCompatActivity)?.supportFragmentManager?.let {
             bottomSheetListDialog?.show(it, null)
+        }
+    }
+
+    override fun showTagDialog(
+        list: List<ListItem<MediaTag?>>,
+        selectedIndex: ArrayList<Int>,
+        action: (data: List<MediaTag>) -> Unit
+    ) {
+        bottomSheetTagDialog = BottomSheetTagDialog.newInstance(list, selectedIndex, object : BottomSheetTagDialog.TagDialogListener {
+            override fun getSelectedTags(list: List<MediaTag>) {
+                action(list)
+            }
+        })
+        bottomSheetTagDialog?.dialog?.setOnCancelListener {
+            bottomSheetTagDialog = null
+        }
+        (context as? AppCompatActivity)?.supportFragmentManager?.let {
+            bottomSheetTagDialog?.show(it, null)
         }
     }
 }
