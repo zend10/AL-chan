@@ -240,8 +240,8 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
                         val tagMap = tags.groupBy { tag -> tag.category }
                         val tagList = ArrayList<ListItem<MediaTag?>>()
                         tagMap.forEach { (category, tags) ->
-                            tagList.add(ListItem(category, listOf(), null))
-                            tagList.addAll(tags.map { tag -> ListItem(tag.name, listOf(), tag) })
+                            tagList.add(ListItem(category, null))
+                            tagList.addAll(tags.map { tag -> ListItem(tag.name, tag) })
                         }
                         this.tagList = tagList
                     }
@@ -546,7 +546,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         }
 
         val formats = ArrayList<ListItem<MediaFormat>>()
-        formats.addAll(mediaFormats.map { ListItem(it.getString(), listOf(), it) })
+        formats.addAll(mediaFormats.map { ListItem(it.getString(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaFormats.value?.forEach {
@@ -561,7 +561,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     fun loadMediaStatuses() {
         val mediaStatuses = getNonUnknownValues<MediaStatus>()
         val statuses = ArrayList<ListItem<MediaStatus>>()
-        statuses.addAll(mediaStatuses.map { ListItem(it.getString(), listOf(), it) })
+        statuses.addAll(mediaStatuses.map { ListItem(it.getString(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaStatuses.value?.forEach {
@@ -576,7 +576,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     fun loadMediaSources() {
         val mediaSources = getNonUnknownValues<MediaSource>()
         val sources = ArrayList<ListItem<MediaSource>>()
-        sources.addAll(mediaSources.map { ListItem(it.getString(), listOf(), it) })
+        sources.addAll(mediaSources.map { ListItem(it.getString(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaSources.value?.forEach {
@@ -591,7 +591,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     fun loadCountries() {
         val mediaCountries = Country.values()
         val countries = ArrayList<ListItem<Country>>()
-        countries.addAll(mediaCountries.map { ListItem(it.getString(), listOf(), it) })
+        countries.addAll(mediaCountries.map { ListItem(it.getString(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _countries.value?.forEach {
@@ -606,7 +606,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     fun loadMediaSeasons() {
         val mediaSeasons = getNonUnknownValues<MediaSeason>()
         val seasons = ArrayList<ListItem<MediaSeason>>()
-        seasons.addAll(mediaSeasons.map { ListItem(it.getString(), listOf(), it) })
+        seasons.addAll(mediaSeasons.map { ListItem(it.getString(), it) })
 
         val selectedIndex = ArrayList<Int>()
         _mediaSeasons.value?.forEach {
@@ -630,7 +630,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun loadIncludedGenres() {
-        val genreList = genres.map { ListItem(it.name, listOf(), it.name) }
+        val genreList = genres.map { ListItem(it.name, it.name) }
         val selectedIndex = ArrayList<Int>()
         _includedGenres.value?.forEach {
             val index = genres.indexOfFirst { genre -> genre.name == it }
@@ -642,7 +642,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun loadExcludedGenres() {
-        val genreList = genres.map { ListItem(it.name, listOf(), it.name) }
+        val genreList = genres.map { ListItem(it.name, it.name) }
         val selectedIndex = ArrayList<Int>()
         _excludedGenres.value?.forEach {
             val index = genres.indexOfFirst { genre -> genre.name == it }

@@ -7,6 +7,7 @@ import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.helper.enums.getStringResource
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
@@ -384,41 +385,21 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
 
     fun loadScoreFormatItems() {
         val items = ArrayList<ListItem<ScoreFormat>>()
-        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_100), ScoreFormat.POINT_100))
-        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_10_DECIMAL), ScoreFormat.POINT_10_DECIMAL))
-        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_10), ScoreFormat.POINT_10))
-        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_5), ScoreFormat.POINT_5))
-        items.add(ListItem(getScoreFormatStringResource(ScoreFormat.POINT_3), ScoreFormat.POINT_3))
+        items.add(ListItem(ScoreFormat.POINT_100.getStringResource(), ScoreFormat.POINT_100))
+        items.add(ListItem(ScoreFormat.POINT_10_DECIMAL.getStringResource(), ScoreFormat.POINT_10_DECIMAL))
+        items.add(ListItem(ScoreFormat.POINT_10.getStringResource(), ScoreFormat.POINT_10))
+        items.add(ListItem(ScoreFormat.POINT_5.getStringResource(), ScoreFormat.POINT_5))
+        items.add(ListItem(ScoreFormat.POINT_3.getStringResource(), ScoreFormat.POINT_3))
         _scoreFormatItems.onNext(items)
-    }
-
-    fun getScoreFormatStringResource(scoreFormat: ScoreFormat): Int {
-        return when (scoreFormat) {
-            ScoreFormat.POINT_100 -> R.string.hundred_point
-            ScoreFormat.POINT_10_DECIMAL -> R.string.ten_point_decimal
-            ScoreFormat.POINT_10 -> R.string.ten_point
-            ScoreFormat.POINT_5 -> R.string.five_star
-            ScoreFormat.POINT_3 -> R.string.three_point_smiley
-            else -> R.string.hundred_point
-        }
     }
 
     fun loadListOrderItems() {
         val items = ArrayList<ListItem<ListOrder>>()
-        items.add(ListItem(getListOrderStringResource(ListOrder.SCORE), ListOrder.SCORE))
-        items.add(ListItem(getListOrderStringResource(ListOrder.TITLE), ListOrder.TITLE))
-        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_UPDATED), ListOrder.LAST_UPDATED))
-        items.add(ListItem(getListOrderStringResource(ListOrder.LAST_ADDED), ListOrder.LAST_ADDED))
+        items.add(ListItem(ListOrder.SCORE.getStringResource(), ListOrder.SCORE))
+        items.add(ListItem(ListOrder.TITLE.getStringResource(), ListOrder.TITLE))
+        items.add(ListItem(ListOrder.LAST_UPDATED.getStringResource(), ListOrder.LAST_UPDATED))
+        items.add(ListItem(ListOrder.LAST_ADDED.getStringResource(), ListOrder.LAST_ADDED))
         _listOrderItems.onNext(items)
-    }
-
-    fun getListOrderStringResource(listOrder: ListOrder): Int {
-        return when (listOrder) {
-            ListOrder.SCORE -> R.string.score
-            ListOrder.TITLE -> R.string.title
-            ListOrder.LAST_UPDATED -> R.string.last_updated
-            ListOrder.LAST_ADDED -> R.string.last_added
-        }
     }
 
     fun loadSectionOrderItems(mediaType: MediaType) {

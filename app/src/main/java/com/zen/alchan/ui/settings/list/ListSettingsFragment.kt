@@ -7,6 +7,7 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentListSettingsBinding
 import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseFragment
@@ -191,7 +192,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 dialog.showToast(it)
             },
             viewModel.scoreFormat.subscribe {
-                binding.listSettingsScoringSystemText.text = getString(viewModel.getScoreFormatStringResource(it))
+                binding.listSettingsScoringSystemText.text = it.getString(requireContext())
             },
             viewModel.advancedScoringEnabled.subscribe {
                 binding.listSettingsUseAdvancedScoringCheckBox.isChecked = it
@@ -200,7 +201,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 advancedScoringAdapter?.updateData(it)
             },
             viewModel.rowOrder.subscribe {
-                binding.listSettingsDefaultListOrderText.text = getString(viewModel.getListOrderStringResource(it))
+                binding.listSettingsDefaultListOrderText.text = it.getString(requireContext())
             },
             viewModel.splitCompletedAnimeSectionByFormat.subscribe {
                 binding.listSettingsSplitAnimeCompletedCheckBox.isChecked = it

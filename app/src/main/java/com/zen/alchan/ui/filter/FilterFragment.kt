@@ -196,7 +196,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 binding.filterPersistCheckBox.isChecked = it
             },
             viewModel.sortBy.subscribe {
-                binding.filterSortByText.text = getString(it.getStringResource())
+                binding.filterSortByText.text = it.getString(requireContext())
             },
             viewModel.orderByDescending.subscribe {
                 binding.filterOrderByText.text = getString(if (it) R.string.descending else R.string.ascending)

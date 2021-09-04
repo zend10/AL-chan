@@ -1,5 +1,6 @@
 package com.zen.alchan.helper.enums
 
+import android.content.Context
 import com.zen.alchan.R
 
 enum class Sort {
@@ -16,6 +17,10 @@ enum class Sort {
     POPULARITY,
     PRIORITY,
     NEXT_AIRING
+}
+
+fun Sort.getString(context: Context): String {
+    return context.getString(getStringResource())
 }
 
 fun Sort.getStringResource(): Int {

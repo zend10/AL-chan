@@ -6,13 +6,17 @@ import com.zen.alchan.R
 import type.*
 
 fun ScoreFormat.getString(context: Context): String {
+    return context.getString(getStringResource())
+}
+
+fun ScoreFormat.getStringResource(): Int {
     return when (this) {
-        ScoreFormat.POINT_100 -> context.getString(R.string.hundred_point)
-        ScoreFormat.POINT_10_DECIMAL -> context.getString(R.string.ten_point_decimal)
-        ScoreFormat.POINT_10 -> context.getString(R.string.ten_point)
-        ScoreFormat.POINT_5 -> context.getString(R.string.five_star)
-        ScoreFormat.POINT_3 -> context.getString(R.string.three_point_smiley)
-        else -> this.name.convertFromSnakeCase()
+        ScoreFormat.POINT_100 -> R.string.hundred_point
+        ScoreFormat.POINT_10_DECIMAL -> R.string.ten_point_decimal
+        ScoreFormat.POINT_10 -> R.string.ten_point
+        ScoreFormat.POINT_5 -> R.string.five_star
+        ScoreFormat.POINT_3 -> R.string.three_point_smiley
+        else -> R.string.hundred_point
     }
 }
 

@@ -169,7 +169,7 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
     override fun setUpObserver() {
         disposables.addAll(
             viewModel.appTheme.subscribe {
-                binding.appSettingsSelectedThemeText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsSelectedThemeText.text = it.getString()
             },
             viewModel.useCircularAvatarForProfile.subscribe {
                 binding.appSettingsCircularAvatarCheckBox.isChecked = it
@@ -195,19 +195,19 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 binding.appSettingsRelativeDateCheckBox.isChecked = it
             },
             viewModel.japaneseStaffNaming.subscribe {
-                binding.appSettingsStaffNameText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsStaffNameText.text = it.getString()
             },
             viewModel.japaneseMediaNaming.subscribe {
-                binding.appSettingsJapaneseMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsJapaneseMediaText.text = it.getString()
             },
             viewModel.koreanMediaNaming.subscribe {
-                binding.appSettingsKoreanMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsKoreanMediaText.text = it.getString()
             },
             viewModel.chineseMediaNaming.subscribe {
-                binding.appSettingsChineseMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsChineseMediaText.text = it.getString()
             },
             viewModel.taiwaneseMediaNaming.subscribe {
-                binding.appSettingsTaiwaneseMediaText.text = it.name.convertFromSnakeCase()
+                binding.appSettingsTaiwaneseMediaText.text = it.getString()
             },
             viewModel.sendAiringPushNotifications.subscribe {
                 binding.appSettingsAiringPushNotificationsCheckBox.isChecked = it

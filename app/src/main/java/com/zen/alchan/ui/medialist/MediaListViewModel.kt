@@ -115,11 +115,11 @@ class MediaListViewModel(
             val listFromCurrentGroups = groups.map {
                 totalEntries += it.entries.size
                 val formattedTitle = "${it.name} (${it.entries.size})"
-                ListItem(text = formattedTitle, data = formattedTitle)
+                ListItem(formattedTitle, formattedTitle)
             }
             sections.addAll(listFromCurrentGroups)
 
-            val allListItem = ListItem(text = "All ($totalEntries)", data = "All")
+            val allListItem = ListItem("All ($totalEntries)", "All")
             if (isAllListPositionAtTop) {
                 sections.add(0, allListItem)
             } else {

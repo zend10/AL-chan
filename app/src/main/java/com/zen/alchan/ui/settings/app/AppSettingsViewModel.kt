@@ -356,19 +356,19 @@ class AppSettingsViewModel(
 
     fun loadStaffNamingItems() {
         val items = ArrayList<ListItem<StaffNaming>>()
-        items.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), StaffNaming.FOLLOW_ANILIST))
-        items.add(ListItem("{0}", listOf(R.string.use_staff_first_middle_last_name_format), StaffNaming.FIRST_MIDDLE_LAST))
-        items.add(ListItem("{0}", listOf(R.string.use_staff_last_middle_first_name_format), StaffNaming.LAST_MIDDLE_FIRST))
-        items.add(ListItem("{0}", listOf(R.string.native_name), StaffNaming.NATIVE))
+        items.add(ListItem(R.string.follow_anilist_setting, StaffNaming.FOLLOW_ANILIST))
+        items.add(ListItem(R.string.use_staff_first_middle_last_name_format, StaffNaming.FIRST_MIDDLE_LAST))
+        items.add(ListItem(R.string.use_staff_last_middle_first_name_format, StaffNaming.LAST_MIDDLE_FIRST))
+        items.add(ListItem(R.string.native_name, StaffNaming.NATIVE))
         _staffNamingItems.onNext(items)
     }
 
     fun loadMediaNamingItems(country: Country) {
         val items = ArrayList<ListItem<MediaNaming>>()
-        items.add(ListItem("{0}", listOf(R.string.follow_anilist_setting), MediaNaming.FOLLOW_ANILIST))
-        items.add(ListItem("{0}", listOf(R.string.use_media_english_name_format), MediaNaming.ENGLISH))
-        items.add(ListItem("{0}", listOf(R.string.use_media_romaji_name_format), MediaNaming.ROMAJI))
-        items.add(ListItem("{0}", listOf(R.string.use_media_native_name_format), MediaNaming.NATIVE))
+        items.add(ListItem(R.string.follow_anilist_setting, MediaNaming.FOLLOW_ANILIST))
+        items.add(ListItem(R.string.use_media_english_name_format, MediaNaming.ENGLISH))
+        items.add(ListItem(R.string.use_media_romaji_name_format, MediaNaming.ROMAJI))
+        items.add(ListItem(R.string.use_media_native_name_format, MediaNaming.NATIVE))
         _mediaNamingItems.onNext(items to country)
     }
 
