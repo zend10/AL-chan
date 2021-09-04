@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.zen.alchan.BuildConfig
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentAboutBinding
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
@@ -29,6 +30,8 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel>() {
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.about_al_chan))
+
+            aboutSettingsAppVersionText.text = getString(R.string.version, BuildConfig.VERSION_NAME)
 
             aboutSettingsAniListLink.clicks {
                 navigation.openWebView(NavigationManager.Url.ALCHAN_FORUM_THREAD)

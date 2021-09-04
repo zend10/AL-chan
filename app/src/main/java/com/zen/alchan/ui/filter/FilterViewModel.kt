@@ -678,7 +678,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun loadEpisodesSliderItem() {
-        val episodes = _releaseYears.value?.data
+        val episodes = _episodes.value?.data
         val sliderItem = SliderItem(
             0,
             150,
@@ -703,7 +703,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         val averageScores = _averageScores.value?.data
         val sliderItem = SliderItem(
             0,
-            180,
+            100,
             averageScores?.first,
             averageScores?.second
         )
