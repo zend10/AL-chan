@@ -23,7 +23,7 @@ interface DialogManager {
     fun dismissListDialog()
 
     fun showTextInputDialog(currentText: String, textInputSetting: TextInputSetting, action: (newText: String) -> Unit)
-    fun showSliderDialog(sliderItem: SliderItem, action: (minValue: Int?, maxValue: Int?) -> Unit)
+    fun showSliderDialog(sliderItem: SliderItem, useSingleSlider: Boolean = false, action: (minValue: Int?, maxValue: Int?) -> Unit)
     fun <T> showMultiSelectDialog(list: List<ListItem<T>>, selectedIndex: ArrayList<Int>, action: (data: List<T>) -> Unit)
 
     fun showTagDialog(list: List<ListItem<MediaTag?>>, selectedIndex: ArrayList<Int>, action: (data: List<MediaTag>) -> Unit)

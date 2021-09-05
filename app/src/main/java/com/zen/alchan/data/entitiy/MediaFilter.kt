@@ -21,12 +21,6 @@ data class MediaFilter(
     var mediaSeasons: List<MediaSeason> = listOf(),
     var minYear: Int? = null,
     var maxYear: Int? = null,
-    var includedGenres: List<String> = listOf(),
-    var excludedGenres: List<String> = listOf(),
-    var includedTags: List<String> = listOf(),
-    var excludedTags: List<String> = listOf(),
-    var minTagPercentage: Int = 0,
-    var otherLinks: List<OtherLink> = listOf(),
     var minEpisodes: Int? = null,
     var maxEpisodes: Int? = null,
     var minDuration: Int? = null,
@@ -35,6 +29,12 @@ data class MediaFilter(
     var maxAverageScore: Int? = null,
     var minPopularity: Int? = null,
     var maxPopularity: Int? = null,
+    var streamingOn: List<OtherLink> = listOf(),
+    var includedGenres: List<String> = listOf(),
+    var excludedGenres: List<String> = listOf(),
+    var includedTags: List<String> = listOf(),
+    var excludedTags: List<String> = listOf(),
+    var minTagPercentage: Int = DEFAULT_MINIMUM_TAG_PERCENTAGE,
     var minUserScore: Int? = null,
     var maxUserScore: Int? = null,
     var minUserStartYear: Int? = null,
@@ -46,5 +46,6 @@ data class MediaFilter(
 ) {
     companion object {
         val EMPTY_MEDIA_FILTER = MediaFilter()
+        const val DEFAULT_MINIMUM_TAG_PERCENTAGE = 18
     }
 }

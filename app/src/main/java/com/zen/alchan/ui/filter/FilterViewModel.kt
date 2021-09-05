@@ -59,22 +59,6 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val releaseYears: Observable<NullableItem<Pair<Int, Int>>>
         get() = _releaseYears
 
-    private val _includedGenres = BehaviorSubject.createDefault(listOf<String>())
-    val includedGenres: Observable<List<String>>
-        get() = _includedGenres
-
-    private val _excludedGenres = BehaviorSubject.createDefault(listOf<String>())
-    val excludedGenres: Observable<List<String>>
-        get() = _excludedGenres
-
-    private val _includedTags = BehaviorSubject.createDefault(listOf<String>())
-    val includedTags: Observable<List<String>>
-        get() = _includedTags
-
-    private val _excludedTags = BehaviorSubject.createDefault(listOf<String>())
-    val excludedTags: Observable<List<String>>
-        get() = _excludedTags
-
     private val _episodes = BehaviorSubject.createDefault(NullableItem<Pair<Int, Int>>())
     val episodes: Observable<NullableItem<Pair<Int, Int>>>
         get() = _episodes
@@ -91,6 +75,30 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val popularity: Observable<NullableItem<Pair<Int, Int>>>
         get() = _popularity
 
+    private val _streamingOn = BehaviorSubject.createDefault(listOf<OtherLink>())
+    val streamingOn: Observable<List<OtherLink>>
+        get() = _streamingOn
+
+    private val _includedGenres = BehaviorSubject.createDefault(listOf<String>())
+    val includedGenres: Observable<List<String>>
+        get() = _includedGenres
+
+    private val _excludedGenres = BehaviorSubject.createDefault(listOf<String>())
+    val excludedGenres: Observable<List<String>>
+        get() = _excludedGenres
+
+    private val _includedTags = BehaviorSubject.createDefault(listOf<String>())
+    val includedTags: Observable<List<String>>
+        get() = _includedTags
+
+    private val _excludedTags = BehaviorSubject.createDefault(listOf<String>())
+    val excludedTags: Observable<List<String>>
+        get() = _excludedTags
+
+    private val _minimumTagPercentage = BehaviorSubject.createDefault(MediaFilter.DEFAULT_MINIMUM_TAG_PERCENTAGE)
+    val minimumTagPercentage: Observable<Int>
+        get() = _minimumTagPercentage
+
     private val _scores = BehaviorSubject.createDefault(NullableItem<Pair<Int, Int>>())
     val scores: Observable<NullableItem<Pair<Int, Int>>>
         get() = _scores
@@ -106,6 +114,10 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     private val _priorities = BehaviorSubject.createDefault(NullableItem<Pair<Int, Int>>())
     val priorities: Observable<NullableItem<Pair<Int, Int>>>
         get() = _priorities
+
+
+
+
 
     private val _includedGenresLayoutVisibility = BehaviorSubject.createDefault(false)
     val includedGenresLayoutVisibility: Observable<Boolean>
@@ -167,6 +179,26 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val releaseYearsSliderItem: Observable<SliderItem>
         get() = _releaseYearsSliderItem
 
+    private val _episodesSliderItem = PublishSubject.create<SliderItem>()
+    val episodesSliderItem: Observable<SliderItem>
+        get() = _episodesSliderItem
+
+    private val _durationsSliderItem = PublishSubject.create<SliderItem>()
+    val durationsSliderItem: Observable<SliderItem>
+        get() = _durationsSliderItem
+
+    private val _averageScoresSliderItem = PublishSubject.create<SliderItem>()
+    val averageScoresSliderItem: Observable<SliderItem>
+        get() = _averageScoresSliderItem
+
+    private val _popularitySliderItem = PublishSubject.create<SliderItem>()
+    val popularitySliderItem: Observable<SliderItem>
+        get() = _popularitySliderItem
+
+    private val _streamingOnList = PublishSubject.create<Pair<List<ListItem<OtherLink>>, ArrayList<Int>>>()
+    val streamingOnList: Observable<Pair<List<ListItem<OtherLink>>, ArrayList<Int>>>
+        get() = _streamingOnList
+
     private val _includedGenreList = PublishSubject.create<Pair<List<ListItem<String>>, ArrayList<Int>>>()
     val includedGenreList: Observable<Pair<List<ListItem<String>>, ArrayList<Int>>>
         get() = _includedGenreList
@@ -183,21 +215,9 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val excludedTagList: Observable<Pair<List<ListItem<MediaTag?>>, ArrayList<Int>>>
         get() = _excludedTagList
 
-    private val _episodesSliderItem = PublishSubject.create<SliderItem>()
-    val episodesSliderItem: Observable<SliderItem>
-        get() = _episodesSliderItem
-
-    private val _durationsSliderItem = PublishSubject.create<SliderItem>()
-    val durationsSliderItem: Observable<SliderItem>
-        get() = _durationsSliderItem
-
-    private val _averageScoresSliderItem = PublishSubject.create<SliderItem>()
-    val averageScoresSliderItem: Observable<SliderItem>
-        get() = _averageScoresSliderItem
-
-    private val _popularitySliderItem = PublishSubject.create<SliderItem>()
-    val popularitySliderItem: Observable<SliderItem>
-        get() = _popularitySliderItem
+    private val _minimumTagPercentageSliderItem = PublishSubject.create<SliderItem>()
+    val minimumTagPercentageSliderItem: Observable<SliderItem>
+        get() = _minimumTagPercentageSliderItem
 
     private val _scoresSliderItem = PublishSubject.create<SliderItem>()
     val scoresSliderItem: Observable<SliderItem>
@@ -306,6 +326,67 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         _releaseYears.onNext(releaseYears)
     }
 
+    fun updateEpisodes(minEpisode: Int?, maxEpisode: Int?) {
+        val episodes = if (minEpisode == null || maxEpisode == null) {
+            currentMediaFilter.minEpisodes = null
+            currentMediaFilter.maxEpisodes = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minEpisodes = minEpisode
+            currentMediaFilter.maxEpisodes = maxEpisode
+            NullableItem(Pair(minEpisode, maxEpisode))
+        }
+
+        _episodes.onNext(episodes)
+    }
+
+    fun updateDurations(minDuration: Int?, maxDuration: Int?) {
+        val durations = if (minDuration == null || maxDuration == null) {
+            currentMediaFilter.minDuration = null
+            currentMediaFilter.maxDuration = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minDuration = minDuration
+            currentMediaFilter.maxDuration = maxDuration
+            NullableItem(Pair(minDuration, maxDuration))
+        }
+
+        _durations.onNext(durations)
+    }
+
+    fun updateAverageScores(minAverageScore: Int?, maxAverageScore: Int?) {
+        val averageScores = if (minAverageScore == null || maxAverageScore == null) {
+            currentMediaFilter.minAverageScore = null
+            currentMediaFilter.maxAverageScore = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minAverageScore = minAverageScore
+            currentMediaFilter.maxAverageScore = maxAverageScore
+            NullableItem(Pair(minAverageScore, maxAverageScore))
+        }
+
+        _averageScores.onNext(averageScores)
+    }
+
+    fun updatePopularity(minPopularity: Int?, maxPopularity: Int?) {
+        val popularity = if (minPopularity == null || maxPopularity == null) {
+            currentMediaFilter.minPopularity = null
+            currentMediaFilter.maxPopularity = null
+            NullableItem<Pair<Int, Int>>(null)
+        } else {
+            currentMediaFilter.minPopularity = minPopularity
+            currentMediaFilter.maxPopularity = maxPopularity
+            NullableItem(Pair(minPopularity, maxPopularity))
+        }
+
+        _popularity.onNext(popularity)
+    }
+
+    fun updateStreamingOn(newStreamingOn: List<OtherLink>) {
+        currentMediaFilter.streamingOn = newStreamingOn
+        _streamingOn.onNext(newStreamingOn)
+    }
+
     fun updateIncludedGenres(newGenres: List<String>) {
         currentMediaFilter.includedGenres = newGenres
         _includedGenres.onNext(newGenres)
@@ -400,60 +481,9 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         _noItemTagLayoutVisibility.onNext(_includedTags.value.isNullOrEmpty() && _excludedTags.value.isNullOrEmpty())
     }
 
-    fun updateEpisodes(minEpisode: Int?, maxEpisode: Int?) {
-        val episodes = if (minEpisode == null || maxEpisode == null) {
-            currentMediaFilter.minEpisodes = null
-            currentMediaFilter.maxEpisodes = null
-            NullableItem<Pair<Int, Int>>(null)
-        } else {
-            currentMediaFilter.minEpisodes = minEpisode
-            currentMediaFilter.maxEpisodes = maxEpisode
-            NullableItem(Pair(minEpisode, maxEpisode))
-        }
-
-        _episodes.onNext(episodes)
-    }
-
-    fun updateDurations(minDuration: Int?, maxDuration: Int?) {
-        val durations = if (minDuration == null || maxDuration == null) {
-            currentMediaFilter.minDuration = null
-            currentMediaFilter.maxDuration = null
-            NullableItem<Pair<Int, Int>>(null)
-        } else {
-            currentMediaFilter.minDuration = minDuration
-            currentMediaFilter.maxDuration = maxDuration
-            NullableItem(Pair(minDuration, maxDuration))
-        }
-
-        _durations.onNext(durations)
-    }
-
-    fun updateAverageScores(minAverageScore: Int?, maxAverageScore: Int?) {
-        val averageScores = if (minAverageScore == null || maxAverageScore == null) {
-            currentMediaFilter.minAverageScore = null
-            currentMediaFilter.maxAverageScore = null
-            NullableItem<Pair<Int, Int>>(null)
-        } else {
-            currentMediaFilter.minAverageScore = minAverageScore
-            currentMediaFilter.maxAverageScore = maxAverageScore
-            NullableItem(Pair(minAverageScore, maxAverageScore))
-        }
-
-        _averageScores.onNext(averageScores)
-    }
-
-    fun updatePopularity(minPopularity: Int?, maxPopularity: Int?) {
-        val popularity = if (minPopularity == null || maxPopularity == null) {
-            currentMediaFilter.minPopularity = null
-            currentMediaFilter.maxPopularity = null
-            NullableItem<Pair<Int, Int>>(null)
-        } else {
-            currentMediaFilter.minPopularity = minPopularity
-            currentMediaFilter.maxPopularity = maxPopularity
-            NullableItem(Pair(minPopularity, maxPopularity))
-        }
-
-        _popularity.onNext(popularity)
+    fun updateMinimumTagPercentage(newMinimumPercentage: Int) {
+        currentMediaFilter.minTagPercentage = newMinimumPercentage
+        _minimumTagPercentage.onNext(newMinimumPercentage)
     }
 
     fun updateScores(minScore: Int?, maxScore: Int?) {
@@ -629,6 +659,65 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         _releaseYearsSliderItem.onNext(sliderItem)
     }
 
+    fun loadEpisodesSliderItem() {
+        val episodes = _episodes.value?.data
+        val sliderItem = SliderItem(
+            0,
+            150,
+            episodes?.first,
+            episodes?.second
+        )
+        _episodesSliderItem.onNext(sliderItem)
+    }
+
+    fun loadDurationsSliderItem() {
+        val durations = _durations.value?.data
+        val sliderItem = SliderItem(
+            0,
+            180,
+            durations?.first,
+            durations?.second
+        )
+        _durationsSliderItem.onNext(sliderItem)
+    }
+
+    fun loadAverageScoresSliderItem() {
+        val averageScores = _averageScores.value?.data
+        val sliderItem = SliderItem(
+            0,
+            100,
+            averageScores?.first,
+            averageScores?.second
+        )
+        _averageScoresSliderItem.onNext(sliderItem)
+    }
+
+    fun loadPopularitySliderItem() {
+        val popularity = _popularity.value?.data
+        val sliderItem = SliderItem(
+            0,
+            300000,
+            popularity?.first,
+            popularity?.second
+        )
+        _popularitySliderItem.onNext(sliderItem)
+    }
+
+    fun loadStreamingOnList() {
+        val links = getOtherLinks()
+        val streamingOn = ArrayList<ListItem<OtherLink>>()
+        streamingOn.addAll(links.map { ListItem(it.getString(), it) })
+
+        val selectedIndex = ArrayList<Int>()
+        _streamingOn.value?.forEach {
+            val index = links.indexOf(it)
+            if (index != -1)
+                selectedIndex.add(index)
+        }
+
+        _streamingOnList.onNext(streamingOn to selectedIndex)
+    }
+
     fun loadIncludedGenres() {
         val genreList = genres.map { ListItem(it.name, it.name) }
         val selectedIndex = ArrayList<Int>()
@@ -677,48 +766,15 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         _excludedTagList.onNext(tagList to selectedTagIds)
     }
 
-    fun loadEpisodesSliderItem() {
-        val episodes = _episodes.value?.data
+    fun loadMinimumTagPercentageSliderItem() {
+        val percentage = _minimumTagPercentage.value
         val sliderItem = SliderItem(
-            0,
-            150,
-            episodes?.first,
-            episodes?.second
-        )
-        _episodesSliderItem.onNext(sliderItem)
-    }
-
-    fun loadDurationsSliderItem() {
-        val durations = _durations.value?.data
-        val sliderItem = SliderItem(
-            0,
-            180,
-            durations?.first,
-            durations?.second
-        )
-        _durationsSliderItem.onNext(sliderItem)
-    }
-
-    fun loadAverageScoresSliderItem() {
-        val averageScores = _averageScores.value?.data
-        val sliderItem = SliderItem(
-            0,
+            1,
             100,
-            averageScores?.first,
-            averageScores?.second
+            percentage,
+            100
         )
-        _averageScoresSliderItem.onNext(sliderItem)
-    }
-
-    fun loadPopularitySliderItem() {
-        val popularity = _popularity.value?.data
-        val sliderItem = SliderItem(
-            0,
-            300000,
-            popularity?.first,
-            popularity?.second
-        )
-        _popularitySliderItem.onNext(sliderItem)
+        _minimumTagPercentageSliderItem.onNext(sliderItem)
     }
 
     fun loadUserScoresSliderItem() {
@@ -767,5 +823,63 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
 
     private fun getYearSliderMaxValue(): Int {
         return TimeUtil.getCurrentYear() + 1
+    }
+
+    private fun getOtherLinks(): List<OtherLink> {
+        return when (mediaType) {
+            MediaType.ANIME -> {
+                listOf(
+                    OtherLink.CRUNCHYROLL,
+                    OtherLink.YOUTUBE,
+                    OtherLink.FUNIMATION,
+                    OtherLink.HIDIVE,
+                    OtherLink.VRV,
+                    OtherLink.NETFLIX,
+                    OtherLink.AMAZON,
+                    OtherLink.HULU,
+                    OtherLink.HBO_MAX,
+                    OtherLink.ANIMELAB,
+                    OtherLink.VIZ,
+                    OtherLink.ADULT_SWIM,
+                    OtherLink.RETRO_CRUSH,
+                    OtherLink.MIDNIGHT_PULP,
+                    OtherLink.TUBI_TV,
+                    OtherLink.CONTV
+                )
+            }
+            MediaType.MANGA -> {
+                listOf(
+                    OtherLink.MANGA_PLUS,
+                    OtherLink.VIZ,
+                    OtherLink.CRUNCHYROLL,
+                    OtherLink.MANGA_CLUB,
+                    OtherLink.FAKKU,
+                    OtherLink.WEBTOONS,
+                    OtherLink.LEZHIN,
+                    OtherLink.TOOMICS,
+                    OtherLink.WEB_COMICS,
+                    OtherLink.COMICWALKER,
+                    OtherLink.PIXIV_COMIC,
+                    OtherLink.COMICO,
+                    OtherLink.MANGABOX,
+                    OtherLink.PIXIV_NOVEL,
+                    OtherLink.PICCOMA,
+                    OtherLink.POCKET_MAGAZINE,
+                    OtherLink.NICO_NICO_SEIGA,
+                    OtherLink.SHONEN_JUMP_PLUS,
+                    OtherLink.LEZHIN_KO,
+                    OtherLink.NAVER,
+                    OtherLink.DAUM_WEBTOON,
+                    OtherLink.TOOMICS_KO,
+                    OtherLink.BOMTOON,
+                    OtherLink.KAKAOPAGE,
+                    OtherLink.KUAIKAN_MANHUA,
+                    OtherLink.QQ,
+                    OtherLink.DAJIAOCHONG_MANHUA,
+                    OtherLink.WEIBO_MANHUA,
+                    OtherLink.MANMAN_MANHUA
+                )
+            }
+        }
     }
 }

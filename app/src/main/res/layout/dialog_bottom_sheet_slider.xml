@@ -42,22 +42,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/dialogRangeSlider"
+        <FrameLayout
+            android:id="@+id/dialogSliderLayout"
             app:layout_constraintTop_toBottomOf="@id/dialogInfoText"
-            android:stepSize="1.0"
-            app:tickVisible="false"
-            app:labelBehavior="gone"
             android:layout_marginTop="@dimen/marginPageNormal"
             android:layout_marginHorizontal="@dimen/marginPageBig"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.slider.RangeSlider
+                android:visibility="gone"
+                android:id="@+id/dialogRangeSlider"
+                android:stepSize="1.0"
+                app:tickVisible="false"
+                app:labelBehavior="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.slider.Slider
+                android:visibility="gone"
+                android:id="@+id/dialogSingleSlider"
+                android:stepSize="1.0"
+                app:tickVisible="false"
+                app:labelBehavior="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dialogSaveButton"
             android:text="@string/save_changes"
             style="?themePrimaryButton"
-            app:layout_constraintTop_toBottomOf="@id/dialogRangeSlider"
+            app:layout_constraintTop_toBottomOf="@id/dialogSliderLayout"
             android:layout_marginTop="@dimen/marginPageNormal"
             android:layout_marginHorizontal="@dimen/marginPageBig"
             android:layout_width="match_parent"

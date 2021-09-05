@@ -138,6 +138,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 viewModel.loadPopularitySliderItem()
             }
 
+            filterStreamingLayout.clicks {
+                viewModel.loadStreamingOnList()
+            }
+
             filterGenresIncludeText.clicks {
                 viewModel.loadIncludedGenres()
             }
@@ -152,6 +156,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
             filterTagsExcludeText.clicks {
                 viewModel.loadExcludedTags()
+            }
+
+            filterMinimumTagLayout.clicks {
+                viewModel.loadMinimumTagPercentageSliderItem()
             }
 
             filterScoreLayout.clicks {
@@ -219,6 +227,21 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.releaseYears.subscribe {
                 binding.filterReleaseYearText.text = getPairString(it.data)
             },
+            viewModel.episodes.subscribe {
+                binding.filterEpisodesText.text = getPairString(it.data)
+            },
+            viewModel.durations.subscribe {
+                binding.filterDurationText.text = getPairString(it.data)
+            },
+            viewModel.averageScores.subscribe {
+                binding.filterAverageScoreText.text = getPairString(it.data)
+            },
+            viewModel.popularity.subscribe {
+                binding.filterPopularityText.text = getPairString(it.data)
+            },
+            viewModel.streamingOn.subscribe {
+                binding.filterStreamingText.text = getJointString(it) { link -> link.getString() }
+            },
             viewModel.includedGenres.subscribe {
                 includedGenresAdapter?.updateData(it)
             },
@@ -231,17 +254,8 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.excludedTags.subscribe {
                 excludedTagsAdapter?.updateData(it)
             },
-            viewModel.episodes.subscribe {
-                binding.filterEpisodesText.text = getPairString(it.data)
-            },
-            viewModel.durations.subscribe {
-                binding.filterDurationText.text = getPairString(it.data)
-            },
-            viewModel.averageScores.subscribe {
-                binding.filterAverageScoreText.text = getPairString(it.data)
-            },
-            viewModel.popularity.subscribe {
-                binding.filterPopularityText.text = getPairString(it.data)
+            viewModel.minimumTagPercentage.subscribe {
+                binding.filterMinimumTagText.text = it.toString()
             },
             viewModel.scores.subscribe {
                 binding.filterScoreText.text = getPairString(it.data)
@@ -319,6 +333,31 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                     viewModel.updateReleaseYears(minValue, maxValue)
                 }
             },
+            viewModel.episodesSliderItem.subscribe {
+                dialog.showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateEpisodes(minValue, maxValue)
+                }
+            },
+            viewModel.durationsSliderItem.subscribe {
+                dialog.showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateDurations(minValue, maxValue)
+                }
+            },
+            viewModel.averageScoresSliderItem.subscribe {
+                dialog.showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updateAverageScores(minValue, maxValue)
+                }
+            },
+            viewModel.popularitySliderItem.subscribe {
+                dialog.showSliderDialog(it) { minValue, maxValue ->
+                    viewModel.updatePopularity(minValue, maxValue)
+                }
+            },
+            viewModel.streamingOnList.subscribe {
+                dialog.showMultiSelectDialog(it.first, it.second) { data ->
+                    viewModel.updateStreamingOn(data)
+                }
+            },
             viewModel.includedGenreList.subscribe {
                 dialog.showMultiSelectDialog(it.first, it.second) { data ->
                     viewModel.updateIncludedGenres(data)
@@ -339,24 +378,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                     viewModel.updateExcludedTags(data)
                 }
             },
-            viewModel.episodesSliderItem.subscribe {
-                dialog.showSliderDialog(it) { minValue, maxValue ->
-                    viewModel.updateEpisodes(minValue, maxValue)
-                }
-            },
-            viewModel.durationsSliderItem.subscribe {
-                dialog.showSliderDialog(it) { minValue, maxValue ->
-                    viewModel.updateDurations(minValue, maxValue)
-                }
-            },
-            viewModel.averageScoresSliderItem.subscribe {
-                dialog.showSliderDialog(it) { minValue, maxValue ->
-                    viewModel.updateAverageScores(minValue, maxValue)
-                }
-            },
-            viewModel.popularitySliderItem.subscribe {
-                dialog.showSliderDialog(it) { minValue, maxValue ->
-                    viewModel.updatePopularity(minValue, maxValue)
+            viewModel.minimumTagPercentageSliderItem.subscribe {
+                dialog.showSliderDialog(it, true) { minValue, _ ->
+                    viewModel.updateMinimumTagPercentage(minValue ?: 0)
                 }
             },
             viewModel.scoresSliderItem.subscribe {

@@ -103,9 +103,10 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
 
     override fun showSliderDialog(
         sliderItem: SliderItem,
+        useSingleSlider: Boolean,
         action: (minValue: Int?, maxValue: Int?) -> Unit
     ) {
-        bottomSheetSliderDialog = BottomSheetSliderDialog.newInstance(sliderItem, object : BottomSheetSliderDialog.BottomSheetSliderListener {
+        bottomSheetSliderDialog = BottomSheetSliderDialog.newInstance(sliderItem, useSingleSlider, object : BottomSheetSliderDialog.BottomSheetSliderListener {
             override fun getNewValues(minValue: Int?, maxValue: Int?) {
                 action(minValue, maxValue)
             }

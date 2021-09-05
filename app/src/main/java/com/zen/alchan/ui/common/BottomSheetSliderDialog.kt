@@ -6,12 +6,15 @@ import com.google.android.material.slider.RangeSlider
 import com.zen.alchan.R
 import com.zen.alchan.databinding.DialogBottomSheetSliderBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.ui.base.BaseDialogFragment
 
 class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBinding>() {
 
     private var listener: BottomSheetSliderListener? = null
+
+    private var useSingleSlider = false
 
     private var sliderMinValue = 0
     private var sliderMaxValue = 0
@@ -27,32 +30,61 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
 
     override fun setUpLayout() {
         binding.apply {
-            dialogRangeSlider.valueFrom = sliderMinValue.toFloat()
-            dialogRangeSlider.valueTo = sliderMaxValue.toFloat()
-            dialogRangeSlider.values = listOf(minValue.toFloat(), maxValue.toFloat())
+            if (useSingleSlider) {
+                dialogSingleSlider.show(true)
+                dialogRangeSlider.show(false)
 
-            updateRangeText()
-
-            dialogRangeSlider.addOnChangeListener { slider, value, fromUser ->
-                if (!fromUser)
-                    return@addOnChangeListener
-
-                if (slider.activeThumbIndex == MIN_THUMB)
-                    minValue = value.toInt()
-
-                if (slider.activeThumbIndex == MAX_THUMB)
-                    maxValue = value.toInt()
+                dialogSingleSlider.valueFrom = sliderMinValue.toFloat()
+                dialogSingleSlider.valueTo = sliderMaxValue.toFloat()
+                dialogSingleSlider.value = minValue.toFloat()
 
                 updateRangeText()
-            }
 
-            dialogSaveButton.clicks {
-                if (minValue == sliderMinValue && maxValue == sliderMaxValue)
-                    listener?.getNewValues(null, null)
-                else
-                    listener?.getNewValues(minValue, maxValue)
+                dialogSingleSlider.addOnChangeListener { slider, value, fromUser ->
+                    if (!fromUser)
+                        return@addOnChangeListener
 
-                dismiss()
+                    if (slider.activeThumbIndex == MIN_THUMB)
+                        minValue = value.toInt()
+
+                    updateRangeText()
+                }
+
+                dialogSaveButton.clicks {
+                    listener?.getNewValues(minValue, null)
+                    dismiss()
+                }
+            } else {
+                dialogSingleSlider.show(false)
+                dialogRangeSlider.show(true)
+
+                dialogRangeSlider.valueFrom = sliderMinValue.toFloat()
+                dialogRangeSlider.valueTo = sliderMaxValue.toFloat()
+                dialogRangeSlider.values = listOf(minValue.toFloat(), maxValue.toFloat())
+
+                updateRangeText()
+
+                dialogRangeSlider.addOnChangeListener { slider, value, fromUser ->
+                    if (!fromUser)
+                        return@addOnChangeListener
+
+                    if (slider.activeThumbIndex == MIN_THUMB)
+                        minValue = value.toInt()
+
+                    if (slider.activeThumbIndex == MAX_THUMB)
+                        maxValue = value.toInt()
+
+                    updateRangeText()
+                }
+
+                dialogSaveButton.clicks {
+                    if (minValue == sliderMinValue && maxValue == sliderMaxValue)
+                        listener?.getNewValues(null, null)
+                    else
+                        listener?.getNewValues(minValue, maxValue)
+
+                    dismiss()
+                }
             }
         }
     }
@@ -62,10 +94,14 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
     }
     
     private fun updateRangeText() {
-        if (minValue == sliderMinValue && maxValue == sliderMaxValue)
-            binding.dialogRangeText.text = ""
-        else
-            binding.dialogRangeText.text = getString(R.string.range_min_to_max, minValue, maxValue)
+        if (useSingleSlider) {
+            binding.dialogRangeText.text = minValue.toString()
+        } else {
+            if (minValue == sliderMinValue && maxValue == sliderMaxValue)
+                binding.dialogRangeText.text = ""
+            else
+                binding.dialogRangeText.text = getString(R.string.range_min_to_max, minValue, maxValue)
+        }
     }
 
     override fun onDestroyView() {
@@ -79,6 +115,7 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
 
         fun newInstance(
             sliderItem: SliderItem,
+            useSingleSlider: Boolean,
             listener: BottomSheetSliderListener
         ) = BottomSheetSliderDialog().apply {
             this.sliderMinValue = sliderItem.sliderMinValue
@@ -94,6 +131,7 @@ class BottomSheetSliderDialog : BaseDialogFragment<DialogBottomSheetSliderBindin
             else
                 sliderItem.maxValue
 
+            this.useSingleSlider = useSingleSlider
             this.listener = listener
         }
     }
