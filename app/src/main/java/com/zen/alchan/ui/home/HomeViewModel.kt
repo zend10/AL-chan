@@ -34,7 +34,12 @@ class HomeViewModel(
             _loading.onNext(true)
         else
             _homeItemList.onNext(
-                listOf(HomeItem.ITEM_HEADER, HomeItem.ITEM_MENU, HomeItem.EMPTY_TRENDING_ANIME, HomeItem.EMPTY_TRENDING_MANGA)
+                listOf(
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
+                )
             )
 
         requestHomeData(if (isReloading) Source.NETWORK else null)
@@ -50,8 +55,8 @@ class HomeViewModel(
                     {
                         _homeItemList.onNext(
                             listOf(
-                                HomeItem.ITEM_HEADER,
-                                HomeItem.ITEM_MENU,
+                                HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
+                                HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
                                 HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                                 HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
                             )

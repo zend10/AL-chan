@@ -17,8 +17,4 @@ data class User(
     val donatorTier: Int = 0,
     val donatorBadge: String = "",
     val moderatorRoles: List<ModRole> = listOf()
-) {
-    companion object {
-        val EMPTY_USER = User()
-    }
-}
+)

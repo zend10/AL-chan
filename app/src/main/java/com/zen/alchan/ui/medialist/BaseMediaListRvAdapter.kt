@@ -14,7 +14,7 @@ abstract class BaseMediaListRvAdapter(
     list: List<MediaListItem>
 ) : BaseRecyclerViewAdapter<MediaListItem, ViewBinding>(list) {
 
-    protected var listStyle = ListStyle.EMPTY_LIST_STYLE
+    protected var listStyle = ListStyle()
     protected var mediaListOptions = MediaListOptions()
 
     fun applyListStyle(listStyle: ListStyle) {

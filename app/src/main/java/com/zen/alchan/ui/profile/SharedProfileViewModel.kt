@@ -16,11 +16,11 @@ class SharedProfileViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val _userAndAppSetting = BehaviorSubject.createDefault(User.EMPTY_USER to AppSetting.EMPTY_APP_SETTING)
+    private val _userAndAppSetting = BehaviorSubject.createDefault(User() to AppSetting())
     val userAndAppSetting: Observable<Pair<User, AppSetting>>
         get() = _userAndAppSetting
 
-    private val _profileData = BehaviorSubject.createDefault(ProfileData.EMPTY_PROFILE_DATA)
+    private val _profileData = BehaviorSubject.createDefault(ProfileData())
     val profileData: Observable<ProfileData>
         get() = _profileData
 

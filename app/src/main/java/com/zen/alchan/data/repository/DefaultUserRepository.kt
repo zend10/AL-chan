@@ -172,7 +172,7 @@ class DefaultUserRepository(
     override fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit> {
         return Observable.create {
             try {
-                userManager.appSetting = newAppSetting ?: AppSetting.EMPTY_APP_SETTING
+                userManager.appSetting = newAppSetting ?: AppSetting()
                 it.onNext(Unit)
                 it.onComplete()
             } catch (e: Exception) {

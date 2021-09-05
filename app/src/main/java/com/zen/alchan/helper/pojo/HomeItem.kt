@@ -18,10 +18,5 @@ data class HomeItem(
         const val VIEW_TYPE_NEW_MANGA = 401
         const val VIEW_TYPE_FIRST_REVIEW =  500
         const val VIEW_TYPE_REVIEW = 501
-
-        val ITEM_HEADER = HomeItem(viewType = VIEW_TYPE_HEADER)
-        val ITEM_MENU = HomeItem(viewType = VIEW_TYPE_MENU)
-        val EMPTY_TRENDING_ANIME = HomeItem(viewType = VIEW_TYPE_TRENDING_ANIME)
-        val EMPTY_TRENDING_MANGA = HomeItem(viewType = VIEW_TYPE_TRENDING_MANGA)
     }
 }

@@ -36,11 +36,11 @@ class MediaListViewModel(
     val toolbarSubtitle: Observable<String>
         get() = _toolbarSubtitle
 
-    private val _mediaListAdapterComponent = BehaviorSubject.createDefault(MediaListAdapterComponent.EMPTY_MEDIA_LIST_ADAPTER_COMPONENT)
+    private val _mediaListAdapterComponent = BehaviorSubject.createDefault(MediaListAdapterComponent())
     val mediaListAdapterComponent: Observable<MediaListAdapterComponent>
         get() = _mediaListAdapterComponent
 
-    private val _listStyle = BehaviorSubject.createDefault(ListStyle.EMPTY_LIST_STYLE)
+    private val _listStyle = BehaviorSubject.createDefault(ListStyle())
     val listStyle: Observable<ListStyle>
         get() = _listStyle
 
@@ -55,8 +55,8 @@ class MediaListViewModel(
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
-    private var user = User.EMPTY_USER
-    private var appSetting = AppSetting.EMPTY_APP_SETTING
+    private var user = User()
+    private var appSetting = AppSetting()
     private var isAllListPositionAtTop = true
 
     private var rawMediaListCollection: MediaListCollection? = null // needed when applying filter
@@ -205,7 +205,7 @@ class MediaListViewModel(
                         rawMediaListCollection = mediaListCollection
                         val filteredAndSortedList = getFilteredAndSortedList(mediaListCollection)
                         _mediaListAdapterComponent.onNext(MediaListAdapterComponent(
-                            _listStyle.value ?: ListStyle.EMPTY_LIST_STYLE,
+                            _listStyle.value ?: ListStyle(),
                             appSetting,
                             user.mediaListOptions,
                             filteredAndSortedList

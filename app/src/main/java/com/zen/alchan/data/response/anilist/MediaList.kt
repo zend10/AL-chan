@@ -20,5 +20,5 @@ data class MediaList(
     val completedAt: FuzzyDate? = null,
     val updatedAt: Int = 0,
     val createdAt: Int = 0,
-    val media: Media = Media.EMPTY_MEDIA
+    val media: Media = Media()
 )

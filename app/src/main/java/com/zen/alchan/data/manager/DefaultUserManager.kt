@@ -25,15 +25,15 @@ class DefaultUserManager(
         set(value) { sharedPreferencesManager.guestLogin = value }
 
     override var animeListStyle: ListStyle
-        get() = sharedPreferencesManager.animeListStyle ?: ListStyle.EMPTY_LIST_STYLE
+        get() = sharedPreferencesManager.animeListStyle ?: ListStyle()
         set(value) { sharedPreferencesManager.animeListStyle = value }
 
     override var mangaListStyle: ListStyle
-        get() = sharedPreferencesManager.mangaListStyle ?: ListStyle.EMPTY_LIST_STYLE
+        get() = sharedPreferencesManager.mangaListStyle ?: ListStyle()
         set(value) { sharedPreferencesManager.mangaListStyle = value }
 
     override var appSetting: AppSetting
-        get() = sharedPreferencesManager.appSetting ?: AppSetting.EMPTY_APP_SETTING
+        get() = sharedPreferencesManager.appSetting ?: AppSetting()
         set(value) { sharedPreferencesManager.appSetting = value }
 
     override var viewerData: SaveItem<User>?

@@ -27,8 +27,4 @@ data class AppSetting(
     var enableSocialFeature: Boolean = true,
     var showBioAutomatically: Boolean = true,
     var showStatsChartAutomatically: Boolean = true,
-) {
-    companion object {
-        val EMPTY_APP_SETTING = AppSetting()
-    }
-}
+)

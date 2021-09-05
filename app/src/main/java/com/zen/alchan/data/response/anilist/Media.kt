@@ -65,8 +65,4 @@ data class Media(
             MediaNaming.NATIVE -> title.native
         }
     }
-
-    companion object {
-        val EMPTY_MEDIA = Media()
-    }
 }

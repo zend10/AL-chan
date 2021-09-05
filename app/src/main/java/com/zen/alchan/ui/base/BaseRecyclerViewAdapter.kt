@@ -11,7 +11,7 @@ abstract class BaseRecyclerViewAdapter<T, VB: ViewBinding>(
     protected var list: List<T>,
 ) : RecyclerView.Adapter<BaseRecyclerViewAdapter<T, VB>.ViewHolder>() {
 
-    protected var appSetting = AppSetting.EMPTY_APP_SETTING
+    protected var appSetting = AppSetting()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(list[position], position)
