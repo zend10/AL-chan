@@ -308,6 +308,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterEpisodesLabel"
                         android:text="@string/episodes"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
@@ -333,6 +334,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterDurationLabel"
                         android:text="@string/duration"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
@@ -408,6 +410,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filterStreamingLabel"
                         android:text="@string/streaming_on"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
@@ -786,6 +789,72 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/filterOthersLayout"
+                app:layout_constraintTop_toBottomOf="@id/filterUserListLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/filterOthersTitle"
+                    android:text="@string/others"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/filterHideDoujinLayout"
+                    app:layout_constraintTop_toBottomOf="@id/filterOthersTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/hide_doujin_self_published_series"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/filterHideDoujinCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/filterOnlyShowDoujinLayout"
+                    app:layout_constraintTop_toBottomOf="@id/filterHideDoujinLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/only_show_doujin_self_published_series"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/filterOnlyShowDoujinCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

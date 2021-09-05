@@ -115,9 +115,32 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val priorities: Observable<NullableItem<Pair<Int, Int>>>
         get() = _priorities
 
+    private val _hideDoujin = BehaviorSubject.createDefault(false)
+    val hideDoujin: Observable<Boolean>
+        get() = _hideDoujin
+
+    private val _onlyShowDoujin = BehaviorSubject.createDefault(false)
+    val onlyShowDoujin: Observable<Boolean>
+        get() = _onlyShowDoujin
 
 
 
+
+    private val _seasonVisibility = BehaviorSubject.createDefault(false)
+    val seasonVisibility: Observable<Boolean>
+        get() = _seasonVisibility
+
+    private val _episodeText = BehaviorSubject.createDefault(R.string.episodes)
+    val episodeText: Observable<Int>
+        get() = _episodeText
+
+    private val _durationText = BehaviorSubject.createDefault(R.string.duration)
+    val durationText: Observable<Int>
+        get() = _durationText
+
+    private val _streamingOnText = BehaviorSubject.createDefault(R.string.streaming_on)
+    val streamingOnText: Observable<Int>
+        get() = _streamingOnText
 
     private val _includedGenresLayoutVisibility = BehaviorSubject.createDefault(false)
     val includedGenresLayoutVisibility: Observable<Boolean>
@@ -266,6 +289,21 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
                         this.tagList = tagList
                     }
             )
+
+            when (mediaType) {
+                MediaType.ANIME -> {
+                    _seasonVisibility.onNext(true)
+                    _episodeText.onNext(R.string.episodes)
+                    _durationText.onNext(R.string.duration)
+                    _streamingOnText.onNext(R.string.streaming_on)
+                }
+                MediaType.MANGA -> {
+                    _seasonVisibility.onNext(false)
+                    _episodeText.onNext(R.string.chapters)
+                    _durationText.onNext(R.string.volumes)
+                    _streamingOnText.onNext(R.string.reading_on)
+                }
+            }
 
             handleGenreLayoutVisibility()
             handleTagLayoutVisibility()
@@ -542,6 +580,20 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
         _priorities.onNext(priorities)
     }
 
+    fun updateHideDoujin(shouldHideDoujin: Boolean) {
+        if (shouldHideDoujin)
+            _onlyShowDoujin.onNext(false)
+
+        _hideDoujin.onNext(shouldHideDoujin)
+    }
+
+    fun updateOnlyShowDoujin(shouldOnlyShowDoujin: Boolean) {
+        if (shouldOnlyShowDoujin)
+            _hideDoujin.onNext(false)
+
+        _onlyShowDoujin.onNext(shouldOnlyShowDoujin)
+    }
+
     fun loadSortByList() {
         val sortBy = ArrayList<ListItem<Sort>>()
         sortBy.addAll(Sort.values().map { ListItem(it.getStringResource(), it) })
@@ -661,9 +713,13 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
 
     fun loadEpisodesSliderItem() {
         val episodes = _episodes.value?.data
+        val maxValue = when (mediaType) {
+            MediaType.ANIME -> 150
+            MediaType.MANGA -> 500
+        }
         val sliderItem = SliderItem(
             0,
-            150,
+            maxValue,
             episodes?.first,
             episodes?.second
         )
@@ -672,9 +728,13 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
 
     fun loadDurationsSliderItem() {
         val durations = _durations.value?.data
+        val maxValue = when (mediaType) {
+            MediaType.ANIME -> 180
+            MediaType.MANGA -> 50
+        }
         val sliderItem = SliderItem(
             0,
-            180,
+            maxValue,
             durations?.first,
             durations?.second
         )

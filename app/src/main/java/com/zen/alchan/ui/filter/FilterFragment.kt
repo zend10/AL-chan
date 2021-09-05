@@ -178,6 +178,14 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 viewModel.loadUserPrioritiesSliderItem()
             }
 
+            filterHideDoujinCheckBox.setOnClickListener {
+                viewModel.updateHideDoujin(filterHideDoujinCheckBox.isChecked)
+            }
+
+            filterOnlyShowDoujinCheckBox.setOnClickListener {
+                viewModel.updateOnlyShowDoujin(filterOnlyShowDoujinCheckBox.isChecked)
+            }
+
             filterApplyLayout.positiveButton.text = getString(R.string.apply)
             filterApplyLayout.positiveButton.clicks {
 
@@ -269,9 +277,26 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.priorities.subscribe {
                 binding.filterPriorityText.text = getPairString(it.data)
             },
+            viewModel.hideDoujin.subscribe {
+                binding.filterHideDoujinCheckBox.isChecked = it
+            },
+            viewModel.onlyShowDoujin.subscribe {
+                binding.filterOnlyShowDoujinCheckBox.isChecked = it
+            },
 
 
-
+            viewModel.seasonVisibility.subscribe {
+                binding.filterSeasonLayout.show(it)
+            },
+            viewModel.episodeText.subscribe {
+                binding.filterEpisodesLabel.text = getString(it)
+            },
+            viewModel.durationText.subscribe {
+                binding.filterDurationLabel.text = getString(it)
+            },
+            viewModel.streamingOnText.subscribe {
+                binding.filterStreamingLabel.text = getString(it)
+            },
             viewModel.includedGenresLayoutVisibility.subscribe {
                 binding.filterGenresIncludeLayout.show(it)
             },

@@ -251,6 +251,12 @@
     <string name="version">Version %1$s</string>
     <string name="streaming_on">Streaming on</string>
     <string name="minimum_tag_percentage">Minimum Tag Percentage</string>
+    <string name="others">Others</string>
+    <string name="hide_doujin_self_published_series">Hide Doujin (self-published series)</string>
+    <string name="only_show_doujin_self_published_series">Only show Doujin (self-published series)</string>
+    <string name="chapters">Chapters</string>
+    <string name="volumes">Volumes</string>
+    <string name="reading_on">Reading on</string>
 
 
     <plurals name="minute">

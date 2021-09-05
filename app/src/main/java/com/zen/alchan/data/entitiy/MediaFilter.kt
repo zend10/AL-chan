@@ -42,7 +42,8 @@ data class MediaFilter(
     var minUserCompletedYear: Int? = null,
     var maxUserCompletedYear: Int? = null,
     var minUserPriority: Int? = null,
-    var maxUserPriority: Int? = null
+    var maxUserPriority: Int? = null,
+    var isDoujin: Boolean? = null
 ) {
     companion object {
         val EMPTY_MEDIA_FILTER = MediaFilter()

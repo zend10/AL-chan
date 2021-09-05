@@ -55,6 +55,7 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
           chapters
           volumes
           countryOfOrigin
+          isLicensed
           source(version:$sourceVersion)
           coverImage {
             extraLarge
