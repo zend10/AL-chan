@@ -2,6 +2,7 @@ package com.zen.alchan.ui.medialist
 
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
@@ -15,6 +16,7 @@ import com.zen.alchan.helper.pojo.ListStyle
 import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseViewModel
+import com.zen.alchan.ui.filter.SharedFilterViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -46,6 +48,10 @@ class MediaListViewModel(
     val listSections: Observable<List<ListItem<String>>>
         get() = _listSections
 
+    private val _mediaFilterAndFilterList = PublishSubject.create<Pair<MediaFilter, SharedFilterViewModel.FilterList>>()
+    val mediaFilterAndFilterList: Observable<Pair<MediaFilter, SharedFilterViewModel.FilterList>>
+        get() = _mediaFilterAndFilterList
+
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
@@ -56,6 +62,7 @@ class MediaListViewModel(
     private var rawMediaListCollection: MediaListCollection? = null // needed when applying filter
     private var currentMediaListCollection: MediaListCollection? = null // needed to show number of entries in each section
     private var currentMediaListItems: List<MediaListItem> = listOf() // needed for search
+    private var currentMediaFilter = MediaFilter()
 
     private var selectedSectionIndex = 0
     private var searchKeyword = ""
@@ -102,6 +109,18 @@ class MediaListViewModel(
                     }
             )
         }
+    }
+
+    fun loadMediaFilter() {
+        val filterList = when (mediaType) {
+            MediaType.ANIME -> SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST
+            MediaType.MANGA -> SharedFilterViewModel.FilterList.MANGA_MEDIA_LIST
+        }
+        _mediaFilterAndFilterList.onNext(currentMediaFilter to filterList)
+    }
+
+    fun updateMediaFilter(newFilter: MediaFilter) {
+        currentMediaFilter = newFilter
     }
 
     fun reloadData() {

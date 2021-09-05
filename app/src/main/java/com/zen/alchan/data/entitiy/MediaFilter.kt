@@ -12,7 +12,7 @@ import type.MediaStatus
 
 data class MediaFilter(
     var persistFilter: Boolean = false,
-    var sort: Sort? = null,
+    var sort: Sort = Sort.FOLLOW_LIST_SETTINGS,
     var orderByDescending: Boolean = true,
     var mediaFormats: List<MediaFormat> = listOf(),
     var mediaStatuses: List<MediaStatus> = listOf(),
@@ -32,8 +32,8 @@ data class MediaFilter(
     var streamingOn: List<OtherLink> = listOf(),
     var includedGenres: List<String> = listOf(),
     var excludedGenres: List<String> = listOf(),
-    var includedTags: List<String> = listOf(),
-    var excludedTags: List<String> = listOf(),
+    var includedTags: List<MediaTag> = listOf(),
+    var excludedTags: List<MediaTag> = listOf(),
     var minTagPercentage: Int = DEFAULT_MINIMUM_TAG_PERCENTAGE,
     var minUserScore: Int? = null,
     var maxUserScore: Int? = null,
@@ -46,7 +46,6 @@ data class MediaFilter(
     var isDoujin: Boolean? = null
 ) {
     companion object {
-        val EMPTY_MEDIA_FILTER = MediaFilter()
         const val DEFAULT_MINIMUM_TAG_PERCENTAGE = 18
     }
 }

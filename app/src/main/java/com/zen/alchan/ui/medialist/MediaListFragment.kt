@@ -85,16 +85,13 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemFilter?.setOnMenuItemClickListener {
-                // TODO: pass current filter as well
-                navigation.navigateToFilter(viewModel.mediaType, true)
+                viewModel.loadMediaFilter()
                 true
             }
 
             mediaListSwitchListButton.clicks {
                 viewModel.loadListSections()
             }
-
-
         }
     }
 
@@ -128,6 +125,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 dialog.showListDialog(it) { _, index ->
                     viewModel.showSelectedSectionMediaList(index)
                 }
+            },
+            viewModel.mediaFilterAndFilterList.subscribe {
+                sharedFilterViewModel.updateMediaFilter(it.first, it.second)
+                navigation.navigateToFilter(viewModel.mediaType, true)
             }
         )
 
@@ -137,13 +138,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             },
 
             sharedFilterViewModel.newMediaFilter.subscribe {
-                when (it.second) {
-                    SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST -> {
-
-                    }
-                    SharedFilterViewModel.FilterList.MANGA_MEDIA_LIST -> {
-
-                    }
+                if ((viewModel.mediaType == MediaType.ANIME && it.second == SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST) ||
+                    (viewModel.mediaType == MediaType.MANGA && it.second == SharedFilterViewModel.FilterList.MANGA_MEDIA_LIST)
+                ) {
+                    viewModel.updateMediaFilter(it.first)
                 }
             }
         )

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.databinding.FragmentFilterBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
@@ -188,12 +189,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
             filterApplyLayout.positiveButton.text = getString(R.string.apply)
             filterApplyLayout.positiveButton.clicks {
-
+                viewModel.saveCurrentFilter()
             }
 
             filterApplyLayout.negativeButton.text = getString(R.string.reset)
             filterApplyLayout.negativeButton.clicks {
-
+                viewModel.resetCurrentFilter()
             }
         }
     }
@@ -208,6 +209,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.mediaFilter.subscribe {
+                sharedViewModel.updateMediaFilterResult(it)
+                goBack()
+            },
             viewModel.persistFilter.subscribe {
                 binding.filterPersistCheckBox.isChecked = it
             },
@@ -283,8 +288,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.onlyShowDoujin.subscribe {
                 binding.filterOnlyShowDoujinCheckBox.isChecked = it
             },
-
-
             viewModel.seasonVisibility.subscribe {
                 binding.filterSeasonLayout.show(it)
             },
@@ -315,9 +318,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.noItemTagLayoutVisibility.subscribe {
                 binding.filterTagsNoItemText.show(it)
             },
-
-
-
             viewModel.sortByList.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     viewModel.updateSortBy(data)
@@ -432,7 +432,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
         sharedDisposables.addAll(
             sharedViewModel.oldMediaFilter.subscribe {
-
+                viewModel.updateCurrentFilter(it)
             }
         )
 

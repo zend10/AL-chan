@@ -14,7 +14,7 @@ class SharedFilterViewModel : BaseViewModel() {
     val newMediaFilter: Observable<Pair<MediaFilter, FilterList>>
         get() = _newMediaFilter
 
-    private val _oldMediaFilter = BehaviorSubject.createDefault(MediaFilter.EMPTY_MEDIA_FILTER)
+    private val _oldMediaFilter = BehaviorSubject.createDefault(MediaFilter())
     val oldMediaFilter: Observable<MediaFilter>
         get() = _oldMediaFilter
 

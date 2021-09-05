@@ -23,6 +23,10 @@ import type.MediaStatus
 
 class FilterViewModel(private val contentRepository: ContentRepository) : BaseViewModel() {
 
+    private val _mediaFilter = PublishSubject.create<MediaFilter>()
+    val mediaFilter: Observable<MediaFilter>
+        get() = _mediaFilter
+
     private val _persistFilter = BehaviorSubject.createDefault(false)
     val persistFilter: Observable<Boolean>
         get() = _persistFilter
@@ -123,9 +127,6 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     val onlyShowDoujin: Observable<Boolean>
         get() = _onlyShowDoujin
 
-
-
-
     private val _seasonVisibility = BehaviorSubject.createDefault(false)
     val seasonVisibility: Observable<Boolean>
         get() = _seasonVisibility
@@ -165,10 +166,6 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     private val _noItemTagLayoutVisibility = BehaviorSubject.createDefault(false)
     val noItemTagLayoutVisibility: Observable<Boolean>
         get() = _noItemTagLayoutVisibility
-
-
-
-
 
     private val _sortByList = PublishSubject.create<List<ListItem<Sort>>>()
     val sortByList: Observable<List<ListItem<Sort>>>
@@ -264,7 +261,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     private var genres: List<Genre> = listOf()
     private var tags: List<MediaTag> = listOf()
     private var tagList: List<ListItem<MediaTag?>> = listOf()
-    private var currentMediaFilter = MediaFilter.EMPTY_MEDIA_FILTER
+    private var currentMediaFilter = MediaFilter()
 
     override fun loadData() {
         loadOnce {
@@ -272,6 +269,10 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
                 contentRepository.getGenres()
                     .subscribe {
                         genres = it
+
+                        _includedGenres.onNext(currentMediaFilter.includedGenres)
+                        _excludedGenres.onNext(currentMediaFilter.excludedGenres)
+                        handleGenreLayoutVisibility()
                     }
             )
 
@@ -287,8 +288,37 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
                             tagList.addAll(tags.map { tag -> ListItem(tag.name, tag) })
                         }
                         this.tagList = tagList
+
+                        _includedTags.onNext(currentMediaFilter.includedTags.map { it.name })
+                        _excludedTags.onNext(currentMediaFilter.excludedTags.map { it.name })
+                        handleTagLayoutVisibility()
                     }
             )
+
+            currentMediaFilter.apply {
+                updatePersistFilter(persistFilter)
+                updateSortBy(sort)
+                updateOrderBy(orderByDescending)
+                updateMediaFormats(mediaFormats)
+                updateMediaStatuses(mediaStatuses)
+                updateMediaSources(mediaSources)
+                updateCountries(countries)
+                updateMediaSeasons(mediaSeasons)
+                updateReleaseYears(minYear, maxYear)
+                updateEpisodes(minEpisodes, maxEpisodes)
+                updateDurations(minDuration, maxDuration)
+                updateAverageScores(minAverageScore, maxAverageScore)
+                updatePopularity(minPopularity, maxPopularity)
+                updateStreamingOn(streamingOn)
+                updateMinimumTagPercentage(minTagPercentage)
+                updateScores(minUserScore, maxUserScore)
+                updateStartYears(minUserStartYear, maxUserStartYear)
+                updateCompletedYears(minUserCompletedYear, maxUserCompletedYear)
+                updatePriorities(minUserPriority, maxUserPriority)
+                updateHideDoujin(isDoujin == false)
+                updateOnlyShowDoujin(isDoujin == true)
+            }
+
 
             when (mediaType) {
                 MediaType.ANIME -> {
@@ -304,10 +334,21 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
                     _streamingOnText.onNext(R.string.reading_on)
                 }
             }
-
-            handleGenreLayoutVisibility()
-            handleTagLayoutVisibility()
         }
+    }
+
+    fun saveCurrentFilter() {
+        _mediaFilter.onNext(currentMediaFilter)
+    }
+
+    fun resetCurrentFilter() {
+        currentMediaFilter = MediaFilter()
+        _mediaFilter.onNext(currentMediaFilter)
+    }
+
+    fun updateCurrentFilter(mediaFilter: MediaFilter) {
+        if (state == State.INIT)
+            currentMediaFilter = mediaFilter
     }
 
     fun updatePersistFilter(shouldPersist: Boolean) {
@@ -431,6 +472,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
 
         val excludedGenres = ArrayList(_excludedGenres.value ?: listOf())
         excludedGenres.removeAll(newGenres)
+        currentMediaFilter.excludedGenres = excludedGenres
         _excludedGenres.onNext(excludedGenres)
 
         handleGenreLayoutVisibility()
@@ -451,6 +493,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
 
         val includedGenres = ArrayList(_includedGenres.value ?: listOf())
         includedGenres.removeAll(newGenres)
+        currentMediaFilter.includedGenres = includedGenres
         _includedGenres.onNext(includedGenres)
 
         handleGenreLayoutVisibility()
@@ -472,10 +515,13 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun updateIncludedTags(newTags: List<MediaTag>) {
-        val tagNames = newTags.map { it.name }
-        currentMediaFilter.includedTags = tagNames
-        _includedTags.onNext(tagNames)
+        val currentExcludedTags = ArrayList(currentMediaFilter.excludedTags)
+        currentExcludedTags.removeAll(newTags)
+        currentMediaFilter.includedTags = newTags
+        currentMediaFilter.excludedTags = currentExcludedTags
 
+        val tagNames = newTags.map { it.name }
+        _includedTags.onNext(tagNames)
         val excludedTags = ArrayList(_excludedTags.value ?: listOf())
         excludedTags.removeAll(tagNames)
         _excludedTags.onNext(excludedTags)
@@ -484,19 +530,25 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun removeIncludedTag(index: Int) {
+        val currentIncludedTags = ArrayList(currentMediaFilter.includedTags)
+        currentIncludedTags.removeAt(index)
+        currentMediaFilter.includedTags = currentIncludedTags
+
         val currentTags = ArrayList(_includedTags.value ?: listOf())
         currentTags.removeAt(index)
-        currentMediaFilter.includedTags = currentTags
         _includedTags.onNext(currentTags)
 
         handleTagLayoutVisibility()
     }
 
     fun updateExcludedTags(newTags: List<MediaTag>) {
-        val tagNames = newTags.map { it.name }
-        currentMediaFilter.excludedTags = tagNames
-        _excludedTags.onNext(tagNames)
+        val currentIncludedTags = ArrayList(currentMediaFilter.includedTags)
+        currentIncludedTags.removeAll(newTags)
+        currentMediaFilter.includedTags = currentIncludedTags
+        currentMediaFilter.excludedTags = newTags
 
+        val tagNames = newTags.map { it.name }
+        _excludedTags.onNext(tagNames)
         val includedTags = ArrayList(_includedTags.value ?: listOf())
         includedTags.removeAll(tagNames)
         _includedTags.onNext(includedTags)
@@ -505,9 +557,12 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
     }
 
     fun removeExcludedTag(index: Int) {
+        val currentExcludedTags = ArrayList(currentMediaFilter.excludedTags)
+        currentExcludedTags.removeAt(index)
+        currentMediaFilter.excludedTags = currentExcludedTags
+
         val currentTags = ArrayList(_excludedTags.value ?: listOf())
         currentTags.removeAt(index)
-        currentMediaFilter.excludedTags = currentTags
         _excludedTags.onNext(currentTags)
 
         handleTagLayoutVisibility()
@@ -585,6 +640,7 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
             _onlyShowDoujin.onNext(false)
 
         _hideDoujin.onNext(shouldHideDoujin)
+        syncIsDoujin()
     }
 
     fun updateOnlyShowDoujin(shouldOnlyShowDoujin: Boolean) {
@@ -592,6 +648,15 @@ class FilterViewModel(private val contentRepository: ContentRepository) : BaseVi
             _hideDoujin.onNext(false)
 
         _onlyShowDoujin.onNext(shouldOnlyShowDoujin)
+        syncIsDoujin()
+    }
+
+    private fun syncIsDoujin() {
+        currentMediaFilter.isDoujin = when {
+            _hideDoujin.value == true -> false
+            _onlyShowDoujin.value == true -> true
+            else -> null
+        }
     }
 
     fun loadSortByList() {
