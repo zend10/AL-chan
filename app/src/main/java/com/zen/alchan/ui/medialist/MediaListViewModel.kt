@@ -297,10 +297,10 @@ class MediaListViewModel(
             filterEntries.removeAll { !currentMediaFilter.mediaSeasons.contains(it.media.season) }
 
         if (currentMediaFilter.minYear != null)
-            filterEntries.removeAll { it.media.startDate?.year == null || currentMediaFilter.minYear!! >= it.media.startDate.year }
+            filterEntries.removeAll { it.media.startDate?.year == null || currentMediaFilter.minYear!! > it.media.startDate.year }
 
         if (currentMediaFilter.maxYear != null)
-            filterEntries.removeAll { it.media.startDate?.year == null || currentMediaFilter.maxYear!! <= it.media.startDate.year }
+            filterEntries.removeAll { it.media.startDate?.year == null || currentMediaFilter.maxYear!! < it.media.startDate.year }
 
         if (currentMediaFilter.minEpisodes != null) {
             filterEntries.removeAll {
@@ -308,7 +308,7 @@ class MediaListViewModel(
                     MediaType.ANIME -> it.media.episodes
                     MediaType.MANGA -> it.media.chapters
                 }
-                episodes == null || currentMediaFilter.minEpisodes!! >= episodes
+                episodes == null || currentMediaFilter.minEpisodes!! > episodes
             }
         }
 
@@ -318,7 +318,7 @@ class MediaListViewModel(
                     MediaType.ANIME -> it.media.episodes
                     MediaType.MANGA -> it.media.chapters
                 }
-                episodes == null || currentMediaFilter.maxEpisodes!! <= episodes
+                episodes == null || currentMediaFilter.maxEpisodes!! < episodes
             }
         }
 
@@ -328,7 +328,7 @@ class MediaListViewModel(
                     MediaType.ANIME -> it.media.duration
                     MediaType.MANGA -> it.media.volumes
                 }
-                durations == null || currentMediaFilter.minDuration!! >= durations
+                durations == null || currentMediaFilter.minDuration!! > durations
             }
         }
 
@@ -338,21 +338,21 @@ class MediaListViewModel(
                     MediaType.ANIME -> it.media.duration
                     MediaType.MANGA -> it.media.volumes
                 }
-                durations == null || currentMediaFilter.maxDuration!! <= durations
+                durations == null || currentMediaFilter.maxDuration!! < durations
             }
         }
 
         if (currentMediaFilter.minAverageScore != null)
-            filterEntries.removeAll { currentMediaFilter.minAverageScore!! >= it.media.averageScore }
+            filterEntries.removeAll { currentMediaFilter.minAverageScore!! > it.media.averageScore }
 
         if (currentMediaFilter.maxAverageScore != null)
-            filterEntries.removeAll { currentMediaFilter.maxAverageScore!! <= it.media.averageScore }
+            filterEntries.removeAll { currentMediaFilter.maxAverageScore!! < it.media.averageScore }
 
         if (currentMediaFilter.minPopularity != null)
-            filterEntries.removeAll { currentMediaFilter.minPopularity!! >= it.media.popularity }
+            filterEntries.removeAll { currentMediaFilter.minPopularity!! > it.media.popularity }
 
         if (currentMediaFilter.maxPopularity != null)
-            filterEntries.removeAll { currentMediaFilter.maxPopularity!! <= it.media.popularity }
+            filterEntries.removeAll { currentMediaFilter.maxPopularity!! < it.media.popularity }
 
         if (currentMediaFilter.streamingOn.isNotEmpty()) {
             filterEntries.removeAll { mediaList ->
@@ -425,29 +425,29 @@ class MediaListViewModel(
         }
 
         if (currentMediaFilter.minUserScore != null)
-            filterEntries.removeAll { currentMediaFilter.minUserScore!! >= it.score }
+            filterEntries.removeAll { currentMediaFilter.minUserScore!! > it.score }
 
         if (currentMediaFilter.maxUserScore != null)
-            filterEntries.removeAll { currentMediaFilter.maxUserScore!! <= it.score }
+            filterEntries.removeAll { currentMediaFilter.maxUserScore!! < it.score }
 
         if (currentMediaFilter.minUserStartYear != null)
-            filterEntries.removeAll { it.startedAt?.year == null || currentMediaFilter.minUserStartYear!! >= it.startedAt.year }
+            filterEntries.removeAll { it.startedAt?.year == null || currentMediaFilter.minUserStartYear!! > it.startedAt.year }
 
         if (currentMediaFilter.maxUserStartYear != null)
-            filterEntries.removeAll { it.startedAt?.year == null || currentMediaFilter.maxUserStartYear!! <= it.startedAt.year }
+            filterEntries.removeAll { it.startedAt?.year == null || currentMediaFilter.maxUserStartYear!! < it.startedAt.year }
 
         if (currentMediaFilter.minUserCompletedYear != null)
-            filterEntries.removeAll { it.completedAt?.year == null || currentMediaFilter.minUserCompletedYear!! >= it.completedAt.year }
+            filterEntries.removeAll { it.completedAt?.year == null || currentMediaFilter.minUserCompletedYear!! > it.completedAt.year }
 
         if (currentMediaFilter.maxUserCompletedYear != null)
-            filterEntries.removeAll { it.completedAt?.year == null || currentMediaFilter.maxUserCompletedYear!! <= it.completedAt.year }
+            filterEntries.removeAll { it.completedAt?.year == null || currentMediaFilter.maxUserCompletedYear!! < it.completedAt.year }
 
         if (currentMediaFilter.minUserPriority != null) {
-            filterEntries.removeAll { currentMediaFilter.minUserPriority!! >= it.priority }
+            filterEntries.removeAll { currentMediaFilter.minUserPriority!! > it.priority }
         }
 
         if (currentMediaFilter.maxUserPriority != null) {
-            filterEntries.removeAll { currentMediaFilter.maxUserPriority!! <= it.priority }
+            filterEntries.removeAll { currentMediaFilter.maxUserPriority!! < it.priority }
         }
 
         if (currentMediaFilter.isDoujin != null) {
@@ -514,8 +514,10 @@ class MediaListViewModel(
 
         if (isAllList) {
             groups.forEach { group ->
-                list.add(MediaListItem(title = group.name, viewType = MediaListItem.VIEW_TYPE_TITLE))
-                list.addAll(group.entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
+                if (group.entries.isNotEmpty()) {
+                    list.add(MediaListItem(title = group.name, viewType = MediaListItem.VIEW_TYPE_TITLE))
+                    list.addAll(group.entries.map { MediaListItem(mediaList = it, viewType = MediaListItem.VIEW_TYPE_MEDIA_LIST) })
+                }
             }
 
             _toolbarSubtitle.onNext("All (${list.count { it.viewType == MediaListItem.VIEW_TYPE_MEDIA_LIST }})")

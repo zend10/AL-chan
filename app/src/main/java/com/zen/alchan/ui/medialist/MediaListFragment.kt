@@ -146,8 +146,6 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
         )
 
-
-
         viewModel.loadData()
     }
 

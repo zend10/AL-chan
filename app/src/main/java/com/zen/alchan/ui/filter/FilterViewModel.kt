@@ -7,6 +7,7 @@ import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.*
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.getNonUnknownValues
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.pojo.ListItem
@@ -17,10 +18,7 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSource
-import type.MediaStatus
+import type.*
 
 class FilterViewModel(
     private val contentRepository: ContentRepository,
@@ -267,6 +265,8 @@ class FilterViewModel(
     private var tagList: List<ListItem<MediaTag?>> = listOf()
     private var currentMediaFilter = MediaFilter()
 
+    private var scoreFormat = ScoreFormat.POINT_100
+
     override fun loadData() {
         loadOnce {
             disposables.add(
@@ -296,6 +296,13 @@ class FilterViewModel(
                         _includedTags.onNext(currentMediaFilter.includedTags.map { it.name })
                         _excludedTags.onNext(currentMediaFilter.excludedTags.map { it.name })
                         handleTagLayoutVisibility()
+                    }
+            )
+
+            disposables.add(
+                userRepository.getViewer(Source.CACHE)
+                    .subscribe {
+                        scoreFormat = it.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100
                     }
             )
 
@@ -908,10 +915,17 @@ class FilterViewModel(
     }
 
     fun loadUserScoresSliderItem() {
+        val maxValue = when (scoreFormat) {
+            ScoreFormat.POINT_100 -> 100
+            ScoreFormat.POINT_10_DECIMAL, ScoreFormat.POINT_10 -> 10
+            ScoreFormat.POINT_5 -> 5
+            ScoreFormat.POINT_3 -> 3
+            else -> 100
+        }
         val scores = _scores.value?.data
         val sliderItem = SliderItem(
             0,
-            100,
+            maxValue,
             scores?.first,
             scores?.second
         )
