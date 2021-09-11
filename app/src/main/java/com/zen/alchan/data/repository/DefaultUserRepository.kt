@@ -3,6 +3,7 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
@@ -162,6 +163,22 @@ class DefaultUserRepository(
                 userManager.mangaListStyle = newListStyle
                 _mangaListStyle.onNext(newListStyle)
             }
+        }
+    }
+
+    override fun getMediaFilter(mediaType: MediaType): Observable<MediaFilter> {
+        return Observable.just(
+            when (mediaType) {
+                MediaType.ANIME -> userManager.animeFilter
+                MediaType.MANGA -> userManager.mangaFilter
+            }
+        )
+    }
+
+    override fun setMediaFilter(mediaType: MediaType, newMediaFilter: MediaFilter) {
+        when (mediaType) {
+            MediaType.ANIME -> userManager.animeFilter = newMediaFilter
+            MediaType.MANGA -> userManager.mangaFilter = newMediaFilter
         }
     }
 

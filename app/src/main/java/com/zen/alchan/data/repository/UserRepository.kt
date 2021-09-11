@@ -1,6 +1,7 @@
 package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
@@ -33,6 +34,9 @@ interface UserRepository {
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)
+
+    fun getMediaFilter(mediaType: MediaType): Observable<MediaFilter>
+    fun setMediaFilter(mediaType: MediaType, newMediaFilter: MediaFilter)
 
     fun getAppSetting(): Observable<AppSetting>
     fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>

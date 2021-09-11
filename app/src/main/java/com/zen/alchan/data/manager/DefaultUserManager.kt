@@ -1,6 +1,7 @@
 package com.zen.alchan.data.manager
 
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
 import com.zen.alchan.data.response.ProfileData
@@ -31,6 +32,14 @@ class DefaultUserManager(
     override var mangaListStyle: ListStyle
         get() = sharedPreferencesManager.mangaListStyle ?: ListStyle()
         set(value) { sharedPreferencesManager.mangaListStyle = value }
+
+    override var animeFilter: MediaFilter
+        get() = sharedPreferencesManager.animeFilter ?: MediaFilter()
+        set(value) { sharedPreferencesManager.animeFilter = value }
+
+    override var mangaFilter: MediaFilter
+        get() = sharedPreferencesManager.mangaFilter ?: MediaFilter()
+        set(value) { sharedPreferencesManager.mangaFilter = value }
 
     override var appSetting: AppSetting
         get() = sharedPreferencesManager.appSetting ?: AppSetting()

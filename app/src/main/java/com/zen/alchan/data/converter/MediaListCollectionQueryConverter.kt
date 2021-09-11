@@ -74,6 +74,7 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             chapters = media?.chapters,
             volumes = media?.volumes,
             countryOfOrigin = media?.countryOfOrigin,
+            isLicensed = media?.isLicensed,
             source = media?.source,
             coverImage = MediaCoverImage(
                 media?.coverImage?.extraLarge ?: "",

@@ -24,6 +24,7 @@ data class Media(
     val chapters: Int? = null,
     val volumes: Int? = null,
     val countryOfOrigin: String? = null,
+    val isLicensed: Boolean? = null,
     val source: MediaSource? = null,
 //    val trailer: MediaTrailer? = null,
     val coverImage: MediaCoverImage = MediaCoverImage(),

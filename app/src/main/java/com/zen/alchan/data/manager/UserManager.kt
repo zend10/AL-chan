@@ -1,6 +1,7 @@
 package com.zen.alchan.data.manager
 
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.pojo.ListStyle
@@ -13,6 +14,8 @@ interface UserManager {
 
     var animeListStyle: ListStyle
     var mangaListStyle: ListStyle
+    var animeFilter: MediaFilter
+    var mangaFilter: MediaFilter
     var appSetting: AppSetting
 
     var viewerData: SaveItem<User>?
