@@ -147,10 +147,12 @@ class DefaultUserRepository(
     }
 
     override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
-        return when (mediaType) {
-            MediaType.ANIME -> animeListStyle
-            MediaType.MANGA -> mangaListStyle
-        }
+        return Observable.just(
+            when (mediaType) {
+                MediaType.ANIME -> userManager.animeListStyle
+                MediaType.MANGA -> userManager.mangaListStyle
+            }
+        )
     }
 
     override fun setListStyle(mediaType: MediaType, newListStyle: ListStyle) {

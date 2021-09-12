@@ -14,6 +14,7 @@ import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
+import com.zen.alchan.ui.customise.SharedCustomiseViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -46,8 +47,12 @@ class MediaListViewModel(
     val listSections: Observable<List<ListItem<String>>>
         get() = _listSections
 
-    private val _mediaFilterAndFilterList = PublishSubject.create<Pair<MediaFilter, SharedFilterViewModel.FilterList>>()
-    val mediaFilterAndFilterList: Observable<Pair<MediaFilter, SharedFilterViewModel.FilterList>>
+    private val _listStyleAndCustomisedList = PublishSubject.create<Pair<ListStyle, SharedCustomiseViewModel.CustomisedList>>()
+    val listStyleAndCustomisedList: Observable<Pair<ListStyle, SharedCustomiseViewModel.CustomisedList>>
+        get() = _listStyleAndCustomisedList
+
+    private val _mediaFilterAndFilterList = PublishSubject.create<Pair<MediaFilter, SharedFilterViewModel.FilteredList>>()
+    val mediaFilterAndFilteredList: Observable<Pair<MediaFilter, SharedFilterViewModel.FilteredList>>
         get() = _mediaFilterAndFilterList
 
     var mediaType: MediaType = MediaType.ANIME
@@ -74,14 +79,6 @@ class MediaListViewModel(
                     MediaType.ANIME -> R.string.anime_list
                     MediaType.MANGA -> R.string.manga_list
                 }
-            )
-
-            disposables.add(
-                userRepository.getMediaFilter(mediaType)
-                    .applyScheduler()
-                    .subscribe {
-                        currentMediaFilter = it
-                    }
             )
 
             disposables.add(
@@ -117,10 +114,25 @@ class MediaListViewModel(
         }
     }
 
+    fun loadListStyle() {
+        val customisedList = when (mediaType) {
+            MediaType.ANIME -> SharedCustomiseViewModel.CustomisedList.ANIME_LIST
+            MediaType.MANGA -> SharedCustomiseViewModel.CustomisedList.MANGA_LIST
+        }
+        _listStyleAndCustomisedList.onNext((_listStyle.value ?: ListStyle()) to customisedList)
+    }
+
+    fun updateListStyle(newListStyle: ListStyle) {
+        _listStyle.onNext(newListStyle)
+        _mediaListAdapterComponent.value?.let {
+            _mediaListAdapterComponent.onNext(it.copy(listStyle = newListStyle))
+        }
+    }
+
     fun loadMediaFilter() {
         val filterList = when (mediaType) {
-            MediaType.ANIME -> SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST
-            MediaType.MANGA -> SharedFilterViewModel.FilterList.MANGA_MEDIA_LIST
+            MediaType.ANIME -> SharedFilterViewModel.FilteredList.ANIME_MEDIA_LIST
+            MediaType.MANGA -> SharedFilterViewModel.FilteredList.MANGA_MEDIA_LIST
         }
         _mediaFilterAndFilterList.onNext(currentMediaFilter to filterList)
     }

@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.medialist
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +75,14 @@ class MediaListLinearRvAdapter(
                 mediaListIncrementProgressButton.clicks {  }
                 mediaListProgressVolumeText.clicks {  }
                 mediaListIncrementProgressVolumeButton.clicks {  }
+
+                // style
+                val cardColor = if (listStyle.cardColor != null)
+                    Color.parseColor(listStyle.cardColor)
+                else
+                    context.getAttrValue(R.attr.themeCardColor)
+
+                mediaListCardBackground.setCardBackgroundColor(cardColor)
             }
         }
 

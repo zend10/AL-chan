@@ -1,7 +1,10 @@
 package com.zen.alchan.data.entitiy
 
+import com.zen.alchan.helper.enums.ListType
+
 data class ListStyle(
-    val hideScoreWhenNotScored: Boolean = false,
+    var listType: ListType = ListType.LINEAR,
+    var hideScoreWhenNotScored: Boolean = false,
     var primaryColor: String? = null,
     var secondaryColor: String? = null,
     var negativeColor: String? = null,

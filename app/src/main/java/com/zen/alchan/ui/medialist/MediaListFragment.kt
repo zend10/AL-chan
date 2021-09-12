@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.medialist
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,12 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentMediaListBinding
 import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.extensions.applySidePaddingInsets
-import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.extensions.clicks
-import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.customise.SharedCustomiseViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -24,6 +23,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     override val viewModel: MediaListViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
+    private val sharedCustomiseViewModel by sharedViewModel<SharedCustomiseViewModel>()
     private val sharedFilterViewModel by sharedViewModel<SharedFilterViewModel>()
 
     private var adapter: BaseMediaListRvAdapter? = null
@@ -80,7 +80,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemCustomiseList?.setOnMenuItemClickListener {
-                navigation.navigateToCustomise(viewModel.mediaType)
+                viewModel.loadListStyle()
                 true
             }
 
@@ -96,8 +96,8 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     }
 
     override fun setUpInsets() {
-        binding.mediaListRootLayout.applyTopPaddingInsets()
-        binding.mediaListRecyclerView.applySidePaddingInsets()
+        binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.mediaListRootLayout.applySidePaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -126,7 +126,11 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                     viewModel.showSelectedSectionMediaList(index)
                 }
             },
-            viewModel.mediaFilterAndFilterList.subscribe {
+            viewModel.listStyleAndCustomisedList.subscribe {
+                sharedCustomiseViewModel.updateListStyle(it.first, it.second)
+                navigation.navigateToCustomise(viewModel.mediaType)
+            },
+            viewModel.mediaFilterAndFilteredList.subscribe {
                 sharedFilterViewModel.updateMediaFilter(it.first, it.second)
                 navigation.navigateToFilter(viewModel.mediaType, true)
             }
@@ -136,10 +140,16 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             sharedViewModel.getScrollToTopObservable(sharedViewModel.getPageFromMediaType(viewModel.mediaType)).subscribe {
                 binding.mediaListRecyclerView.smoothScrollToPosition(0)
             },
-
+            sharedCustomiseViewModel.newListStyle.subscribe {
+                if ((viewModel.mediaType == MediaType.ANIME && it.second == SharedCustomiseViewModel.CustomisedList.ANIME_LIST) ||
+                    (viewModel.mediaType == MediaType.MANGA && it.second == SharedCustomiseViewModel.CustomisedList.MANGA_LIST)
+                ) {
+                    viewModel.updateListStyle(it.first)
+                }
+            },
             sharedFilterViewModel.newMediaFilter.subscribe {
-                if ((viewModel.mediaType == MediaType.ANIME && it.second == SharedFilterViewModel.FilterList.ANIME_MEDIA_LIST) ||
-                    (viewModel.mediaType == MediaType.MANGA && it.second == SharedFilterViewModel.FilterList.MANGA_MEDIA_LIST)
+                if ((viewModel.mediaType == MediaType.ANIME && it.second == SharedFilterViewModel.FilteredList.ANIME_MEDIA_LIST) ||
+                    (viewModel.mediaType == MediaType.MANGA && it.second == SharedFilterViewModel.FilteredList.MANGA_MEDIA_LIST)
                 ) {
                     viewModel.updateMediaFilter(it.first)
                 }
@@ -150,7 +160,66 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     }
 
     private fun modifyLayoutStyle(listStyle: ListStyle) {
+        binding.apply {
+            if (listStyle.primaryColor != null) {
 
+            } else {
+
+            }
+
+            if (listStyle.secondaryColor != null) {
+
+            } else {
+
+            }
+
+            if (listStyle.negativeColor != null) {
+
+            } else {
+
+            }
+
+            if (listStyle.textColor != null) {
+
+            } else {
+
+            }
+
+
+            if (listStyle.cardColor != null) {
+
+            } else {
+
+            }
+
+            if (listStyle.toolbarColor != null) {
+                val color = Color.parseColor(listStyle.toolbarColor)
+                defaultToolbar.defaultToolbar.setBackgroundColor(color)
+            } else {
+                val color = requireContext().getAttrValue(R.attr.themeCardColor)
+                defaultToolbar.defaultToolbar.setBackgroundColor(color)
+            }
+
+            if (listStyle.backgroundColor != null) {
+                val color = Color.parseColor(listStyle.backgroundColor)
+                mediaListRootLayout.setBackgroundColor(color)
+            } else {
+                val color = requireContext().getAttrValue(R.attr.themeBackgroundColor)
+                mediaListRootLayout.setBackgroundColor(color)
+            }
+
+            if (listStyle.floatingButtonColor != null) {
+
+            } else {
+
+            }
+
+            if (listStyle.floatingIconColor != null) {
+
+            } else {
+
+            }
+        }
     }
 
     override fun onDestroyView() {

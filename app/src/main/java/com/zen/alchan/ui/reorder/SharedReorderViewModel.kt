@@ -27,6 +27,7 @@ class SharedReorderViewModel : BaseViewModel() {
         _unorderedList.onNext(newList)
     }
 
+    // TODO: might need to refactor this to follow SharedFilterViewModel's implementation
     fun updateOrderedList() {
         val savedList = _unorderedList.value ?: listOf()
         currentReorderList?.let {
