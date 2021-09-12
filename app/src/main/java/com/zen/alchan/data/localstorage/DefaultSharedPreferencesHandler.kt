@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
-import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.data.entitiy.ListStyle
 
 class DefaultSharedPreferencesHandler(
     context: Context,

@@ -435,4 +435,12 @@
     <style name="BottomSheetModalTheme" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/dialog_rounded_edge</item>
     </style>
+
+    <style name="ColorCircleCard" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">@dimen/iconSize</item>
+        <item name="android:layout_height">@dimen/iconSize</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="strokeColor">?themeContentColor</item>
+        <item name="strokeWidth">@dimen/lineWidth</item>
+    </style>
 </resources>

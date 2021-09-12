@@ -9,7 +9,7 @@ import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.data.entitiy.ListStyle
 import io.reactivex.Observable
 import type.ScoreFormat
 import type.UserStaffNameLanguage

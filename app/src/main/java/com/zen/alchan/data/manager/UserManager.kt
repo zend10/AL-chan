@@ -4,7 +4,7 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.helper.pojo.SaveItem
 
 interface UserManager {

@@ -288,6 +288,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             viewModel.onlyShowDoujin.subscribe {
                 binding.filterOnlyShowDoujinCheckBox.isChecked = it
             },
+            viewModel.orderByVisibility.subscribe {
+                binding.filterOrderByLayout.show(it)
+            },
             viewModel.seasonVisibility.subscribe {
                 binding.filterSeasonLayout.show(it)
             },

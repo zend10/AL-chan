@@ -13,7 +13,7 @@ import com.zen.alchan.helper.extensions.applySidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
-import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
@@ -80,7 +80,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemCustomiseList?.setOnMenuItemClickListener {
-                // navigate to customise list
+                navigation.navigateToCustomise(viewModel.mediaType)
                 true
             }
 

@@ -1,11 +1,8 @@
 package com.zen.alchan.ui.base
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.helper.pojo.ListStyle
 
 abstract class BaseRecyclerViewAdapter<T, VB: ViewBinding>(
     protected var list: List<T>,

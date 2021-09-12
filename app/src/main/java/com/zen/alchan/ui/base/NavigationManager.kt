@@ -23,6 +23,7 @@ interface NavigationManager {
 
     fun navigateToReorder()
     fun navigateToFilter(mediaType: MediaType, isUserList: Boolean)
+    fun navigateToCustomise(mediaType: MediaType)
 
     fun openWebView(url: String)
     fun openWebView(url: Url)

@@ -3,9 +3,8 @@ package com.zen.alchan.ui.medialist
 import android.content.Context
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.response.anilist.MediaListOptions
-import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.databinding.ListTitleBinding
-import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 

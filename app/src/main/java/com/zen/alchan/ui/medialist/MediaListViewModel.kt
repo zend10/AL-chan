@@ -6,15 +6,13 @@ import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.helper.enums.ListOrder
-import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.enums.getAniListMediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListItem
-import com.zen.alchan.helper.pojo.ListStyle
+import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
+import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
 import io.reactivex.Observable
@@ -265,16 +263,45 @@ class MediaListViewModel(
             ListOrder.TITLE
         }
 
+        // TODO: should sort by shown title
         val entriesSortedByTitle = entries.sortedBy { it.media.title.userPreferred.toLowerCase(Locale.getDefault()) }
+        val isDescending = currentMediaFilter.orderByDescending
 
-        // TODO: implement more sort later
-        return when (rowOrder) {
-            ListOrder.SCORE -> entriesSortedByTitle.sortedByDescending { it.score }
-            ListOrder.TITLE -> entriesSortedByTitle
-            ListOrder.LAST_UPDATED -> entriesSortedByTitle.sortedByDescending { it.updatedAt }
-            ListOrder.LAST_ADDED -> entriesSortedByTitle.sortedByDescending { it.id }
+        return when (currentMediaFilter.sort) {
+            Sort.TITLE -> if (isDescending) entriesSortedByTitle.reversed() else entriesSortedByTitle
+            Sort.SCORE -> sortUsing(entriesSortedByTitle, isDescending) { score }
+            Sort.PROGRESS -> sortUsing(entriesSortedByTitle, isDescending) { progress }
+            Sort.LAST_UPDATED -> sortUsing(entriesSortedByTitle, isDescending) { updatedAt }
+            Sort.LAST_ADDED -> sortUsing(entriesSortedByTitle, isDescending) { id }
+            Sort.START_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(startedAt) }
+            Sort.COMPLETED_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(completedAt) }
+            Sort.RELEASE_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(media.startDate) }
+            Sort.AVERAGE_SCORE -> sortUsing(entriesSortedByTitle, isDescending) { media.averageScore }
+            Sort.POPULARITY -> sortUsing(entriesSortedByTitle, isDescending) { media.popularity }
+            Sort.PRIORITY -> sortUsing(entriesSortedByTitle, isDescending) { priority }
+            Sort.NEXT_AIRING -> {
+                val defaultValueForNullAiringTime = if (isDescending) Int.MIN_VALUE else Int.MAX_VALUE
+                sortUsing(entriesSortedByTitle, isDescending) { media.nextAiringEpisode?.timeUntilAiring ?: defaultValueForNullAiringTime }
+            }
+            else -> {
+                when (rowOrder) {
+                    ListOrder.SCORE -> sortUsing(entriesSortedByTitle, true) { score }
+                    ListOrder.TITLE -> entriesSortedByTitle
+                    ListOrder.LAST_UPDATED -> sortUsing(entriesSortedByTitle, true) { updatedAt }
+                    ListOrder.LAST_ADDED -> sortUsing(entriesSortedByTitle, true) { id }
+                }
+            }
         }
     }
+
+    private fun <T : Comparable<T>> sortUsing(unsortedList: List<MediaList>, sortByDescending: Boolean, comparison: MediaList.() -> T): List<MediaList> {
+        return if (sortByDescending) {
+            unsortedList.sortedByDescending { it.comparison() }
+        } else {
+            unsortedList.sortedBy { it.comparison() }
+        }
+    }
+
 
     private fun getFilteredEntries(entries: List<MediaList>): List<MediaList> {
         if (entries.isEmpty()) return listOf()

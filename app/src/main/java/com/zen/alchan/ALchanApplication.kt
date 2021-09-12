@@ -19,6 +19,8 @@ import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.bio.BioViewModel
+import com.zen.alchan.ui.customise.CustomiseViewModel
+import com.zen.alchan.ui.customise.SharedCustomiseViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
@@ -122,6 +124,8 @@ class ALchanApplication : Application() {
 
         viewModel { FilterViewModel(get(), get()) }
         viewModel { SharedFilterViewModel() }
+        viewModel { CustomiseViewModel(get()) }
+        viewModel { SharedCustomiseViewModel() }
     }
 
     override fun onCreate() {

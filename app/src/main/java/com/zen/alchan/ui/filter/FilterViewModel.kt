@@ -129,6 +129,10 @@ class FilterViewModel(
     val onlyShowDoujin: Observable<Boolean>
         get() = _onlyShowDoujin
 
+    private val _orderByVisibility = BehaviorSubject.createDefault(false)
+    val orderByVisibility: Observable<Boolean>
+        get() = _orderByVisibility
+
     private val _seasonVisibility = BehaviorSubject.createDefault(false)
     val seasonVisibility: Observable<Boolean>
         get() = _seasonVisibility
@@ -257,7 +261,7 @@ class FilterViewModel(
     val prioritiesYearsSliderItem: Observable<SliderItem>
         get() = _prioritiesYearsSliderItem
 
-    var mediaType: MediaType = MediaType.MANGA
+    var mediaType: MediaType = MediaType.ANIME
     var isUserList: Boolean = true
 
     private var genres: List<Genre> = listOf()
@@ -349,12 +353,15 @@ class FilterViewModel(
     }
 
     fun saveCurrentFilter() {
-        userRepository.setMediaFilter(mediaType, currentMediaFilter)
+        userRepository.setMediaFilter(mediaType, MediaFilter())
+        if (currentMediaFilter.persistFilter)
+            userRepository.setMediaFilter(mediaType, currentMediaFilter)
         _mediaFilter.onNext(currentMediaFilter)
     }
 
     fun resetCurrentFilter() {
         currentMediaFilter = MediaFilter()
+        userRepository.setMediaFilter(mediaType, currentMediaFilter)
         _mediaFilter.onNext(currentMediaFilter)
     }
 
@@ -371,6 +378,7 @@ class FilterViewModel(
     fun updateSortBy(newSort: Sort) {
         currentMediaFilter.sort = newSort
         _sortBy.onNext(newSort)
+        _orderByVisibility.onNext(newSort != Sort.FOLLOW_LIST_SETTINGS)
     }
 
     fun updateOrderBy(shouldOrderByDescending: Boolean) {
