@@ -64,6 +64,42 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     val listTypes: Observable<List<ListItem<ListType>>>
         get() = _listTypes
 
+    private val _primaryColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val primaryColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _primaryColorAndHasAlpha
+
+    private val _secondaryColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val secondaryColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _secondaryColorAndHasAlpha
+
+    private val _negativeColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val negativeColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _negativeColorAndHasAlpha
+
+    private val _textColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val textColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _textColorAndHasAlpha
+
+    private val _cardColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val cardColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _cardColorAndHasAlpha
+
+    private val _toolbarColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val toolbarColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _toolbarColorAndHasAlpha
+
+    private val _backgroundColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val backgroundColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _backgroundColorAndHasAlpha
+
+    private val _floatingButtonColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val floatingButtonColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _floatingButtonColorAndHasAlpha
+
+    private val _floatingIconColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
+    val floatingIconColorAndHasAlpha: Observable<Pair<String?, Boolean>>
+        get() = _floatingIconColorAndHasAlpha
+
     var mediaType: MediaType = MediaType.ANIME
 
     private var appTheme = AppTheme.DEFAULT_THEME_YELLOW
@@ -159,5 +195,59 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
 
     fun loadListTypes() {
         _listTypes.onNext(ListType.values().map { ListItem(it.getString(), it) })
+    }
+
+    fun loadPrimaryColor() {
+        val hexColor = _primaryColor.value?.data
+        val hasAlpha = false
+        _primaryColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadSecondaryColor() {
+        val hexColor = _secondaryColor.value?.data
+        val hasAlpha = false
+        _secondaryColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadNegativeColor() {
+        val hexColor = _negativeColor.value?.data
+        val hasAlpha = false
+        _negativeColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadTextColor() {
+        val hexColor = _textColor.value?.data
+        val hasAlpha = false
+        _textColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadCardColor() {
+        val hexColor = _cardColor.value?.data
+        val hasAlpha = true
+        _cardColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadToolbarColor() {
+        val hexColor = _toolbarColor.value?.data
+        val hasAlpha = true
+        _toolbarColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadBackgroundColor() {
+        val hexColor = _backgroundColor.value?.data
+        val hasAlpha = false
+        _backgroundColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadFloatingButtonColor() {
+        val hexColor = _floatingButtonColor.value?.data
+        val hasAlpha = false
+        _floatingButtonColorAndHasAlpha.onNext(hexColor to hasAlpha)
+    }
+
+    fun loadFloatingIconColor() {
+        val hexColor = _floatingIconColor.value?.data
+        val hasAlpha = false
+        _floatingIconColorAndHasAlpha.onNext(hexColor to hasAlpha)
     }
 }

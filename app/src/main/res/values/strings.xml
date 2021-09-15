@@ -276,6 +276,8 @@
     <string name="remove_image">Remove Image</string>
     <string name="add_image">Add Image</string>
     <string name="no_image_selected">No image selected</string>
+    <string name="select_a_color">Select a Color</string>
+    <string name="select">Select</string>
 
 
     <plurals name="minute">

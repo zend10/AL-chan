@@ -40,3 +40,11 @@ fun Int.convertSecondsToHours(): Int {
 fun Int.convertSecondsToMinutes(): Int {
     return this / 60
 }
+
+fun Int.toHex(): String {
+    return String.format("#%06X", 0xFFFFFF and this)
+}
+
+fun Int.toAlphaHex(): String {
+    return String.format("#%08X", 0xFFFFFFFF and this.toLong())
+}
