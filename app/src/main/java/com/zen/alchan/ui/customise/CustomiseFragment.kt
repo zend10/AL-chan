@@ -111,47 +111,47 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             },
             viewModel.primaryColor.subscribe {
                 binding.customisePrimaryColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultPrimaryColor())
+                    getColorFromHex(it.data, requireContext().getThemePrimaryColor())
                 )
             },
             viewModel.secondaryColor.subscribe {
                 binding.customiseSecondaryColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultSecondaryColor())
+                    getColorFromHex(it.data, requireContext().getThemeSecondaryColor())
                 )
             },
             viewModel.negativeColor.subscribe {
                 binding.customiseNegativeColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultNegativeColor())
+                    getColorFromHex(it.data, requireContext().getThemeNegativeColor())
                 )
             },
             viewModel.textColor.subscribe {
                 binding.customiseTextColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultTextColor())
+                    getColorFromHex(it.data, requireContext().getThemeTextColor())
                 )
             },
             viewModel.cardColor.subscribe {
                 binding.customiseCardColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultCardColor())
+                    getColorFromHex(it.data, requireContext().getThemeCardColor())
                 )
             },
             viewModel.toolbarColor.subscribe {
                 binding.customiseToolbarColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultToolbarColor())
+                    getColorFromHex(it.data, requireContext().getThemeToolbarColor())
                 )
             },
             viewModel.backgroundColor.subscribe {
                 binding.customiseBackgroundColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultBackgroundColor())
+                    getColorFromHex(it.data, requireContext().getThemeBackgroundColor())
                 )
             },
             viewModel.floatingButtonColor.subscribe {
                 binding.customiseFloatingButtonColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultFloatingButtonColor())
+                    getColorFromHex(it.data, requireContext().getThemeFloatingButtonColor())
                 )
             },
             viewModel.floatingIconColor.subscribe {
                 binding.customiseFloatingIconColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, defaultFloatingIconColor())
+                    getColorFromHex(it.data, requireContext().getThemeFloatingIconColor())
                 )
             },
 
@@ -166,47 +166,47 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
                 }
             },
             viewModel.primaryColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultPrimaryColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemePrimaryColor()), it.second) { hexColor ->
                     viewModel.updatePrimaryColor(hexColor)
                 }
             },
             viewModel.secondaryColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultSecondaryColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeSecondaryColor()), it.second) { hexColor ->
                     viewModel.updateSecondaryColor(hexColor)
                 }
             },
             viewModel.negativeColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultNegativeColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeNegativeColor()), it.second) { hexColor ->
                     viewModel.updateNegativeColor(hexColor)
                 }
             },
             viewModel.textColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultTextColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeTextColor()), it.second) { hexColor ->
                     viewModel.updateTextColor(hexColor)
                 }
             },
             viewModel.cardColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultCardColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeCardColor()), it.second) { hexColor ->
                     viewModel.updateCardColor(hexColor)
                 }
             },
             viewModel.toolbarColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultToolbarColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeToolbarColor()), it.second) { hexColor ->
                     viewModel.updateToolbarColor(hexColor)
                 }
             },
             viewModel.backgroundColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultBackgroundColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeBackgroundColor()), it.second) { hexColor ->
                     viewModel.updateBackgroundColor(hexColor)
                 }
             },
             viewModel.floatingButtonColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultFloatingButtonColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeFloatingButtonColor()), it.second) { hexColor ->
                     viewModel.updateFloatingButtonColor(hexColor)
                 }
             },
             viewModel.floatingIconColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, defaultFloatingIconColor()), it.second) { hexColor ->
+                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeFloatingIconColor()), it.second) { hexColor ->
                     viewModel.updateFloatingIconColor(hexColor)
                 }
             }
@@ -241,49 +241,13 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
         dialog.show(childFragmentManager, null)
     }
 
-    @ColorInt private fun getColorFromHex(hexColor: String?, defaultColor: Int): Int {
+    @ColorInt private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
         return if (hexColor != null)
             Color.parseColor(hexColor)
         else
             defaultColor
     }
-
-    @ColorInt private fun defaultPrimaryColor(): Int {
-        return requireContext().getAttrValue(R.attr.themePrimaryColor)
-    }
-
-    @ColorInt private fun defaultSecondaryColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeSecondaryColor)
-    }
-
-    @ColorInt private fun defaultNegativeColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeNegativeColor)
-    }
-
-    @ColorInt private fun defaultTextColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeContentColor)
-    }
-
-    @ColorInt private fun defaultCardColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeCardColor)
-    }
-
-    @ColorInt private fun defaultToolbarColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeCardColor)
-    }
-
-    @ColorInt private fun defaultBackgroundColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeBackgroundColor)
-    }
-
-    @ColorInt private fun defaultFloatingButtonColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeSecondaryColor)
-    }
-
-    @ColorInt private fun defaultFloatingIconColor(): Int {
-        return requireContext().getAttrValue(R.attr.themeBackgroundColor)
-    }
-
+    
     companion object {
         private const val MEDIA_TYPE = "mediaType"
 

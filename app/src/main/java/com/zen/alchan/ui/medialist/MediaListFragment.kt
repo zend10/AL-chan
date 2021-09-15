@@ -1,10 +1,12 @@
 package com.zen.alchan.ui.medialist
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
@@ -161,65 +163,34 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     private fun modifyLayoutStyle(listStyle: ListStyle) {
         binding.apply {
-            if (listStyle.primaryColor != null) {
+            val primaryColor = getColorFromHex(listStyle.primaryColor, requireContext().getThemePrimaryColor())
+            val secondaryColor = getColorFromHex(listStyle.secondaryColor, requireContext().getThemeSecondaryColor())
+            val negativeColor = getColorFromHex(listStyle.negativeColor, requireContext().getThemeNegativeColor())
+            val textColor = getColorFromHex(listStyle.textColor, requireContext().getThemeTextColor())
+            val cardColor = getColorFromHex(listStyle.cardColor, requireContext().getThemeCardColor())
+            val toolbarColor = getColorFromHex(listStyle.toolbarColor, requireContext().getThemeToolbarColor())
+            val backgroundColor = getColorFromHex(listStyle.backgroundColor, requireContext().getThemeBackgroundColor())
+            val floatingButtonColor = getColorFromHex(listStyle.floatingButtonColor, requireContext().getThemeFloatingButtonColor())
+            val floatingIconColor = getColorFromHex(listStyle.floatingIconColor, requireContext().getThemeFloatingIconColor())
 
-            } else {
+            defaultToolbar.defaultToolbar.setBackgroundColor(toolbarColor)
+            defaultToolbar.defaultToolbar.backgroundTintList = ColorStateList.valueOf(toolbarColor)
 
-            }
+            defaultToolbar.defaultToolbar.setTitleTextColor(textColor)
+            defaultToolbar.defaultToolbar.setSubtitleTextColor(textColor)
 
-            if (listStyle.secondaryColor != null) {
+            mediaListRootLayout.setBackgroundColor(backgroundColor)
 
-            } else {
-
-            }
-
-            if (listStyle.negativeColor != null) {
-
-            } else {
-
-            }
-
-            if (listStyle.textColor != null) {
-
-            } else {
-
-            }
-
-
-            if (listStyle.cardColor != null) {
-
-            } else {
-
-            }
-
-            if (listStyle.toolbarColor != null) {
-                val color = Color.parseColor(listStyle.toolbarColor)
-                defaultToolbar.defaultToolbar.setBackgroundColor(color)
-            } else {
-                val color = requireContext().getAttrValue(R.attr.themeCardColor)
-                defaultToolbar.defaultToolbar.setBackgroundColor(color)
-            }
-
-            if (listStyle.backgroundColor != null) {
-                val color = Color.parseColor(listStyle.backgroundColor)
-                mediaListRootLayout.setBackgroundColor(color)
-            } else {
-                val color = requireContext().getAttrValue(R.attr.themeBackgroundColor)
-                mediaListRootLayout.setBackgroundColor(color)
-            }
-
-            if (listStyle.floatingButtonColor != null) {
-
-            } else {
-
-            }
-
-            if (listStyle.floatingIconColor != null) {
-
-            } else {
-
-            }
+            mediaListSwitchListButton.backgroundTintList = ColorStateList.valueOf(floatingButtonColor)
+            mediaListSwitchListButton.imageTintList = ColorStateList.valueOf(floatingIconColor)
         }
+    }
+
+    @ColorInt private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
+        return if (hexColor != null)
+            Color.parseColor(hexColor)
+        else
+            defaultColor
     }
 
     override fun onDestroyView() {
