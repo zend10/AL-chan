@@ -20,6 +20,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mediaListRecyclerView"
             android:paddingTop="@dimen/marginNormal"
+            android:paddingStart="@dimen/marginNormal"
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

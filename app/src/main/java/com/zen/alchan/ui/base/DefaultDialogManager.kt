@@ -23,7 +23,20 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
     override fun showMessageDialog(title: Int, message: Int, positiveButton: Int) {
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButton, null)
+            .setCancelable(false)
+            .show()
+    }
+
+    override fun showMessageDialog(title: String, message: String, positiveButton: Int) {
         AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)

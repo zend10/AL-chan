@@ -66,4 +66,11 @@ data class Media(
             MediaNaming.NATIVE -> title.native
         }
     }
+
+    fun getCoverImage(appSetting: AppSetting): String {
+        return if (appSetting.useHighestQualityImage)
+            coverImage.extraLarge
+        else
+            coverImage.large
+    }
 }

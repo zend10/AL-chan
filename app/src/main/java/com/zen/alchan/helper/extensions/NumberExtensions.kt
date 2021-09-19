@@ -3,6 +3,8 @@ package com.zen.alchan.helper.extensions
 import android.content.Context
 import androidx.annotation.PluralsRes
 import com.zen.alchan.helper.utils.TimeUtil
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,4 +49,10 @@ fun Int.toHex(): String {
 
 fun Int.toAlphaHex(): String {
     return String.format("#%08X", 0xFFFFFFFF and this.toLong())
+}
+
+fun Double.roundToOneDecimal(): String {
+    val format = DecimalFormat("#.#")
+    format.decimalFormatSymbols = DecimalFormatSymbols.getInstance().also { it.decimalSeparator = '.' }
+    return format.format(this)
 }

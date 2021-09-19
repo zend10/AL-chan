@@ -278,6 +278,7 @@
     <string name="no_image_selected">No image selected</string>
     <string name="select_a_color">Select a Color</string>
     <string name="select">Select</string>
+    <string name="ok">OK</string>
 
 
     <plurals name="minute">

@@ -36,6 +36,7 @@
         <item name="themeBackgroundTransparent50Color">@color/blackTransparent50</item>
         <item name="themeBackgroundTransparent36Color">@color/blackTransparent36</item>
         <item name="themeCardColor">@color/blackLight</item>
+        <item name="themeCardTransparentColor">@color/blackLightTransparent80</item>
         <item name="themeDividerColor">@color/whiteTransparent12</item>
         <item name="themeContentColor">@color/white</item>
         <item name="themeContentTransparentColor">@color/whiteTransparent36</item>
@@ -47,6 +48,7 @@
         <item name="themeBackgroundTransparent50Color">@color/whiteTransparent50</item>
         <item name="themeBackgroundTransparent36Color">@color/whiteTransparent36</item>
         <item name="themeCardColor">@color/whiteLight</item>
+        <item name="themeCardTransparentColor">@color/whiteLightTransparent80</item>
         <item name="themeDividerColor">@color/blackTransparent12</item>
         <item name="themeContentColor">@color/black</item>
         <item name="themeContentTransparentColor">@color/blackTransparent36</item>
@@ -58,6 +60,7 @@
         <item name="themeBackgroundTransparent50Color">@color/pureBlackTransparent50</item>
         <item name="themeBackgroundTransparent36Color">@color/pureBlackTransparent36</item>
         <item name="themeCardColor">@color/pureBlackLight</item>
+        <item name="themeCardTransparentColor">@color/pureBlackLightTransparent80</item>
         <item name="themeDividerColor">@color/whiteTransparent12</item>
         <item name="themeContentColor">@color/white</item>
         <item name="themeContentTransparentColor">@color/whiteTransparent36</item>
@@ -69,6 +72,7 @@
         <item name="themeBackgroundTransparent50Color">@color/anilistPaleWhiteTransparent50</item>
         <item name="themeBackgroundTransparent36Color">@color/anilistPaleWhiteTransparent36</item>
         <item name="themeCardColor">@color/anilistWhite</item>
+        <item name="themeCardTransparentColor">@color/anilistWhiteTransparent80</item>
         <item name="themeDividerColor">@color/anilistDarkBlueTransparent12</item>
         <item name="themeContentColor">@color/anilistDarkBlue</item>
         <item name="themeContentTransparentColor">@color/anilistDarkBlueTransparent36</item>
@@ -80,6 +84,7 @@
         <item name="themeBackgroundTransparent50Color">@color/anilistVeryDeepBlueTransparent50</item>
         <item name="themeBackgroundTransparent36Color">@color/anilistVeryDeepBlueTransparent36</item>
         <item name="themeCardColor">@color/anilistDeepBlue</item>
+        <item name="themeCardTransparentColor">@color/anilistDeepBlueTransparent80</item>
         <item name="themeDividerColor">@color/anilistDarkWhiteTransparent12</item>
         <item name="themeContentColor">@color/anilistDarkWhite</item>
         <item name="themeContentTransparentColor">@color/anilistDarkWhiteTransparent36</item>

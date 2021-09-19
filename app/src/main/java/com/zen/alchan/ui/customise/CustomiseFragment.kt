@@ -247,7 +247,7 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
         else
             defaultColor
     }
-    
+
     companion object {
         private const val MEDIA_TYPE = "mediaType"
 

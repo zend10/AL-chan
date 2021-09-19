@@ -5,6 +5,13 @@ import com.zen.alchan.helper.enums.ListType
 data class ListStyle(
     var listType: ListType = ListType.LINEAR,
     var hideScoreWhenNotScored: Boolean = false,
+    var hideAiringIndicator: Boolean = false,
+    var hideChapterForManga: Boolean = false,
+    var hideVolumeForManga: Boolean = false,
+    var hideChapterForNovel: Boolean = false,
+    var hideVolumeForNovel: Boolean = false,
+    var showNotes: Boolean = false,
+    var showPriority: Boolean = false,
     var primaryColor: String? = null,
     var secondaryColor: String? = null,
     var negativeColor: String? = null,

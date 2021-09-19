@@ -7,6 +7,7 @@
     <attr name="themeNegativeColor" format="reference"/>
 
     <attr name="themeCardColor" format="reference"/>
+    <attr name="themeCardTransparentColor" format="reference"/>
     <attr name="themeDividerColor" format="reference"/>
 
     <attr name="themeContentColor" format="reference"/>

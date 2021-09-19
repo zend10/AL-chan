@@ -36,10 +36,15 @@
 
     <!-- Card Background -->
     <color name="blackLight">#2F2F2F</color>
+    <color name="blackLightTransparent80">#CC2F2F2F</color>
     <color name="whiteLight">#F2F2F2</color>
+    <color name="whiteLightTransparent80">#CCF2F2F2</color>
     <color name="pureBlackLight">#0F0F0F</color>
+    <color name="pureBlackLightTransparent80">#CC0F0F0F</color>
     <color name="anilistWhite">#FAFAFA</color>
+    <color name="anilistWhiteTransparent80">#CCFAFAFA</color>
     <color name="anilistDeepBlue">#151F2E</color>
+    <color name="anilistDeepBlueTransparent80">#CC151F2E</color>
 
     <!-- For navigation bar -->
     <color name="whiteTransparent70">#B3FFFFFF</color>

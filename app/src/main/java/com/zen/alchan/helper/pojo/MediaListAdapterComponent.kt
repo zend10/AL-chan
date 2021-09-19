@@ -7,6 +7,5 @@ import com.zen.alchan.data.response.anilist.MediaListOptions
 data class MediaListAdapterComponent(
     var listStyle: ListStyle = ListStyle(),
     var appSetting: AppSetting = AppSetting(),
-    var mediaListOptions: MediaListOptions = MediaListOptions(),
-    var mediaListItems: List<MediaListItem> = listOf()
+    var mediaListOptions: MediaListOptions = MediaListOptions()
 )

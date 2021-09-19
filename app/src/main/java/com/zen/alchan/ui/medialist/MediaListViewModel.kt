@@ -35,13 +35,13 @@ class MediaListViewModel(
     val toolbarSubtitle: Observable<String>
         get() = _toolbarSubtitle
 
-    private val _mediaListAdapterComponent = BehaviorSubject.createDefault(MediaListAdapterComponent())
+    private val _mediaListAdapterComponent = PublishSubject.create<MediaListAdapterComponent>()
     val mediaListAdapterComponent: Observable<MediaListAdapterComponent>
         get() = _mediaListAdapterComponent
 
-    private val _listStyle = BehaviorSubject.createDefault(ListStyle())
-    val listStyle: Observable<ListStyle>
-        get() = _listStyle
+    private val _mediaListItems = BehaviorSubject.createDefault<List<MediaListItem>>(listOf())
+    val mediaListItems: Observable<List<MediaListItem>>
+        get() = _mediaListItems
 
     private val _listSections = PublishSubject.create<List<ListItem<String>>>()
     val listSections: Observable<List<ListItem<String>>>
@@ -58,9 +58,10 @@ class MediaListViewModel(
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
-    private var user = User()
-    private var appSetting = AppSetting()
-    private var currentMediaFilter = MediaFilter()
+    var user = User()
+    var appSetting = AppSetting()
+    var listStyle = ListStyle()
+    private var mediaFilter = MediaFilter()
     private var isAllListPositionAtTop = true
 
     private var rawMediaListCollection: MediaListCollection? = null // needed when applying filter
@@ -92,21 +93,25 @@ class MediaListViewModel(
                             userRepository.getMediaFilter(mediaType),
                             userRepository.getViewer(Source.CACHE)
                         ) { listStyle, appSetting, mediaFilter, user ->
+                            this.listStyle = listStyle
                             this.appSetting = appSetting
-                            this.currentMediaFilter = mediaFilter
+                            this.mediaFilter = mediaFilter
                             isAllListPositionAtTop = when (mediaType) {
                                 MediaType.ANIME -> appSetting.isAllAnimeListPositionAtTop
                                 MediaType.MANGA -> appSetting.isAllMangaListPositionAtTop
                             }
-                            return@zip Pair(listStyle, user)
+                            return@zip user
                         }
                     }
-                    .subscribe { (listStyle, user) ->
+                    .subscribe { user ->
                         if (userId == 0)
                             userId = user.id
 
                         this.user = user
-                        _listStyle.onNext(listStyle)
+
+                        _mediaListAdapterComponent.onNext(
+                            MediaListAdapterComponent(listStyle, appSetting, user.mediaListOptions)
+                        )
 
                         getMediaListCollection(state == State.LOADED || state == State.ERROR)
                     }
@@ -119,13 +124,18 @@ class MediaListViewModel(
             MediaType.ANIME -> SharedCustomiseViewModel.CustomisedList.ANIME_LIST
             MediaType.MANGA -> SharedCustomiseViewModel.CustomisedList.MANGA_LIST
         }
-        _listStyleAndCustomisedList.onNext((_listStyle.value ?: ListStyle()) to customisedList)
+        _listStyleAndCustomisedList.onNext(listStyle to customisedList)
     }
 
     fun updateListStyle(newListStyle: ListStyle) {
-        _listStyle.onNext(newListStyle)
-        _mediaListAdapterComponent.value?.let {
-            _mediaListAdapterComponent.onNext(it.copy(listStyle = newListStyle))
+        listStyle = newListStyle
+
+        _mediaListAdapterComponent.onNext(
+            MediaListAdapterComponent(listStyle, appSetting, user.mediaListOptions)
+        )
+
+        _mediaListItems.value?.let {
+            _mediaListItems.onNext(it)
         }
     }
 
@@ -134,17 +144,15 @@ class MediaListViewModel(
             MediaType.ANIME -> SharedFilterViewModel.FilteredList.ANIME_MEDIA_LIST
             MediaType.MANGA -> SharedFilterViewModel.FilteredList.MANGA_MEDIA_LIST
         }
-        _mediaFilterAndFilterList.onNext(currentMediaFilter to filterList)
+        _mediaFilterAndFilterList.onNext(mediaFilter to filterList)
     }
 
     fun updateMediaFilter(newFilter: MediaFilter) {
-        currentMediaFilter = newFilter
+        mediaFilter = newFilter
 
         rawMediaListCollection?.let {
             val filteredAndSortedList = getFilteredAndSortedList(it)
-            _mediaListAdapterComponent.value?.let {
-                _mediaListAdapterComponent.onNext(it.copy(mediaListItems = filteredAndSortedList))
-            }
+            _mediaListItems.onNext(filteredAndSortedList)
 
             if (searchKeyword.isNotBlank())
                 filterByText(searchKeyword)
@@ -181,9 +189,7 @@ class MediaListViewModel(
         val currentGroups = currentMediaListCollection?.lists ?: listOf()
         selectedSectionIndex = index
         val mediaListItems = getMediaListItems(currentGroups, index)
-        _mediaListAdapterComponent.value?.let {
-            _mediaListAdapterComponent.onNext(it.copy(mediaListItems = mediaListItems))
-        }
+        _mediaListItems.onNext(mediaListItems)
 
         if (searchKeyword.isNotBlank())
             filterByText(searchKeyword)
@@ -215,9 +221,7 @@ class MediaListViewModel(
             }
         }
 
-        _mediaListAdapterComponent.value?.let {
-            _mediaListAdapterComponent.onNext(it.copy(mediaListItems = filteredMediaListItems))
-        }
+        _mediaListItems.onNext(filteredMediaListItems)
     }
 
     private fun getMediaListCollection(isReloading: Boolean = false) {
@@ -232,12 +236,7 @@ class MediaListViewModel(
                     { mediaListCollection ->
                         rawMediaListCollection = mediaListCollection
                         val filteredAndSortedList = getFilteredAndSortedList(mediaListCollection)
-                        _mediaListAdapterComponent.onNext(MediaListAdapterComponent(
-                            _listStyle.value ?: ListStyle(),
-                            appSetting,
-                            user.mediaListOptions,
-                            filteredAndSortedList
-                        ))
+                        _mediaListItems.onNext(filteredAndSortedList)
 
                         if (searchKeyword.isNotBlank())
                             filterByText(searchKeyword)
@@ -277,9 +276,9 @@ class MediaListViewModel(
 
         // TODO: should sort by shown title
         val entriesSortedByTitle = entries.sortedBy { it.media.title.userPreferred.toLowerCase(Locale.getDefault()) }
-        val isDescending = currentMediaFilter.orderByDescending
+        val isDescending = mediaFilter.orderByDescending
 
-        return when (currentMediaFilter.sort) {
+        return when (mediaFilter.sort) {
             Sort.TITLE -> if (isDescending) entriesSortedByTitle.reversed() else entriesSortedByTitle
             Sort.SCORE -> sortUsing(entriesSortedByTitle, isDescending) { score }
             Sort.PROGRESS -> sortUsing(entriesSortedByTitle, isDescending) { progress }
@@ -320,82 +319,82 @@ class MediaListViewModel(
 
         val filterEntries = ArrayList(entries)
 
-        if (currentMediaFilter.mediaFormats.isNotEmpty())
-            filterEntries.removeAll { !currentMediaFilter.mediaFormats.contains(it.media.format) }
+        if (mediaFilter.mediaFormats.isNotEmpty())
+            filterEntries.removeAll { !mediaFilter.mediaFormats.contains(it.media.format) }
 
-        if (currentMediaFilter.mediaStatuses.isNotEmpty())
-            filterEntries.removeAll { !currentMediaFilter.mediaStatuses.contains(it.media.status) }
+        if (mediaFilter.mediaStatuses.isNotEmpty())
+            filterEntries.removeAll { !mediaFilter.mediaStatuses.contains(it.media.status) }
 
-        if (currentMediaFilter.mediaSources.isNotEmpty())
-            filterEntries.removeAll { !currentMediaFilter.mediaSources.contains(it.media.source) }
+        if (mediaFilter.mediaSources.isNotEmpty())
+            filterEntries.removeAll { !mediaFilter.mediaSources.contains(it.media.source) }
 
-        if (currentMediaFilter.countries.isNotEmpty())
-            filterEntries.removeAll { !currentMediaFilter.countries.map { it.iso } .contains(it.media.countryOfOrigin) }
+        if (mediaFilter.countries.isNotEmpty())
+            filterEntries.removeAll { !mediaFilter.countries.map { it.iso } .contains(it.media.countryOfOrigin) }
 
-        if (currentMediaFilter.mediaSeasons.isNotEmpty())
-            filterEntries.removeAll { !currentMediaFilter.mediaSeasons.contains(it.media.season) }
+        if (mediaFilter.mediaSeasons.isNotEmpty())
+            filterEntries.removeAll { !mediaFilter.mediaSeasons.contains(it.media.season) }
 
-        if (currentMediaFilter.minYear != null)
-            filterEntries.removeAll { it.media.startDate?.year == null || currentMediaFilter.minYear!! > it.media.startDate.year }
+        if (mediaFilter.minYear != null)
+            filterEntries.removeAll { it.media.startDate?.year == null || mediaFilter.minYear!! > it.media.startDate.year }
 
-        if (currentMediaFilter.maxYear != null)
-            filterEntries.removeAll { it.media.startDate?.year == null || currentMediaFilter.maxYear!! < it.media.startDate.year }
+        if (mediaFilter.maxYear != null)
+            filterEntries.removeAll { it.media.startDate?.year == null || mediaFilter.maxYear!! < it.media.startDate.year }
 
-        if (currentMediaFilter.minEpisodes != null) {
+        if (mediaFilter.minEpisodes != null) {
             filterEntries.removeAll {
                 val episodes = when (mediaType) {
                     MediaType.ANIME -> it.media.episodes
                     MediaType.MANGA -> it.media.chapters
                 }
-                episodes == null || currentMediaFilter.minEpisodes!! > episodes
+                episodes == null || mediaFilter.minEpisodes!! > episodes
             }
         }
 
-        if (currentMediaFilter.maxEpisodes != null) {
+        if (mediaFilter.maxEpisodes != null) {
             filterEntries.removeAll {
                 val episodes = when (mediaType) {
                     MediaType.ANIME -> it.media.episodes
                     MediaType.MANGA -> it.media.chapters
                 }
-                episodes == null || currentMediaFilter.maxEpisodes!! < episodes
+                episodes == null || mediaFilter.maxEpisodes!! < episodes
             }
         }
 
-        if (currentMediaFilter.minDuration != null) {
+        if (mediaFilter.minDuration != null) {
             filterEntries.removeAll {
                 val durations = when (mediaType) {
                     MediaType.ANIME -> it.media.duration
                     MediaType.MANGA -> it.media.volumes
                 }
-                durations == null || currentMediaFilter.minDuration!! > durations
+                durations == null || mediaFilter.minDuration!! > durations
             }
         }
 
-        if (currentMediaFilter.maxDuration != null) {
+        if (mediaFilter.maxDuration != null) {
             filterEntries.removeAll {
                 val durations = when (mediaType) {
                     MediaType.ANIME -> it.media.duration
                     MediaType.MANGA -> it.media.volumes
                 }
-                durations == null || currentMediaFilter.maxDuration!! < durations
+                durations == null || mediaFilter.maxDuration!! < durations
             }
         }
 
-        if (currentMediaFilter.minAverageScore != null)
-            filterEntries.removeAll { currentMediaFilter.minAverageScore!! > it.media.averageScore }
+        if (mediaFilter.minAverageScore != null)
+            filterEntries.removeAll { mediaFilter.minAverageScore!! > it.media.averageScore }
 
-        if (currentMediaFilter.maxAverageScore != null)
-            filterEntries.removeAll { currentMediaFilter.maxAverageScore!! < it.media.averageScore }
+        if (mediaFilter.maxAverageScore != null)
+            filterEntries.removeAll { mediaFilter.maxAverageScore!! < it.media.averageScore }
 
-        if (currentMediaFilter.minPopularity != null)
-            filterEntries.removeAll { currentMediaFilter.minPopularity!! > it.media.popularity }
+        if (mediaFilter.minPopularity != null)
+            filterEntries.removeAll { mediaFilter.minPopularity!! > it.media.popularity }
 
-        if (currentMediaFilter.maxPopularity != null)
-            filterEntries.removeAll { currentMediaFilter.maxPopularity!! < it.media.popularity }
+        if (mediaFilter.maxPopularity != null)
+            filterEntries.removeAll { mediaFilter.maxPopularity!! < it.media.popularity }
 
-        if (currentMediaFilter.streamingOn.isNotEmpty()) {
+        if (mediaFilter.streamingOn.isNotEmpty()) {
             filterEntries.removeAll { mediaList ->
-                !currentMediaFilter.streamingOn
+                !mediaFilter.streamingOn
                     .map {
                         it.siteName.toLowerCase()
                     }
@@ -407,9 +406,9 @@ class MediaListViewModel(
             }
         }
 
-        if (currentMediaFilter.includedGenres.isNotEmpty()) {
+        if (mediaFilter.includedGenres.isNotEmpty()) {
             filterEntries.removeAll { mediaList ->
-                !currentMediaFilter.includedGenres
+                !mediaFilter.includedGenres
                     .map {
                         it.toLowerCase()
                     }
@@ -421,9 +420,9 @@ class MediaListViewModel(
             }
         }
 
-        if (currentMediaFilter.excludedGenres.isNotEmpty()) {
+        if (mediaFilter.excludedGenres.isNotEmpty()) {
             filterEntries.removeAll { mediaList ->
-                currentMediaFilter.excludedGenres
+                mediaFilter.excludedGenres
                     .map {
                         it.toLowerCase()
                     }
@@ -435,9 +434,9 @@ class MediaListViewModel(
             }
         }
 
-        if (currentMediaFilter.includedTags.isNotEmpty()) {
+        if (mediaFilter.includedTags.isNotEmpty()) {
             filterEntries.removeAll { mediaList ->
-                !currentMediaFilter.includedTags
+                !mediaFilter.includedTags
                     .map {
                         it.id
                     }
@@ -449,9 +448,9 @@ class MediaListViewModel(
             }
         }
 
-        if (currentMediaFilter.excludedTags.isNotEmpty()) {
+        if (mediaFilter.excludedTags.isNotEmpty()) {
             filterEntries.removeAll { mediaList ->
-                currentMediaFilter.excludedTags
+                mediaFilter.excludedTags
                     .map {
                         it.id
                     }
@@ -463,34 +462,34 @@ class MediaListViewModel(
             }
         }
 
-        if (currentMediaFilter.minUserScore != null)
-            filterEntries.removeAll { currentMediaFilter.minUserScore!! > it.score }
+        if (mediaFilter.minUserScore != null)
+            filterEntries.removeAll { mediaFilter.minUserScore!! > it.score }
 
-        if (currentMediaFilter.maxUserScore != null)
-            filterEntries.removeAll { currentMediaFilter.maxUserScore!! < it.score }
+        if (mediaFilter.maxUserScore != null)
+            filterEntries.removeAll { mediaFilter.maxUserScore!! < it.score }
 
-        if (currentMediaFilter.minUserStartYear != null)
-            filterEntries.removeAll { it.startedAt?.year == null || currentMediaFilter.minUserStartYear!! > it.startedAt.year }
+        if (mediaFilter.minUserStartYear != null)
+            filterEntries.removeAll { it.startedAt?.year == null || mediaFilter.minUserStartYear!! > it.startedAt.year }
 
-        if (currentMediaFilter.maxUserStartYear != null)
-            filterEntries.removeAll { it.startedAt?.year == null || currentMediaFilter.maxUserStartYear!! < it.startedAt.year }
+        if (mediaFilter.maxUserStartYear != null)
+            filterEntries.removeAll { it.startedAt?.year == null || mediaFilter.maxUserStartYear!! < it.startedAt.year }
 
-        if (currentMediaFilter.minUserCompletedYear != null)
-            filterEntries.removeAll { it.completedAt?.year == null || currentMediaFilter.minUserCompletedYear!! > it.completedAt.year }
+        if (mediaFilter.minUserCompletedYear != null)
+            filterEntries.removeAll { it.completedAt?.year == null || mediaFilter.minUserCompletedYear!! > it.completedAt.year }
 
-        if (currentMediaFilter.maxUserCompletedYear != null)
-            filterEntries.removeAll { it.completedAt?.year == null || currentMediaFilter.maxUserCompletedYear!! < it.completedAt.year }
+        if (mediaFilter.maxUserCompletedYear != null)
+            filterEntries.removeAll { it.completedAt?.year == null || mediaFilter.maxUserCompletedYear!! < it.completedAt.year }
 
-        if (currentMediaFilter.minUserPriority != null) {
-            filterEntries.removeAll { currentMediaFilter.minUserPriority!! > it.priority }
+        if (mediaFilter.minUserPriority != null) {
+            filterEntries.removeAll { mediaFilter.minUserPriority!! > it.priority }
         }
 
-        if (currentMediaFilter.maxUserPriority != null) {
-            filterEntries.removeAll { currentMediaFilter.maxUserPriority!! < it.priority }
+        if (mediaFilter.maxUserPriority != null) {
+            filterEntries.removeAll { mediaFilter.maxUserPriority!! < it.priority }
         }
 
-        if (currentMediaFilter.isDoujin != null) {
-            filterEntries.removeAll { currentMediaFilter.isDoujin == it.media.isLicensed }
+        if (mediaFilter.isDoujin != null) {
+            filterEntries.removeAll { mediaFilter.isDoujin == it.media.isLicensed }
         }
 
         return filterEntries

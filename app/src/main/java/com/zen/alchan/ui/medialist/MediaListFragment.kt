@@ -8,12 +8,18 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
+import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.databinding.FragmentMediaListBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.data.response.anilist.MediaListOptions
+import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.customise.SharedCustomiseViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
@@ -73,9 +79,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 }
             })
 
-            adapter = MediaListLinearRvAdapter(requireContext(), listOf())
-            mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            mediaListRecyclerView.adapter = adapter
+            assignAdapter(viewModel.listStyle, viewModel.appSetting, viewModel.user.mediaListOptions)
 
             mediaListSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -115,13 +119,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 binding.defaultToolbar.defaultToolbar.subtitle = it
             },
             viewModel.mediaListAdapterComponent.subscribe {
-                adapter?.applyAppSetting(it.appSetting)
-                adapter?.applyListStyle(it.listStyle)
-                adapter?.applyMediaListOptions(it.mediaListOptions)
-                adapter?.updateData(it.mediaListItems)
+                modifyLayoutStyle(it.listStyle, it.appSetting, it.mediaListOptions)
             },
-            viewModel.listStyle.subscribe {
-                modifyLayoutStyle(it)
+            viewModel.mediaListItems.subscribe {
+                adapter?.updateData(it)
             },
             viewModel.listSections.subscribe {
                 dialog.showListDialog(it) { _, index ->
@@ -161,8 +162,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         viewModel.loadData()
     }
 
-    private fun modifyLayoutStyle(listStyle: ListStyle) {
+    private fun modifyLayoutStyle(listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions) {
         binding.apply {
+            assignAdapter(listStyle, appSetting, mediaListOptions)
+
             val primaryColor = getColorFromHex(listStyle.primaryColor, requireContext().getThemePrimaryColor())
             val secondaryColor = getColorFromHex(listStyle.secondaryColor, requireContext().getThemeSecondaryColor())
             val negativeColor = getColorFromHex(listStyle.negativeColor, requireContext().getThemeNegativeColor())
@@ -186,11 +189,55 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         }
     }
 
-    @ColorInt private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
+    private fun assignAdapter(listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions) {
+        when (listStyle.listType) {
+            ListType.LINEAR -> {
+                adapter = MediaListLinearRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                binding.mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            }
+            ListType.GRID -> {
+                adapter = MediaListGridRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+            }
+            ListType.SIMPLIFIED -> {
+                adapter = MediaListSimplifiedRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                binding.mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            }
+            ListType.ALBUM -> {
+                adapter = MediaListAlbumRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+            }
+        }
+        (binding.mediaListRecyclerView.layoutManager as? GridLayoutManager)?.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (adapter?.getItemViewType(position) == MediaListItem.VIEW_TYPE_TITLE) 3 else 1
+            }
+        }
+        binding.mediaListRecyclerView.adapter = adapter
+    }
+
+    @ColorInt
+    private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
         return if (hexColor != null)
             Color.parseColor(hexColor)
         else
             defaultColor
+    }
+
+    private fun getMediaListListener(): BaseMediaListRvAdapter.MediaListListener {
+        return object : BaseMediaListRvAdapter.MediaListListener {
+            override fun showAiringText(airingText: String) {
+                dialog.showToast(airingText)
+            }
+
+            override fun showNotes(mediaList: MediaList) {
+                dialog.showMessageDialog(
+                    mediaList.media.getTitle(viewModel.appSetting),
+                    mediaList.notes,
+                    R.string.ok
+                )
+            }
+        }
     }
 
     override fun onDestroyView() {

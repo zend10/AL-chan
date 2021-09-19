@@ -8,7 +8,9 @@ import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 
 interface DialogManager {
     fun showToast(message: Int)
+    fun showToast(message: String)
     fun showMessageDialog(title: Int, message: Int, positiveButton: Int)
+    fun showMessageDialog(title: String, message: String, positiveButton: Int)
     fun showConfirmationDialog(
         title: Int,
         message: Int, 

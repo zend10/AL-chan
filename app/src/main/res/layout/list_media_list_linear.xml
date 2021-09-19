@@ -2,7 +2,8 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mediaListCardBackground"
     app:cardBackgroundColor="?themeCardColor"
-    android:layout_marginHorizontal="@dimen/marginNormal"
+    android:foreground="?selectableItemBackground"
+    android:layout_marginEnd="@dimen/marginNormal"
     android:layout_marginBottom="@dimen/marginNormal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -164,6 +165,35 @@
             android:minWidth="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mediaListNotesLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="2dp"
+            app:contentPadding="@dimen/marginClose"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mediaListNotesIcon"
+                app:srcCompat="@drawable/ic_speaker_notes"
+                android:layout_width="12dp"
+                android:layout_height="12dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/mediaListPriority"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="4dp"
+            android:layout_height="0dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
