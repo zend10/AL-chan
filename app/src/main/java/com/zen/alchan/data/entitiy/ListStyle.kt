@@ -4,12 +4,15 @@ import com.zen.alchan.helper.enums.ListType
 
 data class ListStyle(
     var listType: ListType = ListType.LINEAR,
+    var longPressShowDetail: Boolean = true,
+    var hideMediaFormat: Boolean = false,
     var hideScoreWhenNotScored: Boolean = false,
     var hideAiringIndicator: Boolean = false,
-    var hideChapterForManga: Boolean = false,
     var hideVolumeForManga: Boolean = false,
-    var hideChapterForNovel: Boolean = false,
+    var hideChapterForManga: Boolean = false,
     var hideVolumeForNovel: Boolean = false,
+    var hideChapterForNovel: Boolean = false,
+    var hideAiring: Boolean = false,
     var showNotes: Boolean = false,
     var showPriority: Boolean = false,
     var primaryColor: String? = null,

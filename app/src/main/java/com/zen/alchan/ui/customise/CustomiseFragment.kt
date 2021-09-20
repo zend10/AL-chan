@@ -45,6 +45,46 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             customiseSelectedListLayout.clicks {
                 viewModel.loadListTypes()
             }
+            
+            customiseLongPressViewDetailCheckBox.setOnClickListener { 
+                viewModel.updateLongPressViewDetail(customiseLongPressViewDetailCheckBox.isChecked)
+            }
+
+            customiseHideMediaFormatCheckBox.setOnClickListener {
+                viewModel.updateHideMediaFormat(customiseHideMediaFormatCheckBox.isChecked)
+            }
+
+            customiseHideScoreCheckBox.setOnClickListener {
+                viewModel.updateHideScore(customiseHideScoreCheckBox.isChecked)
+            }
+            
+            customiseHideVolumeProgressForMangaCheckBox.setOnClickListener {
+                viewModel.updateHideVolumeProgressForManga(customiseHideVolumeProgressForMangaCheckBox.isChecked)
+            }
+            
+            customiseHideChapterProgressForMangaCheckBox.setOnClickListener {
+                viewModel.updateHideChapterProgressForManga(customiseHideChapterProgressForMangaCheckBox.isChecked)
+            }
+
+            customiseHideVolumeProgressForNovelCheckBox.setOnClickListener {
+                viewModel.updateHideVolumeProgressForNovel(customiseHideVolumeProgressForNovelCheckBox.isChecked)
+            }
+
+            customiseHideChapterProgressForNovelCheckBox.setOnClickListener {
+                viewModel.updateHideChapterProgressForNovel(customiseHideChapterProgressForNovelCheckBox.isChecked)
+            }
+
+            customiseHideAiringCheckBox.setOnClickListener {
+                viewModel.updateHideAiring(customiseHideAiringCheckBox.isChecked)
+            }
+
+            customiseShowNotesCheckBox.setOnClickListener {
+                viewModel.updateShowNotes(customiseShowNotesCheckBox.isChecked)
+            }
+
+            customiseShowPriorityCheckBox.setOnClickListener {
+                viewModel.updateShowPriority(customiseShowPriorityCheckBox.isChecked)
+            }
 
             customisePrimaryColorIcon.clicks {
                 viewModel.loadPrimaryColor()
@@ -87,7 +127,16 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             }
 
             customiseApplyLayout.negativeButton.clicks {
-                viewModel.resetCurrentListStyle()
+                dialog.showConfirmationDialog(
+                    R.string.reset_to_default,
+                    R.string.this_will_reset_your_list_style_to_default_style,
+                    R.string.reset,
+                    {
+                        viewModel.resetCurrentListStyle()
+                    },
+                    R.string.cancel,
+                    { }
+                )
             }
         }
     }
@@ -108,6 +157,33 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             },
             viewModel.listType.subscribe {
                 binding.customiseSelectedListText.text = it.getString()
+            },
+            viewModel.longPressViewDetail.subscribe {
+                binding.customiseLongPressViewDetailCheckBox.isChecked = it
+            },
+            viewModel.hideScore.subscribe {
+                binding.customiseHideScoreCheckBox.isChecked = it
+            },
+            viewModel.hideScoreVolumeProgressForManga.subscribe {
+                binding.customiseHideVolumeProgressForMangaCheckBox.isChecked = it
+            },
+            viewModel.hideScoreChapterProgressForManga.subscribe {
+                binding.customiseHideChapterProgressForMangaCheckBox.isChecked = it
+            },
+            viewModel.hideScoreVolumeProgressForNovel.subscribe {
+                binding.customiseHideVolumeProgressForNovelCheckBox.isChecked = it
+            },
+            viewModel.hideScoreChapterProgressForNovel.subscribe {
+                binding.customiseHideChapterProgressForNovelCheckBox.isChecked = it
+            },
+            viewModel.hideAiring.subscribe {
+                binding.customiseHideAiringCheckBox.isChecked = it
+            },
+            viewModel.showNotes.subscribe {
+                binding.customiseShowNotesCheckBox.isChecked = it
+            },
+            viewModel.showPriority.subscribe {
+                binding.customiseShowPriorityCheckBox.isChecked = it
             },
             viewModel.primaryColor.subscribe {
                 binding.customisePrimaryColorIcon.setCardBackgroundColor(
@@ -154,12 +230,21 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
                     getColorFromHex(it.data, requireContext().getThemeFloatingIconColor())
                 )
             },
-
-
-
-
-
-
+            viewModel.hideMediaFormatVisibility.subscribe {
+                binding.customiseHideMediaFormatLayout.show(it)
+            },
+            viewModel.progressVisibility.subscribe {
+                binding.customiseHideVolumeProgressForMangaLayout.show(it)
+                binding.customiseHideChapterProgressForMangaLayout.show(it)
+                binding.customiseHideVolumeProgressForNovelLayout.show(it)
+                binding.customiseHideChapterProgressForNovelLayout.show(it)
+            },
+            viewModel.airingVisibility.subscribe {
+                binding.customiseHideAiringLayout.show(it)
+            },
+            viewModel.showNotesVisibility.subscribe {
+                binding.customiseShowNotesLayout.show(it)
+            },
             viewModel.listTypes.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     viewModel.updateListType(data)

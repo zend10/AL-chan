@@ -24,6 +24,46 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     val listType: Observable<ListType>
         get() = _listType
 
+    private val _longPressViewDetail = BehaviorSubject.createDefault(true)
+    val longPressViewDetail: Observable<Boolean>
+        get() = _longPressViewDetail
+
+    private val _hideMediaFormat = BehaviorSubject.createDefault(false)
+    val hideMediaFormat: Observable<Boolean>
+        get() = _hideMediaFormat
+
+    private val _hideScore = BehaviorSubject.createDefault(false)
+    val hideScore: Observable<Boolean>
+        get() = _hideScore
+
+    private val _hideScoreVolumeProgressForManga = BehaviorSubject.createDefault(false)
+    val hideScoreVolumeProgressForManga: Observable<Boolean>
+        get() = _hideScoreVolumeProgressForManga
+
+    private val _hideScoreChapterProgressForManga = BehaviorSubject.createDefault(false)
+    val hideScoreChapterProgressForManga: Observable<Boolean>
+        get() = _hideScoreChapterProgressForManga
+
+    private val _hideScoreVolumeProgressForNovel = BehaviorSubject.createDefault(false)
+    val hideScoreVolumeProgressForNovel: Observable<Boolean>
+        get() = _hideScoreVolumeProgressForNovel
+
+    private val _hideScoreChapterProgressForNovel = BehaviorSubject.createDefault(false)
+    val hideScoreChapterProgressForNovel: Observable<Boolean>
+        get() = _hideScoreChapterProgressForNovel
+
+    private val _hideAiring = BehaviorSubject.createDefault(false)
+    val hideAiring: Observable<Boolean>
+        get() = _hideAiring
+
+    private val _showNotes = BehaviorSubject.createDefault(false)
+    val showNotes: Observable<Boolean>
+        get() = _showNotes
+
+    private val _showPriority = BehaviorSubject.createDefault(false)
+    val showPriority: Observable<Boolean>
+        get() = _showPriority
+
     private val _primaryColor = BehaviorSubject.createDefault(NullableItem<String?>())
     val primaryColor: Observable<NullableItem<String?>>
         get() = _primaryColor
@@ -59,6 +99,22 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     private val _floatingIconColor = BehaviorSubject.createDefault(NullableItem<String?>())
     val floatingIconColor: Observable<NullableItem<String?>>
         get() = _floatingIconColor
+
+    private val _hideMediaFormatVisibility = BehaviorSubject.createDefault(false)
+    val hideMediaFormatVisibility: Observable<Boolean>
+        get() = _hideMediaFormatVisibility
+
+    private val _progressVisibility = BehaviorSubject.createDefault(false)
+    val progressVisibility: Observable<Boolean>
+        get() = _progressVisibility
+
+    private val _airingVisibility = BehaviorSubject.createDefault(false)
+    val airingVisibility: Observable<Boolean>
+        get() = _airingVisibility
+
+    private val _showNotesVisibility = BehaviorSubject.createDefault(false)
+    val showNotesVisibility: Observable<Boolean>
+        get() = _showNotesVisibility
 
     private val _listTypes = PublishSubject.create<List<ListItem<ListType>>>()
     val listTypes: Observable<List<ListItem<ListType>>>
@@ -117,16 +173,31 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
                         appTheme = appSetting.appTheme
                         currentListStyle = listStyle
 
-                        updateListType(listStyle.listType)
-                        updatePrimaryColor(listStyle.primaryColor)
-                        updateSecondaryColor(listStyle.secondaryColor)
-                        updateNegativeColor(listStyle.negativeColor)
-                        updateTextColor(listStyle.textColor)
-                        updateCardColor(listStyle.cardColor)
-                        updateToolbarColor(listStyle.toolbarColor)
-                        updateBackgroundColor(listStyle.backgroundColor)
-                        updateFloatingButtonColor(listStyle.floatingButtonColor)
-                        updateFloatingIconColor(listStyle.floatingIconColor)
+                        _progressVisibility.onNext(mediaType == MediaType.MANGA)
+                        _airingVisibility.onNext(mediaType == MediaType.ANIME)
+
+                        listStyle.apply {
+                            updateListType(listType)
+                            updateLongPressViewDetail(longPressShowDetail)
+                            updateHideMediaFormat(hideMediaFormat)
+                            updateHideScore(hideScoreWhenNotScored)
+                            updateHideVolumeProgressForManga(hideVolumeForManga)
+                            updateHideChapterProgressForManga(hideChapterForManga)
+                            updateHideVolumeProgressForNovel(hideVolumeForNovel)
+                            updateHideChapterProgressForNovel(hideChapterForNovel)
+                            updateHideAiring(hideAiring)
+                            updateShowNotes(showNotes)
+                            updateShowPriority(showNotes)
+                            updatePrimaryColor(primaryColor)
+                            updateSecondaryColor(secondaryColor)
+                            updateNegativeColor(negativeColor)
+                            updateTextColor(textColor)
+                            updateCardColor(cardColor)
+                            updateToolbarColor(toolbarColor)
+                            updateBackgroundColor(backgroundColor)
+                            updateFloatingButtonColor(floatingButtonColor)
+                            updateFloatingIconColor(floatingIconColor)
+                        }
                     }
             )
         }
@@ -138,7 +209,7 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     }
 
     fun resetCurrentListStyle() {
-        currentListStyle = ListStyle()
+        currentListStyle = ListStyle(currentListStyle.listType)
         userRepository.setListStyle(mediaType, currentListStyle)
         _listStyle.onNext(currentListStyle)
     }
@@ -146,6 +217,59 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     fun updateListType(newListType: ListType) {
         currentListStyle.listType = newListType
         _listType.onNext(newListType)
+
+        _hideMediaFormatVisibility.onNext(newListType == ListType.GRID)
+        _showNotesVisibility.onNext(newListType != ListType.SIMPLIFIED)
+    }
+
+    fun updateLongPressViewDetail(shouldLongPressShowDetail: Boolean) {
+        currentListStyle.longPressShowDetail = shouldLongPressShowDetail
+        _longPressViewDetail.onNext(shouldLongPressShowDetail)
+    }
+
+    fun updateHideMediaFormat(shouldHideMediaFormat: Boolean) {
+        currentListStyle.hideMediaFormat = shouldHideMediaFormat
+        _hideMediaFormat.onNext(shouldHideMediaFormat)
+    }
+
+    fun updateHideScore(shouldHideScore: Boolean) {
+        currentListStyle.hideScoreWhenNotScored = shouldHideScore
+        _hideScore.onNext(shouldHideScore)
+    }
+
+    fun updateHideVolumeProgressForManga(shouldHideVolumeProgressForManga: Boolean) {
+        currentListStyle.hideVolumeForManga = shouldHideVolumeProgressForManga
+        _hideScoreVolumeProgressForManga.onNext(shouldHideVolumeProgressForManga)
+    }
+
+    fun updateHideChapterProgressForManga(shouldHideChapterProgressForManga: Boolean) {
+        currentListStyle.hideChapterForManga = shouldHideChapterProgressForManga
+        _hideScoreChapterProgressForManga.onNext(shouldHideChapterProgressForManga)
+    }
+
+    fun updateHideVolumeProgressForNovel(shouldHideVolumeProgressForNovel: Boolean) {
+        currentListStyle.hideVolumeForNovel = shouldHideVolumeProgressForNovel
+        _hideScoreVolumeProgressForNovel.onNext(shouldHideVolumeProgressForNovel)
+    }
+
+    fun updateHideChapterProgressForNovel(shouldHideChapterProgressForNovel: Boolean) {
+        currentListStyle.hideChapterForNovel = shouldHideChapterProgressForNovel
+        _hideScoreChapterProgressForNovel.onNext(shouldHideChapterProgressForNovel)
+    }
+
+    fun updateHideAiring(shouldHideAiring: Boolean) {
+        currentListStyle.hideAiring = shouldHideAiring
+        _hideAiring.onNext(shouldHideAiring)
+    }
+
+    fun updateShowNotes(shouldShowNotes: Boolean) {
+        currentListStyle.showNotes = shouldShowNotes
+        _showNotes.onNext(shouldShowNotes)
+    }
+
+    fun updateShowPriority(shouldShowPriority: Boolean) {
+        currentListStyle.showPriority = shouldShowPriority
+        _showPriority.onNext(shouldShowPriority)
     }
 
     fun updatePrimaryColor(newPrimaryColor: String?) {

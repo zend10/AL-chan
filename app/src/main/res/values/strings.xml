@@ -279,6 +279,14 @@
     <string name="select_a_color">Select a Color</string>
     <string name="select">Select</string>
     <string name="ok">OK</string>
+    <string name="hide_media_format">Hide media format</string>
+    <string name="hide_airing_indicator">Hide airing indicator</string>
+    <string name="show_notes_indicator">Show Notes indicator</string>
+    <string name="hide_volume_progress_for_manga">Hide volume progress for Manga</string>
+    <string name="hide_chapter_progress_for_manga">Hide chapter progress for Manga</string>
+    <string name="hide_volume_progress_for_novel">Hide volume progress for Novel</string>
+    <string name="hide_chapter_progress_for_novel">Hide chapter progress for Novel</string>
+    <string name="this_will_reset_your_list_style_to_default_style">This will reset your list style to default style.</string>
 
 
     <plurals name="minute">
