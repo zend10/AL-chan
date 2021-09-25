@@ -399,37 +399,8 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/customiseNegativeColorLayout"
-                    app:layout_constraintTop_toBottomOf="@id/customiseSecondaryColorLayout"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/negative_color"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginNormal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                    <FrameLayout
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/customiseNegativeColorIcon"
-                            style="@style/ColorCircleCard"/>
-
-                    </FrameLayout>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/customiseTextColorLayout"
-                    app:layout_constraintTop_toBottomOf="@id/customiseNegativeColorLayout"
+                    app:layout_constraintTop_toBottomOf="@id/customiseSecondaryColorLayout"
                     android:layout_marginTop="@dimen/marginNormal"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"

@@ -169,7 +169,6 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
             val primaryColor = getColorFromHex(listStyle.primaryColor, requireContext().getThemePrimaryColor())
             val secondaryColor = getColorFromHex(listStyle.secondaryColor, requireContext().getThemeSecondaryColor())
-            val negativeColor = getColorFromHex(listStyle.negativeColor, requireContext().getThemeNegativeColor())
             val textColor = getColorFromHex(listStyle.textColor, requireContext().getThemeTextColor())
             val cardColor = getColorFromHex(listStyle.cardColor, requireContext().getThemeCardColor())
             val toolbarColor = getColorFromHex(listStyle.toolbarColor, requireContext().getThemeToolbarColor())

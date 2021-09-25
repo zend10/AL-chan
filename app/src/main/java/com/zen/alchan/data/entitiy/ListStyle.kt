@@ -20,7 +20,6 @@ data class ListStyle(
     var showPriority: Boolean = false,
     var primaryColor: String? = null,
     var secondaryColor: String? = null,
-    var negativeColor: String? = null, // TODO: remove this
     var textColor: String? = null,
     var cardColor: String? = null,
     var toolbarColor: String? = null,
@@ -42,14 +41,6 @@ data class ListStyle(
             Color.parseColor(secondaryColor)
         else
             context.getThemeSecondaryColor()
-    }
-
-    @ColorInt
-    fun getNegativeColor(context: Context): Int {
-        return if (negativeColor != null)
-            Color.parseColor(negativeColor)
-        else
-            context.getThemeNegativeColor()
     }
 
     @ColorInt

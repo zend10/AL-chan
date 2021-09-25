@@ -18,10 +18,6 @@ fun Context.getThemeSecondaryColor(): Int {
     return getAttrValue(R.attr.themeSecondaryColor)
 }
 
-fun Context.getThemeNegativeColor(): Int {
-    return getAttrValue(R.attr.themeNegativeColor)
-}
-
 fun Context.getThemeTextColor(): Int {
     return getAttrValue(R.attr.themeContentColor)
 }

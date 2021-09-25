@@ -72,10 +72,6 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     val secondaryColor: Observable<NullableItem<String?>>
         get() = _secondaryColor
 
-    private val _negativeColor = BehaviorSubject.createDefault(NullableItem<String?>())
-    val negativeColor: Observable<NullableItem<String?>>
-        get() = _negativeColor
-
     private val _textColor = BehaviorSubject.createDefault(NullableItem<String?>())
     val textColor: Observable<NullableItem<String?>>
         get() = _textColor
@@ -127,10 +123,6 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     private val _secondaryColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
     val secondaryColorAndHasAlpha: Observable<Pair<String?, Boolean>>
         get() = _secondaryColorAndHasAlpha
-
-    private val _negativeColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
-    val negativeColorAndHasAlpha: Observable<Pair<String?, Boolean>>
-        get() = _negativeColorAndHasAlpha
 
     private val _textColorAndHasAlpha = PublishSubject.create<Pair<String?, Boolean>>()
     val textColorAndHasAlpha: Observable<Pair<String?, Boolean>>
@@ -190,7 +182,6 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
                             updateShowPriority(showPriority)
                             updatePrimaryColor(primaryColor)
                             updateSecondaryColor(secondaryColor)
-                            updateNegativeColor(negativeColor)
                             updateTextColor(textColor)
                             updateCardColor(cardColor)
                             updateToolbarColor(toolbarColor)
@@ -282,11 +273,6 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
         _secondaryColor.onNext(NullableItem(newSecondaryColor))
     }
 
-    fun updateNegativeColor(newNegativeColor: String?) {
-        currentListStyle.negativeColor = newNegativeColor
-        _negativeColor.onNext(NullableItem(newNegativeColor))
-    }
-
     fun updateTextColor(newTextColor: String?) {
         currentListStyle.textColor = newTextColor
         _textColor.onNext(NullableItem(newTextColor))
@@ -331,12 +317,6 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
         val hexColor = _secondaryColor.value?.data
         val hasAlpha = false
         _secondaryColorAndHasAlpha.onNext(hexColor to hasAlpha)
-    }
-
-    fun loadNegativeColor() {
-        val hexColor = _negativeColor.value?.data
-        val hasAlpha = false
-        _negativeColorAndHasAlpha.onNext(hexColor to hasAlpha)
     }
 
     fun loadTextColor() {

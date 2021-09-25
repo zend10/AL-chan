@@ -94,10 +94,6 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
                 viewModel.loadSecondaryColor()
             }
 
-            customiseNegativeColorIcon.clicks {
-                viewModel.loadNegativeColor()
-            }
-
             customiseTextColorIcon.clicks {
                 viewModel.loadTextColor()
             }
@@ -198,11 +194,6 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
                     getColorFromHex(it.data, requireContext().getThemeSecondaryColor())
                 )
             },
-            viewModel.negativeColor.subscribe {
-                binding.customiseNegativeColorIcon.setCardBackgroundColor(
-                    getColorFromHex(it.data, requireContext().getThemeNegativeColor())
-                )
-            },
             viewModel.textColor.subscribe {
                 binding.customiseTextColorIcon.setCardBackgroundColor(
                     getColorFromHex(it.data, requireContext().getThemeTextColor())
@@ -261,11 +252,6 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             viewModel.secondaryColorAndHasAlpha.subscribe {
                 showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeSecondaryColor()), it.second) { hexColor ->
                     viewModel.updateSecondaryColor(hexColor)
-                }
-            },
-            viewModel.negativeColorAndHasAlpha.subscribe {
-                showColorPickerDialog(getColorFromHex(it.first, requireContext().getThemeNegativeColor()), it.second) { hexColor ->
-                    viewModel.updateNegativeColor(hexColor)
                 }
             },
             viewModel.textColorAndHasAlpha.subscribe {
