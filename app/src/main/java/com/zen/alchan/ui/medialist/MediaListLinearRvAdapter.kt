@@ -19,7 +19,7 @@ import com.zen.alchan.helper.utils.ImageUtil
 import type.MediaType
 
 class MediaListLinearRvAdapter(
-    private val context: Context,
+    context: Context,
     list: List<MediaListItem>,
     appSetting: AppSetting,
     listStyle: ListStyle,
@@ -49,13 +49,13 @@ class MediaListLinearRvAdapter(
                 // cover
                 ImageUtil.loadImage(context, getCoverImage(media), mediaListCoverImage)
                 mediaListCoverImage.clicks {
-
+                    listener.navigateToMedia(media)
                 }
 
                 // title
                 mediaListTitleText.text = getTitle(media)
                 mediaListTitleText.clicks {
-
+                    listener.navigateToMedia(media)
                 }
 
                 // format
@@ -79,7 +79,7 @@ class MediaListLinearRvAdapter(
                 // score
                 handleScoring(mediaListScoreLayout, mediaListScoreIcon, mediaListScoreText, mediaListScoreSmiley, mediaList)
                 mediaListScoreLayout.clicks {
-
+                    listener.showScoreDialog(mediaList)
                 }
 
                 // progress
@@ -88,34 +88,63 @@ class MediaListLinearRvAdapter(
                 mediaListProgressText.show(shouldShowProgress(media))
                 mediaListIncrementProgressButton.show(shouldShowProgress(media))
                 mediaListProgressText.clicks {
-
+                    listener.showProgressDialog(mediaList, false)
                 }
                 mediaListIncrementProgressButton.clicks {
-
+                    listener.incrementProgress(mediaList, false)
                 }
 
                 mediaListProgressVolumeText.text = getProgressVolumeText(mediaList)
                 mediaListProgressVolumeText.show(shouldShowProgressVolume(media))
                 mediaListIncrementProgressVolumeButton.show(shouldShowProgressVolume(media))
                 mediaListProgressVolumeText.clicks {
-
+                    listener.showProgressDialog(mediaList, true)
                 }
                 mediaListIncrementProgressVolumeButton.clicks {
-
+                    listener.incrementProgress(mediaList, true)
                 }
 
                 // progress bar
                 mediaListProgressBar.max = getMaxProgressBar(mediaList)
                 mediaListProgressBar.progress = mediaList.progress
 
+                // root
+                root.setOnLongClickListener {
+                    if (shouldShowQuickDetail())
+                        listener.showQuickDetail(mediaList)
 
-                // style
-//                val cardColor = if (listStyle.cardColor != null)
-//                    Color.parseColor(listStyle.cardColor)
-//                else
-//                    context.getAttrValue(R.attr.themeCardColor)
-//
-//                mediaListCardBackground.setCardBackgroundColor(cardColor)
+                    true
+                }
+
+                root.clicks {
+                    listener.navigateToListEditor(mediaList)
+                }
+
+                // theme
+                val primaryColor = listStyle.getPrimaryColor(context)
+                mediaListTitleText.setTextColor(primaryColor)
+                mediaListScoreText.setTextColor(primaryColor)
+                mediaListScoreSmiley.imageTintList = ColorStateList.valueOf(primaryColor)
+                mediaListProgressText.setTextColor(primaryColor)
+                mediaListIncrementProgressButton.setTextColor(primaryColor)
+                mediaListIncrementProgressButton.strokeColor = ColorStateList.valueOf(primaryColor)
+                mediaListProgressVolumeText.setTextColor(primaryColor)
+                mediaListIncrementProgressVolumeButton.setTextColor(primaryColor)
+                mediaListIncrementProgressVolumeButton.strokeColor = ColorStateList.valueOf(primaryColor)
+
+                val secondaryColor = listStyle.getSecondaryColor(context)
+                mediaListAiringText.setTextColor(secondaryColor)
+                mediaListAiringIndicator.imageTintList = ColorStateList.valueOf(secondaryColor)
+                mediaListProgressBar.progressTintList = ColorStateList.valueOf(secondaryColor)
+                mediaListProgressBar.progressBackgroundTintList = ColorStateList.valueOf(getProgressBarBackgroundColor())
+
+                val textColor = listStyle.getTextColor(context)
+                mediaListFormatText.setTextColor(textColor)
+                mediaListNotesIcon.imageTintList = ColorStateList.valueOf(textColor)
+
+                val cardColor = listStyle.getCardColor(context)
+                mediaListCardBackground.setCardBackgroundColor(cardColor)
+                mediaListNotesLayout.setCardBackgroundColor(getTransparentCardColor())
             }
         }
 
@@ -145,6 +174,13 @@ class MediaListLinearRvAdapter(
                     context.getString(R.string.plus_one_ep)
                 }
             }
+        }
+
+        private fun getProgressBarBackgroundColor(): Int {
+            return if (listStyle.secondaryColor != null)
+                Color.parseColor("#80${listStyle.secondaryColor?.substring(1)}")
+            else
+                context.getAttrValue(R.attr.themeSecondaryTransparent50Color)
         }
     }
 }

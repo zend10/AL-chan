@@ -28,11 +28,11 @@ import type.MediaType
 import type.ScoreFormat
 
 abstract class BaseMediaListRvAdapter(
-    private val context: Context,
+    protected val context: Context,
     list: List<MediaListItem>,
-    private val appSetting: AppSetting,
-    private val listStyle: ListStyle,
-    private val mediaListOptions: MediaListOptions
+    protected val appSetting: AppSetting,
+    protected val listStyle: ListStyle,
+    protected val mediaListOptions: MediaListOptions
 ) : BaseRecyclerViewAdapter<MediaListItem, ViewBinding>(list) {
 
     override fun getItemViewType(position: Int): Int {
@@ -42,6 +42,7 @@ abstract class BaseMediaListRvAdapter(
     protected inner class TitleViewHolder(private val binding: ListTitleBinding) : ViewHolder(binding) {
         override fun bind(item: MediaListItem, index: Int) {
             binding.titleText.text = item.title
+            binding.titleText.setTextColor(listStyle.getTextColor(context))
         }
     }
 
@@ -55,11 +56,15 @@ abstract class BaseMediaListRvAdapter(
         }
 
         protected fun getFormat(media: Media): String {
-            return media.getFormattedMediaFormat(true)
+            return  media.getFormattedMediaFormat(true)
+        }
+
+        protected fun shouldShowMediaFormat(): Boolean {
+            return !listStyle.hideMediaFormat
         }
 
         protected fun shouldShowAiringIndicator(media: Media): Boolean {
-            return !listStyle.hideAiringIndicator && media.type == MediaType.ANIME && media.nextAiringEpisode != null
+            return !listStyle.hideAiring && media.type == MediaType.ANIME && media.nextAiringEpisode != null
         }
 
         @DrawableRes
@@ -175,10 +180,27 @@ abstract class BaseMediaListRvAdapter(
 
             return !listStyle.hideVolumeForManga
         }
+
+        protected fun shouldShowQuickDetail(): Boolean {
+            return listStyle.longPressShowDetail
+        }
+
+        protected fun getTransparentCardColor(): Int {
+            return if (listStyle.cardColor != null)
+                Color.parseColor("#CC${listStyle.cardColor?.takeLast(6)}")
+            else
+                context.getAttrValue(R.attr.themeCardTransparentColor)
+        }
     }
 
     interface MediaListListener {
+        fun navigateToMedia(media: Media)
+        fun navigateToListEditor(mediaList: MediaList)
+        fun showQuickDetail(mediaList: MediaList)
         fun showAiringText(airingText: String)
         fun showNotes(mediaList: MediaList)
+        fun showScoreDialog(mediaList: MediaList)
+        fun showProgressDialog(mediaList: MediaList, isVolumeProgress: Boolean)
+        fun incrementProgress(mediaList: MediaList, isVolumeProgress: Boolean)
     }
 }

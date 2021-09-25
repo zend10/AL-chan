@@ -15,6 +15,7 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.databinding.FragmentMediaListBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.enums.ListType
@@ -226,6 +227,18 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     private fun getMediaListListener(): BaseMediaListRvAdapter.MediaListListener {
         return object : BaseMediaListRvAdapter.MediaListListener {
+            override fun navigateToMedia(media: Media) {
+
+            }
+
+            override fun navigateToListEditor(mediaList: MediaList) {
+
+            }
+
+            override fun showQuickDetail(mediaList: MediaList) {
+
+            }
+
             override fun showAiringText(airingText: String) {
                 dialog.showToast(airingText)
             }
@@ -236,6 +249,18 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                     mediaList.notes,
                     R.string.ok
                 )
+            }
+
+            override fun showScoreDialog(mediaList: MediaList) {
+
+            }
+
+            override fun showProgressDialog(mediaList: MediaList, isVolumeProgress: Boolean) {
+
+            }
+
+            override fun incrementProgress(mediaList: MediaList, isVolumeProgress: Boolean) {
+
             }
         }
     }

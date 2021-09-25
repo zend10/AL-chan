@@ -161,6 +161,9 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             viewModel.longPressViewDetail.subscribe {
                 binding.customiseLongPressViewDetailCheckBox.isChecked = it
             },
+            viewModel.hideMediaFormat.subscribe {
+                binding.customiseHideMediaFormatCheckBox.isChecked = it
+            },
             viewModel.hideScore.subscribe {
                 binding.customiseHideScoreCheckBox.isChecked = it
             },

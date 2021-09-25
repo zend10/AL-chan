@@ -187,7 +187,7 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
                             updateHideChapterProgressForNovel(hideChapterForNovel)
                             updateHideAiring(hideAiring)
                             updateShowNotes(showNotes)
-                            updateShowPriority(showNotes)
+                            updateShowPriority(showPriority)
                             updatePrimaryColor(primaryColor)
                             updateSecondaryColor(secondaryColor)
                             updateNegativeColor(negativeColor)
@@ -219,7 +219,7 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
         _listType.onNext(newListType)
 
         _hideMediaFormatVisibility.onNext(newListType == ListType.GRID)
-        _showNotesVisibility.onNext(newListType != ListType.SIMPLIFIED)
+        _showNotesVisibility.onNext(newListType != ListType.SIMPLIFIED && newListType != ListType.ALBUM)
     }
 
     fun updateLongPressViewDetail(shouldLongPressShowDetail: Boolean) {

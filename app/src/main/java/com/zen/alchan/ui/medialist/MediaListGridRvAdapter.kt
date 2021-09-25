@@ -16,7 +16,7 @@ import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
 
 class MediaListGridRvAdapter(
-    private val context: Context,
+    context: Context,
     list: List<MediaListItem>,
     appSetting: AppSetting,
     listStyle: ListStyle,
@@ -49,11 +49,12 @@ class MediaListGridRvAdapter(
                 // title
                 mediaListTitleText.text = getTitle(media)
                 mediaListTitleLayout.clicks {
-
+                    listener.navigateToMedia(media)
                 }
 
                 // format
                 mediaListFormatText.text = getFormat(media)
+                mediaListFormatLayout.show(shouldShowMediaFormat())
 
                 // airing indicator
                 mediaListAiringLayout.show(shouldShowAiringIndicator(media))
@@ -75,21 +76,58 @@ class MediaListGridRvAdapter(
                 // score
                 handleScoring(mediaListScoreLayout, mediaListScoreIcon, mediaListScoreText, mediaListScoreSmiley, mediaList)
                 mediaListScoreLayout.clicks {
-
+                    listener.showScoreDialog(mediaList)
                 }
 
                 // progress
                 mediaListProgressText.text = getProgressText(mediaList)
                 mediaListProgressLayout.show(shouldShowProgress(media))
                 mediaListProgressLayout.clicks {
-
+                    listener.showProgressDialog(mediaList, false)
                 }
 
                 mediaListProgressVolumeText.text = getProgressVolumeText(mediaList)
                 mediaListProgressVolumeLayout.show(shouldShowProgressVolume(media))
                 mediaListProgressVolumeLayout.clicks {
-
+                    listener.showProgressDialog(mediaList, true)
                 }
+
+                // root
+                root.setOnLongClickListener {
+                    if (shouldShowQuickDetail())
+                        listener.showQuickDetail(mediaList)
+
+                    true
+                }
+
+                root.clicks {
+                    listener.navigateToListEditor(mediaList)
+                }
+
+                // theme
+                val primaryColor = listStyle.getPrimaryColor(context)
+                mediaListTitleText.setTextColor(primaryColor)
+                mediaListScoreText.setTextColor(primaryColor)
+                mediaListScoreSmiley.imageTintList = ColorStateList.valueOf(primaryColor)
+                mediaListProgressText.setTextColor(primaryColor)
+                mediaListProgressVolumeText.setTextColor(primaryColor)
+
+                val secondaryColor = listStyle.getSecondaryColor(context)
+                mediaListAiringIndicator.imageTintList = ColorStateList.valueOf(secondaryColor)
+
+                val textColor = listStyle.getTextColor(context)
+                mediaListFormatText.setTextColor(textColor)
+                mediaListNotesIcon.imageTintList = ColorStateList.valueOf(textColor)
+
+                val cardColor = listStyle.getCardColor(context)
+                mediaListCardBackground.setCardBackgroundColor(cardColor)
+                mediaListTitleLayout.setCardBackgroundColor(getTransparentCardColor())
+                mediaListScoreLayout.setCardBackgroundColor(getTransparentCardColor())
+                mediaListProgressLayout.setCardBackgroundColor(getTransparentCardColor())
+                mediaListProgressVolumeLayout.setCardBackgroundColor(getTransparentCardColor())
+                mediaListFormatLayout.setCardBackgroundColor(getTransparentCardColor())
+                mediaListAiringLayout.setCardBackgroundColor(getTransparentCardColor())
+                mediaListNotesLayout.setCardBackgroundColor(getTransparentCardColor())
             }
         }
     }
