@@ -2,12 +2,17 @@ package com.zen.alchan.ui.medialist
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SearchView
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
@@ -167,24 +172,33 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         binding.apply {
             assignAdapter(listStyle, appSetting, mediaListOptions)
 
-            val primaryColor = getColorFromHex(listStyle.primaryColor, requireContext().getThemePrimaryColor())
-            val secondaryColor = getColorFromHex(listStyle.secondaryColor, requireContext().getThemeSecondaryColor())
-            val textColor = getColorFromHex(listStyle.textColor, requireContext().getThemeTextColor())
-            val cardColor = getColorFromHex(listStyle.cardColor, requireContext().getThemeCardColor())
-            val toolbarColor = getColorFromHex(listStyle.toolbarColor, requireContext().getThemeToolbarColor())
-            val backgroundColor = getColorFromHex(listStyle.backgroundColor, requireContext().getThemeBackgroundColor())
-            val floatingButtonColor = getColorFromHex(listStyle.floatingButtonColor, requireContext().getThemeFloatingButtonColor())
-            val floatingIconColor = getColorFromHex(listStyle.floatingIconColor, requireContext().getThemeFloatingIconColor())
-
-            defaultToolbar.defaultToolbar.setBackgroundColor(toolbarColor)
-            defaultToolbar.defaultToolbar.backgroundTintList = ColorStateList.valueOf(toolbarColor)
-
+            val textColor = listStyle.getTextColor(requireContext())
             defaultToolbar.defaultToolbar.setTitleTextColor(textColor)
             defaultToolbar.defaultToolbar.setSubtitleTextColor(textColor)
 
+            val searchDrawable = menuItemSearch?.icon
+            searchDrawable?.mutate()
+            searchDrawable?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(textColor, BlendModeCompat.SRC_ATOP)
+
+            val textSearch = searchView?.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+            val closeSearch = searchView?.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+            textSearch?.setTextColor(textColor)
+            closeSearch?.imageTintList = ColorStateList.valueOf(textColor)
+
+            val overflowDrawable = defaultToolbar.defaultToolbar.overflowIcon
+            overflowDrawable?.mutate()
+            overflowDrawable?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(textColor, BlendModeCompat.SRC_ATOP)
+
+            val toolbarColor = listStyle.getToolbarColor(requireContext())
+            defaultToolbar.defaultToolbar.setBackgroundColor(toolbarColor)
+
+            val backgroundColor = listStyle.getBackgroundColor(requireContext())
             mediaListRootLayout.setBackgroundColor(backgroundColor)
 
+            val floatingButtonColor = listStyle.getFloatingButtonColor(requireContext())
             mediaListSwitchListButton.backgroundTintList = ColorStateList.valueOf(floatingButtonColor)
+
+            val floatingIconColor = listStyle.getFloatingIconColor(requireContext())
             mediaListSwitchListButton.imageTintList = ColorStateList.valueOf(floatingIconColor)
         }
     }
@@ -214,14 +228,6 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
         }
         binding.mediaListRecyclerView.adapter = adapter
-    }
-
-    @ColorInt
-    private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
-        return if (hexColor != null)
-            Color.parseColor(hexColor)
-        else
-            defaultColor
     }
 
     private fun getMediaListListener(): BaseMediaListRvAdapter.MediaListListener {
