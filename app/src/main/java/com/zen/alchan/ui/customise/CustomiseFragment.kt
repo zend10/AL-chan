@@ -1,17 +1,27 @@
 package com.zen.alchan.ui.customise
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import com.stfalcon.imageviewer.loader.ImageLoader
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentCustomiseBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +31,20 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
 
     override val viewModel: CustomiseViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedCustomiseViewModel>()
+
+    private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val selectedImage = it.data?.data
+            viewModel.updateSelectedImage(selectedImage, true)
+        }
+    }
+
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        if (it)
+            navigation.openGallery(activityResultLauncher)
+        else
+            dialog.showToast(getString(R.string.storage_permission_is_required_to_pick_and_save_image))
+    }
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -116,6 +140,23 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
 
             customiseFloatingIconColorIcon.clicks {
                 viewModel.loadFloatingIconColor()
+            }
+
+            customiseSelectImageText.clicks {
+                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+
+            customiseRemoveImageText.clicks {
+                dialog.showConfirmationDialog(
+                    R.string.remove_image,
+                    R.string.stop_using_this_image_for_your_list,
+                    R.string.remove,
+                    {
+                        viewModel.updateSelectedImage(null)
+                    },
+                    R.string.cancel,
+                    {}
+                )
             }
 
             customiseApplyLayout.positiveButton.clicks {
@@ -224,6 +265,11 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
                     getColorFromHex(it.data, requireContext().getThemeFloatingIconColor())
                 )
             },
+            viewModel.selectedImage.subscribe {
+                it.data?.let { uri ->
+                    ImageUtil.loadImage(requireContext(), uri, binding.customiseSelectedImage)
+                }
+            },
             viewModel.hideMediaFormatVisibility.subscribe {
                 binding.customiseHideMediaFormatLayout.show(it)
             },
@@ -238,6 +284,15 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             },
             viewModel.showNotesVisibility.subscribe {
                 binding.customiseShowNotesLayout.show(it)
+            },
+            viewModel.removeImageVisibility.subscribe {
+                binding.customiseRemoveImageText.show(it)
+            },
+            viewModel.imageVisibility.subscribe {
+                binding.customiseSelectedImage.show(it)
+            },
+            viewModel.noImageVisibility.subscribe {
+                binding.customiseNoImageText.show(it)
             },
             viewModel.listTypes.subscribe {
                 dialog.showListDialog(it) { data, _ ->
@@ -315,7 +370,8 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
         dialog.show(childFragmentManager, null)
     }
 
-    @ColorInt private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
+    @ColorInt
+    private fun getColorFromHex(hexColor: String?, @ColorInt defaultColor: Int): Int {
         return if (hexColor != null)
             Color.parseColor(hexColor)
         else

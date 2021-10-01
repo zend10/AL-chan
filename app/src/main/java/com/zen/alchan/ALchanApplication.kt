@@ -3,10 +3,7 @@ package com.zen.alchan
 import android.app.Application
 import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
-import com.zen.alchan.data.localstorage.DefaultJsonStorageHandler
-import com.zen.alchan.data.localstorage.DefaultSharedPreferencesHandler
-import com.zen.alchan.data.localstorage.JsonStorageHandler
-import com.zen.alchan.data.localstorage.SharedPreferencesHandler
+import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.manager.ContentManager
 import com.zen.alchan.data.manager.DefaultContentManager
 import com.zen.alchan.data.manager.UserManager
@@ -73,8 +70,12 @@ class ALchanApplication : Application() {
             )
         }
 
+        single<FileStorageHandler> {
+            DefaultFileStorageHandler(this@ALchanApplication)
+        }
+
         // local storage manager
-        single<UserManager> { DefaultUserManager(get(), get()) }
+        single<UserManager> { DefaultUserManager(get(), get(), get()) }
         single<ContentManager> { DefaultContentManager(get()) }
 
         // network

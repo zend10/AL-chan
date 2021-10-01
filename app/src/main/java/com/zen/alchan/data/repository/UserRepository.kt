@@ -1,5 +1,6 @@
 package com.zen.alchan.data.repository
 
+import android.net.Uri
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.response.ProfileData
@@ -10,11 +11,13 @@ import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.helper.pojo.NullableItem
 import io.reactivex.Observable
 import type.ScoreFormat
 import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
+import java.io.File
 
 interface UserRepository {
 
@@ -34,6 +37,8 @@ interface UserRepository {
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)
+    fun getListBackground(mediaType: MediaType): Observable<NullableItem<Uri>>
+    fun setListBackground(mediaType: MediaType, newUri: Uri?): Observable<Unit>
 
     fun getMediaFilter(mediaType: MediaType): Observable<MediaFilter>
     fun setMediaFilter(mediaType: MediaType, newMediaFilter: MediaFilter)

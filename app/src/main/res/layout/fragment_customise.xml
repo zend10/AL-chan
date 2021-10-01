@@ -606,8 +606,8 @@
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/customiseAddImageText"
-                        android:text="@string/add_image"
+                        android:id="@+id/customiseSelectImageText"
+                        android:text="@string/select_image"
                         style="?themeRegularClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
@@ -626,6 +626,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/customiseSelectedImage"
+                        android:layout_marginTop="@dimen/marginNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

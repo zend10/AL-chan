@@ -1,5 +1,6 @@
 package com.zen.alchan.data.manager
 
+import android.net.Uri
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.localstorage.JsonStorageHandler
@@ -7,11 +8,16 @@ import com.zen.alchan.data.localstorage.SharedPreferencesHandler
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.localstorage.FileStorageHandler
+import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
+import io.reactivex.Observable
+import java.io.File
 
 class DefaultUserManager(
     private val sharedPreferencesManager: SharedPreferencesHandler,
-    private val jsonStorageHandler: JsonStorageHandler
+    private val jsonStorageHandler: JsonStorageHandler,
+    private val fileStorageHandler: FileStorageHandler
 ) : UserManager {
 
     override var bearerToken: String?
@@ -44,6 +50,20 @@ class DefaultUserManager(
     override var appSetting: AppSetting
         get() = sharedPreferencesManager.appSetting ?: AppSetting()
         set(value) { sharedPreferencesManager.appSetting = value }
+
+    override val animeListBackground: Observable<NullableItem<Uri>>
+        get() = fileStorageHandler.animeListBackground
+
+    override val mangaListBackground: Observable<NullableItem<Uri>>
+        get() = fileStorageHandler.mangaListBackground
+
+    override fun saveAnimeListBackground(uri: Uri?): Observable<Unit> {
+        return fileStorageHandler.saveAnimeListBackground(uri)
+    }
+
+    override fun saveMangaListBackground(uri: Uri?): Observable<Unit> {
+        return fileStorageHandler.saveMangaListBackground(uri)
+    }
 
     override var viewerData: SaveItem<User>?
         get() = jsonStorageHandler.viewerData

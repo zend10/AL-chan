@@ -2,10 +2,12 @@ package com.zen.alchan.helper.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.net.Uri
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.zen.alchan.R
 
 object ImageUtil {
@@ -20,6 +22,14 @@ object ImageUtil {
     fun loadImage(context: Context, resourceId: Int, imageView: AppCompatImageView) {
         Glide.with(context)
             .load(resourceId)
+            .centerCrop()
+            .into(imageView)
+    }
+
+    fun loadImage(context: Context, uri: Uri, imageView: AppCompatImageView) {
+        Glide.with(context)
+            .load(uri)
+            .signature(ObjectKey(TimeUtil.getCurrentTimeInMillis()))
             .centerCrop()
             .into(imageView)
     }

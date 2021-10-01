@@ -3,6 +3,7 @@ package com.zen.alchan.ui.base
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -130,6 +131,13 @@ class DefaultNavigationManager(
     override fun openEmailClient() {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", Constant.ALCHAN_EMAIL_ADDRESS, null))
         context.startActivity(intent)
+    }
+
+    override fun openGallery(launcher: ActivityResultLauncher<Intent>) {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        launcher.launch(intent)
     }
 
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false) {

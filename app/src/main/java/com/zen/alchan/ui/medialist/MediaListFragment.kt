@@ -3,6 +3,7 @@ package com.zen.alchan.ui.medialist
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -26,6 +27,7 @@ import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.customise.SharedCustomiseViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
@@ -125,7 +127,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 binding.defaultToolbar.defaultToolbar.subtitle = it
             },
             viewModel.mediaListAdapterComponent.subscribe {
-                modifyLayoutStyle(it.listStyle, it.appSetting, it.mediaListOptions)
+                modifyLayoutStyle(it.listStyle, it.appSetting, it.mediaListOptions, it.backgroundUri)
             },
             viewModel.mediaListItems.subscribe {
                 adapter?.updateData(it)
@@ -168,7 +170,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         viewModel.loadData()
     }
 
-    private fun modifyLayoutStyle(listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions) {
+    private fun modifyLayoutStyle(listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions, backgroundUri: Uri?) {
         binding.apply {
             assignAdapter(listStyle, appSetting, mediaListOptions)
 
@@ -200,6 +202,14 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
             val floatingIconColor = listStyle.getFloatingIconColor(requireContext())
             mediaListSwitchListButton.imageTintList = ColorStateList.valueOf(floatingIconColor)
+
+            if (backgroundUri != null) {
+                ImageUtil.loadImage(requireContext(), backgroundUri, binding.mediaListBackgroundImage)
+                binding.mediaListBackgroundImage.show(true)
+            } else {
+                ImageUtil.loadImage(requireContext(), 0, binding.mediaListBackgroundImage)
+                binding.mediaListBackgroundImage.show(false)
+            }
         }
     }
 

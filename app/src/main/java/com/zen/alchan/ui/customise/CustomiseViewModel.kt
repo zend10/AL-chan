@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.customise
 
+import android.net.Uri
 import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppTheme
@@ -96,6 +97,10 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     val floatingIconColor: Observable<NullableItem<String?>>
         get() = _floatingIconColor
 
+    private val _selectedImage = BehaviorSubject.createDefault(NullableItem<Uri?>())
+    val selectedImage: Observable<NullableItem<Uri?>>
+        get() = _selectedImage
+
     private val _hideMediaFormatVisibility = BehaviorSubject.createDefault(false)
     val hideMediaFormatVisibility: Observable<Boolean>
         get() = _hideMediaFormatVisibility
@@ -111,6 +116,18 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     private val _showNotesVisibility = BehaviorSubject.createDefault(false)
     val showNotesVisibility: Observable<Boolean>
         get() = _showNotesVisibility
+
+    private val _removeImageVisibility = BehaviorSubject.createDefault(false)
+    val removeImageVisibility: Observable<Boolean>
+        get() = _removeImageVisibility
+
+    private val _imageVisibility = BehaviorSubject.createDefault(false)
+    val imageVisibility: Observable<Boolean>
+        get() = _imageVisibility
+
+    private val _noImageTextVisibility = BehaviorSubject.createDefault(false)
+    val noImageVisibility: Observable<Boolean>
+        get() = _noImageTextVisibility
 
     private val _listTypes = PublishSubject.create<List<ListItem<ListType>>>()
     val listTypes: Observable<List<ListItem<ListType>>>
@@ -153,6 +170,8 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     private var appTheme = AppTheme.DEFAULT_THEME_YELLOW
     private var currentListStyle = ListStyle()
 
+    private var isBackgroundImageChanged = false
+
     override fun loadData() {
         loadOnce {
             disposables.add(
@@ -160,8 +179,11 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
                     .zipWith(userRepository.getListStyle(mediaType)) { appSetting, listStyle ->
                         return@zipWith appSetting to listStyle
                     }
+                    .zipWith(userRepository.getListBackground(mediaType)) { appSettingAndListStyle, backgroundUri ->
+                        return@zipWith Triple(appSettingAndListStyle.first, appSettingAndListStyle.second, backgroundUri)
+                    }
                     .applyScheduler()
-                    .subscribe { (appSetting, listStyle) ->
+                    .subscribe { (appSetting, listStyle, backgroundUri) ->
                         appTheme = appSetting.appTheme
                         currentListStyle = listStyle
 
@@ -188,6 +210,8 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
                             updateBackgroundColor(backgroundColor)
                             updateFloatingButtonColor(floatingButtonColor)
                             updateFloatingIconColor(floatingIconColor)
+
+                            updateSelectedImage(backgroundUri.data)
                         }
                     }
             )
@@ -196,7 +220,18 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
 
     fun saveCurrentListStyle() {
         userRepository.setListStyle(mediaType, currentListStyle)
-        _listStyle.onNext(currentListStyle)
+
+        if (isBackgroundImageChanged) {
+            disposables.add(
+                userRepository.setListBackground(mediaType, _selectedImage.value?.data)
+                    .applyScheduler()
+                    .subscribe {
+                        _listStyle.onNext(currentListStyle)
+                    }
+            )
+        } else {
+            _listStyle.onNext(currentListStyle)
+        }
     }
 
     fun resetCurrentListStyle() {
@@ -301,6 +336,15 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     fun updateFloatingIconColor(newFloatingIconColor: String?) {
         currentListStyle.floatingIconColor = newFloatingIconColor
         _floatingIconColor.onNext(NullableItem(newFloatingIconColor))
+    }
+
+    fun updateSelectedImage(newImageUri: Uri?, isChanged: Boolean = false) {
+        currentListStyle.useBackgroundImage = newImageUri != null
+        _selectedImage.onNext(NullableItem(newImageUri))
+        _removeImageVisibility.onNext(currentListStyle.useBackgroundImage)
+        _imageVisibility.onNext(currentListStyle.useBackgroundImage)
+        _noImageTextVisibility.onNext(!currentListStyle.useBackgroundImage)
+        isBackgroundImageChanged = isChanged
     }
 
     fun loadListTypes() {

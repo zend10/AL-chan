@@ -39,7 +39,7 @@ abstract class BaseJsonStorageHandler(
             outputStream = FileOutputStream(targetFile, false)
             outputStream.write(value.toByteArray())
         } catch (e: Exception) {
-
+            e.printStackTrace()
         } finally {
             outputStream?.flush()
             outputStream?.close()

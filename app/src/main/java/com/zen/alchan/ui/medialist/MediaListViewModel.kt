@@ -103,14 +103,22 @@ class MediaListViewModel(
                             return@zip user
                         }
                     }
-                    .subscribe { user ->
+                    .zipWith(userRepository.getListBackground(mediaType)) { user, backgroundUri ->
+                        return@zipWith user to backgroundUri
+                    }
+                    .subscribe { (user, backgroundUri) ->
                         if (userId == 0)
                             userId = user.id
 
                         this.user = user
 
                         _mediaListAdapterComponent.onNext(
-                            MediaListAdapterComponent(listStyle, appSetting, user.mediaListOptions)
+                            MediaListAdapterComponent(
+                                listStyle,
+                                appSetting,
+                                user.mediaListOptions,
+                                backgroundUri.data
+                            )
                         )
 
                         getMediaListCollection(state == State.LOADED || state == State.ERROR)
@@ -130,13 +138,24 @@ class MediaListViewModel(
     fun updateListStyle(newListStyle: ListStyle) {
         listStyle = newListStyle
 
-        _mediaListAdapterComponent.onNext(
-            MediaListAdapterComponent(listStyle, appSetting, user.mediaListOptions)
-        )
+        disposables.add(
+            userRepository.getListBackground(mediaType)
+                .applyScheduler()
+                .subscribe { uri ->
+                    _mediaListAdapterComponent.onNext(
+                        MediaListAdapterComponent(
+                            listStyle,
+                            appSetting,
+                            user.mediaListOptions,
+                            uri.data
+                        )
+                    )
 
-        _mediaListItems.value?.let {
-            _mediaListItems.onNext(it)
-        }
+                    _mediaListItems.value?.let {
+                        _mediaListItems.onNext(it)
+                    }
+                }
+        )
     }
 
     fun loadMediaFilter() {

@@ -25,7 +25,8 @@ data class ListStyle(
     var toolbarColor: String? = null,
     var backgroundColor: String? = null,
     var floatingButtonColor: String? = null,
-    var floatingIconColor: String? = null
+    var floatingIconColor: String? = null,
+    var useBackgroundImage: Boolean = false
 ) {
     @ColorInt
     fun getPrimaryColor(context: Context): Int {

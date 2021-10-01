@@ -1,5 +1,6 @@
 package com.zen.alchan.data.repository
 
+import android.net.Uri
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.entitiy.AppSetting
@@ -14,6 +15,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
@@ -22,19 +24,12 @@ import type.ScoreFormat
 import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
+import java.io.File
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
     private val userManager: UserManager
 ) : UserRepository {
-
-    private val _animeListStyle = BehaviorSubject.createDefault(userManager.animeListStyle)
-    private val animeListStyle: Observable<ListStyle>
-        get() = _animeListStyle
-
-    private val _mangaListStyle = BehaviorSubject.createDefault(userManager.mangaListStyle)
-    private val mangaListStyle: Observable<ListStyle>
-        get() = _mangaListStyle
 
     override fun getIsLoggedInAsGuest(): Observable<Boolean> {
         return Observable.just(userManager.isLoggedInAsGuest)
@@ -157,14 +152,34 @@ class DefaultUserRepository(
 
     override fun setListStyle(mediaType: MediaType, newListStyle: ListStyle) {
         when (mediaType) {
+            MediaType.ANIME -> userManager.animeListStyle = newListStyle
+            MediaType.MANGA -> userManager.mangaListStyle = newListStyle
+        }
+    }
+
+    override fun getListBackground(mediaType: MediaType): Observable<NullableItem<Uri>> {
+        return when (mediaType) {
             MediaType.ANIME -> {
-                userManager.animeListStyle = newListStyle
-                _animeListStyle.onNext(newListStyle)
+                if (userManager.animeListStyle.useBackgroundImage) {
+                    userManager.animeListBackground
+                } else {
+                    Observable.just(NullableItem(null))
+                }
             }
             MediaType.MANGA -> {
-                userManager.mangaListStyle = newListStyle
-                _mangaListStyle.onNext(newListStyle)
+                if (userManager.mangaListStyle.useBackgroundImage) {
+                    userManager.mangaListBackground
+                } else {
+                    Observable.just(NullableItem(null))
+                }
             }
+        }
+    }
+
+    override fun setListBackground(mediaType: MediaType, newUri: Uri?): Observable<Unit> {
+        return when (mediaType) {
+            MediaType.ANIME -> userManager.saveAnimeListBackground(newUri)
+            MediaType.MANGA -> userManager.saveMangaListBackground(newUri)
         }
     }
 

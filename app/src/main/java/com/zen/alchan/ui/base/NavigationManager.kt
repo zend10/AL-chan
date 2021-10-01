@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.base
 
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import com.zen.alchan.helper.enums.MediaType
 
 
@@ -28,6 +30,7 @@ interface NavigationManager {
     fun openWebView(url: String)
     fun openWebView(url: Url)
     fun openEmailClient()
+    fun openGallery(launcher: ActivityResultLauncher<Intent>)
 
     enum class Url {
         ANILIST_WEBSITE,
