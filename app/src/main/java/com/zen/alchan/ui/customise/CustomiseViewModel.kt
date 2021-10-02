@@ -117,6 +117,38 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     val showNotesVisibility: Observable<Boolean>
         get() = _showNotesVisibility
 
+    private val _resetPrimaryColorVisibility = BehaviorSubject.createDefault(false)
+    val resetPrimaryColorVisibility: Observable<Boolean>
+        get() = _resetPrimaryColorVisibility
+
+    private val _resetSecondaryColorVisibility = BehaviorSubject.createDefault(false)
+    val resetSecondaryColorVisibility: Observable<Boolean>
+        get() = _resetSecondaryColorVisibility
+
+    private val _resetTextColorVisibility = BehaviorSubject.createDefault(false)
+    val resetTextColorVisibility: Observable<Boolean>
+        get() = _resetTextColorVisibility
+
+    private val _resetCardColorVisibility = BehaviorSubject.createDefault(false)
+    val resetCardColorVisibility: Observable<Boolean>
+        get() = _resetCardColorVisibility
+
+    private val _resetToolbarColorVisibility = BehaviorSubject.createDefault(false)
+    val resetToolbarColorVisibility: Observable<Boolean>
+        get() = _resetToolbarColorVisibility
+
+    private val _resetBackgroundColorVisibility = BehaviorSubject.createDefault(false)
+    val resetBackgroundColorVisibility: Observable<Boolean>
+        get() = _resetBackgroundColorVisibility
+
+    private val _resetFloatingButtonColorVisibility = BehaviorSubject.createDefault(false)
+    val resetFloatingButtonColorVisibility: Observable<Boolean>
+        get() = _resetFloatingButtonColorVisibility
+
+    private val _resetFloatingIconColorVisibility = BehaviorSubject.createDefault(false)
+    val resetFloatingIconColorVisibility: Observable<Boolean>
+        get() = _resetFloatingIconColorVisibility
+
     private val _removeImageVisibility = BehaviorSubject.createDefault(false)
     val removeImageVisibility: Observable<Boolean>
         get() = _removeImageVisibility
@@ -301,41 +333,49 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     fun updatePrimaryColor(newPrimaryColor: String?) {
         currentListStyle.primaryColor = newPrimaryColor
         _primaryColor.onNext(NullableItem(newPrimaryColor))
+        _resetPrimaryColorVisibility.onNext(newPrimaryColor != null)
     }
 
     fun updateSecondaryColor(newSecondaryColor: String?) {
         currentListStyle.secondaryColor = newSecondaryColor
         _secondaryColor.onNext(NullableItem(newSecondaryColor))
+        _resetSecondaryColorVisibility.onNext(newSecondaryColor != null)
     }
 
     fun updateTextColor(newTextColor: String?) {
         currentListStyle.textColor = newTextColor
         _textColor.onNext(NullableItem(newTextColor))
+        _resetTextColorVisibility.onNext(newTextColor != null)
     }
 
     fun updateCardColor(newCardColor: String?) {
         currentListStyle.cardColor = newCardColor
         _cardColor.onNext(NullableItem(newCardColor))
+        _resetCardColorVisibility.onNext(newCardColor != null)
     }
 
     fun updateToolbarColor(newToolbarColor: String?) {
         currentListStyle.toolbarColor = newToolbarColor
         _toolbarColor.onNext(NullableItem(newToolbarColor))
+        _resetToolbarColorVisibility.onNext(newToolbarColor != null)
     }
 
     fun updateBackgroundColor(newBackgroundColor: String?) {
         currentListStyle.backgroundColor = newBackgroundColor
         _backgroundColor.onNext(NullableItem(newBackgroundColor))
+        _resetBackgroundColorVisibility.onNext(newBackgroundColor != null)
     }
 
     fun updateFloatingButtonColor(newFloatingButtonColor: String?) {
         currentListStyle.floatingButtonColor = newFloatingButtonColor
         _floatingButtonColor.onNext(NullableItem(newFloatingButtonColor))
+        _resetFloatingButtonColorVisibility.onNext(newFloatingButtonColor != null)
     }
 
     fun updateFloatingIconColor(newFloatingIconColor: String?) {
         currentListStyle.floatingIconColor = newFloatingIconColor
         _floatingIconColor.onNext(NullableItem(newFloatingIconColor))
+        _resetFloatingIconColorVisibility.onNext(newFloatingIconColor != null)
     }
 
     fun updateSelectedImage(newImageUri: Uri?, isChanged: Boolean = false) {

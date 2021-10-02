@@ -2,20 +2,14 @@ package com.zen.alchan.ui.customise
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import com.stfalcon.imageviewer.loader.ImageLoader
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentCustomiseBinding
 import com.zen.alchan.helper.enums.MediaType
@@ -140,6 +134,38 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
 
             customiseFloatingIconColorIcon.clicks {
                 viewModel.loadFloatingIconColor()
+            }
+
+            customisePrimaryColorResetIcon.clicks {
+                viewModel.updatePrimaryColor(null)
+            }
+
+            customiseSecondaryColorResetIcon.clicks {
+                viewModel.updateSecondaryColor(null)
+            }
+
+            customiseTextColorResetIcon.clicks {
+                viewModel.updateTextColor(null)
+            }
+
+            customiseCardColorResetIcon.clicks {
+                viewModel.updateCardColor(null)
+            }
+
+            customiseToolbarColorResetIcon.clicks {
+                viewModel.updateToolbarColor(null)
+            }
+
+            customiseBackgroundColorResetIcon.clicks {
+                viewModel.updateBackgroundColor(null)
+            }
+
+            customiseFloatingButtonColorResetIcon.clicks {
+                viewModel.updateFloatingButtonColor(null)
+            }
+
+            customiseFloatingIconColorResetIcon.clicks {
+                viewModel.updateFloatingIconColor(null)
             }
 
             customiseSelectImageText.clicks {
@@ -284,6 +310,33 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             },
             viewModel.showNotesVisibility.subscribe {
                 binding.customiseShowNotesLayout.show(it)
+            },
+            viewModel.resetPrimaryColorVisibility.subscribe {
+                binding.customisePrimaryColorResetIcon.show(it)
+            },
+            viewModel.resetPrimaryColorVisibility.subscribe {
+                binding.customisePrimaryColorResetIcon.show(it)
+            },
+            viewModel.resetSecondaryColorVisibility.subscribe {
+                binding.customiseSecondaryColorResetIcon.show(it)
+            },
+            viewModel.resetTextColorVisibility.subscribe {
+                binding.customiseTextColorResetIcon.show(it)
+            },
+            viewModel.resetCardColorVisibility.subscribe {
+                binding.customiseCardColorResetIcon.show(it)
+            },
+            viewModel.resetToolbarColorVisibility.subscribe {
+                binding.customiseToolbarColorResetIcon.show(it)
+            },
+            viewModel.resetBackgroundColorVisibility.subscribe {
+                binding.customiseBackgroundColorResetIcon.show(it)
+            },
+            viewModel.resetFloatingButtonColorVisibility.subscribe {
+                binding.customiseFloatingButtonColorResetIcon.show(it)
+            },
+            viewModel.resetFloatingIconColorVisibility.subscribe {
+                binding.customiseFloatingIconColorResetIcon.show(it)
             },
             viewModel.removeImageVisibility.subscribe {
                 binding.customiseRemoveImageText.show(it)

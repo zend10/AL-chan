@@ -356,8 +356,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -365,7 +366,20 @@
                             android:id="@+id/customisePrimaryColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customisePrimaryColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -385,8 +399,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -394,7 +409,20 @@
                             android:id="@+id/customiseSecondaryColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseSecondaryColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -414,8 +442,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -423,7 +452,20 @@
                             android:id="@+id/customiseTextColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseTextColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -443,8 +485,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -452,7 +495,20 @@
                             android:id="@+id/customiseCardColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseCardColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -472,8 +528,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -481,7 +538,20 @@
                             android:id="@+id/customiseToolbarColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseToolbarColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -501,8 +571,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -510,7 +581,20 @@
                             android:id="@+id/customiseBackgroundColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseBackgroundColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -530,8 +614,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -539,7 +624,20 @@
                             android:id="@+id/customiseFloatingButtonColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseFloatingButtonColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -559,8 +657,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
 
@@ -568,7 +667,20 @@
                             android:id="@+id/customiseFloatingIconColorIcon"
                             style="@style/ColorCircleCard"/>
 
-                    </FrameLayout>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/customiseFloatingIconColorResetIcon"
+                            android:text="@string/reset"
+                            style="?themeSmallNegativeFont"
+                            app:drawableStartCompat="@drawable/ic_reset_small"
+                            app:drawableTint="?themeNegativeColor"
+                            android:drawablePadding="@dimen/marginClose"
+                            android:layout_marginStart="@dimen/marginNormal"
+                            android:foreground="?selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
