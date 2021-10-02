@@ -247,7 +247,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             override fun navigateToListEditor(mediaList: MediaList) {
-
+                navigation.navigateToEditor(viewModel.mediaType, mediaList.media.idAniList)
             }
 
             override fun showQuickDetail(mediaList: MediaList) {

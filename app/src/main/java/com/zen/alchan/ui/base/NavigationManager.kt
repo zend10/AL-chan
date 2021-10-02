@@ -27,6 +27,8 @@ interface NavigationManager {
     fun navigateToFilter(mediaType: MediaType, isUserList: Boolean)
     fun navigateToCustomise(mediaType: MediaType)
 
+    fun navigateToEditor(mediaType: MediaType, mediaId: Int)
+
     fun openWebView(url: String)
     fun openWebView(url: Url)
     fun openEmailClient()

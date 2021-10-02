@@ -18,6 +18,7 @@ import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.bio.BioViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.customise.SharedCustomiseViewModel
+import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
 import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
@@ -127,6 +128,8 @@ class ALchanApplication : Application() {
         viewModel { SharedFilterViewModel() }
         viewModel { CustomiseViewModel(get()) }
         viewModel { SharedCustomiseViewModel() }
+
+        viewModel { EditorViewModel() }
     }
 
     override fun onCreate() {

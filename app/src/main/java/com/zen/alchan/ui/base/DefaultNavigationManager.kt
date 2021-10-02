@@ -14,6 +14,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.browse.BrowseFragment
 import com.zen.alchan.ui.customise.CustomiseFragment
+import com.zen.alchan.ui.editor.EditorFragment
 import com.zen.alchan.ui.filter.FilterFragment
 import com.zen.alchan.ui.landing.LandingFragment
 import com.zen.alchan.ui.login.LoginFragment
@@ -100,6 +101,10 @@ class DefaultNavigationManager(
 
     override fun navigateToCustomise(mediaType: MediaType) {
         stackPage(CustomiseFragment.newInstance(mediaType))
+    }
+
+    override fun navigateToEditor(mediaType: MediaType, mediaId: Int) {
+        stackPage(EditorFragment.newInstance(mediaType, mediaId))
     }
 
     override fun openWebView(url: String) {

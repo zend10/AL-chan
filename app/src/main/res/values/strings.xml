@@ -290,6 +290,23 @@
     <string name="storage_permission_is_required_to_pick_and_save_image">Storage permission is required to pick and save image.</string>
     <string name="stop_using_this_image_for_your_list">Stop using this image for your list?</string>
     <string name="remove">Remove</string>
+    <string name="general">General</string>
+    <string name="episode">Episode</string>
+    <string name="volume">Volume</string>
+    <string name="finish_date">Finish Date</string>
+    <string name="total_rewatches">Total Rewatches</string>
+    <string name="notes">Notes</string>
+    <string name="custom_lists">Custom Lists</string>
+    <string name="hide_from_status_lists">Hide from status lists</string>
+    <string name="private_">Private</string>
+    <string name="remove_from_list">Remove from list</string>
+    <string name="list_editor">List Editor</string>
+    <string name="no_priority">No Priority</string>
+    <string name="very_low">Very Low</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+    <string name="very_high">Very High</string>
 
 
     <plurals name="minute">
