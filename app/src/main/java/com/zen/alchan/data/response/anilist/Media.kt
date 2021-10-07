@@ -42,7 +42,8 @@ data class Media(
     val isFavourite: Boolean = false,
     val isAdult: Boolean = false,
     val nextAiringEpisode: AiringSchedule? = null,
-    val externalLinks: List<MediaExternalLink> = listOf()
+    val externalLinks: List<MediaExternalLink> = listOf(),
+    val mediaListEntry: MediaList? = null
 ) {
     fun getFormattedMediaFormat(toUpper: Boolean = false): String {
         return format?.name?.convertFromSnakeCase(toUpper) ?: ""

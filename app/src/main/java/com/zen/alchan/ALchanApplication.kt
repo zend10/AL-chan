@@ -129,7 +129,7 @@ class ALchanApplication : Application() {
         viewModel { CustomiseViewModel(get()) }
         viewModel { SharedCustomiseViewModel() }
 
-        viewModel { EditorViewModel() }
+        viewModel { EditorViewModel(get(), get()) }
     }
 
     override fun onCreate() {

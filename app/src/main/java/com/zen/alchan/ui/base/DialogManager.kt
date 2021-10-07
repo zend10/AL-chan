@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.base
 
 import com.zen.alchan.data.response.anilist.MediaTag
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
@@ -29,4 +30,6 @@ interface DialogManager {
     fun <T> showMultiSelectDialog(list: List<ListItem<T>>, selectedIndex: ArrayList<Int>, action: (data: List<T>) -> Unit)
 
     fun showTagDialog(list: List<ListItem<MediaTag?>>, selectedIndex: ArrayList<Int>, action: (data: List<MediaTag>) -> Unit)
+
+    fun showProgressDialog(mediaType: MediaType, currentProgress: Int, maxProgress: Int?, isProgressVolume: Boolean, action: (newProgress: Int) -> Unit)
 }

@@ -39,7 +39,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.list_editor))
 
             editorMediaTitle.clicks {
-
+                goBack()
             }
 
             editorFavoriteIcon.setOnClickListener {
@@ -47,7 +47,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorStatusText.clicks {
-
+                viewModel.loadMediaListStatuses()
             }
 
             editorScoreText.clicks {
@@ -55,11 +55,11 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorProgressText.clicks {
-
+                viewModel.loadProgresses(false)
             }
 
             editorProgressVolumeText.clicks {
-
+                viewModel.loadProgresses(true)
             }
 
             editorStartDateText.clicks {
@@ -71,11 +71,11 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorTotalRewatchesText.clicks {
-
+                viewModel.loadRewatchesTextInputSetting()
             }
 
             editorTotalNotesText.clicks {
-
+                viewModel.loadNotesTextInputSetting()
             }
 
             editorPriorityText.clicks {
@@ -91,14 +91,14 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorSaveLayout.positiveButton.text = getString(R.string.save)
-//            editorSaveLayout.positiveButton.clicks {
-//
-//            }
+            editorSaveLayout.positiveButton.clicks {
+
+            }
 
             editorSaveLayout.negativeButton.text = getString(R.string.remove_from_list)
-//            editorSaveLayout.negativeButton.clicks {
-//
-//            }
+            editorSaveLayout.negativeButton.clicks {
+
+            }
         }
     }
 
@@ -112,6 +112,15 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.loading.subscribe {
+                binding.loadingLayout.loadingLayout.show(it)
+            },
+            viewModel.error.subscribe {
+                dialog.showToast(it)
+            },
+            viewModel.title.subscribe {
+                binding.editorMediaTitle.text = it
+            },
             viewModel.isFavorite.subscribe {
                 binding.editorFavoriteIcon.imageTintList = if (it)
                     ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.brightRed))
@@ -119,7 +128,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
                     ColorStateList.valueOf(requireContext().getAttrValue(R.attr.themeContentColor))
             },
             viewModel.status.subscribe {
-                binding.editorStatusText.text = it.name
+                binding.editorStatusText.text = it.getString(viewModel.mediaType)
             },
             viewModel.score.subscribe {
                 binding.editorScoreText.text = it.toString()
@@ -156,6 +165,29 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             },
             viewModel.isPrivate.subscribe {
                 binding.editorPrivateCheckBox.isChecked = it
+            },
+            viewModel.mediaListStatuses.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    binding.editorStatusText.text = data.getString(viewModel.mediaType)
+                }
+            },
+            viewModel.progresses.subscribe { (progress, maxProgress, isProgressVolume) ->
+                dialog.showProgressDialog(viewModel.mediaType, progress, maxProgress, isProgressVolume) { newProgress ->
+                    if (isProgressVolume)
+                        viewModel.updateProgressVolume(newProgress)
+                    else
+                        viewModel.updateProgress(newProgress)
+                }
+            },
+            viewModel.rewatchesTextInputSetting.subscribe {
+                dialog.showTextInputDialog(it.first.toString(), it.second) { newText ->
+                    viewModel.updateTotalRewatches(newText.toIntOrNull() ?: 0)
+                }
+            },
+            viewModel.notesTextInputSetting.subscribe {
+                dialog.showTextInputDialog(it.first, it.second) { newText ->
+                    viewModel.updateNotes(newText)
+                }
             },
             viewModel.prioritySliderItem.subscribe {
                 dialog.showSliderDialog(it, true) { minValue, _ ->

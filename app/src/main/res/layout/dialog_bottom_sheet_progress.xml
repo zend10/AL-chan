@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/dragIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="?themeDividerColor"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_width="@dimen/marginFar"
+            android:layout_height="@dimen/marginClose"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/progressLayout"
+            app:layout_constraintTop_toBottomOf="@+id/dragIcon"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_marginHorizontal="@dimen/marginPageBig"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/progressCurrentProgressText"
+                style="?themeBigFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_right_arrow"
+                app:tint="?themeContentColor"
+                android:layout_marginHorizontal="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/progressNextProgressEditText"
+                style="?themeBigFont"
+                android:maxLines="1"
+                android:digits="0123456789"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/progressMaxProgressText"
+                android:text="/ ?"
+                style="?themeBigFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            app:layout_constraintTop_toBottomOf="@id/progressLayout"
+            android:layout_marginTop="@dimen/marginPageNormal"
+            android:layout_marginHorizontal="@dimen/marginPageBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/progressIncrementButton"
+                android:text="@string/plus_one_ep"
+                style="?themePrimaryBorderButton"
+                android:layout_marginEnd="@dimen/marginNormal"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/progressSetButton"
+                android:text="@string/set"
+                style="?themePrimaryButton"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

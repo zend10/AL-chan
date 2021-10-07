@@ -1,6 +1,7 @@
 package com.zen.alchan.data.datasource
 
 import MediaListCollectionQuery
+import MediaWithMediaListQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxQuery
@@ -23,6 +24,17 @@ class DefaultMediaListDataSource(
             Input.fromNullable(mediaType),
             Input.fromNullable(statusVersion),
             Input.fromNullable(sourceVersion)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getMediaWithMediaListQuery(
+        mediaId: Int,
+        mediaType: MediaType
+    ): Observable<Response<MediaWithMediaListQuery.Data>> {
+        val query = MediaWithMediaListQuery(
+            Input.fromNullable(mediaId),
+            Input.fromNullable(mediaType)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

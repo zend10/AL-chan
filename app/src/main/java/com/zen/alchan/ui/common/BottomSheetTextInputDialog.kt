@@ -16,7 +16,7 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
 
     private var listener: BottomSheetTextInputListener? = null
     private var currentText = ""
-    private var textInputSetting = TextInputSetting.DEFAULT_TEXT_INPUT_SETTING
+    private var textInputSetting = TextInputSetting()
 
     private var inputMethodManager: InputMethodManager? = null
 

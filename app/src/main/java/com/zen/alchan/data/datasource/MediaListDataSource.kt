@@ -6,4 +6,5 @@ import type.MediaType
 
 interface MediaListDataSource {
     fun getMediaListCollectionQuery(userId: Int, mediaType: MediaType): Observable<Response<MediaListCollectionQuery.Data>>
+    fun getMediaWithMediaListQuery(mediaId: Int, mediaType: MediaType): Observable<Response<MediaWithMediaListQuery.Data>>
 }

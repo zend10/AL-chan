@@ -1,0 +1,44 @@
+query MediaWithMediaListQuery($id:Int, $type:MediaType) {
+    Media(id:$id, type:$type) {
+        id
+        idMal
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        episodes
+        chapters
+        volumes
+        isFavourite
+        mediaListEntry {
+            id
+            userId
+            mediaId
+            status
+            score
+            progress
+            progressVolumes
+            repeat
+            priority
+            private
+            notes
+            hiddenFromStatusLists
+            customLists
+            advancedScores
+            startedAt {
+                year
+                month
+                day
+            }
+            completedAt {
+                year
+                month
+                day
+            }
+            updatedAt
+            createdAt
+        }
+    }
+}

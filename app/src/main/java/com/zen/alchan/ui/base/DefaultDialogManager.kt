@@ -5,12 +5,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.zen.alchan.data.response.anilist.MediaTag
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.common.*
 import com.zen.alchan.ui.common.BottomSheetTagDialog
 import com.zen.alchan.ui.common.TagRvAdapter
+import com.zen.alchan.ui.editor.BottomSheetProgressDialog
 
 class DefaultDialogManager(private val context: Context) : DialogManager {
 
@@ -18,6 +20,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetTextInputDialog: BottomSheetTextInputDialog? = null
     private var bottomSheetSliderDialog: BottomSheetSliderDialog? = null
     private var bottomSheetTagDialog: BottomSheetTagDialog? = null
+    private var bottomSheetProgressDialog: BottomSheetProgressDialog? = null
 
     override fun showToast(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -166,6 +169,26 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         }
         (context as? AppCompatActivity)?.supportFragmentManager?.let {
             bottomSheetTagDialog?.show(it, null)
+        }
+    }
+
+    override fun showProgressDialog(
+        mediaType: MediaType,
+        currentProgress: Int,
+        maxProgress: Int?,
+        isProgressVolume: Boolean,
+        action: (newProgress: Int) -> Unit
+    ) {
+        bottomSheetProgressDialog = BottomSheetProgressDialog.newInstance(mediaType, currentProgress, maxProgress, isProgressVolume, object : BottomSheetProgressDialog.BottomSheetProgressListener {
+            override fun getNewProgress(newProgress: Int) {
+                action(newProgress)
+            }
+        })
+        bottomSheetProgressDialog?.dialog?.setOnCancelListener {
+            bottomSheetProgressDialog = null
+        }
+        (context as? AppCompatActivity)?.supportFragmentManager?.let {
+            bottomSheetProgressDialog?.show(it, null)
         }
     }
 }

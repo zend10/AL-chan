@@ -7,8 +7,4 @@ data class TextInputSetting(
     val inputType: Int = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES,
     val singleLine: Boolean = true,
     val characterLimit: Int = 30
-) {
-    companion object {
-        val DEFAULT_TEXT_INPUT_SETTING = TextInputSetting()
-    }
-}
+)
