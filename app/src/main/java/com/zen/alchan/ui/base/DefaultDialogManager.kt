@@ -13,6 +13,8 @@ import com.zen.alchan.ui.common.*
 import com.zen.alchan.ui.common.BottomSheetTagDialog
 import com.zen.alchan.ui.common.TagRvAdapter
 import com.zen.alchan.ui.editor.BottomSheetProgressDialog
+import com.zen.alchan.ui.editor.BottomSheetScoreDialog
+import type.ScoreFormat
 
 class DefaultDialogManager(private val context: Context) : DialogManager {
 
@@ -21,6 +23,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetSliderDialog: BottomSheetSliderDialog? = null
     private var bottomSheetTagDialog: BottomSheetTagDialog? = null
     private var bottomSheetProgressDialog: BottomSheetProgressDialog? = null
+    private var bottomSheetScoreDialog: BottomSheetScoreDialog? = null
 
     override fun showToast(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -189,6 +192,25 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         }
         (context as? AppCompatActivity)?.supportFragmentManager?.let {
             bottomSheetProgressDialog?.show(it, null)
+        }
+    }
+
+    override fun showScoreDialog(
+        scoreFormat: ScoreFormat,
+        currentScore: Double,
+        advancedScores: LinkedHashMap<String, Double>?,
+        action: (newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) -> Unit
+    ) {
+        bottomSheetScoreDialog = BottomSheetScoreDialog.newInstance(scoreFormat, currentScore, advancedScores, object : BottomSheetScoreDialog.BottomSheetScoreListener {
+            override fun getNewScore(newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) {
+                action(newScore, newAdvancedScores)
+            }
+        })
+        bottomSheetScoreDialog?.dialog?.setOnCancelListener {
+            bottomSheetScoreDialog = null
+        }
+        (context as? AppCompatActivity)?.supportFragmentManager?.let {
+            bottomSheetScoreDialog?.show(it, null)
         }
     }
 }

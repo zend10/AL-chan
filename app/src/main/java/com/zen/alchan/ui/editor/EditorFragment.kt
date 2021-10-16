@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentEditorBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.ScoreFormat
 
 class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 
@@ -51,15 +54,19 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorScoreText.clicks {
+                viewModel.loadScoreValues()
+            }
 
+            editorScoreSmiley.clicks {
+                viewModel.loadScoreValues()
             }
 
             editorProgressText.clicks {
-                viewModel.loadProgresses(false)
+                viewModel.loadProgressValues(false)
             }
 
             editorProgressVolumeText.clicks {
-                viewModel.loadProgresses(true)
+                viewModel.loadProgressValues(true)
             }
 
             editorStartDateText.clicks {
@@ -131,7 +138,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
                 binding.editorStatusText.text = it.getString(viewModel.mediaType)
             },
             viewModel.score.subscribe {
-                binding.editorScoreText.text = it.toString()
+                setScore(it)
             },
             viewModel.progress.subscribe {
                 binding.editorProgressText.text = it.toString()
@@ -166,12 +173,31 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             viewModel.isPrivate.subscribe {
                 binding.editorPrivateCheckBox.isChecked = it
             },
+
+
+            viewModel.progressVolumeVisibility.subscribe {
+                binding.editorProgressVolumeLayout.show(it)
+            },
+            viewModel.scoreTextVisibility.subscribe {
+                binding.editorScoreText.show(it)
+            },
+            viewModel.scoreSmileyVisibility.subscribe {
+                binding.editorScoreSmiley.show(it)
+            },
+
+
             viewModel.mediaListStatuses.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     binding.editorStatusText.text = data.getString(viewModel.mediaType)
                 }
             },
-            viewModel.progresses.subscribe { (progress, maxProgress, isProgressVolume) ->
+            viewModel.scoreValues.subscribe { (scoreFormat: ScoreFormat, currentScore: Double, advancedScores: LinkedHashMap<String, Double>?) ->
+                dialog.showScoreDialog(scoreFormat, currentScore, advancedScores) { newScore, newAdvancedScores ->
+                    viewModel.updateScore(newScore)
+                    viewModel.updateAdvancedScores(newAdvancedScores)
+                }
+            },
+            viewModel.progressValues.subscribe { (progress, maxProgress, isProgressVolume) ->
                 dialog.showProgressDialog(viewModel.mediaType, progress, maxProgress, isProgressVolume) { newProgress ->
                     if (isProgressVolume)
                         viewModel.updateProgressVolume(newProgress)
@@ -197,6 +223,20 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
         )
 
         viewModel.loadData()
+    }
+
+    private fun setScore(score: Double) {
+        if (binding.editorScoreText.isVisible) {
+            binding.editorScoreText.text = score.roundToOneDecimal()
+        } else {
+            val smiley = when (score) {
+                1.0 -> R.drawable.ic_sad
+                2.0 -> R.drawable.ic_neutral
+                3.0 -> R.drawable.ic_happy
+                else -> R.drawable.ic_puzzled
+            }
+            binding.editorScoreSmiley.setImageResource(smiley)
+        }
     }
 
     private fun getPriorityText(priority: Int): String {

@@ -89,6 +89,7 @@
                     android:id="@+id/editorScoreLayout"
                     app:layout_constraintTop_toBottomOf="@id/editorStatusLayout"
                     android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -100,13 +101,25 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/editorScoreText"
-                        style="?themeRegularClickableFont"
-                        android:foreground="?selectableItemBackground"
+                    <FrameLayout
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/editorScoreText"
+                            style="?themeRegularClickableFont"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/editorScoreSmiley"
+                            app:tint="?themePrimaryColor"
+                            android:layout_width="@dimen/iconSmallSize"
+                            android:layout_height="@dimen/iconSmallSize"/>
+
+                    </FrameLayout>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

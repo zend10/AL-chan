@@ -6,6 +6,7 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.common.BottomSheetTextInputDialog
+import type.ScoreFormat
 
 interface DialogManager {
     fun showToast(message: Int)
@@ -32,4 +33,5 @@ interface DialogManager {
     fun showTagDialog(list: List<ListItem<MediaTag?>>, selectedIndex: ArrayList<Int>, action: (data: List<MediaTag>) -> Unit)
 
     fun showProgressDialog(mediaType: MediaType, currentProgress: Int, maxProgress: Int?, isProgressVolume: Boolean, action: (newProgress: Int) -> Unit)
+    fun showScoreDialog(scoreFormat: ScoreFormat, currentScore: Double, advancedScores: LinkedHashMap<String, Double>?, action: (newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) -> Unit)
 }

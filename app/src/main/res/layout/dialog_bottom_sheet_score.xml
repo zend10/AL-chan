@@ -1,6 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/dragIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="?themeDividerColor"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_width="@dimen/marginFar"
+            android:layout_height="@dimen/marginClose"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/scoreLayout"
+            app:layout_constraintTop_toBottomOf="@+id/dragIcon"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_marginHorizontal="@dimen/marginPageBig"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/scoreSmileyLayout"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/scoreSmileySadIcon"
+                    app:srcCompat="@drawable/ic_sad"
+                    app:tint="?themeContentColor"
+                    android:layout_width="@dimen/imageCircleSize"
+                    android:layout_height="@dimen/imageCircleSize"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/scoreSmileyNeutralIcon"
+                    app:srcCompat="@drawable/ic_neutral"
+                    app:tint="?themeContentColor"
+                    android:layout_width="@dimen/imageCircleSize"
+                    android:layout_height="@dimen/imageCircleSize"/>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/scoreSmileyHappyIcon"
+                    app:srcCompat="@drawable/ic_happy"
+                    app:tint="?themeContentColor"
+                    android:layout_width="@dimen/imageCircleSize"
+                    android:layout_height="@dimen/imageCircleSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/scoreStarLayout"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/scoreStarRatingBar"
+                    android:numStars="5"
+                    android:stepSize="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/scorePickerLayout"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <NumberPicker
+                    android:id="@+id/scorePickerNumberPicker"
+                    android:scaleY="1.2"
+                    android:descendantFocusability="blocksDescendants"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="/ 10"
+                    style="?themeBigFont"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/scoreInputLayout"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/scoreInputEditText"
+                    style="?themeBigBoldFont"
+                    android:textAlignment="center"
+                    android:maxLines="1"
+                    android:imeOptions="actionDone"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/scoreInputMaxScore"
+                    android:text="/ 10"
+                    style="?themeBigFont"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/scoreAdvancedScoringRecyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/scoreLayout"
+            android:layout_marginTop="@dimen/marginPageNormal"
+            android:layout_marginHorizontal="@dimen/marginPageBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/scoreSetButton"
+            android:text="@string/set"
+            style="?themePrimaryButton"
+            app:layout_constraintTop_toBottomOf="@id/scoreAdvancedScoringRecyclerView"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_marginHorizontal="@dimen/marginPageBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

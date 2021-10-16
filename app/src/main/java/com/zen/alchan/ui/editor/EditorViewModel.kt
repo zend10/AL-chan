@@ -1,12 +1,15 @@
 package com.zen.alchan.ui.editor
 
 import android.text.InputType
+import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.enums.getAniListMediaType
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getString
@@ -20,6 +23,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
+import type.ScoreFormat
 
 class EditorViewModel(
     private val mediaListRepository: MediaListRepository,
@@ -41,6 +45,10 @@ class EditorViewModel(
     private var _score = BehaviorSubject.createDefault(0.0)
     val score: Observable<Double>
         get() = _score
+
+    private var _advancedScores = BehaviorSubject.createDefault(NullableItem<LinkedHashMap<String, Double>>(null))
+    val advancedScores: Observable<NullableItem<LinkedHashMap<String, Double>>>
+        get() = _advancedScores
 
     private var _progress = BehaviorSubject.createDefault(0)
     val progress: Observable<Int>
@@ -80,13 +88,30 @@ class EditorViewModel(
 
 
 
+    private var _progressVolumeVisibility = BehaviorSubject.createDefault(false)
+    val progressVolumeVisibility: Observable<Boolean>
+        get() = _progressVolumeVisibility
+
+    private var _scoreTextVisibility = BehaviorSubject.createDefault(true)
+    val scoreTextVisibility: Observable<Boolean>
+        get() = _scoreTextVisibility
+
+    private var _scoreSmileyVisibility = BehaviorSubject.createDefault(false)
+    val scoreSmileyVisibility: Observable<Boolean>
+        get() = _scoreSmileyVisibility
+
+
     private var _mediaListStatuses = PublishSubject.create<List<ListItem<MediaListStatus>>>()
     val mediaListStatuses: Observable<List<ListItem<MediaListStatus>>>
         get() = _mediaListStatuses
 
-    private var _progresses = PublishSubject.create<Triple<Int, Int?, Boolean>>()
-    val progresses: Observable<Triple<Int, Int?, Boolean>> // progress, maxProgress, isProgressVolume
-        get() = _progresses
+    private var _scoreValues = PublishSubject.create<Triple<ScoreFormat, Double, LinkedHashMap<String, Double>?>>()
+    val scoreValues: Observable<Triple<ScoreFormat, Double, LinkedHashMap<String, Double>?>> // scoreFormat, score, advancedScores
+        get() = _scoreValues
+
+    private var _progressValues = PublishSubject.create<Triple<Int, Int?, Boolean>>()
+    val progressValues: Observable<Triple<Int, Int?, Boolean>> // progress, maxProgress, isProgressVolume
+        get() = _progressValues
 
     private var _rewatchesTextInputSetting = PublishSubject.create<Pair<Int, TextInputSetting>>()
     val rewatchesTextInputSetting: Observable<Pair<Int, TextInputSetting>>
@@ -100,6 +125,7 @@ class EditorViewModel(
     val prioritySliderItem: Observable<SliderItem>
         get() = _prioritySliderItem
 
+    var user = User()
     var mediaType = MediaType.ANIME
     var mediaId = 0
 
@@ -112,23 +138,34 @@ class EditorViewModel(
 
             disposables.add(
                 mediaListRepository.getMediaWithMediaList(mediaId, mediaType.getAniListMediaType())
-                    .zipWith(userRepository.getAppSetting()) { media, appSetting ->
-                        return@zipWith media to appSetting
+                    .zipWith(userRepository.getViewer(Source.CACHE)) { media, user ->
+                        return@zipWith media to user
+                    }
+                    .zipWith(userRepository.getAppSetting()) { mediaAndUser, appSetting ->
+                        return@zipWith Triple(mediaAndUser.first, mediaAndUser.second, appSetting)
                     }
                     .applyScheduler()
                     .doFinally { _loading.onNext(false) }
                     .subscribe(
-                        { (media, appSetting) ->
+                        { (media, user, appSetting) ->
                             this.media = media
+                            this.user = user
                             this.appSetting = appSetting
 
                             _title.onNext(media.getTitle(appSetting))
                             updateIsFavorite(media.isFavourite)
 
+                            _progressVolumeVisibility.onNext(mediaType == MediaType.MANGA)
+                            _scoreTextVisibility.onNext(user.mediaListOptions.scoreFormat != ScoreFormat.POINT_3)
+                            _scoreSmileyVisibility.onNext(user.mediaListOptions.scoreFormat == ScoreFormat.POINT_3)
+
                             val mediaList = media.mediaListEntry
                             mediaList?.let {
                                 updateStatus(it.status ?: MediaListStatus.PLANNING)
                                 updateScore(it.score)
+                                updateAdvancedScores((it.advancedScores as? CustomTypeValue<LinkedHashMap<String, Double>>)?.value)
+
+
                                 updateProgress(it.progress)
                                 updateProgressVolume(it.progressVolumes ?: 0)
                                 updateStartDate(it.startedAt)
@@ -158,6 +195,10 @@ class EditorViewModel(
 
     fun updateScore(newScore: Double) {
         _score.onNext(newScore)
+    }
+
+    fun updateAdvancedScores(newAdvancedScores: LinkedHashMap<String, Double>?) {
+        _advancedScores.onNext(NullableItem(newAdvancedScores))
     }
 
     fun updateProgress(newProgress: Int) {
@@ -211,7 +252,14 @@ class EditorViewModel(
         )
     }
 
-    fun loadProgresses(isProgressVolume: Boolean) {
+    fun loadScoreValues() {
+        val scoreFormat = user.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100
+        val currentScore = _score.value ?: 0.0
+        val advancedScores = _advancedScores.value?.data
+        _scoreValues.onNext(Triple(scoreFormat, currentScore, advancedScores))
+    }
+
+    fun loadProgressValues(isProgressVolume: Boolean) {
         val currentProgress = if (isProgressVolume)
             _progressVolume.value ?: 0
         else
@@ -222,7 +270,7 @@ class EditorViewModel(
             MediaType.MANGA -> if (isProgressVolume) media.volumes else media.chapters
         }
 
-        _progresses.onNext(Triple(currentProgress, maxProgress, isProgressVolume))
+        _progressValues.onNext(Triple(currentProgress, maxProgress, isProgressVolume))
     }
 
     fun loadRewatchesTextInputSetting() {

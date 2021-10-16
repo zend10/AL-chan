@@ -48,7 +48,12 @@ class BottomSheetProgressDialog : BaseDialogFragment<DialogBottomSheetProgressBi
             }
 
             progressSetButton.clicks {
-                listener?.getNewProgress(progressNextProgressEditText.text.toString().toIntOrNull() ?: 0)
+                var newProgress = progressNextProgressEditText.text.toString().toIntOrNull() ?: 0
+                maxProgress?.let {
+                    if (newProgress > it) newProgress = it
+                }
+
+                listener?.getNewProgress(newProgress)
                 dismiss()
             }
         }

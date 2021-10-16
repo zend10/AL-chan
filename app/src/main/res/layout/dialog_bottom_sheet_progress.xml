@@ -44,7 +44,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/progressNextProgressEditText"
-                style="?themeBigFont"
+                style="?themeBigBoldFont"
                 android:maxLines="1"
                 android:digits="0123456789"
                 android:inputType="number"
@@ -67,7 +67,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             app:layout_constraintTop_toBottomOf="@id/progressLayout"
-            android:layout_marginTop="@dimen/marginPageNormal"
+            android:layout_marginTop="@dimen/marginPageBig"
             android:layout_marginHorizontal="@dimen/marginPageBig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
