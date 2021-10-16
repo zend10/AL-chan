@@ -7,6 +7,9 @@ import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import type.ScoreFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
 interface DialogManager {
     fun showToast(message: Int)
@@ -34,4 +37,6 @@ interface DialogManager {
 
     fun showProgressDialog(mediaType: MediaType, currentProgress: Int, maxProgress: Int?, isProgressVolume: Boolean, action: (newProgress: Int) -> Unit)
     fun showScoreDialog(scoreFormat: ScoreFormat, currentScore: Double, advancedScores: LinkedHashMap<String, Double>?, action: (newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) -> Unit)
+
+    fun showDatePicker(calendar: Calendar, action: (year: Int, month: Int, dayOfMonth: Int) -> Unit)
 }

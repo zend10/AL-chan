@@ -18,110 +18,128 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
+import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 import type.ScoreFormat
+import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class EditorViewModel(
     private val mediaListRepository: MediaListRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private var _title = BehaviorSubject.createDefault("")
+    private val _title = BehaviorSubject.createDefault("")
     val title: Observable<String>
         get() = _title
 
-    private var _isFavorite = BehaviorSubject.createDefault(false)
+    private val _isFavorite = BehaviorSubject.createDefault(false)
     val isFavorite: Observable<Boolean>
         get() = _isFavorite
 
-    private var _status = BehaviorSubject.createDefault(MediaListStatus.PLANNING)
+    private val _status = BehaviorSubject.createDefault(MediaListStatus.PLANNING)
     val status: Observable<MediaListStatus>
         get() = _status
 
-    private var _score = BehaviorSubject.createDefault(0.0)
+    private val _score = BehaviorSubject.createDefault(0.0)
     val score: Observable<Double>
         get() = _score
 
-    private var _advancedScores = BehaviorSubject.createDefault(NullableItem<LinkedHashMap<String, Double>>(null))
+    private val _advancedScores = BehaviorSubject.createDefault(NullableItem<LinkedHashMap<String, Double>>(null))
     val advancedScores: Observable<NullableItem<LinkedHashMap<String, Double>>>
         get() = _advancedScores
 
-    private var _progress = BehaviorSubject.createDefault(0)
+    private val _progress = BehaviorSubject.createDefault(0)
     val progress: Observable<Int>
         get() = _progress
 
-    private var _progressVolume = BehaviorSubject.createDefault(0)
+    private val _progressVolume = BehaviorSubject.createDefault(0)
     val progressVolume: Observable<Int>
         get() = _progressVolume
 
-    private var _startDate = BehaviorSubject.createDefault(NullableItem<FuzzyDate>(null))
+    private val _startDate = BehaviorSubject.createDefault(NullableItem<FuzzyDate>(null))
     val startDate: Observable<NullableItem<FuzzyDate>>
         get() = _startDate
 
-    private var _finishDate = BehaviorSubject.createDefault(NullableItem<FuzzyDate>(null))
+    private val _finishDate = BehaviorSubject.createDefault(NullableItem<FuzzyDate>(null))
     val finishDate: Observable<NullableItem<FuzzyDate>>
         get() = _finishDate
 
-    private var _totalRewatches = BehaviorSubject.createDefault(0)
+    private val _totalRewatches = BehaviorSubject.createDefault(0)
     val totalRewatches: Observable<Int>
         get() = _totalRewatches
 
-    private var _notes = BehaviorSubject.createDefault("")
+    private val _notes = BehaviorSubject.createDefault("")
     val notes: Observable<String>
         get() = _notes
 
-    private var _priority = BehaviorSubject.createDefault(0)
+    private val _priority = BehaviorSubject.createDefault(0)
     val priority: Observable<Int>
         get() = _priority
 
-    private var _hideFromStatusLists = BehaviorSubject.createDefault(false)
+    private val _hideFromStatusLists = BehaviorSubject.createDefault(false)
     val hideFromStatusList: Observable<Boolean>
         get() = _hideFromStatusLists
 
-    private var _isPrivate = BehaviorSubject.createDefault(false)
+    private val _isPrivate = BehaviorSubject.createDefault(false)
     val isPrivate: Observable<Boolean>
         get() = _isPrivate
 
 
 
-    private var _progressVolumeVisibility = BehaviorSubject.createDefault(false)
+    private val _progressVolumeVisibility = BehaviorSubject.createDefault(false)
     val progressVolumeVisibility: Observable<Boolean>
         get() = _progressVolumeVisibility
 
-    private var _scoreTextVisibility = BehaviorSubject.createDefault(true)
+    private val _scoreTextVisibility = BehaviorSubject.createDefault(true)
     val scoreTextVisibility: Observable<Boolean>
         get() = _scoreTextVisibility
 
-    private var _scoreSmileyVisibility = BehaviorSubject.createDefault(false)
+    private val _scoreSmileyVisibility = BehaviorSubject.createDefault(false)
     val scoreSmileyVisibility: Observable<Boolean>
         get() = _scoreSmileyVisibility
 
+    private val _startDateRemoveIconVisibility = BehaviorSubject.createDefault(false)
+    val startDateRemoveIconVisibility: Observable<Boolean>
+        get() = _startDateRemoveIconVisibility
 
-    private var _mediaListStatuses = PublishSubject.create<List<ListItem<MediaListStatus>>>()
+    private val _finishDateRemoveIconVisibility = BehaviorSubject.createDefault(false)
+    val finishDateRemoveIconVisibility: Observable<Boolean>
+        get() = _finishDateRemoveIconVisibility
+
+    private val _mediaListStatuses = PublishSubject.create<List<ListItem<MediaListStatus>>>()
     val mediaListStatuses: Observable<List<ListItem<MediaListStatus>>>
         get() = _mediaListStatuses
 
-    private var _scoreValues = PublishSubject.create<Triple<ScoreFormat, Double, LinkedHashMap<String, Double>?>>()
+    private val _scoreValues = PublishSubject.create<Triple<ScoreFormat, Double, LinkedHashMap<String, Double>?>>()
     val scoreValues: Observable<Triple<ScoreFormat, Double, LinkedHashMap<String, Double>?>> // scoreFormat, score, advancedScores
         get() = _scoreValues
 
-    private var _progressValues = PublishSubject.create<Triple<Int, Int?, Boolean>>()
+    private val _progressValues = PublishSubject.create<Triple<Int, Int?, Boolean>>()
     val progressValues: Observable<Triple<Int, Int?, Boolean>> // progress, maxProgress, isProgressVolume
         get() = _progressValues
 
-    private var _rewatchesTextInputSetting = PublishSubject.create<Pair<Int, TextInputSetting>>()
+    private val _calendarStartDate = PublishSubject.create<Calendar>()
+    val calendarStartDate: Observable<Calendar>
+        get() = _calendarStartDate
+
+    private val _calendarFinishDate = PublishSubject.create<Calendar>()
+    val calendarFinishDate: Observable<Calendar>
+        get() = _calendarFinishDate
+
+    private val _rewatchesTextInputSetting = PublishSubject.create<Pair<Int, TextInputSetting>>()
     val rewatchesTextInputSetting: Observable<Pair<Int, TextInputSetting>>
         get() = _rewatchesTextInputSetting
 
-    private var _notesTextInputSetting = PublishSubject.create<Pair<String, TextInputSetting>>()
+    private val _notesTextInputSetting = PublishSubject.create<Pair<String, TextInputSetting>>()
     val notesTextInputSetting: Observable<Pair<String, TextInputSetting>>
         get() = _notesTextInputSetting
 
-    private var _prioritySliderItem = PublishSubject.create<SliderItem>()
+    private val _prioritySliderItem = PublishSubject.create<SliderItem>()
     val prioritySliderItem: Observable<SliderItem>
         get() = _prioritySliderItem
 
@@ -164,7 +182,6 @@ class EditorViewModel(
                                 updateStatus(it.status ?: MediaListStatus.PLANNING)
                                 updateScore(it.score)
                                 updateAdvancedScores((it.advancedScores as? CustomTypeValue<LinkedHashMap<String, Double>>)?.value)
-
 
                                 updateProgress(it.progress)
                                 updateProgressVolume(it.progressVolumes ?: 0)
@@ -211,10 +228,12 @@ class EditorViewModel(
 
     fun updateStartDate(newStartDate: FuzzyDate?) {
         _startDate.onNext(NullableItem(newStartDate))
+        _startDateRemoveIconVisibility.onNext(newStartDate?.isNull() == false)
     }
 
     fun updateFinishDate(newFinishDate: FuzzyDate?) {
         _finishDate.onNext(NullableItem(newFinishDate))
+        _finishDateRemoveIconVisibility.onNext(newFinishDate?.isNull() == false)
     }
 
     fun updateTotalRewatches(newTotalRewatches: Int) {
@@ -271,6 +290,38 @@ class EditorViewModel(
         }
 
         _progressValues.onNext(Triple(currentProgress, maxProgress, isProgressVolume))
+    }
+
+    fun loadCalendarStartDate() {
+        val startDate = _startDate.value?.data
+        val calendar = Calendar.getInstance()
+
+        if (startDate?.year != null)
+            calendar.set(Calendar.YEAR, startDate.year)
+
+        if (startDate?.month != null)
+            calendar.set(Calendar.MONTH, startDate.month - 1)
+
+        if (startDate?.day != null)
+            calendar.set(Calendar.DAY_OF_MONTH, startDate.day)
+
+        _calendarStartDate.onNext(calendar)
+    }
+
+    fun loadCalendarFinishDate() {
+        val finishDate = _finishDate.value?.data
+        val calendar = Calendar.getInstance()
+
+        if (finishDate?.year != null)
+            calendar.set(Calendar.YEAR, finishDate.year)
+
+        if (finishDate?.month != null)
+            calendar.set(Calendar.MONTH, finishDate.month - 1)
+
+        if (finishDate?.day != null)
+            calendar.set(Calendar.DAY_OF_MONTH, finishDate.day)
+
+        _calendarFinishDate.onNext(calendar)
     }
 
     fun loadRewatchesTextInputSetting() {

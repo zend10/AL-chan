@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.base
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -15,6 +16,9 @@ import com.zen.alchan.ui.common.TagRvAdapter
 import com.zen.alchan.ui.editor.BottomSheetProgressDialog
 import com.zen.alchan.ui.editor.BottomSheetScoreDialog
 import type.ScoreFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
 class DefaultDialogManager(private val context: Context) : DialogManager {
 
@@ -24,6 +28,8 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetTagDialog: BottomSheetTagDialog? = null
     private var bottomSheetProgressDialog: BottomSheetProgressDialog? = null
     private var bottomSheetScoreDialog: BottomSheetScoreDialog? = null
+
+    private var datePickerDialog: DatePickerDialog? = null
 
     override fun showToast(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -212,5 +218,21 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         (context as? AppCompatActivity)?.supportFragmentManager?.let {
             bottomSheetScoreDialog?.show(it, null)
         }
+    }
+
+    override fun showDatePicker(calendar: Calendar, action: (year: Int, month: Int, dayOfMonth: Int) -> Unit) {
+        datePickerDialog = DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                action(year, month + 1, dayOfMonth)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog?.setOnCancelListener {
+            datePickerDialog = null
+        }
+        datePickerDialog?.show()
     }
 }

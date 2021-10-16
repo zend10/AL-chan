@@ -188,13 +188,29 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/editorStartDateText"
-                        style="?themeRegularClickableFont"
-                        android:foreground="?selectableItemBackground"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/editorStartDateText"
+                            style="?themeRegularClickableFont"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:visibility="gone"
+                            android:id="@+id/editorStartDateRemoveIcon"
+                            app:srcCompat="@drawable/ic_cancel"
+                            app:tint="?themeNegativeColor"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_width="@dimen/iconSmallSize"
+                            android:layout_height="@dimen/iconSmallSize"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -213,13 +229,29 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/editorFinishDateText"
-                        style="?themeRegularClickableFont"
-                        android:foreground="?selectableItemBackground"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/editorFinishDateText"
+                            style="?themeRegularClickableFont"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:visibility="gone"
+                            android:id="@+id/editorFinishDateRemoveIcon"
+                            app:srcCompat="@drawable/ic_cancel"
+                            app:tint="?themeNegativeColor"
+                            android:foreground="?selectableItemBackground"
+                            android:layout_width="@dimen/iconSmallSize"
+                            android:layout_height="@dimen/iconSmallSize"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.zen.alchan.R
+import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.databinding.FragmentEditorBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
@@ -70,11 +71,19 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorStartDateText.clicks {
+                viewModel.loadCalendarStartDate()
+            }
 
+            editorStartDateRemoveIcon.clicks {
+                viewModel.updateStartDate(null)
             }
 
             editorFinishDateText.clicks {
+                viewModel.loadCalendarFinishDate()
+            }
 
+            editorFinishDateRemoveIcon.clicks {
+                viewModel.updateFinishDate(null)
             }
 
             editorTotalRewatchesText.clicks {
@@ -147,16 +156,10 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
                 binding.editorProgressVolumeText.text = it.toString()
             },
             viewModel.startDate.subscribe {
-                binding.editorStartDateText.text = if (it.data != null)
-                    TimeUtil.getMillisFromFuzzyDate(it.data).toString()
-                else
-                    "-"
+                binding.editorStartDateText.text = TimeUtil.getReadableDateFromFuzzyDate(it.data)
             },
             viewModel.finishDate.subscribe {
-                binding.editorFinishDateText.text = if (it.data != null)
-                    TimeUtil.getMillisFromFuzzyDate(it.data).toString()
-                else
-                    "-"
+                binding.editorFinishDateText.text = TimeUtil.getReadableDateFromFuzzyDate(it.data)
             },
             viewModel.totalRewatches.subscribe {
                 binding.editorTotalRewatchesText.text = it.toString()
@@ -184,6 +187,12 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             viewModel.scoreSmileyVisibility.subscribe {
                 binding.editorScoreSmiley.show(it)
             },
+            viewModel.startDateRemoveIconVisibility.subscribe {
+                binding.editorStartDateRemoveIcon.show(it)
+            },
+            viewModel.finishDateRemoveIconVisibility.subscribe {
+                binding.editorFinishDateRemoveIcon.show(it)
+            },
 
 
             viewModel.mediaListStatuses.subscribe {
@@ -203,6 +212,16 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
                         viewModel.updateProgressVolume(newProgress)
                     else
                         viewModel.updateProgress(newProgress)
+                }
+            },
+            viewModel.calendarStartDate.subscribe {
+                dialog.showDatePicker(it) { year, month, dayOfMonth ->
+                    viewModel.updateStartDate(FuzzyDate(year, month, dayOfMonth))
+                }
+            },
+            viewModel.calendarFinishDate.subscribe {
+                dialog.showDatePicker(it) { year, month, dayOfMonth ->
+                    viewModel.updateFinishDate(FuzzyDate(year, month, dayOfMonth))
                 }
             },
             viewModel.rewatchesTextInputSetting.subscribe {
