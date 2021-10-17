@@ -333,6 +333,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
                 android:id="@+id/editorCustomListsLayout"
                 app:layout_constraintTop_toBottomOf="@id/editorGeneralLayout"
                 android:layout_marginTop="@dimen/marginFar"
@@ -352,7 +353,8 @@
                     android:id="@+id/editorCustomListsRecyclerView"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/editorCustomListsTitle"
-                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_marginTop="6dp"
+                    android:nestedScrollingEnabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

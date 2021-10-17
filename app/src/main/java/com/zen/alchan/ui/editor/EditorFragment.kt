@@ -23,6 +23,8 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 
     override val viewModel: EditorViewModel by viewModel()
 
+    private var customListsAdapter: CustomListsRvAdapter? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -41,6 +43,13 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.list_editor))
+
+            customListsAdapter = CustomListsRvAdapter(listOf(), object : CustomListsRvAdapter.CustomListsListener {
+                override fun getNewCustomList(newCustomList: Pair<String, Boolean>) {
+                    viewModel.updateCustomList(newCustomList)
+                }
+            })
+            editorCustomListsRecyclerView.adapter = customListsAdapter
 
             editorMediaTitle.clicks {
                 goBack()
@@ -170,14 +179,18 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             viewModel.priority.subscribe {
                 binding.editorPriorityText.text = getPriorityText(it)
             },
+            viewModel.customLists.subscribe {
+                customListsAdapter?.updateData(it.data?.toList() ?: listOf())
+            },
             viewModel.hideFromStatusList.subscribe {
                 binding.editorHideFromStatusListsCheckBox.isChecked = it
             },
             viewModel.isPrivate.subscribe {
                 binding.editorPrivateCheckBox.isChecked = it
             },
-
-
+            viewModel.customListsVisibility.subscribe {
+                binding.editorCustomListsLayout.show(it)
+            },
             viewModel.progressVolumeVisibility.subscribe {
                 binding.editorProgressVolumeLayout.show(it)
             },
@@ -193,8 +206,6 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             viewModel.finishDateRemoveIconVisibility.subscribe {
                 binding.editorFinishDateRemoveIcon.show(it)
             },
-
-
             viewModel.mediaListStatuses.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     binding.editorStatusText.text = data.getString(viewModel.mediaType)
@@ -267,6 +278,11 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             5 -> R.string.very_high
             else -> R.string.no_priority
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        customListsAdapter = null
     }
 
     companion object {

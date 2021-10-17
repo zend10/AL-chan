@@ -81,6 +81,10 @@ class EditorViewModel(
     val priority: Observable<Int>
         get() = _priority
 
+    private val _customLists = BehaviorSubject.createDefault(NullableItem<LinkedHashMap<String, Boolean>>(null))
+    val customLists: Observable<NullableItem<LinkedHashMap<String, Boolean>>>
+        get() = _customLists
+
     private val _hideFromStatusLists = BehaviorSubject.createDefault(false)
     val hideFromStatusList: Observable<Boolean>
         get() = _hideFromStatusLists
@@ -89,7 +93,9 @@ class EditorViewModel(
     val isPrivate: Observable<Boolean>
         get() = _isPrivate
 
-
+    private val _customListsVisibility = BehaviorSubject.createDefault(false)
+    val customListsVisibility: Observable<Boolean>
+        get() = _customListsVisibility
 
     private val _progressVolumeVisibility = BehaviorSubject.createDefault(false)
     val progressVolumeVisibility: Observable<Boolean>
@@ -182,7 +188,6 @@ class EditorViewModel(
                                 updateStatus(it.status ?: MediaListStatus.PLANNING)
                                 updateScore(it.score)
                                 updateAdvancedScores((it.advancedScores as? CustomTypeValue<LinkedHashMap<String, Double>>)?.value)
-
                                 updateProgress(it.progress)
                                 updateProgressVolume(it.progressVolumes ?: 0)
                                 updateStartDate(it.startedAt)
@@ -192,6 +197,24 @@ class EditorViewModel(
                                 updatePriority(it.priority)
                                 updateShouldHideFromStatusLists(it.hiddenFromStatusLists)
                                 updateIsPrivate(it.private)
+
+                                // sort Custom Lists
+                                val sectionOrder = when (mediaType) {
+                                    MediaType.ANIME -> user.mediaListOptions.animeList.sectionOrder
+                                    MediaType.MANGA -> user.mediaListOptions.mangaList.sectionOrder
+                                }
+                                val customLists = (it.customLists as? CustomTypeValue<LinkedHashMap<String, Boolean>>)?.value
+                                val sortedCustomLists = LinkedHashMap<String, Boolean>()
+                                sectionOrder.forEach { section ->
+                                    if (customLists?.containsKey(section) == true)
+                                        sortedCustomLists[section] = customLists[section]!!
+                                }
+                                customLists?.forEach { (key, value) ->
+                                    if (!sortedCustomLists.containsKey(key))
+                                        sortedCustomLists[key] = value
+                                }
+                                updateCustomLists(sortedCustomLists)
+                                _customListsVisibility.onNext(!customLists.isNullOrEmpty())
                             }
                         },
                         {
@@ -246,6 +269,18 @@ class EditorViewModel(
 
     fun updatePriority(newPriority: Int) {
         _priority.onNext(newPriority)
+    }
+
+    fun updateCustomLists(newCustomLists: LinkedHashMap<String, Boolean>?) {
+        _customLists.onNext(NullableItem(newCustomLists))
+    }
+
+    fun updateCustomList(newCustomList: Pair<String, Boolean>) {
+        val currentCustomLists = _customLists.value?.data
+        currentCustomLists?.let {
+            it[newCustomList.first] = newCustomList.second
+        }
+        _customLists.onNext(NullableItem(currentCustomLists))
     }
 
     fun updateShouldHideFromStatusLists(shouldHideFromStatusLists: Boolean) {
