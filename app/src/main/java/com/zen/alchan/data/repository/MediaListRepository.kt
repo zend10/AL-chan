@@ -14,6 +14,7 @@ interface MediaListRepository {
     val defaultAnimeListSplitCompletedSectionByFormat: List<String>
     val defaultMangaList: List<String>
     val defaultMangaListSplitCompletedSectionByFormat: List<String>
+    val refreshMediaListTrigger: Observable<Pair<com.zen.alchan.helper.enums.MediaType, MediaList?>>
     fun getMediaListCollection(userId: Int, mediaType: MediaType): Observable<MediaListCollection>
     fun getMediaWithMediaList(mediaId: Int, mediaType: MediaType): Observable<Media>
     fun toggleFavorite(
@@ -24,6 +25,7 @@ interface MediaListRepository {
         studioId: Int? = null
     ): Completable
     fun updateMediaListEntry(
+        mediaType: com.zen.alchan.helper.enums.MediaType,
         id: Int?,
         mediaId: Int?,
         status: MediaListStatus,
@@ -40,5 +42,5 @@ interface MediaListRepository {
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
     ): Observable<MediaList>
-    fun deleteMediaListEntry(id: Int): Completable
+    fun deleteMediaListEntry(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int): Completable
 }

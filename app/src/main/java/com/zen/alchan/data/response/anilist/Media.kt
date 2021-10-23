@@ -39,7 +39,7 @@ data class Media(
     val studios: StudioConnection = StudioConnection(),
     val favourites: Int = 0,
     val tags: List<MediaTag> = listOf(),
-    val isFavourite: Boolean = false,
+    var isFavourite: Boolean = false,
     val isAdult: Boolean = false,
     val nextAiringEpisode: AiringSchedule? = null,
     val externalLinks: List<MediaExternalLink> = listOf(),

@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.medialist
 
+import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
@@ -122,6 +123,79 @@ class MediaListViewModel(
                         )
 
                         getMediaListCollection(state == State.LOADED || state == State.ERROR)
+                    }
+            )
+
+            disposables.add(
+                mediaListRepository.refreshMediaListTrigger
+                    .applyScheduler()
+                    .filter { it.first == mediaType }
+                    .subscribe { (mediaType, newMediaList) ->
+                        if (newMediaList == null) {
+                            reloadData()
+                        } else {
+                            // get all the index of the modified MediaList
+                            var previousMediaList: MediaList? = null
+                            val mediaListGroupIndex = ArrayList<Int>()
+                            val mediaListIndex = ArrayList<Int>()
+                            rawMediaListCollection?.lists?.forEachIndexed { groupIndex, mediaListGroup ->
+                                mediaListGroup.entries.forEachIndexed { listIndex, mediaList ->
+                                    if (mediaList.id == newMediaList.id) {
+                                        mediaListGroupIndex.add(groupIndex)
+                                        mediaListIndex.add(listIndex)
+                                        previousMediaList = mediaList
+                                    }
+                                }
+                            }
+
+                            // reload if it's a new entry or when the status is changed or when the visibility is changed
+                            if (previousMediaList == null ||
+                                previousMediaList?.status != newMediaList.status ||
+                                previousMediaList?.hiddenFromStatusLists != newMediaList.hiddenFromStatusLists
+                            ) {
+                                reloadData()
+                                return@subscribe
+                            }
+
+                            // reload if the custom lists is changed
+                            val oldCustomLists = (previousMediaList?.customLists as? CustomTypeValue<LinkedHashMap<String, Boolean>>)?.value
+                            val newCustomLists = (newMediaList.customLists as? CustomTypeValue<LinkedHashMap<String, Boolean>>)?.value
+                            newCustomLists?.forEach { (key, value) ->
+                                if (oldCustomLists?.get(key) != value) {
+                                    reloadData()
+                                    return@subscribe
+                                }
+                            }
+
+                            // modify the collection with the new MediaList
+                            mediaListGroupIndex.zip(mediaListIndex).forEach { (groupIndex, listIndex) ->
+                                rawMediaListCollection?.lists?.get(groupIndex)?.entries?.get(listIndex)?.apply {
+                                    status = newMediaList.status
+                                    score = newMediaList.score
+                                    progress = newMediaList.progress
+                                    progressVolumes = newMediaList.progressVolumes
+                                    repeat = newMediaList.repeat
+                                    priority = newMediaList.priority
+                                    private = newMediaList.private
+                                    notes = newMediaList.notes
+                                    hiddenFromStatusLists = newMediaList.hiddenFromStatusLists
+                                    customLists = newMediaList.customLists
+                                    advancedScores = newMediaList.advancedScores
+                                    startedAt = newMediaList.startedAt
+                                    completedAt = newMediaList.completedAt
+                                    updatedAt = newMediaList.updatedAt
+                                    createdAt = newMediaList.createdAt
+                                }
+                            }
+
+                            // emit the change
+                            rawMediaListCollection?.let {
+                                _mediaListItems.onNext(getFilteredAndSortedList(it))
+
+                                if (searchKeyword.isNotBlank())
+                                    filterByText(searchKeyword)
+                            }
+                        }
                     }
             )
         }
@@ -488,16 +562,16 @@ class MediaListViewModel(
             filterEntries.removeAll { mediaFilter.maxUserScore!! < it.score }
 
         if (mediaFilter.minUserStartYear != null)
-            filterEntries.removeAll { it.startedAt?.year == null || mediaFilter.minUserStartYear!! > it.startedAt.year }
+            filterEntries.removeAll { it.startedAt?.year == null || mediaFilter.minUserStartYear!! > it.startedAt?.year!! }
 
         if (mediaFilter.maxUserStartYear != null)
-            filterEntries.removeAll { it.startedAt?.year == null || mediaFilter.maxUserStartYear!! < it.startedAt.year }
+            filterEntries.removeAll { it.startedAt?.year == null || mediaFilter.maxUserStartYear!! < it.startedAt?.year!! }
 
         if (mediaFilter.minUserCompletedYear != null)
-            filterEntries.removeAll { it.completedAt?.year == null || mediaFilter.minUserCompletedYear!! > it.completedAt.year }
+            filterEntries.removeAll { it.completedAt?.year == null || mediaFilter.minUserCompletedYear!! > it.completedAt?.year!! }
 
         if (mediaFilter.maxUserCompletedYear != null)
-            filterEntries.removeAll { it.completedAt?.year == null || mediaFilter.maxUserCompletedYear!! < it.completedAt.year }
+            filterEntries.removeAll { it.completedAt?.year == null || mediaFilter.maxUserCompletedYear!! < it.completedAt?.year!! }
 
         if (mediaFilter.minUserPriority != null) {
             filterEntries.removeAll { mediaFilter.minUserPriority!! > it.priority }

@@ -237,6 +237,7 @@ class EditorViewModel(
 
         disposables.add(
             mediaListRepository.updateMediaListEntry(
+                mediaType,
                 media.mediaListEntry?.id,
                 media.idAniList,
                 _status.value ?: MediaListStatus.PLANNING,
@@ -295,7 +296,7 @@ class EditorViewModel(
             _loading.onNext(true)
 
             disposables.add(
-                mediaListRepository.deleteMediaListEntry(id)
+                mediaListRepository.deleteMediaListEntry(mediaType, id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doFinally {

@@ -8,6 +8,7 @@ import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListCollection
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 import type.MediaType
 
@@ -61,6 +62,10 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
             "Planning"
         )
 
+    private val _refreshMediaListTrigger = PublishSubject.create<Pair<com.zen.alchan.helper.enums.MediaType, MediaList?>>()
+    override val refreshMediaListTrigger: Observable<Pair<com.zen.alchan.helper.enums.MediaType, MediaList?>>
+        get() = _refreshMediaListTrigger
+
     override fun getMediaListCollection(
         userId: Int,
         mediaType: MediaType
@@ -87,6 +92,7 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
     }
 
     override fun updateMediaListEntry(
+        mediaType: com.zen.alchan.helper.enums.MediaType,
         id: Int?,
         mediaId: Int?,
         status: MediaListStatus,
@@ -120,11 +126,15 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
             startedAt,
             completedAt
         ).map {
-            it.data?.convert()
+            val newMediaList = it.data?.convert()
+            _refreshMediaListTrigger.onNext(mediaType to newMediaList)
+            newMediaList
         }
     }
 
-    override fun deleteMediaListEntry(id: Int): Completable {
-        return mediaListDataSource.deleteMediaListEntry(id)
+    override fun deleteMediaListEntry(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int): Completable {
+        return mediaListDataSource.deleteMediaListEntry(id).doFinally {
+            _refreshMediaListTrigger.onNext(mediaType to null)
+        }
     }
 }
