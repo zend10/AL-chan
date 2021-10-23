@@ -62,9 +62,9 @@ data class Media(
     private fun getPreferredNaming(naming: MediaNaming): String {
         return when (naming) {
             MediaNaming.FOLLOW_ANILIST -> title.userPreferred
-            MediaNaming.ROMAJI -> title.romaji
-            MediaNaming.ENGLISH -> title.english
-            MediaNaming.NATIVE -> title.native
+            MediaNaming.ROMAJI -> if (title.romaji.isNotBlank()) title.romaji else title.userPreferred
+            MediaNaming.ENGLISH -> if (title.english.isNotBlank()) title.english else title.userPreferred
+            MediaNaming.NATIVE -> if (title.native.isNotBlank()) title.native else title.userPreferred
         }
     }
 

@@ -367,8 +367,7 @@ class MediaListViewModel(
             ListOrder.TITLE
         }
 
-        // TODO: should sort by shown title
-        val entriesSortedByTitle = entries.sortedBy { it.media.title.userPreferred.toLowerCase(Locale.getDefault()) }
+        val entriesSortedByTitle = entries.sortedBy { it.media.getTitle(appSetting) }
         val isDescending = mediaFilter.orderByDescending
 
         return when (mediaFilter.sort) {
