@@ -28,4 +28,7 @@ interface MediaListDataSource {
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
     ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    fun deleteMediaListEntry(
+        id: Int
+    ): Completable
 }

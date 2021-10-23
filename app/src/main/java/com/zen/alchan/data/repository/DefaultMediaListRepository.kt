@@ -123,4 +123,8 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
             it.data?.convert()
         }
     }
+
+    override fun deleteMediaListEntry(id: Int): Completable {
+        return mediaListDataSource.deleteMediaListEntry(id)
+    }
 }

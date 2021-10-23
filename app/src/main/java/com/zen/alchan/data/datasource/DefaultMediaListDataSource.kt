@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import DeleteMediaListEntryMutation
 import MediaListCollectionQuery
 import MediaWithMediaListQuery
 import SaveMediaListEntryMutation
@@ -112,5 +113,10 @@ class DefaultMediaListDataSource(
             )
         )
         return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+    }
+
+    override fun deleteMediaListEntry(id: Int): Completable {
+        val mutation = DeleteMediaListEntryMutation(Input.fromNullable(id))
+        return apolloHandler.apolloClient.rxPrefetch(mutation)
     }
 }

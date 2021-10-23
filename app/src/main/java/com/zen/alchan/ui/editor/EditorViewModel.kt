@@ -152,6 +152,10 @@ class EditorViewModel(
     val prioritySliderItem: Observable<SliderItem>
         get() = _prioritySliderItem
 
+    private val _deleteSuccess = PublishSubject.create<Int>()
+    val deleteSuccess: Observable<Int>
+        get() = _deleteSuccess
+
     var user = User()
     var mediaType = MediaType.ANIME
     var mediaId = 0
@@ -284,6 +288,30 @@ class EditorViewModel(
                     }
                 )
         )
+    }
+
+    fun deleteMediaList() {
+        media.mediaListEntry?.id?.let { id ->
+            _loading.onNext(true)
+
+            disposables.add(
+                mediaListRepository.deleteMediaListEntry(id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally {
+                        _loading.onNext(false)
+                    }
+                    .subscribe(
+                        {
+                            _deleteSuccess.onNext(R.string.entry_removed)
+                        },
+                        {
+                            _error.onNext(it.getStringResource())
+                        }
+                    )
+            )
+        }
+
     }
 
     fun updateStatus(newStatus: MediaListStatus) {

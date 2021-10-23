@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AL-chan</string>
+    <string name="app_name">AL-chan (Dev)</string>
     <string name="home">Home</string>
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
@@ -308,6 +308,8 @@
     <string name="high">High</string>
     <string name="very_high">Very High</string>
     <string name="set">Set</string>
+    <string name="entry_removed">Entry Removed</string>
+    <string name="are_you_sure_you_want_to_remove_this_entry_from_your_list">Are you sure you want to remove this entry from your list?</string>
 
 
     <plurals name="minute">

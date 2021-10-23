@@ -122,7 +122,16 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 
             editorSaveLayout.negativeButton.text = getString(R.string.remove_from_list)
             editorSaveLayout.negativeButton.clicks {
-
+                dialog.showConfirmationDialog(
+                    R.string.remove_from_list,
+                    R.string.are_you_sure_you_want_to_remove_this_entry_from_your_list,
+                    R.string.remove,
+                    {
+                        viewModel.deleteMediaList()
+                    },
+                    R.string.cancel,
+                    {}
+                )
             }
         }
     }
@@ -142,6 +151,10 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             },
             viewModel.success.subscribe {
                 dialog.showToast(it)
+            },
+            viewModel.deleteSuccess.subscribe {
+                dialog.showToast(it)
+                goBack()
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)

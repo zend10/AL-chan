@@ -40,4 +40,5 @@ interface MediaListRepository {
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
     ): Observable<MediaList>
+    fun deleteMediaListEntry(id: Int): Completable
 }
