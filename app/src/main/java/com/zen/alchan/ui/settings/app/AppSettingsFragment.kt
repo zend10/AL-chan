@@ -21,7 +21,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
 
     /**
      * TODO:
-     * Ask for rating
      * Starting tab
      */
 

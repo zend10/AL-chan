@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.ui.activity.ActivityFragment
@@ -147,8 +148,13 @@ class DefaultNavigationManager(
 
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.setCustomAnimations(
+            R.anim.slide_in,
+            R.anim.fade_out,
+            R.anim.fade_in,
+            R.anim.slide_out
+        )
         fragmentTransaction.replace(layout.id, fragment)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         if (!skipBackStack)
             fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
@@ -156,8 +162,13 @@ class DefaultNavigationManager(
 
     private fun stackPage(fragment: Fragment) {
         val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.setCustomAnimations(
+            R.anim.slide_in,
+            R.anim.fade_out,
+            R.anim.fade_in,
+            R.anim.slide_out
+        )
         fragmentTransaction.add(layout.id, fragment)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
     }
