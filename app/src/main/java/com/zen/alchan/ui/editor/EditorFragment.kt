@@ -56,7 +56,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
 
             editorFavoriteIcon.setOnClickListener {
-
+                viewModel.updateIsFavorite()
             }
 
             editorStatusText.clicks {
@@ -117,7 +117,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 
             editorSaveLayout.positiveButton.text = getString(R.string.save)
             editorSaveLayout.positiveButton.clicks {
-
+                viewModel.saveMediaList()
             }
 
             editorSaveLayout.negativeButton.text = getString(R.string.remove_from_list)
@@ -139,6 +139,9 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
         disposables.addAll(
             viewModel.loading.subscribe {
                 binding.loadingLayout.loadingLayout.show(it)
+            },
+            viewModel.success.subscribe {
+                dialog.showToast(it)
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)

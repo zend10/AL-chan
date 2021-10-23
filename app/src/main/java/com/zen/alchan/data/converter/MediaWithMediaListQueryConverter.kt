@@ -28,6 +28,7 @@ fun MediaWithMediaListQuery.Data.convert(): Media {
             repeat = media?.mediaListEntry?.repeat ?: 0,
             priority = media?.mediaListEntry?.priority ?: 0,
             private = media?.mediaListEntry?.private_ ?: false,
+            notes = media?.mediaListEntry?.notes ?: "",
             hiddenFromStatusLists = media?.mediaListEntry?.hiddenFromStatusLists ?: false,
             customLists = media?.mediaListEntry?.customLists,
             advancedScores = media?.mediaListEntry?.advancedScores,

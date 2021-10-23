@@ -2,6 +2,7 @@ package com.zen.alchan.ui.editor
 
 import android.text.InputType
 import com.apollographql.apollo.api.CustomTypeValue
+import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
@@ -21,6 +22,8 @@ import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
@@ -177,7 +180,7 @@ class EditorViewModel(
                             this.appSetting = appSetting
 
                             _title.onNext(media.getTitle(appSetting))
-                            updateIsFavorite(media.isFavourite)
+                            _isFavorite.onNext(media.isFavourite)
 
                             _progressVolumeVisibility.onNext(mediaType == MediaType.MANGA)
                             _scoreTextVisibility.onNext(user.mediaListOptions.scoreFormat != ScoreFormat.POINT_3)
@@ -225,8 +228,62 @@ class EditorViewModel(
         }
     }
 
-    fun updateIsFavorite(isFavorite: Boolean) {
-        _isFavorite.onNext(isFavorite)
+    fun saveMediaList() {
+        _loading.onNext(true)
+
+        disposables.add(
+            mediaListRepository.updateMediaListEntry(
+                media.mediaListEntry?.id,
+                media.idAniList,
+                _status.value ?: MediaListStatus.PLANNING,
+                _score.value ?: 0.0,
+                _progress.value ?: 0,
+                _progressVolume.value,
+                _totalRewatches.value ?: 0,
+                _priority.value ?: 0,
+                _isPrivate.value ?: false,
+                _notes.value ?: "",
+                _hideFromStatusLists.value ?: false,
+                _customLists.value?.data?.filter { it.value }?.map { it.key },
+                _advancedScores.value?.data?.map { it.value },
+                _startDate.value?.data,
+                _finishDate.value?.data
+            )
+                .applyScheduler()
+                .doAfterNext { _loading.onNext(false) }
+                .subscribe(
+                    {
+                        _success.onNext(R.string.save_changes)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
+    }
+
+    fun updateIsFavorite() {
+        _loading.onNext(true)
+        disposables.add(
+            mediaListRepository.toggleFavorite(
+                animeId = if (mediaType == MediaType.ANIME) mediaId else null,
+                mangaId = if (mediaType == MediaType.MANGA) mediaId else null
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        val isFavorited = _isFavorite.value ?: false
+                        _isFavorite.onNext(!isFavorited)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 
     fun updateStatus(newStatus: MediaListStatus) {
