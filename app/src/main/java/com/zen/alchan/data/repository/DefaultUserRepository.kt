@@ -216,8 +216,6 @@ class DefaultUserRepository(
                 it.onComplete()
             } catch (e: Exception) {
                 it.onError(e)
-            } finally {
-                _refreshMainScreenTrigger.onNext(Unit)
             }
         }
     }
@@ -241,6 +239,9 @@ class DefaultUserRepository(
             airingNotifications
         )
             .toObservable()
+            .doFinally {
+                _refreshMainScreenTrigger.onNext(Unit)
+            }
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {
@@ -260,6 +261,9 @@ class DefaultUserRepository(
             scoreFormat, rowOrder, animeListOptions, mangaListOptions
         )
             .toObservable()
+            .doFinally {
+                _refreshMainScreenTrigger.onNext(Unit)
+            }
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {
