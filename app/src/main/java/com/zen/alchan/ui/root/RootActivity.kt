@@ -1,11 +1,12 @@
 package com.zen.alchan.ui.root
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.zen.alchan.R
+import android.content.Intent
+import android.net.Uri
 import com.zen.alchan.databinding.ActivityRootBinding
+import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.*
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class RootActivity : BaseActivity<ActivityRootBinding>() {
 
@@ -15,6 +16,10 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
     lateinit var dialogManager: DialogManager
         private set
 
+    private val _incomingDeepLink = PublishSubject.create<DeepLink>()
+    val incomingDeepLink: Observable<DeepLink>
+        get() = _incomingDeepLink
+
     override fun generateViewBinding(): ActivityRootBinding {
         return ActivityRootBinding.inflate(layoutInflater)
     }
@@ -23,16 +28,43 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
         navigationManager = DefaultNavigationManager(this, supportFragmentManager, binding.rootLayout)
         dialogManager = DefaultDialogManager(this)
 
-        navigationManager.navigateToSplash()
+        handleDeepLink(intent)
     }
 
     override fun setUpObserver() {
-        val deepLink = intent.data?.encodedFragment
-        val accessToken = deepLink?.substring("access_token=".length, deepLink.indexOf("&"))
+        // do nothing
+    }
 
-        if (!accessToken.isNullOrBlank()) {
-            intent.data = null
-            navigationManager.navigateToLogin(accessToken)
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent?.data != null) {
+            handleDeepLink(intent)
         }
+    }
+
+    private fun handleDeepLink(intent: Intent) {
+        val deepLink = DeepLink(intent.data)
+
+        when {
+            supportFragmentManager.fragments.isEmpty() -> {
+                navigationManager.navigateToSplash(deepLink, intent.getBooleanExtra("RESTART", false))
+            }
+            navigationManager.isAtPreLoginScreen() -> {
+                if (deepLink.isLogin()) {
+                    val fullDeepLink = deepLink.uri?.encodedFragment
+                    val accessToken = fullDeepLink?.substring("access_token=".length, fullDeepLink.indexOf("&"))
+                    navigationManager.navigateToLogin(accessToken, true)
+                } else {
+                    // TODO: login as guest
+                    navigationManager.navigateToMain(deepLink)
+                }
+            }
+            deepLink.uri != null -> {
+                _incomingDeepLink.onNext(deepLink)
+            }
+        }
+
+        intent.data = null
     }
 }

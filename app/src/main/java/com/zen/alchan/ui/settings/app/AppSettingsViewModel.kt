@@ -109,10 +109,6 @@ class AppSettingsViewModel(
     val showStatsChartAutomatically: Observable<Boolean>
         get() = _showStatsChartAutomatically
 
-    private val _appSettingsSaved = PublishSubject.create<Unit>()
-    val appSettingsSaved: Observable<Unit>
-        get() = _appSettingsSaved
-
     private val _appThemeItems = PublishSubject.create<List<AppThemeItem>>()
     val appThemeItems: Observable<List<AppThemeItem>>
         get() = _appThemeItems
@@ -191,7 +187,7 @@ class AppSettingsViewModel(
             userRepository.setAppSetting(currentAppSetting)
                 .applyScheduler()
                 .subscribe{
-                    _appSettingsSaved.onNext(Unit)
+                    _success.onNext(R.string.settings_saved)
                 }
         )
     }
@@ -201,7 +197,7 @@ class AppSettingsViewModel(
             userRepository.setAppSetting(null)
                 .applyScheduler()
                 .subscribe {
-                    _appSettingsSaved.onNext(Unit)
+                    _success.onNext(R.string.settings_saved)
                 }
         )
     }

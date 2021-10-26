@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.base
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.TextInputSetting
+import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.common.BottomSheetListDialog
 import com.zen.alchan.ui.common.BottomSheetListRvAdapter
 import com.zen.alchan.ui.common.BottomSheetTextInputDialog
@@ -30,6 +32,10 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
 
     protected val dialog by lazy {
         rootActivity.dialogManager
+    }
+
+    protected val incomingDeepLink by lazy {
+        rootActivity.incomingDeepLink
     }
 
     protected abstract val viewModel: VM
@@ -119,8 +125,12 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
         }
     }
 
-    protected fun restartApp() {
+    protected fun restartApp(deepLink: DeepLink? = null) {
         val intent = Intent(rootActivity, LaunchActivity::class.java)
+        if (deepLink?.uri != null) {
+            intent.data = deepLink.uri
+            intent.putExtra("RESTART", true)
+        }
         startActivity(intent)
         rootActivity.overridePendingTransition(0, 0)
         rootActivity.finish()

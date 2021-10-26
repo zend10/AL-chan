@@ -16,7 +16,10 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding>() {
     }
 
     override fun setUpLayout() {
-        startActivity(Intent(this, RootActivity::class.java))
+        val targetIntent = Intent(this, RootActivity::class.java)
+        targetIntent.data = intent.data
+        targetIntent.putExtra("RESTART", intent.getBooleanExtra("RESTART", false))
+        startActivity(targetIntent)
         overridePendingTransition(0, 0)
         finish()
     }

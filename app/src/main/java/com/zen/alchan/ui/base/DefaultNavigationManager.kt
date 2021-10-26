@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.browse.BrowseFragment
 import com.zen.alchan.ui.customise.CustomiseFragment
@@ -36,20 +37,20 @@ class DefaultNavigationManager(
     private val layout: FragmentContainerView
 ) : NavigationManager {
 
-    override fun navigateToSplash() {
-        swapPage(SplashFragment.newInstance(), true)
+    override fun navigateToSplash(deepLink: DeepLink?, bypassSplash: Boolean) {
+        swapPage(SplashFragment.newInstance(deepLink, bypassSplash), true)
     }
 
     override fun navigateToLanding() {
         swapPage(LandingFragment.newInstance(), true)
     }
 
-    override fun navigateToLogin(bearerToken: String?) {
-        swapPage(LoginFragment.newInstance(bearerToken), true)
+    override fun navigateToLogin(bearerToken: String?, disableAnimation: Boolean) {
+        swapPage(LoginFragment.newInstance(bearerToken), true, disableAnimation)
     }
 
-    override fun navigateToMain() {
-        swapPage(MainFragment.newInstance(), true)
+    override fun navigateToMain(deepLink: DeepLink?) {
+        swapPage(MainFragment.newInstance(deepLink), true)
     }
 
     override fun navigateToBrowse() {
@@ -65,31 +66,31 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToSettings() {
-        swapPage(SettingsFragment.newInstance())
+        stackPage(SettingsFragment.newInstance())
     }
 
     override fun navigateToAppSettings() {
-        swapPage(AppSettingsFragment.newInstance())
+        stackPage(AppSettingsFragment.newInstance())
     }
 
     override fun navigateToAniListSettings() {
-        swapPage(AniListSettingsFragment.newInstance())
+        stackPage(AniListSettingsFragment.newInstance())
     }
 
     override fun navigateToListSettings() {
-        swapPage(ListSettingsFragment.newInstance())
+        stackPage(ListSettingsFragment.newInstance())
     }
 
     override fun navigateToNotificationsSettings() {
-        swapPage(NotificationsSettingsFragment.newInstance())
+        stackPage(NotificationsSettingsFragment.newInstance())
     }
 
     override fun navigateToAccountSettings() {
-        swapPage(AccountSettingsFragment.newInstance())
+        stackPage(AccountSettingsFragment.newInstance())
     }
 
     override fun navigateToAbout() {
-        swapPage(AboutFragment.newInstance())
+        stackPage(AboutFragment.newInstance())
     }
 
     override fun navigateToReorder() {
@@ -146,17 +147,27 @@ class DefaultNavigationManager(
         launcher.launch(intent)
     }
 
-    private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false) {
+    override fun isAtPreLoginScreen(): Boolean {
+        val fragments = fragmentManager.fragments
+        if (fragments.isEmpty()) return true
+        val lastFragment = fragments.last()
+        return lastFragment is SplashFragment || lastFragment is LandingFragment || lastFragment is LoginFragment
+    }
+
+    private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false, disableAnimation: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.setCustomAnimations(
-            R.anim.slide_in,
-            R.anim.fade_out,
-            R.anim.fade_in,
-            R.anim.slide_out
-        )
+        if (!disableAnimation) {
+            fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+        }
         fragmentTransaction.replace(layout.id, fragment)
-        if (!skipBackStack)
+        if (!skipBackStack) {
             fragmentTransaction.addToBackStack(fragment.toString())
+        }
         fragmentTransaction.commit()
     }
 

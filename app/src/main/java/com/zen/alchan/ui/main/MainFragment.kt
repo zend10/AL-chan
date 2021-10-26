@@ -1,13 +1,14 @@
 package com.zen.alchan.ui.main
 
+import android.net.Uri
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.view.get
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentMainBinding
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
@@ -30,6 +31,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     private var mangaListFragment: MediaListFragment? = null
     private var socialFragment: SocialFragment? = null
     private var profileFragment: ProfileFragment? = null
+
+    private var deepLink: DeepLink? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -84,7 +87,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                 }
             })
 
-            mainBottomNavigation.setOnNavigationItemSelectedListener {
+            mainBottomNavigation.setOnItemSelectedListener {
                 val index = if (fragments?.size == mainBottomNavigation.menu.size()) {
                     it.order
                 } else {
@@ -100,7 +103,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                 true
             }
 
-            mainBottomNavigation.setOnNavigationItemReselectedListener {
+            mainBottomNavigation.setOnItemReselectedListener {
                 sharedViewModel.scrollToTop(it.order)
             }
         }
@@ -108,6 +111,41 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     override fun setUpObserver() {
         viewModel.loadData()
+
+        disposables.add(
+            incomingDeepLink.subscribe {
+                handleDeepLinkNavigation(it)
+            }
+        )
+
+        deepLink?.let {
+            handleDeepLinkNavigation(it)
+        }
+    }
+
+    private fun handleDeepLinkNavigation(deepLink: DeepLink) {
+        when {
+            deepLink.isHome() -> binding.mainViewPager.currentItem = 0
+            deepLink.isAnimeList() -> {
+                val animeListIndex = fragments?.indexOfFirst { it == animeListFragment  }
+                if (animeListIndex != null && animeListIndex != -1)
+                    binding.mainViewPager.currentItem = animeListIndex
+            }
+            deepLink.isMangaList() -> {
+                val mangaListIndex = fragments?.indexOfFirst { it == mangaListFragment  }
+                if (mangaListIndex != null && mangaListIndex != -1)
+                    binding.mainViewPager.currentItem = mangaListIndex
+            }
+            deepLink.isAppSettings() -> {
+                val profileIndex = fragments?.indexOfFirst { it == profileFragment }
+                if (profileIndex != null && profileIndex != -1)
+                    binding.mainViewPager.currentItem = profileIndex
+                navigation.navigateToSettings()
+                navigation.navigateToAppSettings()
+            }
+        }
+
+        this.deepLink = null
     }
 
     override fun onDestroyView() {
@@ -123,6 +161,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = MainFragment()
+        fun newInstance(deepLink: DeepLink?) = MainFragment().apply {
+            this.deepLink = deepLink
+        }
     }
 }

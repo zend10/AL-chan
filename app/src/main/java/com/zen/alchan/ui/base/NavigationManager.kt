@@ -1,16 +1,18 @@
 package com.zen.alchan.ui.base
 
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.utils.DeepLink
 
 
 interface NavigationManager {
 
-    fun navigateToSplash()
+    fun navigateToSplash(deepLink: DeepLink? = null, bypassSplash: Boolean = false)
     fun navigateToLanding()
-    fun navigateToLogin(bearerToken: String? = null)
-    fun navigateToMain()
+    fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false)
+    fun navigateToMain(deepLink: DeepLink? = null)
     fun navigateToBrowse()
 
     fun navigateToActivities()
@@ -33,6 +35,8 @@ interface NavigationManager {
     fun openWebView(url: Url)
     fun openEmailClient()
     fun openGallery(launcher: ActivityResultLauncher<Intent>)
+
+    fun isAtPreLoginScreen(): Boolean
 
     enum class Url {
         ANILIST_WEBSITE,

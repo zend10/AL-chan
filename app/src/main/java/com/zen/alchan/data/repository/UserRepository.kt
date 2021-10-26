@@ -21,6 +21,8 @@ import java.io.File
 
 interface UserRepository {
 
+    val refreshMainScreenTrigger: Observable<Unit>
+
     fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
     fun getViewer(source: Source? = null): Observable<User>

@@ -20,6 +20,7 @@ import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import type.ScoreFormat
 import type.UserStaffNameLanguage
 import type.UserStatisticsSort
@@ -30,6 +31,10 @@ class DefaultUserRepository(
     private val userDataSource: UserDataSource,
     private val userManager: UserManager
 ) : UserRepository {
+
+    private val _refreshMainScreenTrigger = PublishSubject.create<Unit>()
+    override val refreshMainScreenTrigger: Observable<Unit>
+        get() = _refreshMainScreenTrigger
 
     override fun getIsLoggedInAsGuest(): Observable<Boolean> {
         return Observable.just(userManager.isLoggedInAsGuest)
@@ -211,6 +216,8 @@ class DefaultUserRepository(
                 it.onComplete()
             } catch (e: Exception) {
                 it.onError(e)
+            } finally {
+                _refreshMainScreenTrigger.onNext(Unit)
             }
         }
     }

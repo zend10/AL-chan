@@ -11,11 +11,10 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentAppSettingsBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
-import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.common.BottomSheetListRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.utils.DeepLink
 
 class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettingsViewModel>() {
 
@@ -167,6 +166,10 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+                restartApp(DeepLink.generateAppSettings())
+            },
             viewModel.appTheme.subscribe {
                 binding.appSettingsSelectedThemeText.text = it.getString()
             },
@@ -275,10 +278,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 dialog.showListDialog(it) { data, _ ->
                     viewModel.updateShowPushNotificationsInterval(data)
                 }
-            },
-            viewModel.appSettingsSaved.subscribe {
-                // TODO: need to handle the navigation
-                restartApp()
             }
         )
 

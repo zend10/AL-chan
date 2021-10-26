@@ -198,6 +198,14 @@ class MediaListViewModel(
                         }
                     }
             )
+
+            disposables.add(
+                userRepository.refreshMainScreenTrigger
+                    .applyScheduler()
+                    .subscribe {
+                        reloadData()
+                    }
+            )
         }
     }
 
