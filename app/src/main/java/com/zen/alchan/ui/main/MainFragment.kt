@@ -124,24 +124,29 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     }
 
     private fun handleDeepLinkNavigation(deepLink: DeepLink) {
+        val isViewerAuthenticated = viewModel.isViewerAuthenticated
+
         when {
             deepLink.isHome() -> binding.mainViewPager.currentItem = 0
-            deepLink.isAnimeList() -> {
+            deepLink.isAnimeList() && isViewerAuthenticated -> {
                 val animeListIndex = fragments?.indexOfFirst { it == animeListFragment  }
-                if (animeListIndex != null && animeListIndex != -1)
+                if (animeListIndex != null && animeListIndex != -1) {
                     binding.mainViewPager.currentItem = animeListIndex
+                }
             }
-            deepLink.isMangaList() -> {
+            deepLink.isMangaList() && isViewerAuthenticated -> {
                 val mangaListIndex = fragments?.indexOfFirst { it == mangaListFragment  }
-                if (mangaListIndex != null && mangaListIndex != -1)
+                if (mangaListIndex != null && mangaListIndex != -1) {
                     binding.mainViewPager.currentItem = mangaListIndex
+                }
             }
-            deepLink.isAppSettings() -> {
+            deepLink.isAppSettings() && isViewerAuthenticated -> {
                 val profileIndex = fragments?.indexOfFirst { it == profileFragment }
-                if (profileIndex != null && profileIndex != -1)
+                if (profileIndex != null && profileIndex != -1) {
                     binding.mainViewPager.currentItem = profileIndex
-                navigation.navigateToSettings()
-                navigation.navigateToAppSettings()
+                    navigation.navigateToSettings()
+                    navigation.navigateToAppSettings()
+                }
             }
         }
 

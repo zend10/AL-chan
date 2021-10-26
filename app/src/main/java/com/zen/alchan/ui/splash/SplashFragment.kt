@@ -31,16 +31,21 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override fun setUpObserver() {
         disposables.add(
             viewModel.isLoggedIn.subscribe {
-                if (it) {
+                // in a case where there's a deep link passed to Splash screen,
+                // navigate directly to Main screen
+                if (it || deepLink?.uri != null) {
                     navigation.navigateToMain(deepLink)
+                    deepLink = null
                 } else {
                     navigation.navigateToLanding()
                 }
             }
         )
 
+        // currently bypassSplash is only used after restarting app from AppSettings screen
         if (bypassSplash) {
             navigation.navigateToMain(deepLink)
+            deepLink = null
         } else {
             viewModel.loadData()
         }

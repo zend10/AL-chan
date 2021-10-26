@@ -56,7 +56,6 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
                     val accessToken = fullDeepLink?.substring("access_token=".length, fullDeepLink.indexOf("&"))
                     navigationManager.navigateToLogin(accessToken, true)
                 } else {
-                    // TODO: login as guest
                     navigationManager.navigateToMain(deepLink)
                 }
             }

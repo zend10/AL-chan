@@ -37,7 +37,7 @@ class LandingFragment : BaseFragment<FragmentLandingBinding, LandingViewModel>()
     }
 
     override fun setUpObserver() {
-
+        // do nothing
     }
 
     companion object {

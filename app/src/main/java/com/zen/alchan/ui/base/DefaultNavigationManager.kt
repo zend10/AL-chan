@@ -152,7 +152,7 @@ class DefaultNavigationManager(
     }
 
     override fun isAtPreLoginScreen(): Boolean {
-        val fragments = fragmentManager.fragments
+        val fragments = fragmentManager.fragments.filterIsInstance<BaseFragment<*, *>>()
         if (fragments.isEmpty()) return true
         val lastFragment = fragments.last()
         return lastFragment is SplashFragment || lastFragment is LandingFragment || lastFragment is LoginFragment
