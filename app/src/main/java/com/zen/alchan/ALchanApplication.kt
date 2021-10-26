@@ -30,7 +30,6 @@ import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.profile.SharedProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
-import com.zen.alchan.ui.reorder.SharedReorderViewModel
 import com.zen.alchan.ui.review.ReviewViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.account.AccountSettingsViewModel
@@ -122,7 +121,6 @@ class ALchanApplication : Application() {
         viewModel { AccountSettingsViewModel(get()) }
 
         viewModel { ReorderViewModel() }
-        viewModel { SharedReorderViewModel() }
 
         viewModel { FilterViewModel(get(), get()) }
         viewModel { SharedFilterViewModel() }

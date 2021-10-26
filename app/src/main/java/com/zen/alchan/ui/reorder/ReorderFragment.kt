@@ -19,7 +19,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>() {
 
     override val viewModel: ReorderViewModel by viewModel()
-    private val sharedViewModel by sharedViewModel<SharedReorderViewModel>()
+
+    private var listener: ReorderListener? = null
 
     private var reorderAdapter: ReorderRvAdapter? = null
     private var itemTouchHelper: ItemTouchHelper? = null
@@ -49,8 +50,7 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
 
             reorderSaveLayout.positiveButton.text = getString(R.string.save_changes)
             reorderSaveLayout.positiveButton.clicks {
-                sharedViewModel.updateOrderedList()
-                goBack()
+                viewModel.saveOrder()
             }
         }
     }
@@ -61,11 +61,19 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
     }
 
     override fun setUpObserver() {
-        sharedDisposables.add(
-            sharedViewModel.unorderedList.subscribe {
+        disposables.addAll(
+            viewModel.itemList.subscribe {
                 reorderAdapter?.updateData(it)
+            },
+            viewModel.reorderResult.subscribe {
+                listener?.getReorderResult(it)
+                goBack()
             }
         )
+
+        arguments?.let {
+            viewModel.loadData(it.getStringArrayList(ITEM_LIST)?.toList() ?: listOf())
+        }
     }
 
     override fun onDestroyView() {
@@ -74,7 +82,19 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
     }
 
     companion object {
+        private const val ITEM_LIST = "itemList"
+
         @JvmStatic
-        fun newInstance() = ReorderFragment()
+        fun newInstance(itemList: List<String>, listener: ReorderListener) =
+            ReorderFragment().apply {
+                arguments = Bundle().apply {
+                    putStringArrayList(ITEM_LIST, ArrayList(itemList))
+                }
+                this.listener = listener
+            }
+    }
+
+    interface ReorderListener {
+        fun getReorderResult(reorderResult: List<String>)
     }
 }

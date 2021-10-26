@@ -203,7 +203,8 @@ class MediaListViewModel(
                 userRepository.refreshMainScreenTrigger
                     .applyScheduler()
                     .subscribe {
-                        reloadData()
+                        state = State.INIT
+                        loadData()
                     }
             )
         }

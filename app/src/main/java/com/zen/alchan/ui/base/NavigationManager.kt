@@ -25,7 +25,7 @@ interface NavigationManager {
     fun navigateToAccountSettings()
     fun navigateToAbout()
 
-    fun navigateToReorder()
+    fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit)
     fun navigateToFilter(mediaType: MediaType, isUserList: Boolean)
     fun navigateToCustomise(mediaType: MediaType)
 

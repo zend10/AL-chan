@@ -5,26 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentListSettingsBinding
-import com.zen.alchan.helper.enums.ListOrder
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.common.ChipRvAdapter
 import com.zen.alchan.ui.reorder.ReorderRvAdapter
-import com.zen.alchan.ui.reorder.SharedReorderViewModel
 import io.reactivex.Observable
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-import type.ScoreFormat
 
 class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSettingsViewModel>() {
 
     override val viewModel: ListSettingsViewModel by viewModel()
-    private val sharedViewModel by sharedViewModel<SharedReorderViewModel>()
 
     private var advancedScoringAdapter: ChipRvAdapter? = null
     private var animeCustomListsAdapter: ChipRvAdapter? = null
@@ -247,24 +240,13 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 binding.listSettingsCustomMangaListsNoItemText.show(it)
             },
             viewModel.animeSectionOrderItems.subscribe {
-                sharedViewModel.updateUnorderedList(it, SharedReorderViewModel.ReorderList.ANIME_SECTION_ORDER)
-                navigation.navigateToReorder()
+                navigation.navigateToReorder(it) { orderedList ->
+                    viewModel.updateSectionOrder(MediaType.ANIME, orderedList)
+                }
             },
             viewModel.mangaSectionOrderItems.subscribe {
-                sharedViewModel.updateUnorderedList(it, SharedReorderViewModel.ReorderList.MANGA_SECTION_ORDER)
-                navigation.navigateToReorder()
-            }
-        )
-
-        sharedDisposables.addAll(
-            sharedViewModel.orderedList.subscribe { (orderedList, reorderList) ->
-                when (reorderList) {
-                    SharedReorderViewModel.ReorderList.ANIME_SECTION_ORDER -> {
-                        viewModel.updateSectionOrder(MediaType.ANIME, orderedList)
-                    }
-                    SharedReorderViewModel.ReorderList.MANGA_SECTION_ORDER -> {
-                        viewModel.updateSectionOrder(MediaType.MANGA, orderedList)
-                    }
+                navigation.navigateToReorder(it) { orderedList ->
+                    viewModel.updateSectionOrder(MediaType.MANGA, orderedList)
                 }
             }
         )

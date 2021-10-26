@@ -93,8 +93,12 @@ class DefaultNavigationManager(
         stackPage(AboutFragment.newInstance())
     }
 
-    override fun navigateToReorder() {
-        stackPage(ReorderFragment.newInstance())
+    override fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit) {
+        stackPage(ReorderFragment.newInstance(itemList, object : ReorderFragment.ReorderListener{
+            override fun getReorderResult(reorderResult: List<String>) {
+                action(reorderResult)
+            }
+        }))
     }
 
     override fun navigateToFilter(mediaType: MediaType, isUserList: Boolean) {
@@ -171,14 +175,16 @@ class DefaultNavigationManager(
         fragmentTransaction.commit()
     }
 
-    private fun stackPage(fragment: Fragment) {
+    private fun stackPage(fragment: Fragment, disableAnimation: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.setCustomAnimations(
-            R.anim.slide_in,
-            R.anim.fade_out,
-            R.anim.fade_in,
-            R.anim.slide_out
-        )
+        if (!disableAnimation) {
+            fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+        }
         fragmentTransaction.add(layout.id, fragment)
         fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
