@@ -3,21 +3,17 @@ package com.zen.alchan.ui.base
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.zen.alchan.R
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment(), ViewContract {
@@ -29,11 +25,14 @@ abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment()
     abstract fun generateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     protected val disposables = CompositeDisposable()
-    protected var inputMethodManager: InputMethodManager? = null
+    private var insetsController: WindowInsetsControllerCompat? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+
+        activity?.window?.let {
+            insetsController = WindowInsetsControllerCompat(it, it.decorView)
+        }
     }
 
     override fun onCreateView(
@@ -91,20 +90,24 @@ abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment()
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        inputMethodManager?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        inputMethodManager = null
+        closeKeyboard()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        inputMethodManager?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        closeKeyboard()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        insetsController = null
     }
 
     protected fun openKeyboard() {
-        inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        insetsController?.show(WindowInsetsCompat.Type.ime())
+    }
+
+    protected fun closeKeyboard() {
+        insetsController?.hide(WindowInsetsCompat.Type.ime())
     }
 }
