@@ -187,7 +187,7 @@
     <string name="when_someone_replies_to_a_forum_thread_i_m_subscribed_to">When someone replies to a forum thread I\'m subscribed to</string>
     <string name="when_someone_likes_my_forum_thread">When someone likes my forum thread</string>
     <string name="custom_lists_feature_is_a_bit_glitchy_if_your_custom_lists_are_not_showing_in_your_list_you_can_try_clicking_on_reset_to_default_and_save_changes">Custom Lists feature is a bit glitchy. If your Custom Lists are not showing in your list, you can try clicking on Reset to Default and Save Changes.</string>
-    <string name="account_settings_can_only_be_managed_on_the_web_make_sure_the_url_is_anilist_co_before_doing_anything">Account settings can only be managed on the web. Make sure the url is anilist.co before doing anything.</string>
+    <string name="account_settings_can_only_be_managed_on_the_web_make_sure_the_url_is_anilist_co_before_doing_anything">Account settings can only be managed on the web. Make sure the URL is anilist.co before doing anything.</string>
     <string name="update_profile">Update Profile</string>
     <string name="update_account">Update Account</string>
     <string name="force_update_stats">Force Update Stats</string>
