@@ -17,7 +17,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
     override val viewModel: FilterViewModel by viewModel()
-    private val sharedViewModel by sharedViewModel<SharedFilterViewModel>()
+
+    private var listener: FilterListener? = null
+    private var oldMediaFilter: MediaFilter? = null
 
     private var includedGenresAdapter: ChipRvAdapter? = null
     private var excludedGenresAdapter: ChipRvAdapter? = null
@@ -29,14 +31,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
         container: ViewGroup?
     ): FragmentFilterBinding {
         return FragmentFilterBinding.inflate(inflater, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            viewModel.mediaType = MediaType.valueOf(it.getString(MEDIA_TYPE) ?: MediaType.ANIME.name)
-            viewModel.isUserList = it.getBoolean(IS_USER_LIST)
-        }
     }
 
     override fun setUpLayout() {
@@ -210,7 +204,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
     override fun setUpObserver() {
         disposables.addAll(
             viewModel.mediaFilter.subscribe {
-                sharedViewModel.updateMediaFilterResult(it)
+                listener?.getFilterResult(it)
                 goBack()
             },
             viewModel.persistFilter.subscribe {
@@ -433,13 +427,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             }
         )
 
-        sharedDisposables.addAll(
-            sharedViewModel.oldMediaFilter.subscribe {
-                viewModel.updateCurrentFilter(it)
-            }
+        viewModel.loadData(
+            oldMediaFilter ?: MediaFilter(),
+            MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name),
+            arguments?.getBoolean(IS_USER_LIST) ?: false
         )
-
-        viewModel.loadData()
     }
 
     private fun <T> getJointString(list: List<T>, action: (data: T) -> String): String {
@@ -461,12 +453,18 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
         private const val IS_USER_LIST = "isUserList"
 
         @JvmStatic
-        fun newInstance(mediaType: MediaType, isUserList: Boolean) =
+        fun newInstance(mediaFilter: MediaFilter?, mediaType: MediaType, isUserList: Boolean, listener: FilterListener) =
             FilterFragment().apply {
                 arguments = Bundle().apply {
                     putString(MEDIA_TYPE, mediaType.name)
                     putBoolean(IS_USER_LIST, isUserList)
                 }
+                this.oldMediaFilter = mediaFilter
+                this.listener = listener
             }
+    }
+
+    interface FilterListener {
+        fun getFilterResult(filterResult: MediaFilter)
     }
 }

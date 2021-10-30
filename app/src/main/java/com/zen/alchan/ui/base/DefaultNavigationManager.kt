@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.zen.alchan.R
+import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
@@ -94,19 +96,27 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit) {
-        stackPage(ReorderFragment.newInstance(itemList, object : ReorderFragment.ReorderListener{
+        stackPage(ReorderFragment.newInstance(itemList, object : ReorderFragment.ReorderListener {
             override fun getReorderResult(reorderResult: List<String>) {
                 action(reorderResult)
             }
         }))
     }
 
-    override fun navigateToFilter(mediaType: MediaType, isUserList: Boolean) {
-        stackPage(FilterFragment.newInstance(mediaType, isUserList))
+    override fun navigateToFilter(mediaFilter: MediaFilter?, mediaType: MediaType, isUserList: Boolean, action: (filterResult: MediaFilter) -> Unit) {
+        stackPage(FilterFragment.newInstance(mediaFilter, mediaType, isUserList, object : FilterFragment.FilterListener {
+            override fun getFilterResult(filterResult: MediaFilter) {
+                action(filterResult)
+            }
+        }))
     }
 
-    override fun navigateToCustomise(mediaType: MediaType) {
-        stackPage(CustomiseFragment.newInstance(mediaType))
+    override fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit) {
+        stackPage(CustomiseFragment.newInstance(mediaType, object : CustomiseFragment.CustomiseListener {
+            override fun getCustomiseResult(customiseResult: ListStyle) {
+                action(customiseResult)
+            }
+        }))
     }
 
     override fun navigateToEditor(mediaType: MediaType, mediaId: Int) {

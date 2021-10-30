@@ -15,8 +15,6 @@ import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
-import com.zen.alchan.ui.customise.SharedCustomiseViewModel
-import com.zen.alchan.ui.filter.SharedFilterViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -48,21 +46,13 @@ class MediaListViewModel(
     val listSections: Observable<List<ListItem<String>>>
         get() = _listSections
 
-    private val _listStyleAndCustomisedList = PublishSubject.create<Pair<ListStyle, SharedCustomiseViewModel.CustomisedList>>()
-    val listStyleAndCustomisedList: Observable<Pair<ListStyle, SharedCustomiseViewModel.CustomisedList>>
-        get() = _listStyleAndCustomisedList
-
-    private val _mediaFilterAndFilterList = PublishSubject.create<Pair<MediaFilter, SharedFilterViewModel.FilteredList>>()
-    val mediaFilterAndFilteredList: Observable<Pair<MediaFilter, SharedFilterViewModel.FilteredList>>
-        get() = _mediaFilterAndFilterList
-
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
     var user = User()
     var appSetting = AppSetting()
     var listStyle = ListStyle()
-    private var mediaFilter = MediaFilter()
+    var mediaFilter = MediaFilter()
     private var isAllListPositionAtTop = true
 
     private var rawMediaListCollection: MediaListCollection? = null // needed when applying filter
@@ -210,14 +200,6 @@ class MediaListViewModel(
         }
     }
 
-    fun loadListStyle() {
-        val customisedList = when (mediaType) {
-            MediaType.ANIME -> SharedCustomiseViewModel.CustomisedList.ANIME_LIST
-            MediaType.MANGA -> SharedCustomiseViewModel.CustomisedList.MANGA_LIST
-        }
-        _listStyleAndCustomisedList.onNext(listStyle to customisedList)
-    }
-
     fun updateListStyle(newListStyle: ListStyle) {
         listStyle = newListStyle
 
@@ -239,14 +221,6 @@ class MediaListViewModel(
                     }
                 }
         )
-    }
-
-    fun loadMediaFilter() {
-        val filterList = when (mediaType) {
-            MediaType.ANIME -> SharedFilterViewModel.FilteredList.ANIME_MEDIA_LIST
-            MediaType.MANGA -> SharedFilterViewModel.FilteredList.MANGA_MEDIA_LIST
-        }
-        _mediaFilterAndFilterList.onNext(mediaFilter to filterList)
     }
 
     fun updateMediaFilter(newFilter: MediaFilter) {

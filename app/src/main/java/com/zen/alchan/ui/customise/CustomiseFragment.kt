@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.zen.alchan.R
+import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.databinding.FragmentCustomiseBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
@@ -24,7 +25,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewModel>() {
 
     override val viewModel: CustomiseViewModel by viewModel()
-    private val sharedViewModel by sharedViewModel<SharedCustomiseViewModel>()
+
+    private var listener: CustomiseListener? = null
 
     private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
@@ -45,13 +47,6 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
         container: ViewGroup?
     ): FragmentCustomiseBinding {
         return FragmentCustomiseBinding.inflate(inflater, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            viewModel.mediaType = MediaType.valueOf(it.getString(MEDIA_TYPE) ?: MediaType.ANIME.name)
-        }
     }
 
     override fun setUpLayout() {
@@ -215,7 +210,7 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
     override fun setUpObserver() {
         disposables.addAll(
             viewModel.listStyle.subscribe {
-                sharedViewModel.updateListStyleResult(it)
+                listener?.getCustomiseResult(it)
                 goBack()
             },
             viewModel.listType.subscribe {
@@ -394,7 +389,7 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name))
     }
 
     private fun showColorPickerDialog(@ColorInt currentColor: Int, hasAlpha: Boolean, action: (hexColor: String) -> Unit) {
@@ -435,11 +430,16 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
         private const val MEDIA_TYPE = "mediaType"
 
         @JvmStatic
-        fun newInstance(mediaType: MediaType) =
+        fun newInstance(mediaType: MediaType, listener: CustomiseListener) =
             CustomiseFragment().apply {
                 arguments = Bundle().apply {
                     putString(MEDIA_TYPE, mediaType.name)
                 }
+                this.listener = listener
             }
+    }
+
+    interface CustomiseListener {
+        fun getCustomiseResult(customiseResult: ListStyle)
     }
 }

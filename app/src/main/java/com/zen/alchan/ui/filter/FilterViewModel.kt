@@ -261,9 +261,8 @@ class FilterViewModel(
     val prioritiesYearsSliderItem: Observable<SliderItem>
         get() = _prioritiesYearsSliderItem
 
-    var mediaType: MediaType = MediaType.ANIME
-    var isUserList: Boolean = true
-
+    private var mediaType: MediaType = MediaType.ANIME
+    private var isUserList: Boolean = true
     private var genres: List<Genre> = listOf()
     private var tags: List<MediaTag> = listOf()
     private var tagList: List<ListItem<MediaTag?>> = listOf()
@@ -272,7 +271,15 @@ class FilterViewModel(
     private var scoreFormat = ScoreFormat.POINT_100
 
     override fun loadData() {
+        // do nothing
+    }
+
+    fun loadData(mediaFilter: MediaFilter, mediaType: MediaType, isUserList: Boolean) {
         loadOnce {
+            this.currentMediaFilter = mediaFilter
+            this.mediaType = mediaType
+            this.isUserList = isUserList
+
             disposables.add(
                 contentRepository.getGenres()
                     .subscribe {

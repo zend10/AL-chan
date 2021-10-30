@@ -125,11 +125,11 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
         }
     }
 
-    protected fun restartApp(deepLink: DeepLink? = null) {
+    protected fun restartApp(deepLink: DeepLink? = null, skipSplashScreen: Boolean = true) {
         val intent = Intent(rootActivity, LaunchActivity::class.java)
         if (deepLink?.uri != null) {
             intent.data = deepLink.uri
-            intent.putExtra("RESTART", true)
+            intent.putExtra("RESTART", skipSplashScreen)
         }
         startActivity(intent)
         rootActivity.overridePendingTransition(0, 0)

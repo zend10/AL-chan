@@ -3,6 +3,8 @@ package com.zen.alchan.ui.base
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
+import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
 
@@ -26,8 +28,8 @@ interface NavigationManager {
     fun navigateToAbout()
 
     fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit)
-    fun navigateToFilter(mediaType: MediaType, isUserList: Boolean)
-    fun navigateToCustomise(mediaType: MediaType)
+    fun navigateToFilter(mediaFilter: MediaFilter?, mediaType: MediaType, isUserList: Boolean, action: (filterResult: MediaFilter) -> Unit)
+    fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit)
 
     fun navigateToEditor(mediaType: MediaType, mediaId: Int)
 

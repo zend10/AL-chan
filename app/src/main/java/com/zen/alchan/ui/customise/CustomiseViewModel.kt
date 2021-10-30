@@ -197,15 +197,20 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     val floatingIconColorAndHasAlpha: Observable<Pair<String?, Boolean>>
         get() = _floatingIconColorAndHasAlpha
 
-    var mediaType: MediaType = MediaType.ANIME
-
+    private var mediaType: MediaType = MediaType.ANIME
     private var appTheme = AppTheme.DEFAULT_THEME_YELLOW
     private var currentListStyle = ListStyle()
 
     private var isBackgroundImageChanged = false
 
     override fun loadData() {
+        // do nothing
+    }
+
+    fun loadData(mediaType: MediaType) {
         loadOnce {
+            this.mediaType = mediaType
+
             disposables.add(
                 userRepository.getAppSetting()
                     .zipWith(userRepository.getListStyle(mediaType)) { appSetting, listStyle ->

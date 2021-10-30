@@ -1,8 +1,6 @@
 package com.zen.alchan.ui.medialist
 
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +8,6 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
@@ -29,8 +26,6 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.customise.SharedCustomiseViewModel
-import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,8 +34,6 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     override val viewModel: MediaListViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
-    private val sharedCustomiseViewModel by sharedViewModel<SharedCustomiseViewModel>()
-    private val sharedFilterViewModel by sharedViewModel<SharedFilterViewModel>()
 
     private var adapter: BaseMediaListRvAdapter? = null
 
@@ -94,12 +87,16 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemCustomiseList?.setOnMenuItemClickListener {
-                viewModel.loadListStyle()
+                navigation.navigateToCustomise(viewModel.mediaType) { customiseResult ->
+                    viewModel.updateListStyle(customiseResult)
+                }
                 true
             }
 
             menuItemFilter?.setOnMenuItemClickListener {
-                viewModel.loadMediaFilter()
+                navigation.navigateToFilter(viewModel.mediaFilter, viewModel.mediaType, true) { filterResult ->
+                    viewModel.updateMediaFilter(filterResult)
+                }
                 true
             }
 
@@ -136,34 +133,12 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 dialog.showListDialog(it) { _, index ->
                     viewModel.showSelectedSectionMediaList(index)
                 }
-            },
-            viewModel.listStyleAndCustomisedList.subscribe {
-                sharedCustomiseViewModel.updateListStyle(it.first, it.second)
-                navigation.navigateToCustomise(viewModel.mediaType)
-            },
-            viewModel.mediaFilterAndFilteredList.subscribe {
-                sharedFilterViewModel.updateMediaFilter(it.first, it.second)
-                navigation.navigateToFilter(viewModel.mediaType, true)
             }
         )
 
         sharedDisposables.addAll(
             sharedViewModel.getScrollToTopObservable(sharedViewModel.getPageFromMediaType(viewModel.mediaType)).subscribe {
                 binding.mediaListRecyclerView.smoothScrollToPosition(0)
-            },
-            sharedCustomiseViewModel.newListStyle.subscribe {
-                if ((viewModel.mediaType == MediaType.ANIME && it.second == SharedCustomiseViewModel.CustomisedList.ANIME_LIST) ||
-                    (viewModel.mediaType == MediaType.MANGA && it.second == SharedCustomiseViewModel.CustomisedList.MANGA_LIST)
-                ) {
-                    viewModel.updateListStyle(it.first)
-                }
-            },
-            sharedFilterViewModel.newMediaFilter.subscribe {
-                if ((viewModel.mediaType == MediaType.ANIME && it.second == SharedFilterViewModel.FilteredList.ANIME_MEDIA_LIST) ||
-                    (viewModel.mediaType == MediaType.MANGA && it.second == SharedFilterViewModel.FilteredList.MANGA_MEDIA_LIST)
-                ) {
-                    viewModel.updateMediaFilter(it.first)
-                }
             }
         )
 

@@ -17,10 +17,8 @@ import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.bio.BioViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
-import com.zen.alchan.ui.customise.SharedCustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
-import com.zen.alchan.ui.filter.SharedFilterViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.login.LoginViewModel
@@ -123,9 +121,7 @@ class ALchanApplication : Application() {
         viewModel { ReorderViewModel() }
 
         viewModel { FilterViewModel(get(), get()) }
-        viewModel { SharedFilterViewModel() }
         viewModel { CustomiseViewModel(get()) }
-        viewModel { SharedCustomiseViewModel() }
 
         viewModel { EditorViewModel(get(), get()) }
     }
