@@ -99,6 +99,11 @@ abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment()
         inputMethodManager = null
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        inputMethodManager?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    }
+
     protected fun openKeyboard() {
         inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
