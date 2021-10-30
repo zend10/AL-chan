@@ -30,6 +30,7 @@ import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.ScoreFormat
+import kotlin.math.max
 
 class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewModel>() {
 
@@ -144,6 +145,25 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 dialog.showScoreDialog(scoreFormat, currentScore, advancedScores) { newScore, newAdvancedScores ->
                     viewModel.updateScore(mediaList, newScore, newAdvancedScores)
                 }
+            },
+            viewModel.progressValues.subscribe { (mediaList: MediaList, isProgressVolume: Boolean) ->
+                val currentProgress = if (isProgressVolume)
+                    mediaList.progressVolumes ?: 0
+                else
+                    mediaList.progress
+
+                val maxProgress = when (viewModel.mediaType) {
+                    MediaType.ANIME -> mediaList.media.episodes
+                    MediaType.MANGA -> if (isProgressVolume) mediaList.media.volumes else mediaList.media.chapters
+                }
+
+                dialog.showProgressDialog(viewModel.mediaType, currentProgress, maxProgress, isProgressVolume) { newProgress ->
+                    if (maxProgress != null && maxProgress != 0 && currentProgress > maxProgress) {
+//                        dialog.showConfirmationDialog()
+                    } else {
+                        viewModel.updateProgress(mediaList, newProgress, isProgressVolume)
+                    }
+                }
             }
         )
 
@@ -257,11 +277,11 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             override fun showProgressDialog(mediaList: MediaList, isVolumeProgress: Boolean) {
-
+                viewModel.loadProgressValues(mediaList, isVolumeProgress)
             }
 
-            override fun incrementProgress(mediaList: MediaList, isVolumeProgress: Boolean) {
-
+            override fun incrementProgress(mediaList: MediaList, newProgress: Int, isVolumeProgress: Boolean) {
+                viewModel.updateProgress(mediaList, newProgress, isVolumeProgress)
             }
         }
     }

@@ -91,7 +91,7 @@ class MediaListLinearRvAdapter(
                     listener.showProgressDialog(mediaList, false)
                 }
                 mediaListIncrementProgressButton.clicks {
-                    listener.incrementProgress(mediaList, false)
+                    listener.incrementProgress(mediaList, mediaList.progress + 1, false)
                 }
 
                 mediaListProgressVolumeText.text = getProgressVolumeText(mediaList)
@@ -101,7 +101,7 @@ class MediaListLinearRvAdapter(
                     listener.showProgressDialog(mediaList, true)
                 }
                 mediaListIncrementProgressVolumeButton.clicks {
-                    listener.incrementProgress(mediaList, true)
+                    listener.incrementProgress(mediaList, (mediaList.progressVolumes ?: 0) + 1, true)
                 }
 
                 // progress bar

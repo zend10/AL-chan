@@ -145,4 +145,17 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
             newMediaList
         }
     }
+
+    override fun updateMediaListProgress(
+        mediaType: com.zen.alchan.helper.enums.MediaType,
+        id: Int,
+        progress: Int?,
+        progressVolumes: Int?
+    ): Observable<MediaList> {
+        return mediaListDataSource.updateMediaListProgress(id, progress, progressVolumes).map {
+            val newMediaList = it.data?.convert()
+            _refreshMediaListTrigger.onNext(mediaType to newMediaList)
+            newMediaList
+        }
+    }
 }

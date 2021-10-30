@@ -36,4 +36,9 @@ interface MediaListDataSource {
         score: Double,
         advancedScores: List<Double>?
     ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    fun updateMediaListProgress(
+        id: Int,
+        progress: Int?,
+        progressVolumes: Int?
+    ): Observable<Response<SaveMediaListEntryMutation.Data>>
 }

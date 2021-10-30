@@ -201,6 +201,6 @@ abstract class BaseMediaListRvAdapter(
         fun showNotes(mediaList: MediaList)
         fun showScoreDialog(mediaList: MediaList)
         fun showProgressDialog(mediaList: MediaList, isVolumeProgress: Boolean)
-        fun incrementProgress(mediaList: MediaList, isVolumeProgress: Boolean)
+        fun incrementProgress(mediaList: MediaList, newProgress: Int, isVolumeProgress: Boolean)
     }
 }

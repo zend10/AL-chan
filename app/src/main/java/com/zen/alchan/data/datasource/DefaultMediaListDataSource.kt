@@ -132,4 +132,17 @@ class DefaultMediaListDataSource(
         )
         return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
     }
+
+    override fun updateMediaListProgress(
+        id: Int,
+        progress: Int?,
+        progressVolumes: Int?
+    ): Observable<Response<SaveMediaListEntryMutation.Data>> {
+        val mutation = SaveMediaListEntryMutation(
+            id = Input.fromNullable(id),
+            progress = Input.optional(progress),
+            progressVolumes = Input.optional(progressVolumes)
+        )
+        return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+    }
 }

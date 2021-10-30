@@ -44,4 +44,5 @@ interface MediaListRepository {
     ): Observable<MediaList>
     fun deleteMediaListEntry(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int): Completable
     fun updateMediaListScore(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int, score: Double, advancedScores: List<Double>?): Observable<MediaList>
+    fun updateMediaListProgress(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int, progress: Int?, progressVolumes: Int?): Observable<MediaList>
 }

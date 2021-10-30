@@ -52,6 +52,10 @@ class MediaListViewModel(
     val scoreValues: Observable<Pair<MediaList, ScoreFormat>>
         get() = _scoreValues
 
+    private val _progressValues = PublishSubject.create<Pair<MediaList, Boolean>>()
+    val progressValues: Observable<Pair<MediaList, Boolean>>
+        get() = _progressValues
+
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
@@ -666,6 +670,34 @@ class MediaListViewModel(
         _loading.onNext(true)
         disposables.add(
             mediaListRepository.updateMediaListScore(mediaType, mediaList.id, newScore, newAdvancedScores?.map { it.value })
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        // do nothing
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
+    }
+
+    fun loadProgressValues(mediaList: MediaList, isProgressVolume: Boolean) {
+        _progressValues.onNext(mediaList to isProgressVolume)
+    }
+
+    fun updateProgress(mediaList: MediaList, newProgress: Int, isProgressVolume: Boolean) {
+        _loading.onNext(true)
+        disposables.add(
+            mediaListRepository.updateMediaListProgress(
+                mediaType,
+                mediaList.id,
+                if (isProgressVolume) null else newProgress,
+                if (isProgressVolume) newProgress else null
+            )
                 .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)
