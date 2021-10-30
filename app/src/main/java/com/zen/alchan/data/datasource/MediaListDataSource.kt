@@ -31,4 +31,9 @@ interface MediaListDataSource {
     fun deleteMediaListEntry(
         id: Int
     ): Completable
+    fun updateMediaListScore(
+        id: Int,
+        score: Double,
+        advancedScores: List<Double>?
+    ): Observable<Response<SaveMediaListEntryMutation.Data>>
 }

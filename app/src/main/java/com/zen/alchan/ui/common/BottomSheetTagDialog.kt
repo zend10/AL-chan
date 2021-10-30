@@ -22,18 +22,6 @@ class BottomSheetTagDialog : BaseDialogFragment<DialogBottomSheetTagBinding>() {
     private var selectedTagIds: ArrayList<Int> = arrayListOf()
     private var listener: TagDialogListener? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setOnShowListener {
-            val bottomSheetDialog = dialog as BottomSheetDialog
-            val bottomSheet = bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-            bottomSheet?.let {
-                BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-        return dialog
-    }
-
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

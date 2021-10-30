@@ -442,6 +442,7 @@
         <item name="bottomSheetStyle">@style/BottomSheetModalTheme</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:navigationBarColor">@color/pureBlack</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="BottomSheetModalTheme" parent="Widget.Design.BottomSheet.Modal">

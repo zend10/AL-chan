@@ -1,12 +1,8 @@
 package com.zen.alchan.ui.common
 
-import android.content.Context
-import android.content.DialogInterface
-import android.os.Handler
 import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import com.zen.alchan.databinding.DialogBottomSheetTextInputBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.TextInputSetting
@@ -17,8 +13,6 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
     private var listener: BottomSheetTextInputListener? = null
     private var currentText = ""
     private var textInputSetting = TextInputSetting()
-
-    private var inputMethodManager: InputMethodManager? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -45,9 +39,7 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
             }
 
             dialogEditText.requestFocus()
-
-            inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            openKeyboard()
         }
     }
 
@@ -55,15 +47,9 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
         // do nothing
     }
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        inputMethodManager?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         listener = null
-        inputMethodManager = null
     }
 
     companion object {

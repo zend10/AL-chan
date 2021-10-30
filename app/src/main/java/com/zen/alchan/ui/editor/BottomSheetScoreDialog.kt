@@ -142,10 +142,13 @@ class BottomSheetScoreDialog : BaseDialogFragment<DialogBottomSheetScoreBinding>
                 filters = arrayOf(InputFilter.LengthFilter(3))
                 keyListener = DigitsKeyListener.getInstance("0123456789.")
                 setText(if (currentScore == 0.0) "" else currentScore.roundToOneDecimal())
+                setSelection(0, scoreInputEditText.text?.length ?: 0)
             }
             scoreInputEditText.addTextChangedListener {
                 currentScore = it.toString().toDoubleOrNull() ?: 0.0
             }
+            scoreInputEditText.requestFocus()
+            openKeyboard()
         }
     }
 
@@ -158,10 +161,13 @@ class BottomSheetScoreDialog : BaseDialogFragment<DialogBottomSheetScoreBinding>
                 filters = arrayOf(InputFilter.LengthFilter(3))
                 keyListener = DigitsKeyListener.getInstance("0123456789")
                 setText(if (currentScore == 0.0) "" else currentScore.roundToOneDecimal())
+                setSelection(0, scoreInputEditText.text?.length ?: 0)
             }
             scoreInputEditText.addTextChangedListener {
                 currentScore = it.toString().toDoubleOrNull() ?: 0.0
             }
+            scoreInputEditText.requestFocus()
+            openKeyboard()
         }
     }
 

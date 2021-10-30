@@ -119,4 +119,17 @@ class DefaultMediaListDataSource(
         val mutation = DeleteMediaListEntryMutation(Input.fromNullable(id))
         return apolloHandler.apolloClient.rxPrefetch(mutation)
     }
+
+    override fun updateMediaListScore(
+        id: Int,
+        score: Double,
+        advancedScores: List<Double>?
+    ): Observable<Response<SaveMediaListEntryMutation.Data>> {
+        val mutation = SaveMediaListEntryMutation(
+            id = Input.fromNullable(id),
+            score = Input.fromNullable(score),
+            advancedScores = Input.optional(advancedScores)
+        )
+        return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+    }
 }

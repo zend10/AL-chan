@@ -18,8 +18,10 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.ScoreFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
 class MediaListViewModel(
     private val mediaListRepository: MediaListRepository,
@@ -45,6 +47,10 @@ class MediaListViewModel(
     private val _listSections = PublishSubject.create<List<ListItem<String>>>()
     val listSections: Observable<List<ListItem<String>>>
         get() = _listSections
+
+    private val _scoreValues = PublishSubject.create<Pair<MediaList, ScoreFormat>>()
+    val scoreValues: Observable<Pair<MediaList, ScoreFormat>>
+        get() = _scoreValues
 
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
@@ -649,5 +655,29 @@ class MediaListViewModel(
         currentMediaListItems = list
 
         return list
+    }
+
+    fun loadScoreValues(mediaList: MediaList) {
+        val scoreFormat = user.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100
+        _scoreValues.onNext(mediaList to scoreFormat)
+    }
+
+    fun updateScore(mediaList: MediaList, newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) {
+        _loading.onNext(true)
+        disposables.add(
+            mediaListRepository.updateMediaListScore(mediaType, mediaList.id, newScore, newAdvancedScores?.map { it.value })
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        // do nothing
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 }

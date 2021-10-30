@@ -29,6 +29,7 @@ import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.ScoreFormat
 
 class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewModel>() {
 
@@ -117,6 +118,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 binding.loadingLayout.loadingLayout.show(it)
                 binding.mediaListSwipeRefresh.isRefreshing = false
             },
+            viewModel.error.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.toolbarTitle.subscribe {
                 binding.defaultToolbar.defaultToolbar.setTitle(it)
             },
@@ -132,6 +136,13 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             viewModel.listSections.subscribe {
                 dialog.showListDialog(it) { _, index ->
                     viewModel.showSelectedSectionMediaList(index)
+                }
+            },
+            viewModel.scoreValues.subscribe { (mediaList: MediaList, scoreFormat: ScoreFormat) ->
+                val currentScore = mediaList.score
+                val advancedScores = mediaList.advancedScores as? LinkedHashMap<String, Double>
+                dialog.showScoreDialog(scoreFormat, currentScore, advancedScores) { newScore, newAdvancedScores ->
+                    viewModel.updateScore(mediaList, newScore, newAdvancedScores)
                 }
             }
         )
@@ -242,7 +253,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             override fun showScoreDialog(mediaList: MediaList) {
-
+                viewModel.loadScoreValues(mediaList)
             }
 
             override fun showProgressDialog(mediaList: MediaList, isVolumeProgress: Boolean) {

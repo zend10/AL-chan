@@ -310,6 +310,8 @@
     <string name="set">Set</string>
     <string name="entry_removed">Entry Removed</string>
     <string name="are_you_sure_you_want_to_remove_this_entry_from_your_list">Are you sure you want to remove this entry from your list?</string>
+    <string name="something_went_wrong_please_try_again">Something went wrong. Please try again.</string>
+    <string name="failed_to_load_from_cache">Failed to load from cache.</string>
 
 
     <plurals name="minute">

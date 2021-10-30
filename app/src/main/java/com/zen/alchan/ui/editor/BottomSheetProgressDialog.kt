@@ -1,9 +1,7 @@
 package com.zen.alchan.ui.editor
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import com.zen.alchan.R
 import com.zen.alchan.databinding.DialogBottomSheetProgressBinding
 import com.zen.alchan.helper.enums.MediaType
@@ -56,6 +54,9 @@ class BottomSheetProgressDialog : BaseDialogFragment<DialogBottomSheetProgressBi
                 listener?.getNewProgress(newProgress)
                 dismiss()
             }
+
+            progressNextProgressEditText.requestFocus()
+            openKeyboard()
         }
     }
 

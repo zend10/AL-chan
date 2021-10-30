@@ -137,4 +137,12 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
             _refreshMediaListTrigger.onNext(mediaType to null)
         }
     }
+
+    override fun updateMediaListScore(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int, score: Double, advancedScores: List<Double>?): Observable<MediaList> {
+        return mediaListDataSource.updateMediaListScore(id = id, score = score, advancedScores = advancedScores).map {
+            val newMediaList = it.data?.convert()
+            _refreshMediaListTrigger.onNext(mediaType to newMediaList)
+            newMediaList
+        }
+    }
 }
