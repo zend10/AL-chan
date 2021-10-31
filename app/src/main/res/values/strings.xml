@@ -308,10 +308,15 @@
     <string name="high">High</string>
     <string name="very_high">Very High</string>
     <string name="set">Set</string>
-    <string name="entry_removed">Entry Removed</string>
+    <string name="entry_removed">Entry removed</string>
+    <string name="entry_saved">Entry saved</string>
     <string name="are_you_sure_you_want_to_remove_this_entry_from_your_list">Are you sure you want to remove this entry from your list?</string>
     <string name="something_went_wrong_please_try_again">Something went wrong. Please try again.</string>
     <string name="failed_to_load_from_cache">Failed to load from cache.</string>
+    <string name="move_to_watching">Move to Watching</string>
+    <string name="do_you_want_to_set_this_entry_into_watching">Do you want to set this entry into Watching?</string>
+    <string name="move">Move</string>
+    <string name="stay">Stay</string>
 
 
     <plurals name="minute">

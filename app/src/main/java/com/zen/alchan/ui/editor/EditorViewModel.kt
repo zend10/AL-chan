@@ -258,7 +258,7 @@ class EditorViewModel(
                 .doAfterNext { _loading.onNext(false) }
                 .subscribe(
                     {
-                        _success.onNext(R.string.save_changes)
+                        _success.onNext(R.string.entry_saved)
                     },
                     {
                         _error.onNext(it.getStringResource())
@@ -317,6 +317,19 @@ class EditorViewModel(
 
     fun updateStatus(newStatus: MediaListStatus) {
         _status.onNext(newStatus)
+
+        val (maxProgress, maxProgressVolume) = when (mediaType) {
+            MediaType.ANIME -> media.episodes to null
+            MediaType.MANGA -> media.chapters to media.volumes
+        }
+
+        maxProgress?.let {
+            updateProgress(it)
+        }
+
+        maxProgressVolume?.let {
+            updateProgressVolume(it)
+        }
     }
 
     fun updateScore(newScore: Double) {

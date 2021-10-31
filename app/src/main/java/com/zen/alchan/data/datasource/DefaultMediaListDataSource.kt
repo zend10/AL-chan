@@ -135,11 +135,15 @@ class DefaultMediaListDataSource(
 
     override fun updateMediaListProgress(
         id: Int,
+        status: MediaListStatus?,
+        repeat: Int?,
         progress: Int?,
         progressVolumes: Int?
     ): Observable<Response<SaveMediaListEntryMutation.Data>> {
         val mutation = SaveMediaListEntryMutation(
             id = Input.fromNullable(id),
+            status = Input.optional(status),
+            repeat = Input.optional(repeat),
             progress = Input.optional(progress),
             progressVolumes = Input.optional(progressVolumes)
         )

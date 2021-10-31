@@ -224,7 +224,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             },
             viewModel.mediaListStatuses.subscribe {
                 dialog.showListDialog(it) { data, _ ->
-                    binding.editorStatusText.text = data.getString(viewModel.mediaType)
+                    viewModel.updateStatus(data)
                 }
             },
             viewModel.scoreValues.subscribe { (scoreFormat: ScoreFormat, currentScore: Double, advancedScores: LinkedHashMap<String, Double>?) ->

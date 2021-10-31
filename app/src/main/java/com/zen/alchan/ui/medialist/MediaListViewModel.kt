@@ -18,10 +18,12 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.MediaListStatus
 import type.ScoreFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
+import kotlin.math.max
 
 class MediaListViewModel(
     private val mediaListRepository: MediaListRepository,
@@ -55,6 +57,10 @@ class MediaListViewModel(
     private val _progressValues = PublishSubject.create<Pair<MediaList, Boolean>>()
     val progressValues: Observable<Pair<MediaList, Boolean>>
         get() = _progressValues
+
+    private val _setToWatchingDialog = PublishSubject.create<Triple<MediaList, Int, Boolean>>()
+    val setToWatchingDialog: Observable<Triple<MediaList, Int, Boolean>> // media list, new progress, isProgressVolume
+        get() = _setToWatchingDialog
 
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
@@ -134,6 +140,8 @@ class MediaListViewModel(
                         if (newMediaList == null) {
                             reloadData()
                         } else {
+                            _loading.onNext(true)
+
                             // get all the index of the modified MediaList
                             var previousMediaList: MediaList? = null
                             val mediaListGroupIndex = ArrayList<Int>()
@@ -195,6 +203,8 @@ class MediaListViewModel(
                                 if (searchKeyword.isNotBlank())
                                     filterByText(searchKeyword)
                             }
+
+                            _loading.onNext(false)
                         }
                     }
             )
@@ -690,13 +700,59 @@ class MediaListViewModel(
     }
 
     fun updateProgress(mediaList: MediaList, newProgress: Int, isProgressVolume: Boolean) {
+        val currentProgress = when (mediaList.media.type) {
+            type.MediaType.ANIME -> mediaList.progress
+            type.MediaType.MANGA -> if (isProgressVolume) (mediaList.progressVolumes ?: 0) else mediaList.progress
+            else -> 0
+        }
+
+        if (currentProgress == newProgress)
+            return
+
+        val maxProgress = when (mediaList.media.type) {
+            type.MediaType.ANIME -> mediaList.media.episodes
+            type.MediaType.MANGA -> if (isProgressVolume) mediaList.media.volumes else mediaList.media.chapters
+            else -> null
+        }
+
+        var targetProgress = newProgress
+        var status: MediaListStatus? = null
+        var repeat: Int? = null
+
+        if (maxProgress != null && targetProgress >= maxProgress) {
+            if (mediaList.status == MediaListStatus.REPEATING)
+                repeat = mediaList.repeat + 1
+
+            status = MediaListStatus.COMPLETED
+            targetProgress = maxProgress
+        } else {
+            if (mediaList.status == MediaListStatus.PLANNING ||
+                mediaList.status == MediaListStatus.PAUSED ||
+                mediaList.status == MediaListStatus.DROPPED
+            ) {
+                _setToWatchingDialog.onNext(Triple(mediaList, targetProgress, isProgressVolume))
+                return
+            }
+        }
+
+        updateProgress(mediaList.id, status, repeat, targetProgress, isProgressVolume)
+    }
+
+    fun updateProgress(mediaList: MediaList, status: MediaListStatus?, newProgress: Int, isProgressVolume: Boolean) {
+        updateProgress(mediaList.id, status, null,  newProgress, isProgressVolume)
+    }
+
+    private fun updateProgress(mediaListId: Int, status: MediaListStatus?, repeat: Int?, progress: Int, isProgressVolume: Boolean) {
         _loading.onNext(true)
+
         disposables.add(
             mediaListRepository.updateMediaListProgress(
                 mediaType,
-                mediaList.id,
-                if (isProgressVolume) null else newProgress,
-                if (isProgressVolume) newProgress else null
+                mediaListId,
+                status,
+                repeat,
+                if (isProgressVolume) null else progress,
+                if (isProgressVolume) progress else null
             )
                 .applyScheduler()
                 .doFinally {

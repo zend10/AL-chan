@@ -29,6 +29,7 @@ import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaListStatus
 import type.ScoreFormat
 import kotlin.math.max
 
@@ -158,12 +159,22 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 }
 
                 dialog.showProgressDialog(viewModel.mediaType, currentProgress, maxProgress, isProgressVolume) { newProgress ->
-                    if (maxProgress != null && maxProgress != 0 && currentProgress > maxProgress) {
-//                        dialog.showConfirmationDialog()
-                    } else {
-                        viewModel.updateProgress(mediaList, newProgress, isProgressVolume)
-                    }
+                    viewModel.updateProgress(mediaList, newProgress, isProgressVolume)
                 }
+            },
+            viewModel.setToWatchingDialog.subscribe { (mediaList, newProgress, isProgressVolume) ->
+                dialog.showConfirmationDialog(
+                    R.string.move_to_watching,
+                    R.string.do_you_want_to_set_this_entry_into_watching,
+                    R.string.move,
+                    {
+                        viewModel.updateProgress(mediaList, MediaListStatus.CURRENT, newProgress, isProgressVolume)
+                    },
+                    R.string.stay,
+                    {
+                        viewModel.updateProgress(mediaList, null, newProgress, isProgressVolume)
+                    }
+                )
             }
         )
 

@@ -86,7 +86,7 @@ class MediaListLinearRvAdapter(
                 mediaListProgressText.text = getProgressText(mediaList)
                 mediaListIncrementProgressButton.text = getProgressButtonText(media)
                 mediaListProgressText.show(shouldShowProgress(media))
-                mediaListIncrementProgressButton.show(shouldShowProgress(media))
+                mediaListIncrementProgressButton.show(shouldShowIncrementButton(mediaList, false))
                 mediaListProgressText.clicks {
                     listener.showProgressDialog(mediaList, false)
                 }
@@ -96,7 +96,7 @@ class MediaListLinearRvAdapter(
 
                 mediaListProgressVolumeText.text = getProgressVolumeText(mediaList)
                 mediaListProgressVolumeText.show(shouldShowProgressVolume(media))
-                mediaListIncrementProgressVolumeButton.show(shouldShowProgressVolume(media))
+                mediaListIncrementProgressVolumeButton.show(shouldShowIncrementButton(mediaList, true))
                 mediaListProgressVolumeText.clicks {
                     listener.showProgressDialog(mediaList, true)
                 }
@@ -181,6 +181,19 @@ class MediaListLinearRvAdapter(
                 Color.parseColor("#80${listStyle.secondaryColor?.substring(1)}")
             else
                 context.getAttrValue(R.attr.themeSecondaryTransparent50Color)
+        }
+
+        private fun shouldShowIncrementButton(mediaList: MediaList, isVolumeProgress: Boolean): Boolean {
+            val isAtMaxProgress = when (mediaList.media.type) {
+                MediaType.ANIME -> mediaList.media.episodes != null && mediaList.progress >= mediaList.media.episodes
+                MediaType.MANGA -> if (isVolumeProgress) {
+                    mediaList.media.volumes != null && (mediaList.progressVolumes ?: 0) >= mediaList.media.volumes
+                } else {
+                    mediaList.media.chapters != null && mediaList.progress >= mediaList.media.chapters
+                }
+                else -> false
+            }
+            return (if (isVolumeProgress) shouldShowProgressVolume(mediaList.media) else shouldShowProgress(mediaList.media)) && !isAtMaxProgress
         }
     }
 }

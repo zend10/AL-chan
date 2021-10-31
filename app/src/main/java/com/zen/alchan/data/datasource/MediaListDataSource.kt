@@ -38,6 +38,8 @@ interface MediaListDataSource {
     ): Observable<Response<SaveMediaListEntryMutation.Data>>
     fun updateMediaListProgress(
         id: Int,
+        status: MediaListStatus?,
+        repeat: Int?,
         progress: Int?,
         progressVolumes: Int?
     ): Observable<Response<SaveMediaListEntryMutation.Data>>
