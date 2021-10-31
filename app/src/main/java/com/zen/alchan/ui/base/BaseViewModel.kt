@@ -26,6 +26,10 @@ abstract class BaseViewModel : ViewModel(), ViewModelContract {
     val isAuthenticated: Observable<Boolean>
         get() = _isAuthenticated
 
+    protected val _closePage = PublishSubject.create<Unit>()
+    val closePage: Observable<Unit>
+        get() = _closePage
+
     protected var state = State.INIT
 
     protected fun loadOnce(action: () -> Unit) {

@@ -2,17 +2,25 @@ package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.MediaListDataSource
+import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListCollection
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.helper.enums.getAniListMediaType
+import com.zen.alchan.helper.pojo.SaveItem
+import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
-import type.MediaType
 
-class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataSource) : MediaListRepository {
+class DefaultMediaListRepository(
+    private val mediaListDataSource: MediaListDataSource,
+    private val userManager: UserManager
+) : MediaListRepository {
 
     override val defaultAnimeList: List<String>
         get() = listOf(
@@ -62,21 +70,50 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
             "Planning"
         )
 
-    private val _refreshMediaListTrigger = PublishSubject.create<Pair<com.zen.alchan.helper.enums.MediaType, MediaList?>>()
-    override val refreshMediaListTrigger: Observable<Pair<com.zen.alchan.helper.enums.MediaType, MediaList?>>
+    private val _refreshMediaListTrigger = PublishSubject.create<Pair<MediaType, MediaList?>>()
+    override val refreshMediaListTrigger: Observable<Pair<MediaType, MediaList?>>
         get() = _refreshMediaListTrigger
 
     override fun getMediaListCollection(
+        source: Source,
         userId: Int,
         mediaType: MediaType
     ): Observable<MediaListCollection> {
-        return mediaListDataSource.getMediaListCollectionQuery(userId, mediaType).map {
-            it.data?.convert()
+        return if (source == Source.CACHE) {
+            val mediaListCollection = when (mediaType) {
+                MediaType.ANIME -> userManager.animeList?.data
+                MediaType.MANGA -> userManager.mangaList?.data
+            } ?: throw NotInStorageException()
+
+            Observable.just(mediaListCollection)
+        } else {
+            mediaListDataSource.getMediaListCollectionQuery(userId, mediaType.getAniListMediaType()).map {
+                val newMediaListCollection = it.data?.convert()
+
+                if (newMediaListCollection != null) {
+                    when (mediaType) {
+                        MediaType.ANIME -> userManager.animeList = SaveItem(newMediaListCollection)
+                        MediaType.MANGA -> userManager.mangaList = SaveItem(newMediaListCollection)
+                    }
+                }
+
+                newMediaListCollection
+            }
+        }
+    }
+
+    override fun updateCacheMediaList(
+        mediaType: MediaType,
+        mediaListCollection: MediaListCollection
+    ) {
+        when (mediaType) {
+            MediaType.ANIME -> userManager.animeList = SaveItem(mediaListCollection)
+            MediaType.MANGA -> userManager.mangaList = SaveItem(mediaListCollection)
         }
     }
 
     override fun getMediaWithMediaList(mediaId: Int, mediaType: MediaType): Observable<Media> {
-        return mediaListDataSource.getMediaWithMediaListQuery(mediaId, mediaType).map {
+        return mediaListDataSource.getMediaWithMediaListQuery(mediaId, mediaType.getAniListMediaType()).map {
             it.data?.convert()
         }
     }
@@ -92,7 +129,7 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
     }
 
     override fun updateMediaListEntry(
-        mediaType: com.zen.alchan.helper.enums.MediaType,
+        mediaType: MediaType,
         id: Int?,
         mediaId: Int?,
         status: MediaListStatus,
@@ -132,13 +169,13 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
         }
     }
 
-    override fun deleteMediaListEntry(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int): Completable {
+    override fun deleteMediaListEntry(mediaType: MediaType, id: Int): Completable {
         return mediaListDataSource.deleteMediaListEntry(id).doFinally {
             _refreshMediaListTrigger.onNext(mediaType to null)
         }
     }
 
-    override fun updateMediaListScore(mediaType: com.zen.alchan.helper.enums.MediaType, id: Int, score: Double, advancedScores: List<Double>?): Observable<MediaList> {
+    override fun updateMediaListScore(mediaType: MediaType, id: Int, score: Double, advancedScores: List<Double>?): Observable<MediaList> {
         return mediaListDataSource.updateMediaListScore(id = id, score = score, advancedScores = advancedScores).map {
             val newMediaList = it.data?.convert()
             _refreshMediaListTrigger.onNext(mediaType to newMediaList)
@@ -147,7 +184,7 @@ class DefaultMediaListRepository(private val mediaListDataSource: MediaListDataS
     }
 
     override fun updateMediaListProgress(
-        mediaType: com.zen.alchan.helper.enums.MediaType,
+        mediaType: MediaType,
         id: Int,
         status: MediaListStatus?,
         repeat: Int?,

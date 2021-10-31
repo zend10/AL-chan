@@ -9,6 +9,7 @@ import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.data.localstorage.FileStorageHandler
+import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import io.reactivex.Observable
@@ -72,4 +73,12 @@ class DefaultUserManager(
     override var profileData: SaveItem<ProfileData>?
         get() = jsonStorageHandler.profileData
         set(value) { jsonStorageHandler.profileData = value }
+
+    override var animeList: SaveItem<MediaListCollection>?
+        get() = jsonStorageHandler.animeList
+        set(value) { jsonStorageHandler.animeList = value }
+
+    override var mangaList: SaveItem<MediaListCollection>?
+        get() = jsonStorageHandler.mangaList
+        set(value) { jsonStorageHandler.mangaList = value }
 }

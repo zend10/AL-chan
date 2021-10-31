@@ -5,6 +5,7 @@ import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.Genre
+import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.SaveItem
 
 interface JsonStorageHandler {
@@ -13,4 +14,6 @@ interface JsonStorageHandler {
     var profileData: SaveItem<ProfileData>?
     var genres: SaveItem<List<Genre>>?
     var tags: SaveItem<List<MediaTag>>?
+    var animeList: SaveItem<MediaListCollection>?
+    var mangaList: SaveItem<MediaListCollection>?
 }

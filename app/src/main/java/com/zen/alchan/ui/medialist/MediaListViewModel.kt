@@ -202,6 +202,8 @@ class MediaListViewModel(
 
                                 if (searchKeyword.isNotBlank())
                                     filterByText(searchKeyword)
+
+                                mediaListRepository.updateCacheMediaList(mediaType, it)
                             }
 
                             _loading.onNext(false)
@@ -325,7 +327,7 @@ class MediaListViewModel(
             _loading.onNext(true)
 
         disposables.add(
-            mediaListRepository.getMediaListCollection(userId, mediaType.getAniListMediaType())
+            mediaListRepository.getMediaListCollection(Source.NETWORK, userId, mediaType)
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .subscribe(
@@ -340,6 +342,39 @@ class MediaListViewModel(
                         state = State.LOADED
                     },
                     {
+                        getMediaListCollectionFromCache()
+                    }
+                )
+        )
+    }
+
+    /**
+     * Purposely not handled in Repository because need to inform user when loaded from cache
+     */
+    private fun getMediaListCollectionFromCache() {
+        disposables.add(
+            mediaListRepository.getMediaListCollection(Source.CACHE, userId, mediaType)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        rawMediaListCollection = it
+                        val filteredAndSortedList = getFilteredAndSortedList(it)
+                        _mediaListItems.onNext(filteredAndSortedList)
+
+                        if (searchKeyword.isNotBlank())
+                            filterByText(searchKeyword)
+
+                        _success.onNext(
+                            when (mediaType) {
+                                MediaType.ANIME -> R.string.anime_list_is_loaded_from_cache
+                                MediaType.MANGA -> R.string.manga_list_is_loaded_from_cache
+                            }
+                        )
+
+                        state = State.LOADED
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
                         state = State.ERROR
                     }
                 )

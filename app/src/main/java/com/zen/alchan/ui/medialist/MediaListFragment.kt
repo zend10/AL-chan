@@ -120,6 +120,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 binding.loadingLayout.loadingLayout.show(it)
                 binding.mediaListSwipeRefresh.isRefreshing = false
             },
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },

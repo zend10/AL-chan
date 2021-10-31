@@ -168,7 +168,7 @@ class EditorViewModel(
             _loading.onNext(true)
 
             disposables.add(
-                mediaListRepository.getMediaWithMediaList(mediaId, mediaType.getAniListMediaType())
+                mediaListRepository.getMediaWithMediaList(mediaId, mediaType)
                     .zipWith(userRepository.getViewer(Source.CACHE)) { media, user ->
                         return@zipWith media to user
                     }
@@ -226,6 +226,7 @@ class EditorViewModel(
                         },
                         {
                             _error.onNext(it.getStringResource())
+                            _closePage.onNext(Unit)
                         }
                     )
             )
@@ -255,7 +256,7 @@ class EditorViewModel(
                 _finishDate.value?.data
             )
                 .applyScheduler()
-                .doAfterNext { _loading.onNext(false) }
+                .doFinally { _loading.onNext(false) }
                 .subscribe(
                     {
                         _success.onNext(R.string.entry_saved)

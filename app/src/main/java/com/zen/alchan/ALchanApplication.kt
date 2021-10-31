@@ -88,7 +88,7 @@ class ALchanApplication : Application() {
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
         single<UserRepository> { DefaultUserRepository(get(), get()) }
-        single<MediaListRepository> { DefaultMediaListRepository(get()) }
+        single<MediaListRepository> { DefaultMediaListRepository(get(), get()) }
 
         // view model
         viewModel { BaseActivityViewModel(get()) }

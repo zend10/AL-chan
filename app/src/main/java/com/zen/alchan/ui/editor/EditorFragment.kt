@@ -159,6 +159,9 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
+            viewModel.closePage.subscribe {
+                goBack()
+            },
             viewModel.title.subscribe {
                 binding.editorMediaTitle.text = it
             },

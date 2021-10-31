@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.data.response.ProfileData
+import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.pojo.SaveItem
@@ -34,11 +35,21 @@ class DefaultJsonStorageHandler(
         get() = gson.fromJson(getData(TAGS), getType<SaveItem<List<MediaTag>>>())
         set(value) { setData(TAGS, gson.toJson(value)) }
 
+    override var animeList: SaveItem<MediaListCollection>?
+        get() = gson.fromJson(getData(ANIME_LIST), getType<SaveItem<MediaListCollection>>())
+        set(value) { setData(ANIME_LIST, gson.toJson(value)) }
+
+    override var mangaList: SaveItem<MediaListCollection>?
+        get() = gson.fromJson(getData(MANGA_LIST), getType<SaveItem<MediaListCollection>>())
+        set(value) { setData(MANGA_LIST, gson.toJson(value)) }
+
     companion object {
         private const val HOME_DATA = "home_data.json"
         private const val VIEWER_DATA = "viewer_data.json"
         private const val PROFILE_DATA = "profile_data.json"
         private const val GENRES = "genres.json"
         private const val TAGS = "tags.json"
+        private const val ANIME_LIST = "anime_list.json"
+        private const val MANGA_LIST = "manga_list.json"
     }
 }

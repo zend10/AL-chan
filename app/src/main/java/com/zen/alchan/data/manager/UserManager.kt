@@ -6,6 +6,7 @@ import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import io.reactivex.Observable
@@ -29,4 +30,7 @@ interface UserManager {
 
     var viewerData: SaveItem<User>?
     var profileData: SaveItem<ProfileData>?
+
+    var animeList: SaveItem<MediaListCollection>?
+    var mangaList: SaveItem<MediaListCollection>?
 }
