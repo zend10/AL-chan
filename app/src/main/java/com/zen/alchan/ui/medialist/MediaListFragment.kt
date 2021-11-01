@@ -13,6 +13,7 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.databinding.FragmentMediaListBinding
@@ -106,6 +107,15 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             mediaListSwitchListButton.clicks {
                 viewModel.loadListSections()
             }
+
+            mediaListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0)
+                        mediaListSwitchListButton.hide()
+                    else
+                        mediaListSwitchListButton.show()
+                }
+            })
         }
     }
 
