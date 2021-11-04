@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/marginFar"
+    android:layout_marginHorizontal="@dimen/marginPageBig"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profileAffinityTitle"
+        android:text="@string/affinity"
+        style="?themeRegularBoldFont"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/profileAnimeAffinityLayout"
+        app:layout_constraintTop_toBottomOf="@id/profileAffinityTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/anime"
+            style="?themeSmallFont"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:gravity="center_vertical"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/profileAnimeAffinityNegativeBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progressBackgroundTint="?themeNegativeTransparent50Color"
+                android:progressTint="?themeNegativeColor"
+                android:scaleX="-1"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/profileAnimeAffinityPositiveBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progressBackgroundTint="?themeSecondaryTransparent50Color"
+                android:progressTint="?themeSecondaryColor"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/profileAnimeAffinityText"
+                style="?themeRegularFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:textAlignment="viewEnd"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/profileMangaAffinityLayout"
+        app:layout_constraintTop_toBottomOf="@id/profileAnimeAffinityLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/manga"
+            style="?themeSmallFont"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:gravity="center_vertical"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/profileMangaAffinityNegativeBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progressBackgroundTint="?themeNegativeTransparent50Color"
+                android:progressTint="?themeNegativeColor"
+                android:scaleX="-1"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/profileMangaAffinityPositiveBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progressBackgroundTint="?themeSecondaryTransparent50Color"
+                android:progressTint="?themeSecondaryColor"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/profileMangaAffinityText"
+                style="?themeRegularFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:textAlignment="viewEnd"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,3 +56,9 @@ fun Double.roundToOneDecimal(): String {
     format.decimalFormatSymbols = DecimalFormatSymbols.getInstance().also { it.decimalSeparator = '.' }
     return format.format(this)
 }
+
+fun Double.roundToTwoDecimal(): String {
+    val format = DecimalFormat("#.##")
+    format.decimalFormatSymbols = DecimalFormatSymbols.getInstance().also { it.decimalSeparator = '.' }
+    return format.format(this)
+}

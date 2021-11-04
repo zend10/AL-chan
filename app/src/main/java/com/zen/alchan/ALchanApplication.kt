@@ -15,7 +15,6 @@ import com.zen.alchan.data.network.header.HeaderInterceptor
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
-import com.zen.alchan.ui.bio.BioViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
@@ -26,9 +25,7 @@ import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
-import com.zen.alchan.ui.profile.SharedProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
-import com.zen.alchan.ui.review.ReviewViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.account.AccountSettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -107,9 +104,6 @@ class ALchanApplication : Application() {
         viewModel { SocialViewModel() }
 
         viewModel { ProfileViewModel(get()) }
-        viewModel { SharedProfileViewModel(get()) }
-        viewModel { BioViewModel() }
-        viewModel { ReviewViewModel() }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }

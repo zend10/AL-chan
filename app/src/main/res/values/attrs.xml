@@ -5,6 +5,7 @@
     <attr name="themeSecondaryTransparent50Color" format="reference"/>
     <attr name="themeSecondaryTransparent20Color" format="reference"/>
     <attr name="themeNegativeColor" format="reference"/>
+    <attr name="themeNegativeTransparent50Color" format="reference"/>
 
     <attr name="themeCardColor" format="reference"/>
     <attr name="themeCardTransparentColor" format="reference"/>
@@ -38,7 +39,7 @@
     <attr name="themePrimaryButton" format="reference"/>
     <attr name="themePrimaryBorderButton" format="reference"/>
     <attr name="themeNegativeBorderButton" format="reference"/>
-    
+
     <attr name="themeRegularCheckBox" format="reference"/>
     
     <fraction name="listImageRatio">0.25</fraction>

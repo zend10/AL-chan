@@ -319,6 +319,8 @@
     <string name="stay">Stay</string>
     <string name="anime_list_is_loaded_from_cache">Failed to fetch the latest data. Anime List is loaded from cache.</string>
     <string name="manga_list_is_loaded_from_cache">Failed to fetch the latest data. Manga List is loaded from cache.</string>
+    <string name="affinity">Affinity</string>
+    <string name="tendency_is_generated_automatically_based_on_user_stats_it_might_or_might_not_be_accurate">Tendency is generated automatically based on user stats. It might or might not be accurate.</string>
 
 
     <plurals name="minute">
