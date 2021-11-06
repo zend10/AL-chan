@@ -10,6 +10,7 @@ import androidx.core.text.color
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.databinding.*
@@ -32,6 +33,7 @@ class ProfileRvAdapter(
     private var favoriteMangaAdapter: FavoriteMediaRvAdapter? = null
     private var favoriteCharacterAdapter: FavoriteCharacterRvAdapter? = null
     private var favoriteStaffAdapter: FavoriteStaffRvAdapter? = null
+    private var favoriteStudioRvAdapter: FavoriteStudioRvAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -71,6 +73,13 @@ class ProfileRvAdapter(
                 favoriteStaffAdapter = FavoriteStaffRvAdapter(context, listOf(), listener.favoriteStaffListener)
                 setUpGridRecyclerView(view.listRecyclerView, favoriteStaffAdapter)
                 return FavoriteStaffViewHolder(view)
+            }
+            ProfileItem.VIEW_TYPE_FAVORITE_STUDIO -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                favoriteStudioRvAdapter = FavoriteStudioRvAdapter(context, listOf(), listener.favoriteStudioListener)
+                view.listRecyclerView.layoutManager = FlexboxLayoutManager(context)
+                view.listRecyclerView.adapter = favoriteStudioRvAdapter
+                return FavoriteStudioViewHolder(view)
             }
             else -> {
                 val view = LayoutProfileBioBinding.inflate(inflater, parent, false)
@@ -204,6 +213,16 @@ class ProfileRvAdapter(
                 titleText.text = context.getString(R.string.favorite_staff)
                 seeMoreText.clicks { listener.favoriteStaffListener.navigateToFavoriteStaff() }
                 favoriteStaffAdapter?.updateData(item.favoriteStaff ?: listOf())
+            }
+        }
+    }
+
+    inner class FavoriteStudioViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: ProfileItem, index: Int) {
+            binding.apply {
+                titleText.text = context.getString(R.string.favorite_studios)
+                seeMoreText.clicks { listener.favoriteStudioListener.navigateToFavoriteStudio() }
+                favoriteStudioRvAdapter?.updateData(item.favoriteStudios ?: listOf())
             }
         }
     }

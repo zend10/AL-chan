@@ -191,15 +191,25 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
         val profileItemList = ArrayList<ProfileItem>()
         profileItemList.add(ProfileItem(bio = user.about, viewType = ProfileItem.VIEW_TYPE_BIO))
 
+        if (user.favourites.anime.nodes.isNotEmpty())
+            profileItemList.add(ProfileItem(favoriteMedia = user.favourites.anime.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_ANIME))
+
+        if (user.favourites.manga.nodes.isNotEmpty())
+            profileItemList.add(ProfileItem(favoriteMedia = user.favourites.manga.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_MANGA))
+
+        if (user.favourites.characters.nodes.isNotEmpty())
+            profileItemList.add(ProfileItem(favoriteCharacters = user.favourites.characters.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER))
+
+        if (user.favourites.staff.nodes.isNotEmpty())
+            profileItemList.add(ProfileItem(favoriteStaff = user.favourites.staff.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_STAFF))
+
+        if (user.favourites.studios.nodes.isNotEmpty())
+            profileItemList.add(ProfileItem(favoriteStudios = user.favourites.studios.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_STUDIO))
+
         val animeTendency = getTendency(user.statistics.anime)
         val mangaTendency = getTendency(user.statistics.manga)
         if (animeTendency != null || mangaTendency != null)
             profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
-
-        profileItemList.add(ProfileItem(favoriteMedia = user.favourites.anime.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_ANIME))
-        profileItemList.add(ProfileItem(favoriteMedia = user.favourites.manga.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_MANGA))
-        profileItemList.add(ProfileItem(favoriteCharacters = user.favourites.characters.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER))
-        profileItemList.add(ProfileItem(favoriteStaff = user.favourites.staff.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_STAFF))
 
         _profileItemList.onNext(profileItemList)
     }
