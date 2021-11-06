@@ -7,13 +7,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.text.color
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
+import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.databinding.LayoutHorizontalListBinding
 import com.zen.alchan.databinding.LayoutProfileAffinityBinding
 import com.zen.alchan.databinding.LayoutProfileBioBinding
 import com.zen.alchan.databinding.LayoutProfileTendencyBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ProfileItem
+import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlin.math.abs
 import kotlin.math.absoluteValue
@@ -22,9 +27,12 @@ import kotlin.math.roundToInt
 class ProfileRvAdapter(
     private val context: Context,
     list: List<ProfileItem>,
+    private val appSetting: AppSetting,
     private val width: Int,
     private val listener: ProfileListener
 ) : BaseRecyclerViewAdapter<ProfileItem, ViewBinding>(list) {
+
+    private var favoriteCharacterAdapter: FavoriteCharacterRvAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,6 +49,13 @@ class ProfileRvAdapter(
                 val view = LayoutProfileTendencyBinding.inflate(inflater, parent, false)
                 return TendencyViewHolder(view)
             }
+            ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER -> {
+                val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
+                favoriteCharacterAdapter = FavoriteCharacterRvAdapter(context, listOf(), appSetting, width, listener.favoriteCharacterListener)
+                view.horizontalListRecyclerView.adapter = favoriteCharacterAdapter
+                view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageBig)))
+                return FavoriteCharacterViewHolder(view)
+            }
             else -> {
                 val view = LayoutProfileBioBinding.inflate(inflater, parent, false)
                 return BioViewHolder(view)
@@ -54,7 +69,7 @@ class ProfileRvAdapter(
 
     inner class BioViewHolder(private val binding: LayoutProfileBioBinding) : ViewHolder(binding) {
         override fun bind(item: ProfileItem, index: Int) {
-            binding.profileBioText.text = item.user?.about
+            binding.profileBioText.text = item.bio
         }
     }
 
@@ -129,6 +144,16 @@ class ProfileRvAdapter(
                     spannableStringBuilder.color(context.getAttrValue(R.attr.themeSecondaryColor)) { append(value) }
             }
             return spannableStringBuilder
+        }
+    }
+
+    inner class FavoriteCharacterViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
+        override fun bind(item: ProfileItem, index: Int) {
+            binding.apply {
+                horizontalListTitle.text = context.getString(R.string.favorite_characters)
+                horizontalListSeeMore.clicks { listener.favoriteCharacterListener.navigateToCharacterFavorite() }
+                favoriteCharacterAdapter?.updateData(item.favoriteCharacters ?: listOf())
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo.api.Response
-import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import io.reactivex.Observable
@@ -12,8 +11,8 @@ import type.UserStatisticsSort
 import type.UserTitleLanguage
 
 interface UserDataSource {
-    fun getViewerQuery(): Observable<Response<ViewerQuery.Data>>
-    fun getProfileQuery(userId: Int, sort: List<UserStatisticsSort>): Observable<Response<ProfileDataQuery.Data>>
+    fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<Response<ViewerQuery.Data>>
+//    fun getFollowingAndFollowerCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
         staffNameLanguage: UserStaffNameLanguage,

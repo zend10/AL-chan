@@ -1,35 +1,30 @@
 package com.zen.alchan.data.datasource
 
-import ProfileDataQuery
+import FollowingAndFollowersCountQuery
 import UpdateUserMutation
 import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxMutate
-import com.apollographql.apollo.rx2.rxPrefetch
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import type.*
 
 class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserDataSource {
 
-    override fun getViewerQuery(): Observable<Response<ViewerQuery.Data>> {
-        val query = ViewerQuery()
+    override fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<Response<ViewerQuery.Data>> {
+        val query = ViewerQuery(sort = Input.optional(sort))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 
-    override fun getProfileQuery(
-        userId: Int,
-        sort: List<UserStatisticsSort>
-    ): Observable<Response<ProfileDataQuery.Data>> {
-        val query = ProfileDataQuery(userId = userId, sort = Input.optional(sort))
-        return apolloHandler.apolloClient.rxQuery(query)
-    }
+//    override fun getFollowingAndFollowerCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>> {
+//        val query = FollowingAndFollowersCountQuery(userId = userId)
+//        return apolloHandler.apolloClient.rxQuery(query)
+//    }
 
     override fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,

@@ -12,10 +12,13 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
+import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.databinding.FragmentProfileBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
+import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
@@ -60,8 +63,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 menuItemCopyLink = findItem(R.id.itemCopyLink)
             }
 
-            profileAdapter = ProfileRvAdapter(requireContext(), listOf(), screenWidth, getProfileListener())
-            profileRecyclerView.adapter = profileAdapter
+            assignAdapter(AppSetting())
 
             notLoggedInLayout.goToLoginButton.setOnClickListener {
                 viewModel.logout()
@@ -130,11 +132,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             viewModel.loading.subscribe {
                 binding.profileSwipeRefresh.isRefreshing = it
             },
+            viewModel.profileAdapterComponent.subscribe {
+                assignAdapter(it)
+            },
             viewModel.notLoggedInLayoutVisibility.subscribe {
                 binding.notLoggedInLayout.notLoggedInLayout.show(it)
                 binding.profileSwipeRefresh.show(!it)
             },
-            viewModel.viewerMenutItemVisibility.subscribe {
+            viewModel.viewerMenuItemVisibility.subscribe {
                 menuItemNotifications?.isVisible = it
                 menuItemSettings?.isVisible = it
             },
@@ -176,9 +181,27 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         viewModel.loadData(arguments?.getInt(USER_ID) ?: 0)
     }
 
+    private fun assignAdapter(appSetting: AppSetting) {
+        profileAdapter = ProfileRvAdapter(requireContext(), listOf(), appSetting, screenWidth, getProfileListener())
+        binding.profileRecyclerView.adapter = profileAdapter
+        binding.profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
+    }
+
     private fun getProfileListener(): ProfileListener {
         return object : ProfileListener {
+            override val favoriteCharacterListener: ProfileListener.FavoriteCharacterListener = getFavoriteCharacterListener()
+        }
+    }
 
+    private fun getFavoriteCharacterListener(): ProfileListener.FavoriteCharacterListener {
+        return object : ProfileListener.FavoriteCharacterListener {
+            override fun navigateToCharacterFavorite() {
+
+            }
+
+            override fun navigateToCharacter(character: Character) {
+
+            }
         }
     }
 

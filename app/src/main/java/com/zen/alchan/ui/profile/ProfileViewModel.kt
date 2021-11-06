@@ -13,13 +13,18 @@ import com.zen.alchan.helper.pojo.Tendency
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 
 class ProfileViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
-    private val _viewerMenutItemVisibility = BehaviorSubject.createDefault(false)
-    val viewerMenutItemVisibility: Observable<Boolean>
-        get() = _viewerMenutItemVisibility
+    private val _profileAdapterComponent = PublishSubject.create<AppSetting>()
+    val profileAdapterComponent: Observable<AppSetting>
+        get() = _profileAdapterComponent
+
+    private val _viewerMenuItemVisibility = BehaviorSubject.createDefault(false)
+    val viewerMenuItemVisibility: Observable<Boolean>
+        get() = _viewerMenuItemVisibility
 
     private val _bestFriendVisibility = BehaviorSubject.createDefault(false)
     val bestFriendVisibility: Observable<Boolean>
@@ -76,7 +81,7 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
                     .applyScheduler()
                     .subscribe {
                         _notLoggedInLayoutVisibility.onNext(userId == 0 && !it)
-                        _viewerMenutItemVisibility.onNext(userId == 0)
+                        _viewerMenuItemVisibility.onNext(userId == 0)
 
                         loadUserData()
                     }
@@ -108,13 +113,24 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
                             this.user = user
                             this.appSetting = appSetting
 
-                            userId = user.id
-
+                            _profileAdapterComponent.onNext(appSetting)
                             _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
                             _bannerUrl.onNext(user.bannerImage)
                             _username.onNext(user.name)
 
-                            loadProfileData(if (isReloading) Source.NETWORK else null)
+//                            loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
+
+                            _animeCompletedCount.onNext(
+                                user.statistics.anime.statuses.find { anime -> anime.status == MediaListStatus.COMPLETED }?.count ?: 0
+                            )
+                            _mangaCompletedCount.onNext(
+                                user.statistics.manga.statuses.find { manga -> manga.status == MediaListStatus.COMPLETED }?.count ?: 0
+                            )
+
+                            emitProfileItemList()
+
+                            _loading.onNext(false)
+                            state = State.LOADED
                         },
                         {
                             _loading.onNext(false)
@@ -128,49 +144,61 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
         }
     }
 
-    private fun loadProfileData(source: Source?) {
-        disposables.add(
-            userRepository.getProfileData(userId, source = source)
-                .applyScheduler()
-                .doFinally {
-                    _loading.onNext(false)
-                }
-                .subscribe(
-                    {
-                        _animeCompletedCount.onNext(
-                            it.user.statistics.anime.statuses.find { anime ->
-                                anime.status == MediaListStatus.COMPLETED
-                            }?.count ?: 0
-                        )
-                        _mangaCompletedCount.onNext(
-                            it.user.statistics.manga.statuses.find { manga ->
-                                manga.status == MediaListStatus.COMPLETED
-                            }?.count ?: 0
-                        )
-                        _followingCount.onNext(it.following.pageInfo.total)
-                        _followersCount.onNext(it.followers.pageInfo.total)
+    private fun loadProfileData(userId: Int, source: Source?) {
+//        disposables.add(
+//            userRepository.getProfileData(userId, source = source)
+//                .applyScheduler()
+//                .doFinally {
+//                    _loading.onNext(false)
+//                }
+//                .subscribe(
+//                    {
+//                        _animeCompletedCount.onNext(
+//                            it.user.statistics.anime.statuses.find { anime ->
+//                                anime.status == MediaListStatus.COMPLETED
+//                            }?.count ?: 0
+//                        )
+//                        _mangaCompletedCount.onNext(
+//                            it.user.statistics.manga.statuses.find { manga ->
+//                                manga.status == MediaListStatus.COMPLETED
+//                            }?.count ?: 0
+//                        )
+//                        _followingCount.onNext(it.following.pageInfo.total)
+//                        _followersCount.onNext(it.followers.pageInfo.total)
+//
+//
+//                        val profileItemList = ArrayList<ProfileItem>()
+//                        profileItemList.add(ProfileItem(user = user, viewType = ProfileItem.VIEW_TYPE_BIO),)
+//
+//                        val animeTendency = getTendency(it.user.statistics.anime)
+//                        val mangaTendency = getTendency(it.user.statistics.manga)
+//                        if (animeTendency != null || mangaTendency != null)
+//                            profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
+//
+//                        _profileItemList.onNext(profileItemList)
+//
+//                        state = State.LOADED
+//                    },
+//                    {
+//                        _error.onNext(it.getStringResource())
+//                        state = State.ERROR
+//                    }
+//                )
+//        )
+    }
 
+    private fun emitProfileItemList() {
+        val profileItemList = ArrayList<ProfileItem>()
+        profileItemList.add(ProfileItem(bio = user.about, viewType = ProfileItem.VIEW_TYPE_BIO))
 
-                        val profileItemList = mutableListOf(
-                            ProfileItem(user = user, viewType = ProfileItem.VIEW_TYPE_BIO),
-                            ProfileItem(affinity = Pair(30.0, -23.45), viewType = ProfileItem.VIEW_TYPE_AFFINITY)
-                        )
+        val animeTendency = getTendency(user.statistics.anime)
+        val mangaTendency = getTendency(user.statistics.manga)
+        if (animeTendency != null || mangaTendency != null)
+            profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
 
-                        val animeTendency = getTendency(it.user.statistics.anime)
-                        val mangaTendency = getTendency(it.user.statistics.manga)
-                        if (animeTendency != null || mangaTendency != null)
-                            profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
+        profileItemList.add(ProfileItem(favoriteCharacters = user.favourites.characters.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER))
 
-                        _profileItemList.onNext(profileItemList)
-
-                        state = State.LOADED
-                    },
-                    {
-                        _error.onNext(it.getStringResource())
-                        state = State.ERROR
-                    }
-                )
-        )
+        _profileItemList.onNext(profileItemList)
     }
 
     private fun getTendency(statistics: UserStatistics): Tendency? {
@@ -257,5 +285,7 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
         private const val TENDENCY_FAVORITES_COUNT = 3
         private const val TENDENCY_FAVORITES_SEPARATOR = "/"
         private const val TENDENCY_MINIMUM_COMPLETED = 20
+
+        private const val FAVORITE_LIMIT = 10
     }
 }

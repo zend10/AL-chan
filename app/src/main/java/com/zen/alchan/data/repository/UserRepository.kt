@@ -25,17 +25,16 @@ interface UserRepository {
 
     fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
-    fun getViewer(source: Source? = null): Observable<User>
+    fun getViewer(source: Source? = null, sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)): Observable<User>
     fun loginAsGuest()
     fun logoutAsGuest()
     fun logout()
     fun saveBearerToken(newBearerToken: String?)
 
-    fun getProfileData(
-        userId: Int,
-        sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC),
-        source: Source?
-    ): Observable<ProfileData>
+//    fun getFollowingAndFollowerCount(
+//        userId: Int,
+//        source: Source?
+//    ): Observable<Pair<Int, Int>>
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)

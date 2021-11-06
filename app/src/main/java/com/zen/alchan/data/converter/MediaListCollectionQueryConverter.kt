@@ -117,7 +117,8 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
                     url = it?.url ?: "",
                     site = it?.site ?: ""
                 )
-            } ?: listOf()
+            } ?: listOf(),
+            siteUrl = media?.siteUrl ?: ""
         )
     )
 }

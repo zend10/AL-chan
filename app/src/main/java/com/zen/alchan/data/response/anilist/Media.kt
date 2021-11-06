@@ -43,6 +43,7 @@ data class Media(
     val isAdult: Boolean = false,
     val nextAiringEpisode: AiringSchedule? = null,
     val externalLinks: List<MediaExternalLink> = listOf(),
+    val siteUrl: String = "",
     val mediaListEntry: MediaList? = null
 ) {
     fun getFormattedMediaFormat(toUpper: Boolean = false): String {

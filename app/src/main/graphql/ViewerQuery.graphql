@@ -1,4 +1,4 @@
-query ViewerQuery {
+query ViewerQuery($sort: [UserStatisticsSort]) {
   Viewer {
     id
     name
@@ -8,6 +8,9 @@ query ViewerQuery {
       medium
     }
     bannerImage
+    isFollowing
+    isFollower
+    isBlocked
     options {
       titleLanguage
       displayAdultContent
@@ -38,10 +41,153 @@ query ViewerQuery {
         advancedScoringEnabled
       }
     }
+    favourites {
+      anime {
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      manga {
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      characters {
+        nodes {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            alternativeSpoiler
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      staff {
+        nodes {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            userPreferred
+          }
+          languageV2
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      studios {
+        nodes {
+          id
+          name
+          siteUrl
+        }
+      }
+    }
+    statistics {
+      anime {
+        ...ViewerStatistics
+      }
+      manga {
+        ...ViewerStatistics
+      }
+    }
     unreadNotificationCount
     donatorTier
     donatorBadge
     moderatorRoles
     siteUrl
+  }
+}
+
+fragment ViewerStatistics on UserStatistics {
+  count
+  meanScore
+  standardDeviation
+  minutesWatched
+  episodesWatched
+  chaptersRead
+  volumesRead
+  statuses {
+    count
+    meanScore
+    status
+  }
+  scores {
+    count
+    meanScore
+    score
+  }
+  releaseYears(sort: $sort) {
+    count
+    meanScore
+    releaseYear
+  }
+  startYears(sort: $sort) {
+    count
+    meanScore
+    startYear
+  }
+  genres(sort: $sort) {
+    count
+    meanScore
+    genre
+  }
+  tags(sort: $sort) {
+    count
+    meanScore
+    tag {
+      id
+      name
+    }
+  }
+  studios(sort: $sort) {
+    count
+    meanScore
+    studio {
+      id
+      name
+      isAnimationStudio
+    }
   }
 }

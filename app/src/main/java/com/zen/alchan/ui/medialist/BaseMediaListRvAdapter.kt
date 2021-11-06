@@ -1,18 +1,13 @@
 package com.zen.alchan.ui.medialist
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.widget.ImageViewCompat
-import androidx.core.widget.TextViewCompat
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.textview.MaterialTextView
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.anilist.MediaListOptions

@@ -16,6 +16,9 @@ abstract class BaseRecyclerViewAdapter<T, VB: ViewBinding>(
     }
 
     fun updateData(list: List<T>) {
+        if (this.list == list)
+            return
+
         this.list = list
         notifyDataSetChanged()
     }

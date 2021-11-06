@@ -1,10 +1,9 @@
 package com.zen.alchan.data.response.anilist
 
-data class Staff(
+data class Character(
     val id: Int = 0,
-    val name: StaffName = StaffName(),
-    val language: String = "",
-    val image: StaffImage = StaffImage(),
+    val name: CharacterName = CharacterName(),
+    val image: CharacterImage = CharacterImage(),
     val description: String = "",
     val siteUrl: String = ""
 )

@@ -5,10 +5,12 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.signature.ObjectKey
 import com.zen.alchan.R
+import com.zen.alchan.helper.extensions.getAttrValue
 
 object ImageUtil {
 
@@ -36,7 +38,8 @@ object ImageUtil {
 
     fun loadCircleImage(context: Context, url: String, imageView: AppCompatImageView)  {
         imageView.background = ContextCompat.getDrawable(context, R.drawable.shape_oval_with_border)
-        imageView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+        imageView.backgroundTintList = ColorStateList.valueOf(context.getAttrValue(R.attr.themeContentColor))
+        imageView.setPadding(context.resources.getDimensionPixelSize(R.dimen.lineWidth))
 
         Glide.with(context)
             .load(url)

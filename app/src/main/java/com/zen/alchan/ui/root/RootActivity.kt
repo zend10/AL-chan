@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.root
 
 import android.content.Intent
-import android.net.Uri
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.*

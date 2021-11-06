@@ -6,26 +6,22 @@ import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.manager.UserManager
-import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.ScoreFormat
 import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
-import java.io.File
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
@@ -44,7 +40,7 @@ class DefaultUserRepository(
         return Observable.just(userManager.isAuthenticated)
     }
 
-    override fun getViewer(source: Source?): Observable<User> {
+    override fun getViewer(source: Source?, sort: List<UserStatisticsSort>): Observable<User> {
         when (source) {
             Source.CACHE -> {
                 return Observable.create { emitter ->
@@ -59,7 +55,7 @@ class DefaultUserRepository(
             }
             else -> {
                 return Observable.create { emitter ->
-                    userDataSource.getViewerQuery().subscribe(
+                    userDataSource.getViewerQuery(sort).subscribe(
                         {
                             val newViewer = it.data?.convert()
 
@@ -105,46 +101,46 @@ class DefaultUserRepository(
         userManager.bearerToken = newBearerToken
     }
 
-    override fun getProfileData(userId: Int, sort: List<UserStatisticsSort>, source: Source?): Observable<ProfileData> {
-        if (userManager.viewerData?.data?.id != userId)
-            return getProfileDataFromNetwork(userId, sort)
-
-        return when (source) {
-            Source.NETWORK -> getProfileDataFromNetwork(userId, sort)
-            Source.CACHE -> getProfileDataFromCache()
-            else -> {
-                val savedItem = userManager.profileData
-                if (savedItem == null || savedItem.saveTime.moreThanADay()) {
-                    getProfileDataFromNetwork(userId, sort)
-                } else {
-                    Observable.just(savedItem.data)
-                }
-            }
-        }
-    }
-
-    private fun getProfileDataFromNetwork(userId: Int, sort: List<UserStatisticsSort>): Observable<ProfileData> {
-        return userDataSource.getProfileQuery(userId, sort).map {
-            val newProfileData = it.data?.convert() ?: ProfileData()
-
-            if (userManager.viewerData?.data?.id == newProfileData.user.id)
-                userManager.profileData = SaveItem(newProfileData)
-
-            newProfileData
-        }
-    }
-
-    private fun getProfileDataFromCache(): Observable<ProfileData> {
-        return Observable.create {
-            val savedItem = userManager.profileData?.data
-            if (savedItem != null) {
-                it.onNext(savedItem)
-                it.onComplete()
-            } else {
-                it.onError(NotInStorageException())
-            }
-        }
-    }
+//    override fun getFollowingAndFollowerCount(userId: Int, source: Source?): Observable<ProfileData> {
+//        if (userManager.viewerData?.data?.id != userId)
+//            return getProfileDataFromNetwork(userId, sort)
+//
+//        return when (source) {
+//            Source.NETWORK -> getProfileDataFromNetwork(userId, sort)
+//            Source.CACHE -> getProfileDataFromCache()
+//            else -> {
+//                val savedItem = userManager.profileData
+//                if (savedItem == null || savedItem.saveTime.moreThanADay()) {
+//                    getProfileDataFromNetwork(userId, sort)
+//                } else {
+//                    Observable.just(savedItem.data)
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun getFollowingAndFollowerCountFromNetwork(userId: Int, sort: List<UserStatisticsSort>): Observable<ProfileData> {
+//        return userDataSource.getFollowingAndFollowerCount(userId, sort).map {
+//            val newProfileData = it.data?.convert() ?: ProfileData()
+//
+//            if (userManager.viewerData?.data?.id == newProfileData.user.id)
+//                userManager.profileData = SaveItem(newProfileData)
+//
+//            newProfileData
+//        }
+//    }
+//
+//    private fun getFollowingAndFollowerCountFromCache(): Observable<ProfileData> {
+//        return Observable.create {
+//            val savedItem = userManager.profileData?.data
+//            if (savedItem != null) {
+//                it.onNext(savedItem)
+//                it.onComplete()
+//            } else {
+//                it.onError(NotInStorageException())
+//            }
+//        }
+//    }
 
     override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
         return Observable.just(
