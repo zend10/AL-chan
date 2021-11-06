@@ -196,7 +196,10 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
         if (animeTendency != null || mangaTendency != null)
             profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
 
+        profileItemList.add(ProfileItem(favoriteMedia = user.favourites.anime.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_ANIME))
+        profileItemList.add(ProfileItem(favoriteMedia = user.favourites.manga.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_MANGA))
         profileItemList.add(ProfileItem(favoriteCharacters = user.favourites.characters.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER))
+        profileItemList.add(ProfileItem(favoriteStaff = user.favourites.staff.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_STAFF))
 
         _profileItemList.onNext(profileItemList)
     }
@@ -286,6 +289,6 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
         private const val TENDENCY_FAVORITES_SEPARATOR = "/"
         private const val TENDENCY_MINIMUM_COMPLETED = 20
 
-        private const val FAVORITE_LIMIT = 10
+        private const val FAVORITE_LIMIT = 9
     }
 }

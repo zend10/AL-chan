@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.ListCircularBinding
 import com.zen.alchan.databinding.ListRectangleBinding
 import com.zen.alchan.helper.extensions.clicks
@@ -12,11 +13,11 @@ import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
-class FavoriteCharacterRvAdapter(
+class FavoriteStaffRvAdapter(
     private val context: Context,
-    list: List<Character>,
-    private val listener: ProfileListener.FavoriteCharacterListener
-) : BaseRecyclerViewAdapter<Character, ListRectangleBinding>(list) {
+    list: List<Staff>,
+    private val listener: ProfileListener.FavoriteStaffListener
+) : BaseRecyclerViewAdapter<Staff, ListRectangleBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListRectangleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,12 +25,12 @@ class FavoriteCharacterRvAdapter(
     }
 
     inner class ItemViewHolder(private val binding: ListRectangleBinding) : ViewHolder(binding) {
-        override fun bind(item: Character, index: Int) {
+        override fun bind(item: Staff, index: Int) {
             binding.apply {
                 val image = item.image.large
                 ImageUtil.loadImage(context, image, rectangleItemImage)
                 rectangleItemText.show(false)
-                root.clicks { listener.navigateToCharacter(item) }
+                root.clicks { listener.navigateToStaff(item) }
             }
         }
     }

@@ -1,14 +1,16 @@
 package com.zen.alchan.helper.pojo
 
-import com.zen.alchan.data.response.anilist.Character
-import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.*
 
 
 data class ProfileItem(
     val bio: String? = null,
     val affinity: Pair<Double?, Double?>? = null,
     val tendency: Pair<Tendency?, Tendency?>? = null,
+    val favoriteMedia: List<Media>? = null,
     val favoriteCharacters: List<Character>? = null,
+    val favoriteStaff: List<Staff>? = null,
+    val favoriteStudios: List<Studio>? = null,
     val viewType: Int = 0
 ) {
     companion object {

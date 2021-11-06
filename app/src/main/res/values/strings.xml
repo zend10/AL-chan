@@ -323,6 +323,10 @@
     <string name="tendency_is_generated_automatically_based_on_user_stats_it_might_or_might_not_be_accurate">Tendency is generated automatically based on user stats. It might or might not be accurate.</string>
     <string name="see_more">See More</string>
     <string name="favorite_characters">Favorite Characters</string>
+    <string name="favorite_anime">Favorite Anime</string>
+    <string name="favorite_manga">Favorite Manga</string>
+    <string name="favorite_staff">Favorite Staff</string>
+    <string name="favorite_studios">Favorite Studios</string>
 
 
     <plurals name="minute">

@@ -7,32 +7,31 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.text.color
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.response.anilist.Character
-import com.zen.alchan.databinding.LayoutHorizontalListBinding
-import com.zen.alchan.databinding.LayoutProfileAffinityBinding
-import com.zen.alchan.databinding.LayoutProfileBioBinding
-import com.zen.alchan.databinding.LayoutProfileTendencyBinding
+import com.zen.alchan.databinding.*
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ProfileItem
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlin.math.abs
-import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 class ProfileRvAdapter(
     private val context: Context,
     list: List<ProfileItem>,
     private val appSetting: AppSetting,
-    private val width: Int,
     private val listener: ProfileListener
 ) : BaseRecyclerViewAdapter<ProfileItem, ViewBinding>(list) {
 
+    private var favoriteAnimeAdapter: FavoriteMediaRvAdapter? = null
+    private var favoriteMangaAdapter: FavoriteMediaRvAdapter? = null
     private var favoriteCharacterAdapter: FavoriteCharacterRvAdapter? = null
+    private var favoriteStaffAdapter: FavoriteStaffRvAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -49,12 +48,29 @@ class ProfileRvAdapter(
                 val view = LayoutProfileTendencyBinding.inflate(inflater, parent, false)
                 return TendencyViewHolder(view)
             }
+            ProfileItem.VIEW_TYPE_FAVORITE_ANIME -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                favoriteAnimeAdapter = FavoriteMediaRvAdapter(context, listOf(), MediaType.ANIME, appSetting, listener.favoriteMediaListener)
+                setUpGridRecyclerView(view.listRecyclerView, favoriteAnimeAdapter)
+                return FavoriteAnimeViewHolder((view))
+            }
+            ProfileItem.VIEW_TYPE_FAVORITE_MANGA -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                favoriteMangaAdapter = FavoriteMediaRvAdapter(context, listOf(), MediaType.MANGA, appSetting, listener.favoriteMediaListener)
+                setUpGridRecyclerView(view.listRecyclerView, favoriteMangaAdapter)
+                return FavoriteMangaViewHolder((view))
+            }
             ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER -> {
-                val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
-                favoriteCharacterAdapter = FavoriteCharacterRvAdapter(context, listOf(), appSetting, width, listener.favoriteCharacterListener)
-                view.horizontalListRecyclerView.adapter = favoriteCharacterAdapter
-                view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageBig)))
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                favoriteCharacterAdapter = FavoriteCharacterRvAdapter(context, listOf(), listener.favoriteCharacterListener)
+                setUpGridRecyclerView(view.listRecyclerView, favoriteCharacterAdapter)
                 return FavoriteCharacterViewHolder(view)
+            }
+            ProfileItem.VIEW_TYPE_FAVORITE_STAFF -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                favoriteStaffAdapter = FavoriteStaffRvAdapter(context, listOf(), listener.favoriteStaffListener)
+                setUpGridRecyclerView(view.listRecyclerView, favoriteStaffAdapter)
+                return FavoriteStaffViewHolder(view)
             }
             else -> {
                 val view = LayoutProfileBioBinding.inflate(inflater, parent, false)
@@ -65,6 +81,11 @@ class ProfileRvAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
+    }
+
+    private fun setUpGridRecyclerView(recyclerView: RecyclerView, adapter: BaseRecyclerViewAdapter<*, *>?) {
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.adapter = adapter
     }
 
     inner class BioViewHolder(private val binding: LayoutProfileBioBinding) : ViewHolder(binding) {
@@ -147,12 +168,42 @@ class ProfileRvAdapter(
         }
     }
 
-    inner class FavoriteCharacterViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
+    inner class FavoriteAnimeViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
         override fun bind(item: ProfileItem, index: Int) {
             binding.apply {
-                horizontalListTitle.text = context.getString(R.string.favorite_characters)
-                horizontalListSeeMore.clicks { listener.favoriteCharacterListener.navigateToCharacterFavorite() }
+                titleText.text = context.getString(R.string.favorite_anime)
+                seeMoreText.clicks { listener.favoriteMediaListener.navigateToFavoriteMedia(MediaType.ANIME) }
+                favoriteAnimeAdapter?.updateData(item.favoriteMedia ?: listOf())
+            }
+        }
+    }
+
+    inner class FavoriteMangaViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: ProfileItem, index: Int) {
+            binding.apply {
+                titleText.text = context.getString(R.string.favorite_manga)
+                seeMoreText.clicks { listener.favoriteMediaListener.navigateToFavoriteMedia(MediaType.MANGA) }
+                favoriteMangaAdapter?.updateData(item.favoriteMedia ?: listOf())
+            }
+        }
+    }
+
+    inner class FavoriteCharacterViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: ProfileItem, index: Int) {
+            binding.apply {
+                titleText.text = context.getString(R.string.favorite_characters)
+                seeMoreText.clicks { listener.favoriteCharacterListener.navigateToFavoriteCharacter() }
                 favoriteCharacterAdapter?.updateData(item.favoriteCharacters ?: listOf())
+            }
+        }
+    }
+
+    inner class FavoriteStaffViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: ProfileItem, index: Int) {
+            binding.apply {
+                titleText.text = context.getString(R.string.favorite_staff)
+                seeMoreText.clicks { listener.favoriteStaffListener.navigateToFavoriteStaff() }
+                favoriteStaffAdapter?.updateData(item.favoriteStaff ?: listOf())
             }
         }
     }

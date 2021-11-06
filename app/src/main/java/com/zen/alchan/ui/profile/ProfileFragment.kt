@@ -14,7 +14,11 @@ import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Staff
+import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.databinding.FragmentProfileBinding
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
@@ -182,24 +186,63 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     }
 
     private fun assignAdapter(appSetting: AppSetting) {
-        profileAdapter = ProfileRvAdapter(requireContext(), listOf(), appSetting, screenWidth, getProfileListener())
+        profileAdapter = ProfileRvAdapter(requireContext(), listOf(), appSetting, getProfileListener())
         binding.profileRecyclerView.adapter = profileAdapter
-        binding.profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
+        binding.profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginPageBig)))
     }
 
     private fun getProfileListener(): ProfileListener {
         return object : ProfileListener {
+            override val favoriteMediaListener: ProfileListener.FavoriteMediaListener = getFavoriteMediaListener()
             override val favoriteCharacterListener: ProfileListener.FavoriteCharacterListener = getFavoriteCharacterListener()
+            override val favoriteStaffListener: ProfileListener.FavoriteStaffListener = getFavoriteStaffListener()
+            override val favoriteStudioListener: ProfileListener.FavoriteStudioListener = getFavoriteStudioListener()
+        }
+    }
+
+    private fun getFavoriteMediaListener(): ProfileListener.FavoriteMediaListener {
+        return object : ProfileListener.FavoriteMediaListener {
+            override fun navigateToFavoriteMedia(mediaType: MediaType) {
+
+            }
+
+            override fun navigateToMedia(media: Media, mediaType: MediaType) {
+
+            }
         }
     }
 
     private fun getFavoriteCharacterListener(): ProfileListener.FavoriteCharacterListener {
         return object : ProfileListener.FavoriteCharacterListener {
-            override fun navigateToCharacterFavorite() {
+            override fun navigateToFavoriteCharacter() {
 
             }
 
             override fun navigateToCharacter(character: Character) {
+
+            }
+        }
+    }
+
+    private fun getFavoriteStaffListener(): ProfileListener.FavoriteStaffListener {
+        return object : ProfileListener.FavoriteStaffListener {
+            override fun navigateToFavoriteStaff() {
+
+            }
+
+            override fun navigateToStaff(staff: Staff) {
+
+            }
+        }
+    }
+
+    private fun getFavoriteStudioListener(): ProfileListener.FavoriteStudioListener {
+        return object : ProfileListener.FavoriteStudioListener {
+            override fun navigateToFavoriteStudio() {
+
+            }
+
+            override fun navigateToStudio(studio: Studio) {
 
             }
         }
