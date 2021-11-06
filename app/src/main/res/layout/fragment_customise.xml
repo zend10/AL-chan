@@ -710,7 +710,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/customiseRemoveImageText"
                         android:text="@string/remove_image"
-                        style="?themeRegularNegativeClickableFont"
+                        style="?attr/themeSmallNegativeFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginSmall"
@@ -720,7 +720,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/customiseSelectImageText"
                         android:text="@string/select_image"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginSmall"

@@ -81,6 +81,10 @@ class ProfileRvAdapter(
                 view.listRecyclerView.adapter = favoriteStudioRvAdapter
                 return FavoriteStudioViewHolder(view)
             }
+            ProfileItem.VIEw_TYPE_STATS -> {
+                val view = LayoutProfileStatsBinding.inflate(inflater, parent, false)
+                return StatsViewHolder(view)
+            }
             else -> {
                 val view = LayoutProfileBioBinding.inflate(inflater, parent, false)
                 return BioViewHolder(view)
@@ -223,6 +227,24 @@ class ProfileRvAdapter(
                 titleText.text = context.getString(R.string.favorite_studios)
                 seeMoreText.clicks { listener.favoriteStudioListener.navigateToFavoriteStudio() }
                 favoriteStudioRvAdapter?.updateData(item.favoriteStudios ?: listOf())
+            }
+        }
+    }
+
+    inner class StatsViewHolder(private val binding: LayoutProfileStatsBinding) : ViewHolder(binding) {
+        override fun bind(item: ProfileItem, index: Int) {
+            binding.apply {
+                profileStatsTotalAnimeText.text = item.animeStats?.count?.toString()
+                profileStatsEpisodesWatchedText.text = item.animeStats?.episodesWatched?.toString()
+                profileStatsDaysWatchedText.text = ((item.animeStats?.minutesWatched?.toDouble() ?: 0.0) / 60.0 / 24.0).roundToTwoDecimal()
+                profileStatsAnimeMeanScoreText.text = item.animeStats?.meanScore?.roundToTwoDecimal()
+
+                profileStatsTotalMangaText.text = item.mangaStats?.count?.toString()
+                profileStatsChaptersReadText.text = item.mangaStats?.chaptersRead?.toString()
+                profileStatsVolumesReadText.text = item.mangaStats?.volumesRead?.toString()
+                profileStatsMangaMeanScoreText.text = item.mangaStats?.meanScore?.roundToTwoDecimal()
+
+                profileStatsDetailText.clicks { listener.statsListener.navigateToStatsDetail() }
             }
         }
     }

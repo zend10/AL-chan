@@ -114,7 +114,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsAdvancedScoringCriteriaAddMoreText"
                         android:text="@string/add_more"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginClose"
@@ -262,7 +262,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsCustomAnimeListsAddMoreText"
                         android:text="@string/add_more"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginClose"
@@ -319,7 +319,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsCustomMangaListsAddMoreText"
                         android:text="@string/add_more"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginClose"
@@ -376,7 +376,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsAnimeSectionOrderResetText"
                         android:text="@string/reset_to_default"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginClose"
@@ -387,7 +387,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsAnimeSectionOrderReorderText"
                         android:text="@string/start_reorder"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_width="wrap_content"
@@ -430,7 +430,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsMangaSectionOrderResetText"
                         android:text="@string/reset_to_default"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginClose"
@@ -441,7 +441,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listSettingsMangaSectionOrderReorderText"
                         android:text="@string/start_reorder"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_width="wrap_content"

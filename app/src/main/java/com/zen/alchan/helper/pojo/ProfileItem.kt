@@ -11,6 +11,8 @@ data class ProfileItem(
     val favoriteCharacters: List<Character>? = null,
     val favoriteStaff: List<Staff>? = null,
     val favoriteStudios: List<Studio>? = null,
+    val animeStats: UserStatistics? = null,
+    val mangaStats: UserStatistics? = null,
     val viewType: Int = 0
 ) {
     companion object {

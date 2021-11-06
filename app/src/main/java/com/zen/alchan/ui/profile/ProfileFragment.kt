@@ -67,6 +67,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 menuItemCopyLink = findItem(R.id.itemCopyLink)
             }
 
+            profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
             assignAdapter(AppSetting())
 
             notLoggedInLayout.goToLoginButton.setOnClickListener {
@@ -188,15 +189,23 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun assignAdapter(appSetting: AppSetting) {
         profileAdapter = ProfileRvAdapter(requireContext(), listOf(), appSetting, getProfileListener())
         binding.profileRecyclerView.adapter = profileAdapter
-        binding.profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginPageBig)))
     }
 
     private fun getProfileListener(): ProfileListener {
         return object : ProfileListener {
+            override val statsListener: ProfileListener.StatsListener = getStatsListener()
             override val favoriteMediaListener: ProfileListener.FavoriteMediaListener = getFavoriteMediaListener()
             override val favoriteCharacterListener: ProfileListener.FavoriteCharacterListener = getFavoriteCharacterListener()
             override val favoriteStaffListener: ProfileListener.FavoriteStaffListener = getFavoriteStaffListener()
             override val favoriteStudioListener: ProfileListener.FavoriteStudioListener = getFavoriteStudioListener()
+        }
+    }
+
+    private fun getStatsListener(): ProfileListener.StatsListener {
+        return object : ProfileListener.StatsListener {
+            override fun navigateToStatsDetail() {
+
+            }
         }
     }
 

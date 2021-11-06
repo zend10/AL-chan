@@ -454,7 +454,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filterGenresExcludeText"
                         android:text="@string/exclude"
-                        style="?themeRegularNegativeClickableFont"
+                        style="?attr/themeSmallNegativeFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginSmall"
@@ -464,7 +464,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filterGenresIncludeText"
                         android:text="@string/include"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginSmall"
@@ -564,7 +564,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filterTagsExcludeText"
                         android:text="@string/exclude"
-                        style="?themeRegularNegativeClickableFont"
+                        style="?attr/themeSmallNegativeFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginSmall"
@@ -574,7 +574,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filterTagsIncludeText"
                         android:text="@string/include"
-                        style="?themeRegularClickableFont"
+                        style="?themeSmallClickableFont"
                         android:padding="@dimen/iconPadding"
                         android:foreground="?selectableItemBackground"
                         android:layout_marginStart="@dimen/marginSmall"

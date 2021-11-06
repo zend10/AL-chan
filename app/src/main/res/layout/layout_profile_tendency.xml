@@ -78,7 +78,7 @@
     <View
         android:id="@+id/profileTendencyGapView"
         android:layout_width="0dp"
-        android:layout_height="@dimen/marginNormal"/>
+        android:layout_height="@dimen/marginBig"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/profileMangaTendencyLayout"

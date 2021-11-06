@@ -21,7 +21,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/seeMoreText"
-            style="?themeRegularClickableFont"
+            style="?themeSmallClickableFont"
             android:foreground="?selectableItemBackground"
             android:text="@string/see_more"
             android:paddingVertical="@dimen/iconPadding"

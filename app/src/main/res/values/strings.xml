@@ -327,6 +327,16 @@
     <string name="favorite_manga">Favorite Manga</string>
     <string name="favorite_staff">Favorite Staff</string>
     <string name="favorite_studios">Favorite Studios</string>
+    <string name="info">Info</string>
+    <string name="total_anime">Total Anime</string>
+    <string name="total_manga">Total Manga</string>
+    <string name="episodes_watched">Episodes Watched</string>
+    <string name="days_watched">Days Watched</string>
+    <string name="anime_mean_score">Anime Mean Score</string>
+    <string name="chapters_read">Chapters Read</string>
+    <string name="manga_mean_score">Manga Mean Score</string>
+    <string name="volumes_read">Volumes Read</string>
+    <string name="view_detail_statistics">View Detail Statistics</string>
 
 
     <plurals name="minute">

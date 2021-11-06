@@ -77,12 +77,14 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     fun loadData(userId: Int) {
         loadOnce {
             disposables.add(
-                userRepository.getIsAuthenticated()
+                userRepository.getIsAuthenticated().zipWith(userRepository.getAppSetting()) { isAuthenticated, appSetting ->
+                    return@zipWith isAuthenticated to appSetting
+                }
                     .applyScheduler()
-                    .subscribe {
-                        _notLoggedInLayoutVisibility.onNext(userId == 0 && !it)
+                    .subscribe { (isAuthenticated, appSetting) ->
+                        _notLoggedInLayoutVisibility.onNext(userId == 0 && !isAuthenticated)
                         _viewerMenuItemVisibility.onNext(userId == 0)
-
+                        _profileAdapterComponent.onNext(appSetting)
                         loadUserData()
                     }
             )
@@ -113,7 +115,6 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
                             this.user = user
                             this.appSetting = appSetting
 
-                            _profileAdapterComponent.onNext(appSetting)
                             _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
                             _bannerUrl.onNext(user.bannerImage)
                             _username.onNext(user.name)
@@ -190,6 +191,7 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     private fun emitProfileItemList() {
         val profileItemList = ArrayList<ProfileItem>()
         profileItemList.add(ProfileItem(bio = user.about, viewType = ProfileItem.VIEW_TYPE_BIO))
+        profileItemList.add(ProfileItem(animeStats = user.statistics.anime, mangaStats = user.statistics.manga, viewType = ProfileItem.VIEw_TYPE_STATS))
 
         if (user.favourites.anime.nodes.isNotEmpty())
             profileItemList.add(ProfileItem(favoriteMedia = user.favourites.anime.nodes.take(FAVORITE_LIMIT), viewType = ProfileItem.VIEW_TYPE_FAVORITE_ANIME))

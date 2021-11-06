@@ -8,6 +8,10 @@ import com.zen.alchan.helper.enums.MediaType
 
 interface ProfileListener {
 
+    interface StatsListener {
+        fun navigateToStatsDetail()
+    }
+
     interface FavoriteMediaListener {
         fun navigateToFavoriteMedia(mediaType: MediaType)
         fun navigateToMedia(media: Media, mediaType: MediaType)
@@ -28,6 +32,7 @@ interface ProfileListener {
         fun navigateToStudio(studio: Studio)
     }
 
+    val statsListener: StatsListener
     val favoriteMediaListener: FavoriteMediaListener
     val favoriteCharacterListener: FavoriteCharacterListener
     val favoriteStaffListener: FavoriteStaffListener
