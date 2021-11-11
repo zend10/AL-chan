@@ -55,8 +55,8 @@ class DefaultNavigationManager(
         swapPage(MainFragment.newInstance(deepLink), true)
     }
 
-    override fun navigateToBrowse() {
-        swapPage(BrowseFragment.newInstance())
+    override fun navigateToBrowse(page: BrowseNavigationManager.Page, id: Int?) {
+        pushBrowseScreenPage(page, id)
     }
 
     override fun navigateToActivities() {
@@ -166,6 +166,29 @@ class DefaultNavigationManager(
         if (fragments.isEmpty()) return true
         val lastFragment = fragments.last()
         return lastFragment is SplashFragment || lastFragment is LandingFragment || lastFragment is LoginFragment
+    }
+
+    override fun isAtBrowseScreen(): Boolean {
+        val fragments = fragmentManager.fragments.filterIsInstance<BaseFragment<*, *>>()
+        if (fragments.isEmpty()) return false
+        val lastFragment = fragments.last()
+        return lastFragment is BrowseFragment
+    }
+
+    override fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?) {
+        if (isAtBrowseScreen()) {
+            val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
+            browseFragment.browseNavigationManager.pushBrowseScreenPage(page, id)
+        } else {
+            stackPage(BrowseFragment.newInstance(page, id))
+        }
+    }
+
+    override fun popBrowseScreenPage() {
+        if (isAtBrowseScreen()) {
+            val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
+            browseFragment.browseNavigationManager.popBrowseScreenPage()
+        }
     }
 
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false, disableAnimation: Boolean = false) {

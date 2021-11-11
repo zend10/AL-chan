@@ -168,7 +168,10 @@ class ProfileRvAdapter(
             }
         }
 
-        private fun getSpannedText(@StringRes stringId: Int, value: String?): Spanned {
+        private fun getSpannedText(@StringRes stringId: Int, value: String?): Spanned? {
+            if (value == null)
+                return null
+
             val text = context.getString(stringId, value)
             val textWithoutValue = text.split(value ?: "")
             val spannableStringBuilder = SpannableStringBuilder()

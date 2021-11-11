@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.profile
 
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserStatistics
@@ -16,7 +17,10 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 
-class ProfileViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class ProfileViewModel(
+    private val userRepository: UserRepository,
+    private val browseRepository: BrowseRepository
+) : BaseViewModel() {
 
     private val _profileAdapterComponent = PublishSubject.create<AppSetting>()
     val profileAdapterComponent: Observable<AppSetting>
@@ -75,6 +79,8 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     }
 
     fun loadData(userId: Int) {
+        this.userId = userId
+
         loadOnce {
             disposables.add(
                 userRepository.getIsAuthenticated().zipWith(userRepository.getAppSetting()) { isAuthenticated, appSetting ->
@@ -103,46 +109,47 @@ class ProfileViewModel(private val userRepository: UserRepository) : BaseViewMod
     private fun loadUserData(isReloading: Boolean = false) {
         _loading.onNext(true)
 
-        if (userId == 0) {
-            disposables.add(
-                userRepository.getViewer()
-                    .zipWith(userRepository.getAppSetting()) { user, appSetting ->
-                        return@zipWith user to appSetting
-                    }
-                    .applyScheduler()
-                    .subscribe(
-                        { (user, appSetting) ->
-                            this.user = user
-                            this.appSetting = appSetting
+        val userObservable = if (userId == 0)
+            userRepository.getViewer()
+        else
+            browseRepository.getUser(userId)
 
-                            _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
-                            _bannerUrl.onNext(user.bannerImage)
-                            _username.onNext(user.name)
+        disposables.add(
+            userObservable
+                .zipWith(userRepository.getAppSetting()) { user, appSetting ->
+                    return@zipWith user to appSetting
+                }
+                .applyScheduler()
+                .subscribe(
+                    { (user, appSetting) ->
+                        this.user = user
+                        this.appSetting = appSetting
+
+                        _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
+                        _bannerUrl.onNext(user.bannerImage)
+                        _username.onNext(user.name)
 
 //                            loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
 
-                            _animeCompletedCount.onNext(
-                                user.statistics.anime.statuses.find { anime -> anime.status == MediaListStatus.COMPLETED }?.count ?: 0
-                            )
-                            _mangaCompletedCount.onNext(
-                                user.statistics.manga.statuses.find { manga -> manga.status == MediaListStatus.COMPLETED }?.count ?: 0
-                            )
+                        _animeCompletedCount.onNext(
+                            user.statistics.anime.statuses.find { anime -> anime.status == MediaListStatus.COMPLETED }?.count ?: 0
+                        )
+                        _mangaCompletedCount.onNext(
+                            user.statistics.manga.statuses.find { manga -> manga.status == MediaListStatus.COMPLETED }?.count ?: 0
+                        )
 
-                            emitProfileItemList()
+                        emitProfileItemList()
 
-                            _loading.onNext(false)
-                            state = State.LOADED
-                        },
-                        {
-                            _loading.onNext(false)
-                            _error.onNext(it.getStringResource())
-                            state = State.ERROR
-                        }
-                    )
-            )
-        } else {
-            // load user based on userId
-        }
+                        _loading.onNext(false)
+                        state = State.LOADED
+                    },
+                    {
+                        _loading.onNext(false)
+                        _error.onNext(it.getStringResource())
+                        state = State.ERROR
+                    }
+                )
+        )
     }
 
     private fun loadProfileData(userId: Int, source: Source?) {

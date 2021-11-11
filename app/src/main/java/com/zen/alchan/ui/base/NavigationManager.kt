@@ -3,6 +3,7 @@ package com.zen.alchan.ui.base
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.Fragment
 import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.helper.enums.MediaType
@@ -15,7 +16,7 @@ interface NavigationManager {
     fun navigateToLanding()
     fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false)
     fun navigateToMain(deepLink: DeepLink? = null)
-    fun navigateToBrowse()
+    fun navigateToBrowse(page: BrowseNavigationManager.Page, id: Int? = null)
 
     fun navigateToActivities()
     fun navigateToNotifications()
@@ -39,6 +40,9 @@ interface NavigationManager {
     fun openGallery(launcher: ActivityResultLauncher<Intent>)
 
     fun isAtPreLoginScreen(): Boolean
+    fun isAtBrowseScreen(): Boolean
+    fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?)
+    fun popBrowseScreenPage()
 
     enum class Url {
         ANILIST_WEBSITE,

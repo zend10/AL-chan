@@ -65,4 +65,12 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
 
         intent.data = null
     }
+
+    override fun onBackPressed() {
+        if (navigationManager.isAtBrowseScreen()) {
+            navigationManager.popBrowseScreenPage()
+            return
+        }
+        super.onBackPressed()
+    }
 }

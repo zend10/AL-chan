@@ -81,11 +81,13 @@ class ALchanApplication : Application() {
         single<ContentDataSource> { DefaultContentDataSource(get()) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
         single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
+        single<BrowseDataSource> { DefaultBrowseDataSource(get()) }
 
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
         single<UserRepository> { DefaultUserRepository(get(), get()) }
         single<MediaListRepository> { DefaultMediaListRepository(get(), get()) }
+        single<BrowseRepository> { DefaultBrowseRepository(get()) }
 
         // view model
         viewModel { BaseActivityViewModel(get()) }
@@ -103,7 +105,7 @@ class ALchanApplication : Application() {
 
         viewModel { SocialViewModel() }
 
-        viewModel { ProfileViewModel(get()) }
+        viewModel { ProfileViewModel(get(), get()) }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }

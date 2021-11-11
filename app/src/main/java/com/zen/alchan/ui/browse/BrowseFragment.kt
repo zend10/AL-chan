@@ -8,25 +8,17 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentBrowseBinding
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.base.BrowseNavigationManager
+import com.zen.alchan.ui.base.DefaultBrowseNavigationManager
+import com.zen.alchan.ui.base.NavigationManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [BrowseFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BrowseFragment : BaseFragment<FragmentBrowseBinding, BrowseViewModel>() {
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
     override val viewModel: BrowseViewModel by viewModel()
+
+    lateinit var browseNavigationManager: BrowseNavigationManager
+        private set
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -35,38 +27,32 @@ class BrowseFragment : BaseFragment<FragmentBrowseBinding, BrowseViewModel>() {
         return FragmentBrowseBinding.inflate(inflater, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun setUpLayout() {
+        browseNavigationManager = DefaultBrowseNavigationManager(requireContext(), childFragmentManager, binding.browseLayout)
+
+        arguments?.getString(BROWSE_PAGE)?.let { page ->
+            browseNavigationManager.pushBrowseScreenPage(BrowseNavigationManager.Page.valueOf(page), arguments?.getInt(ID))
         }
+
+        arguments?.remove(ID)
+        arguments?.remove(BROWSE_PAGE)
     }
 
     override fun setUpObserver() {
 
-    }
-
-    override fun setUpLayout() {
 
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BrowseFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+        const val BROWSE_PAGE = "browsePage"
+        const val ID = "id"
+
         @JvmStatic
-        fun newInstance(param1: String = "", param2: String = "") =
+        fun newInstance(page: BrowseNavigationManager.Page, id: Int? = null) =
             BrowseFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(BROWSE_PAGE, page.name)
+                    if (id != null) putInt(ID, id)
                 }
             }
     }
