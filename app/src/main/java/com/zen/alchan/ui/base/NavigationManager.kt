@@ -16,7 +16,6 @@ interface NavigationManager {
     fun navigateToLanding()
     fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false)
     fun navigateToMain(deepLink: DeepLink? = null)
-    fun navigateToBrowse(page: BrowseNavigationManager.Page, id: Int? = null)
 
     fun navigateToActivities()
     fun navigateToNotifications()
@@ -33,6 +32,9 @@ interface NavigationManager {
     fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit)
 
     fun navigateToEditor(mediaType: MediaType, mediaId: Int)
+
+    fun navigateToMedia(id: Int)
+    fun navigateToUser(id: Int)
 
     fun openWebView(url: String)
     fun openWebView(url: Url)

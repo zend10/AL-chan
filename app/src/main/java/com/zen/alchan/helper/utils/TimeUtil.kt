@@ -46,4 +46,10 @@ object TimeUtil {
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
+
+    fun displayInDayDateTimeFormat(seconds: Int): String {
+        val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.getDefault())
+        val date = Date(seconds * 1000L)
+        return dateFormat.format(date)
+    }
 }

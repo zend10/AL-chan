@@ -46,6 +46,10 @@ data class Media(
     val siteUrl: String = "",
     val mediaListEntry: MediaList? = null
 ) {
+    fun getId() : Int {
+        return idAniList
+    }
+
     fun getFormattedMediaFormat(toUpper: Boolean = false): String {
         return format?.name?.convertFromSnakeCase(toUpper) ?: ""
     }

@@ -273,7 +273,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     private fun getMediaListListener(): BaseMediaListRvAdapter.MediaListListener {
         return object : BaseMediaListRvAdapter.MediaListListener {
             override fun navigateToMedia(media: Media) {
-
+                navigation.navigateToMedia(media.getId())
             }
 
             override fun navigateToListEditor(mediaList: MediaList) {

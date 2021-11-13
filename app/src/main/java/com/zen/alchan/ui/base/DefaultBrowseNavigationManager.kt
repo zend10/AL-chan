@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.zen.alchan.R
 import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 
 class DefaultBrowseNavigationManager(
@@ -14,14 +15,18 @@ class DefaultBrowseNavigationManager(
     private val layout: FragmentContainerView
 ) : BrowseNavigationManager {
 
+    private fun navigateToMedia(mediaId: Int) {
+        swapPage(MediaFragment.newInstance(mediaId))
+    }
+
     private fun navigateToUser(userId: Int) {
         swapPage(ProfileFragment.newInstance(userId))
     }
 
     override fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?) {
         when (page) {
+            BrowseNavigationManager.Page.MEDIA -> id?.let { navigateToMedia(id) }
             BrowseNavigationManager.Page.USER -> id?.let { navigateToUser(id) }
-
         }
     }
 
@@ -41,7 +46,7 @@ class DefaultBrowseNavigationManager(
         }
         fragmentTransaction.replace(layout.id, fragment)
         if (!skipBackStack) {
-            fragmentTransaction.addToBackStack("${fragment.toString()}-${TimeUtil.getCurrentTimeInMillis()}")
+            fragmentTransaction.addToBackStack(fragment.toString())
         }
         fragmentTransaction.commit()
     }

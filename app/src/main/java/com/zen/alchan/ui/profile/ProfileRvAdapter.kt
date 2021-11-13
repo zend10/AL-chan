@@ -39,7 +39,7 @@ class ProfileRvAdapter(
         val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
             ProfileItem.VIEW_TYPE_BIO -> {
-                val view = LayoutProfileBioBinding.inflate(inflater, parent, false)
+                val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
                 return BioViewHolder(view)
             }
             ProfileItem.VIEW_TYPE_AFFINITY -> {
@@ -86,7 +86,7 @@ class ProfileRvAdapter(
                 return StatsViewHolder(view)
             }
             else -> {
-                val view = LayoutProfileBioBinding.inflate(inflater, parent, false)
+                val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
                 return BioViewHolder(view)
             }
         }
@@ -101,9 +101,9 @@ class ProfileRvAdapter(
         recyclerView.adapter = adapter
     }
 
-    inner class BioViewHolder(private val binding: LayoutProfileBioBinding) : ViewHolder(binding) {
+    inner class BioViewHolder(private val binding: LayoutTitleAndTextBinding) : ViewHolder(binding) {
         override fun bind(item: ProfileItem, index: Int) {
-            binding.profileBioText.text = item.bio
+            binding.itemTitle.text = item.bio
         }
     }
 

@@ -1,0 +1,98 @@
+query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeVersion: Int) {
+    Media(id:$id) {
+        id
+        idMal
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        type
+        format
+        status(version: $statusVersion)
+        description
+        startDate {
+            year
+            month
+            day
+        }
+        endDate {
+            year
+            month
+            day
+        }
+        season
+        seasonYear
+        episodes
+        duration
+        chapters
+        volumes
+        countryOfOrigin
+        isLicensed
+        source(version: $sourceVersion)
+        trailer {
+            id
+            site
+            thumbnail
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        bannerImage
+        genres
+        synonyms
+        averageScore
+        meanScore
+        popularity
+        trending
+        favourites
+        tags {
+            id
+            name
+            description
+            category
+            rank
+            isGeneralSpoiler
+            isMediaSpoiler
+            isAdult
+        }
+        relations {
+            edges {
+                node {
+                    id
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    type
+                    format
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                }
+                relationType(version: $relationTypeVersion)
+            }
+        }
+        isFavourite
+        isAdult
+        nextAiringEpisode {
+            id
+            airingAt
+            timeUntilAiring
+            episode
+        }
+        externalLinks {
+            id
+            url
+            site
+        }
+        siteUrl
+    }
+}

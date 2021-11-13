@@ -55,10 +55,6 @@ class DefaultNavigationManager(
         swapPage(MainFragment.newInstance(deepLink), true)
     }
 
-    override fun navigateToBrowse(page: BrowseNavigationManager.Page, id: Int?) {
-        pushBrowseScreenPage(page, id)
-    }
-
     override fun navigateToActivities() {
         swapPage(ActivityFragment.newInstance())
     }
@@ -121,6 +117,14 @@ class DefaultNavigationManager(
 
     override fun navigateToEditor(mediaType: MediaType, mediaId: Int) {
         stackPage(EditorFragment.newInstance(mediaType, mediaId))
+    }
+
+    override fun navigateToMedia(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.MEDIA, id)
+    }
+
+    override fun navigateToUser(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.USER, id)
     }
 
     override fun openWebView(url: String) {

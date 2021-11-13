@@ -17,6 +17,7 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
+import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import type.MediaFormat
 import type.MediaType
@@ -90,7 +91,7 @@ abstract class BaseMediaListRvAdapter(
                 }
                 context.getString(R.string.ep_x_in_y, nextAiringEpisode.episode, remainingTime)
             } else {
-                context.getString(R.string.ep_x_on_y, nextAiringEpisode.episode, nextAiringEpisode.airingAt.displaySecondsInDayDateTimeFormat())
+                context.getString(R.string.ep_x_on_y, nextAiringEpisode.episode, TimeUtil.displayInDayDateTimeFormat(nextAiringEpisode.airingAt))
             }
 
             var episodesBehindText = ""

@@ -23,6 +23,7 @@ import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.login.LoginViewModel
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
+import com.zen.alchan.ui.media.MediaViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
@@ -120,6 +121,8 @@ class ALchanApplication : Application() {
         viewModel { CustomiseViewModel(get()) }
 
         viewModel { EditorViewModel(get(), get()) }
+
+        viewModel { MediaViewModel(get(), get()) }
     }
 
     override fun onCreate() {

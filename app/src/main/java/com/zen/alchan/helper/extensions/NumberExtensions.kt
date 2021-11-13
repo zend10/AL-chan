@@ -25,12 +25,6 @@ fun Int.showUnit(context: Context, @PluralsRes pluralResId: Int): String {
     return "$this ${context.resources.getQuantityString(pluralResId, this)}"
 }
 
-fun Int.displaySecondsInDayDateTimeFormat(): String {
-    val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.getDefault())
-    val date = Date(this * 1000L)
-    return dateFormat.format(date)
-}
-
 fun Int.convertSecondsToDays(): Int {
     return this / 3600 / 24 + 1
 }

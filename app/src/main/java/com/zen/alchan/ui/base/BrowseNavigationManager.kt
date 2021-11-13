@@ -8,6 +8,7 @@ interface BrowseNavigationManager {
     fun popBrowseScreenPage()
 
     enum class Page {
+        MEDIA,
         USER
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/profileBioTitle"
+        android:id="@+id/itemTitle"
         android:text="@string/bio"
         style="?themeRegularBoldFont"
         app:layout_constraintTop_toTopOf="parent"
@@ -15,9 +15,9 @@
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/profileBioText"
+        android:id="@+id/itemText"
         style="?themeRegularFont"
-        app:layout_constraintTop_toBottomOf="@id/profileBioTitle"
+        app:layout_constraintTop_toBottomOf="@id/itemTitle"
         android:layout_marginTop="@dimen/marginNormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
