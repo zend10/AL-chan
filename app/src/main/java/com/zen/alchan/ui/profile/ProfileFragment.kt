@@ -216,7 +216,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             override fun navigateToMedia(media: Media, mediaType: MediaType) {
-
+                navigation.navigateToMedia(media.getId())
             }
         }
     }
@@ -228,7 +228,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             override fun navigateToCharacter(character: Character) {
-
+                navigation.navigateToCharacter(character.id)
             }
         }
     }

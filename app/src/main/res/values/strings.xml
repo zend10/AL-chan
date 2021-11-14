@@ -339,6 +339,10 @@
     <string name="view_detail_statistics">View Detail Statistics</string>
     <string name="add_to_list">Add to List</string>
     <string name="synopsis">Synopsis</string>
+    <string name="characters">Characters</string>
+    <string name="media">Media</string>
+    <string name="set_as_favorite">Set as Favorite</string>
+    <string name="also_called">Also called: %1$s</string>
 
 
     <plurals name="minute">

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.zen.alchan.R
 import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 
@@ -19,6 +20,10 @@ class DefaultBrowseNavigationManager(
         swapPage(MediaFragment.newInstance(mediaId))
     }
 
+    private fun navigateToCharacter(characterId: Int) {
+        swapPage(CharacterFragment.newInstance(characterId))
+    }
+
     private fun navigateToUser(userId: Int) {
         swapPage(ProfileFragment.newInstance(userId))
     }
@@ -26,6 +31,7 @@ class DefaultBrowseNavigationManager(
     override fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?) {
         when (page) {
             BrowseNavigationManager.Page.MEDIA -> id?.let { navigateToMedia(id) }
+            BrowseNavigationManager.Page.CHARACTER -> id?.let { navigateToCharacter(id) }
             BrowseNavigationManager.Page.USER -> id?.let { navigateToUser(id) }
         }
     }
@@ -37,12 +43,12 @@ class DefaultBrowseNavigationManager(
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false, disableAnimation: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
         if (!disableAnimation) {
-            fragmentTransaction.setCustomAnimations(
-                R.anim.slide_in,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.slide_out
-            )
+//            fragmentTransaction.setCustomAnimations(
+//                R.anim.slide_in,
+//                R.anim.fade_out,
+//                R.anim.fade_in,
+//                R.anim.slide_out
+//            )
         }
         fragmentTransaction.replace(layout.id, fragment)
         if (!skipBackStack) {

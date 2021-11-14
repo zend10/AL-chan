@@ -15,6 +15,7 @@ import com.zen.alchan.data.network.header.HeaderInterceptor
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.ui.base.BaseActivityViewModel
+import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
@@ -123,6 +124,7 @@ class ALchanApplication : Application() {
         viewModel { EditorViewModel(get(), get()) }
 
         viewModel { MediaViewModel(get(), get()) }
+        viewModel { CharacterViewModel(get(), get()) }
     }
 
     override fun onCreate() {

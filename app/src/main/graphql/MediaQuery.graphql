@@ -11,7 +11,7 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
         type
         format
         status(version: $statusVersion)
-        description
+        description(asHtml: false)
         startDate {
             year
             month
@@ -78,6 +78,25 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
                     }
                 }
                 relationType(version: $relationTypeVersion)
+            }
+        }
+        characters(role: MAIN, sort: [ID]) {
+            nodes {
+                id
+                name {
+                    first
+                    middle
+                    last
+                    full
+                    native
+                    alternative
+                    alternativeSpoiler
+                    userPreferred
+                }
+                image {
+                    large
+                    medium
+                }
             }
         }
         isFavourite

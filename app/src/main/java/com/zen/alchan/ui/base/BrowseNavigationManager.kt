@@ -1,7 +1,5 @@
 package com.zen.alchan.ui.base
 
-import androidx.fragment.app.Fragment
-
 interface BrowseNavigationManager {
 
     fun pushBrowseScreenPage(page: Page, id: Int?)
@@ -9,6 +7,7 @@ interface BrowseNavigationManager {
 
     enum class Page {
         MEDIA,
+        CHARACTER,
         USER
     }
 }

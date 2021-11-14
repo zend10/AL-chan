@@ -61,6 +61,27 @@ fun MediaQuery.Data.convert(): Media {
             )
         } ?: listOf(),
 //        relations
+        characters = CharacterConnection(
+            nodes = media?.characters?.nodes?.filterNotNull()?.map {
+                Character(
+                    id = it.id,
+                    name = CharacterName(
+                        first = it.name?.first ?: "",
+                        middle = it.name?.middle ?: "",
+                        last = it.name?.last ?: "",
+                        full = it.name?.full ?: "",
+                        native = it.name?.native_ ?: "",
+                        alternative = it.name?.alternative?.filterNotNull() ?: listOf(),
+                        alternativeSpoiler = it.name?.alternativeSpoiler?.filterNotNull() ?: listOf(),
+                        userPreferred = it.name?.userPreferred ?: "",
+                    ),
+                    image = CharacterImage(
+                        large = it.image?.large ?: "",
+                        medium = it.image?.medium ?: ""
+                    )
+                )
+            } ?: listOf()
+        ),
         isFavourite = media?.isFavourite ?: false,
         isAdult = media?.isAdult ?: false,
         nextAiringEpisode = if (media?.nextAiringEpisode != null)

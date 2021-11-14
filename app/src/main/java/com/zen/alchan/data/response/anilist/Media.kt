@@ -35,6 +35,7 @@ data class Media(
     val meanScore: Int = 0,
     val popularity: Int = 0,
     val trending: Int = 0,
+    val characters: CharacterConnection = CharacterConnection(),
     val staffs: StaffConnection = StaffConnection(),
     val studios: StudioConnection = StudioConnection(),
     val favourites: Int = 0,

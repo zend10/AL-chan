@@ -12,6 +12,8 @@ import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.getString
@@ -113,14 +115,31 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     }
 
     private fun assignAdapter(appSetting: AppSetting) {
-        mediaAdapter = MediaRvAdapter(requireContext(), listOf(), appSetting, getMediaListener())
+        mediaAdapter = MediaRvAdapter(requireContext(), listOf(), appSetting, screenWidth, getMediaListener())
         binding.mediaRecyclerView.adapter = mediaAdapter
     }
 
     private fun getMediaListener(): MediaListener {
         return object : MediaListener {
-
+            override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
         }
+    }
+
+    private fun getMediaCharacterListener(): MediaListener.MediaCharacterListener {
+        return object : MediaListener.MediaCharacterListener {
+            override fun navigateToMediaCharacter(media: Media) {
+
+            }
+
+            override fun navigateToCharacter(character: Character) {
+                navigation.navigateToCharacter(character.id)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediaAdapter = null
     }
 
     companion object {

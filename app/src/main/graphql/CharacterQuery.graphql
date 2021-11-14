@@ -1,0 +1,59 @@
+query CharacterQuery($id:Int) {
+    Character(id:$id) {
+        id
+        name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            alternativeSpoiler
+            userPreferred
+        }
+        image {
+            large
+            medium
+        }
+        description(asHtml:false)
+        gender
+        dateOfBirth {
+            year
+            month
+            day
+        }
+        age
+        bloodType
+        isFavourite
+        siteUrl
+        media {
+            edges {
+                node {
+                    id
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                    type
+                    format
+                }
+                characterRole
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+        favourites
+    }
+}

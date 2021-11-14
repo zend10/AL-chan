@@ -34,6 +34,7 @@ interface NavigationManager {
     fun navigateToEditor(mediaType: MediaType, mediaId: Int)
 
     fun navigateToMedia(id: Int)
+    fun navigateToCharacter(id: Int)
     fun navigateToUser(id: Int)
 
     fun openWebView(url: String)

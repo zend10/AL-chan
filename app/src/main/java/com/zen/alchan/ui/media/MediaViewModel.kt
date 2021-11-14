@@ -110,7 +110,8 @@ class MediaViewModel(
 
                         _mediaItemList.onNext(
                             listOf(
-                                MediaItem(synopsis = media.description, viewType = MediaItem.VIEW_TYPE_SYNOPSIS)
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_SYNOPSIS),
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_CHARACTERS)
                             )
                         )
                     },
