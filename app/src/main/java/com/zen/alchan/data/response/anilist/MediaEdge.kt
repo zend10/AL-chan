@@ -4,5 +4,6 @@ import type.CharacterRole
 
 data class MediaEdge(
     val node: Media = Media(),
-    val characterRole: CharacterRole? = null
+    val characterRole: CharacterRole? = null,
+    val staffRole: String = ""
 )

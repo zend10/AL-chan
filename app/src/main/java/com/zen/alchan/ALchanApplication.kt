@@ -36,6 +36,7 @@ import com.zen.alchan.ui.settings.list.ListSettingsViewModel
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
 import com.zen.alchan.ui.social.SocialViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
+import com.zen.alchan.ui.staff.StaffViewModel
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -125,6 +126,7 @@ class ALchanApplication : Application() {
 
         viewModel { MediaViewModel(get(), get()) }
         viewModel { CharacterViewModel(get(), get()) }
+        viewModel { StaffViewModel(get(), get()) }
     }
 
     override fun onCreate() {

@@ -35,6 +35,7 @@ interface NavigationManager {
 
     fun navigateToMedia(id: Int)
     fun navigateToCharacter(id: Int)
+    fun navigateToStaff(id: Int)
     fun navigateToUser(id: Int)
 
     fun openWebView(url: String)
@@ -46,6 +47,7 @@ interface NavigationManager {
     fun isAtBrowseScreen(): Boolean
     fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?)
     fun popBrowseScreenPage()
+    fun shouldPopFromBrowseScreen(): Boolean
 
     enum class Url {
         ANILIST_WEBSITE,

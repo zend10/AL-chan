@@ -127,6 +127,10 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(BrowseNavigationManager.Page.CHARACTER, id)
     }
 
+    override fun navigateToStaff(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.STAFF, id)
+    }
+
     override fun navigateToUser(id: Int) {
         pushBrowseScreenPage(BrowseNavigationManager.Page.USER, id)
     }
@@ -196,6 +200,15 @@ class DefaultNavigationManager(
         if (isAtBrowseScreen()) {
             val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
             browseFragment.browseNavigationManager.popBrowseScreenPage()
+        }
+    }
+
+    override fun shouldPopFromBrowseScreen(): Boolean {
+        if (isAtBrowseScreen()) {
+            val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
+            return browseFragment.browseNavigationManager.backStackCount() > 1
+        } else {
+            return false
         }
     }
 

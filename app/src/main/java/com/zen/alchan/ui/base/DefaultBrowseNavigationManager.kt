@@ -9,6 +9,7 @@ import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.profile.ProfileFragment
+import com.zen.alchan.ui.staff.StaffFragment
 
 class DefaultBrowseNavigationManager(
     private val context: Context,
@@ -24,8 +25,16 @@ class DefaultBrowseNavigationManager(
         swapPage(CharacterFragment.newInstance(characterId))
     }
 
+    private fun navigateToStaff(staffId: Int) {
+        swapPage(StaffFragment.newInstance(staffId))
+    }
+
     private fun navigateToUser(userId: Int) {
         swapPage(ProfileFragment.newInstance(userId))
+    }
+
+    override fun backStackCount(): Int {
+        return fragmentManager.backStackEntryCount
     }
 
     override fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?) {
@@ -33,6 +42,7 @@ class DefaultBrowseNavigationManager(
             BrowseNavigationManager.Page.MEDIA -> id?.let { navigateToMedia(id) }
             BrowseNavigationManager.Page.CHARACTER -> id?.let { navigateToCharacter(id) }
             BrowseNavigationManager.Page.USER -> id?.let { navigateToUser(id) }
+            BrowseNavigationManager.Page.STAFF -> id?.let { navigateToStaff(id) }
         }
     }
 

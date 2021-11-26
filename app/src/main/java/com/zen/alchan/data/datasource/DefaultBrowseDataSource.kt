@@ -2,6 +2,7 @@ package com.zen.alchan.data.datasource
 
 import CharacterQuery
 import MediaQuery
+import StaffQuery
 import UserQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -27,6 +28,11 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
 
     override fun getCharacterQuery(id: Int): Observable<Response<CharacterQuery.Data>> {
         val query = CharacterQuery(id = Input.fromNullable(id))
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getStaffQuery(id: Int): Observable<Response<StaffQuery.Data>> {
+        val query = StaffQuery(id = Input.fromNullable(id))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 }

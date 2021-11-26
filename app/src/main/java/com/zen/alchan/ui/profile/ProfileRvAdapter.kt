@@ -103,7 +103,9 @@ class ProfileRvAdapter(
 
     inner class BioViewHolder(private val binding: LayoutTitleAndTextBinding) : ViewHolder(binding) {
         override fun bind(item: ProfileItem, index: Int) {
-            binding.itemTitle.text = item.bio
+            binding.itemTitle.show(true)
+            binding.itemTitle.text = context.getString(R.string.bio)
+            binding.itemText.text = item.bio
         }
     }
 

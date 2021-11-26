@@ -67,7 +67,7 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
     }
 
     override fun onBackPressed() {
-        if (navigationManager.isAtBrowseScreen()) {
+        if (navigationManager.shouldPopFromBrowseScreen()) {
             navigationManager.popBrowseScreenPage()
             return
         }

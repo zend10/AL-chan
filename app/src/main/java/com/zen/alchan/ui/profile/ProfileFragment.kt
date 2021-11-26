@@ -240,7 +240,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             override fun navigateToStaff(staff: Staff) {
-
+                navigation.navigateToStaff(staff.id)
             }
         }
     }

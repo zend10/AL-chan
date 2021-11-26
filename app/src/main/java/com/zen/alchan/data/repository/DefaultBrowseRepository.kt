@@ -4,6 +4,7 @@ import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.User
 import io.reactivex.Observable
 import type.UserStatisticsSort
@@ -24,6 +25,12 @@ class DefaultBrowseRepository(private val browseDataSource: BrowseDataSource) : 
 
     override fun getCharacter(id: Int): Observable<Character> {
         return browseDataSource.getCharacterQuery(id).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun getStaff(id: Int): Observable<Staff> {
+        return browseDataSource.getStaffQuery(id).map {
             it.data?.convert()
         }
     }
