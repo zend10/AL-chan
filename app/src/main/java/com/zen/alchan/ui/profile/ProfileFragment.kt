@@ -187,7 +187,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     }
 
     private fun assignAdapter(appSetting: AppSetting) {
-        profileAdapter = ProfileRvAdapter(requireContext(), listOf(), appSetting, getProfileListener())
+        profileAdapter = ProfileRvAdapter(requireContext(), listOf(), appSetting, screenWidth, getProfileListener())
         binding.profileRecyclerView.adapter = profileAdapter
     }
 

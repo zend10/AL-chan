@@ -342,7 +342,6 @@
     <string name="characters">Characters</string>
     <string name="media">Media</string>
     <string name="set_as_favorite">Set as Favorite</string>
-    <string name="also_called">Also called: %1$s</string>
 
 
     <plurals name="minute">

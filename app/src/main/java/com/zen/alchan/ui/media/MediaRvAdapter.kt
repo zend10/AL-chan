@@ -10,7 +10,9 @@ import com.zen.alchan.databinding.LayoutHorizontalListBinding
 import com.zen.alchan.databinding.LayoutTitleAndListBinding
 import com.zen.alchan.databinding.LayoutTitleAndTextBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.MediaItem
+import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
@@ -51,8 +53,11 @@ class MediaRvAdapter(
 
     inner class SynopsisViewHolder(private val binding: LayoutTitleAndTextBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
-            binding.itemTitle.text = context.getString(R.string.synopsis)
-            binding.itemText.text = item.media.description
+            binding.apply {
+                itemTitle.show(true)
+                itemTitle.text = context.getString(R.string.synopsis)
+                MarkdownUtil.applyMarkdown(context, itemText, item.media.description)
+            }
         }
     }
 

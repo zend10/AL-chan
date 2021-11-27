@@ -17,7 +17,8 @@ import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ProfileItem
-import com.zen.alchan.helper.utils.SpaceItemDecoration
+import com.zen.alchan.helper.utils.MarkdownSetup
+import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -26,6 +27,7 @@ class ProfileRvAdapter(
     private val context: Context,
     list: List<ProfileItem>,
     private val appSetting: AppSetting,
+    private val width: Int,
     private val listener: ProfileListener
 ) : BaseRecyclerViewAdapter<ProfileItem, ViewBinding>(list) {
 
@@ -35,11 +37,14 @@ class ProfileRvAdapter(
     private var favoriteStaffAdapter: FavoriteStaffRvAdapter? = null
     private var favoriteStudioRvAdapter: FavoriteStudioRvAdapter? = null
 
+    private var markdownSetup: MarkdownSetup? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
             ProfileItem.VIEW_TYPE_BIO -> {
                 val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
+                markdownSetup = MarkdownUtil.getMarkdownSetup(context, width)
                 return BioViewHolder(view)
             }
             ProfileItem.VIEW_TYPE_AFFINITY -> {
@@ -103,9 +108,11 @@ class ProfileRvAdapter(
 
     inner class BioViewHolder(private val binding: LayoutTitleAndTextBinding) : ViewHolder(binding) {
         override fun bind(item: ProfileItem, index: Int) {
-            binding.itemTitle.show(true)
-            binding.itemTitle.text = context.getString(R.string.bio)
-            binding.itemText.text = item.bio
+            binding.apply {
+                itemTitle.show(true)
+                itemTitle.text = context.getString(R.string.bio)
+                MarkdownUtil.applyMarkdown(context, markdownSetup, itemText, item.bio ?: "")
+            }
         }
     }
 

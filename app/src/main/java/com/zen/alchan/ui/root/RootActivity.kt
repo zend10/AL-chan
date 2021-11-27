@@ -3,6 +3,7 @@ package com.zen.alchan.ui.root
 import android.content.Intent
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.*
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -26,6 +27,8 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
     override fun setUpLayout() {
         navigationManager = DefaultNavigationManager(this, supportFragmentManager, binding.rootLayout)
         dialogManager = DefaultDialogManager(this)
+
+        ImageUtil.init(this)
 
         handleDeepLink(intent)
     }

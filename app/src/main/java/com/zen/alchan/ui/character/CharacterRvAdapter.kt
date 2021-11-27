@@ -9,6 +9,7 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.databinding.LayoutTitleAndTextBinding
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.CharacterItem
+import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class CharacterRvAdapter(
@@ -41,8 +42,8 @@ class CharacterRvAdapter(
         override fun bind(item: CharacterItem, index: Int) {
             binding.apply {
                 itemTitle.show(item.character.name.alternative.isNotEmpty())
-                itemTitle.text = context.getString(R.string.also_called, item.character.name.alternative.joinToString(", "))
-                itemText.text = item.character.description
+                itemTitle.text = item.character.name.alternative.joinToString(", ")
+                MarkdownUtil.applyMarkdown(context, itemText, item.character.description)
             }
         }
     }

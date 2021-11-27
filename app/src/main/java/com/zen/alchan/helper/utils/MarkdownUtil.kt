@@ -21,13 +21,15 @@ import org.commonmark.node.Link
 import java.util.*
 import java.util.regex.Pattern
 
+typealias MarkdownSetup = Markwon
+
 object MarkdownUtil {
 
-    fun getMarkdownSetup(context: Context, maxWidth: Int, maxHeight: Int): Markwon {
+    fun getMarkdownSetup(context: Context, maxWidth: Int): MarkdownSetup {
         return Markwon.builder(context)
             .usePlugin(
                 ImagesPlugin.create { plugin ->
-                    plugin.defaultMediaDecoder(DefaultDownScalingMediaDecoder.create(maxWidth, maxHeight))
+                    plugin.defaultMediaDecoder(DefaultDownScalingMediaDecoder.create(maxWidth, 0))
                     plugin.addMediaDecoder(GifMediaDecoder.create())
                 }
             )
@@ -51,11 +53,12 @@ object MarkdownUtil {
             .build()
     }
 
-    fun applyMarkdown(context: Context, markwon: Markwon, textView: AppCompatTextView, markdownText: String) {
+    fun applyMarkdown(context: Context, markdownSetup: MarkdownSetup?, textView: AppCompatTextView, markdownText: String) {
         try {
-            val node = markwon.parse(markdownText)
-            val markdown = markwon.render(node)
-            markwon.setParsedMarkdown(textView, markdown)
+            val markdownSetup = markdownSetup ?: getMarkdownSetup(context, 0)
+            val node = markdownSetup.parse(markdownText)
+            val markdown = markdownSetup.render(node)
+            markdownSetup.setParsedMarkdown(textView, markdown)
             textView.movementMethod = LinkMovementMethod.getInstance()
         } catch (e: Exception) {
             textView.text = "Failed to render"
@@ -64,10 +67,10 @@ object MarkdownUtil {
 
     fun applyMarkdown(context: Context, textView: AppCompatTextView, markdownText: String) {
         try {
-            val markwon = getMarkdownSetup(context, 0, 0)
-            val node = markwon.parse(markdownText)
-            val markdown = markwon.render(node)
-            markwon.setParsedMarkdown(textView, markdown)
+            val markdownSetup = getMarkdownSetup(context, 0)
+            val node = markdownSetup.parse(markdownText)
+            val markdown = markdownSetup.render(node)
+            markdownSetup.setParsedMarkdown(textView, markdown)
             textView.movementMethod = LinkMovementMethod.getInstance()
         } catch (e: Exception) {
             textView.text = "Failed to render"

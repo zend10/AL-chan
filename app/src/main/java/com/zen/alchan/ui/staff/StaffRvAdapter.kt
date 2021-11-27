@@ -7,7 +7,9 @@ import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.databinding.LayoutTitleAndTextBinding
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.StaffItem
+import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class StaffRvAdapter(
@@ -39,8 +41,9 @@ class StaffRvAdapter(
     inner class BioViewHolder(private val binding: LayoutTitleAndTextBinding) : ViewHolder(binding) {
         override fun bind(item: StaffItem, index: Int) {
             binding.apply {
+                itemTitle.show(true)
                 itemTitle.text = context.getString(R.string.bio)
-                itemText.text = item.staff.description
+                MarkdownUtil.applyMarkdown(context, itemText, item.staff.description)
             }
         }
     }
