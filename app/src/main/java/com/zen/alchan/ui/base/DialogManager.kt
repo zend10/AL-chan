@@ -39,4 +39,6 @@ interface DialogManager {
     fun showScoreDialog(scoreFormat: ScoreFormat, currentScore: Double, advancedScores: LinkedHashMap<String, Double>?, action: (newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) -> Unit)
 
     fun showDatePicker(calendar: Calendar, action: (year: Int, month: Int, dayOfMonth: Int) -> Unit)
+
+    fun showShareSheet(text: String)
 }

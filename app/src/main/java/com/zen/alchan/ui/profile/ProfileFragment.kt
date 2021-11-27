@@ -90,6 +90,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 true
             }
 
+            menuItemViewOnAniList?.setOnMenuItemClickListener {
+                viewModel.loadProfileUrlForWebView()
+                true
+            }
+
+            menuItemShareProfile?.setOnMenuItemClickListener {
+                viewModel.loadProfileUrlForShareSheet()
+                true
+            }
+
+            menuItemCopyLink?.setOnMenuItemClickListener {
+                viewModel.copyProfileUrl()
+                true
+            }
+
             profileAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 profileSwipeRefresh.isEnabled = verticalOffset == 0
 
@@ -134,6 +149,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.loading.subscribe {
                 binding.profileSwipeRefresh.isRefreshing = it
             },
@@ -180,6 +198,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             },
             viewModel.profileItemList.subscribe {
                 profileAdapter?.updateData(it)
+            },
+            viewModel.profileUrlForWebView.subscribe {
+                navigation.openWebView(it)
+            },
+            viewModel.profileUrlForShareSheet.subscribe {
+                dialog.showShareSheet(it)
             }
         )
 

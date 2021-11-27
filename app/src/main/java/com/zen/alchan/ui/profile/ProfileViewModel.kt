@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.profile
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
@@ -11,6 +12,7 @@ import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ProfileItem
 import com.zen.alchan.helper.pojo.Tendency
+import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -19,7 +21,8 @@ import type.MediaListStatus
 
 class ProfileViewModel(
     private val userRepository: UserRepository,
-    private val browseRepository: BrowseRepository
+    private val browseRepository: BrowseRepository,
+    private val clipboardService: ClipboardService
 ) : BaseViewModel() {
 
     private val _profileAdapterComponent = PublishSubject.create<AppSetting>()
@@ -70,6 +73,14 @@ class ProfileViewModel(
     val profileItemList: Observable<List<ProfileItem>>
         get() = _profileItemList
 
+    private val _profileUrlForWebView = PublishSubject.create<String>()
+    val profileUrlForWebView: Observable<String>
+        get() = _profileUrlForWebView
+
+    private val _profileUrlForShareSheet = PublishSubject.create<String>()
+    val profileUrlForShareSheet: Observable<String>
+        get() = _profileUrlForShareSheet
+
     private var userId = 0
     private var user = User()
     private var appSetting = AppSetting()
@@ -104,6 +115,29 @@ class ProfileViewModel(
 
     fun reloadData() {
         loadUserData(true)
+    }
+
+    fun loadProfileUrlForWebView() {
+        _profileUrlForWebView.onNext(user.siteUrl)
+    }
+
+    fun loadProfileUrlForShareSheet() {
+        _profileUrlForShareSheet.onNext(user.siteUrl)
+    }
+
+    fun copyProfileUrl() {
+        disposables.add(
+            clipboardService.copyPlainText(user.siteUrl)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        _success.onNext(R.string.link_copied)
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
+        )
     }
 
     private fun loadUserData(isReloading: Boolean = false) {

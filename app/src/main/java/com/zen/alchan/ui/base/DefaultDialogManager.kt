@@ -2,6 +2,7 @@ package com.zen.alchan.ui.base
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -234,5 +235,16 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
             datePickerDialog = null
         }
         datePickerDialog?.show()
+    }
+
+    override fun showShareSheet(text: String) {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
     }
 }

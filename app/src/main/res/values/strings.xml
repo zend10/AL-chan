@@ -342,6 +342,7 @@
     <string name="characters">Characters</string>
     <string name="media">Media</string>
     <string name="set_as_favorite">Set as Favorite</string>
+    <string name="link_copied">Link copied</string>
 
 
     <plurals name="minute">

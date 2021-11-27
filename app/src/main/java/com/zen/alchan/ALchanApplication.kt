@@ -14,6 +14,8 @@ import com.zen.alchan.data.network.header.AniListHeaderInterceptorImpl
 import com.zen.alchan.data.network.header.HeaderInterceptor
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.service.clipboard.ClipboardService
+import com.zen.alchan.helper.service.clipboard.DefaultClipboardService
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
@@ -92,6 +94,9 @@ class ALchanApplication : Application() {
         single<MediaListRepository> { DefaultMediaListRepository(get(), get()) }
         single<BrowseRepository> { DefaultBrowseRepository(get()) }
 
+        // service
+        single<ClipboardService> { DefaultClipboardService(this.androidContext()) }
+
         // view model
         viewModel { BaseActivityViewModel(get()) }
 
@@ -108,7 +113,7 @@ class ALchanApplication : Application() {
 
         viewModel { SocialViewModel() }
 
-        viewModel { ProfileViewModel(get(), get()) }
+        viewModel { ProfileViewModel(get(), get(), get()) }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }
