@@ -10,6 +10,10 @@ interface BrowseNavigationManager {
         MEDIA,
         CHARACTER,
         STAFF,
-        USER
+        USER,
+        ANIME_MEDIA_LIST,
+        MANGA_MEDIA_LIST,
+        FOLLOWING,
+        FOLLOWERS,
     }
 }

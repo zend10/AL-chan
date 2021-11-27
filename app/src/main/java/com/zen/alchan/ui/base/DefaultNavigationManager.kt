@@ -135,6 +135,22 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(BrowseNavigationManager.Page.USER, id)
     }
 
+    override fun navigateToAnimeMediaList(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.ANIME_MEDIA_LIST, id)
+    }
+
+    override fun navigateToMangaMediaList(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.MANGA_MEDIA_LIST, id)
+    }
+
+    override fun navigateToFollowing(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.FOLLOWING, id)
+    }
+
+    override fun navigateToFollowers(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.FOLLOWERS, id)
+    }
+
     override fun openWebView(url: String) {
         launchWebView(Uri.parse(url))
     }

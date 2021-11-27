@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
+import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
@@ -16,6 +17,7 @@ import coil.imageLoader
 import coil.load
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zen.alchan.BuildConfig
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.getAttrValue
@@ -62,5 +64,11 @@ object ImageUtil {
         imageView.background = ContextCompat.getDrawable(context, R.drawable.shape_rectangle)
         imageView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.transparent))
         imageView.load(url)
+    }
+
+    fun showFullScreenImage(context: Context, url: String, imageView: AppCompatImageView) {
+        StfalconImageViewer.Builder<String>(context, arrayOf(url)) { view, image ->
+            view.load(image)
+        }.withTransitionFrom(imageView).withHiddenStatusBar(false).show(true)
     }
 }

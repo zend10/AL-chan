@@ -38,6 +38,11 @@ interface NavigationManager {
     fun navigateToStaff(id: Int)
     fun navigateToUser(id: Int)
 
+    fun navigateToAnimeMediaList(id: Int)
+    fun navigateToMangaMediaList(id: Int)
+    fun navigateToFollowing(id: Int)
+    fun navigateToFollowers(id: Int)
+
     fun openWebView(url: String)
     fun openWebView(url: Url)
     fun openEmailClient()

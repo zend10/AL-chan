@@ -21,6 +21,10 @@ class SharedMainViewModel : BaseViewModel() {
         Page.PROFILE to _scrollProfileToTop
     )
 
+    private val _bottomSheetNavigation = PublishSubject.create<Int>()
+    val bottomSheetNavigation: Observable<Int>
+        get() = _bottomSheetNavigation
+
     override fun loadData() {
         // do nothing
     }
@@ -38,6 +42,10 @@ class SharedMainViewModel : BaseViewModel() {
             MediaType.ANIME -> Page.ANIME
             MediaType.MANGA -> Page.MANGA
         }
+    }
+
+    fun navigateTo(page: Page) {
+        _bottomSheetNavigation.onNext(Page.values().indexOfFirst { it == page })
     }
 
     enum class Page {

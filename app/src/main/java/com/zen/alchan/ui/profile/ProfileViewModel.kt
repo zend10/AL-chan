@@ -81,6 +81,14 @@ class ProfileViewModel(
     val profileUrlForShareSheet: Observable<String>
         get() = _profileUrlForShareSheet
 
+    private val _avatarUrlForPreview = PublishSubject.create<Pair<String, Boolean>>()
+    val avatarUrlForPreview: Observable<Pair<String, Boolean>>
+        get() = _avatarUrlForPreview
+
+    private val _bannerUrlForPreview = PublishSubject.create<String>()
+    val bannerUrlForPreview: Observable<String>
+        get() = _bannerUrlForPreview
+
     private var userId = 0
     private var user = User()
     private var appSetting = AppSetting()
@@ -138,6 +146,16 @@ class ProfileViewModel(
                     }
                 )
         )
+    }
+
+    fun loadAvatarUrl(useCircular: Boolean) {
+        if (user.avatar.getImageUrl(appSetting).isNotBlank())
+            _avatarUrlForPreview.onNext(user.avatar.large to useCircular)
+    }
+
+    fun loadBannerUrl() {
+        if (user.bannerImage.isNotBlank())
+            _bannerUrlForPreview.onNext(user.bannerImage)
     }
 
     private fun loadUserData(isReloading: Boolean = false) {

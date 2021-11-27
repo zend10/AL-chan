@@ -24,6 +24,8 @@ import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.main.SharedMainViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
@@ -31,6 +33,7 @@ import kotlin.math.abs
 class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>() {
 
     override val viewModel: ProfileViewModel by viewModel()
+    private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     private var menuItemActivities: MenuItem? = null
     private var menuItemNotifications: MenuItem? = null
@@ -125,20 +128,40 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 viewModel.reloadData()
             }
 
-            profileAnimeCountLayout.clicks {
+            profileAvatarCircleImage.clicks {
+                viewModel.loadAvatarUrl(true)
+            }
 
+            profileAvatarRectangleImage.clicks {
+                viewModel.loadAvatarUrl(false)
+            }
+
+            profileBannerImage.clicks {
+                viewModel.loadBannerUrl()
+            }
+
+            profileAnimeCountLayout.clicks {
+                val userId = arguments?.getInt(USER_ID) ?: 0
+                if (userId == 0)
+                    sharedViewModel.navigateTo(SharedMainViewModel.Page.ANIME)
+                else
+                    navigation.navigateToAnimeMediaList(userId)
             }
 
             profileMangaCountLayout.clicks {
-
+                val userId = arguments?.getInt(USER_ID) ?: 0
+                if (userId == 0)
+                    sharedViewModel.navigateTo(SharedMainViewModel.Page.MANGA)
+                else
+                    navigation.navigateToMangaMediaList(userId)
             }
 
             profileFollowingCountLayout.clicks {
-
+                navigation.navigateToFollowing(arguments?.getInt(USER_ID) ?: 0)
             }
 
             profileFollowersCountLayout.clicks {
-
+                navigation.navigateToFollowers(arguments?.getInt(USER_ID) ?: 0)
             }
         }
     }
@@ -204,6 +227,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             },
             viewModel.profileUrlForShareSheet.subscribe {
                 dialog.showShareSheet(it)
+            },
+            viewModel.avatarUrlForPreview.subscribe {
+                ImageUtil.showFullScreenImage(
+                    requireContext(),
+                    it.first,
+                    if (it.second) binding.profileAvatarCircleImage else binding.profileAvatarRectangleImage
+                )
+            },
+            viewModel.bannerUrlForPreview.subscribe {
+                ImageUtil.showFullScreenImage(
+                    requireContext(),
+                    it,
+                    binding.profileBannerImage
+                )
             }
         )
 

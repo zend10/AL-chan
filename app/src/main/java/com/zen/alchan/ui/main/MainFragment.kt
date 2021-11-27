@@ -118,6 +118,12 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             }
         )
 
+        sharedDisposables.add(
+            sharedViewModel.bottomSheetNavigation.subscribe {
+                binding.mainViewPager.setCurrentItem(it, true)
+            }
+        )
+
         deepLink?.let {
             handleDeepLinkNavigation(it)
         }

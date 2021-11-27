@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.character.CharacterFragment
+import com.zen.alchan.ui.follow.FollowFragment
 import com.zen.alchan.ui.media.MediaFragment
+import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.staff.StaffFragment
 
@@ -33,6 +36,22 @@ class DefaultBrowseNavigationManager(
         swapPage(ProfileFragment.newInstance(userId))
     }
 
+    private fun navigateToAnimeMediaList(userId: Int) {
+        swapPage(MediaListFragment.newInstance(MediaType.ANIME, userId))
+    }
+
+    private fun navigateToMangaMediaList(userId: Int) {
+        swapPage(MediaListFragment.newInstance(MediaType.MANGA, userId))
+    }
+
+    private fun navigateToFollowing(userId: Int) {
+        swapPage(FollowFragment.newInstance(userId, true))
+    }
+
+    private fun navigateToFollowers(userId: Int) {
+        swapPage(FollowFragment.newInstance(userId, false))
+    }
+
     override fun backStackCount(): Int {
         return fragmentManager.backStackEntryCount
     }
@@ -43,6 +62,10 @@ class DefaultBrowseNavigationManager(
             BrowseNavigationManager.Page.CHARACTER -> id?.let { navigateToCharacter(id) }
             BrowseNavigationManager.Page.USER -> id?.let { navigateToUser(id) }
             BrowseNavigationManager.Page.STAFF -> id?.let { navigateToStaff(id) }
+            BrowseNavigationManager.Page.ANIME_MEDIA_LIST -> id?.let { navigateToAnimeMediaList(id) }
+            BrowseNavigationManager.Page.MANGA_MEDIA_LIST -> id?.let { navigateToMangaMediaList(id) }
+            BrowseNavigationManager.Page.FOLLOWING -> id?.let { navigateToFollowing(id) }
+            BrowseNavigationManager.Page.FOLLOWERS -> id?.let { navigateToFollowers(id) }
         }
     }
 
