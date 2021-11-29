@@ -40,6 +40,14 @@ class DefaultSharedPreferencesHandler(
         get() = gson.fromJson(getData(APP_SETTING), AppSetting::class.java)
         set(value) { setData(APP_SETTING, gson.toJson(value)) }
 
+    override var followingCount: Int?
+        get() = getData(FOLLOWING_COUNT)?.toIntOrNull()
+        set(value) { setData(FOLLOWING_COUNT, value.toString()) }
+
+    override var followersCount: Int?
+        get() = getData(FOLLOWERS_COUNT)?.toIntOrNull()
+        set(value) { setData(FOLLOWERS_COUNT, value.toString()) }
+
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val GUEST_LOGIN = "guestLogin"
@@ -48,5 +56,7 @@ class DefaultSharedPreferencesHandler(
         private const val ANIME_FILTER = "animeFilter"
         private const val MANGA_FILTER = "mangaFilter"
         private const val APP_SETTING = "appSetting"
+        private const val FOLLOWING_COUNT = "followingCount"
+        private const val FOLLOWERS_COUNT = "followersCount"
     }
 }

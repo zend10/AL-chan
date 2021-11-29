@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/itemActivities"
         android:title="@string/activities"
-        android:icon="@drawable/ic_baseline_chat_bubble"
+        android:icon="@drawable/ic_custom_activity"
         app:showAsAction="always"/>
     <item android:id="@+id/itemNotifications"
         android:title="@string/notifications"

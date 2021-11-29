@@ -3,7 +3,6 @@ package com.zen.alchan.data.repository
 import android.net.Uri
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
-import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
@@ -17,7 +16,6 @@ import type.ScoreFormat
 import type.UserStaffNameLanguage
 import type.UserStatisticsSort
 import type.UserTitleLanguage
-import java.io.File
 
 interface UserRepository {
 
@@ -25,16 +23,19 @@ interface UserRepository {
 
     fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
-    fun getViewer(source: Source? = null, sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)): Observable<User>
+    fun getViewer(
+        source: Source? = null,
+        sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)
+    ): Observable<User>
     fun loginAsGuest()
     fun logoutAsGuest()
     fun logout()
     fun saveBearerToken(newBearerToken: String?)
 
-//    fun getFollowingAndFollowerCount(
-//        userId: Int,
-//        source: Source?
-//    ): Observable<Pair<Int, Int>>
+    fun getFollowingAndFollowersCount(
+        userId: Int,
+        source: Source? = null
+    ): Observable<Pair<Int, Int>>
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)

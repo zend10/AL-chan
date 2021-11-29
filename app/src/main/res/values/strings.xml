@@ -343,6 +343,7 @@
     <string name="media">Media</string>
     <string name="set_as_favorite">Set as Favorite</string>
     <string name="link_copied">Link copied</string>
+    <string name="stats_are_automatically_updated_every_24_hours_or_you_can_force_update_them_in_account_settings">Stats are automatically updated every 24 hours, or you can force update them in Account Settings.</string>
 
 
     <plurals name="minute">

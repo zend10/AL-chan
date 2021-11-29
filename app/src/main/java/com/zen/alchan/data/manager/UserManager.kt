@@ -3,14 +3,12 @@ package com.zen.alchan.data.manager
 import android.net.Uri
 import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
-import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import io.reactivex.Observable
-import java.io.File
 
 interface UserManager {
     var bearerToken: String?
@@ -29,7 +27,8 @@ interface UserManager {
     fun saveMangaListBackground(uri: Uri?): Observable<Unit>
 
     var viewerData: SaveItem<User>?
-    var profileData: SaveItem<ProfileData>?
+    var followingCount: Int?
+    var followersCount: Int?
 
     var animeList: SaveItem<MediaListCollection>?
     var mangaList: SaveItem<MediaListCollection>?

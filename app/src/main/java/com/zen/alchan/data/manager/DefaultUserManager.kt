@@ -5,7 +5,6 @@ import com.zen.alchan.data.entitiy.AppSetting
 import com.zen.alchan.data.entitiy.MediaFilter
 import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
-import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.entitiy.ListStyle
 import com.zen.alchan.data.localstorage.FileStorageHandler
@@ -13,7 +12,6 @@ import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import io.reactivex.Observable
-import java.io.File
 
 class DefaultUserManager(
     private val sharedPreferencesManager: SharedPreferencesHandler,
@@ -70,9 +68,13 @@ class DefaultUserManager(
         get() = jsonStorageHandler.viewerData
         set(value) { jsonStorageHandler.viewerData = value }
 
-    override var profileData: SaveItem<ProfileData>?
-        get() = jsonStorageHandler.profileData
-        set(value) { jsonStorageHandler.profileData = value }
+    override var followingCount: Int?
+        get() = sharedPreferencesManager.followingCount
+        set(value) { sharedPreferencesManager.followingCount = value }
+
+    override var followersCount: Int?
+        get() = sharedPreferencesManager.followersCount
+        set(value) { sharedPreferencesManager.followersCount = value }
 
     override var animeList: SaveItem<MediaListCollection>?
         get() = jsonStorageHandler.animeList

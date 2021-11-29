@@ -6,7 +6,6 @@ import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserStatistics
-import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.getStringResource
@@ -113,7 +112,6 @@ class ProfileViewModel(
                         loadUserData()
                     }
             )
-
         }
     }
 
@@ -122,7 +120,7 @@ class ProfileViewModel(
     }
 
     fun reloadData() {
-        loadUserData(true)
+        loadUserData()
     }
 
     fun loadProfileUrlForWebView() {
@@ -158,7 +156,7 @@ class ProfileViewModel(
             _bannerUrlForPreview.onNext(user.bannerImage)
     }
 
-    private fun loadUserData(isReloading: Boolean = false) {
+    private fun loadUserData() {
         _loading.onNext(true)
 
         val userObservable = if (userId == 0)
@@ -168,12 +166,17 @@ class ProfileViewModel(
 
         disposables.add(
             userObservable
-                .zipWith(userRepository.getAppSetting()) { user, appSetting ->
-                    return@zipWith user to appSetting
+                .flatMap {  user ->
+                    Observable.just(user).zipWith(userRepository.getFollowingAndFollowersCount(user.id)) { user, followingAndFollowersCount ->
+                        return@zipWith user to followingAndFollowersCount
+                    }
+                }
+                .zipWith(userRepository.getAppSetting()) { userAndFollowsCount, appSetting ->
+                    return@zipWith Triple(userAndFollowsCount.first, userAndFollowsCount.second, appSetting)
                 }
                 .applyScheduler()
                 .subscribe(
-                    { (user, appSetting) ->
+                    { (user, followingAndFollowersCount, appSetting) ->
                         this.user = user
                         this.appSetting = appSetting
 
@@ -181,14 +184,15 @@ class ProfileViewModel(
                         _bannerUrl.onNext(user.bannerImage)
                         _username.onNext(user.name)
 
-//                            loadProfileData(user.id, if (isReloading) Source.NETWORK else null)
-
                         _animeCompletedCount.onNext(
                             user.statistics.anime.statuses.find { anime -> anime.status == MediaListStatus.COMPLETED }?.count ?: 0
                         )
                         _mangaCompletedCount.onNext(
                             user.statistics.manga.statuses.find { manga -> manga.status == MediaListStatus.COMPLETED }?.count ?: 0
                         )
+
+                        _followingCount.onNext(followingAndFollowersCount.first)
+                        _followersCount.onNext(followingAndFollowersCount.second)
 
                         emitProfileItemList()
 
@@ -202,49 +206,6 @@ class ProfileViewModel(
                     }
                 )
         )
-    }
-
-    private fun loadProfileData(userId: Int, source: Source?) {
-//        disposables.add(
-//            userRepository.getProfileData(userId, source = source)
-//                .applyScheduler()
-//                .doFinally {
-//                    _loading.onNext(false)
-//                }
-//                .subscribe(
-//                    {
-//                        _animeCompletedCount.onNext(
-//                            it.user.statistics.anime.statuses.find { anime ->
-//                                anime.status == MediaListStatus.COMPLETED
-//                            }?.count ?: 0
-//                        )
-//                        _mangaCompletedCount.onNext(
-//                            it.user.statistics.manga.statuses.find { manga ->
-//                                manga.status == MediaListStatus.COMPLETED
-//                            }?.count ?: 0
-//                        )
-//                        _followingCount.onNext(it.following.pageInfo.total)
-//                        _followersCount.onNext(it.followers.pageInfo.total)
-//
-//
-//                        val profileItemList = ArrayList<ProfileItem>()
-//                        profileItemList.add(ProfileItem(user = user, viewType = ProfileItem.VIEW_TYPE_BIO),)
-//
-//                        val animeTendency = getTendency(it.user.statistics.anime)
-//                        val mangaTendency = getTendency(it.user.statistics.manga)
-//                        if (animeTendency != null || mangaTendency != null)
-//                            profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
-//
-//                        _profileItemList.onNext(profileItemList)
-//
-//                        state = State.LOADED
-//                    },
-//                    {
-//                        _error.onNext(it.getStringResource())
-//                        state = State.ERROR
-//                    }
-//                )
-//        )
     }
 
     private fun emitProfileItemList() {

@@ -21,10 +21,10 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
         return apolloHandler.apolloClient.rxQuery(query)
     }
 
-//    override fun getFollowingAndFollowerCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>> {
-//        val query = FollowingAndFollowersCountQuery(userId = userId)
-//        return apolloHandler.apolloClient.rxQuery(query)
-//    }
+    override fun getFollowingAndFollowersCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>> {
+        val query = FollowingAndFollowersCountQuery(userId = userId)
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
 
     override fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,

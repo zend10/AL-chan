@@ -54,30 +54,15 @@ class DefaultUserRepository(
                 }
             }
             else -> {
-                return Observable.create { emitter ->
-                    userDataSource.getViewerQuery(sort).subscribe(
-                        {
-                            val newViewer = it.data?.convert()
-
-                            if (newViewer != null) {
-                                userManager.viewerData = SaveItem(newViewer)
-                                emitter.onNext(newViewer)
-                                emitter.onComplete()
-                            } else {
-                                throw Throwable()
-                            }
-                        },
-                        {
-                            val savedViewer = userManager.viewerData?.data
-
-                            if (savedViewer != null) {
-                                emitter.onNext(savedViewer)
-                                emitter.onComplete()
-                            } else {
-                                emitter.onError(NotInStorageException())
-                            }
-                        }
-                    )
+                return userDataSource.getViewerQuery(sort).map {
+                    val newViewer = it.data?.convert()
+                    if (newViewer != null) {
+                        userManager.viewerData = SaveItem(newViewer)
+                    }
+                    newViewer ?: throw Throwable()
+                }.onErrorReturn {
+                    val savedViewer = userManager.viewerData?.data
+                    savedViewer ?: throw NotInStorageException()
                 }
             }
         }
@@ -94,53 +79,39 @@ class DefaultUserRepository(
     override fun logout() {
         userManager.bearerToken = null
         userManager.viewerData = null
-        userManager.profileData = null
+        userManager.followingCount = null
+        userManager.followersCount = null
     }
 
     override fun saveBearerToken(newBearerToken: String?) {
         userManager.bearerToken = newBearerToken
     }
 
-//    override fun getFollowingAndFollowerCount(userId: Int, source: Source?): Observable<ProfileData> {
-//        if (userManager.viewerData?.data?.id != userId)
-//            return getProfileDataFromNetwork(userId, sort)
-//
-//        return when (source) {
-//            Source.NETWORK -> getProfileDataFromNetwork(userId, sort)
-//            Source.CACHE -> getProfileDataFromCache()
-//            else -> {
-//                val savedItem = userManager.profileData
-//                if (savedItem == null || savedItem.saveTime.moreThanADay()) {
-//                    getProfileDataFromNetwork(userId, sort)
-//                } else {
-//                    Observable.just(savedItem.data)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun getFollowingAndFollowerCountFromNetwork(userId: Int, sort: List<UserStatisticsSort>): Observable<ProfileData> {
-//        return userDataSource.getFollowingAndFollowerCount(userId, sort).map {
-//            val newProfileData = it.data?.convert() ?: ProfileData()
-//
-//            if (userManager.viewerData?.data?.id == newProfileData.user.id)
-//                userManager.profileData = SaveItem(newProfileData)
-//
-//            newProfileData
-//        }
-//    }
-//
-//    private fun getFollowingAndFollowerCountFromCache(): Observable<ProfileData> {
-//        return Observable.create {
-//            val savedItem = userManager.profileData?.data
-//            if (savedItem != null) {
-//                it.onNext(savedItem)
-//                it.onComplete()
-//            } else {
-//                it.onError(NotInStorageException())
-//            }
-//        }
-//    }
+    override fun getFollowingAndFollowersCount(userId: Int, source: Source?): Observable<Pair<Int, Int>> {
+        when (source) {
+            Source.CACHE -> {
+                return Observable.create { emitter ->
+                    val savedFollowingCount = userManager.followingCount ?: 0
+                    val savedFollowersCount = userManager.followersCount ?: 0
+                    emitter.onNext(savedFollowingCount to savedFollowersCount)
+                    emitter.onComplete()
+                }
+            }
+            else -> {
+                return userDataSource.getFollowingAndFollowersCount(userId).map {
+                    val newFollowingCount = it.data?.following?.pageInfo?.total ?: 0
+                    val newFollowersCount = it.data?.followers?.pageInfo?.total ?: 0
+                    userManager.followingCount = newFollowingCount
+                    userManager.followersCount = newFollowersCount
+                    newFollowingCount to newFollowersCount
+                }.onErrorReturn {
+                    val savedFollowingCount = userManager.followingCount ?: 0
+                    val savedFollowersCount = userManager.followersCount ?: 0
+                    savedFollowingCount to savedFollowersCount
+                }
+            }
+        }
+    }
 
     override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
         return Observable.just(

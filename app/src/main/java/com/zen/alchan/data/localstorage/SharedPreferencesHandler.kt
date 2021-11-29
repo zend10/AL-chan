@@ -12,4 +12,6 @@ interface SharedPreferencesHandler {
     var animeFilter: MediaFilter?
     var mangaFilter: MediaFilter?
     var appSetting: AppSetting?
+    var followingCount: Int?
+    var followersCount: Int?
 }

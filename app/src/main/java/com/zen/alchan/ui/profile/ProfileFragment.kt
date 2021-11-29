@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -69,6 +70,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 menuItemShareProfile = findItem(R.id.itemShareProfile)
                 menuItemCopyLink = findItem(R.id.itemCopyLink)
             }
+
+            profileToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_custom_more)
 
             profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
             assignAdapter(AppSetting())

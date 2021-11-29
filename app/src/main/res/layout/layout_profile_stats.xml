@@ -231,4 +231,13 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:text="@string/stats_are_automatically_updated_every_24_hours_or_you_can_force_update_them_in_account_settings"
+        style="?themeSmallFont"
+        android:textColor="?themeDividerColor"
+        app:layout_constraintTop_toBottomOf="@+id/profileStatsMangaMeanScoreLayout"
+        android:layout_marginTop="@dimen/marginBig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

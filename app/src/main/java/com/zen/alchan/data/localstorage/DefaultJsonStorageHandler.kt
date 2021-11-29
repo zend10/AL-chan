@@ -4,7 +4,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.HomeData
-import com.zen.alchan.data.response.ProfileData
 import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.data.response.anilist.User
@@ -22,10 +21,6 @@ class DefaultJsonStorageHandler(
     override var viewerData: SaveItem<User>?
         get() = gson.fromJson(getData(VIEWER_DATA), getType<SaveItem<User>>())
         set(value) { setData(VIEWER_DATA, gson.toJson(value)) }
-
-    override var profileData: SaveItem<ProfileData>?
-        get() = gson.fromJson(getData(PROFILE_DATA), getType<SaveItem<ProfileData>>())
-        set(value) { setData(PROFILE_DATA, gson.toJson(value)) }
 
     override var genres: SaveItem<List<Genre>>?
         get() = gson.fromJson(getData(GENRES), getType<SaveItem<List<Genre>>>())
@@ -46,7 +41,6 @@ class DefaultJsonStorageHandler(
     companion object {
         private const val HOME_DATA = "home_data.json"
         private const val VIEWER_DATA = "viewer_data.json"
-        private const val PROFILE_DATA = "profile_data.json"
         private const val GENRES = "genres.json"
         private const val TAGS = "tags.json"
         private const val ANIME_LIST = "anime_list.json"
