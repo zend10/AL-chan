@@ -615,8 +615,8 @@ class AnimeListEditorActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.itemSave) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.itemSave) {
             viewModel.updateAnimeListEntryDetail()
             return true
         }

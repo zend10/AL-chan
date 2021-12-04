@@ -285,8 +285,8 @@ class TextEditorActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.itemPost) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.itemPost) {
             if (editorEditText.text?.trim().isNullOrBlank()) {
                 DialogUtility.showToast(this, R.string.please_write_something)
                 return false

@@ -73,7 +73,7 @@ class BrowseActivity : BaseActivity(), BaseListener {
 
         try {
             if (supportFragmentManager.backStackEntryCount == 0) {
-                changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE)), intent.getIntExtra(LOAD_ID, 0), intent.getStringExtra(EXTRA_LOAD) ,false)
+                changeFragment(BrowsePage.valueOf(intent.getStringExtra(TARGET_PAGE) ?: ""), intent.getIntExtra(LOAD_ID, 0), intent.getStringExtra(EXTRA_LOAD) ,false)
             }
         } catch (e: Exception) {
             DialogUtility.showToast(this, R.string.invalid_link)

@@ -8,13 +8,13 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.zen.alchan"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 100206
-        versionName "1.2.6"
+        targetSdkVersion 30
+        versionCode 100207
+        versionName "1.2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

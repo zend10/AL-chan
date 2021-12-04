@@ -55,7 +55,7 @@ class ReorderFavoritesActivity : BaseActivity() {
             viewModel.favoriteList.addAll(favoriteItemList)
         }
 
-        viewModel.favoriteCategory = BrowsePage.valueOf(intent.getStringExtra(FAVORITE_CATEGORY))
+        viewModel.favoriteCategory = BrowsePage.valueOf(intent.getStringExtra(FAVORITE_CATEGORY) ?: "")
 
         setSupportActionBar(toolbarLayout)
         supportActionBar?.apply {
@@ -109,8 +109,8 @@ class ReorderFavoritesActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.itemSave) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.itemSave) {
             if (viewModel.favoriteList.isNullOrEmpty()) {
                 DialogUtility.showToast(this, R.string.you_have_no_favorite_yet)
                 return false

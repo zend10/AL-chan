@@ -71,7 +71,7 @@ class ExploreActivity : BaseActivity() {
         }
 
         if (viewModel.selectedExplorePage == null) {
-            viewModel.selectedExplorePage = BrowsePage.valueOf(intent.getStringExtra(EXPLORE_PAGE))
+            viewModel.selectedExplorePage = BrowsePage.valueOf(intent.getStringExtra(EXPLORE_PAGE) ?: "")
         }
 
         if (viewModel.filterData == null && intent?.getStringExtra(SELECTED_TAG) != null) {

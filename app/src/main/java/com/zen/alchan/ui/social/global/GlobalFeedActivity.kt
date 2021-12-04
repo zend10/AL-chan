@@ -379,8 +379,8 @@ class GlobalFeedActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.itemFilter) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.itemFilter) {
             val filterDialog = GlobalFeedFilterBottomSheet()
             filterDialog.setListener(object : GlobalFeedFilterBottomSheet.GlobalFeedFilterListener {
                 override fun passFilterData(
