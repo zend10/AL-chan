@@ -3,7 +3,7 @@ package com.zen.alchan.ui.editor
 import android.text.InputType
 import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.FuzzyDate
@@ -11,7 +11,6 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.enums.getAniListMediaType
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.getStringResource
@@ -19,7 +18,6 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
-import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

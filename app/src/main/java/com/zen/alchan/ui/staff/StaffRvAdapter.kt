@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.databinding.LayoutTitleAndTextBinding
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.StaffItem

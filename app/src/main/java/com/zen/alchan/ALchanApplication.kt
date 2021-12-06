@@ -21,6 +21,7 @@ import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
+import com.zen.alchan.ui.follow.FollowViewModel
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.login.LoginViewModel
@@ -114,6 +115,7 @@ class ALchanApplication : Application() {
         viewModel { SocialViewModel() }
 
         viewModel { ProfileViewModel(get(), get(), get()) }
+        viewModel { FollowViewModel(get()) }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }

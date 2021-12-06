@@ -11,14 +11,13 @@ import androidx.annotation.ColorInt
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.databinding.FragmentCustomiseBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

@@ -1,4 +1,4 @@
-package com.zen.alchan.data.entitiy
+package com.zen.alchan.data.entity
 
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaNaming

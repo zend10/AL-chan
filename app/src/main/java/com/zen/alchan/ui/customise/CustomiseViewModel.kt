@@ -1,7 +1,7 @@
 package com.zen.alchan.ui.customise
 
 import android.net.Uri
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.ListType

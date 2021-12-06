@@ -1,6 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 
 data class Staff(
     val id: Int = 0,

@@ -1,15 +1,16 @@
 package com.zen.alchan.data.repository
 
 import android.net.Uri
-import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.entitiy.MediaFilter
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.response.anilist.PageInfo
 import com.zen.alchan.helper.pojo.NullableItem
 import io.reactivex.Observable
 import type.ScoreFormat
@@ -36,6 +37,9 @@ interface UserRepository {
         userId: Int,
         source: Source? = null
     ): Observable<Pair<Int, Int>>
+
+    fun getFollowing(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
+    fun getFollowers(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)

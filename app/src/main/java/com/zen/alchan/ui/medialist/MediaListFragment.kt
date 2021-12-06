@@ -15,15 +15,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.databinding.FragmentMediaListBinding
 import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.enums.ListType
-import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.extensions.applySidePaddingInsets
+import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
@@ -32,7 +35,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
 import type.ScoreFormat
-import kotlin.math.max
 
 class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewModel>() {
 

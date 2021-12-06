@@ -1,6 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.helper.enums.Country
 import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.extensions.convertFromSnakeCase

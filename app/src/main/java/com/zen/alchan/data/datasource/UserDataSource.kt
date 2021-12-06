@@ -13,6 +13,8 @@ import type.UserTitleLanguage
 interface UserDataSource {
     fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<Response<ViewerQuery.Data>>
     fun getFollowingAndFollowersCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>>
+    fun getFollowing(userId: Int, page: Int): Observable<Response<FollowingQuery.Data>>
+    fun getFollowers(userId: Int, page: Int): Observable<Response<FollowersQuery.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
         staffNameLanguage: UserStaffNameLanguage,

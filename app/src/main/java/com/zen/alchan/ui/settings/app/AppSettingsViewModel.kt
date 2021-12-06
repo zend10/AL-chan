@@ -1,8 +1,7 @@
 package com.zen.alchan.ui.settings.app
 
-import androidx.lifecycle.viewModelScope
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.*

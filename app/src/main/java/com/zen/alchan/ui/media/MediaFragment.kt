@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.media
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +10,16 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.FragmentMediaBinding
-import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.profile.ProfileRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 

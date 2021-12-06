@@ -2,14 +2,14 @@ package com.zen.alchan.ui.medialist
 
 import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.entitiy.MediaFilter
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListItem
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
@@ -20,10 +20,8 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
 import type.ScoreFormat
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
-import kotlin.math.max
 
 class MediaListViewModel(
     private val mediaListRepository: MediaListRepository,

@@ -3,8 +3,8 @@ package com.zen.alchan.data.repository
 import android.net.Uri
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.UserDataSource
-import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.entitiy.MediaFilter
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
@@ -12,7 +12,8 @@ import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.response.anilist.PageInfo
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
@@ -110,6 +111,18 @@ class DefaultUserRepository(
                     savedFollowingCount to savedFollowersCount
                 }
             }
+        }
+    }
+
+    override fun getFollowing(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>> {
+        return userDataSource.getFollowing(userId, page).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun getFollowers(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>> {
+        return userDataSource.getFollowers(userId, page).map {
+            it.data?.convert()
         }
     }
 

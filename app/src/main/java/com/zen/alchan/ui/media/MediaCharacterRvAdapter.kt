@@ -3,7 +3,7 @@ package com.zen.alchan.ui.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.databinding.ListCircularBinding
 import com.zen.alchan.helper.extensions.clicks

@@ -1,10 +1,10 @@
 package com.zen.alchan.data.manager
 
 import android.net.Uri
-import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.entitiy.MediaFilter
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem

@@ -1,4 +1,4 @@
-package com.zen.alchan.data.entitiy
+package com.zen.alchan.data.entity
 
 import android.content.Context
 import android.graphics.Color

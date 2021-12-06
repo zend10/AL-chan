@@ -9,10 +9,10 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
-import com.zen.alchan.data.entitiy.AppSetting
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.databinding.ListTitleBinding
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.helper.extensions.*

@@ -5,16 +5,14 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.entitiy.ListStyle
-import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.databinding.ListMediaListSimplifiedBinding
 import com.zen.alchan.databinding.ListTitleBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.MediaListItem
-import com.zen.alchan.helper.utils.ImageUtil
 
 class MediaListSimplifiedRvAdapter(
     context: Context,

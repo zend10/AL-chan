@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.data.entitiy.AppSetting
-import com.zen.alchan.data.entitiy.ListStyle
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.databinding.ListMediaListAlbumBinding
 import com.zen.alchan.databinding.ListTitleBinding
