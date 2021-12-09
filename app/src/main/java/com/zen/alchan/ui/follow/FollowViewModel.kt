@@ -114,7 +114,9 @@ class FollowViewModel(
     }
 
     private fun loadFollowList(isLoadingNextPage: Boolean = false) {
-        _loading.onNext(true)
+        if (!isLoadingNextPage)
+            _loading.onNext(true)
+        
         state = State.LOADING
 
         val followObservable = if (isFollowingScreen)
@@ -126,8 +128,10 @@ class FollowViewModel(
             followObservable
                 .applyScheduler()
                 .doFinally {
-                    _loading.onNext(false)
-                    _emptyLayoutVisibility.onNext(_users.value.isNullOrEmpty())
+                    if (!isLoadingNextPage) {
+                        _loading.onNext(false)
+                        _emptyLayoutVisibility.onNext(_users.value.isNullOrEmpty())
+                    }
                 }
                 .subscribe(
                     { (pageInfo, users) ->
