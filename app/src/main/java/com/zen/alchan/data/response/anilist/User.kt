@@ -8,7 +8,7 @@ data class User(
     val about: String = "",
     val avatar: UserAvatar = UserAvatar(),
     val bannerImage: String = "",
-    val isFollowing: Boolean = false,
+    var isFollowing: Boolean = false,
     val isFollower: Boolean = false,
     val isBlocked: Boolean = false,
     val options: UserOptions = UserOptions(),

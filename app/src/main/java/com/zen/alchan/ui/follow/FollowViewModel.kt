@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.follow
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
@@ -27,6 +28,8 @@ class FollowViewModel(
     val emptyLayoutVisibility: Observable<Boolean>
         get() = _emptyLayoutVisibility
 
+    private var isViewer = false
+    private var viewerId = 0
     private var userId = 0
     private var isFollowingScreen = false
 
@@ -44,22 +47,19 @@ class FollowViewModel(
 
             disposables.add(
                 userRepository.getAppSetting()
+                    .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, user ->
+                        return@zipWith appSetting to user
+                    }
                     .applyScheduler()
-                    .subscribe { appSetting ->
+                    .subscribe { (appSetting, user) ->
                         _followAdapterComponent.onNext(appSetting)
+                        viewerId = user.id
+                        isViewer = userId == 0 || userId == viewerId
 
-                        if (userId == 0) {
-                            disposables.add(
-                                userRepository.getViewer(Source.CACHE)
-                                    .applyScheduler()
-                                    .subscribe { user ->
-                                        this.userId = user.id
-                                        loadFollowList()
-                                    }
-                            )
-                        } else {
-                            loadFollowList()
-                        }
+                        if (userId == 0)
+                            this.userId = viewerId
+
+                        loadFollowList()
                     }
             )
         }
@@ -77,6 +77,40 @@ class FollowViewModel(
 
             loadFollowList(true)
         }
+    }
+
+    fun toggleFollow(user: User, shouldFollow: Boolean) {
+        if (user.id == viewerId) {
+            _error.onNext(R.string.did_you_just_try_to_follow_yourself)
+            return
+        }
+
+        _loading.onNext(true)
+
+        disposables.add(
+            userRepository.toggleFollow(user.id)
+                .applyScheduler()
+                .doFinally { _loading.onNext(false) }
+                .subscribe(
+                    { isFollowing ->
+                        val currentUsers = ArrayList(_users.value ?: listOf())
+                        val userIndex = currentUsers.indexOfFirst { currentUser -> currentUser?.id == user.id }
+                        if (userIndex == -1) return@subscribe
+
+                        // is isViewer and isFollowingScreen and isFollowing false
+                        if (isViewer && isFollowingScreen && !isFollowing) {
+                            currentUsers.removeAt(userIndex)
+                        } else {
+                            currentUsers[userIndex]?.isFollowing = isFollowing
+                        }
+
+                        _users.onNext(currentUsers)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 
     private fun loadFollowList(isLoadingNextPage: Boolean = false) {

@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import type.ScoreFormat
@@ -15,6 +16,7 @@ interface UserDataSource {
     fun getFollowingAndFollowersCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>>
     fun getFollowing(userId: Int, page: Int): Observable<Response<FollowingQuery.Data>>
     fun getFollowers(userId: Int, page: Int): Observable<Response<FollowersQuery.Data>>
+    fun toggleFollow(userId: Int): Single<Response<ToggleFollowMutation.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
         staffNameLanguage: UserStaffNameLanguage,

@@ -87,11 +87,11 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
             }
 
             override fun toggleFollow(user: User) {
-
+                viewModel.toggleFollow(user, true)
             }
 
             override fun toggleUnfollow(user: User) {
-
+                viewModel.toggleFollow(user, false)
             }
 
             override fun viewOnAniList(user: User) {

@@ -40,6 +40,7 @@ interface UserRepository {
 
     fun getFollowing(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
     fun getFollowers(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
+    fun toggleFollow(userId: Int): Observable<Boolean>
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)

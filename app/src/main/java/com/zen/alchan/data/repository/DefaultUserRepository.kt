@@ -126,6 +126,12 @@ class DefaultUserRepository(
         }
     }
 
+    override fun toggleFollow(userId: Int): Observable<Boolean> {
+        return userDataSource.toggleFollow(userId).toObservable().map {
+            it.data?.toggleFollow?.isFollowing
+        }
+    }
+
     override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
         return Observable.just(
             when (mediaType) {

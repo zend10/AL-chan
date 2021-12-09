@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import FollowersQuery
 import FollowingAndFollowersCountQuery
 import FollowingQuery
+import ToggleFollowMutation
 import UpdateUserMutation
 import ViewerQuery
 import com.apollographql.apollo.api.Input
@@ -36,6 +37,11 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
     override fun getFollowers(userId: Int, page: Int): Observable<Response<FollowersQuery.Data>> {
         val query = FollowersQuery(userId = userId, page = Input.fromNullable(page))
         return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun toggleFollow(userId: Int): Single<Response<ToggleFollowMutation.Data>> {
+        val mutation = ToggleFollowMutation(Input.fromNullable(userId))
+        return apolloHandler.apolloClient.rxMutate(mutation)
     }
 
     override fun updateAniListSettings(
