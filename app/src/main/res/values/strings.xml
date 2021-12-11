@@ -348,6 +348,9 @@
     <string name="there_s_nothing_here">There\'s nothing here</string>
     <string name="did_you_just_try_to_follow_yourself">Did you just try to follow yourself?</string>
     <string name="this_page_does_not_exist_its_either_set_to_private_or_removed">This page does not exist. It\'s either set to to private or removed.</string>
+    <string name="calculating">Calculating...</string>
+    <string name="not_enough_shared_anime">Not enough shared Anime</string>
+    <string name="not_enough_shared_manga">Not enough shared Manga</string>
 
 
     <plurals name="minute">

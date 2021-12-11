@@ -16,6 +16,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.pojo.Affinity
 import com.zen.alchan.helper.pojo.ProfileItem
 import com.zen.alchan.helper.utils.MarkdownSetup
 import com.zen.alchan.helper.utils.MarkdownUtil
@@ -122,29 +123,59 @@ class ProfileRvAdapter(
                 val animeAffinity = item.affinity?.first
                 val mangaAffinity = item.affinity?.second
 
-                profileAnimeAffinityLayout.show(animeAffinity != null)
-                profileAnimeAffinityText.text = "${animeAffinity?.roundToTwoDecimal()}%"
+                when (animeAffinity?.status) {
+                    Affinity.AFFINITY_STATUS_LOADING -> {
+                        profileAnimeAffinityPositiveBar.show(false)
+                        profileAnimeAffinityNegativeBar.show(false)
+                        profileAnimeAffinityText.text = context.getString(R.string.calculating)
+                    }
+                    Affinity.AFFINITY_STATUS_COMPLETED -> {
+                        profileAnimeAffinityPositiveBar.show(true)
+                        profileAnimeAffinityNegativeBar.show(true)
+                        profileAnimeAffinityText.text = "${animeAffinity.value?.roundToTwoDecimal()}%"
+                    }
+                    Affinity.AFFINITY_STATUS_FAILED -> {
+                        profileAnimeAffinityPositiveBar.show(false)
+                        profileAnimeAffinityNegativeBar.show(false)
+                        profileAnimeAffinityText.text = context.getString(R.string.not_enough_shared_anime)
+                    }
+                }
 
-                profileAnimeAffinityPositiveBar.progress = if (animeAffinity != null && animeAffinity > 0)
-                    animeAffinity.roundToInt()
+                when (mangaAffinity?.status) {
+                    Affinity.AFFINITY_STATUS_LOADING -> {
+                        profileMangaAffinityPositiveBar.show(false)
+                        profileMangaAffinityNegativeBar.show(false)
+                        profileMangaAffinityText.text = context.getString(R.string.calculating)
+                    }
+                    Affinity.AFFINITY_STATUS_COMPLETED -> {
+                        profileMangaAffinityPositiveBar.show(true)
+                        profileMangaAffinityNegativeBar.show(true)
+                        profileMangaAffinityText.text = "${mangaAffinity.value?.roundToTwoDecimal()}%"
+                    }
+                    Affinity.AFFINITY_STATUS_FAILED -> {
+                        profileMangaAffinityPositiveBar.show(false)
+                        profileMangaAffinityNegativeBar.show(false)
+                        profileMangaAffinityText.text = context.getString(R.string.not_enough_shared_manga)
+                    }
+                }
+
+                profileAnimeAffinityPositiveBar.progress = if (animeAffinity != null && (animeAffinity.value ?: 0.0) > 0.0)
+                    animeAffinity.value?.roundToInt() ?: 0
                 else
                     0
 
-                profileAnimeAffinityNegativeBar.progress = if (animeAffinity != null && animeAffinity < 0)
-                    abs(animeAffinity.roundToInt())
+                profileAnimeAffinityNegativeBar.progress = if (animeAffinity != null && (animeAffinity.value ?: 0.0) < 0.0)
+                    abs(animeAffinity.value?.roundToInt() ?: 0)
                 else
                     0
 
-                profileMangaAffinityLayout.show(mangaAffinity != null)
-                profileMangaAffinityText.text = "${mangaAffinity?.roundToTwoDecimal()}%"
-
-                profileMangaAffinityPositiveBar.progress = if (mangaAffinity != null && mangaAffinity > 0)
-                    mangaAffinity.roundToInt()
+                profileMangaAffinityPositiveBar.progress = if (mangaAffinity != null && (mangaAffinity.value ?: 0.0) > 0.0)
+                    mangaAffinity.value?.roundToInt() ?: 0
                 else
                     0
 
-                profileMangaAffinityNegativeBar.progress = if (mangaAffinity != null && mangaAffinity < 0)
-                    abs(mangaAffinity.roundToInt())
+                profileMangaAffinityNegativeBar.progress = if (mangaAffinity != null && (mangaAffinity.value ?: 0.0) < 0.0)
+                    abs(mangaAffinity.value?.roundToInt() ?: 0)
                 else
                     0
             }

@@ -13,6 +13,7 @@ import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.Affinity
 import com.zen.alchan.helper.pojo.ProfileItem
 import com.zen.alchan.helper.pojo.Tendency
 import com.zen.alchan.helper.service.clipboard.ClipboardService
@@ -283,6 +284,9 @@ class ProfileViewModel(
         if (user.about.isNotBlank())
             profileItemList.add(ProfileItem(bio = user.about, viewType = ProfileItem.VIEW_TYPE_BIO))
 
+        if (!isViewer)
+            profileItemList.add(ProfileItem(affinity = Pair(Affinity(status = Affinity.AFFINITY_STATUS_LOADING), Affinity(status = Affinity.AFFINITY_STATUS_LOADING)), viewType = ProfileItem.VIEW_TYPE_AFFINITY))
+
         profileItemList.add(ProfileItem(animeStats = user.statistics.anime, mangaStats = user.statistics.manga, viewType = ProfileItem.VIEw_TYPE_STATS))
 
         if (user.favourites.anime.nodes.isNotEmpty())
@@ -388,28 +392,40 @@ class ProfileViewModel(
                         }
 
                         return@zip Pair(
-                            if (viewerAnimeScoreList.size < 10) null else calculatePearsonCorrelation(otherPersonAnimeScoreList, viewerAnimeScoreList) * 100,
-                            if (viewerMangaScoreList.size < 10) null else calculatePearsonCorrelation(otherPersonMangaScoreList, viewerMangaScoreList) * 100
+                            Affinity(calculatePearsonCorrelation(otherPersonAnimeScoreList, viewerAnimeScoreList), viewerAnimeScoreList.size),
+                            Affinity(calculatePearsonCorrelation(otherPersonMangaScoreList, viewerMangaScoreList), viewerAnimeScoreList.size)
                         )
                     }
                 }
                 .subscribe(
                     {
                         val currentProfileItemList = ArrayList(_profileItemList.value ?: listOf())
-                        val profileStatsIndex = currentProfileItemList.indexOfFirst { it.viewType == ProfileItem.VIEw_TYPE_STATS }
-                        if (profileStatsIndex == -1)
+                        val affinityIndex = currentProfileItemList.indexOfFirst { it.viewType == ProfileItem.VIEW_TYPE_AFFINITY }
+                        if (affinityIndex == -1)
                             return@subscribe
-                        currentProfileItemList.add(profileStatsIndex, ProfileItem(affinity = it, viewType = ProfileItem.VIEW_TYPE_AFFINITY))
+                        currentProfileItemList[affinityIndex].affinity = Pair(
+                            it.first.copy(status = if (it.first.value != null) Affinity.AFFINITY_STATUS_COMPLETED else Affinity.AFFINITY_STATUS_FAILED),
+                            it.second.copy(status = if (it.second.value != null) Affinity.AFFINITY_STATUS_COMPLETED else Affinity.AFFINITY_STATUS_FAILED)
+                        )
                         _profileItemList.onNext(currentProfileItemList)
                     },
                     {
                         // do nothing
+                        val currentProfileItemList = ArrayList(_profileItemList.value ?: listOf())
+                        val affinityIndex = currentProfileItemList.indexOfFirst { it.viewType == ProfileItem.VIEW_TYPE_AFFINITY }
+                        if (affinityIndex == -1)
+                            return@subscribe
+                        currentProfileItemList[affinityIndex].affinity = Pair(Affinity(status = Affinity.AFFINITY_STATUS_FAILED), Affinity(status = Affinity.AFFINITY_STATUS_FAILED))
+                        _profileItemList.onNext(currentProfileItemList)
                     }
                 )
         )
     }
 
-    private fun calculatePearsonCorrelation(x: ArrayList<Double>, y: ArrayList<Double>): Double {
+    private fun calculatePearsonCorrelation(x: ArrayList<Double>, y: ArrayList<Double>): Double? {
+        if (x.size < AFFINITY_MIN_THRESHOLD)
+            return null
+
         val mx = x.average()
         val my = y.average()
 
@@ -422,7 +438,7 @@ class ProfileViewModel(
         val num = xm.zip(ym).fold(0.0, { acc, pair -> acc + pair.first * pair.second })
         val den = sqrt(sx.sum() * sy.sum())
 
-        return if (den == 0.0) 0.0 else num / den
+        return if (den == 0.0) 0.0 else num / den * 100
     }
 
     private fun getTendency(statistics: UserStatistics): Tendency? {
@@ -524,5 +540,7 @@ class ProfileViewModel(
         private const val TENDENCY_MINIMUM_COMPLETED = 20
 
         private const val FAVORITE_LIMIT = 9
+
+        private const val AFFINITY_MIN_THRESHOLD = 10
     }
 }

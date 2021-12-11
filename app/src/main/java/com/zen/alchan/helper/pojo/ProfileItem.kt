@@ -5,7 +5,7 @@ import com.zen.alchan.data.response.anilist.*
 
 data class ProfileItem(
     val bio: String? = null,
-    val affinity: Pair<Double?, Double?>? = null,
+    var affinity: Pair<Affinity?, Affinity?>? = null,
     val tendency: Pair<Tendency?, Tendency?>? = null,
     val favoriteMedia: List<Media>? = null,
     val favoriteCharacters: List<Character>? = null,

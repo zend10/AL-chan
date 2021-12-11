@@ -244,7 +244,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 binding.profileFollowersCountText.text = it.toString()
             },
             viewModel.profileItemList.subscribe {
-                profileAdapter?.updateData(it)
+                profileAdapter?.updateData(it, true)
             },
             viewModel.profileUrlForWebView.subscribe {
                 navigation.openWebView(it)
