@@ -143,6 +143,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 viewModel.loadBannerUrl()
             }
 
+            profileFollowButton.clicks {
+                viewModel.toggleFollow()
+            }
+
             profileAnimeCountLayout.clicks {
                 val userId = arguments?.getInt(USER_ID) ?: 0
                 if (userId == 0)
@@ -181,6 +185,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             viewModel.loading.subscribe {
                 binding.profileSwipeRefresh.isRefreshing = it
             },
+            viewModel.error.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.profileAdapterComponent.subscribe {
                 assignAdapter(it)
             },
@@ -209,6 +216,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             },
             viewModel.username.subscribe {
                 binding.profileUsernameText.text = it
+            },
+            viewModel.donatorAndModBadge.subscribe { (donatorBadge, modBadge) ->
+                binding.profileBadgeLayout.show(donatorBadge != null || modBadge != null)
+                binding.profileBadgeSpace.show(donatorBadge != null && modBadge != null)
+                binding.profileDonatorCard.show(donatorBadge != null)
+                binding.profileDonatorText.text = donatorBadge
+                binding.profileModCard.show(modBadge != null)
+                binding.profileModText.text = modBadge
+            },
+            viewModel.followButtonVisibility.subscribe {
+                binding.profileFollowButton.show(it)
+            },
+            viewModel.followButtonText.subscribe {
+                binding.profileFollowButton.text = getString(it)
             },
             viewModel.animeCompletedCount.subscribe {
                 binding.profileAnimeCountText.text = it.toString()

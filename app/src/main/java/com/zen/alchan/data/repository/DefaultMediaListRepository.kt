@@ -90,7 +90,7 @@ class DefaultMediaListRepository(
             mediaListDataSource.getMediaListCollectionQuery(userId, mediaType.getAniListMediaType()).map {
                 val newMediaListCollection = it.data?.convert()
 
-                if (newMediaListCollection != null) {
+                if (newMediaListCollection != null && userManager.viewerData?.data?.id == userId) {
                     when (mediaType) {
                         MediaType.ANIME -> userManager.animeList = SaveItem(newMediaListCollection)
                         MediaType.MANGA -> userManager.mangaList = SaveItem(newMediaListCollection)

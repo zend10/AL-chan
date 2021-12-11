@@ -3,10 +3,14 @@ package com.zen.alchan.ui.profile
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
+import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserStatistics
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ProfileItem
@@ -17,10 +21,13 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class ProfileViewModel(
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository,
+    private val mediaListRepository: MediaListRepository,
     private val clipboardService: ClipboardService
 ) : BaseViewModel() {
 
@@ -51,6 +58,18 @@ class ProfileViewModel(
     private val _username = BehaviorSubject.createDefault("")
     val username: Observable<String>
         get() = _username
+
+    private val _donatorAndModBadge = BehaviorSubject.createDefault<Pair<String?, String?>>(null to null)
+    val donatorAndModBadge: Observable<Pair<String?, String?>>
+        get() = _donatorAndModBadge
+
+    private val _followButtonVisibility = BehaviorSubject.createDefault(false)
+    val followButtonVisibility: Observable<Boolean>
+        get() = _followButtonVisibility
+
+    private val _followButtonText = BehaviorSubject.createDefault(R.string.follow)
+    val followButtonText: Observable<Int>
+        get() = _followButtonText
 
     private val _animeCompletedCount = BehaviorSubject.createDefault(0)
     val animeCompletedCount: Observable<Int>
@@ -87,6 +106,9 @@ class ProfileViewModel(
     private val _bannerUrlForPreview = PublishSubject.create<String>()
     val bannerUrlForPreview: Observable<String>
         get() = _bannerUrlForPreview
+
+    private var isViewer = false
+    private var viewerId = 0
 
     private var userId = 0
     private var user = User()
@@ -156,13 +178,50 @@ class ProfileViewModel(
             _bannerUrlForPreview.onNext(user.bannerImage)
     }
 
+    fun toggleFollow() {
+        if (isViewer) {
+            _error.onNext(R.string.did_you_just_try_to_follow_yourself)
+            return
+        }
+
+        _loading.onNext(true)
+
+        disposables.add(
+            userRepository.toggleFollow(userId)
+                .applyScheduler()
+                .doFinally { _loading.onNext(false) }
+                .subscribe(
+                    { isFollowing ->
+                        user.isFollowing = isFollowing
+                        setFollowButtonText()
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
+    }
+
     private fun loadUserData() {
         _loading.onNext(true)
 
         val userObservable = if (userId == 0)
             userRepository.getViewer()
+                .map { user ->
+                    isViewer = true
+                    viewerId = user.id
+                    user
+                }
         else
             browseRepository.getUser(userId)
+                .flatMap { user ->
+                    userRepository.getViewer(Source.CACHE)
+                        .map { viewer ->
+                            isViewer = user.id == viewer.id
+                            viewerId = viewer.id
+                            user
+                        }
+                }
 
         disposables.add(
             userObservable
@@ -183,6 +242,15 @@ class ProfileViewModel(
                         _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
                         _bannerUrl.onNext(user.bannerImage)
                         _username.onNext(user.name)
+                        _donatorAndModBadge.onNext(
+                            Pair(
+                                if (user.donatorTier != 0) user.donatorBadge else null,
+                                user.moderatorRoles.firstOrNull()?.name?.convertFromSnakeCase()
+                            )
+                        )
+
+                        _followButtonVisibility.onNext(!isViewer)
+                        setFollowButtonText()
 
                         _animeCompletedCount.onNext(
                             user.statistics.anime.statuses.find { anime -> anime.status == MediaListStatus.COMPLETED }?.count ?: 0
@@ -195,6 +263,7 @@ class ProfileViewModel(
                         _followersCount.onNext(followingAndFollowersCount.second)
 
                         emitProfileItemList()
+                        getAffinity()
 
                         _loading.onNext(false)
                         state = State.LOADED
@@ -210,7 +279,10 @@ class ProfileViewModel(
 
     private fun emitProfileItemList() {
         val profileItemList = ArrayList<ProfileItem>()
-        profileItemList.add(ProfileItem(bio = user.about, viewType = ProfileItem.VIEW_TYPE_BIO))
+
+        if (user.about.isNotBlank())
+            profileItemList.add(ProfileItem(bio = user.about, viewType = ProfileItem.VIEW_TYPE_BIO))
+
         profileItemList.add(ProfileItem(animeStats = user.statistics.anime, mangaStats = user.statistics.manga, viewType = ProfileItem.VIEw_TYPE_STATS))
 
         if (user.favourites.anime.nodes.isNotEmpty())
@@ -234,6 +306,123 @@ class ProfileViewModel(
             profileItemList.add(ProfileItem(tendency = animeTendency to mangaTendency, viewType = ProfileItem.VIEW_TYPE_TENDENCY))
 
         _profileItemList.onNext(profileItemList)
+    }
+
+    private fun getAffinity() {
+        if (isViewer)
+            return
+
+        disposables.add(
+            Observable.zip(
+                mediaListRepository.getMediaListCollection(userId = userId, mediaType = MediaType.ANIME),
+                mediaListRepository.getMediaListCollection(userId = userId, mediaType = MediaType.MANGA)
+            ) { otherPersonAnimeList, otherPersonMangaList ->
+                val otherPersonAnimeMediaIdToScoreMap = HashMap<Int, Double>()
+                val otherPersonMangaMediaIdToScoreMap = HashMap<Int, Double>()
+
+                otherPersonAnimeList.lists.forEach {
+                    it.entries.forEach { entry ->
+                        if (entry.media.getId() != 0 &&
+                            entry.score != 0.0 &&
+                            !otherPersonAnimeMediaIdToScoreMap.containsKey(entry.media.getId())
+                        ) {
+                            otherPersonAnimeMediaIdToScoreMap[entry.media.getId()] = entry.score
+                        }
+                    }
+                }
+
+                otherPersonMangaList.lists.forEach {
+                    it.entries.forEach { entry ->
+                        if (entry.media.getId() != 0 &&
+                            entry.score != 0.0 &&
+                            !otherPersonMangaMediaIdToScoreMap.containsKey(entry.media.getId())
+                        ) {
+                            otherPersonMangaMediaIdToScoreMap[entry.media.getId()] = entry.score
+                        }
+                    }
+                }
+
+                return@zip otherPersonAnimeMediaIdToScoreMap to otherPersonMangaMediaIdToScoreMap
+            }
+                .applyScheduler()
+                .flatMap { (otherPersonAnimeMediaIdToScoreMap, otherPersonMangaMediaIdToScoreMap) ->
+                    Observable.zip(
+                        mediaListRepository.getMediaListCollection(Source.CACHE, viewerId, MediaType.ANIME),
+                        mediaListRepository.getMediaListCollection(Source.CACHE, viewerId, MediaType.MANGA)
+                    ) { viewerAnimeList, viewerMangaList ->
+                        val viewerAnimeMediaIdToScoreMap = HashMap<Int, Double>()
+                        val viewerMangaMediaIdToScoreMap = HashMap<Int, Double>()
+
+                        val otherPersonAnimeScoreList = ArrayList<Double>()
+                        val viewerAnimeScoreList = ArrayList<Double>()
+
+                        val otherPersonMangaScoreList = ArrayList<Double>()
+                        val viewerMangaScoreList = ArrayList<Double>()
+
+                        viewerAnimeList.lists.forEach {
+                            it.entries.forEach { entry ->
+                                if (entry.media.getId() != 0 &&
+                                    entry.score != 0.0 &&
+                                    otherPersonAnimeMediaIdToScoreMap.containsKey(entry.media.getId()) &&
+                                    !viewerAnimeMediaIdToScoreMap.containsKey(entry.media.getId())
+                                ) {
+                                    viewerAnimeMediaIdToScoreMap[entry.media.getId()] = entry.score
+                                    otherPersonAnimeScoreList.add(otherPersonAnimeMediaIdToScoreMap[entry.media.getId()]!!)
+                                    viewerAnimeScoreList.add(entry.score)
+                                }
+                            }
+                        }
+
+                        viewerMangaList.lists.forEach {
+                            it.entries.forEach { entry ->
+                                if (entry.media.getId() != 0 &&
+                                    entry.score != 0.0 &&
+                                    otherPersonMangaMediaIdToScoreMap.containsKey(entry.media.getId()) &&
+                                    !viewerMangaMediaIdToScoreMap.containsKey(entry.media.getId())
+                                ) {
+                                    viewerMangaMediaIdToScoreMap[entry.media.getId()] = entry.score
+                                    otherPersonMangaScoreList.add(otherPersonMangaMediaIdToScoreMap[entry.media.getId()]!!)
+                                    viewerMangaScoreList.add(entry.score)
+                                }
+                            }
+                        }
+
+                        return@zip Pair(
+                            if (viewerAnimeScoreList.size < 10) null else calculatePearsonCorrelation(otherPersonAnimeScoreList, viewerAnimeScoreList) * 100,
+                            if (viewerMangaScoreList.size < 10) null else calculatePearsonCorrelation(otherPersonMangaScoreList, viewerMangaScoreList) * 100
+                        )
+                    }
+                }
+                .subscribe(
+                    {
+                        val currentProfileItemList = ArrayList(_profileItemList.value ?: listOf())
+                        val profileStatsIndex = currentProfileItemList.indexOfFirst { it.viewType == ProfileItem.VIEw_TYPE_STATS }
+                        if (profileStatsIndex == -1)
+                            return@subscribe
+                        currentProfileItemList.add(profileStatsIndex, ProfileItem(affinity = it, viewType = ProfileItem.VIEW_TYPE_AFFINITY))
+                        _profileItemList.onNext(currentProfileItemList)
+                    },
+                    {
+                        // do nothing
+                    }
+                )
+        )
+    }
+
+    private fun calculatePearsonCorrelation(x: ArrayList<Double>, y: ArrayList<Double>): Double {
+        val mx = x.average()
+        val my = y.average()
+
+        val xm = x.map { it - mx }
+        val ym = y.map { it - my }
+
+        val sx = xm.map { it.pow(2) }
+        val sy = ym.map { it.pow(2) }
+
+        val num = xm.zip(ym).fold(0.0, { acc, pair -> acc + pair.first * pair.second })
+        val den = sqrt(sx.sum() * sy.sum())
+
+        return if (den == 0.0) 0.0 else num / den
     }
 
     private fun getTendency(statistics: UserStatistics): Tendency? {
@@ -314,6 +503,19 @@ class ProfileViewModel(
 
     private fun calculateWeightedScore(count: Int, totalCount: Double, meanScore: Double): Double {
         return count.toDouble() / totalCount + meanScore / 100.0
+    }
+
+    private fun setFollowButtonText() {
+        _followButtonText.onNext(
+            if (user.isFollowing && user.isFollower)
+                R.string.mutual
+            else if (user.isFollowing && !user.isFollower)
+                R.string.following
+            else if (!user.isFollowing && user.isFollower)
+                R.string.follows_you
+            else
+                R.string.follow
+        )
     }
 
     companion object {

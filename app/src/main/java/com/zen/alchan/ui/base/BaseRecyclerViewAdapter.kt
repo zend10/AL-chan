@@ -24,9 +24,9 @@ abstract class BaseRecyclerViewAdapter<T, VB: ViewBinding>(
         return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_CONTENT
     }
 
-    fun updateData(list: List<T>) {
-//        if (this.list == list)
-//            return
+    fun updateData(list: List<T>, alwaysRefresh: Boolean = false) {
+        if (!alwaysRefresh && this.list == list)
+            return
 
         this.list = list
         notifyDataSetChanged()

@@ -70,7 +70,7 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },
             viewModel.users.subscribe {
-                adapter?.updateData(it)
+                adapter?.updateData(it, true)
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)

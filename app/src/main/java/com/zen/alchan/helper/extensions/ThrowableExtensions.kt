@@ -11,7 +11,7 @@ fun Throwable.getStringResource(): Int {
                 400 -> R.string.something_went_wrong_please_try_again
                 401 -> R.string.something_went_wrong_please_try_again
                 529 -> R.string.something_went_wrong_please_try_again
-                404 -> R.string.something_went_wrong_please_try_again
+                404 -> R.string.this_page_does_not_exist_its_either_set_to_private_or_removed
                 else -> R.string.something_went_wrong_please_try_again
             }
         }
