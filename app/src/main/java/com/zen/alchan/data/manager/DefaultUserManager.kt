@@ -14,41 +14,41 @@ import com.zen.alchan.helper.pojo.SaveItem
 import io.reactivex.Observable
 
 class DefaultUserManager(
-    private val sharedPreferencesManager: SharedPreferencesHandler,
+    private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val jsonStorageHandler: JsonStorageHandler,
     private val fileStorageHandler: FileStorageHandler
 ) : UserManager {
 
     override var bearerToken: String?
-        get() = sharedPreferencesManager.bearerToken
-        set(value) { sharedPreferencesManager.bearerToken = value }
+        get() = sharedPreferencesHandler.bearerToken
+        set(value) { sharedPreferencesHandler.bearerToken = value }
 
     override val isAuthenticated: Boolean
         get() = bearerToken != null
 
     override var isLoggedInAsGuest: Boolean
-        get() = sharedPreferencesManager.guestLogin == true
-        set(value) { sharedPreferencesManager.guestLogin = value }
+        get() = sharedPreferencesHandler.guestLogin == true
+        set(value) { sharedPreferencesHandler.guestLogin = value }
 
     override var animeListStyle: ListStyle
-        get() = sharedPreferencesManager.animeListStyle ?: ListStyle()
-        set(value) { sharedPreferencesManager.animeListStyle = value }
+        get() = sharedPreferencesHandler.animeListStyle ?: ListStyle()
+        set(value) { sharedPreferencesHandler.animeListStyle = value }
 
     override var mangaListStyle: ListStyle
-        get() = sharedPreferencesManager.mangaListStyle ?: ListStyle()
-        set(value) { sharedPreferencesManager.mangaListStyle = value }
+        get() = sharedPreferencesHandler.mangaListStyle ?: ListStyle()
+        set(value) { sharedPreferencesHandler.mangaListStyle = value }
 
     override var animeFilter: MediaFilter
-        get() = sharedPreferencesManager.animeFilter ?: MediaFilter()
-        set(value) { sharedPreferencesManager.animeFilter = value }
+        get() = sharedPreferencesHandler.animeFilter ?: MediaFilter()
+        set(value) { sharedPreferencesHandler.animeFilter = value }
 
     override var mangaFilter: MediaFilter
-        get() = sharedPreferencesManager.mangaFilter ?: MediaFilter()
-        set(value) { sharedPreferencesManager.mangaFilter = value }
+        get() = sharedPreferencesHandler.mangaFilter ?: MediaFilter()
+        set(value) { sharedPreferencesHandler.mangaFilter = value }
 
     override var appSetting: AppSetting
-        get() = sharedPreferencesManager.appSetting ?: AppSetting()
-        set(value) { sharedPreferencesManager.appSetting = value }
+        get() = sharedPreferencesHandler.appSetting ?: AppSetting()
+        set(value) { sharedPreferencesHandler.appSetting = value }
 
     override val animeListBackground: Observable<NullableItem<Uri>>
         get() = fileStorageHandler.animeListBackground
@@ -69,12 +69,12 @@ class DefaultUserManager(
         set(value) { jsonStorageHandler.viewerData = value }
 
     override var followingCount: Int?
-        get() = sharedPreferencesManager.followingCount
-        set(value) { sharedPreferencesManager.followingCount = value }
+        get() = sharedPreferencesHandler.followingCount
+        set(value) { sharedPreferencesHandler.followingCount = value }
 
     override var followersCount: Int?
-        get() = sharedPreferencesManager.followersCount
-        set(value) { sharedPreferencesManager.followersCount = value }
+        get() = sharedPreferencesHandler.followersCount
+        set(value) { sharedPreferencesHandler.followersCount = value }
 
     override var animeList: SaveItem<MediaListCollection>?
         get() = jsonStorageHandler.animeList

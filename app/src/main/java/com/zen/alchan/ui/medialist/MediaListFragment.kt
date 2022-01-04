@@ -45,6 +45,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     private var menuItemSearch: MenuItem? = null
     private var menuItemCustomiseList: MenuItem? = null
+    private var menuItemChangeListType: MenuItem? = null
     private var menuItemFilter: MenuItem? = null
 
     private var searchView: SearchView? = null
@@ -70,6 +71,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 inflateMenu(R.menu.menu_media_list)
                 menuItemSearch = menu.findItem(R.id.itemSearch)
                 menuItemCustomiseList = menu.findItem(R.id.itemCustomiseList)
+                menuItemChangeListType = menu.findItem(R.id.itemChangeListType)
                 menuItemFilter = menu.findItem(R.id.itemFilter)
             }
 
@@ -86,7 +88,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 }
             })
 
-            assignAdapter(viewModel.listStyle, viewModel.appSetting, viewModel.user.mediaListOptions)
+            assignAdapter(viewModel.isViewer, viewModel.listStyle, viewModel.appSetting, viewModel.user.mediaListOptions)
 
             mediaListSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -96,6 +98,11 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 navigation.navigateToCustomise(viewModel.mediaType) { customiseResult ->
                     viewModel.updateListStyle(customiseResult)
                 }
+                true
+            }
+
+            menuItemChangeListType?.setOnMenuItemClickListener {
+                viewModel.loadListTypes()
                 true
             }
 
@@ -144,8 +151,14 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             viewModel.toolbarSubtitle.subscribe {
                 binding.defaultToolbar.defaultToolbar.subtitle = it
             },
+            viewModel.menuItemCustomiseListVisibility.subscribe {
+                menuItemCustomiseList?.isVisible = it
+            },
+            viewModel.menuItemChangeListTypeVisibility.subscribe {
+                menuItemChangeListType?.isVisible = it
+            },
             viewModel.mediaListAdapterComponent.subscribe {
-                modifyLayoutStyle(it.listStyle, it.appSetting, it.mediaListOptions, it.backgroundUri)
+                modifyLayoutStyle(it.isViewer, it.listStyle, it.appSetting, it.mediaListOptions, it.backgroundUri)
             },
             viewModel.mediaListItems.subscribe {
                 adapter?.updateData(it)
@@ -190,6 +203,11 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                         viewModel.updateProgress(mediaList, null, newProgress, isProgressVolume)
                     }
                 )
+            },
+            viewModel.listTypes.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateListType(data)
+                }
             }
         )
 
@@ -202,9 +220,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         viewModel.loadData()
     }
 
-    private fun modifyLayoutStyle(listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions, backgroundUri: Uri?) {
+    private fun modifyLayoutStyle(isViewer: Boolean, listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions, backgroundUri: Uri?) {
         binding.apply {
-            assignAdapter(listStyle, appSetting, mediaListOptions)
+            assignAdapter(isViewer, listStyle, appSetting, mediaListOptions)
 
             val textColor = listStyle.getTextColor(requireContext())
             defaultToolbar.defaultToolbar.setTitleTextColor(textColor)
@@ -245,22 +263,22 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         }
     }
 
-    private fun assignAdapter(listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions) {
+    private fun assignAdapter(isViewer: Boolean, listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions) {
         when (listStyle.listType) {
             ListType.LINEAR -> {
-                adapter = MediaListLinearRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                adapter = MediaListLinearRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
                 binding.mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             }
             ListType.GRID -> {
-                adapter = MediaListGridRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                adapter = MediaListGridRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
                 binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
             }
             ListType.SIMPLIFIED -> {
-                adapter = MediaListSimplifiedRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                adapter = MediaListSimplifiedRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
                 binding.mediaListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             }
             ListType.ALBUM -> {
-                adapter = MediaListAlbumRvAdapter(requireContext(), listOf(), appSetting, listStyle, mediaListOptions, getMediaListListener())
+                adapter = MediaListAlbumRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
                 binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
             }
         }
@@ -317,6 +335,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
         adapter = null
         menuItemSearch = null
         menuItemCustomiseList = null
+        menuItemChangeListType = null
         menuItemFilter = null
         searchView = null
     }

@@ -26,6 +26,7 @@ import type.ScoreFormat
 abstract class BaseMediaListRvAdapter(
     protected val context: Context,
     list: List<MediaListItem>,
+    protected val isViewer: Boolean,
     protected val appSetting: AppSetting,
     protected val listStyle: ListStyle,
     protected val mediaListOptions: MediaListOptions

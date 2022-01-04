@@ -21,11 +21,12 @@ import type.MediaType
 class MediaListLinearRvAdapter(
     context: Context,
     list: List<MediaListItem>,
+    isViewer: Boolean,
     appSetting: AppSetting,
     listStyle: ListStyle,
     mediaListOptions: MediaListOptions,
     private val listener: MediaListListener
-) : BaseMediaListRvAdapter(context, list, appSetting, listStyle, mediaListOptions) {
+) : BaseMediaListRvAdapter(context, list, isViewer, appSetting, listStyle, mediaListOptions) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -184,6 +185,9 @@ class MediaListLinearRvAdapter(
         }
 
         private fun shouldShowIncrementButton(mediaList: MediaList, isVolumeProgress: Boolean): Boolean {
+            if (!isViewer)
+                return false
+
             val isAtMaxProgress = when (mediaList.media.type) {
                 MediaType.ANIME -> mediaList.media.episodes != null && mediaList.progress >= mediaList.media.episodes
                 MediaType.MANGA -> if (isVolumeProgress) {

@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.helper.enums.ListType
 
 class DefaultSharedPreferencesHandler(
     context: Context,
@@ -48,6 +49,10 @@ class DefaultSharedPreferencesHandler(
         get() = getData(FOLLOWERS_COUNT)?.toIntOrNull()
         set(value) { setData(FOLLOWERS_COUNT, value.toString()) }
 
+    override var othersListType: ListType?
+        get() = ListType.valueOf(getData(OTHERS_LIST_TYPE) ?: ListType.LINEAR.name)
+        set(value) { setData(OTHERS_LIST_TYPE, value?.name) }
+
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val GUEST_LOGIN = "guestLogin"
@@ -58,5 +63,6 @@ class DefaultSharedPreferencesHandler(
         private const val APP_SETTING = "appSetting"
         private const val FOLLOWING_COUNT = "followingCount"
         private const val FOLLOWERS_COUNT = "followersCount"
+        private const val OTHERS_LIST_TYPE = "othersListType"
     }
 }

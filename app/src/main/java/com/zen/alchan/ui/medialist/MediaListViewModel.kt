@@ -10,6 +10,7 @@ import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
@@ -25,7 +26,8 @@ import kotlin.collections.LinkedHashMap
 
 class MediaListViewModel(
     private val mediaListRepository: MediaListRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val browseRepository: BrowseRepository
 ) : BaseViewModel() {
 
     private val _toolbarTitle = BehaviorSubject.createDefault(R.string.anime_list)
@@ -35,6 +37,14 @@ class MediaListViewModel(
     private val _toolbarSubtitle = BehaviorSubject.createDefault("")
     val toolbarSubtitle: Observable<String>
         get() = _toolbarSubtitle
+
+    private val _menuItemCustomiseListVisibility = BehaviorSubject.createDefault(false)
+    val menuItemCustomiseListVisibility: Observable<Boolean>
+        get() = _menuItemCustomiseListVisibility
+
+    private val _menuItemChangeListTypeVisibility = BehaviorSubject.createDefault(false)
+    val menuItemChangeListTypeVisibility: Observable<Boolean>
+        get() = _menuItemChangeListTypeVisibility
 
     private val _mediaListAdapterComponent = PublishSubject.create<MediaListAdapterComponent>()
     val mediaListAdapterComponent: Observable<MediaListAdapterComponent>
@@ -60,9 +70,14 @@ class MediaListViewModel(
     val setToWatchingDialog: Observable<Triple<MediaList, Int, Boolean>> // media list, new progress, isProgressVolume
         get() = _setToWatchingDialog
 
+    private val _listTypes = PublishSubject.create<List<ListItem<ListType>>>()
+    val listTypes: Observable<List<ListItem<ListType>>>
+        get() = _listTypes
+
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
+    var isViewer = false
     var user = User()
     var appSetting = AppSetting()
     var listStyle = ListStyle()
@@ -96,9 +111,11 @@ class MediaListViewModel(
                             userRepository.getListStyle(MediaType.valueOf(mediaType.name)),
                             userRepository.getAppSetting(),
                             userRepository.getMediaFilter(mediaType),
-                            userRepository.getViewer(Source.CACHE)
-                        ) { listStyle, appSetting, mediaFilter, user ->
-                            this.listStyle = listStyle
+                            userRepository.getViewer(Source.CACHE),
+                            browseRepository.getOthersListType()
+                        ) { listStyle, appSetting, mediaFilter, user, othersListType ->
+                            this.isViewer = userId == 0
+                            this.listStyle = if (isViewer) listStyle else ListStyle.getOthersListStyle(othersListType)
                             this.appSetting = appSetting
                             this.mediaFilter = mediaFilter
                             isAllListPositionAtTop = when (mediaType) {
@@ -117,12 +134,16 @@ class MediaListViewModel(
 
                         this.user = user
 
+                        _menuItemCustomiseListVisibility.onNext(isViewer)
+                        _menuItemChangeListTypeVisibility.onNext(!isViewer)
+
                         _mediaListAdapterComponent.onNext(
                             MediaListAdapterComponent(
+                                isViewer,
                                 listStyle,
                                 appSetting,
                                 user.mediaListOptions,
-                                backgroundUri.data
+                                if (isViewer) backgroundUri.data else null
                             )
                         )
 
@@ -229,6 +250,7 @@ class MediaListViewModel(
                 .subscribe { uri ->
                     _mediaListAdapterComponent.onNext(
                         MediaListAdapterComponent(
+                            isViewer,
                             listStyle,
                             appSetting,
                             user.mediaListOptions,
@@ -800,5 +822,27 @@ class MediaListViewModel(
                     }
                 )
         )
+    }
+
+    fun loadListTypes() {
+        _listTypes.onNext(ListType.values().map { ListItem(it.getString(), it) })
+    }
+
+    fun updateListType(newListType: ListType) {
+        browseRepository.updateOthersListType(newListType)
+
+        _mediaListAdapterComponent.onNext(
+            MediaListAdapterComponent(
+                isViewer,
+                listStyle.copy(listType = newListType),
+                appSetting,
+                user.mediaListOptions,
+                null
+            )
+        )
+
+        _mediaListItems.value?.let {
+            _mediaListItems.onNext(it)
+        }
     }
 }

@@ -9,6 +9,9 @@
     <item android:id="@+id/itemCustomiseList"
         android:title="@string/customise_list"
         app:showAsAction="never"/>
+    <item android:id="@+id/itemChangeListType"
+        android:title="@string/change_list_type"
+        app:showAsAction="never"/>
     <item android:id="@+id/itemFilter"
         android:title="@string/filter"
         app:showAsAction="never"/>

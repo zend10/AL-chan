@@ -3,6 +3,7 @@ package com.zen.alchan.data.localstorage
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.helper.enums.ListType
 
 interface SharedPreferencesHandler {
     var bearerToken: String?
@@ -14,4 +15,5 @@ interface SharedPreferencesHandler {
     var appSetting: AppSetting?
     var followingCount: Int?
     var followersCount: Int?
+    var othersListType: ListType?
 }

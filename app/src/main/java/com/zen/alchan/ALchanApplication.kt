@@ -4,10 +4,7 @@ import android.app.Application
 import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
-import com.zen.alchan.data.manager.ContentManager
-import com.zen.alchan.data.manager.DefaultContentManager
-import com.zen.alchan.data.manager.UserManager
-import com.zen.alchan.data.manager.DefaultUserManager
+import com.zen.alchan.data.manager.*
 import com.zen.alchan.data.network.apollo.AniListApolloHandler
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.network.header.AniListHeaderInterceptorImpl
@@ -78,6 +75,7 @@ class ALchanApplication : Application() {
         // local storage manager
         single<UserManager> { DefaultUserManager(get(), get(), get()) }
         single<ContentManager> { DefaultContentManager(get()) }
+        single<BrowseManager> { DefaultBrowseManager(get()) }
 
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
@@ -93,7 +91,7 @@ class ALchanApplication : Application() {
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
         single<UserRepository> { DefaultUserRepository(get(), get()) }
         single<MediaListRepository> { DefaultMediaListRepository(get(), get()) }
-        single<BrowseRepository> { DefaultBrowseRepository(get()) }
+        single<BrowseRepository> { DefaultBrowseRepository(get(), get()) }
 
         // service
         single<ClipboardService> { DefaultClipboardService(this.androidContext()) }
@@ -110,7 +108,7 @@ class ALchanApplication : Application() {
 
         viewModel { HomeViewModel(get(), get()) }
 
-        viewModel { MediaListViewModel(get(), get()) }
+        viewModel { MediaListViewModel(get(), get(), get()) }
 
         viewModel { SocialViewModel() }
 

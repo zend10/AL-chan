@@ -17,11 +17,12 @@ import com.zen.alchan.helper.utils.ImageUtil
 class MediaListAlbumRvAdapter(
     context: Context,
     list: List<MediaListItem>,
+    isViewer: Boolean,
     appSetting: AppSetting,
     listStyle: ListStyle,
     mediaListOptions: MediaListOptions,
     private val listener: MediaListListener
-) : BaseMediaListRvAdapter(context, list, appSetting, listStyle, mediaListOptions) {
+) : BaseMediaListRvAdapter(context, list, isViewer, appSetting, listStyle, mediaListOptions) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)

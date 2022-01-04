@@ -22,6 +22,9 @@ class DefaultMediaListRepository(
     private val userManager: UserManager
 ) : MediaListRepository {
 
+    private val userIdToAnimeListCollectionMap = HashMap<Int, MediaListCollection>()
+    private val userIdToMangaListCollectionMap = HashMap<Int, MediaListCollection>()
+
     override val defaultAnimeList: List<String>
         get() = listOf(
             "Watching",
@@ -79,21 +82,47 @@ class DefaultMediaListRepository(
         userId: Int,
         mediaType: MediaType
     ): Observable<MediaListCollection> {
+        val isViewer = userManager.viewerData?.data?.id == userId
         return if (source == Source.CACHE) {
-            val mediaListCollection = when (mediaType) {
-                MediaType.ANIME -> userManager.animeList?.data
-                MediaType.MANGA -> userManager.mangaList?.data
-            } ?: throw NotInStorageException()
+            val mediaListCollection = if (isViewer) {
+                when (mediaType) {
+                    MediaType.ANIME -> userManager.animeList?.data
+                    MediaType.MANGA -> userManager.mangaList?.data
+                } ?: throw NotInStorageException()
+            } else {
+                when (mediaType) {
+                    MediaType.ANIME -> userIdToAnimeListCollectionMap[userId]
+                    MediaType.MANGA -> userIdToMangaListCollectionMap[userId]
+                } ?: throw NotInStorageException()
+            }
 
             Observable.just(mediaListCollection)
         } else {
+            // for other person's list, simply get from memory cache if exist
+            if (!isViewer) {
+                if (mediaType == MediaType.ANIME && userIdToAnimeListCollectionMap.containsKey(userId)) {
+                    return Observable.just(userIdToAnimeListCollectionMap[userId])
+                }
+
+                if (mediaType == MediaType.MANGA && userIdToMangaListCollectionMap.containsKey(userId)) {
+                    return Observable.just(userIdToMangaListCollectionMap[userId])
+                }
+            }
+
             mediaListDataSource.getMediaListCollectionQuery(userId, mediaType.getAniListMediaType()).map {
                 val newMediaListCollection = it.data?.convert()
 
-                if (newMediaListCollection != null && userManager.viewerData?.data?.id == userId) {
+                if (newMediaListCollection != null && isViewer) {
                     when (mediaType) {
                         MediaType.ANIME -> userManager.animeList = SaveItem(newMediaListCollection)
                         MediaType.MANGA -> userManager.mangaList = SaveItem(newMediaListCollection)
+                    }
+                }
+
+                if (newMediaListCollection != null && !isViewer) {
+                    when (mediaType) {
+                        MediaType.ANIME -> userIdToAnimeListCollectionMap[userId] = newMediaListCollection
+                        MediaType.MANGA -> userIdToMangaListCollectionMap[userId] = newMediaListCollection
                     }
                 }
 

@@ -91,4 +91,15 @@ data class ListStyle(
         else
             context.getThemeFloatingIconColor()
     }
+
+    companion object {
+        fun getOthersListStyle(listType: ListType = ListType.LINEAR): ListStyle {
+            return ListStyle(
+                listType = listType,
+                hideAiring = false,
+                showNotes = true,
+                showPriority = true
+            )
+        }
+    }
 }
