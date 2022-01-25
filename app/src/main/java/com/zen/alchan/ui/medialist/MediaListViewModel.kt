@@ -77,7 +77,9 @@ class MediaListViewModel(
     var mediaType: MediaType = MediaType.ANIME
     var userId = 0
 
-    var isViewer = false
+    val isViewer: Boolean
+        get() = userId == 0
+
     var user = User()
     var appSetting = AppSetting()
     var listStyle = ListStyle()
@@ -93,8 +95,6 @@ class MediaListViewModel(
 
     override fun loadData() {
         loadOnce {
-            isViewer = userId == 0
-
             _loading.onNext(true)
 
             _toolbarTitle.onNext(

@@ -23,10 +23,7 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.enums.ListType
-import com.zen.alchan.helper.extensions.applySidePaddingInsets
-import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.extensions.clicks
-import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
@@ -67,6 +64,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     override fun setUpLayout() {
         binding.apply {
+            if (!viewModel.isViewer) {
+                setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.list))
+            }
+
             defaultToolbar.defaultToolbar.apply {
                 inflateMenu(R.menu.menu_media_list)
                 menuItemSearch = menu.findItem(R.id.itemSearch)
@@ -131,6 +132,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
         binding.mediaListRootLayout.applySidePaddingInsets()
+        if (!viewModel.isViewer) {
+            binding.mediaListSwitchListContainer.applyBottomPaddingInsets()
+            binding.mediaListRecyclerView.applyBottomPaddingInsets()
+        }
     }
 
     override fun setUpObserver() {
