@@ -261,8 +261,13 @@ class FilterViewModel(
     val prioritiesYearsSliderItem: Observable<SliderItem>
         get() = _prioritiesYearsSliderItem
 
+    private val _filterSettingsVisibility = BehaviorSubject.createDefault(true)
+    val filterSettingsVisibility: Observable<Boolean>
+        get() = _filterSettingsVisibility
+
     private var mediaType: MediaType = MediaType.ANIME
     private var isUserList: Boolean = true
+    private var isCurrentUser: Boolean = true
     private var genres: List<Genre> = listOf()
     private var tags: List<MediaTag> = listOf()
     private var tagList: List<ListItem<MediaTag?>> = listOf()
@@ -274,11 +279,15 @@ class FilterViewModel(
         // do nothing
     }
 
-    fun loadData(mediaFilter: MediaFilter, mediaType: MediaType, isUserList: Boolean) {
+    fun loadData(mediaFilter: MediaFilter, mediaType: MediaType, scoreFormat: ScoreFormat, isUserList: Boolean, isCurrentUser: Boolean) {
         loadOnce {
             this.currentMediaFilter = mediaFilter
             this.mediaType = mediaType
+            this.scoreFormat = scoreFormat
             this.isUserList = isUserList
+            this.isCurrentUser = isCurrentUser
+
+            _filterSettingsVisibility.onNext(isUserList && isCurrentUser)
 
             disposables.add(
                 contentRepository.getGenres()
@@ -307,13 +316,6 @@ class FilterViewModel(
                         _includedTags.onNext(currentMediaFilter.includedTags.map { it.name })
                         _excludedTags.onNext(currentMediaFilter.excludedTags.map { it.name })
                         handleTagLayoutVisibility()
-                    }
-            )
-
-            disposables.add(
-                userRepository.getViewer(Source.CACHE)
-                    .subscribe {
-                        scoreFormat = it.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100
                     }
             )
 
@@ -360,21 +362,20 @@ class FilterViewModel(
     }
 
     fun saveCurrentFilter() {
-        userRepository.setMediaFilter(mediaType, MediaFilter())
-        if (currentMediaFilter.persistFilter)
-            userRepository.setMediaFilter(mediaType, currentMediaFilter)
+        if (isCurrentUser) {
+            userRepository.setMediaFilter(mediaType, MediaFilter())
+            if (currentMediaFilter.persistFilter)
+                userRepository.setMediaFilter(mediaType, currentMediaFilter)
+        }
         _mediaFilter.onNext(currentMediaFilter)
     }
 
     fun resetCurrentFilter() {
         currentMediaFilter = MediaFilter()
-        userRepository.setMediaFilter(mediaType, currentMediaFilter)
+        if (isCurrentUser) {
+            userRepository.setMediaFilter(mediaType, currentMediaFilter)
+        }
         _mediaFilter.onNext(currentMediaFilter)
-    }
-
-    fun updateCurrentFilter(mediaFilter: MediaFilter) {
-        if (state == State.INIT)
-            currentMediaFilter = mediaFilter
     }
 
     fun updatePersistFilter(shouldPersist: Boolean) {

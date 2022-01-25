@@ -6,6 +6,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
+import type.ScoreFormat
 
 
 interface NavigationManager {
@@ -26,7 +27,14 @@ interface NavigationManager {
     fun navigateToAbout()
 
     fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit)
-    fun navigateToFilter(mediaFilter: MediaFilter?, mediaType: MediaType, isUserList: Boolean, action: (filterResult: MediaFilter) -> Unit)
+    fun navigateToFilter(
+        mediaFilter: MediaFilter?,
+        mediaType: MediaType,
+        scoreFormat: ScoreFormat,
+        isUserList: Boolean,
+        isCurrentUser: Boolean,
+        action: (filterResult: MediaFilter) -> Unit
+    )
     fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit)
 
     fun navigateToEditor(mediaType: MediaType, mediaId: Int)

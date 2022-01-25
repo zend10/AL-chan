@@ -11,6 +11,7 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.ChipRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.ScoreFormat
 
 
 class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
@@ -423,13 +424,18 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 dialog.showSliderDialog(it) { minValue, maxValue ->
                     viewModel.updatePriorities(minValue, maxValue)
                 }
+            },
+            viewModel.filterSettingsVisibility.subscribe {
+                binding.filterSettingsLayout.show(it)
             }
         )
 
         viewModel.loadData(
             oldMediaFilter ?: MediaFilter(),
             MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name),
-            arguments?.getBoolean(IS_USER_LIST) ?: false
+            ScoreFormat.valueOf(arguments?.getString(SCORE_FORMAT) ?: ScoreFormat.POINT_100.name),
+            arguments?.getBoolean(IS_USER_LIST) ?: false,
+            arguments?.getBoolean(IS_CURRENT_USER) ?: false
         )
     }
 
@@ -449,14 +455,18 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
 
     companion object {
         private const val MEDIA_TYPE = "mediaType"
+        private const val SCORE_FORMAT = "scoreFormat"
         private const val IS_USER_LIST = "isUserList"
+        private const val IS_CURRENT_USER = "isCurrentUser"
 
         @JvmStatic
-        fun newInstance(mediaFilter: MediaFilter?, mediaType: MediaType, isUserList: Boolean, listener: FilterListener) =
+        fun newInstance(mediaFilter: MediaFilter?, mediaType: MediaType, scoreFormat: ScoreFormat, isUserList: Boolean, isCurrentUser: Boolean, listener: FilterListener) =
             FilterFragment().apply {
                 arguments = Bundle().apply {
                     putString(MEDIA_TYPE, mediaType.name)
+                    putString(SCORE_FORMAT, scoreFormat.name)
                     putBoolean(IS_USER_LIST, isUserList)
+                    putBoolean(IS_CURRENT_USER, isCurrentUser)
                 }
                 this.oldMediaFilter = mediaFilter
                 this.listener = listener

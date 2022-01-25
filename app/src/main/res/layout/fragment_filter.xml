@@ -68,6 +68,7 @@
                 android:id="@+id/filterSortLayout"
                 app:layout_constraintTop_toBottomOf="@+id/filterSettingsLayout"
                 android:layout_marginTop="@dimen/marginFar"
+                app:layout_goneMarginTop="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

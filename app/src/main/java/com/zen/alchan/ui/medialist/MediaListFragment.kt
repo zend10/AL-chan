@@ -107,7 +107,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemFilter?.setOnMenuItemClickListener {
-                navigation.navigateToFilter(viewModel.mediaFilter, viewModel.mediaType, true) { filterResult ->
+                navigation.navigateToFilter(viewModel.mediaFilter, viewModel.mediaType, viewModel.user.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100, true, viewModel.isViewer) { filterResult ->
                     viewModel.updateMediaFilter(filterResult)
                 }
                 true

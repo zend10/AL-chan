@@ -31,6 +31,7 @@ import com.zen.alchan.ui.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.settings.list.ListSettingsFragment
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsFragment
 import com.zen.alchan.ui.splash.SplashFragment
+import type.ScoreFormat
 
 class DefaultNavigationManager(
     private val context: Context,
@@ -98,8 +99,8 @@ class DefaultNavigationManager(
         }))
     }
 
-    override fun navigateToFilter(mediaFilter: MediaFilter?, mediaType: MediaType, isUserList: Boolean, action: (filterResult: MediaFilter) -> Unit) {
-        stackPage(FilterFragment.newInstance(mediaFilter, mediaType, isUserList, object : FilterFragment.FilterListener {
+    override fun navigateToFilter(mediaFilter: MediaFilter?, mediaType: MediaType, scoreFormat: ScoreFormat, isUserList: Boolean, isCurrentUser: Boolean, action: (filterResult: MediaFilter) -> Unit) {
+        stackPage(FilterFragment.newInstance(mediaFilter, mediaType, scoreFormat, isUserList, isCurrentUser, object : FilterFragment.FilterListener {
             override fun getFilterResult(filterResult: MediaFilter) {
                 action(filterResult)
             }

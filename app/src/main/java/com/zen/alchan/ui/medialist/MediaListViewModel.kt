@@ -93,6 +93,8 @@ class MediaListViewModel(
 
     override fun loadData() {
         loadOnce {
+            isViewer = userId == 0
+
             _loading.onNext(true)
 
             _toolbarTitle.onNext(
@@ -111,13 +113,12 @@ class MediaListViewModel(
                             userRepository.getListStyle(MediaType.valueOf(mediaType.name)),
                             userRepository.getAppSetting(),
                             userRepository.getMediaFilter(mediaType),
-                            userRepository.getViewer(Source.CACHE),
+                            if (isViewer) userRepository.getViewer(Source.CACHE) else browseRepository.getUser(userId),
                             browseRepository.getOthersListType()
                         ) { listStyle, appSetting, mediaFilter, user, othersListType ->
-                            this.isViewer = userId == 0
                             this.listStyle = if (isViewer) listStyle else ListStyle.getOthersListStyle(othersListType)
                             this.appSetting = appSetting
-                            this.mediaFilter = mediaFilter
+                            this.mediaFilter = if (isViewer) mediaFilter else MediaFilter(false)
                             isAllListPositionAtTop = when (mediaType) {
                                 MediaType.ANIME -> appSetting.isAllAnimeListPositionAtTop
                                 MediaType.MANGA -> appSetting.isAllMangaListPositionAtTop
