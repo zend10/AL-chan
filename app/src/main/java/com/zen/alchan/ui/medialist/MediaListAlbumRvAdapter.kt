@@ -66,6 +66,11 @@ class MediaListAlbumRvAdapter(
                 // score
                 handleScoring(mediaListScoreLayout, mediaListScoreIcon, mediaListScoreText, mediaListScoreSmiley, mediaList)
                 mediaListScoreLayout.clicks {
+                    if (!isViewer) {
+                        listener.showQuickDetail(mediaList)
+                        return@clicks
+                    }
+
                     listener.showScoreDialog(mediaList)
                 }
 
@@ -73,12 +78,22 @@ class MediaListAlbumRvAdapter(
                 mediaListProgressText.text = getProgressText(mediaList)
                 mediaListProgressText.show(shouldShowProgress(media))
                 mediaListProgressText.clicks {
+                    if (!isViewer) {
+                        listener.showQuickDetail(mediaList)
+                        return@clicks
+                    }
+
                     listener.showProgressDialog(mediaList, false)
                 }
 
                 mediaListProgressVolumeText.text = getProgressVolumeText(mediaList)
                 mediaListProgressVolumeText.show(shouldShowProgressVolume(media))
                 mediaListProgressVolumeText.clicks {
+                    if (!isViewer) {
+                        listener.showQuickDetail(mediaList)
+                        return@clicks
+                    }
+
                     listener.showProgressDialog(mediaList, true)
                 }
 
@@ -91,6 +106,11 @@ class MediaListAlbumRvAdapter(
                 }
 
                 root.clicks {
+                    if (!isViewer) {
+                        listener.navigateToMedia(media)
+                        return@clicks
+                    }
+
                     listener.navigateToListEditor(mediaList)
                 }
 

@@ -60,6 +60,11 @@ class MediaListSimplifiedRvAdapter(
                 // score
                 handleScoring(mediaListScoreLayout, mediaListScoreIcon, mediaListScoreText, mediaListScoreSmiley, mediaList)
                 mediaListScoreLayout.clicks {
+                    if (!isViewer) {
+                        listener.showQuickDetail(mediaList)
+                        return@clicks
+                    }
+
                     listener.showScoreDialog(mediaList)
                 }
 
@@ -68,6 +73,11 @@ class MediaListSimplifiedRvAdapter(
                 mediaListProgressText.show(shouldShowProgress(media))
                 mediaListDummyProgressText.visibility = if (shouldShowProgress(media)) View.INVISIBLE else View.GONE
                 mediaListProgressText.clicks {
+                    if (!isViewer) {
+                        listener.showQuickDetail(mediaList)
+                        return@clicks
+                    }
+
                     listener.showProgressDialog(mediaList, false)
                 }
 
@@ -75,6 +85,11 @@ class MediaListSimplifiedRvAdapter(
                 mediaListProgressVolumeText.show(shouldShowProgressVolume(media))
                 mediaListDummyProgressVolumeText.visibility = if (shouldShowProgressVolume(media)) View.INVISIBLE else View.GONE
                 mediaListProgressVolumeText.clicks {
+                    if (!isViewer) {
+                        listener.showQuickDetail(mediaList)
+                        return@clicks
+                    }
+
                     listener.showProgressDialog(mediaList, true)
                 }
 
@@ -87,6 +102,11 @@ class MediaListSimplifiedRvAdapter(
                 }
 
                 root.clicks {
+                    if (!isViewer) {
+                        listener.navigateToMedia(media)
+                        return@clicks
+                    }
+
                     listener.navigateToListEditor(mediaList)
                 }
 
