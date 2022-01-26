@@ -299,7 +299,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getStatsListener(): ProfileListener.StatsListener {
         return object : ProfileListener.StatsListener {
             override fun navigateToStatsDetail() {
-
+                navigation.navigateToUserStats(arguments?.getInt(USER_ID) ?: 0)
             }
         }
     }

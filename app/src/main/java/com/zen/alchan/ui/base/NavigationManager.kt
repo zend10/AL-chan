@@ -48,6 +48,7 @@ interface NavigationManager {
     fun navigateToMangaMediaList(id: Int)
     fun navigateToFollowing(id: Int)
     fun navigateToFollowers(id: Int)
+    fun navigateToUserStats(id: Int)
 
     fun openWebView(url: String)
     fun openWebView(url: Url)

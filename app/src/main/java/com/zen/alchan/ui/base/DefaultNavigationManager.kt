@@ -151,6 +151,10 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(BrowseNavigationManager.Page.FOLLOWERS, id)
     }
 
+    override fun navigateToUserStats(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.USER_STATS, id)
+    }
+
     override fun openWebView(url: String) {
         launchWebView(Uri.parse(url))
     }

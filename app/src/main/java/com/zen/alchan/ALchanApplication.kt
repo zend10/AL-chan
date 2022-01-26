@@ -37,6 +37,7 @@ import com.zen.alchan.ui.settings.notifications.NotificationsSettingsViewModel
 import com.zen.alchan.ui.social.SocialViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 import com.zen.alchan.ui.staff.StaffViewModel
+import com.zen.alchan.ui.userstats.UserStatsViewModel
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -114,6 +115,7 @@ class ALchanApplication : Application() {
 
         viewModel { ProfileViewModel(get(), get(), get(), get()) }
         viewModel { FollowViewModel(get()) }
+        viewModel { UserStatsViewModel() }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }

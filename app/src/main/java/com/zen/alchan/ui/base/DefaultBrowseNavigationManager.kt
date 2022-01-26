@@ -13,6 +13,7 @@ import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.staff.StaffFragment
+import com.zen.alchan.ui.userstats.UserStatsFragment
 
 class DefaultBrowseNavigationManager(
     private val context: Context,
@@ -52,6 +53,10 @@ class DefaultBrowseNavigationManager(
         swapPage(FollowFragment.newInstance(userId, false))
     }
 
+    private fun navigateToUserStats(userId: Int) {
+        swapPage(UserStatsFragment.newInstance(userId))
+    }
+
     override fun backStackCount(): Int {
         return fragmentManager.backStackEntryCount
     }
@@ -66,6 +71,7 @@ class DefaultBrowseNavigationManager(
             BrowseNavigationManager.Page.MANGA_MEDIA_LIST -> id?.let { navigateToMangaMediaList(id) }
             BrowseNavigationManager.Page.FOLLOWING -> id?.let { navigateToFollowing(id) }
             BrowseNavigationManager.Page.FOLLOWERS -> id?.let { navigateToFollowers(id) }
+            BrowseNavigationManager.Page.USER_STATS -> id?.let { navigateToUserStats(id) }
         }
     }
 

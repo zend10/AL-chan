@@ -15,5 +15,6 @@ interface BrowseNavigationManager {
         MANGA_MEDIA_LIST,
         FOLLOWING,
         FOLLOWERS,
+        USER_STATS
     }
 }

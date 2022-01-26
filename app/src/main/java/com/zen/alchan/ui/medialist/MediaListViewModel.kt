@@ -94,7 +94,7 @@ class MediaListViewModel(
     override fun loadData() {
         loadOnce {
             isViewer = userId == 0
-            
+
             _loading.onNext(true)
 
             _toolbarTitle.onNext(
