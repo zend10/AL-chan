@@ -20,6 +20,7 @@ import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.databinding.FragmentProfileBinding
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
@@ -60,6 +61,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         binding.apply {
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+
+            if (arguments?.getInt(USER_ID) != 0) {
+                setUpToolbar(profileToolbar, "", R.drawable.ic_delete) {
+                    navigation.closeBrowseScreen()
+                }
+            }
 
             profileToolbar.menu.apply {
                 menuItemActivities = findItem(R.id.itemActivities)
@@ -175,6 +182,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     override fun setUpInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.profileCollapsingToolbar, null)
+        if (arguments?.getInt(USER_ID) != 0) {
+            binding.profileRecyclerView.applyBottomPaddingInsets()
+        }
     }
 
     override fun setUpObserver() {

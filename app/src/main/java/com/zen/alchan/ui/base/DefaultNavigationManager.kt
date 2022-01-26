@@ -228,6 +228,12 @@ class DefaultNavigationManager(
         }
     }
 
+    override fun closeBrowseScreen() {
+        if (isAtBrowseScreen()) {
+            fragmentManager.popBackStack()
+        }
+    }
+
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false, disableAnimation: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
         if (!disableAnimation) {

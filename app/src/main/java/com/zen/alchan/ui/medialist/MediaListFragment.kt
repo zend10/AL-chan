@@ -64,7 +64,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
     override fun setUpLayout() {
         binding.apply {
-            if (!viewModel.isViewer) {
+            if (arguments?.getInt(USER_ID) != 0) {
                 setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.list))
             }
 
@@ -132,7 +132,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
         binding.mediaListRootLayout.applySidePaddingInsets()
-        if (!viewModel.isViewer) {
+        if (arguments?.getInt(USER_ID) != 0) {
             binding.mediaListSwitchListContainer.applyBottomPaddingInsets()
             binding.mediaListRecyclerView.applyBottomPaddingInsets()
         }

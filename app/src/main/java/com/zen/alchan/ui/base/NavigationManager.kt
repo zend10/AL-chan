@@ -59,6 +59,7 @@ interface NavigationManager {
     fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?)
     fun popBrowseScreenPage()
     fun shouldPopFromBrowseScreen(): Boolean
+    fun closeBrowseScreen()
 
     enum class Url {
         ANILIST_WEBSITE,
