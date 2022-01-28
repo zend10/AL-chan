@@ -1,11 +1,15 @@
 package com.zen.alchan.data.repository
 
+import android.net.Uri
+import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.helper.pojo.NullableItem
 import io.reactivex.Completable
 import io.reactivex.Observable
 import type.MediaListStatus
@@ -54,4 +58,11 @@ interface MediaListRepository {
         progress: Int?,
         progressVolumes: Int?
     ): Observable<MediaList>
+
+    fun getListStyle(mediaType: MediaType): Observable<ListStyle>
+    fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)
+    fun getListBackground(mediaType: MediaType): Observable<NullableItem<Uri>>
+    fun setListBackground(mediaType: MediaType, newUri: Uri?): Observable<Unit>
+    fun getMediaFilter(mediaType: MediaType): Observable<MediaFilter>
+    fun setMediaFilter(mediaType: MediaType, newMediaFilter: MediaFilter)
 }

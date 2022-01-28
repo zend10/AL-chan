@@ -3,6 +3,7 @@ package com.zen.alchan.ui.filter
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.MediaTag
@@ -22,7 +23,7 @@ import type.*
 
 class FilterViewModel(
     private val contentRepository: ContentRepository,
-    private val userRepository: UserRepository
+    private val mediaListRepository: MediaListRepository
 ) : BaseViewModel() {
 
     private val _mediaFilter = PublishSubject.create<MediaFilter>()
@@ -363,9 +364,9 @@ class FilterViewModel(
 
     fun saveCurrentFilter() {
         if (isCurrentUser) {
-            userRepository.setMediaFilter(mediaType, MediaFilter())
+            mediaListRepository.setMediaFilter(mediaType, MediaFilter())
             if (currentMediaFilter.persistFilter)
-                userRepository.setMediaFilter(mediaType, currentMediaFilter)
+                mediaListRepository.setMediaFilter(mediaType, currentMediaFilter)
         }
         _mediaFilter.onNext(currentMediaFilter)
     }
@@ -373,7 +374,7 @@ class FilterViewModel(
     fun resetCurrentFilter() {
         currentMediaFilter = MediaFilter()
         if (isCurrentUser) {
-            userRepository.setMediaFilter(mediaType, currentMediaFilter)
+            mediaListRepository.setMediaFilter(mediaType, currentMediaFilter)
         }
         _mediaFilter.onNext(currentMediaFilter)
     }

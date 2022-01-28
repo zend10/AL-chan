@@ -110,9 +110,9 @@ class MediaListViewModel(
                     .filter { it }
                     .flatMap {
                         Observable.zip(
-                            userRepository.getListStyle(MediaType.valueOf(mediaType.name)),
+                            mediaListRepository.getListStyle(MediaType.valueOf(mediaType.name)),
                             userRepository.getAppSetting(),
-                            userRepository.getMediaFilter(mediaType),
+                            mediaListRepository.getMediaFilter(mediaType),
                             if (isViewer) userRepository.getViewer(Source.CACHE) else browseRepository.getUser(userId),
                             browseRepository.getOthersListType()
                         ) { listStyle, appSetting, mediaFilter, user, othersListType ->
@@ -126,7 +126,7 @@ class MediaListViewModel(
                             return@zip user
                         }
                     }
-                    .zipWith(userRepository.getListBackground(mediaType)) { user, backgroundUri ->
+                    .zipWith(mediaListRepository.getListBackground(mediaType)) { user, backgroundUri ->
                         return@zipWith user to backgroundUri
                     }
                     .subscribe { (user, backgroundUri) ->
@@ -246,7 +246,7 @@ class MediaListViewModel(
         listStyle = newListStyle
 
         disposables.add(
-            userRepository.getListBackground(mediaType)
+            mediaListRepository.getListBackground(mediaType)
                 .applyScheduler()
                 .subscribe { uri ->
                     _mediaListAdapterComponent.onNext(

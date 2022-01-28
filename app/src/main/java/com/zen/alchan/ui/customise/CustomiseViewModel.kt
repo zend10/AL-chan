@@ -2,6 +2,7 @@ package com.zen.alchan.ui.customise
 
 import android.net.Uri
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.ListType
@@ -15,7 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class CustomiseViewModel(private val userRepository: UserRepository, private val mediaListRepository: MediaListRepository) : BaseViewModel() {
 
     private val _listStyle = PublishSubject.create<ListStyle>()
     val listStyle: Observable<ListStyle>
@@ -213,10 +214,10 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
 
             disposables.add(
                 userRepository.getAppSetting()
-                    .zipWith(userRepository.getListStyle(mediaType)) { appSetting, listStyle ->
+                    .zipWith(mediaListRepository.getListStyle(mediaType)) { appSetting, listStyle ->
                         return@zipWith appSetting to listStyle
                     }
-                    .zipWith(userRepository.getListBackground(mediaType)) { appSettingAndListStyle, backgroundUri ->
+                    .zipWith(mediaListRepository.getListBackground(mediaType)) { appSettingAndListStyle, backgroundUri ->
                         return@zipWith Triple(appSettingAndListStyle.first, appSettingAndListStyle.second, backgroundUri)
                     }
                     .applyScheduler()
@@ -256,11 +257,11 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
     }
 
     fun saveCurrentListStyle() {
-        userRepository.setListStyle(mediaType, currentListStyle)
+        mediaListRepository.setListStyle(mediaType, currentListStyle)
 
         if (isBackgroundImageChanged) {
             disposables.add(
-                userRepository.setListBackground(mediaType, _selectedImage.value?.data)
+                mediaListRepository.setListBackground(mediaType, _selectedImage.value?.data)
                     .applyScheduler()
                     .subscribe {
                         _listStyle.onNext(currentListStyle)
@@ -273,7 +274,7 @@ class CustomiseViewModel(private val userRepository: UserRepository) : BaseViewM
 
     fun resetCurrentListStyle() {
         currentListStyle = ListStyle(currentListStyle.listType)
-        userRepository.setListStyle(mediaType, currentListStyle)
+        mediaListRepository.setListStyle(mediaType, currentListStyle)
         _listStyle.onNext(currentListStyle)
     }
 

@@ -6,14 +6,11 @@ import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.manager.UserManager
-import com.zen.alchan.data.response.anilist.MediaListTypeOptions
-import com.zen.alchan.data.response.anilist.NotificationOption
-import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entity.ListStyle
-import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
@@ -132,61 +129,13 @@ class DefaultUserRepository(
         }
     }
 
-    override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
-        return Observable.just(
-            when (mediaType) {
-                MediaType.ANIME -> userManager.animeListStyle
-                MediaType.MANGA -> userManager.mangaListStyle
-            }
-        )
-    }
-
-    override fun setListStyle(mediaType: MediaType, newListStyle: ListStyle) {
-        when (mediaType) {
-            MediaType.ANIME -> userManager.animeListStyle = newListStyle
-            MediaType.MANGA -> userManager.mangaListStyle = newListStyle
-        }
-    }
-
-    override fun getListBackground(mediaType: MediaType): Observable<NullableItem<Uri>> {
-        return when (mediaType) {
-            MediaType.ANIME -> {
-                if (userManager.animeListStyle.useBackgroundImage) {
-                    userManager.animeListBackground
-                } else {
-                    Observable.just(NullableItem(null))
-                }
-            }
-            MediaType.MANGA -> {
-                if (userManager.mangaListStyle.useBackgroundImage) {
-                    userManager.mangaListBackground
-                } else {
-                    Observable.just(NullableItem(null))
-                }
-            }
-        }
-    }
-
-    override fun setListBackground(mediaType: MediaType, newUri: Uri?): Observable<Unit> {
-        return when (mediaType) {
-            MediaType.ANIME -> userManager.saveAnimeListBackground(newUri)
-            MediaType.MANGA -> userManager.saveMangaListBackground(newUri)
-        }
-    }
-
-    override fun getMediaFilter(mediaType: MediaType): Observable<MediaFilter> {
-        return Observable.just(
-            when (mediaType) {
-                MediaType.ANIME -> userManager.animeFilter
-                MediaType.MANGA -> userManager.mangaFilter
-            }
-        )
-    }
-
-    override fun setMediaFilter(mediaType: MediaType, newMediaFilter: MediaFilter) {
-        when (mediaType) {
-            MediaType.ANIME -> userManager.animeFilter = newMediaFilter
-            MediaType.MANGA -> userManager.mangaFilter = newMediaFilter
+    override fun getUserStatistics(
+        userId: Int,
+        sort: UserStatisticsSort,
+        source: Source?
+    ): Observable<UserStatisticTypes> {
+        return userDataSource.getUserStatistics(userId, listOf(sort)).map {
+            it.data?.convert()?.statistics
         }
     }
 

@@ -1,7 +1,6 @@
 package com.zen.alchan.data.converter
 
 import com.zen.alchan.data.response.anilist.*
-import fragment.ViewerStatistics
 
 fun ViewerQuery.Data.convert(): User {
     return User(
@@ -56,8 +55,8 @@ fun ViewerQuery.Data.convert(): User {
             studios = StudioConnection(nodes = viewer?.favourites?.studios?.nodes?.mapNotNull { it?.convert() } ?: listOf())
         ),
         statistics = UserStatisticTypes(
-            anime = viewer?.statistics?.anime?.fragments?.viewerStatistics?.convert() ?: UserStatistics(),
-            manga = viewer?.statistics?.manga?.fragments?.viewerStatistics?.convert() ?: UserStatistics()
+            anime = viewer?.statistics?.anime?.fragments?.userStatistics?.convert() ?: UserStatistics(),
+            manga = viewer?.statistics?.manga?.fragments?.userStatistics?.convert() ?: UserStatistics()
         ),
         unreadNotificationCount = viewer?.unreadNotificationCount ?: 0,
         siteUrl = viewer?.siteUrl ?: "",
@@ -150,73 +149,5 @@ private fun ViewerQuery.Node4?.convert(): Studio {
         id = this?.id ?: 0,
         name = this?.name ?: "",
         siteUrl = this?.siteUrl ?: ""
-    )
-}
-
-private fun ViewerStatistics?.convert(): UserStatistics {
-    return UserStatistics(
-        count = this?.count ?: 0,
-        meanScore = this?.meanScore ?: 0.0,
-        standardDeviation = this?.standardDeviation ?: 0.0,
-        minutesWatched = this?.minutesWatched ?: 0,
-        episodesWatched = this?.episodesWatched ?: 0,
-        chaptersRead = this?.chaptersRead ?: 0,
-        volumesRead = this?.volumesRead ?: 0,
-        statuses = this?.statuses?.mapNotNull {
-            UserStatusStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                status = it?.status
-            )
-        } ?: listOf(),
-        scores = this?.scores?.mapNotNull {
-            UserScoreStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                score = it?.score ?: 0
-            )
-        } ?: listOf(),
-        releaseYears = this?.releaseYears?.mapNotNull {
-            UserReleaseYearStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                releaseYear = it?.releaseYear ?: 0
-            )
-        } ?: listOf(),
-        startYears = this?.startYears?.mapNotNull {
-            UserStartYearStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                startYear = it?.startYear ?: 0
-            )
-        } ?: listOf(),
-        genres = this?.genres?.mapNotNull {
-            UserGenreStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                genre = it?.genre ?: ""
-            )
-        } ?: listOf(),
-        tags = this?.tags?.mapNotNull {
-            UserTagStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                tag = MediaTag(
-                    id = it?.tag?.id ?: 0,
-                    name = it?.tag?.name ?: ""
-                )
-            )
-        } ?: listOf(),
-        studios = this?.studios?.mapNotNull {
-            UserStudioStatistic(
-                count = it?.count ?: 0,
-                meanScore = it?.meanScore ?: 0.0,
-                studio = Studio(
-                    id = it?.studio?.id ?: 0,
-                    name = it?.studio?.name ?: "",
-                    isAnimationStudio = it?.studio?.isAnimationStudio ?: false
-                )
-            )
-        } ?: listOf(),
     )
 }

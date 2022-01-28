@@ -5,6 +5,7 @@ import FollowingAndFollowersCountQuery
 import FollowingQuery
 import ToggleFollowMutation
 import UpdateUserMutation
+import UserStatisticsQuery
 import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -42,6 +43,14 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
     override fun toggleFollow(userId: Int): Single<Response<ToggleFollowMutation.Data>> {
         val mutation = ToggleFollowMutation(Input.fromNullable(userId))
         return apolloHandler.apolloClient.rxMutate(mutation)
+    }
+
+    override fun getUserStatistics(
+        userId: Int,
+        sort: List<UserStatisticsSort>
+    ): Observable<Response<UserStatisticsQuery.Data>> {
+        val query = UserStatisticsQuery(Input.fromNullable(userId), Input.fromNullable(sort))
+        return apolloHandler.apolloClient.rxQuery(query)
     }
 
     override fun updateAniListSettings(

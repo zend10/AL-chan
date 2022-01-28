@@ -352,6 +352,7 @@
     <string name="not_enough_shared_anime">Not enough shared Anime</string>
     <string name="not_enough_shared_manga">Not enough shared Manga</string>
     <string name="change_list_type">Change List Type</string>
+    <string name="user_stats">User Stats</string>
 
 
     <plurals name="minute">

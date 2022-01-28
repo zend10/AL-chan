@@ -127,7 +127,7 @@ class ALchanApplication : Application() {
         viewModel { ReorderViewModel() }
 
         viewModel { FilterViewModel(get(), get()) }
-        viewModel { CustomiseViewModel(get()) }
+        viewModel { CustomiseViewModel(get(), get()) }
 
         viewModel { EditorViewModel(get(), get()) }
 
