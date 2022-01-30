@@ -18,6 +18,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.browse.reviews.editor.ReviewEditorActivity" />
         <activity android:name=".ui.calendar.CalendarActivity" />
+
         <service
             android:name=".notifications.PushNotificationsService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
@@ -103,7 +104,9 @@
         <activity android:name=".ui.animelist.editor.AnimeListEditorActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.auth.LoginActivity">
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
