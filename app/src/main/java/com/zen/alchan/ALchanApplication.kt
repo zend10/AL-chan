@@ -115,7 +115,7 @@ class ALchanApplication : Application() {
 
         viewModel { ProfileViewModel(get(), get(), get(), get()) }
         viewModel { FollowViewModel(get()) }
-        viewModel { UserStatsViewModel() }
+        viewModel { UserStatsViewModel(get(), get()) }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }

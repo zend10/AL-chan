@@ -39,7 +39,7 @@ interface UserRepository {
     fun getFollowers(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
     fun toggleFollow(userId: Int): Observable<Boolean>
 
-    fun getUserStatistics(userId: Int, sort: UserStatisticsSort, source: Source?): Observable<UserStatisticTypes>
+    fun getUserStatistics(userId: Int, sort: UserStatisticsSort): Observable<UserStatisticTypes>
 
     fun getAppSetting(): Observable<AppSetting>
     fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>

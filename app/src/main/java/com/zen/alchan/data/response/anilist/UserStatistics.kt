@@ -16,7 +16,7 @@ data class UserStatistics(
     val startYears: List<UserStartYearStatistic> = listOf(),
     val genres: List<UserGenreStatistic> = listOf(),
     val tags: List<UserTagStatistic> = listOf(),
-//    val countries: List<UserCountryStatistic> = listOf(),
+    val countries: List<UserCountryStatistic> = listOf(),
     val voiceActors: List<UserVoiceActorStatistic> = listOf(),
     val staffs: List<UserStaffStatistic> = listOf(),
     val studios: List<UserStudioStatistic> = listOf()

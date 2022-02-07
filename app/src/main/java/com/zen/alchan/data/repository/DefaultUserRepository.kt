@@ -131,8 +131,7 @@ class DefaultUserRepository(
 
     override fun getUserStatistics(
         userId: Int,
-        sort: UserStatisticsSort,
-        source: Source?
+        sort: UserStatisticsSort
     ): Observable<UserStatisticTypes> {
         return userDataSource.getUserStatistics(userId, listOf(sort)).map {
             it.data?.convert()?.statistics
