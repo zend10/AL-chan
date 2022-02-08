@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
+import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseFragment
@@ -39,6 +40,8 @@ class UserStatsFragment : BaseFragment<LayoutInfiniteScrollingBinding, UserStats
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.infiniteScrollingRecyclerView.applyBottomSidePaddingInsets()
+        binding.infiniteScrollingFloatingButtonContainer.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {

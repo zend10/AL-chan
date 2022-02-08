@@ -1,10 +1,16 @@
 package com.zen.alchan.helper.pojo
 
 import com.zen.alchan.data.response.anilist.UserStatisticsDetail
+import com.zen.alchan.helper.enums.MediaType
 
 data class UserStatsItem(
     val chart: List<Chart>? = null,
     val stats: UserStatisticsDetail? = null,
+    val color: String = "",
+    val label: String = "",
+    var countPercentage: String = "",
+    var durationPercentage: String = "",
+    val mediaType: MediaType = MediaType.ANIME,
     val viewType: Int = 0
 ) {
     companion object {

@@ -9,6 +9,7 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.enums.Statistic
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
+import com.zen.alchan.helper.extensions.formatTwoDecimal
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.Chart
 import com.zen.alchan.helper.pojo.UserStatsItem
@@ -77,27 +78,58 @@ class UserStatsViewModel(
     private fun emitStatsItems(stats: List<UserStatisticsDetail>) {
         val items = ArrayList<UserStatsItem>()
         val charts = ArrayList<Chart>()
+        var countTotal = 0
+        var durationTotal = 0
+        var chapterTotal = 0
+
         stats.forEach {
+            countTotal += it.count
+            durationTotal += it.minutesWatched
+            chapterTotal += it.chaptersRead
+
+            val color = getChartColor(it)
+            val label = getChartLabel(it)
+
             items.add(
                 UserStatsItem(
                     stats = it,
+                    color = color,
+                    label = label,
+                    mediaType = _mediaType.value ?: MediaType.ANIME,
                     viewType = UserStatsItem.VIEW_TYPE_INFO
                 )
             )
 
-            if (shouldShowChart()) {
-                charts.add(
-                    Chart(
-                        color = getChartColor(it),
-                        label = getChartLabel(it),
-                        value = it.count.toDouble()
-                    )
+            charts.add(
+                Chart(
+                    color = color,
+                    label = label,
+                    value = getChartValue(it)
                 )
-            }
+            )
         }
 
-        if (charts.isNotEmpty()) {
-            items.add(0, UserStatsItem(charts, null, getChartType()))
+        items.forEach {
+            val countPercentage = if (countTotal != 0) {
+                ((it.stats?.count?.toDouble() ?: 0.0) / countTotal.toDouble() * 100).formatTwoDecimal()
+            } else {
+                "0.00"
+            }
+
+            val durationPercentage = if (durationTotal != 0) {
+                ((it.stats?.minutesWatched?.toDouble() ?: 0.0) / durationTotal.toDouble() * 100).formatTwoDecimal()
+            } else if (chapterTotal != 0) {
+                ((it.stats?.chaptersRead?.toDouble() ?: 0.0) / chapterTotal.toDouble() * 100).formatTwoDecimal()
+            } else {
+                "0.00"
+            }
+
+            it.countPercentage = "(${countPercentage}%)"
+            it.durationPercentage = "(${durationPercentage}%)"
+        }
+
+        if (shouldShowChart()) {
+            items.add(0, UserStatsItem(charts, viewType = getChartType()))
         }
 
         _statsItems.onNext(items)
@@ -122,8 +154,23 @@ class UserStatsViewModel(
 
     private fun getChartLabel(userStatisticsDetail: UserStatisticsDetail): String {
         return when (userStatisticsDetail) {
-            is UserStatusStatistic -> userStatisticsDetail.status?.name?.convertFromSnakeCase(false) ?: ""
+            is UserStatusStatistic -> userStatisticsDetail.status?.name?.convertFromSnakeCase(true) ?: ""
             else -> ""
+        }
+    }
+
+    private fun getChartValue(userStatisticsDetail: UserStatisticsDetail): Double {
+        return when (_sort.value) {
+            UserStatisticsSort.COUNT_DESC -> userStatisticsDetail.count.toDouble()
+            UserStatisticsSort.PROGRESS_DESC -> {
+                when (_mediaType.value) {
+                    MediaType.ANIME -> userStatisticsDetail.minutesWatched.toDouble()
+                    MediaType.MANGA -> userStatisticsDetail.chaptersRead.toDouble()
+                    else -> 0.0
+                }
+            }
+            UserStatisticsSort.MEAN_SCORE_DESC -> userStatisticsDetail.meanScore
+            else -> 0.0
         }
     }
 }

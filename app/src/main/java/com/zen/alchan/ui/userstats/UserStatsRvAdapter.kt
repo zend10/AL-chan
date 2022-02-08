@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.userstats
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
@@ -9,8 +10,11 @@ import com.zen.alchan.databinding.ListStatsChartBarBinding
 import com.zen.alchan.databinding.ListStatsChartLineBinding
 import com.zen.alchan.databinding.ListStatsChartPieBinding
 import com.zen.alchan.databinding.ListStatsInfoBinding
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.formatTwoDecimal
+import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.pojo.UserStatsItem
+import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class UserStatsRvAdapter(
@@ -51,12 +55,46 @@ class UserStatsRvAdapter(
     inner class InfoViewHolder(private val binding: ListStatsInfoBinding) : ViewHolder(binding) {
         override fun bind(item: UserStatsItem, index: Int) {
             binding.apply {
-                statsInfoItemLabel.text = ""
+                statsInfoItemLabel.text = item.label
+                statsInfoItemLabel.setTextColor(Color.parseColor(item.color))
+
                 statsInfoItemCount.text = item.stats?.count?.toString() ?: ""
-                statsInfoItemDurationTitle.text = context.getString(R.string.time_watched)
-                statsInfoItemDuration.text = item.stats?.minutesWatched?.toString() ?: ""
+                statsInfoItemCountPercentage.text = item.countPercentage
+
+                when (item.mediaType) {
+                    MediaType.ANIME -> {
+                        statsInfoItemDurationTitle.text = context.getString(R.string.time_watched)
+                        statsInfoItemDuration.text = getDaysAndHoursString(TimeUtil.getDaysAndHours(item.stats?.minutesWatched ?: 0))
+                    }
+                    MediaType.MANGA -> {
+                        statsInfoItemDurationTitle.text = context.getString(R.string.chapters_read)
+                        statsInfoItemDuration.text = item.stats?.chaptersRead?.getNumberFormatting() ?: "0"
+                    }
+                }
+
+                statsInfoItemDurationPercentage.text = item.durationPercentage
+
                 statsInfoItemMeanScore.text = item.stats?.meanScore?.formatTwoDecimal()
             }
+        }
+
+        private fun getDaysAndHoursString(daysAndHours: Pair<Int, Int>): String {
+            val stringBuilder = StringBuilder()
+            val days = daysAndHours.first
+            val hours = daysAndHours.second
+            if (days != 0) {
+                stringBuilder.append("$days ${context.resources.getQuantityString(R.plurals.day, days)}")
+            }
+
+            if (hours != 0) {
+                if (days != 0) {
+                    stringBuilder.append(" ")
+                }
+
+                stringBuilder.append("$hours ${context.resources.getQuantityString(R.plurals.hour, hours)}")
+            }
+
+            return stringBuilder.toString()
         }
     }
 

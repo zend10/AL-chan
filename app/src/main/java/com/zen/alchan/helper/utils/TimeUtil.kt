@@ -52,4 +52,10 @@ object TimeUtil {
         val date = Date(seconds * 1000L)
         return dateFormat.format(date)
     }
+
+    fun getDaysAndHours(minutes: Int): Pair<Int, Int> {
+        val days = minutes / 60 / 24
+        val hours = (minutes - (days * 60 * 24)) / 60
+        return days to hours
+    }
 }
