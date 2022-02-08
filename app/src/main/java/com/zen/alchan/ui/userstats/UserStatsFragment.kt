@@ -35,6 +35,10 @@ class UserStatsFragment : BaseFragment<LayoutInfiniteScrollingBinding, UserStats
             adapter = UserStatsRvAdapter(requireContext(), listOf())
             infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             infiniteScrollingRecyclerView.adapter = adapter
+
+            infiniteScrollingSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadData()
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.zen.alchan.ui.userstats
 
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.anilist.UserStatisticTypes
 import com.zen.alchan.data.response.anilist.UserStatisticsDetail
 import com.zen.alchan.data.response.anilist.UserStatusStatistic
 import com.zen.alchan.helper.enums.MediaType
@@ -65,7 +66,8 @@ class UserStatsViewModel(
                     }
                     .subscribe(
                         { user ->
-                            emitStatsItems(user.statistics.anime.statuses)
+                            this.userId = user.id
+                            emitStatsItems(user.statistics)
                         },
                         {
                             _error.onNext(it.getStringResource())
@@ -75,7 +77,29 @@ class UserStatsViewModel(
         }
     }
 
-    private fun emitStatsItems(stats: List<UserStatisticsDetail>) {
+    fun reloadData() {
+        _loading.onNext(true)
+
+        disposables.add(
+            userRepository.getUserStatistics(userId, _sort.value ?: UserStatisticsSort.COUNT_DESC)
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        emitStatsItems(it)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
+    }
+
+    private fun emitStatsItems(statisticTypes: UserStatisticTypes) {
+        val stats = getCurrentStats(statisticTypes)
+
         val items = ArrayList<UserStatsItem>()
         val charts = ArrayList<Chart>()
         var countTotal = 0
@@ -135,8 +159,46 @@ class UserStatsViewModel(
         _statsItems.onNext(items)
     }
 
+    private fun getCurrentStats(statisticTypes: UserStatisticTypes): List<UserStatisticsDetail> {
+        val userStatistics = when (_mediaType.value) {
+            MediaType.ANIME -> statisticTypes.anime
+            MediaType.MANGA -> statisticTypes.manga
+            else -> statisticTypes.anime
+        }
+
+        return when (_statistic.value) {
+            Statistic.STATUS -> userStatistics.statuses
+            Statistic.FORMAT -> userStatistics.formats
+            Statistic.SCORE -> userStatistics.scores
+            Statistic.LENGTH -> userStatistics.lengths
+            Statistic.RELEASE_YEAR -> userStatistics.releaseYears
+            Statistic.START_YEAR -> userStatistics.startYears
+            Statistic.GENRE -> userStatistics.genres
+            Statistic.TAG -> userStatistics.tags
+            Statistic.COUNTRY -> userStatistics.countries
+            Statistic.VOICE_ACTOR -> userStatistics.voiceActors
+            Statistic.STAFF -> userStatistics.staffs
+            Statistic.STUDIO -> userStatistics.studios
+            else -> userStatistics.statuses
+        }
+    }
+
     private fun shouldShowChart(): Boolean {
-        return _statistic.value?.showChart ?: false
+        return when (_statistic.value) {
+            Statistic.STATUS -> true
+            Statistic.FORMAT -> true
+            Statistic.SCORE -> true
+            Statistic.LENGTH -> true
+            Statistic.RELEASE_YEAR -> true
+            Statistic.START_YEAR -> true
+            Statistic.GENRE -> false
+            Statistic.TAG -> false
+            Statistic.COUNTRY -> true
+            Statistic.VOICE_ACTOR -> false
+            Statistic.STAFF -> false
+            Statistic.STUDIO -> false
+            else -> true
+        }
     }
 
     private fun getChartType(): Int {
