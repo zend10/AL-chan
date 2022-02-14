@@ -26,3 +26,6 @@
 - View recommendations and read reviews.
 - Interact with the community.
 - Light and Dark theme.
+
+## Contributing (Important)
+Currently not accepting Pull Request until v2 is dropped. There's no estimate date on when v2 will drop, but hopefully as soon as possible.
