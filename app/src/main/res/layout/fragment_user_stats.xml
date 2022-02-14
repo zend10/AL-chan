@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/userStatsSwipeRefresh"
+        app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@id/userStatsFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userStatsRecyclerView"
+            android:paddingTop="@dimen/marginPageNormal"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_empty"
+        android:id="@+id/emptyLayout"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/userStatsFilterLayout"
+        android:background="?themeBackgroundColor"
+        android:paddingTop="@dimen/lineWidth"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/divider"/>
+
+        <HorizontalScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:padding="@dimen/marginPageNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/userStatsStatsText"
+                    style="?themeRegularClickableFont"
+                    android:maxLines="1"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/userStatsMediaLabel"
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/media"
+                    android:layout_marginStart="@dimen/marginPageBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/userStatsMediaText"
+                    style="?themeRegularClickableFont"
+                    android:maxLines="1"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/userStatsSortLabel"
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/sort"
+                    android:layout_marginStart="@dimen/marginPageBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/userStatsSortText"
+                    style="?themeRegularClickableFont"
+                    android:maxLines="1"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </HorizontalScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

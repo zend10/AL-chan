@@ -26,22 +26,4 @@
     <include layout="@layout/layout_empty"
         android:id="@+id/emptyLayout"/>
 
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/infiniteScrollingFloatingButtonContainer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/infiniteScrollingFloatingButton"
-            android:layout_margin="@dimen/marginPageNormal"
-            app:backgroundTint="?themeSecondaryColor"
-            app:tint="?themeBackgroundColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </FrameLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

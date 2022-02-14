@@ -6,7 +6,7 @@ import com.zen.alchan.helper.enums.MediaType
 data class UserStatsItem(
     val chart: List<Chart>? = null,
     val stats: UserStatisticsDetail? = null,
-    val color: String = "",
+    val color: String? = null,
     val label: String = "",
     var countPercentage: String = "",
     var durationPercentage: String = "",

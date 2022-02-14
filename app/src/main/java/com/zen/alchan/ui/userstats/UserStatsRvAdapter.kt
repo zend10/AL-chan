@@ -12,7 +12,9 @@ import com.zen.alchan.databinding.ListStatsChartPieBinding
 import com.zen.alchan.databinding.ListStatsInfoBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.formatTwoDecimal
+import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.alchan.helper.extensions.getNumberFormatting
+import com.zen.alchan.helper.extensions.roundToTwoDecimal
 import com.zen.alchan.helper.pojo.UserStatsItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -56,7 +58,12 @@ class UserStatsRvAdapter(
         override fun bind(item: UserStatsItem, index: Int) {
             binding.apply {
                 statsInfoItemLabel.text = item.label
-                statsInfoItemLabel.setTextColor(Color.parseColor(item.color))
+                statsInfoItemLabel.setTextColor(
+                    if (item.color.isNullOrBlank())
+                        context.getAttrValue(R.attr.themeSecondaryColor)
+                    else
+                        Color.parseColor(item.color)
+                )
 
                 statsInfoItemCount.text = item.stats?.count?.toString() ?: ""
                 statsInfoItemCountPercentage.text = item.countPercentage
@@ -74,7 +81,7 @@ class UserStatsRvAdapter(
 
                 statsInfoItemDurationPercentage.text = item.durationPercentage
 
-                statsInfoItemMeanScore.text = item.stats?.meanScore?.formatTwoDecimal()
+                statsInfoItemMeanScore.text = item.stats?.meanScore?.roundToTwoDecimal()
             }
         }
 

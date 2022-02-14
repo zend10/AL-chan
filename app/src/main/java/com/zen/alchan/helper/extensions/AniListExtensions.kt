@@ -54,6 +54,18 @@ fun MediaListStatus.getString(mediaType: MediaType): String {
     }
 }
 
+fun UserStatisticsSort.getStringResource(mediaType: MediaType): Int {
+    return when (this) {
+        UserStatisticsSort.COUNT_DESC -> R.string.title_count
+        UserStatisticsSort.PROGRESS_DESC -> when (mediaType) {
+            MediaType.ANIME -> R.string.time_watched
+            MediaType.MANGA -> R.string.chapters_read
+        }
+        UserStatisticsSort.MEAN_SCORE_DESC -> R.string.mean_score
+        else -> R.string.title_count
+    }
+}
+
 inline fun <reified T: Enum<*>> getNonUnknownValues(): List<T> {
     return enumValues<T>().filter { it.name != "UNKNOWN__" }
 }

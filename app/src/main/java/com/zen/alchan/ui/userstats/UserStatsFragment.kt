@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zen.alchan.R
-import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
-import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
-import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.databinding.FragmentUserStatsBinding
+import com.zen.alchan.helper.enums.getStringResource
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class UserStatsFragment : BaseFragment<LayoutInfiniteScrollingBinding, UserStatsViewModel>() {
+class UserStatsFragment : BaseFragment<FragmentUserStatsBinding, UserStatsViewModel>() {
 
     override val viewModel: UserStatsViewModel by viewModel()
 
@@ -22,42 +21,84 @@ class UserStatsFragment : BaseFragment<LayoutInfiniteScrollingBinding, UserStats
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): LayoutInfiniteScrollingBinding {
-        return LayoutInfiniteScrollingBinding.inflate(inflater, container, false)
+    ): FragmentUserStatsBinding {
+        return FragmentUserStatsBinding.inflate(inflater, container, false)
     }
 
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.user_stats))
 
-            infiniteScrollingFloatingButtonContainer.show(true)
-
             adapter = UserStatsRvAdapter(requireContext(), listOf())
-            infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            infiniteScrollingRecyclerView.adapter = adapter
+            userStatsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            userStatsRecyclerView.adapter = adapter
 
-            infiniteScrollingSwipeRefresh.setOnRefreshListener {
+            userStatsSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
+            }
+
+            userStatsStatsText.clicks {
+                viewModel.loadStatistics()
+            }
+
+            userStatsMediaText.clicks {
+                viewModel.loadMediaTypes()
+            }
+
+            userStatsSortText.clicks {
+                viewModel.loadSorts()
             }
         }
     }
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.infiniteScrollingRecyclerView.applyBottomSidePaddingInsets()
-        binding.infiniteScrollingFloatingButtonContainer.applyBottomSidePaddingInsets()
+        binding.userStatsRecyclerView.applySidePaddingInsets()
+        binding.userStatsFilterLayout.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {
         disposables.addAll(
             viewModel.loading.subscribe {
-                binding.infiniteScrollingSwipeRefresh.isRefreshing = it
+                binding.userStatsSwipeRefresh.isRefreshing = it
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
             viewModel.statsItems.subscribe {
                 adapter?.updateData(it)
+            },
+            viewModel.statistic.subscribe {
+                binding.userStatsStatsText.text = getString(it.getStringResource())
+            },
+            viewModel.mediaType.subscribe {
+                binding.userStatsMediaText.text = getString(it.getStringResource())
+            },
+            viewModel.sort.subscribe { (sort, mediaType) ->
+                binding.userStatsSortText.text = getString(sort.getStringResource(mediaType))
+            },
+            viewModel.statistics.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateStatistic(data)
+                }
+            },
+            viewModel.mediaTypes.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateMediaType(data)
+                }
+            },
+            viewModel.sorts.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateSort(data)
+                }
+            },
+            viewModel.mediaTypeVisibility.subscribe {
+                binding.userStatsMediaLabel.show(it)
+                binding.userStatsMediaText.show(it)
+            },
+            viewModel.sortVisibility.subscribe {
+                binding.userStatsSortLabel.show(it)
+                binding.userStatsSortText.show(it)
             }
         )
 

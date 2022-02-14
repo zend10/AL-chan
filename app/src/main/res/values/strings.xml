@@ -356,6 +356,13 @@
     <string name="count">Count</string>
     <string name="mean_score">Mean Score</string>
     <string name="time_watched">Time Watched</string>
+    <string name="length">Length</string>
+    <string name="genre">Genre</string>
+    <string name="tag">Tag</string>
+    <string name="voice_actor">Voice Actor</string>
+    <string name="staff">Staff</string>
+    <string name="studio">Studio</string>
+    <string name="title_count">Title Count</string>
 
 
     <plurals name="minute">
