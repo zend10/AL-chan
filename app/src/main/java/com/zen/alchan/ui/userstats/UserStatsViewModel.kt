@@ -1,12 +1,10 @@
 package com.zen.alchan.ui.userstats
 
+import android.graphics.Color
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.helper.enums.Statistic
-import com.zen.alchan.helper.enums.getStringResource
+import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.extensions.formatTwoDecimal
@@ -18,7 +16,10 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.MediaFormat
+import type.MediaListStatus
 import type.UserStatisticsSort
+import kotlin.math.roundToInt
 
 class UserStatsViewModel(
     private val userRepository: UserRepository,
@@ -63,6 +64,10 @@ class UserStatsViewModel(
 
     private var userId: Int = 0
     private var userStatisticTypes = UserStatisticTypes()
+
+    private val animeLengths = arrayListOf("1", "2-6", "7-16", "17-28", "29-55", "56-100", "101+", "")
+    private val mangaLengths = arrayListOf("1", "2-10", "11-25", "26-50", "51-100", "101-200", "201+", "")
+    private val scoreList = arrayListOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
 
     override fun loadData() {
         // do nothing
@@ -226,16 +231,20 @@ class UserStatsViewModel(
         }
 
         val lengthList = when (_mediaType.value) {
-            MediaType.ANIME -> arrayListOf("1", "2-6", "7-16", "17-28", "29-55", "56-100", "101+", "")
-            MediaType.MANGA -> arrayListOf("1", "2-10", "11-25", "26-50", "51-100", "101-200", "201+", "")
-            else -> arrayListOf("1", "2-6", "7-16", "17-28", "29-55", "56-100", "101+", "Unknown")
+            MediaType.ANIME -> animeLengths
+            MediaType.MANGA -> mangaLengths
+            else -> animeLengths
         }
 
         return when (_statistic.value) {
             Statistic.STATUS -> userStatistics.statuses
             Statistic.FORMAT -> userStatistics.formats
-            Statistic.SCORE -> userStatistics.scores.sortedBy { it.score }
-            Statistic.LENGTH -> userStatistics.lengths.sortedBy { lengthList.indexOf(it.length) }
+            Statistic.SCORE -> scoreList.map { score ->
+                userStatistics.scores.find { it.meanScore.roundToInt() == score } ?: UserScoreStatistic(meanScore = score.toDouble(), score = score)
+            }
+            Statistic.LENGTH -> lengthList.map { length ->
+                userStatistics.lengths.find { it.length == length } ?: UserLengthStatistic(length = length)
+            }
             Statistic.RELEASE_YEAR -> userStatistics.releaseYears.sortedBy { it.releaseYear }
             Statistic.START_YEAR -> userStatistics.startYears.sortedBy { it.startYear }
             Statistic.GENRE -> userStatistics.genres
@@ -249,6 +258,9 @@ class UserStatsViewModel(
     }
 
     private fun shouldShowChart(): Boolean {
+        if (_sort.value?.first == UserStatisticsSort.MEAN_SCORE_DESC)
+            return false
+
         return when (_statistic.value) {
             Statistic.STATUS -> true
             Statistic.FORMAT -> true
@@ -276,20 +288,84 @@ class UserStatsViewModel(
     }
 
     private fun getChartColor(userStatisticsDetail: UserStatisticsDetail): String? {
-        return null
+        return when (userStatisticsDetail) {
+            is UserStatusStatistic -> {
+                when (userStatisticsDetail.status) {
+                    MediaListStatus.CURRENT -> "#9256F3"
+                    MediaListStatus.PLANNING -> "#02A9FF"
+                    MediaListStatus.COMPLETED -> "#68D639"
+                    MediaListStatus.DROPPED -> "#F779A4"
+                    MediaListStatus.PAUSED -> "#E85D75"
+                    else -> null
+                }
+            }
+            is UserFormatStatistic -> {
+                when (userStatisticsDetail.format) {
+                    MediaFormat.TV -> "#55e2cf"
+                    MediaFormat.TV_SHORT -> "#57aee2"
+                    MediaFormat.MOVIE -> "#5668e2"
+                    MediaFormat.SPECIAL -> "#8a56e2"
+                    MediaFormat.OVA -> "#ce56e2"
+                    MediaFormat.ONA -> "#e256ae"
+                    MediaFormat.MUSIC -> "#e25768"
+                    MediaFormat.MANGA -> "#aee256"
+                    MediaFormat.NOVEL -> "#68e257"
+                    MediaFormat.ONE_SHOT -> "#56e28a"
+                    else -> null
+                }
+            }
+            is UserCountryStatistic -> {
+                when (userStatisticsDetail.country) {
+                    Country.JAPAN.iso -> "#BC002D"
+                    Country.SOUTH_KOREA.iso -> "#32569D"
+                    Country.CHINA.iso -> "#F9B60B"
+                    Country.JAPAN.iso -> "#000095"
+                    else -> null
+                }
+            }
+            is UserScoreStatistic -> {
+                when (userStatisticsDetail.meanScore.roundToInt()) {
+                    10 -> "#d2492d"
+                    20 -> "#d2642c"
+                    30 -> "#d2802e"
+                    40 -> "#d29d2f"
+                    50 -> "#d2b72e"
+                    60 -> "#d3d22e"
+                    70 -> "#b8d22c"
+                    80 -> "#9cd42e"
+                    90 -> "#81d12d"
+                    100 -> "#63d42e"
+                    else -> null
+                }
+            }
+            is UserLengthStatistic -> {
+                when (userStatisticsDetail.length) {
+                    animeLengths[0], mangaLengths[0] -> "#d2492d"
+                    animeLengths[1], mangaLengths[1] -> "#d2642c"
+                    animeLengths[2], mangaLengths[2] -> "#d2802e"
+                    animeLengths[3], mangaLengths[3] -> "#d29d2f"
+                    animeLengths[4], mangaLengths[4] -> "#d2b72e"
+                    animeLengths[5], mangaLengths[5] -> "#d3d22e"
+                    animeLengths[6], mangaLengths[6] -> "#b8d22c"
+                    animeLengths[7], mangaLengths[7] -> "#9cd42e"
+                    else -> null
+                }
+            }
+            else -> null
+        }
     }
 
     private fun getChartLabel(userStatisticsDetail: UserStatisticsDetail): String {
         return when (userStatisticsDetail) {
             is UserStatusStatistic -> userStatisticsDetail.status?.name?.convertFromSnakeCase(true) ?: ""
             is UserFormatStatistic -> userStatisticsDetail.format?.name?.convertFromSnakeCase(true) ?: ""
-            is UserScoreStatistic -> userStatisticsDetail.score.toString()
-            is UserLengthStatistic -> if (userStatisticsDetail.length.isNotBlank()) userStatisticsDetail.length else "Unknown"
+            is UserScoreStatistic -> userStatisticsDetail.meanScore.roundToInt().toString()
+            is UserLengthStatistic -> if (userStatisticsDetail.length.isNotBlank()) userStatisticsDetail.length else "?"
             is UserReleaseYearStatistic -> userStatisticsDetail.releaseYear.toString()
             is UserStartYearStatistic -> userStatisticsDetail.startYear.toString()
             is UserGenreStatistic -> userStatisticsDetail.genre
             is UserTagStatistic -> userStatisticsDetail.tag?.name ?: ""
-            is UserCountryStatistic -> userStatisticsDetail.country
+            is UserCountryStatistic -> Country.values().firstOrNull { it.iso == userStatisticsDetail.country }?.getString() ?: ""
             is UserVoiceActorStatistic -> userStatisticsDetail.voiceActor?.name?.userPreferred ?: ""
             is UserStaffStatistic -> userStatisticsDetail.staff?.name?.userPreferred ?: ""
             is UserStudioStatistic -> userStatisticsDetail.studio?.name ?: ""

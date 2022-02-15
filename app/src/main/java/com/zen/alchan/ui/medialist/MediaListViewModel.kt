@@ -106,7 +106,6 @@ class MediaListViewModel(
 
             disposables.add(
                 userRepository.getIsAuthenticated()
-                    .applyScheduler()
                     .filter { it }
                     .flatMap {
                         Observable.zip(
@@ -129,6 +128,7 @@ class MediaListViewModel(
                     .zipWith(mediaListRepository.getListBackground(mediaType)) { user, backgroundUri ->
                         return@zipWith user to backgroundUri
                     }
+                    .applyScheduler()
                     .subscribe { (user, backgroundUri) ->
                         if (userId == 0)
                             userId = user.id
@@ -154,8 +154,8 @@ class MediaListViewModel(
 
             disposables.add(
                 mediaListRepository.refreshMediaListTrigger
-                    .applyScheduler()
                     .filter { it.first == mediaType }
+                    .applyScheduler()
                     .subscribe { (mediaType, newMediaList) ->
                         if (newMediaList == null) {
                             reloadData()
