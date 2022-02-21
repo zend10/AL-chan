@@ -21,6 +21,10 @@ fun Double.formatTwoDecimal(): String {
     return String.format("%.2f", this)
 }
 
+fun Int.formatTwoDigit(): String {
+    return String.format("%02d", this)
+}
+
 fun Int.showUnit(context: Context, @PluralsRes pluralResId: Int): String {
     return "$this ${context.resources.getQuantityString(pluralResId, this)}"
 }

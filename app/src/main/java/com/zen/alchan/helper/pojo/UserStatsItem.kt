@@ -11,6 +11,8 @@ data class UserStatsItem(
     var countPercentage: String = "",
     var durationPercentage: String = "",
     val mediaType: MediaType = MediaType.ANIME,
+    val showRank: Boolean = false,
+    val isClickable: Boolean = false,
     val viewType: Int = 0
 ) {
     companion object {

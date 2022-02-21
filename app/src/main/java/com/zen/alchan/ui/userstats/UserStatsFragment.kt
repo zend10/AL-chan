@@ -29,7 +29,15 @@ class UserStatsFragment : BaseFragment<FragmentUserStatsBinding, UserStatsViewMo
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.user_stats))
 
-            adapter = UserStatsRvAdapter(requireContext(), listOf())
+            adapter = UserStatsRvAdapter(requireContext(), listOf(), object : UserStatsRvAdapter.UserStatsListener {
+                override fun navigateToStaff(id: Int) {
+                    navigation.navigateToStaff(id)
+                }
+
+                override fun navigateToStudio(id: Int) {
+                    // TODO: navigate to studio
+                }
+            })
             userStatsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             userStatsRecyclerView.adapter = adapter
 

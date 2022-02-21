@@ -180,6 +180,8 @@ class UserStatsViewModel(
                     color = color,
                     label = label,
                     mediaType = _mediaType.value ?: MediaType.ANIME,
+                    showRank = _statistic.value == Statistic.GENRE || _statistic.value == Statistic.TAG || _statistic.value == Statistic.VOICE_ACTOR || _statistic.value == Statistic.STAFF || _statistic.value == Statistic.STUDIO,
+                    isClickable = _statistic.value == Statistic.VOICE_ACTOR || _statistic.value == Statistic.STAFF || _statistic.value == Statistic.STUDIO,
                     viewType = UserStatsItem.VIEW_TYPE_INFO
                 )
             )
@@ -258,6 +260,9 @@ class UserStatsViewModel(
     }
 
     private fun shouldShowChart(): Boolean {
+        if (_statistic.value == Statistic.SCORE || _statistic.value == Statistic.LENGTH || _statistic.value == Statistic.RELEASE_YEAR || _statistic.value == Statistic.START_YEAR)
+            return true
+
         if (_sort.value?.first == UserStatisticsSort.MEAN_SCORE_DESC)
             return false
 

@@ -347,7 +347,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             override fun navigateToStudio(studio: Studio) {
-
+                // TODO: navigate to studio
             }
         }
     }

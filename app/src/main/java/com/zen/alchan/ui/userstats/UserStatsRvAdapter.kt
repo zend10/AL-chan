@@ -11,15 +11,15 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.UserLengthStatistic
+import com.zen.alchan.data.response.anilist.UserStaffStatistic
+import com.zen.alchan.data.response.anilist.UserStudioStatistic
+import com.zen.alchan.data.response.anilist.UserVoiceActorStatistic
 import com.zen.alchan.databinding.ListStatsChartBarBinding
 import com.zen.alchan.databinding.ListStatsChartLineBinding
 import com.zen.alchan.databinding.ListStatsChartPieBinding
 import com.zen.alchan.databinding.ListStatsInfoBinding
 import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.extensions.formatTwoDecimal
-import com.zen.alchan.helper.extensions.getAttrValue
-import com.zen.alchan.helper.extensions.getNumberFormatting
-import com.zen.alchan.helper.extensions.roundToTwoDecimal
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.UserStatsItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -27,7 +27,8 @@ import kotlin.math.round
 
 class UserStatsRvAdapter(
     private val context: Context,
-    list: List<UserStatsItem>
+    list: List<UserStatsItem>,
+    private val listener: UserStatsListener
 ) : BaseRecyclerViewAdapter<UserStatsItem, ViewBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -65,11 +66,16 @@ class UserStatsRvAdapter(
             binding.apply {
                 statsInfoItemLabel.text = item.label
                 statsInfoItemLabel.setTextColor(
-                    if (item.color.isNullOrBlank())
+                    if (item.isClickable)
+                        context.getAttrValue(R.attr.themePrimaryColor)
+                    else if (item.color.isNullOrBlank())
                         context.getAttrValue(R.attr.themeSecondaryColor)
                     else
                         Color.parseColor(item.color)
                 )
+
+                statsInfoRankLayout.show(item.showRank)
+                statsInfoRankText.text = (index + 1).formatTwoDigit()
 
                 statsInfoItemCount.text = item.stats?.count?.toString() ?: ""
                 statsInfoItemCountPercentage.text = item.countPercentage
@@ -88,6 +94,21 @@ class UserStatsRvAdapter(
                 statsInfoItemDurationPercentage.text = item.durationPercentage
 
                 statsInfoItemMeanScore.text = item.stats?.meanScore?.roundToTwoDecimal()
+
+                if (item.isClickable) {
+                    root.clicks {
+                        when (item.stats) {
+                            is UserVoiceActorStatistic -> listener.navigateToStaff(item.stats.voiceActor?.id ?: 0)
+                            is UserStaffStatistic -> listener.navigateToStaff(item.stats.staff?.id ?: 0)
+                            is UserStudioStatistic -> listener.navigateToStudio(item.stats.studio?.id ?: 0)
+                            else -> Unit
+                        }
+                    }
+                    root.isClickable = true
+                } else {
+                    root.clicks { Unit }
+                    root.isClickable = false
+                }
             }
         }
 
@@ -253,5 +274,10 @@ class UserStatsRvAdapter(
                 }
             }
         }
+    }
+
+    interface UserStatsListener {
+        fun navigateToStaff(id: Int)
+        fun navigateToStudio(id: Int)
     }
 }
