@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
 import type.ScoreFormat
@@ -49,6 +50,7 @@ interface NavigationManager {
     fun navigateToFollowing(id: Int)
     fun navigateToFollowers(id: Int)
     fun navigateToUserStats(id: Int)
+    fun navigateToFavorite(id: Int, favorite: Favorite)
 
     fun openWebView(url: String)
     fun openWebView(url: Url)

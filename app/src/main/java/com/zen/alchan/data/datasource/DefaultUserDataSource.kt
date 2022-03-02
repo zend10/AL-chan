@@ -5,6 +5,7 @@ import FollowingAndFollowersCountQuery
 import FollowingQuery
 import ToggleFollowMutation
 import UpdateUserMutation
+import UserFavouritesQuery
 import UserStatisticsQuery
 import ViewerQuery
 import com.apollographql.apollo.api.Input
@@ -50,6 +51,14 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
         sort: List<UserStatisticsSort>
     ): Observable<Response<UserStatisticsQuery.Data>> {
         val query = UserStatisticsQuery(Input.fromNullable(userId), Input.fromNullable(sort))
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getFavorites(
+        userId: Int,
+        page: Int
+    ): Observable<Response<UserFavouritesQuery.Data>> {
+        val query = UserFavouritesQuery(Input.fromNullable(userId), Input.fromNullable(page))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

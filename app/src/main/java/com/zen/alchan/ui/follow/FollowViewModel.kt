@@ -79,7 +79,7 @@ class FollowViewModel(
         }
     }
 
-    fun toggleFollow(user: User, shouldFollow: Boolean) {
+    fun toggleFollow(user: User) {
         if (user.id == viewerId) {
             _error.onNext(R.string.did_you_just_try_to_follow_yourself)
             return

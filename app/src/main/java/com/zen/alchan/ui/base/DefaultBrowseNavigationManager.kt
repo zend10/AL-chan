@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.zen.alchan.R
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.character.CharacterFragment
+import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.follow.FollowFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
@@ -57,6 +59,10 @@ class DefaultBrowseNavigationManager(
         swapPage(UserStatsFragment.newInstance(userId))
     }
 
+    private fun navigateToFavorite(userId: Int, favorite: Favorite) {
+        swapPage(FavoriteFragment.newInstance(userId, favorite))
+    }
+
     override fun backStackCount(): Int {
         return fragmentManager.backStackEntryCount
     }
@@ -72,6 +78,11 @@ class DefaultBrowseNavigationManager(
             BrowseNavigationManager.Page.FOLLOWING -> id?.let { navigateToFollowing(id) }
             BrowseNavigationManager.Page.FOLLOWERS -> id?.let { navigateToFollowers(id) }
             BrowseNavigationManager.Page.USER_STATS -> id?.let { navigateToUserStats(id) }
+            BrowseNavigationManager.Page.FAVORITE_ANIME -> id?.let { navigateToFavorite(id, Favorite.ANIME) }
+            BrowseNavigationManager.Page.FAVORITE_MANGA -> id?.let { navigateToFavorite(id, Favorite.MANGA) }
+            BrowseNavigationManager.Page.FAVORITE_CHARACTERS -> id?.let { navigateToFavorite(id, Favorite.CHARACTERS) }
+            BrowseNavigationManager.Page.FAVORITE_STAFF -> id?.let { navigateToFavorite(id, Favorite.STAFF) }
+            BrowseNavigationManager.Page.FAVORITE_STUDIOS -> id?.let { navigateToFavorite(id, Favorite.STUDIOS) }
         }
     }
 

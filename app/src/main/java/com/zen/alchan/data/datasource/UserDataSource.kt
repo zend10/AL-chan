@@ -18,6 +18,7 @@ interface UserDataSource {
     fun getFollowers(userId: Int, page: Int): Observable<Response<FollowersQuery.Data>>
     fun toggleFollow(userId: Int): Single<Response<ToggleFollowMutation.Data>>
     fun getUserStatistics(userId: Int, sort: List<UserStatisticsSort>): Observable<Response<UserStatisticsQuery.Data>>
+    fun getFavorites(userId: Int, page: Int): Observable<Response<UserFavouritesQuery.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
         staffNameLanguage: UserStaffNameLanguage,

@@ -15,6 +15,11 @@ interface BrowseNavigationManager {
         MANGA_MEDIA_LIST,
         FOLLOWING,
         FOLLOWERS,
-        USER_STATS
+        USER_STATS,
+        FAVORITE_ANIME,
+        FAVORITE_MANGA,
+        FAVORITE_CHARACTERS,
+        FAVORITE_STAFF,
+        FAVORITE_STUDIOS
     }
 }

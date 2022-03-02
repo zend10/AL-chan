@@ -17,6 +17,7 @@ import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
+import com.zen.alchan.ui.favorite.FavoriteViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
 import com.zen.alchan.ui.follow.FollowViewModel
 import com.zen.alchan.ui.home.HomeViewModel
@@ -116,6 +117,7 @@ class ALchanApplication : Application() {
         viewModel { ProfileViewModel(get(), get(), get(), get()) }
         viewModel { FollowViewModel(get()) }
         viewModel { UserStatsViewModel(get(), get()) }
+        viewModel { FavoriteViewModel(get()) }
 
         viewModel { SettingsViewModel() }
         viewModel { AppSettingsViewModel(get()) }

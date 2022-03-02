@@ -138,6 +138,12 @@ class DefaultUserRepository(
         }
     }
 
+    override fun getFavorites(userId: Int, page: Int): Observable<Favourites> {
+        return userDataSource.getFavorites(userId, page).map {
+            it.data?.convert()
+        }
+    }
+
     override fun getAppSetting(): Observable<AppSetting> {
         return Observable.just(userManager.appSetting)
     }

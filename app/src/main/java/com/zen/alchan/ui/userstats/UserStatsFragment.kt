@@ -113,6 +113,11 @@ class UserStatsFragment : BaseFragment<FragmentUserStatsBinding, UserStatsViewMo
         viewModel.loadData(arguments?.getInt(USER_ID) ?: 0)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+    }
+
     companion object {
         private const val USER_ID = "userId"
 

@@ -12,6 +12,7 @@ import com.zen.alchan.R
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.activity.ActivityFragment
@@ -153,6 +154,17 @@ class DefaultNavigationManager(
 
     override fun navigateToUserStats(id: Int) {
         pushBrowseScreenPage(BrowseNavigationManager.Page.USER_STATS, id)
+    }
+
+    override fun navigateToFavorite(id: Int, favorite: Favorite) {
+        val browseScreenPage = when (favorite) {
+            Favorite.ANIME -> BrowseNavigationManager.Page.FAVORITE_ANIME
+            Favorite.MANGA -> BrowseNavigationManager.Page.FAVORITE_MANGA
+            Favorite.CHARACTERS -> BrowseNavigationManager.Page.FAVORITE_CHARACTERS
+            Favorite.STAFF -> BrowseNavigationManager.Page.FAVORITE_STAFF
+            Favorite.STUDIOS -> BrowseNavigationManager.Page.FAVORITE_STUDIOS
+        }
+        pushBrowseScreenPage(browseScreenPage, id)
     }
 
     override fun openWebView(url: String) {

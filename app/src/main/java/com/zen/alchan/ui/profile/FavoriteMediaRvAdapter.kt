@@ -28,11 +28,7 @@ class FavoriteMediaRvAdapter(
     inner class ItemViewHolder(private val binding: ListRectangleBinding) : ViewHolder(binding) {
         override fun bind(item: Media, index: Int) {
             binding.apply {
-                val image = if (appSetting.useHighestQualityImage)
-                    item.coverImage.extraLarge
-                else
-                    item.coverImage.large
-
+                val image = item.getCoverImage(appSetting)
                 ImageUtil.loadImage(context, image, rectangleItemImage)
                 rectangleItemText.show(false)
                 root.clicks { listener.navigateToMedia(item, mediaType) }

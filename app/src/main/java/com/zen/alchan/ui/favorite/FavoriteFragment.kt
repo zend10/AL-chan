@@ -1,24 +1,26 @@
-package com.zen.alchan.ui.follow
+package com.zen.alchan.ui.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewModel>() {
+class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteViewModel>() {
 
-    override val viewModel: FollowViewModel by viewModel()
+    override val viewModel: FavoriteViewModel by viewModel()
 
-    private var adapter: FollowRvAdapter? = null
+    private var adapter: FavoriteAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -29,13 +31,16 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
 
     override fun setUpLayout() {
         binding.apply {
-            setUpToolbar(
-                defaultToolbar.defaultToolbar,
-                if (arguments?.getBoolean(IS_FOLLOWING) == true) getString(R.string.following) else getString(R.string.followers)
-            )
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.favorites))
 
-            adapter = FollowRvAdapter(requireContext(), listOf(), AppSetting(), getFollowListener())
-            infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            adapter = FavoriteAdapter(requireContext(), listOf(), AppSetting(), getFavoriteListener())
+
+            infiniteScrollingRecyclerView.layoutManager = if (arguments?.getString(FAVORITE) == Favorite.STUDIOS.name)
+                FlexboxLayoutManager(requireContext())
+            else
+                GridLayoutManager(requireContext(), 3)
+
+            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
 
             infiniteScrollingSwipeRefresh.setOnRefreshListener {
@@ -59,17 +64,20 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.toolbarTitle.subscribe {
+                binding.defaultToolbar.defaultToolbar.title = getString(it)
+            },
             viewModel.loading.subscribe {
                 binding.infiniteScrollingSwipeRefresh.isRefreshing = it
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
-            viewModel.followAdapterComponent.subscribe {
-                adapter = FollowRvAdapter(requireContext(), listOf(), it, getFollowListener())
+            viewModel.favoriteAdapterComponent.subscribe {
+                adapter = FavoriteAdapter(requireContext(), listOf(), it, getFavoriteListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },
-            viewModel.users.subscribe {
+            viewModel.favorites.subscribe {
                 adapter?.updateData(it, true)
             },
             viewModel.emptyLayoutVisibility.subscribe {
@@ -77,25 +85,29 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
             }
         )
 
-        viewModel.loadData(arguments?.getInt(USER_ID) ?: 0, arguments?.getBoolean(IS_FOLLOWING) ?: false)
+        viewModel.loadData(arguments?.getInt(USER_ID) ?: 0, Favorite.valueOf(arguments?.getString(FAVORITE) ?: Favorite.ANIME.name))
     }
 
-    private fun getFollowListener(): FollowRvAdapter.FollowListener {
-        return object : FollowRvAdapter.FollowListener {
-            override fun navigateToUser(user: User) {
-                navigation.navigateToUser(user.id)
+    private fun getFavoriteListener(): FavoriteAdapter.FavoriteListener {
+        return object : FavoriteAdapter.FavoriteListener {
+            override fun navigateToAnime(id: Int) {
+                navigation.navigateToMedia(id)
             }
 
-            override fun toggleFollow(user: User) {
-                viewModel.toggleFollow(user)
+            override fun navigateToManga(id: Int) {
+                navigation.navigateToMedia(id)
             }
 
-            override fun toggleUnfollow(user: User) {
-                viewModel.toggleFollow(user)
+            override fun navigateToCharacter(id: Int) {
+                navigation.navigateToCharacter(id)
             }
 
-            override fun viewOnAniList(user: User) {
-                navigation.openWebView(user.siteUrl)
+            override fun navigateToStaff(id: Int) {
+                navigation.navigateToStaff(id)
+            }
+
+            override fun navigateToStudio(id: Int) {
+                // TODO: navigate to studio
             }
         }
     }
@@ -107,13 +119,14 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
 
     companion object {
         private const val USER_ID = "userId"
-        private const val IS_FOLLOWING = "isFollowing"
+        private const val FAVORITE = "favorite"
+
         @JvmStatic
-        fun newInstance(userId: Int, isFollowing: Boolean) =
-            FollowFragment().apply {
+        fun newInstance(userId: Int, favorite: Favorite) =
+            FavoriteFragment().apply {
                 arguments = Bundle().apply {
                     putInt(USER_ID, userId)
-                    putBoolean(IS_FOLLOWING, isFollowing)
+                    putString(FAVORITE, favorite.name)
                 }
             }
     }

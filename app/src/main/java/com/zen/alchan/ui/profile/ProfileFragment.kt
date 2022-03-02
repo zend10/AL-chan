@@ -19,6 +19,7 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.databinding.FragmentProfileBinding
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
@@ -307,7 +308,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteMediaListener(): ProfileListener.FavoriteMediaListener {
         return object : ProfileListener.FavoriteMediaListener {
             override fun navigateToFavoriteMedia(mediaType: MediaType) {
-
+                val favorite = when (mediaType) {
+                    MediaType.ANIME -> Favorite.ANIME
+                    MediaType.MANGA -> Favorite.MANGA
+                }
+                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, favorite)
             }
 
             override fun navigateToMedia(media: Media, mediaType: MediaType) {
@@ -319,7 +324,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteCharacterListener(): ProfileListener.FavoriteCharacterListener {
         return object : ProfileListener.FavoriteCharacterListener {
             override fun navigateToFavoriteCharacter() {
-
+                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, Favorite.CHARACTERS)
             }
 
             override fun navigateToCharacter(character: Character) {
@@ -331,7 +336,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteStaffListener(): ProfileListener.FavoriteStaffListener {
         return object : ProfileListener.FavoriteStaffListener {
             override fun navigateToFavoriteStaff() {
-
+                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, Favorite.STAFF)
             }
 
             override fun navigateToStaff(staff: Staff) {
@@ -343,7 +348,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteStudioListener(): ProfileListener.FavoriteStudioListener {
         return object : ProfileListener.FavoriteStudioListener {
             override fun navigateToFavoriteStudio() {
-
+                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, Favorite.STUDIOS)
             }
 
             override fun navigateToStudio(studio: Studio) {

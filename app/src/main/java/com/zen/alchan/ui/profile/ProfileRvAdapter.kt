@@ -70,13 +70,13 @@ class ProfileRvAdapter(
             }
             ProfileItem.VIEW_TYPE_FAVORITE_CHARACTER -> {
                 val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
-                favoriteCharacterAdapter = FavoriteCharacterRvAdapter(context, listOf(), listener.favoriteCharacterListener)
+                favoriteCharacterAdapter = FavoriteCharacterRvAdapter(context, listOf(), appSetting, listener.favoriteCharacterListener)
                 setUpGridRecyclerView(view.listRecyclerView, favoriteCharacterAdapter)
                 return FavoriteCharacterViewHolder(view)
             }
             ProfileItem.VIEW_TYPE_FAVORITE_STAFF -> {
                 val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
-                favoriteStaffAdapter = FavoriteStaffRvAdapter(context, listOf(), listener.favoriteStaffListener)
+                favoriteStaffAdapter = FavoriteStaffRvAdapter(context, listOf(), appSetting, listener.favoriteStaffListener)
                 setUpGridRecyclerView(view.listRecyclerView, favoriteStaffAdapter)
                 return FavoriteStaffViewHolder(view)
             }
