@@ -32,8 +32,17 @@ class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewMo
     val emptyLayoutVisibility: Observable<Boolean>
         get() = _emptyLayoutVisibility
 
+    private val _reorderVisibility = BehaviorSubject.createDefault(false)
+    val reorderVisibility: Observable<Boolean>
+        get() = _reorderVisibility
+
+    private val _reorderItems = PublishSubject.create<List<String>>()
+    val reorderItems: Observable<List<String>>
+        get() = _reorderItems
+
     private var userId = 0
     private var favorite = Favorite.ANIME
+    private var appSetting = AppSetting()
     private var hasNextPage = false
     private var currentPage = 0
 
@@ -55,6 +64,8 @@ class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewMo
             }
         )
 
+        _reorderVisibility.onNext(userId == 0)
+
         disposables.add(
             userRepository.getAppSetting()
                 .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, user ->
@@ -62,6 +73,7 @@ class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewMo
                 }
                 .applyScheduler()
                 .subscribe { (appSetting, user) ->
+                    this.appSetting = appSetting
                     _favoriteAdapterComponent.onNext(appSetting)
                     if (userId == 0)
                         this.userId = user.id
@@ -82,6 +94,57 @@ class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewMo
 
             loadFavoriteList(true)
         }
+    }
+
+    fun loadAll() {
+        while (hasNextPage) {
+            loadNextPage()
+        }
+
+        if (!hasNextPage) {
+            _reorderItems.onNext(
+                when (favorite) {
+                    Favorite.ANIME -> _favorites.value?.map { it?.anime?.getTitle(appSetting) ?: "" }
+                    Favorite.MANGA -> _favorites.value?.map { it?.manga?.getTitle(appSetting) ?: "" }
+                    Favorite.CHARACTERS -> _favorites.value?.map { it?.character?.name?.userPreferred ?: "" }
+                    Favorite.STAFF -> _favorites.value?.map { it?.staff?.name?.userPreferred ?: "" }
+                    Favorite.STUDIOS -> _favorites.value?.map { it?.studio?.name ?: "" }
+                } ?: listOf()
+            )
+        }
+    }
+
+    fun updateOrder(newOrder: List<String>) {
+        _loading.onNext(true)
+
+        val ids = when (favorite) {
+            Favorite.ANIME -> _favorites.value?.sortedBy { newOrder.indexOf(it?.anime?.getTitle(appSetting) ?: "") }?.map { it?.anime?.getId() }?.filterNotNull()
+            Favorite.MANGA -> _favorites.value?.sortedBy { newOrder.indexOf(it?.manga?.getTitle(appSetting) ?: "") }?.map { it?.manga?.getId() }?.filterNotNull()
+            Favorite.CHARACTERS -> _favorites.value?.sortedBy { newOrder.indexOf(it?.character?.name?.userPreferred ?: "") }?.map { it?.character?.id }?.filterNotNull()
+            Favorite.STAFF -> _favorites.value?.sortedBy { newOrder.indexOf(it?.staff?.name?.userPreferred ?: "") }?.map { it?.staff?.id }?.filterNotNull()
+            Favorite.STUDIOS -> _favorites.value?.sortedBy { newOrder.indexOf(it?.studio?.name ?: "") }?.map { it?.studio?.id }?.filterNotNull()
+        } ?: listOf()
+
+        disposables.add(
+            userRepository.updateFavoriteOrder(ids, favorite)
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        val pageInfo = it.getPageInfo(favorite)
+                        hasNextPage = pageInfo.hasNextPage
+                        currentPage = pageInfo.currentPage
+
+                        val favoriteItems = getFavoriteItems(it)
+                        _favorites.onNext(favoriteItems)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 
     private fun loadFavoriteList(isLoadingNextPage: Boolean = false) {

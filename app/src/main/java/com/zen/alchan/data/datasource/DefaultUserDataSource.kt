@@ -4,6 +4,7 @@ import FollowersQuery
 import FollowingAndFollowersCountQuery
 import FollowingQuery
 import ToggleFollowMutation
+import UpdateFavouriteOrderMutation
 import UpdateUserMutation
 import UserFavouritesQuery
 import UserStatisticsQuery
@@ -15,6 +16,7 @@ import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
+import com.zen.alchan.helper.enums.Favorite
 import io.reactivex.Observable
 import io.reactivex.Single
 import type.*
@@ -60,6 +62,26 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
     ): Observable<Response<UserFavouritesQuery.Data>> {
         val query = UserFavouritesQuery(Input.fromNullable(userId), Input.fromNullable(page))
         return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun updateFavoriteOrder(
+        ids: List<Int>,
+        favorite: Favorite
+    ): Single<Response<UpdateFavouriteOrderMutation.Data>> {
+        val order = ids.mapIndexed { index, _ -> index + 1 }
+        val mutation = UpdateFavouriteOrderMutation(
+            animeIds = Input.optional(if (favorite == Favorite.ANIME) ids else null),
+            mangaIds = Input.optional(if (favorite == Favorite.MANGA) ids else null),
+            characterIds = Input.optional(if (favorite == Favorite.CHARACTERS) ids else null),
+            staffIds = Input.optional(if (favorite == Favorite.STAFF) ids else null),
+            studioIds = Input.optional(if (favorite == Favorite.STUDIOS) ids else null),
+            animeOrder = Input.optional(if (favorite == Favorite.ANIME) order else null),
+            mangaOrder = Input.optional(if (favorite == Favorite.MANGA) order else null),
+            characterOrder = Input.optional(if (favorite == Favorite.CHARACTERS) order else null),
+            staffOrder = Input.optional(if (favorite == Favorite.STAFF) order else null),
+            studioOrder = Input.optional(if (favorite == Favorite.STUDIOS) order else null)
+        )
+        return apolloHandler.apolloClient.rxMutate(mutation)
     }
 
     override fun updateAniListSettings(

@@ -8,6 +8,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.pojo.NullableItem
 import io.reactivex.Observable
 import type.ScoreFormat
@@ -18,6 +19,7 @@ import type.UserTitleLanguage
 interface UserRepository {
 
     val refreshMainScreenTrigger: Observable<Unit>
+    val refreshFavoriteTrigger: Observable<User>
 
     fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
@@ -41,6 +43,7 @@ interface UserRepository {
 
     fun getUserStatistics(userId: Int, sort: UserStatisticsSort): Observable<UserStatisticTypes>
     fun getFavorites(userId: Int, page: Int): Observable<Favourites>
+    fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Observable<Favourites>
 
     fun getAppSetting(): Observable<AppSetting>
     fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>

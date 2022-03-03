@@ -363,6 +363,7 @@
     <string name="staff">Staff</string>
     <string name="studio">Studio</string>
     <string name="title_count">Title Count</string>
+    <string name="reorder_favorites">Reorder Favorites</string>
 
 
     <plurals name="minute">

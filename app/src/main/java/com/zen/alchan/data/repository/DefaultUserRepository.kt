@@ -11,6 +11,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
@@ -29,6 +30,10 @@ class DefaultUserRepository(
     private val _refreshMainScreenTrigger = PublishSubject.create<Unit>()
     override val refreshMainScreenTrigger: Observable<Unit>
         get() = _refreshMainScreenTrigger
+
+    private val _refreshFavoriteTrigger = PublishSubject.create<User>()
+    override val refreshFavoriteTrigger: Observable<User>
+        get() = _refreshFavoriteTrigger
 
     override fun getIsLoggedInAsGuest(): Observable<Boolean> {
         return Observable.just(userManager.isLoggedInAsGuest)
@@ -142,6 +147,22 @@ class DefaultUserRepository(
         return userDataSource.getFavorites(userId, page).map {
             it.data?.convert()
         }
+    }
+
+    override fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Observable<Favourites> {
+        return userDataSource.updateFavoriteOrder(ids, favorite).toObservable()
+            .map {
+                val newFavorites = it.data?.convert()
+                if (newFavorites != null) {
+                    val user = userManager.viewerData?.data
+                    user?.let {
+                        user.favourites = newFavorites
+                        userManager.viewerData = SaveItem(user)
+                        _refreshFavoriteTrigger.onNext(user)
+                    }
+                }
+                newFavorites
+            }
     }
 
     override fun getAppSetting(): Observable<AppSetting> {

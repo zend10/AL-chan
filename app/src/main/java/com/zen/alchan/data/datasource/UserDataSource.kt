@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
+import com.zen.alchan.helper.enums.Favorite
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,6 +20,7 @@ interface UserDataSource {
     fun toggleFollow(userId: Int): Single<Response<ToggleFollowMutation.Data>>
     fun getUserStatistics(userId: Int, sort: List<UserStatisticsSort>): Observable<Response<UserStatisticsQuery.Data>>
     fun getFavorites(userId: Int, page: Int): Observable<Response<UserFavouritesQuery.Data>>
+    fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Single<Response<UpdateFavouriteOrderMutation.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
         staffNameLanguage: UserStaffNameLanguage,

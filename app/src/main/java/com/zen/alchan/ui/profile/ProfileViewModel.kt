@@ -135,6 +135,15 @@ class ProfileViewModel(
                         loadUserData()
                     }
             )
+
+            disposables.add(
+                userRepository.refreshFavoriteTrigger
+                    .applyScheduler()
+                    .subscribe {
+                        user = it
+                        emitProfileItemList()
+                    }
+            )
         }
     }
 

@@ -2,6 +2,7 @@ package com.zen.alchan.ui.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
     override val viewModel: FavoriteViewModel by viewModel()
 
     private var adapter: FavoriteAdapter? = null
+    private var menuItemReorder: MenuItem? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -32,6 +34,13 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.favorites))
+            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_favorite)
+
+            menuItemReorder = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemReorder)
+            menuItemReorder?.setOnMenuItemClickListener {
+                viewModel.loadAll()
+                true
+            }
 
             adapter = FavoriteAdapter(requireContext(), listOf(), AppSetting(), getFavoriteListener())
 
@@ -67,6 +76,9 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
             viewModel.toolbarTitle.subscribe {
                 binding.defaultToolbar.defaultToolbar.title = getString(it)
             },
+            viewModel.reorderVisibility.subscribe {
+                menuItemReorder?.isVisible = it
+            },
             viewModel.loading.subscribe {
                 binding.infiniteScrollingSwipeRefresh.isRefreshing = it
             },
@@ -82,6 +94,11 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.reorderItems.subscribe {
+                navigation.navigateToReorder(it) { reorderResult ->
+                    viewModel.updateOrder(reorderResult)
+                }
             }
         )
 
@@ -115,6 +132,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        menuItemReorder = null
     }
 
     companion object {

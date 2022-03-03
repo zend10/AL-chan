@@ -13,7 +13,7 @@ data class User(
     val isBlocked: Boolean = false,
     val options: UserOptions = UserOptions(),
     val mediaListOptions: MediaListOptions = MediaListOptions(),
-    val favourites: Favourites = Favourites(),
+    var favourites: Favourites = Favourites(),
     val statistics: UserStatisticTypes = UserStatisticTypes(),
     val unreadNotificationCount: Int = 0,
     val siteUrl: String = "",
