@@ -60,10 +60,6 @@ class DefaultNavigationManager(
         swapPage(ActivityFragment.newInstance())
     }
 
-    override fun navigateToNotifications() {
-
-    }
-
     override fun navigateToSettings() {
         stackPage(SettingsFragment.newInstance())
     }
@@ -134,6 +130,10 @@ class DefaultNavigationManager(
 
     override fun navigateToUser(id: Int) {
         pushBrowseScreenPage(BrowseNavigationManager.Page.USER, id)
+    }
+
+    override fun navigateToStudio(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.STUDIO, id)
     }
 
     override fun navigateToAnimeMediaList(id: Int) {

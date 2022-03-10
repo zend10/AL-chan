@@ -18,7 +18,6 @@ interface NavigationManager {
     fun navigateToMain(deepLink: DeepLink? = null)
 
     fun navigateToActivities()
-    fun navigateToNotifications()
     fun navigateToSettings()
     fun navigateToAppSettings()
     fun navigateToAniListSettings()
@@ -44,6 +43,7 @@ interface NavigationManager {
     fun navigateToCharacter(id: Int)
     fun navigateToStaff(id: Int)
     fun navigateToUser(id: Int)
+    fun navigateToStudio(id: Int)
 
     fun navigateToAnimeMediaList(id: Int)
     fun navigateToMangaMediaList(id: Int)

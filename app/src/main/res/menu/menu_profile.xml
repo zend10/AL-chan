@@ -5,11 +5,6 @@
         android:title="@string/activities"
         android:icon="@drawable/ic_custom_activity"
         app:showAsAction="always"/>
-    <item android:id="@+id/itemNotifications"
-        android:title="@string/notifications"
-        android:icon="@drawable/ic_notification"
-        android:visible="false"
-        app:showAsAction="always"/>
     <item android:id="@+id/itemAddAsBestFriend"
         android:title="@string/add_as_best_friend"
         android:visible="false"

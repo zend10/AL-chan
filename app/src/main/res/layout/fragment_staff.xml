@@ -222,7 +222,7 @@
                         android:layout_height="match_parent"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/staffAddToListButton"
+                        android:id="@+id/staffSetAsFavoriteButton"
                         style="?themePrimaryButton"
                         android:text="@string/set_as_favorite"
                         android:layout_marginStart="@dimen/marginSmall"

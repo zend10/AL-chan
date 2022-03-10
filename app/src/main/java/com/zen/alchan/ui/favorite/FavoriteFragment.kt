@@ -124,7 +124,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
             }
 
             override fun navigateToStudio(id: Int) {
-                // TODO: navigate to studio
+                navigation.navigateToStudio(id)
             }
         }
     }

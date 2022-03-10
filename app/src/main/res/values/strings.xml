@@ -386,4 +386,8 @@
         <item quantity="one">episode</item>
         <item quantity="other">episodes</item>
     </plurals>
+    <plurals name="chapter">
+        <item quantity="one">chapter</item>
+        <item quantity="other">chapters</item>
+    </plurals>
 </resources>

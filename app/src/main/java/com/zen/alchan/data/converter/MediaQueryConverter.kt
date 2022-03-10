@@ -34,7 +34,14 @@ fun MediaQuery.Data.convert(): Media {
         countryOfOrigin = media?.countryOfOrigin,
         isLicensed = media?.isLicensed,
         source = media?.source,
-//        trailer
+        trailer = if (media?.trailer != null)
+            MediaTrailer(
+                id = media.trailer.id ?: "",
+                site = media.trailer.site ?: "",
+                thumbnail = media.trailer.thumbnail ?: ""
+            )
+        else
+            null,
         coverImage = MediaCoverImage(
             extraLarge = media?.coverImage?.extraLarge ?: "",
             large = media?.coverImage?.large ?: "",
@@ -60,7 +67,28 @@ fun MediaQuery.Data.convert(): Media {
                 isAdult = it.isAdult ?: false
             )
         } ?: listOf(),
-//        relations
+        relations = MediaConnection(
+            edges = media?.relations?.edges?.map {
+                MediaEdge(
+                    node = Media(
+                        idAniList = it?.node?.id ?: 0,
+                        title = MediaTitle(
+                            romaji = it?.node?.title?.romaji ?: "",
+                            english = it?.node?.title?.english ?: "",
+                            native = it?.node?.title?.native_ ?: "",
+                            userPreferred = it?.node?.title?.userPreferred ?: "",
+                        ),
+                        type = it?.node?.type,
+                        coverImage = MediaCoverImage(
+                            extraLarge = it?.node?.coverImage?.extraLarge ?: "",
+                            large = it?.node?.coverImage?.large ?: "",
+                            medium = it?.node?.coverImage?.medium ?: ""
+                        )
+                    ),
+                    relationType = it?.relationType
+                )
+            } ?: listOf()
+        ),
         characters = CharacterConnection(
             nodes = media?.characters?.nodes?.filterNotNull()?.map {
                 Character(
@@ -82,6 +110,43 @@ fun MediaQuery.Data.convert(): Media {
                 )
             } ?: listOf()
         ),
+        staff = StaffConnection(
+            edges = media?.staff?.edges?.map {
+                StaffEdge(
+                    node = Staff(
+                        id = it?.node?.id ?: 0,
+                        name = StaffName(
+                            first = it?.node?.name?.first ?: "",
+                            middle = it?.node?.name?.middle ?: "",
+                            last = it?.node?.name?.last ?: "",
+                            full = it?.node?.name?.full ?: "",
+                            native = it?.node?.name?.native_ ?: "",
+                            alternative = it?.node?.name?.alternative?.filterNotNull() ?: listOf(),
+                            userPreferred = it?.node?.name?.userPreferred ?: "",
+                        ),
+                        image = StaffImage(
+                            large = it?.node?.image?.large ?: "",
+                            medium = it?.node?.image?.medium ?: ""
+                        )
+                    ),
+                    id = it?.id ?: 0,
+                    role = it?.role ?: ""
+                )
+            } ?: listOf()
+        ),
+        studios = StudioConnection(
+            edges = media?.studios?.edges?.map {
+                StudioEdge(
+                    node = Studio(
+                        id = it?.node?.id ?: 0,
+                        name = it?.node?.name ?: "",
+                        isAnimationStudio = it?.node?.isAnimationStudio ?: false
+                    ),
+                    id = it?.id ?: 0,
+                    isMain = it?.isMain ?: false
+                )
+            } ?: listOf()
+        ),
         isFavourite = media?.isFavourite ?: false,
         isAdult = media?.isAdult ?: false,
         nextAiringEpisode = if (media?.nextAiringEpisode != null)
@@ -95,8 +160,70 @@ fun MediaQuery.Data.convert(): Media {
             null
         ,
         externalLinks = media?.externalLinks?.filterNotNull()?.map {
-            MediaExternalLink(id = it.id, url = it.url, site = it.site)
+            MediaExternalLink(
+                id = it.id,
+                url = it.url ?: "",
+                site = it.site,
+                siteId = it.siteId ?: 0,
+                type = it.type,
+                language = it.language ?: "",
+                color = it.color ?: "",
+                icon = it.icon ?: ""
+            )
         } ?: listOf(),
+        rankings = media?.rankings?.map {
+            MediaRank(
+                id = it?.id ?: 0,
+                rank = it?.rank ?: 0,
+                type = it?.type,
+                format = it?.format,
+                year = it?.year ?: 0,
+                season = it?.season,
+                allTime = it?.allTime ?: false,
+                context = it?.context ?: ""
+            )
+        } ?: listOf(),
+        recommendations = RecommendationConnection(
+            nodes = media?.recommendations?.nodes?.map {
+                Recommendation(
+                    id = it?.id ?: 0,
+                    rating = it?.id ?: 0,
+                    userRating = it?.userRating,
+                    mediaRecommendation = Media(
+                        idAniList = it?.mediaRecommendation?.id ?: 0,
+                        title = MediaTitle(
+                            romaji = it?.mediaRecommendation?.title?.romaji ?: "",
+                            english = it?.mediaRecommendation?.title?.english ?: "",
+                            native = it?.mediaRecommendation?.title?.native_ ?: "",
+                            userPreferred = it?.mediaRecommendation?.title?.userPreferred ?: ""
+                        ),
+                        format = it?.mediaRecommendation?.format,
+                        coverImage = MediaCoverImage(
+                            extraLarge = it?.mediaRecommendation?.coverImage?.extraLarge ?: "",
+                            large = it?.mediaRecommendation?.coverImage?.large ?: "",
+                            medium = it?.mediaRecommendation?.coverImage?.medium ?: ""
+                        ),
+                        averageScore = it?.mediaRecommendation?.averageScore ?: 0,
+                        meanScore = it?.mediaRecommendation?.meanScore ?: 0,
+                        popularity = it?.mediaRecommendation?.popularity ?: 0
+                    )
+                )
+            } ?: listOf()
+        ),
+        stats = MediaStats(
+            scoreDistribution = media?.stats?.scoreDistribution?.map {
+                ScoreDistribution(
+                    score = it?.score ?: 0,
+                    amount = it?.amount ?: 0
+                )
+            } ?: listOf(),
+            statusDistribution = media?.stats?.statusDistribution?.map {
+                StatusDistribution(
+                    status = it?.status,
+                    amount = it?.amount ?: 0
+                )
+            } ?: listOf()
+        ),
         siteUrl = media?.siteUrl ?: ""
     )
 }

@@ -39,7 +39,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
     private var menuItemActivities: MenuItem? = null
-    private var menuItemNotifications: MenuItem? = null
     private var menuItemAddAsBestFriend: MenuItem? = null
     private var menuItemSettings: MenuItem? = null
     private var menuItemViewOnAniList: MenuItem? = null
@@ -64,14 +63,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
 
             if (arguments?.getInt(USER_ID) != 0) {
-                setUpToolbar(profileToolbar, "", R.drawable.ic_delete) {
+                setUpToolbar(profileToolbar, "", R.drawable.ic_custom_close) {
                     navigation.closeBrowseScreen()
                 }
             }
 
             profileToolbar.menu.apply {
                 menuItemActivities = findItem(R.id.itemActivities)
-                menuItemNotifications = findItem(R.id.itemNotifications)
                 menuItemAddAsBestFriend = findItem(R.id.itemAddAsBestFriend)
                 menuItemSettings = findItem(R.id.itemSettings)
                 menuItemViewOnAniList = findItem(R.id.itemViewOnAniList)
@@ -91,11 +89,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
             menuItemActivities?.setOnMenuItemClickListener {
                 navigation.navigateToActivities()
-                true
-            }
-
-            menuItemNotifications?.setOnMenuItemClickListener {
-                navigation.navigateToNotifications()
                 true
             }
 
@@ -207,7 +200,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 binding.profileSwipeRefresh.show(!it)
             },
             viewModel.viewerMenuItemVisibility.subscribe {
-                menuItemNotifications?.isVisible = it
                 menuItemSettings?.isVisible = it
             },
             viewModel.bestFriendVisibility.subscribe {
@@ -352,7 +344,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             override fun navigateToStudio(studio: Studio) {
-                // TODO: navigate to studio
+                navigation.navigateToStudio(studio.id)
             }
         }
     }
@@ -360,7 +352,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     override fun onDestroyView() {
         super.onDestroyView()
         menuItemActivities = null
-        menuItemNotifications = null
         menuItemAddAsBestFriend = null
         menuItemSettings = null
         menuItemViewOnAniList = null

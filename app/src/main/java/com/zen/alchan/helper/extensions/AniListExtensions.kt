@@ -20,6 +20,14 @@ fun ScoreFormat.getStringResource(): Int {
     }
 }
 
+fun type.MediaType.getMediaType(): MediaType {
+    return when (this) {
+        type.MediaType.ANIME -> MediaType.ANIME
+        type.MediaType.MANGA -> MediaType.MANGA
+        type.MediaType.UNKNOWN__ -> MediaType.ANIME
+    }
+}
+
 fun MediaFormat.getString(): String {
     return name.convertFromSnakeCase(true)
 }

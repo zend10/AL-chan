@@ -40,7 +40,7 @@ class TrendingMediaRvAdapter(
                         .filter { it.isMain }
                         .joinToString(", ") { it.node.name }
                 } else {
-                    item.staffs.edges
+                    item.staff.edges
                         .filter {
                             it.role.contains("art", true) ||
                                     it.role.contains("story", true) ||

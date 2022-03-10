@@ -26,7 +26,7 @@ data class Media(
     val countryOfOrigin: String? = null,
     val isLicensed: Boolean? = null,
     val source: MediaSource? = null,
-//    val trailer: MediaTrailer? = null,
+    val trailer: MediaTrailer? = null,
     val coverImage: MediaCoverImage = MediaCoverImage(),
     val bannerImage: String = "",
     val genres: List<Genre> = listOf(),
@@ -35,15 +35,19 @@ data class Media(
     val meanScore: Int = 0,
     val popularity: Int = 0,
     val trending: Int = 0,
-    val characters: CharacterConnection = CharacterConnection(),
-    val staffs: StaffConnection = StaffConnection(),
-    val studios: StudioConnection = StudioConnection(),
     val favourites: Int = 0,
     val tags: List<MediaTag> = listOf(),
+    val relations: MediaConnection = MediaConnection(),
+    val characters: CharacterConnection = CharacterConnection(),
+    val staff: StaffConnection = StaffConnection(),
+    val studios: StudioConnection = StudioConnection(),
     var isFavourite: Boolean = false,
     val isAdult: Boolean = false,
     val nextAiringEpisode: AiringSchedule? = null,
     val externalLinks: List<MediaExternalLink> = listOf(),
+    val rankings: List<MediaRank> = listOf(),
+    val recommendations: RecommendationConnection = RecommendationConnection(),
+    val stats: MediaStats? = null,
     val siteUrl: String = "",
     val mediaListEntry: MediaList? = null
 ) {
@@ -79,5 +83,13 @@ data class Media(
             coverImage.extraLarge
         else
             coverImage.large
+    }
+
+    fun getLength(): Int? {
+        return when (type) {
+            MediaType.ANIME -> episodes
+            MediaType.MANGA -> chapters
+            else -> null
+        }
     }
 }

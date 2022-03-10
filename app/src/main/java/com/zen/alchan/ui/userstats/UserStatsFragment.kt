@@ -35,7 +35,7 @@ class UserStatsFragment : BaseFragment<FragmentUserStatsBinding, UserStatsViewMo
                 }
 
                 override fun navigateToStudio(id: Int) {
-                    // TODO: navigate to studio
+                    navigation.navigateToStudio(id)
                 }
             })
             userStatsRecyclerView.layoutManager = LinearLayoutManager(requireContext())

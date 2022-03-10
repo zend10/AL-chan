@@ -68,7 +68,7 @@ private fun HomeMedia?.convert(): Media {
         genres = this?.genres?.mapNotNull { Genre(name = it ?: "") } ?: listOf(),
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0,
-        staffs = this?.staff?.convert() ?: StaffConnection(),
+        staff = this?.staff?.convert() ?: StaffConnection(),
         studios = this?.studios?.convert() ?: StudioConnection()
     )
 }

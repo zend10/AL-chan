@@ -99,6 +99,39 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
                 }
             }
         }
+        staff(sort:[RELEVANCE, ID]) {
+            edges {
+                node {
+                    id
+                    name {
+                        first
+                        middle
+                        last
+                        full
+                        native
+                        alternative
+                        userPreferred
+                    }
+                    image {
+                        large
+                        medium
+                    }
+                }
+                id
+                role
+            }
+        }
+        studios {
+            edges {
+                node {
+                    id
+                    name
+                    isAnimationStudio
+                }
+                id
+                isMain
+            }
+        }
         isFavourite
         isAdult
         nextAiringEpisode {
@@ -111,6 +144,56 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
             id
             url
             site
+            siteId
+            type
+            language
+            color
+            icon
+        }
+        rankings {
+            id
+            rank
+            type
+            format
+            year
+            season
+            allTime
+            context
+        }
+        recommendations(sort:[RATING_DESC]) {
+            nodes {
+                id
+              	rating
+              	userRating
+              	mediaRecommendation {
+                  	id
+                  	title {
+                      	romaji
+                      	english
+                      	native
+                      	userPreferred
+                    }
+                  	format
+                  	coverImage {
+                      	extraLarge
+                      	large
+                      	medium
+                    }
+                  	averageScore
+                  	meanScore
+                  	popularity
+                }
+            }
+        }
+        stats {
+            scoreDistribution {
+                score
+                amount
+            }
+            statusDistribution {
+                status
+                amount
+            }
         }
         siteUrl
     }

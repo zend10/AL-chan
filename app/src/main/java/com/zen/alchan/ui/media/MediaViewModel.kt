@@ -5,7 +5,9 @@ import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getMediaType
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.MediaItem
 import com.zen.alchan.helper.pojo.NullableItem
@@ -14,6 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaFormat
+import type.MediaStatus
 
 class MediaViewModel(
     private val browseRepository: BrowseRepository,
@@ -36,9 +39,25 @@ class MediaViewModel(
     val mediaTitle: Observable<String>
         get() = _mediaTitle
 
+    private val _mediaYear = BehaviorSubject.createDefault("")
+    val mediaYear: Observable<String>
+        get() = _mediaYear
+
+    private val _mediaYearVisibility = BehaviorSubject.createDefault(false)
+    val mediaYearVisibility: Observable<Boolean>
+        get() = _mediaYearVisibility
+
     private val _mediaFormat = BehaviorSubject.createDefault(NullableItem<MediaFormat>(null))
     val mediaFormat: Observable<NullableItem<MediaFormat>>
         get() = _mediaFormat
+
+    private val _mediaLength = BehaviorSubject.createDefault(0 to MediaType.ANIME)
+    val mediaLength: Observable<Pair<Int, MediaType>>
+        get() = _mediaLength
+
+    private val _mediaLengthVisibility = BehaviorSubject.createDefault(false)
+    val mediaLengthVisibility: Observable<Boolean>
+        get() = _mediaLengthVisibility
 
     private val _airingSchedule = BehaviorSubject.createDefault(NullableItem<AiringSchedule>(null))
     val airingSchedule: Observable<NullableItem<AiringSchedule>>
@@ -101,7 +120,11 @@ class MediaViewModel(
                         _bannerImage.onNext(media.bannerImage)
                         _coverImage.onNext(media.getCoverImage(appSetting))
                         _mediaTitle.onNext(media.getTitle(appSetting))
+                        _mediaYear.onNext(media.startDate?.year?.toString() ?: "TBA")
+                        _mediaYearVisibility.onNext(media.startDate?.year != null || media.status == MediaStatus.NOT_YET_RELEASED)
                         _mediaFormat.onNext(NullableItem(media.format))
+                        _mediaLength.onNext((media.getLength() ?: 0) to (media.type?.getMediaType() ?: MediaType.ANIME))
+                        _mediaLengthVisibility.onNext(media.getLength() != null && media.getLength() != 0)
                         _airingSchedule.onNext(NullableItem(media.nextAiringEpisode))
 
                         _averageScore.onNext(media.averageScore)

@@ -14,8 +14,11 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.FragmentMediaBinding
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.extensions.showUnit
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
@@ -85,8 +88,21 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             viewModel.mediaTitle.subscribe {
                 binding.mediaTitleText.text = it
             },
+            viewModel.mediaYear.subscribe {
+                binding.mediaYearText.text = it
+            },
             viewModel.mediaFormat.subscribe {
                 binding.mediaFormatText.text = it.data?.getString()
+            },
+            viewModel.mediaLength.subscribe { (length, mediaType) ->
+                binding.mediaLengthText.text = when (mediaType) {
+                    MediaType.ANIME -> length.showUnit(requireContext(), R.plurals.episode)
+                    MediaType.MANGA -> length.showUnit(requireContext(), R.plurals.chapter)
+                }
+            },
+            viewModel.mediaLengthVisibility.subscribe {
+                binding.mediaLengthDividerIcon.show(it)
+                binding.mediaLengthText.show(it)
             },
             viewModel.airingSchedule.subscribe {
                 binding.mediaAiringLayout.show(it.data != null)
@@ -99,7 +115,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 binding.mediaScoreText.text = "$it%"
             },
             viewModel.favorites.subscribe {
-                binding.mediaFavoritesText.text = it.toString()
+                binding.mediaFavoritesText.text = it.getNumberFormatting()
             },
             viewModel.mediaItemList.subscribe {
                 mediaAdapter?.updateData(it)
