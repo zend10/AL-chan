@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Studio
@@ -138,8 +139,17 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
     private fun getMediaListener(): MediaListener {
         return object : MediaListener {
+            override val mediaGenreListener: MediaListener.MediaGenreListener = getMediaGenreListener()
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
             override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
+        }
+    }
+
+    private fun getMediaGenreListener(): MediaListener.MediaGenreListener {
+        return object : MediaListener.MediaGenreListener {
+            override fun navigateToExplore(genre: Genre) {
+                // TODO: navigate to Explore
+            }
         }
     }
 

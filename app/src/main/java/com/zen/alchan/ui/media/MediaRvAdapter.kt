@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.Genre
 import com.zen.alchan.databinding.LayoutHorizontalListBinding
 import com.zen.alchan.databinding.LayoutMediaInfoBinding
 import com.zen.alchan.databinding.LayoutTitleAndListBinding
@@ -17,6 +19,7 @@ import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import com.zen.alchan.ui.common.GenreRvAdapter
 import com.zen.alchan.ui.common.TextRvAdapter
 
 class MediaRvAdapter(
@@ -27,6 +30,7 @@ class MediaRvAdapter(
     private val listener: MediaListener
 ) : BaseRecyclerViewAdapter<MediaItem, ViewBinding>(list) {
 
+    private var genreAdapter: GenreRvAdapter? = null
     private var characterAdapter: MediaCharacterRvAdapter? = null
     private var synonymsAdapter: TextRvAdapter? = null
     private var studiosAdapter: TextRvAdapter? = null
@@ -35,6 +39,17 @@ class MediaRvAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
+            MediaItem.VIEW_TYPE_GENRE -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                genreAdapter = GenreRvAdapter(context, listOf(), object : GenreRvAdapter.GenreListener {
+                    override fun getGenre(genre: Genre) {
+                        listener.mediaGenreListener.navigateToExplore(genre)
+                    }
+                })
+                view.listRecyclerView.adapter = genreAdapter
+                view.listRecyclerView.layoutManager = FlexboxLayoutManager(context)
+                return GenreViewHolder(view)
+            }
             MediaItem.VIEW_TYPE_SYNOPSIS -> {
                 val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
                 return SynopsisViewHolder(view)
@@ -76,6 +91,13 @@ class MediaRvAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
+    }
+
+    inner class GenreViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            binding.titleLayout.show(false)
+            genreAdapter?.updateData(item.media.genres)
+        }
     }
 
     inner class SynopsisViewHolder(private val binding: LayoutTitleAndTextBinding) : ViewHolder(binding) {

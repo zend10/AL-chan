@@ -133,6 +133,7 @@ class MediaViewModel(
 
                         _mediaItemList.onNext(
                             listOf(
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_GENRE),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_SYNOPSIS),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_CHARACTERS),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_INFO)
