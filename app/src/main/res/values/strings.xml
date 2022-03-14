@@ -364,6 +364,14 @@
     <string name="studio">Studio</string>
     <string name="title_count">Title Count</string>
     <string name="reorder_favorites">Reorder Favorites</string>
+    <string name="romaji">Romaji</string>
+    <string name="english">English</string>
+    <string name="native_">Native</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="episode_duration">Episode Duration</string>
+    <string name="end_date">End Date</string>
+    <string name="studios">Studios</string>
+    <string name="producers">Producers</string>
 
 
     <plurals name="minute">

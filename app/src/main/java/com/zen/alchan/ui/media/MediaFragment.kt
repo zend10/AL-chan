@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
@@ -13,12 +14,10 @@ import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.extensions.getNumberFormatting
-import com.zen.alchan.helper.extensions.getString
-import com.zen.alchan.helper.extensions.show
-import com.zen.alchan.helper.extensions.showUnit
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
@@ -66,6 +65,11 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 }
             })
         }
+    }
+
+    override fun setUpInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mediaCollapsingToolbar, null)
+        binding.mediaRecyclerView.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -135,6 +139,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     private fun getMediaListener(): MediaListener {
         return object : MediaListener {
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
+            override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
         }
     }
 
@@ -146,6 +151,14 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
             override fun navigateToCharacter(character: Character) {
                 navigation.navigateToCharacter(character.id)
+            }
+        }
+    }
+
+    private fun getMediaStudioListener(): MediaListener.MediaStudioListener {
+        return object : MediaListener.MediaStudioListener {
+            override fun navigateToStudio(studio: Studio) {
+                navigation.navigateToStudio(studio.id)
             }
         }
     }
