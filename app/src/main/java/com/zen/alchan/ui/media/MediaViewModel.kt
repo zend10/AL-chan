@@ -16,6 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaFormat
+import type.MediaRelation
 import type.MediaStatus
 
 class MediaViewModel(
@@ -84,6 +85,22 @@ class MediaViewModel(
     private var media = Media()
     private var appSetting = AppSetting()
 
+    private val mediaRelationPriority = mapOf(
+        Pair(MediaRelation.SOURCE, 0),
+        Pair(MediaRelation.ADAPTATION, 1),
+        Pair(MediaRelation.PARENT, 2),
+        Pair(MediaRelation.PREQUEL, 3),
+        Pair(MediaRelation.SEQUEL, 4),
+        Pair(MediaRelation.ALTERNATIVE, 5),
+        Pair(MediaRelation.SIDE_STORY, 6),
+        Pair(MediaRelation.SPIN_OFF, 7),
+        Pair(MediaRelation.SUMMARY, 8),
+        Pair(MediaRelation.COMPILATION, 9),
+        Pair(MediaRelation.CONTAINS, 10),
+        Pair(MediaRelation.CHARACTER, 11),
+        Pair(MediaRelation.OTHER, 12)
+    )
+
     override fun loadData() {
         // do nothing
     }
@@ -113,6 +130,10 @@ class MediaViewModel(
             browseRepository.getMedia(mediaId)
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
+                .map { media ->
+                    media.relations.edges = media.relations.edges.sortedBy { mediaRelationPriority[it.relationType] ?: mediaRelationPriority.size }
+                    media
+                }
                 .subscribe(
                     { media ->
                         this.media = media
@@ -136,7 +157,8 @@ class MediaViewModel(
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_GENRE),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_SYNOPSIS),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_CHARACTERS),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_INFO)
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_INFO),
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_RELATIONS)
                             )
                         )
                     },

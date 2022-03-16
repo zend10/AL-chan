@@ -8,10 +8,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.Genre
-import com.zen.alchan.databinding.LayoutHorizontalListBinding
-import com.zen.alchan.databinding.LayoutMediaInfoBinding
-import com.zen.alchan.databinding.LayoutTitleAndListBinding
-import com.zen.alchan.databinding.LayoutTitleAndTextBinding
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaItem
@@ -35,6 +33,7 @@ class MediaRvAdapter(
     private var synonymsAdapter: TextRvAdapter? = null
     private var studiosAdapter: TextRvAdapter? = null
     private var producersAdapter: TextRvAdapter? = null
+    private var relationsAdapter: MediaRelationsRvAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -70,6 +69,17 @@ class MediaRvAdapter(
                 producersAdapter = TextRvAdapter(context, listOf(), getTextListener())
                 view.mediaInfoProducersRecyclerView.adapter = producersAdapter
                 return InfoViewHolder(view)
+            }
+            MediaItem.VIEW_TYPE_RELATIONS -> {
+                val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
+                relationsAdapter = MediaRelationsRvAdapter(context, listOf(), appSetting, width, object : MediaRelationsRvAdapter.MediaRelationsListener {
+                    override fun navigateToMedia(media: Media) {
+                        listener.mediaRelationsListener.navigateToMedia(media)
+                    }
+                })
+                view.horizontalListRecyclerView.adapter = relationsAdapter
+                view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageNormal)))
+                return RelationsViewHolder(view)
             }
             else -> {
                 val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
@@ -176,6 +186,14 @@ class MediaRvAdapter(
                 studiosAdapter?.updateData(item.media.studios.edges.filter { it.isMain }.map { it.node.name })
                 producersAdapter?.updateData(item.media.studios.edges.filter { !it.isMain }.map { it.node.name })
             }
+        }
+    }
+
+    inner class RelationsViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            binding.horizontalListTitle.text = context.getString(R.string.relations)
+            binding.horizontalListSeeMore.show(false)
+            relationsAdapter?.updateData(item.media.relations.edges)
         }
     }
 }

@@ -372,6 +372,7 @@
     <string name="end_date">End Date</string>
     <string name="studios">Studios</string>
     <string name="producers">Producers</string>
+    <string name="relations">Relations</string>
 
 
     <plurals name="minute">

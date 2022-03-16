@@ -20,7 +20,12 @@ interface MediaListener {
         fun navigateToStudio(studio: Studio)
     }
 
+    interface MediaRelationsListener {
+        fun navigateToMedia(media: Media)
+    }
+
     val mediaGenreListener: MediaGenreListener
     val mediaCharacterListener: MediaCharacterListener
     val mediaStudioListener: MediaStudioListener
+    val mediaRelationsListener: MediaRelationsListener
 }

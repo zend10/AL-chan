@@ -7,7 +7,7 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.databinding.ListTrendingMediaBinding
+import com.zen.alchan.databinding.ListMediaTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil
@@ -20,15 +20,15 @@ class TrendingMediaRvAdapter(
     list: List<Media>,
     private val width: Int,
     private val listener: HomeListener.TrendingMediaListener
-) : BaseRecyclerViewAdapter<Media, ListTrendingMediaBinding>(list) {
+) : BaseRecyclerViewAdapter<Media, ListMediaTrendingBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = ListTrendingMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ListMediaTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         view.root.layoutParams.width = (width.toDouble() / 1.3).toInt()
         return ItemViewHolder(view)
     }
 
-    inner class ItemViewHolder(private val binding: ListTrendingMediaBinding) : ViewHolder(binding) {
+    inner class ItemViewHolder(private val binding: ListMediaTrendingBinding) : ViewHolder(binding) {
         override fun bind(item: Media, index: Int) {
             binding.apply {
                 ImageUtil.loadImage(context, item.bannerImage, trendingBannerImage)

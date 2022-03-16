@@ -79,6 +79,7 @@ fun MediaQuery.Data.convert(): Media {
                             userPreferred = it?.node?.title?.userPreferred ?: "",
                         ),
                         type = it?.node?.type,
+                        format = it?.node?.format,
                         coverImage = MediaCoverImage(
                             extraLarge = it?.node?.coverImage?.extraLarge ?: "",
                             large = it?.node?.coverImage?.large ?: "",

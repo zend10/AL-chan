@@ -142,6 +142,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override val mediaGenreListener: MediaListener.MediaGenreListener = getMediaGenreListener()
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
             override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
+            override val mediaRelationsListener: MediaListener.MediaRelationsListener = getMediaRelationsListener()
         }
     }
 
@@ -169,6 +170,14 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         return object : MediaListener.MediaStudioListener {
             override fun navigateToStudio(studio: Studio) {
                 navigation.navigateToStudio(studio.id)
+            }
+        }
+    }
+
+    private fun getMediaRelationsListener() : MediaListener.MediaRelationsListener {
+        return object : MediaListener.MediaRelationsListener {
+            override fun navigateToMedia(media: Media) {
+                navigation.navigateToMedia(media.getId())
             }
         }
     }
