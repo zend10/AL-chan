@@ -24,8 +24,13 @@ interface MediaListener {
         fun navigateToMedia(media: Media)
     }
 
+    interface MediaRecommendationsListener {
+        fun navigateToMedia(media: Media)
+    }
+
     val mediaGenreListener: MediaGenreListener
     val mediaCharacterListener: MediaCharacterListener
     val mediaStudioListener: MediaStudioListener
     val mediaRelationsListener: MediaRelationsListener
+    val mediaRecommendationsListener: MediaRecommendationsListener
 }

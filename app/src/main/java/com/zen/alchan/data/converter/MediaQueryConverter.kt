@@ -188,7 +188,7 @@ fun MediaQuery.Data.convert(): Media {
             nodes = media?.recommendations?.nodes?.map {
                 Recommendation(
                     id = it?.id ?: 0,
-                    rating = it?.id ?: 0,
+                    rating = it?.rating ?: 0,
                     userRating = it?.userRating,
                     mediaRecommendation = Media(
                         idAniList = it?.mediaRecommendation?.id ?: 0,
@@ -198,15 +198,22 @@ fun MediaQuery.Data.convert(): Media {
                             native = it?.mediaRecommendation?.title?.native_ ?: "",
                             userPreferred = it?.mediaRecommendation?.title?.userPreferred ?: ""
                         ),
+                        type = it?.mediaRecommendation?.type,
                         format = it?.mediaRecommendation?.format,
+                        status = it?.mediaRecommendation?.status,
+                        startDate = if (it?.mediaRecommendation?.startDate != null)
+                            FuzzyDate(year = it.mediaRecommendation.startDate.year, month = it.mediaRecommendation.startDate.month, day = it.mediaRecommendation.startDate.day)
+                        else
+                            null,
+                        episodes = it?.mediaRecommendation?.episodes,
+                        chapters = it?.mediaRecommendation?.chapters,
                         coverImage = MediaCoverImage(
                             extraLarge = it?.mediaRecommendation?.coverImage?.extraLarge ?: "",
                             large = it?.mediaRecommendation?.coverImage?.large ?: "",
                             medium = it?.mediaRecommendation?.coverImage?.medium ?: ""
                         ),
                         averageScore = it?.mediaRecommendation?.averageScore ?: 0,
-                        meanScore = it?.mediaRecommendation?.meanScore ?: 0,
-                        popularity = it?.mediaRecommendation?.popularity ?: 0
+                        favourites = it?.mediaRecommendation?.favourites ?: 0
                     )
                 )
             } ?: listOf()

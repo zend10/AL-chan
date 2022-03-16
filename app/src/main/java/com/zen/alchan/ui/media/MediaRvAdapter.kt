@@ -34,6 +34,7 @@ class MediaRvAdapter(
     private var studiosAdapter: TextRvAdapter? = null
     private var producersAdapter: TextRvAdapter? = null
     private var relationsAdapter: MediaRelationsRvAdapter? = null
+    private var recommendationsAdapter: MediaRecommendationsRvAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -80,6 +81,17 @@ class MediaRvAdapter(
                 view.horizontalListRecyclerView.adapter = relationsAdapter
                 view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageNormal)))
                 return RelationsViewHolder(view)
+            }
+            MediaItem.VIEW_TYPE_RECOMMENDATIONS -> {
+                val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
+                recommendationsAdapter = MediaRecommendationsRvAdapter(context, listOf(), appSetting, width, object : MediaRecommendationsRvAdapter.MediaRecommendationsListener {
+                    override fun navigateToMedia(media: Media) {
+                        listener.mediaRecommendationsListener.navigateToMedia(media)
+                    }
+                })
+                view.horizontalListRecyclerView.adapter = recommendationsAdapter
+                view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageNormal)))
+                return RecommendationsViewHolder(view)
             }
             else -> {
                 val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
@@ -194,6 +206,14 @@ class MediaRvAdapter(
             binding.horizontalListTitle.text = context.getString(R.string.relations)
             binding.horizontalListSeeMore.show(false)
             relationsAdapter?.updateData(item.media.relations.edges)
+        }
+    }
+
+    inner class RecommendationsViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            binding.horizontalListTitle.text = context.getString(R.string.recommendations)
+            binding.horizontalListSeeMore.show(false)
+            recommendationsAdapter?.updateData(item.media.recommendations.nodes)
         }
     }
 }

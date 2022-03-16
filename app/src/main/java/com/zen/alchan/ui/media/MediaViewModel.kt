@@ -158,7 +158,8 @@ class MediaViewModel(
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_SYNOPSIS),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_CHARACTERS),
                                 MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_INFO),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_RELATIONS)
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_RELATIONS),
+                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_RECOMMENDATIONS)
                             )
                         )
                     },

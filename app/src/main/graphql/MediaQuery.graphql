@@ -173,15 +173,23 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
                       	native
                       	userPreferred
                     }
+                    type
                   	format
+                  	status(version: $statusVersion)
+                  	startDate {
+                        year
+                        month
+                        day
+                    }
+                  	episodes
+                  	chapters
                   	coverImage {
                       	extraLarge
                       	large
                       	medium
                     }
                   	averageScore
-                  	meanScore
-                  	popularity
+                  	favourites
                 }
             }
         }

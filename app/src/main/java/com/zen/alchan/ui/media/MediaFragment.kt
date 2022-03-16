@@ -117,7 +117,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 }
             },
             viewModel.averageScore.subscribe {
-                binding.mediaScoreText.text = "$it%"
+                binding.mediaScoreText.text = it.getNumberFormatting()
             },
             viewModel.favorites.subscribe {
                 binding.mediaFavoritesText.text = it.getNumberFormatting()
@@ -143,6 +143,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
             override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
             override val mediaRelationsListener: MediaListener.MediaRelationsListener = getMediaRelationsListener()
+            override val mediaRecommendationsListener: MediaListener.MediaRecommendationsListener = getMediaRecommendationsListener()
         }
     }
 
@@ -176,6 +177,14 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
     private fun getMediaRelationsListener() : MediaListener.MediaRelationsListener {
         return object : MediaListener.MediaRelationsListener {
+            override fun navigateToMedia(media: Media) {
+                navigation.navigateToMedia(media.getId())
+            }
+        }
+    }
+
+    private fun getMediaRecommendationsListener(): MediaListener.MediaRecommendationsListener {
+        return object : MediaListener.MediaRecommendationsListener {
             override fun navigateToMedia(media: Media) {
                 navigation.navigateToMedia(media.getId())
             }
