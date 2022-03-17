@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.home
 
+import com.zen.alchan.data.response.anilist.Media
+
 interface HomeListener {
 
     interface HeaderListener {
@@ -18,7 +20,7 @@ interface HomeListener {
     }
 
     interface TrendingMediaListener {
-        fun navigateToMedia()
+        fun navigateToMedia(media: Media)
     }
 
     interface NewMediaListener {

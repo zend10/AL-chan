@@ -429,7 +429,7 @@
         <item name="android:textColor">?themeContentColor</item>
     </style>
 
-    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
+    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">?themePrimaryColor</item>
         <item name="android:textColor">?themeBackgroundColor</item>
         <item name="android:textAllCaps">false</item>

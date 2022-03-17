@@ -1,13 +1,17 @@
 package com.zen.alchan.ui.media
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
+import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getMediaType
+import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.MediaItem
 import com.zen.alchan.helper.pojo.NullableItem
@@ -16,12 +20,14 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaFormat
+import type.MediaListStatus
 import type.MediaRelation
 import type.MediaStatus
 
 class MediaViewModel(
     private val browseRepository: BrowseRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val mediaListRepository: MediaListRepository
 ) : BaseViewModel() {
 
     private val _mediaAdapterComponent = PublishSubject.create<AppSetting>()
@@ -72,9 +78,9 @@ class MediaViewModel(
     val favorites: Observable<Int>
         get() = _favorites
 
-    private val _popularity = BehaviorSubject.createDefault(0)
-    val popularity: Observable<Int>
-        get() = _popularity
+    private val _addToListButtonText = BehaviorSubject.createDefault("")
+    val addToListButtonText: Observable<String>
+        get() = _addToListButtonText
 
     private val _mediaItemList = BehaviorSubject.createDefault(listOf<MediaItem>())
     val mediaItemList: Observable<List<MediaItem>>
@@ -105,7 +111,7 @@ class MediaViewModel(
         // do nothing
     }
 
-    fun loadOnce(mediaId: Int) {
+    fun loadData(mediaId: Int) {
         loadOnce {
             this.mediaId = mediaId
 
@@ -116,11 +122,50 @@ class MediaViewModel(
                     .applyScheduler()
                     .subscribe { (isAuthenticated, appSetting) ->
                         this.appSetting = appSetting
+                        _isAuthenticated.onNext(isAuthenticated)
                         _mediaAdapterComponent.onNext(appSetting)
                         loadMedia()
                     }
             )
         }
+
+        if (media.getId() != 0)
+            checkMediaList()
+    }
+
+    private fun checkMediaList() {
+        if (media.getId() == 0)
+            return
+
+        if (_isAuthenticated.value != true) {
+            _isAuthenticated.onNext(_isAuthenticated.value ?: false)
+            return
+        }
+
+        disposables.add(
+            userRepository.getViewer(Source.CACHE)
+                .flatMap {
+                    mediaListRepository.getMediaListCollection(Source.CACHE, it.id, media.type?.getMediaType() ?: MediaType.ANIME)
+                }
+                .applyScheduler()
+                .subscribe { mediaListCollection ->
+                    var itemFound = false
+
+                    mediaListCollection.lists.forEach collection@{ mediaListGroup ->
+                        mediaListGroup.entries.forEach { mediaList ->
+                            if (mediaList.media.getId() == mediaId) {
+                                _addToListButtonText.onNext(mediaList.status?.getString(media.type?.getMediaType() ?: MediaType.ANIME) ?: "")
+                                itemFound = true
+                                return@collection
+                            }
+                        }
+                    }
+
+                    if (!itemFound) {
+                        _addToListButtonText.onNext("")
+                    }
+                }
+        )
     }
 
     private fun loadMedia(isReloading: Boolean = false) {
@@ -138,6 +183,8 @@ class MediaViewModel(
                     { media ->
                         this.media = media
 
+                        checkMediaList()
+
                         _bannerImage.onNext(media.bannerImage)
                         _coverImage.onNext(media.getCoverImage(appSetting))
                         _mediaTitle.onNext(media.getTitle(appSetting))
@@ -150,7 +197,6 @@ class MediaViewModel(
 
                         _averageScore.onNext(media.averageScore)
                         _favorites.onNext(media.favourites)
-                        _popularity.onNext(media.popularity)
 
                         val mediaItemList = ArrayList<MediaItem>()
 

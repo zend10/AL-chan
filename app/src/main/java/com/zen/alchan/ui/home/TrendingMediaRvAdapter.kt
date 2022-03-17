@@ -57,7 +57,7 @@ class TrendingMediaRvAdapter(
 
                 trendingMediaDescriptionText.text = HtmlCompat.fromHtml(item.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-                root.clicks { listener.navigateToMedia() }
+                root.clicks { listener.navigateToMedia(item) }
             }
         }
     }

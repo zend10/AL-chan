@@ -133,7 +133,7 @@ class ALchanApplication : Application() {
 
         viewModel { EditorViewModel(get(), get()) }
 
-        viewModel { MediaViewModel(get(), get()) }
+        viewModel { MediaViewModel(get(), get(), get()) }
         viewModel { CharacterViewModel(get(), get()) }
         viewModel { StaffViewModel(get(), get()) }
     }

@@ -3,6 +3,7 @@ package com.zen.alchan.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.FragmentHomeBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.ui.base.BaseFragment
@@ -113,8 +114,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun getTrendingMediaListener(): HomeListener.TrendingMediaListener {
         return object : HomeListener.TrendingMediaListener {
-            override fun navigateToMedia() {
-
+            override fun navigateToMedia(media: Media) {
+                navigation.navigateToMedia(media.getId())
             }
         }
     }

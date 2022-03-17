@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.media
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -76,11 +78,24 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.isAuthenticated.subscribe {
+                binding.mediaAddToListButton.isEnabled = it
+
+                if (!it) {
+                    binding.mediaAddToListButton.apply {
+                        text = getString(R.string.please_login)
+                        strokeWidth = 0
+                        strokeColor = ColorStateList.valueOf(Color.TRANSPARENT)
+                        backgroundTintList = ColorStateList.valueOf(context.getAttrValue(R.attr.themeContentTransparentColor))
+                        setTextColor(context.getAttrValue(R.attr.themeContentColor))
+                    }
+                }
+            },
             viewModel.loading.subscribe {
                 binding.mediaSwipeRefresh.isRefreshing = it
             },
             viewModel.error.subscribe {
-
+                dialog.showToast(it)
             },
             viewModel.mediaAdapterComponent.subscribe {
                 assignAdapter(it)
@@ -96,6 +111,9 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             },
             viewModel.mediaYear.subscribe {
                 binding.mediaYearText.text = it
+            },
+            viewModel.mediaYearVisibility.subscribe {
+                binding.mediaYearText.show(it)
             },
             viewModel.mediaFormat.subscribe {
                 binding.mediaFormatText.text = it.data?.getString()
@@ -123,13 +141,32 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             viewModel.favorites.subscribe {
                 binding.mediaFavoritesText.text = it.getNumberFormatting()
             },
+            viewModel.addToListButtonText.subscribe {
+                if (it.isNotBlank()) {
+                    binding.mediaAddToListButton.apply {
+                        text = it
+                        strokeWidth = context.resources.getDimensionPixelSize(R.dimen.lineWidth)
+                        strokeColor = ColorStateList.valueOf(context.getAttrValue(R.attr.themePrimaryColor))
+                        backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
+                        setTextColor(context.getAttrValue(R.attr.themePrimaryColor))
+                    }
+                } else {
+                    binding.mediaAddToListButton.apply {
+                        text = getString(R.string.add_to_list)
+                        strokeWidth = 0
+                        strokeColor = ColorStateList.valueOf(Color.TRANSPARENT)
+                        backgroundTintList = ColorStateList.valueOf(context.getAttrValue(R.attr.themePrimaryColor))
+                        setTextColor(context.getAttrValue(R.attr.themeBackgroundColor))
+                    }
+                }
+            },
             viewModel.mediaItemList.subscribe {
                 mediaAdapter?.updateData(it)
             }
         )
 
         arguments?.getInt(MEDIA_ID)?.let {
-            viewModel.loadOnce(it)
+            viewModel.loadData(it)
         }
     }
 
