@@ -143,20 +143,22 @@ class MediaRvAdapter(
     inner class InfoViewHolder(private val binding: LayoutMediaInfoBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
             binding.apply {
-                mediaInfoRomajiText.text= item.media.title.romaji
+                val fallbackTitle = item.media.title.romaji
+
+                mediaInfoRomajiText.text = item.media.title.romaji
                 mediaInfoRomajiText.clicks {
 
                 }
-                mediaInfoEnglishText.text = item.media.title.english
+                mediaInfoEnglishText.text = if (item.media.title.english.isNotBlank()) item.media.title.english else fallbackTitle
                 mediaInfoEnglishText.clicks {
 
                 }
-                mediaInfoNativeText.text = item.media.title.romaji
+                mediaInfoNativeText.text = if (item.media.title.native.isNotBlank()) item.media.title.native else fallbackTitle
                 mediaInfoNativeText.clicks {
 
                 }
 
-                synonymsAdapter?.updateData(item.media.synonyms)
+                synonymsAdapter?.updateData(if (item.media.synonyms.isNotEmpty()) item.media.synonyms else listOf(fallbackTitle))
 
                 mediaInfoFormatText.text = item.media.getFormattedMediaFormat(true)
 
