@@ -96,18 +96,22 @@ data class Media(
     fun getMainStaff(): List<StaffEdge> {
         val mainStaff = when (type) {
             MediaType.ANIME -> staff.edges.filter {
-                it.role.equals("original creator", true) ||
-                it.role.equals("director", true) ||
-                it.role.equals("original character design", true)
+                val role = it.role.trim()
+                role.equals("original creator", true) ||
+                role.equals("director", true) ||
+                role.equals("original character design", true) ||
+                role.equals("original story", true)
             }
             MediaType.MANGA -> staff.edges.filter {
-                it.role.equals("story & art", true) ||
-                it.role.equals("story", true) ||
-                it.role.equals("art", true) ||
-                it.role.equals("original creator", true) ||
-                it.role.equals("original story", true) ||
-                it.role.equals("illustration", true) ||
-                it.role.equals("character design", true)
+                val role = it.role.trim()
+                role.equals("story & art", true) ||
+                role.equals("story", true) ||
+                role.equals("art", true) ||
+                role.equals("original creator", true) ||
+                role.equals("original character design", true) ||
+                role.equals("original story", true) ||
+                role.equals("illustration", true) ||
+                role.equals("character design", true)
             }
             else -> listOf()
         }.distinctBy { it.node.id }
@@ -116,6 +120,6 @@ data class Media(
             return staff.edges.take(10)
         }
 
-        return mainStaff
+        return mainStaff.take(10)
     }
 }
