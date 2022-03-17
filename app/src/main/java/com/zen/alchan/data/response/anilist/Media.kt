@@ -92,4 +92,30 @@ data class Media(
             else -> null
         }
     }
+
+    fun getMainStaff(): List<StaffEdge> {
+        val mainStaff = when (type) {
+            MediaType.ANIME -> staff.edges.filter {
+                it.role.equals("original creator", true) ||
+                it.role.equals("director", true) ||
+                it.role.equals("original character design", true)
+            }
+            MediaType.MANGA -> staff.edges.filter {
+                it.role.equals("story & art", true) ||
+                it.role.equals("story", true) ||
+                it.role.equals("art", true) ||
+                it.role.equals("original creator", true) ||
+                it.role.equals("original story", true) ||
+                it.role.equals("illustration", true) ||
+                it.role.equals("character design", true)
+            }
+            else -> listOf()
+        }.distinctBy { it.node.id }
+
+        if (mainStaff.isEmpty()) {
+            return staff.edges.take(10)
+        }
+
+        return mainStaff
+    }
 }

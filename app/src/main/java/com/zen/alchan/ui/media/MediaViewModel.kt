@@ -152,16 +152,29 @@ class MediaViewModel(
                         _favorites.onNext(media.favourites)
                         _popularity.onNext(media.popularity)
 
-                        _mediaItemList.onNext(
-                            listOf(
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_GENRE),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_SYNOPSIS),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_CHARACTERS),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_INFO),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_RELATIONS),
-                                MediaItem(media = media, viewType = MediaItem.VIEW_TYPE_RECOMMENDATIONS)
-                            )
-                        )
+                        val mediaItemList = ArrayList<MediaItem>()
+
+                        if (media.genres.isNotEmpty())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_GENRE))
+
+                        if (media.description.isNotBlank())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_SYNOPSIS))
+
+                        if (media.characters.nodes.isNotEmpty())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_CHARACTERS))
+
+                        mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_INFO))
+
+                        if (media.staff.edges.isNotEmpty())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_STAFF))
+
+                        if (media.relations.edges.isNotEmpty())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_RELATIONS))
+
+                        if (media.recommendations.nodes.isNotEmpty())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_RECOMMENDATIONS))
+
+                        _mediaItemList.onNext(mediaItemList)
                     },
                     {
                         _error.onNext(it.getStringResource())

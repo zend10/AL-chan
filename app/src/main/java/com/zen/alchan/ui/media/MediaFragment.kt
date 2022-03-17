@@ -15,6 +15,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
@@ -142,6 +143,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override val mediaGenreListener: MediaListener.MediaGenreListener = getMediaGenreListener()
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
             override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
+            override val mediaStaffListener: MediaListener.MediaStaffListener = getMediaStaffListener()
             override val mediaRelationsListener: MediaListener.MediaRelationsListener = getMediaRelationsListener()
             override val mediaRecommendationsListener: MediaListener.MediaRecommendationsListener = getMediaRecommendationsListener()
         }
@@ -171,6 +173,18 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         return object : MediaListener.MediaStudioListener {
             override fun navigateToStudio(studio: Studio) {
                 navigation.navigateToStudio(studio.id)
+            }
+        }
+    }
+
+    private fun getMediaStaffListener(): MediaListener.MediaStaffListener {
+        return object : MediaListener.MediaStaffListener {
+            override fun navigateToMediaStaff(media: Media) {
+
+            }
+
+            override fun navigateToStaff(staff: Staff) {
+                navigation.navigateToStaff(staff.id)
             }
         }
     }

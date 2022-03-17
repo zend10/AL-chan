@@ -19,7 +19,7 @@ class MediaRecommendationsRvAdapter(
     list: List<Recommendation>,
     private val appSetting: AppSetting,
     private val width: Int,
-    private val listener: MediaRecommendationsListener
+    private val listener: MediaListener.MediaRecommendationsListener
 ) : BaseRecyclerViewAdapter<Recommendation, ListMediaRecommendationBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,9 +50,5 @@ class MediaRecommendationsRvAdapter(
                 }
             }
         }
-    }
-
-    interface MediaRecommendationsListener {
-        fun navigateToMedia(media: Media)
     }
 }

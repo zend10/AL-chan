@@ -33,6 +33,7 @@ class MediaRvAdapter(
     private var synonymsAdapter: TextRvAdapter? = null
     private var studiosAdapter: TextRvAdapter? = null
     private var producersAdapter: TextRvAdapter? = null
+    private var staffAdapter: MediaStaffRvAdapter? = null
     private var relationsAdapter: MediaRelationsRvAdapter? = null
     private var recommendationsAdapter: MediaRecommendationsRvAdapter? = null
 
@@ -71,24 +72,23 @@ class MediaRvAdapter(
                 view.mediaInfoProducersRecyclerView.adapter = producersAdapter
                 return InfoViewHolder(view)
             }
+            MediaItem.VIEW_TYPE_STAFF -> {
+                val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
+                staffAdapter = MediaStaffRvAdapter(context, listOf(), appSetting, width, listener.mediaStaffListener)
+                view.horizontalListRecyclerView.adapter = staffAdapter
+                view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageBig)))
+                return StaffViewHolder(view)
+            }
             MediaItem.VIEW_TYPE_RELATIONS -> {
                 val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
-                relationsAdapter = MediaRelationsRvAdapter(context, listOf(), appSetting, width, object : MediaRelationsRvAdapter.MediaRelationsListener {
-                    override fun navigateToMedia(media: Media) {
-                        listener.mediaRelationsListener.navigateToMedia(media)
-                    }
-                })
+                relationsAdapter = MediaRelationsRvAdapter(context, listOf(), appSetting, width, listener.mediaRelationsListener)
                 view.horizontalListRecyclerView.adapter = relationsAdapter
                 view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageNormal)))
                 return RelationsViewHolder(view)
             }
             MediaItem.VIEW_TYPE_RECOMMENDATIONS -> {
                 val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
-                recommendationsAdapter = MediaRecommendationsRvAdapter(context, listOf(), appSetting, width, object : MediaRecommendationsRvAdapter.MediaRecommendationsListener {
-                    override fun navigateToMedia(media: Media) {
-                        listener.mediaRecommendationsListener.navigateToMedia(media)
-                    }
-                })
+                recommendationsAdapter = MediaRecommendationsRvAdapter(context, listOf(), appSetting, width, listener.mediaRecommendationsListener)
                 view.horizontalListRecyclerView.adapter = recommendationsAdapter
                 view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageNormal)))
                 return RecommendationsViewHolder(view)
@@ -195,9 +195,22 @@ class MediaRvAdapter(
 
                 }
 
-                studiosAdapter?.updateData(item.media.studios.edges.filter { it.isMain }.map { it.node.name })
-                producersAdapter?.updateData(item.media.studios.edges.filter { !it.isMain }.map { it.node.name })
+                val studios = item.media.studios.edges.filter { it.isMain }.map { it.node.name }
+                val producers = item.media.studios.edges.filter { !it.isMain }.map { it.node.name }
+                studiosAdapter?.updateData(studios)
+                producersAdapter?.updateData(producers)
+                mediaInfoStudiosLayout.show(studios.isNotEmpty())
+                mediaInfoProducersLayout.show(producers.isNotEmpty())
+                mediaInfoDividerThree.root.show(studios.isNotEmpty() || producers.isNotEmpty())
             }
+        }
+    }
+
+    inner class StaffViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            binding.horizontalListTitle.text = context.getString(R.string.staff)
+            binding.horizontalListSeeMore.clicks { listener.mediaStaffListener.navigateToMediaStaff(item.media) }
+            staffAdapter?.updateData(item.media.getMainStaff())
         }
     }
 

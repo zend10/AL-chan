@@ -16,7 +16,7 @@ class MediaRelationsRvAdapter(
     list: List<MediaEdge>,
     private val appSetting: AppSetting,
     private val width: Int,
-    private val listener: MediaRelationsListener
+    private val listener: MediaListener.MediaRelationsListener
 ) : BaseRecyclerViewAdapter<MediaEdge, ListMediaRelationBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,9 +37,5 @@ class MediaRelationsRvAdapter(
                 }
             }
         }
-    }
-
-    interface MediaRelationsListener {
-        fun navigateToMedia(media: Media)
     }
 }
