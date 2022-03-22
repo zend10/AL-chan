@@ -179,7 +179,7 @@ class ProfileViewModel(
     }
 
     fun loadAvatarUrl(useCircular: Boolean) {
-        if (user.avatar.getImageUrl(appSetting).isNotBlank())
+        if (user.avatar.large.isNotBlank())
             _avatarUrlForPreview.onNext(user.avatar.large to useCircular)
     }
 

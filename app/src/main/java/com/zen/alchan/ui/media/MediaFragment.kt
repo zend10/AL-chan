@@ -69,6 +69,14 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 }
             })
 
+            mediaCoverImage.clicks {
+                viewModel.loadCoverImage()
+            }
+
+            mediaBannerImage.clicks {
+                viewModel.loadBannerImage()
+            }
+
             mediaAddToListButton.clicks {
                 arguments?.getInt(MEDIA_ID)?.let { mediaId ->
                     navigation.navigateToEditor(mediaId, false) {
@@ -170,6 +178,12 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             },
             viewModel.mediaItemList.subscribe {
                 mediaAdapter?.updateData(it)
+            },
+            viewModel.coverImageUrlForPreview.subscribe {
+                ImageUtil.showFullScreenImage(requireContext(), it, binding.mediaCoverImage)
+            },
+            viewModel.bannerImageUrlForPreview.subscribe {
+                ImageUtil.showFullScreenImage(requireContext(), it, binding.mediaBannerImage)
             }
         )
 

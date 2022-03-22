@@ -86,6 +86,14 @@ class MediaViewModel(
     val mediaItemList: Observable<List<MediaItem>>
         get() = _mediaItemList
 
+    private val _coverImageUrlForPreview = PublishSubject.create<String>()
+    val coverImageUrlForPreview: Observable<String>
+        get() = _coverImageUrlForPreview
+
+    private val _bannerImageUrlForPreview = PublishSubject.create<String>()
+    val bannerImageUrlForPreview: Observable<String>
+        get() = _bannerImageUrlForPreview
+
     private var mediaId = 0
 
     private var media = Media()
@@ -227,5 +235,15 @@ class MediaViewModel(
                     }
                 )
         )
+    }
+
+    fun loadCoverImage() {
+        if (media.coverImage.extraLarge.isNotBlank())
+            _coverImageUrlForPreview.onNext(media.coverImage.extraLarge)
+    }
+
+    fun loadBannerImage() {
+        if (media.bannerImage.isNotBlank())
+            _bannerImageUrlForPreview.onNext(media.bannerImage)
     }
 }
