@@ -37,7 +37,7 @@ interface NavigationManager {
     )
     fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit)
 
-    fun navigateToEditor(mediaType: MediaType, mediaId: Int)
+    fun navigateToEditor(mediaId: Int, fromMediaList: Boolean, action: (() -> Unit)? = null)
 
     fun navigateToMedia(id: Int)
     fun navigateToCharacter(id: Int)

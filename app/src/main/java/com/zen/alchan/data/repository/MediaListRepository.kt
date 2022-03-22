@@ -22,7 +22,7 @@ interface MediaListRepository {
     val refreshMediaListTrigger: Observable<Pair<MediaType, MediaList?>>
     fun getMediaListCollection(source: Source = Source.NETWORK, userId: Int, mediaType: MediaType): Observable<MediaListCollection>
     fun updateCacheMediaList(mediaType: MediaType, mediaListCollection: MediaListCollection)
-    fun getMediaWithMediaList(mediaId: Int, mediaType: MediaType): Observable<Media>
+    fun getMediaWithMediaList(mediaId: Int): Observable<Media>
     fun toggleFavorite(
         animeId: Int? = null,
         mangaId: Int? = null,

@@ -166,7 +166,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                 modifyLayoutStyle(it.isViewer, it.listStyle, it.appSetting, it.mediaListOptions, it.backgroundUri)
             },
             viewModel.mediaListItems.subscribe {
-                adapter?.updateData(it)
+                adapter?.updateData(it, true)
             },
             viewModel.listSections.subscribe {
                 dialog.showListDialog(it) { _, index ->
@@ -302,7 +302,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             override fun navigateToListEditor(mediaList: MediaList) {
-                navigation.navigateToEditor(viewModel.mediaType, mediaList.media.idAniList)
+                navigation.navigateToEditor(mediaList.media.idAniList, true)
             }
 
             override fun showQuickDetail(mediaList: MediaList) {

@@ -6,7 +6,7 @@ import com.zen.alchan.data.response.anilist.MediaList
 
 fun SaveMediaListEntryMutation.Data.convert(): MediaList {
     return MediaList(
-        id = saveMediaListEntry?.id ?: 0,
+        id = saveMediaListEntry?.id,
         status = saveMediaListEntry?.status,
         score = saveMediaListEntry?.score ?: 0.0,
         progress = saveMediaListEntry?.progress ?: 0,

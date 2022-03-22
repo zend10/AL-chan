@@ -34,6 +34,7 @@
         android:layout_marginTop="@dimen/marginPageNormal"
         android:layout_marginBottom="@dimen/marginPageNormal"
         android:layout_marginEnd="@dimen/marginPageNormal"
+        app:layout_goneMarginStart="@dimen/marginPageNormal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 

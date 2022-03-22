@@ -6,7 +6,7 @@ import com.zen.alchan.helper.extensions.roundToOneDecimal
 import type.MediaListStatus
 
 data class MediaList(
-    val id: Int = 0,
+    val id: Int? = null,
     var status: MediaListStatus? = null,
     var score: Double = 0.0,
     var progress: Int = 0,

@@ -39,12 +39,10 @@ class DefaultMediaListDataSource(
     }
 
     override fun getMediaWithMediaListQuery(
-        mediaId: Int,
-        mediaType: MediaType
+        mediaId: Int
     ): Observable<Response<MediaWithMediaListQuery.Data>> {
         val query = MediaWithMediaListQuery(
-            Input.fromNullable(mediaId),
-            Input.fromNullable(mediaType)
+            Input.fromNullable(mediaId)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

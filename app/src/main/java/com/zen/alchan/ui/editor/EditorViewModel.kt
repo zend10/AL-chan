@@ -12,6 +12,7 @@ import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getMediaType
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
@@ -118,6 +119,10 @@ class EditorViewModel(
     val finishDateRemoveIconVisibility: Observable<Boolean>
         get() = _finishDateRemoveIconVisibility
 
+    private val _removeFromListButtonVisibility = BehaviorSubject.createDefault(false)
+    val removeFromListButtonVisibility: Observable<Boolean>
+        get() = _removeFromListButtonVisibility
+
     private val _mediaListStatuses = PublishSubject.create<List<ListItem<MediaListStatus>>>()
     val mediaListStatuses: Observable<List<ListItem<MediaListStatus>>>
         get() = _mediaListStatuses
@@ -166,7 +171,7 @@ class EditorViewModel(
             _loading.onNext(true)
 
             disposables.add(
-                mediaListRepository.getMediaWithMediaList(mediaId, mediaType)
+                mediaListRepository.getMediaWithMediaList(mediaId)
                     .zipWith(userRepository.getViewer(Source.CACHE)) { media, user ->
                         return@zipWith media to user
                     }
@@ -178,6 +183,7 @@ class EditorViewModel(
                     .subscribe(
                         { (media, user, appSetting) ->
                             this.media = media
+                            mediaType = media.type?.getMediaType() ?: MediaType.ANIME
                             this.user = user
                             this.appSetting = appSetting
 
@@ -187,6 +193,8 @@ class EditorViewModel(
                             _progressVolumeVisibility.onNext(mediaType == MediaType.MANGA)
                             _scoreTextVisibility.onNext(user.mediaListOptions.scoreFormat != ScoreFormat.POINT_3)
                             _scoreSmileyVisibility.onNext(user.mediaListOptions.scoreFormat == ScoreFormat.POINT_3)
+
+                            _removeFromListButtonVisibility.onNext(media.mediaListEntry?.id != null)
 
                             val mediaList = media.mediaListEntry
                             mediaList?.let {
@@ -317,17 +325,19 @@ class EditorViewModel(
     fun updateStatus(newStatus: MediaListStatus) {
         _status.onNext(newStatus)
 
-        val (maxProgress, maxProgressVolume) = when (mediaType) {
-            MediaType.ANIME -> media.episodes to null
-            MediaType.MANGA -> media.chapters to media.volumes
-        }
+        if (newStatus == MediaListStatus.COMPLETED) {
+            val (maxProgress, maxProgressVolume) = when (mediaType) {
+                MediaType.ANIME -> media.episodes to null
+                MediaType.MANGA -> media.chapters to media.volumes
+            }
 
-        maxProgress?.let {
-            updateProgress(it)
-        }
+            maxProgress?.let {
+                updateProgress(it)
+            }
 
-        maxProgressVolume?.let {
-            updateProgressVolume(it)
+            maxProgressVolume?.let {
+                updateProgressVolume(it)
+            }
         }
     }
 

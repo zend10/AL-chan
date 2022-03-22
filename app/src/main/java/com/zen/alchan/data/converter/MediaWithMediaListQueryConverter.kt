@@ -15,12 +15,13 @@ fun MediaWithMediaListQuery.Data.convert(): Media {
             native = media?.title?.native_ ?: "",
             userPreferred = media?.title?.userPreferred ?: ""
         ),
+        type = media?.type,
         episodes = media?.episodes,
         chapters = media?.chapters,
         volumes = media?.volumes,
         isFavourite = media?.isFavourite ?: false,
         mediaListEntry = MediaList(
-            id = media?.mediaListEntry?.id ?: 0,
+            id = media?.mediaListEntry?.id,
             status = media?.mediaListEntry?.status,
             score = media?.mediaListEntry?.score ?: 0.0,
             progress = media?.mediaListEntry?.progress ?: 0,

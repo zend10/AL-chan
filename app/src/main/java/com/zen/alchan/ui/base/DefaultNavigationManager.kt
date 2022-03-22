@@ -112,8 +112,12 @@ class DefaultNavigationManager(
         }))
     }
 
-    override fun navigateToEditor(mediaType: MediaType, mediaId: Int) {
-        stackPage(EditorFragment.newInstance(mediaType, mediaId))
+    override fun navigateToEditor(mediaId: Int, fromMediaList: Boolean, action: (() -> Unit)?) {
+        stackPage(EditorFragment.newInstance(mediaId, fromMediaList, object : EditorFragment.EditorListener {
+            override fun onEntryEdited() {
+                action?.invoke()
+            }
+        }))
     }
 
     override fun navigateToMedia(id: Int) {

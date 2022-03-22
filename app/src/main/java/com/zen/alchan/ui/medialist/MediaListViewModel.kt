@@ -434,7 +434,7 @@ class MediaListViewModel(
             Sort.SCORE -> sortUsing(entriesSortedByTitle, isDescending) { score }
             Sort.PROGRESS -> sortUsing(entriesSortedByTitle, isDescending) { progress }
             Sort.LAST_UPDATED -> sortUsing(entriesSortedByTitle, isDescending) { updatedAt }
-            Sort.LAST_ADDED -> sortUsing(entriesSortedByTitle, isDescending) { id }
+            Sort.LAST_ADDED -> sortUsing(entriesSortedByTitle, isDescending) { id ?: 0 }
             Sort.START_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(startedAt) }
             Sort.COMPLETED_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(completedAt) }
             Sort.RELEASE_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(media.startDate) }
@@ -450,7 +450,7 @@ class MediaListViewModel(
                     ListOrder.SCORE -> sortUsing(entriesSortedByTitle, true) { score }
                     ListOrder.TITLE -> entriesSortedByTitle
                     ListOrder.LAST_UPDATED -> sortUsing(entriesSortedByTitle, true) { updatedAt }
-                    ListOrder.LAST_ADDED -> sortUsing(entriesSortedByTitle, true) { id }
+                    ListOrder.LAST_ADDED -> sortUsing(entriesSortedByTitle, true) { id ?: 0 }
                 }
             }
         }
@@ -735,7 +735,7 @@ class MediaListViewModel(
     fun updateScore(mediaList: MediaList, newScore: Double, newAdvancedScores: LinkedHashMap<String, Double>?) {
         _loading.onNext(true)
         disposables.add(
-            mediaListRepository.updateMediaListScore(mediaType, mediaList.id, newScore, newAdvancedScores?.map { it.value })
+            mediaListRepository.updateMediaListScore(mediaType, mediaList.id ?: 0, newScore, newAdvancedScores?.map { it.value })
                 .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)
@@ -791,11 +791,11 @@ class MediaListViewModel(
             }
         }
 
-        updateProgress(mediaList.id, status, repeat, targetProgress, isProgressVolume)
+        updateProgress(mediaList.id ?: 0, status, repeat, targetProgress, isProgressVolume)
     }
 
     fun updateProgress(mediaList: MediaList, status: MediaListStatus?, newProgress: Int, isProgressVolume: Boolean) {
-        updateProgress(mediaList.id, status, null,  newProgress, isProgressVolume)
+        updateProgress(mediaList.id ?: 0, status, null,  newProgress, isProgressVolume)
     }
 
     private fun updateProgress(mediaListId: Int, status: MediaListStatus?, repeat: Int?, progress: Int, isProgressVolume: Boolean) {

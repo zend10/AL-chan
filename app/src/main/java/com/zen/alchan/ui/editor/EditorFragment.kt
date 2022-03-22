@@ -23,6 +23,8 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 
     override val viewModel: EditorViewModel by viewModel()
 
+    private var listener: EditorListener? = null
+
     private var customListsAdapter: CustomListsRvAdapter? = null
 
     override fun generateViewBinding(
@@ -35,7 +37,6 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            viewModel.mediaType = MediaType.valueOf(it.getString(MEDIA_TYPE) ?: MediaType.ANIME.name)
             viewModel.mediaId = it.getInt(MEDIA_ID)
         }
     }
@@ -52,7 +53,12 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             editorCustomListsRecyclerView.adapter = customListsAdapter
 
             editorMediaTitle.clicks {
-                goBack()
+                arguments?.getBoolean(FROM_MEDIA_LIST)?.let { fromMediaList ->
+                    goBack()
+                    if (fromMediaList) {
+                        arguments?.getInt(MEDIA_ID)?.let { navigation.navigateToMedia(it) }
+                    }
+                }
             }
 
             editorFavoriteIcon.setOnClickListener {
@@ -151,9 +157,11 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             },
             viewModel.success.subscribe {
                 dialog.showToast(it)
+                listener?.onEntryEdited()
             },
             viewModel.deleteSuccess.subscribe {
                 dialog.showToast(it)
+                listener?.onEntryEdited()
                 goBack()
             },
             viewModel.error.subscribe {
@@ -224,6 +232,9 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             },
             viewModel.finishDateRemoveIconVisibility.subscribe {
                 binding.editorFinishDateRemoveIcon.show(it)
+            },
+            viewModel.removeFromListButtonVisibility.subscribe {
+                binding.editorSaveLayout.negativeButton.show(it)
             },
             viewModel.mediaListStatuses.subscribe {
                 dialog.showListDialog(it) { data, _ ->
@@ -305,16 +316,21 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
     }
 
     companion object {
-        const val MEDIA_TYPE = "mediaType"
         const val MEDIA_ID = "mediaId"
+        const val FROM_MEDIA_LIST = "fromMediaList"
 
         @JvmStatic
-        fun newInstance(mediaType: MediaType, mediaId: Int) =
+        fun newInstance(mediaId: Int, fromMediaList: Boolean, listener: EditorListener) =
             EditorFragment().apply {
                 arguments = Bundle().apply {
-                    putString(MEDIA_TYPE, mediaType.name)
                     putInt(MEDIA_ID, mediaId)
+                    putBoolean(FROM_MEDIA_LIST, fromMediaList)
                 }
+                this.listener = listener
             }
+    }
+
+    interface EditorListener {
+        fun onEntryEdited()
     }
 }

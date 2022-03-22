@@ -1,5 +1,5 @@
-query MediaWithMediaListQuery($id:Int, $type:MediaType) {
-    Media(id:$id, type:$type) {
+query MediaWithMediaListQuery($id:Int) {
+    Media(id:$id) {
         id
         idMal
         title {
@@ -8,6 +8,7 @@ query MediaWithMediaListQuery($id:Int, $type:MediaType) {
             native
             userPreferred
         }
+        type
         episodes
         chapters
         volumes

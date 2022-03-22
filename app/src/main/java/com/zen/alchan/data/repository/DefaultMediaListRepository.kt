@@ -145,8 +145,8 @@ class DefaultMediaListRepository(
         }
     }
 
-    override fun getMediaWithMediaList(mediaId: Int, mediaType: MediaType): Observable<Media> {
-        return mediaListDataSource.getMediaWithMediaListQuery(mediaId, mediaType.getAniListMediaType()).map {
+    override fun getMediaWithMediaList(mediaId: Int): Observable<Media> {
+        return mediaListDataSource.getMediaWithMediaListQuery(mediaId).map {
             it.data?.convert()
         }
     }
