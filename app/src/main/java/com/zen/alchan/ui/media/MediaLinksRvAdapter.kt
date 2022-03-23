@@ -1,9 +1,11 @@
 package com.zen.alchan.ui.media
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.MediaExternalLink
 import com.zen.alchan.databinding.ListMediaLinkBinding
@@ -28,10 +30,13 @@ class MediaLinksRvAdapter(
     inner class ItemViewHolder(private val binding: ListMediaLinkBinding) : ViewHolder(binding) {
         override fun bind(item: MediaExternalLink, index: Int) {
             binding.apply {
-                if (item.color.isNotBlank())
+                if (item.color.isNotBlank()) {
                     linkCard.setCardBackgroundColor(Color.parseColor(item.color))
-                else
+                    linkName.setTextColor(ContextCompat.getColor(context, R.color.white))
+                } else {
                     linkCard.setCardBackgroundColor(context.getAttrValue(R.attr.themeCardColor))
+                    linkName.setTextColor(context.getAttrValue(R.attr.themeContentColor))
+                }
 
                 linkName.text = item.getSiteNameWithLanguage()
 
@@ -44,6 +49,10 @@ class MediaLinksRvAdapter(
                     }
                     else -> {
                         ImageUtil.loadImage(context, R.drawable.ic_link, linkIcon)
+                        if (item.color.isNotBlank())
+                            linkIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+                        else
+                            linkIcon.imageTintList = ColorStateList.valueOf(context.getAttrValue(R.attr.themeContentColor))
                     }
                 }
 

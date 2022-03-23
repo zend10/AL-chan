@@ -24,6 +24,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/linkName"
             style="?themeRegularBoldFont"
+            android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/linkIcon"
