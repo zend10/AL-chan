@@ -3,6 +3,7 @@ package com.zen.alchan.ui.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
@@ -13,6 +14,7 @@ import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaItem
+import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
@@ -32,10 +34,12 @@ class MediaRvAdapter(
     private var characterAdapter: MediaCharacterRvAdapter? = null
     private var synonymsAdapter: TextRvAdapter? = null
     private var studiosAdapter: TextRvAdapter? = null
+    private var tagsAdapter: MediaTagsRvAdapter? = null
     private var producersAdapter: TextRvAdapter? = null
     private var staffAdapter: MediaStaffRvAdapter? = null
     private var relationsAdapter: MediaRelationsRvAdapter? = null
     private var recommendationsAdapter: MediaRecommendationsRvAdapter? = null
+    private var linksAdapter: MediaLinksRvAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -72,6 +76,14 @@ class MediaRvAdapter(
                 view.mediaInfoProducersRecyclerView.adapter = producersAdapter
                 return InfoViewHolder(view)
             }
+            MediaItem.VIEW_TYPE_TAGS -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                tagsAdapter = MediaTagsRvAdapter(context, listOf(), listener.mediaTagsListener)
+                view.listRecyclerView.adapter = tagsAdapter
+                view.listRecyclerView.layoutManager = GridLayoutManager(context, 2)
+                view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(2, context.resources.getDimensionPixelSize(R.dimen.marginSmall), false))
+                return TagsViewHolder(view)
+            }
             MediaItem.VIEW_TYPE_STAFF -> {
                 val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
                 staffAdapter = MediaStaffRvAdapter(context, listOf(), appSetting, width, listener.mediaStaffListener)
@@ -92,6 +104,13 @@ class MediaRvAdapter(
                 view.horizontalListRecyclerView.adapter = recommendationsAdapter
                 view.horizontalListRecyclerView.addItemDecoration(SpaceItemDecoration(right = context.resources.getDimensionPixelSize(R.dimen.marginPageNormal)))
                 return RecommendationsViewHolder(view)
+            }
+            MediaItem.VIEW_TYPE_LINKS -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                linksAdapter = MediaLinksRvAdapter(context, listOf(), listener.mediaLinksListener)
+                view.listRecyclerView.adapter = linksAdapter
+                view.listRecyclerView.layoutManager = FlexboxLayoutManager(context)
+                return LinkViewHolder(view)
             }
             else -> {
                 val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
@@ -208,6 +227,25 @@ class MediaRvAdapter(
         }
     }
 
+    inner class TagsViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            binding.titleText.text = context.getString(R.string.tags)
+            binding.seeMoreText.text = if (item.showSpoilerTags) context.getString(R.string.hide_spoilers) else context.getString(R.string.show_spoilers)
+            binding.seeMoreText.setTextColor(context.getAttrValue(R.attr.themeSecondaryColor))
+            binding.seeMoreText.clicks {
+                listener.mediaTagsListener.shouldShowSpoilers(!item.showSpoilerTags)
+            }
+            binding.footnoteText.text = context.getString(R.string.long_press_to_see_tag_description)
+            binding.footnoteText.show(true)
+            tagsAdapter?.updateData(
+                if (item.showSpoilerTags)
+                    item.media.tags
+                else
+                    item.media.tags.filter { !it.isGeneralSpoiler && !it.isMediaSpoiler }
+            )
+        }
+    }
+
     inner class StaffViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
             binding.horizontalListTitle.text = context.getString(R.string.staff)
@@ -229,6 +267,16 @@ class MediaRvAdapter(
             binding.horizontalListTitle.text = context.getString(R.string.recommendations)
             binding.horizontalListSeeMore.show(false)
             recommendationsAdapter?.updateData(item.media.recommendations.nodes)
+        }
+    }
+
+    inner class LinkViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            binding.titleText.text = context.getString(R.string.links)
+            binding.seeMoreText.show(false)
+            binding.footnoteText.text = context.getString(R.string.long_press_to_copy_link)
+            binding.footnoteText.show(true)
+            linksAdapter?.updateData(item.media.externalLinks)
         }
     }
 }

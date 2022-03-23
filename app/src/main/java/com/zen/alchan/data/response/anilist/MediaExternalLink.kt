@@ -11,4 +11,8 @@ data class MediaExternalLink(
     val language: String = "",
     val color: String = "",
     val icon: String = ""
-)
+) {
+    fun getSiteNameWithLanguage(): String {
+        return site + if (language.isNotBlank()) " (${language})" else ""
+    }
+}

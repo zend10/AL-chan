@@ -15,10 +15,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.Genre
-import com.zen.alchan.data.response.anilist.Character
-import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.Staff
-import com.zen.alchan.data.response.anilist.Studio
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
@@ -49,6 +46,10 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         binding.apply {
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+
+            setUpToolbar(mediaToolbar, "", R.drawable.ic_custom_close) {
+                navigation.closeBrowseScreen()
+            }
 
             mediaRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
             assignAdapter(AppSetting())
@@ -177,7 +178,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 }
             },
             viewModel.mediaItemList.subscribe {
-                mediaAdapter?.updateData(it)
+                mediaAdapter?.updateData(it, true)
             },
             viewModel.coverImageUrlForPreview.subscribe {
                 ImageUtil.showFullScreenImage(requireContext(), it, binding.mediaCoverImage)
@@ -202,9 +203,11 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override val mediaGenreListener: MediaListener.MediaGenreListener = getMediaGenreListener()
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
             override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
+            override val mediaTagsListener: MediaListener.MediaTagsListener = getMediaTagsListener()
             override val mediaStaffListener: MediaListener.MediaStaffListener = getMediaStaffListener()
             override val mediaRelationsListener: MediaListener.MediaRelationsListener = getMediaRelationsListener()
             override val mediaRecommendationsListener: MediaListener.MediaRecommendationsListener = getMediaRecommendationsListener()
+            override val mediaLinksListener: MediaListener.MediaLinksListener = getMediaLinksListener()
         }
     }
 
@@ -236,6 +239,22 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         }
     }
 
+    private fun getMediaTagsListener(): MediaListener.MediaTagsListener {
+        return object : MediaListener.MediaTagsListener {
+            override fun shouldShowSpoilers(show: Boolean) {
+                viewModel.updateShouldShowSpoilerTags(show)
+            }
+
+            override fun navigateToExplore(tag: MediaTag) {
+                // TODO: navigate to Explore
+            }
+
+            override fun showDescription(tag: MediaTag) {
+                dialog.showToast(tag.description)
+            }
+        }
+    }
+
     private fun getMediaStaffListener(): MediaListener.MediaStaffListener {
         return object : MediaListener.MediaStaffListener {
             override fun navigateToMediaStaff(media: Media) {
@@ -260,6 +279,14 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         return object : MediaListener.MediaRecommendationsListener {
             override fun navigateToMedia(media: Media) {
                 navigation.navigateToMedia(media.getId())
+            }
+        }
+    }
+
+    private fun getMediaLinksListener(): MediaListener.MediaLinksListener {
+        return object : MediaListener.MediaLinksListener {
+            override fun navigateToUrl(mediaExternalLink: MediaExternalLink) {
+                navigation.openWebView(mediaExternalLink.url)
             }
         }
     }

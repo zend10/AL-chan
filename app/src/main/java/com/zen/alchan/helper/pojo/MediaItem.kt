@@ -5,7 +5,8 @@ import com.zen.alchan.data.response.anilist.Media
 
 data class MediaItem(
     val media: Media = Media(),
-    val viewType: Int = 0
+    val viewType: Int = 0,
+    var showSpoilerTags: Boolean = false
 ) {
     companion object {
         const val VIEW_TYPE_SYNOPSIS = 100

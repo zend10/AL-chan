@@ -375,6 +375,11 @@
     <string name="relations">Relations</string>
     <string name="recommendations">Recommendations</string>
     <string name="please_login">Please Login</string>
+    <string name="show_spoilers">Show Spoilers</string>
+    <string name="hide_spoilers">Hide Spoilers</string>
+    <string name="links">Links</string>
+    <string name="long_press_to_copy_link">Long press to copy link</string>
+    <string name="long_press_to_see_tag_description">Long press to see tag description</string>
 
 
     <plurals name="minute">

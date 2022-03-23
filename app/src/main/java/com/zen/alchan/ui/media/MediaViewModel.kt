@@ -219,6 +219,9 @@ class MediaViewModel(
 
                         mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_INFO))
 
+                        if (media.tags.isNotEmpty())
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_TAGS))
+
                         if (media.staff.edges.isNotEmpty())
                             mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_STAFF))
 
@@ -227,6 +230,8 @@ class MediaViewModel(
 
                         if (media.recommendations.nodes.isNotEmpty())
                             mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_RECOMMENDATIONS))
+
+                        mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_LINKS))
 
                         _mediaItemList.onNext(mediaItemList)
                     },
@@ -245,5 +250,14 @@ class MediaViewModel(
     fun loadBannerImage() {
         if (media.bannerImage.isNotBlank())
             _bannerImageUrlForPreview.onNext(media.bannerImage)
+    }
+
+    fun updateShouldShowSpoilerTags(shouldShowSpoiler: Boolean) {
+        val currentMediaListItems = _mediaItemList.value ?: return
+        val tagsSectionIndex = currentMediaListItems.indexOfFirst { it.viewType == MediaItem.VIEW_TYPE_TAGS }
+        if (tagsSectionIndex != -1) {
+            currentMediaListItems[tagsSectionIndex].showSpoilerTags = shouldShowSpoiler
+            _mediaItemList.onNext(currentMediaListItems)
+        }
     }
 }

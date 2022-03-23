@@ -2,6 +2,8 @@ package com.zen.alchan.data.converter
 
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.OtherLink
+import com.zen.alchan.helper.extensions.toHex
 
 fun MediaQuery.Data.convert(): Media {
     return Media(
@@ -160,7 +162,11 @@ fun MediaQuery.Data.convert(): Media {
         else
             null
         ,
-        externalLinks = media?.externalLinks?.filterNotNull()?.map {
+        externalLinks = listOf(MediaExternalLink(
+            url = media?.siteUrl ?: "",
+            site = OtherLink.ANILIST.siteName,
+            color = OtherLink.ANILIST.hexColor.toHex()
+        )) + (media?.externalLinks?.filterNotNull()?.map {
             MediaExternalLink(
                 id = it.id,
                 url = it.url ?: "",
@@ -171,7 +177,7 @@ fun MediaQuery.Data.convert(): Media {
                 color = it.color ?: "",
                 icon = it.icon ?: ""
             )
-        } ?: listOf(),
+        } ?: listOf()),
         rankings = media?.rankings?.map {
             MediaRank(
                 id = it?.id ?: 0,
