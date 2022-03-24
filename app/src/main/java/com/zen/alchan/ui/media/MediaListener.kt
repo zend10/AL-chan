@@ -10,7 +10,7 @@ interface MediaListener {
     }
 
     interface MediaCharacterListener {
-        fun navigateToMediaCharacter(media: Media)
+        fun navigateToMediaCharacters(media: Media)
         fun navigateToCharacter(character: Character)
     }
 

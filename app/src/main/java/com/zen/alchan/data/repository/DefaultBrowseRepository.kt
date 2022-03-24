@@ -3,12 +3,10 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
-import com.zen.alchan.data.response.anilist.Character
-import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.Staff
-import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListType
 import io.reactivex.Observable
+import type.StaffLanguage
 import type.UserStatisticsSort
 
 class DefaultBrowseRepository(
@@ -43,6 +41,17 @@ class DefaultBrowseRepository(
     override fun getMedia(id: Int): Observable<Media> {
         return browseDataSource.getMediaQuery(id).map {
             it.data?.convert()
+        }
+    }
+
+    override fun getMediaCharacters(
+        id: Int,
+        page: Int,
+        language: StaffLanguage
+    ): Observable<Pair<PageInfo, List<CharacterEdge>>> {
+        return browseDataSource.getMediaCharactersQuery(id, page, language).map {
+            val characterConnection = it.data?.convert() ?: return@map Pair(PageInfo(), listOf())
+            characterConnection.pageInfo to characterConnection.edges
         }
     }
 

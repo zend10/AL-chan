@@ -1,6 +1,7 @@
 package com.zen.alchan.data.datasource
 
 import CharacterQuery
+import MediaCharactersQuery
 import MediaQuery
 import StaffQuery
 import UserQuery
@@ -9,6 +10,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Observable
+import type.StaffLanguage
 import type.UserStatisticsSort
 
 class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : BrowseDataSource {
@@ -23,6 +25,15 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
 
     override fun getMediaQuery(id: Int): Observable<Response<MediaQuery.Data>> {
         val query = MediaQuery(id = Input.fromNullable(id))
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getMediaCharactersQuery(
+        id: Int,
+        page: Int,
+        language: StaffLanguage
+    ): Observable<Response<MediaCharactersQuery.Data>> {
+        val query = MediaCharactersQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), language = Input.fromNullable(language))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mediaCharacterCard"
+    app:cardBackgroundColor="?themeCardColor"
+    android:foreground="?selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaCharacterImage"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="2:3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaCharacterName"
+            style="?themeSmallFont"
+            android:textAlignment="center"
+            android:maxLines="2"
+            android:lines="2"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/mediaCharacterImage"
+            app:layout_constraintStart_toStartOf="@id/mediaCharacterImage"
+            app:layout_constraintEnd_toEndOf="@id/mediaCharacterImage"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -11,6 +11,7 @@ import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.follow.FollowFragment
+import com.zen.alchan.ui.media.MediaCharacterListFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
@@ -26,6 +27,10 @@ class DefaultBrowseNavigationManager(
 
     private fun navigateToMedia(mediaId: Int) {
         swapPage(MediaFragment.newInstance(mediaId))
+    }
+
+    private fun navigateToMediaCharacters(mediaId: Int) {
+        swapPage(MediaCharacterListFragment.newInstance(mediaId))
     }
 
     private fun navigateToCharacter(characterId: Int) {
@@ -75,6 +80,7 @@ class DefaultBrowseNavigationManager(
     override fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?) {
         when (page) {
             BrowseNavigationManager.Page.MEDIA -> id?.let { navigateToMedia(id) }
+            BrowseNavigationManager.Page.MEDIA_CHARACTERS -> id?.let { navigateToMediaCharacters(id) }
             BrowseNavigationManager.Page.CHARACTER -> id?.let { navigateToCharacter(id) }
             BrowseNavigationManager.Page.USER -> id?.let { navigateToUser(id) }
             BrowseNavigationManager.Page.STAFF -> id?.let { navigateToStaff(id) }

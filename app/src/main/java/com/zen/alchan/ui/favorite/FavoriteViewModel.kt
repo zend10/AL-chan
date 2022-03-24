@@ -182,6 +182,12 @@ class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewMo
                         state = State.LOADED
                     },
                     {
+                        if (isLoadingNextPage) {
+                            val currentFavorites = ArrayList(_favorites.value ?: listOf())
+                            currentFavorites.remove(null)
+                            _favorites.onNext(currentFavorites)
+                        }
+
                         _error.onNext(it.getStringResource())
                         state = State.ERROR
                     }

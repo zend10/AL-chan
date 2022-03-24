@@ -40,6 +40,7 @@ interface NavigationManager {
     fun navigateToEditor(mediaId: Int, fromMediaList: Boolean, action: (() -> Unit)? = null)
 
     fun navigateToMedia(id: Int)
+    fun navigateToMediaCharacters(id: Int)
     fun navigateToCharacter(id: Int)
     fun navigateToStaff(id: Int)
     fun navigateToUser(id: Int)

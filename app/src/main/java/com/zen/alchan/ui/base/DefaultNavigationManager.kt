@@ -124,6 +124,10 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(BrowseNavigationManager.Page.MEDIA, id)
     }
 
+    override fun navigateToMediaCharacters(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.MEDIA_CHARACTERS, id)
+    }
+
     override fun navigateToCharacter(id: Int) {
         pushBrowseScreenPage(BrowseNavigationManager.Page.CHARACTER, id)
     }

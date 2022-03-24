@@ -154,7 +154,7 @@ class MediaRvAdapter(
     inner class CharacterViewHolder(private val binding: LayoutHorizontalListBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
             binding.horizontalListTitle.text = context.getString(R.string.characters)
-            binding.horizontalListSeeMore.clicks { listener.mediaCharacterListener.navigateToMediaCharacter(item.media) }
+            binding.horizontalListSeeMore.clicks { listener.mediaCharacterListener.navigateToMediaCharacters(item.media) }
             characterAdapter?.updateData(item.media.characters.nodes)
         }
     }

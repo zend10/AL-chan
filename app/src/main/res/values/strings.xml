@@ -380,6 +380,7 @@
     <string name="links">Links</string>
     <string name="long_press_to_copy_link">Long press to copy link</string>
     <string name="long_press_to_see_tag_description">Long press to see tag description</string>
+    <string name="character_list">Character List</string>
 
 
     <plurals name="minute">

@@ -221,8 +221,8 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
     private fun getMediaCharacterListener(): MediaListener.MediaCharacterListener {
         return object : MediaListener.MediaCharacterListener {
-            override fun navigateToMediaCharacter(media: Media) {
-
+            override fun navigateToMediaCharacters(media: Media) {
+                navigation.navigateToMediaCharacters(media.getId())
             }
 
             override fun navigateToCharacter(character: Character) {

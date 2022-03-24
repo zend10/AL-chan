@@ -25,6 +25,7 @@ import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.login.LoginViewModel
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
+import com.zen.alchan.ui.media.MediaCharacterListViewModel
 import com.zen.alchan.ui.media.MediaViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
@@ -134,6 +135,7 @@ class ALchanApplication : Application() {
         viewModel { EditorViewModel(get(), get()) }
 
         viewModel { MediaViewModel(get(), get(), get()) }
+        viewModel { MediaCharacterListViewModel(get(), get()) }
         viewModel { CharacterViewModel(get(), get()) }
         viewModel { StaffViewModel(get(), get()) }
     }
