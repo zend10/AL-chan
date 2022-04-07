@@ -8,6 +8,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="@dimen/marginSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,16 +23,38 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mediaCharacterName"
-            style="?themeSmallFont"
+            style="?themeRegularClickableFont"
             android:textAlignment="center"
-            android:maxLines="2"
-            android:lines="2"
+            android:maxLines="1"
+            android:lines="1"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/mediaCharacterImage"
             app:layout_constraintStart_toStartOf="@id/mediaCharacterImage"
             app:layout_constraintEnd_toEndOf="@id/mediaCharacterImage"
-            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaCharacterRole"
+            style="?themeSmallFont"
+            android:textAlignment="center"
+            android:maxLines="1"
+            android:lines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/mediaCharacterName"
+            app:layout_constraintStart_toStartOf="@id/mediaCharacterImage"
+            app:layout_constraintEnd_toEndOf="@id/mediaCharacterImage"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mediaCharacterVoiceActorRecyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/mediaCharacterRole"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

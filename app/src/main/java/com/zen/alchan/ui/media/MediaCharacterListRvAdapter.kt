@@ -4,12 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
+import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.databinding.ListMediaCharacterBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.convertFromSnakeCase
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
+import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class MediaCharacterListRvAdapter(
@@ -28,6 +34,7 @@ class MediaCharacterListRvAdapter(
             }
             else -> {
                 val view = ListMediaCharacterBinding.inflate(inflater, parent, false)
+                view.mediaCharacterVoiceActorRecyclerView.addItemDecoration(SpaceItemDecoration(bottom = context.resources.getDimensionPixelSize(R.dimen.marginSmall)))
                 ItemViewHolder(view)
             }
         }
@@ -41,7 +48,12 @@ class MediaCharacterListRvAdapter(
             binding.apply {
                 ImageUtil.loadImage(context, item.node.getImage(appSetting), mediaCharacterImage)
                 mediaCharacterName.text = item.node.name.userPreferred
-                root.clicks { listener.navigateToCharacter(item.node.id) }
+                mediaCharacterRole.text = item.role?.name?.convertFromSnakeCase(false)
+
+                mediaCharacterVoiceActorRecyclerView.adapter = MediaCharacterListVoiceActorRvAdapter(context, item.voiceActorRoles, appSetting, listener)
+                mediaCharacterVoiceActorRecyclerView.show(item.voiceActorRoles.isNotEmpty())
+
+                root.clicks { listener.navigateToCharacter(item.node) }
             }
         }
     }
@@ -53,7 +65,7 @@ class MediaCharacterListRvAdapter(
     }
 
     interface MediaCharacterListListener {
-        fun navigateToCharacter(id: Int)
-        fun navigateToStaff(id: Int)
+        fun navigateToCharacter(character: Character)
+        fun navigateToStaff(staff: Staff)
     }
 }

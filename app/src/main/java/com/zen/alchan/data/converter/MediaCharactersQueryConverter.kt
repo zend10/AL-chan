@@ -43,7 +43,9 @@ fun MediaCharactersQuery.Data.convert(): CharacterConnection {
                                 large = voiceActorRole?.voiceActor?.image?.large ?: "",
                                 medium = voiceActorRole?.voiceActor?.image?.medium ?: ""
                             )
-                        )
+                        ),
+                        roleNote = voiceActorRole?.roleNotes ?: "",
+                        dubGroup = voiceActorRole?.dubGroup ?: ""
                     )
                 } ?: listOf()
             )

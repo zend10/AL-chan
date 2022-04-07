@@ -11,6 +11,7 @@ import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.enums.Favorite
+import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
@@ -69,6 +70,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.infiniteScrollingRecyclerView.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {

@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
+import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
@@ -54,6 +57,7 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.infiniteScrollingRecyclerView.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -83,12 +87,12 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
 
     private fun getMediaCharacterListListener(): MediaCharacterListRvAdapter.MediaCharacterListListener {
         return object : MediaCharacterListRvAdapter.MediaCharacterListListener {
-            override fun navigateToCharacter(id: Int) {
-                navigation.navigateToCharacter(id)
+            override fun navigateToCharacter(character: Character) {
+                navigation.navigateToCharacter(character.id)
             }
 
-            override fun navigateToStaff(id: Int) {
-                navigation.navigateToStaff(id)
+            override fun navigateToStaff(staff: Staff) {
+                navigation.navigateToStaff(staff.id)
             }
         }
     }

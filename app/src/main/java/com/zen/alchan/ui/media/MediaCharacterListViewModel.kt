@@ -40,16 +40,18 @@ class MediaCharacterListViewModel(
     }
 
     fun loadData(mediaId: Int) {
-        this.mediaId = mediaId
+        loadOnce {
+            this.mediaId = mediaId
 
-        disposables.add(
-            userRepository.getAppSetting()
-                .applyScheduler()
-                .subscribe {
-                    _appSetting.onNext(it)
-                    loadCharacters()
-                }
-        )
+            disposables.add(
+                userRepository.getAppSetting()
+                    .applyScheduler()
+                    .subscribe {
+                        _appSetting.onNext(it)
+                        loadCharacters()
+                    }
+            )
+        }
     }
 
     fun reloadData() {
