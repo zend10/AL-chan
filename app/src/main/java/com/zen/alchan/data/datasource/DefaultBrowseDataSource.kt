@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import CharacterQuery
 import MediaCharactersQuery
 import MediaQuery
+import MediaStaffQuery
 import StaffQuery
 import UserQuery
 import com.apollographql.apollo.api.Input
@@ -34,6 +35,14 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
         language: StaffLanguage
     ): Observable<Response<MediaCharactersQuery.Data>> {
         val query = MediaCharactersQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), language = Input.fromNullable(language))
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getMediaStaffQuery(
+        id: Int,
+        page: Int
+    ): Observable<Response<MediaStaffQuery.Data>> {
+        val query = MediaStaffQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

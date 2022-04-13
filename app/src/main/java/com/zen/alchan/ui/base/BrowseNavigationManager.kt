@@ -9,6 +9,7 @@ interface BrowseNavigationManager {
     enum class Page {
         MEDIA,
         MEDIA_CHARACTERS,
+        MEDIA_STAFF,
         CHARACTER,
         STAFF,
         USER,

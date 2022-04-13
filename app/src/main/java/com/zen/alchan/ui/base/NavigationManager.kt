@@ -41,6 +41,7 @@ interface NavigationManager {
 
     fun navigateToMedia(id: Int)
     fun navigateToMediaCharacters(id: Int)
+    fun navigateToMediaStaff(id: Int)
     fun navigateToCharacter(id: Int)
     fun navigateToStaff(id: Int)
     fun navigateToUser(id: Int)

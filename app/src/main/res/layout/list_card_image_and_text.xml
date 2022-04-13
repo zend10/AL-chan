@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mediaCharacterCard"
+    android:id="@+id/cardLayout"
     app:cardBackgroundColor="?themeCardColor"
     android:foreground="?selectableItemBackground"
     android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/mediaCharacterImage"
+            android:id="@+id/cardImage"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
@@ -22,37 +22,40 @@
             android:layout_height="0dp"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mediaCharacterName"
+            android:id="@+id/cardText"
             style="?themeRegularClickableFont"
             android:textAlignment="center"
             android:maxLines="1"
             android:lines="1"
+            android:gravity="center"
             android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@id/mediaCharacterImage"
-            app:layout_constraintStart_toStartOf="@id/mediaCharacterImage"
-            app:layout_constraintEnd_toEndOf="@id/mediaCharacterImage"
+            app:layout_constraintTop_toBottomOf="@id/cardImage"
+            app:layout_constraintStart_toStartOf="@id/cardImage"
+            app:layout_constraintEnd_toEndOf="@id/cardImage"
             android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginHorizontal="@dimen/marginSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mediaCharacterRole"
+            android:id="@+id/cardSubtitle"
             style="?themeSmallFont"
             android:textAlignment="center"
             android:maxLines="1"
             android:lines="1"
+            android:gravity="center"
             android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@id/mediaCharacterName"
-            app:layout_constraintStart_toStartOf="@id/mediaCharacterImage"
-            app:layout_constraintEnd_toEndOf="@id/mediaCharacterImage"
+            app:layout_constraintTop_toBottomOf="@id/cardText"
+            app:layout_constraintStart_toStartOf="@id/cardText"
+            app:layout_constraintEnd_toEndOf="@id/cardText"
             android:layout_marginTop="@dimen/marginClose"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mediaCharacterVoiceActorRecyclerView"
+            android:id="@+id/cardRecyclerView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/mediaCharacterRole"
+            app:layout_constraintTop_toBottomOf="@id/cardSubtitle"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

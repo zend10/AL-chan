@@ -1,0 +1,36 @@
+query MediaStaffQuery($id:Int, $page:Int) {
+  Media(id:$id) {
+    id
+    title {
+      userPreferred
+    }
+    staff(page:$page, sort:[RELEVANCE, ID]) {
+      edges {
+        node {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+        }
+        role
+      }
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+    }
+  }
+}

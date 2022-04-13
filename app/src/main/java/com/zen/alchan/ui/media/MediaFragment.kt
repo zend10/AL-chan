@@ -258,7 +258,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     private fun getMediaStaffListener(): MediaListener.MediaStaffListener {
         return object : MediaListener.MediaStaffListener {
             override fun navigateToMediaStaff(media: Media) {
-
+                navigation.navigateToMediaStaff(media.getId())
             }
 
             override fun navigateToStaff(staff: Staff) {

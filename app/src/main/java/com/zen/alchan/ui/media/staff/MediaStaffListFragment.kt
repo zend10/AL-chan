@@ -1,14 +1,12 @@
-package com.zen.alchan.ui.media.character
+package com.zen.alchan.ui.media.staff
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
@@ -18,14 +16,11 @@ import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class MediaStaffListFragment : BaseFragment<LayoutInfiniteScrollingBinding, MediaStaffListViewModel>() {
 
-class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, MediaCharacterListViewModel>() {
+    override val viewModel: MediaStaffListViewModel by viewModel()
 
-    override val viewModel: MediaCharacterListViewModel by viewModel()
-
-    private var adapter: MediaCharacterListRvAdapter? = null
-
-    private var menuItemChangeVaLanguage: MenuItem? = null
+    private var adapter: MediaStaffListRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -36,16 +31,9 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
 
     override fun setUpLayout() {
         binding.apply {
-            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.character_list))
-            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_character_list)
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.staff_list))
 
-            menuItemChangeVaLanguage = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemChangeLanguage)
-            menuItemChangeVaLanguage?.setOnMenuItemClickListener {
-                viewModel.loadVoiceActorLanguages()
-                true
-            }
-
-            adapter = MediaCharacterListRvAdapter(requireContext(), listOf(), AppSetting(), getMediaCharacterListListener())
+            adapter = MediaStaffListRvAdapter(requireContext(), listOf(), AppSetting(), getMediaStaffListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
@@ -79,19 +67,14 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
                 dialog.showToast(it)
             },
             viewModel.appSetting.subscribe {
-                adapter = MediaCharacterListRvAdapter(requireContext(), listOf(), it, getMediaCharacterListListener())
+                adapter = MediaStaffListRvAdapter(requireContext(), listOf(), it, getMediaStaffListListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },
-            viewModel.characters.subscribe {
+            viewModel.staff.subscribe {
                 adapter?.updateData(it, true)
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
-            },
-            viewModel.voiceActorLanguages.subscribe {
-                dialog.showListDialog(it) { data, _ ->
-                    viewModel.updateVoiceActorLanguage(data)
-                }
             }
         )
 
@@ -100,12 +83,8 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
         }
     }
 
-    private fun getMediaCharacterListListener(): MediaCharacterListRvAdapter.MediaCharacterListListener {
-        return object : MediaCharacterListRvAdapter.MediaCharacterListListener {
-            override fun navigateToCharacter(character: Character) {
-                navigation.navigateToCharacter(character.id)
-            }
-
+    private fun getMediaStaffListListener(): MediaStaffListRvAdapter.MediaStaffListListener {
+        return object : MediaStaffListRvAdapter.MediaStaffListListener {
             override fun navigateToStaff(staff: Staff) {
                 navigation.navigateToStaff(staff.id)
             }
@@ -115,14 +94,13 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
-        menuItemChangeVaLanguage = null
     }
 
     companion object {
         private const val MEDIA_ID = "mediaId"
         @JvmStatic
         fun newInstance(mediaId: Int) =
-            MediaCharacterListFragment().apply {
+            MediaStaffListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(MEDIA_ID, mediaId)
                 }

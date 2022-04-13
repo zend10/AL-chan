@@ -55,6 +55,13 @@ class DefaultBrowseRepository(
         }
     }
 
+    override fun getMediaStaff(id: Int, page: Int): Observable<Pair<PageInfo, List<StaffEdge>>> {
+        return browseDataSource.getMediaStaffQuery(id, page).map {
+            val staffConnection = it.data?.convert() ?: return@map Pair(PageInfo(), listOf())
+            staffConnection.pageInfo to staffConnection.edges
+        }
+    }
+
     override fun getCharacter(id: Int): Observable<Character> {
         return browseDataSource.getCharacterQuery(id).map {
             it.data?.convert()
