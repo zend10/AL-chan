@@ -2,6 +2,7 @@ package com.zen.alchan.ui.media
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,8 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
 
     private var adapter: MediaCharacterListRvAdapter? = null
 
+    private var menuItemChangeVaLanguage: MenuItem? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -34,6 +37,13 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.character_list))
+            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_character_list)
+
+            menuItemChangeVaLanguage = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemChangeLanguage)
+            menuItemChangeVaLanguage?.setOnMenuItemClickListener {
+                viewModel.loadVoiceActorLanguages()
+                true
+            }
 
             adapter = MediaCharacterListRvAdapter(requireContext(), listOf(), AppSetting(), getMediaCharacterListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -77,6 +87,11 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.voiceActorLanguages.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateVoiceActorLanguage(data)
+                }
             }
         )
 
@@ -95,6 +110,12 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
                 navigation.navigateToStaff(staff.id)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+        menuItemChangeVaLanguage = null
     }
 
     companion object {

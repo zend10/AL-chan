@@ -5,7 +5,10 @@ import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.CharacterEdge
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getNonUnknownValues
+import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -28,6 +31,10 @@ class MediaCharacterListViewModel(
     private val _emptyLayoutVisibility = BehaviorSubject.createDefault(false)
     val emptyLayoutVisibility: Observable<Boolean>
         get() = _emptyLayoutVisibility
+
+    private val _voiceActorLanguages = PublishSubject.create<List<ListItem<StaffLanguage>>>()
+    val voiceActorLanguages: Observable<List<ListItem<StaffLanguage>>>
+        get() = _voiceActorLanguages
 
     private var mediaId = 0
     private var selectedLanguage = StaffLanguage.JAPANESE
@@ -111,5 +118,14 @@ class MediaCharacterListViewModel(
                     }
                 )
         )
+    }
+
+    fun updateVoiceActorLanguage(newLanguage: StaffLanguage) {
+        selectedLanguage = newLanguage
+        reloadData()
+    }
+
+    fun loadVoiceActorLanguages() {
+        _voiceActorLanguages.onNext(getNonUnknownValues<StaffLanguage>().map { ListItem(it.getString(), it) })
     }
 }

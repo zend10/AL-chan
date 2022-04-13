@@ -44,7 +44,7 @@
                 android:visibility="gone"
                 android:id="@+id/voiceActorDubGroup"
                 style="?themeSmallFont"
-                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/marginClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

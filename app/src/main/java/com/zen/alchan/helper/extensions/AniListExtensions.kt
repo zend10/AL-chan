@@ -74,6 +74,10 @@ fun UserStatisticsSort.getStringResource(mediaType: MediaType): Int {
     }
 }
 
+fun StaffLanguage.getString(): String {
+    return name.convertFromSnakeCase(true)
+}
+
 inline fun <reified T: Enum<*>> getNonUnknownValues(): List<T> {
     return enumValues<T>().filter { it.name != "UNKNOWN__" }
 }
