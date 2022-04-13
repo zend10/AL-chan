@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.media
+package com.zen.alchan.ui.media.character
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -4,14 +4,12 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
-import com.zen.alchan.R
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.follow.FollowFragment
-import com.zen.alchan.ui.media.MediaCharacterListFragment
+import com.zen.alchan.ui.media.character.MediaCharacterListFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment

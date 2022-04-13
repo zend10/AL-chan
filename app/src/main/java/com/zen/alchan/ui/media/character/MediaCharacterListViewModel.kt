@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.media
+package com.zen.alchan.ui.media.character
 
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
