@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.ui.character.CharacterFragment
+import com.zen.alchan.ui.character.media.CharacterMediaListFragment
 import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.follow.FollowFragment
 import com.zen.alchan.ui.media.character.MediaCharacterListFragment
@@ -38,6 +39,10 @@ class DefaultBrowseNavigationManager(
 
     private fun navigateToCharacter(characterId: Int) {
         swapPage(CharacterFragment.newInstance(characterId))
+    }
+
+    private fun navigateToCharacterMedia(characterId: Int) {
+        swapPage(CharacterMediaListFragment.newInstance(characterId))
     }
 
     private fun navigateToStaff(staffId: Int) {
@@ -86,6 +91,7 @@ class DefaultBrowseNavigationManager(
             BrowseNavigationManager.Page.MEDIA_CHARACTERS -> id?.let { navigateToMediaCharacters(id) }
             BrowseNavigationManager.Page.MEDIA_STAFF -> id?.let { navigateToMediaStaff(id) }
             BrowseNavigationManager.Page.CHARACTER -> id?.let { navigateToCharacter(id) }
+            BrowseNavigationManager.Page.CHARACTER_MEDIA -> id?.let { navigateToCharacterMedia(id) }
             BrowseNavigationManager.Page.USER -> id?.let { navigateToUser(id) }
             BrowseNavigationManager.Page.STAFF -> id?.let { navigateToStaff(id) }
             BrowseNavigationManager.Page.STUDIO -> id?.let { navigateToStudio(id) }

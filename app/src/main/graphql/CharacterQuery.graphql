@@ -1,4 +1,4 @@
-query CharacterQuery($id:Int) {
+query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort]) {
     Character(id:$id) {
         id
         name {
@@ -26,7 +26,7 @@ query CharacterQuery($id:Int) {
         bloodType
         isFavourite
         siteUrl
-        media {
+        media(page:$page,sort:$sort) {
             edges {
                 node {
                     id
@@ -45,6 +45,27 @@ query CharacterQuery($id:Int) {
                     format
                 }
                 characterRole
+              	voiceActorRoles {
+                  voiceActor {
+                    id
+                    name {
+                      first
+                      middle
+                      last
+                      full
+                      native
+                      alternative
+                      userPreferred
+                    }
+                    languageV2
+                    image {
+                      large
+                      medium
+                    }
+                  }
+                  roleNotes
+                  dubGroup
+                }
             }
             pageInfo {
                 total

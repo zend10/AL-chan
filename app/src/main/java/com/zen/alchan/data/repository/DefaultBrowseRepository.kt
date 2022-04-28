@@ -6,6 +6,7 @@ import com.zen.alchan.data.manager.BrowseManager
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListType
 import io.reactivex.Observable
+import type.MediaSort
 import type.StaffLanguage
 import type.UserStatisticsSort
 
@@ -62,8 +63,8 @@ class DefaultBrowseRepository(
         }
     }
 
-    override fun getCharacter(id: Int): Observable<Character> {
-        return browseDataSource.getCharacterQuery(id).map {
+    override fun getCharacter(id: Int, page: Int, sort: List<MediaSort>): Observable<Character> {
+        return browseDataSource.getCharacterQuery(id, page, sort).map {
             it.data?.convert()
         }
     }

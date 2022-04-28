@@ -42,4 +42,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:visibility="gone"
+        android:id="@+id/horizontalListFootnoteText"
+        style="?themeSmallFont"
+        android:textColor="?themeDividerColor"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalListRecyclerView"
+        android:layout_marginTop="@dimen/marginBig"
+        android:layout_marginHorizontal="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

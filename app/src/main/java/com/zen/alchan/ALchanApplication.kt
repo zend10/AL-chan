@@ -15,6 +15,7 @@ import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.helper.service.clipboard.DefaultClipboardService
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
+import com.zen.alchan.ui.character.media.CharacterMediaListViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.favorite.FavoriteViewModel
@@ -139,6 +140,7 @@ class ALchanApplication : Application() {
         viewModel { MediaCharacterListViewModel(get(), get()) }
         viewModel { MediaStaffListViewModel(get(), get()) }
         viewModel { CharacterViewModel(get(), get()) }
+        viewModel { CharacterMediaListViewModel(get(), get()) }
         viewModel { StaffViewModel(get(), get()) }
     }
 

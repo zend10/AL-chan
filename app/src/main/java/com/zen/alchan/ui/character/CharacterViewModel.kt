@@ -4,9 +4,13 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Staff
+import com.zen.alchan.data.response.anilist.StaffRoleType
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.CharacterItem
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -45,6 +49,10 @@ class CharacterViewModel(
     val characterItemList: Observable<List<CharacterItem>>
         get() = _characterItemList
 
+    private val _staffMedia = PublishSubject.create<List<ListItem<Media>>>()
+    val staffMedia: Observable<List<ListItem<Media>>>
+        get() = _staffMedia
+
     private var characterId = 0
 
     private var character: Character = Character()
@@ -76,7 +84,7 @@ class CharacterViewModel(
         _loading.onNext(true)
 
         disposables.add(
-            browseRepository.getCharacter(characterId)
+            browseRepository.getCharacter(characterId, 1)
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .subscribe(
@@ -94,6 +102,22 @@ class CharacterViewModel(
                         if (character.description.isNotBlank())
                             itemList.add(CharacterItem(character = character, viewType = CharacterItem.VIEW_TYPE_BIO))
 
+                        val voiceActors = ArrayList<StaffRoleType>()
+                        character.media.edges.forEach { mediaEdge ->
+                            mediaEdge.voiceActorRoles.forEach { staffRoleType ->
+                                val id = staffRoleType.voiceActor.id
+                                if (voiceActors.find { it.voiceActor.id == id } == null) {
+                                    voiceActors.add(staffRoleType)
+                                }
+                            }
+                        }
+
+                        if (voiceActors.isNotEmpty())
+                            itemList.add(CharacterItem(voiceActors = voiceActors, viewType = CharacterItem.VIEW_TYPE_STAFF))
+
+                        if (character.media.edges.isNotEmpty())
+                            itemList.add(CharacterItem(character = character, viewType = CharacterItem.VIEW_TYPE_MEDIA))
+
                         _characterItemList.onNext(itemList)
                     },
                     {
@@ -101,5 +125,10 @@ class CharacterViewModel(
                     }
                 )
         )
+    }
+
+    fun loadStaffMedia(staff: Staff) {
+        val media = character.media.edges.filter { it.voiceActorRoles.find { it.voiceActor.id == staff.id } != null }
+        _staffMedia.onNext(media.map { ListItem(it.node.getTitle(appSetting), it.node) })
     }
 }

@@ -49,7 +49,30 @@ fun CharacterQuery.Data.convert(): Character {
                         type = it.node?.type,
                         format = it.node?.format
                     ),
-                    characterRole = it.characterRole
+                    characterRole = it.characterRole,
+                    voiceActorRoles = it.voiceActorRoles?.filterNotNull()?.map {
+                        StaffRoleType(
+                            voiceActor = Staff(
+                                id = it.voiceActor?.id ?: 0,
+                                name = StaffName(
+                                    first = it.voiceActor?.name?.first ?: "",
+                                    middle = it.voiceActor?.name?.middle ?: "",
+                                    last = it.voiceActor?.name?.last ?: "",
+                                    full = it.voiceActor?.name?.full ?: "",
+                                    native = it.voiceActor?.name?.native_ ?: "",
+                                    alternative = it.voiceActor?.name?.alternative?.filterNotNull() ?: listOf(),
+                                    userPreferred = it.voiceActor?.name?.userPreferred ?: "",
+                                ),
+                                language = it.voiceActor?.languageV2 ?: "",
+                                image = StaffImage(
+                                    large = it.voiceActor?.image?.large ?: "",
+                                    medium = it.voiceActor?.image?.medium ?: ""
+                                )
+                            ),
+                            roleNote = it.roleNotes ?: "",
+                            dubGroup = it.dubGroup ?: ""
+                        )
+                    } ?: listOf()
                 )
             } ?: listOf(),
             pageInfo = PageInfo(

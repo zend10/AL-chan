@@ -359,6 +359,7 @@
     <string name="length">Length</string>
     <string name="genre">Genre</string>
     <string name="tag">Tag</string>
+    <string name="voice_actors">Voice Actors</string>
     <string name="voice_actor">Voice Actor</string>
     <string name="staff">Staff</string>
     <string name="studio">Studio</string>
@@ -383,6 +384,9 @@
     <string name="character_list">Character List</string>
     <string name="change_language">Change Language</string>
     <string name="staff_list">Staff List</string>
+    <string name="series">Series</string>
+    <string name="long_press_to_view_series_they_feature_in">Long press to view series they feature in</string>
+    <string name="media_list">Media List</string>
 
 
     <plurals name="minute">

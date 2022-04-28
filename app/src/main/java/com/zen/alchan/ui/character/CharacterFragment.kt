@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.FragmentCharacterBinding
+import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
@@ -39,6 +45,10 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
 
+            setUpToolbar(characterToolbar, "", R.drawable.ic_custom_close) {
+                navigation.closeBrowseScreen()
+            }
+
             characterRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
             assignAdapter(AppSetting())
 
@@ -57,7 +67,16 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
                     }
                 }
             })
+
+            characterImage.clicks {
+
+            }
         }
+    }
+
+    override fun setUpInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.characterCollapsingToolbar, null)
+        binding.characterRecyclerView.applyBottomPaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -81,13 +100,18 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
                 binding.characterNativeNameText.text = it
             },
             viewModel.mediaCount.subscribe {
-                binding.characterMediaText.text = it.toString()
+                binding.characterMediaText.text = it.getNumberFormatting()
             },
             viewModel.favoritesCount.subscribe {
-                binding.characterFavoritesText.text = it.toString()
+                binding.characterFavoritesText.text = it.getNumberFormatting()
             },
             viewModel.characterItemList.subscribe {
                 characterAdapter?.updateData(it)
+            },
+            viewModel.staffMedia.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    navigation.navigateToMedia(data.getId())
+                }
             }
         )
 
@@ -103,7 +127,25 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
 
     private fun getCharacterListener(): CharacterListener {
         return object : CharacterListener {
+            override fun navigateToStaff(staff: Staff) {
+                navigation.navigateToStaff(staff.id)
+            }
 
+            override fun showStaffMedia(staff: Staff) {
+                viewModel.loadStaffMedia(staff)
+            }
+
+            override fun navigateToCharacterMedia() {
+                arguments?.let {
+                    navigation.navigateToCharacterMedia(it.getInt(CHARACTER_ID))
+                }
+            }
+
+            override val characterMediaListener: CharacterListener.CharacterMediaListener = object : CharacterListener.CharacterMediaListener {
+                override fun navigateToMedia(media: Media) {
+                    navigation.navigateToMedia(media.getId())
+                }
+            }
         }
     }
 
