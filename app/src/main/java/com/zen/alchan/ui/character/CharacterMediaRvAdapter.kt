@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.MediaEdge
+import com.zen.alchan.databinding.ListCardImageAndTextBinding
 import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.databinding.ListMediaRelationBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
@@ -27,31 +29,34 @@ class CharacterMediaRvAdapter(
                 LoadingViewHolder(view)
             }
             else -> {
-                val view = ListMediaRelationBinding.inflate(inflater, parent, false)
+                val view = ListCardImageAndTextBinding.inflate(inflater, parent, false)
                 ItemViewHolder(view)
             }
         }
     }
 
-    inner class ItemViewHolder(private val binding: ListMediaRelationBinding) : ViewHolder(binding) {
+    inner class ItemViewHolder(private val binding: ListCardImageAndTextBinding) : ViewHolder(binding) {
         override fun bind(item: MediaEdge?, index: Int) {
             if (item == null)
                 return
 
             binding.apply {
-                ImageUtil.loadImage(context, item.node.getCoverImage(appSetting), relationImage)
+                ImageUtil.loadImage(context, item.node.getCoverImage(appSetting), cardImage)
 
-                relationTitle.text = item.node.getTitle(appSetting)
-                relationTitle.setLines(2)
-                relationTitle.maxLines = 2
+                cardText.text = item.node.getTitle(appSetting)
+                cardText.setLines(2)
+                cardText.maxLines = 2
 
-                relationRelationship.text = item.getCharacterRoleString()
-                relationRelationship.setLines(1)
-                relationRelationship.maxLines = 1
+                cardSubtitle.text = item.getCharacterRoleString()
+                cardSubtitle.setLines(1)
+                cardSubtitle.maxLines = 1
 
-                relationFormat.text = item.node.getFormattedMediaFormat(true)
+                cardInfoLayout.show(true)
+                cardInfoText.text = item.node.getFormattedMediaFormat(true)
 
-                relationImage.clicks {
+                cardRecyclerView.show(false)
+
+                root.clicks {
                     listener.navigateToMedia(item.node)
                 }
             }
