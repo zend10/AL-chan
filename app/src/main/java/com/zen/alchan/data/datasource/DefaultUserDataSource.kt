@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import FollowersQuery
 import FollowingAndFollowersCountQuery
 import FollowingQuery
+import ToggleFavouriteMutation
 import ToggleFollowMutation
 import UpdateFavouriteOrderMutation
 import UpdateUserMutation
@@ -12,11 +13,13 @@ import ViewerQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxMutate
+import com.apollographql.apollo.rx2.rxPrefetch
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.helper.enums.Favorite
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import type.*
@@ -80,6 +83,23 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
             characterOrder = Input.optional(if (favorite == Favorite.CHARACTERS) order else null),
             staffOrder = Input.optional(if (favorite == Favorite.STAFF) order else null),
             studioOrder = Input.optional(if (favorite == Favorite.STUDIOS) order else null)
+        )
+        return apolloHandler.apolloClient.rxMutate(mutation)
+    }
+
+    override fun toggleFavorite(
+        animeId: Int?,
+        mangaId: Int?,
+        characterId: Int?,
+        staffId: Int?,
+        studioId: Int?
+    ): Single<Response<ToggleFavouriteMutation.Data>> {
+        val mutation = ToggleFavouriteMutation(
+            animeId = Input.optional(animeId),
+            mangaId = Input.optional(mangaId),
+            characterId = Input.optional(characterId),
+            staffId = Input.optional(staffId),
+            studioId = Input.optional(studioId)
         )
         return apolloHandler.apolloClient.rxMutate(mutation)
     }

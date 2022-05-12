@@ -10,7 +10,6 @@ import type.MediaType
 interface MediaListDataSource {
     fun getMediaListCollectionQuery(userId: Int, mediaType: MediaType): Observable<Response<MediaListCollectionQuery.Data>>
     fun getMediaWithMediaListQuery(mediaId: Int): Observable<Response<MediaWithMediaListQuery.Data>>
-    fun toggleFavorite(animeId: Int?, mangaId: Int?, characterId: Int?, staffId: Int?, studioId: Int?): Completable
     fun updateMediaListEntry(
         id: Int?,
         mediaId: Int?,

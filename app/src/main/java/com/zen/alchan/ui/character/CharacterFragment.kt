@@ -1,9 +1,9 @@
 package com.zen.alchan.ui.character
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.view.ViewCompat
@@ -17,6 +17,7 @@ import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.FragmentCharacterBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
@@ -33,6 +34,9 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
 
     private var characterAdapter: CharacterRvAdapter? = null
 
+    private var menuViewOnAniList: MenuItem? = null
+    private var menuCopyLink: MenuItem? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -45,8 +49,22 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
 
-            setUpToolbar(characterToolbar, "", R.drawable.ic_custom_close) {
+            setUpToolbar(characterToolbar, "", R.drawable.ic_delete) {
                 navigation.closeBrowseScreen()
+            }
+            characterToolbar.inflateMenu(R.menu.menu_view_on_anilist)
+
+            menuViewOnAniList = characterToolbar.menu.findItem(R.id.itemViewOnAniList)
+            menuCopyLink = characterToolbar.menu.findItem(R.id.itemCopyLink)
+
+            menuViewOnAniList?.setOnMenuItemClickListener {
+                viewModel.loadMediaLink()
+                true
+            }
+
+            menuCopyLink?.setOnMenuItemClickListener {
+                viewModel.copyMediaLink()
+                true
             }
 
             characterRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
@@ -69,7 +87,11 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             })
 
             characterImage.clicks {
+                viewModel.loadCharacterImage()
+            }
 
+            characterSetAsFavoriteButton.clicks {
+                viewModel.toggleFavorite()
             }
         }
     }
@@ -83,6 +105,22 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
         disposables.addAll(
             viewModel.loading.subscribe {
                 binding.characterSwipeRefresh.isRefreshing = it
+            },
+            viewModel.isAuthenticated.subscribe {
+                binding.characterSetAsFavoriteButton.isEnabled = it
+
+                if (!it) {
+                    binding.characterSetAsFavoriteButton.apply {
+                        text = getString(R.string.please_login)
+                        strokeWidth = 0
+                        strokeColor = ColorStateList.valueOf(Color.TRANSPARENT)
+                        backgroundTintList = ColorStateList.valueOf(context.getAttrValue(R.attr.themeContentTransparentColor))
+                        setTextColor(context.getAttrValue(R.attr.themeContentColor))
+                    }
+                }
+            },
+            viewModel.success.subscribe {
+                dialog.showToast(it)
             },
             viewModel.error.subscribe {
                 dialog.showToast(it)
@@ -105,6 +143,25 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             viewModel.favoritesCount.subscribe {
                 binding.characterFavoritesText.text = it.getNumberFormatting()
             },
+            viewModel.isFavorite.subscribe {
+                if (it) {
+                    binding.characterSetAsFavoriteButton.apply {
+                        text = context.getString(R.string.your_favorite)
+                        strokeWidth = context.resources.getDimensionPixelSize(R.dimen.lineWidth)
+                        strokeColor = ColorStateList.valueOf(context.getAttrValue(R.attr.themePrimaryColor))
+                        backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
+                        setTextColor(context.getAttrValue(R.attr.themePrimaryColor))
+                    }
+                } else {
+                    binding.characterSetAsFavoriteButton.apply {
+                        text = context.getString(R.string.set_as_favorite)
+                        strokeWidth = 0
+                        strokeColor = ColorStateList.valueOf(Color.TRANSPARENT)
+                        backgroundTintList = ColorStateList.valueOf(context.getAttrValue(R.attr.themePrimaryColor))
+                        setTextColor(context.getAttrValue(R.attr.themeBackgroundColor))
+                    }
+                }
+            },
             viewModel.characterItemList.subscribe {
                 characterAdapter?.updateData(it)
             },
@@ -112,6 +169,12 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
                 dialog.showListDialog(it) { data, _ ->
                     navigation.navigateToMedia(data.getId())
                 }
+            },
+            viewModel.mediaLink.subscribe {
+                navigation.openWebView(it)
+            },
+            viewModel.characterImageForPreview.subscribe {
+                ImageUtil.showFullScreenImage(requireContext(), it, binding.characterImage)
             }
         )
 

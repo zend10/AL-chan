@@ -23,13 +23,6 @@ interface MediaListRepository {
     fun getMediaListCollection(source: Source = Source.NETWORK, userId: Int, mediaType: MediaType): Observable<MediaListCollection>
     fun updateCacheMediaList(mediaType: MediaType, mediaListCollection: MediaListCollection)
     fun getMediaWithMediaList(mediaId: Int): Observable<Media>
-    fun toggleFavorite(
-        animeId: Int? = null,
-        mangaId: Int? = null,
-        characterId: Int? = null,
-        staffId: Int? = null,
-        studioId: Int? = null
-    ): Completable
     fun updateMediaListEntry(
         mediaType: MediaType,
         id: Int?,

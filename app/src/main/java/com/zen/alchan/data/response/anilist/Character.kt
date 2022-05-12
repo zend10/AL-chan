@@ -11,7 +11,7 @@ data class Character(
     val dateOfBirth: FuzzyDate? = null,
     val age: String = "",
     val bloodType: String = "",
-    val isFavourite: Boolean = false,
+    var isFavourite: Boolean = false,
     val siteUrl: String = "",
     val media: MediaConnection = MediaConnection(),
     val favourites: Int = 0

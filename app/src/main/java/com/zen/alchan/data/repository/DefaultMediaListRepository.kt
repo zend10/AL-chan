@@ -151,16 +151,6 @@ class DefaultMediaListRepository(
         }
     }
 
-    override fun toggleFavorite(
-        animeId: Int?,
-        mangaId: Int?,
-        characterId: Int?,
-        staffId: Int?,
-        studioId: Int?
-    ): Completable {
-        return mediaListDataSource.toggleFavorite(animeId, mangaId, characterId, staffId, studioId)
-    }
-
     override fun updateMediaListEntry(
         mediaType: MediaType,
         id: Int?,

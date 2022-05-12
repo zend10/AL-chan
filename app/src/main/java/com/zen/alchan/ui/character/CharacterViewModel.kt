@@ -1,24 +1,32 @@
 package com.zen.alchan.ui.character
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
+import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.StaffRoleType
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.CharacterItem
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 class CharacterViewModel(
     private val browseRepository: BrowseRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val mediaListRepository: MediaListRepository,
+    private val clipboardService: ClipboardService
 ) : BaseViewModel() {
 
     private val _characterAdapterComponent = PublishSubject.create<AppSetting>()
@@ -45,6 +53,10 @@ class CharacterViewModel(
     val favoritesCount: Observable<Int>
         get() = _favoritesCount
 
+    private val _isFavorite = BehaviorSubject.createDefault(false)
+    val isFavorite: Observable<Boolean>
+        get() = _isFavorite
+
     private val _characterItemList = BehaviorSubject.createDefault(listOf<CharacterItem>())
     val characterItemList: Observable<List<CharacterItem>>
         get() = _characterItemList
@@ -52,6 +64,14 @@ class CharacterViewModel(
     private val _staffMedia = PublishSubject.create<List<ListItem<Media>>>()
     val staffMedia: Observable<List<ListItem<Media>>>
         get() = _staffMedia
+
+    private val _mediaLink = PublishSubject.create<String>()
+    val mediaLink: Observable<String>
+        get() = _mediaLink
+
+    private val _characterImageForPreview = PublishSubject.create<String>()
+    val characterImageForPreview: Observable<String>
+        get() = _characterImageForPreview
 
     private var characterId = 0
 
@@ -73,11 +93,36 @@ class CharacterViewModel(
                     .applyScheduler()
                     .subscribe { (isAuthenticated, appSetting) ->
                         this.appSetting = appSetting
+                        _isAuthenticated.onNext(isAuthenticated)
                         _characterAdapterComponent.onNext(appSetting)
                         loadCharacter()
                     }
             )
         }
+
+        if (character.id != 0)
+            checkFavorite()
+    }
+
+    private fun checkFavorite() {
+        if (character.id == 0)
+            return
+
+        if (_isAuthenticated.value != true) {
+            _isAuthenticated.onNext(_isAuthenticated.value ?: false)
+            return
+        }
+
+        disposables.add(
+            userRepository.getViewer(Source.CACHE)
+                .map {
+                    it.favourites.characters.nodes.find { it.id == character.id } != null
+                }
+                .applyScheduler()
+                .subscribe {
+                    _isFavorite.onNext(it)
+                }
+        )
     }
 
     private fun loadCharacter(isReloading: Boolean = false) {
@@ -96,6 +141,7 @@ class CharacterViewModel(
                         _characterNativeName.onNext(character.name.native)
                         _mediaCount.onNext(character.media.pageInfo.total)
                         _favoritesCount.onNext(character.favourites)
+                        _isFavorite.onNext(character.isFavourite)
 
                         val itemList = ArrayList<CharacterItem>()
 
@@ -130,5 +176,51 @@ class CharacterViewModel(
     fun loadStaffMedia(staff: Staff) {
         val media = character.media.edges.filter { it.voiceActorRoles.find { it.voiceActor.id == staff.id } != null }
         _staffMedia.onNext(media.map { ListItem(it.node.getTitle(appSetting), it.node) })
+    }
+
+    fun loadMediaLink() {
+        _mediaLink.onNext(character.siteUrl)
+    }
+
+    fun copyMediaLink() {
+        disposables.add(
+            clipboardService.copyPlainText(character.siteUrl)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        _success.onNext(R.string.link_copied)
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
+        )
+    }
+
+    fun loadCharacterImage() {
+        if (character.image.large.isNotBlank())
+            _characterImageForPreview.onNext(character.image.large)
+    }
+
+    fun toggleFavorite() {
+        _loading.onNext(true)
+
+        disposables.add(
+            userRepository.toggleFavorite(characterId = character.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        val isFavorited = _isFavorite.value ?: false
+                        _isFavorite.onNext(!isFavorited)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 }

@@ -47,23 +47,6 @@ class DefaultMediaListDataSource(
         return apolloHandler.apolloClient.rxQuery(query)
     }
 
-    override fun toggleFavorite(
-        animeId: Int?,
-        mangaId: Int?,
-        characterId: Int?,
-        staffId: Int?,
-        studioId: Int?
-    ): Completable {
-        val mutation = ToggleFavouriteMutation(
-            animeId = Input.optional(animeId),
-            mangaId = Input.optional(mangaId),
-            characterId = Input.optional(characterId),
-            staffId = Input.optional(staffId),
-            studioId = Input.optional(studioId)
-        )
-        return apolloHandler.apolloClient.rxPrefetch(mutation)
-    }
-
     override fun updateMediaListEntry(
         id: Int?,
         mediaId: Int?,

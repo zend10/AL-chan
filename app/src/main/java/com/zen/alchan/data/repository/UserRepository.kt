@@ -10,6 +10,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.pojo.NullableItem
+import io.reactivex.Completable
 import io.reactivex.Observable
 import type.ScoreFormat
 import type.UserStaffNameLanguage
@@ -44,6 +45,13 @@ interface UserRepository {
     fun getUserStatistics(userId: Int, sort: UserStatisticsSort): Observable<UserStatisticTypes>
     fun getFavorites(userId: Int, page: Int): Observable<Favourites>
     fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Observable<Favourites>
+    fun toggleFavorite(
+        animeId: Int? = null,
+        mangaId: Int? = null,
+        characterId: Int? = null,
+        staffId: Int? = null,
+        studioId: Int? = null
+    ): Completable
 
     fun getAppSetting(): Observable<AppSetting>
     fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>

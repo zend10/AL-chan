@@ -15,6 +15,7 @@ import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import type.ScoreFormat
@@ -163,6 +164,24 @@ class DefaultUserRepository(
                 }
                 newFavorites
             }
+    }
+
+    override fun toggleFavorite(
+        animeId: Int?,
+        mangaId: Int?,
+        characterId: Int?,
+        staffId: Int?,
+        studioId: Int?
+    ): Completable {
+        return userDataSource.toggleFavorite(animeId, mangaId, characterId, staffId, studioId)
+            .flatMapCompletable {
+                getViewer(Source.NETWORK)
+                    .flatMapCompletable {
+                        _refreshFavoriteTrigger.onNext(it)
+                        Completable.complete()
+                    }
+            }
+
     }
 
     override fun getAppSetting(): Observable<AppSetting> {

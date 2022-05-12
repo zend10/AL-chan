@@ -277,7 +277,7 @@ class EditorViewModel(
     fun updateIsFavorite() {
         _loading.onNext(true)
         disposables.add(
-            mediaListRepository.toggleFavorite(
+            userRepository.toggleFavorite(
                 animeId = if (mediaType == MediaType.ANIME) mediaId else null,
                 mangaId = if (mediaType == MediaType.MANGA) mediaId else null
             )

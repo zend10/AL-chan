@@ -21,6 +21,7 @@ interface UserDataSource {
     fun getUserStatistics(userId: Int, sort: List<UserStatisticsSort>): Observable<Response<UserStatisticsQuery.Data>>
     fun getFavorites(userId: Int, page: Int): Observable<Response<UserFavouritesQuery.Data>>
     fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Single<Response<UpdateFavouriteOrderMutation.Data>>
+    fun toggleFavorite(animeId: Int?, mangaId: Int?, characterId: Int?, staffId: Int?, studioId: Int?): Single<Response<ToggleFavouriteMutation.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
         staffNameLanguage: UserStaffNameLanguage,
