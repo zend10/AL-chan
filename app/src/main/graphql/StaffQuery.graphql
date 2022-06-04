@@ -1,4 +1,4 @@
-query StaffQuery($id:Int) {
+query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[CharacterSort], $characterMediaSort:[MediaSort], $page:Int) {
     Staff(id:$id) {
         id
         name {
@@ -34,7 +34,7 @@ query StaffQuery($id:Int) {
         bloodType
         isFavourite
         siteUrl
-        staffMedia(sort: [POPULARITY_DESC, START_DATE_DESC]) {
+        staffMedia(sort:$staffMediaSort, page:$page) {
             edges {
                 node {
                     id
@@ -62,7 +62,7 @@ query StaffQuery($id:Int) {
                 hasNextPage
             }
         }
-        characters(sort: [FAVOURITES_DESC, ID_DESC]) {
+        characters(sort:$characterSort, page:$page) {
             edges {
                 node {
                     id
@@ -83,6 +83,52 @@ query StaffQuery($id:Int) {
                 }
                 role
                 name
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+        characterMedia(sort:$characterMediaSort, page:$page) {
+            edges {
+              	node {
+                  	id
+                    title {
+                      romaji
+                      english
+                      native
+                      userPreferred
+                    }
+                    coverImage {
+                      extraLarge
+                      large
+                      medium
+                    }
+                }
+              	characters {
+                  	id
+                  	name {
+                      first
+                      middle
+                      last
+                      full
+                      native
+                      alternative
+                      alternativeSpoiler
+                      userPreferred
+                    }
+                  	image {
+                      large
+                      medium
+                    }
+                }
+                characterRole
+                characterName
+                roleNotes
+                dubGroup
             }
             pageInfo {
                 total

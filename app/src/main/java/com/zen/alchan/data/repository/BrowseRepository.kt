@@ -3,6 +3,7 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListType
 import io.reactivex.Observable
+import type.CharacterSort
 import type.MediaSort
 import type.StaffLanguage
 import type.UserStatisticsSort
@@ -15,5 +16,11 @@ interface BrowseRepository {
     fun getMediaCharacters(id: Int, page: Int, language: StaffLanguage): Observable<Pair<PageInfo, List<CharacterEdge>>>
     fun getMediaStaff(id: Int, page: Int): Observable<Pair<PageInfo, List<StaffEdge>>>
     fun getCharacter(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC)): Observable<Character>
-    fun getStaff(id: Int): Observable<Staff>
+    fun getStaff(
+        id: Int,
+        page: Int,
+        staffMediaSort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC),
+        characterSort: List<CharacterSort> = listOf(CharacterSort.FAVOURITES_DESC),
+        characterMediaSort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC)
+    ): Observable<Staff>
 }

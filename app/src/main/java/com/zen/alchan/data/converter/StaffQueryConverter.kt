@@ -99,6 +99,56 @@ fun StaffQuery.Data.convert(): Staff {
                     hasNextPage = it.characters?.pageInfo?.hasNextPage ?: false
                 )
             ),
+            characterMedia = MediaConnection(
+                edges = it.characterMedia?.edges?.filterNotNull()?.map {
+                    MediaEdge(
+                        node = Media(
+                            idAniList = it.node?.id ?: 0,
+                            title = MediaTitle(
+                                romaji = it.node?.title?.romaji ?: "",
+                                english = it.node?.title?.english ?: "",
+                                native = it.node?.title?.native_ ?: "",
+                                userPreferred = it.node?.title?.userPreferred ?: "",
+                            ),
+                            coverImage = MediaCoverImage(
+                                extraLarge = it.node?.coverImage?.extraLarge ?: "",
+                                large = it.node?.coverImage?.large ?: "",
+                                medium = it.node?.coverImage?.medium ?: "",
+                            )
+                        ),
+                        characters = it.characters?.filterNotNull()?.map {
+                            Character(
+                                id = it.id,
+                                name = CharacterName(
+                                    first = it.name?.first ?: "",
+                                    middle = it.name?.middle ?: "",
+                                    last = it.name?.last ?: "",
+                                    full = it.name?.full ?: "",
+                                    native = it.name?.native_ ?: "",
+                                    alternative = it.name?.alternative?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
+                                    alternativeSpoiler = it.name?.alternativeSpoiler?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
+                                    userPreferred = it.name?.userPreferred ?: ""
+                                ),
+                                image = CharacterImage(
+                                    large = it.image?.large ?: "",
+                                    medium = it.image?.medium ?: ""
+                                )
+                            )
+                        } ?: listOf(),
+                        characterRole = it.characterRole,
+                        characterName = it.characterName ?: "",
+                        roleNotes = it.roleNotes ?: "",
+                        dubGroup = it.dubGroup ?: ""
+                    )
+                } ?: listOf(),
+                pageInfo = PageInfo(
+                    total = it.characterMedia?.pageInfo?.total ?: 0,
+                    perPage = it.characterMedia?.pageInfo?.perPage ?: 0,
+                    currentPage = it.characterMedia?.pageInfo?.currentPage ?: 0,
+                    lastPage = it.characterMedia?.pageInfo?.lastPage ?: 0,
+                    hasNextPage = it.characterMedia?.pageInfo?.hasNextPage ?: false
+                )
+            ),
             favourites = it.favourites ?: 0
         )
     } ?: Staff()

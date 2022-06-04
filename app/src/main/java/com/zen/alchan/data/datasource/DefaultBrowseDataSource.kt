@@ -11,6 +11,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Observable
+import type.CharacterSort
 import type.MediaSort
 import type.StaffLanguage
 import type.UserStatisticsSort
@@ -52,8 +53,20 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
         return apolloHandler.apolloClient.rxQuery(query)
     }
 
-    override fun getStaffQuery(id: Int): Observable<Response<StaffQuery.Data>> {
-        val query = StaffQuery(id = Input.fromNullable(id))
+    override fun getStaffQuery(
+        id: Int,
+        page: Int,
+        staffMediaSort: List<MediaSort>,
+        characterSort: List<CharacterSort>,
+        characterMediaSort: List<MediaSort>
+    ): Observable<Response<StaffQuery.Data>> {
+        val query = StaffQuery(
+            id = Input.fromNullable(id),
+            page = Input.fromNullable(page),
+            staffMediaSort = Input.optional(staffMediaSort),
+            characterSort = Input.optional(characterSort),
+            characterMediaSort = Input.optional(characterMediaSort)
+        )
         return apolloHandler.apolloClient.rxQuery(query)
     }
 }

@@ -25,7 +25,6 @@ import io.reactivex.subjects.PublishSubject
 class CharacterViewModel(
     private val browseRepository: BrowseRepository,
     private val userRepository: UserRepository,
-    private val mediaListRepository: MediaListRepository,
     private val clipboardService: ClipboardService
 ) : BaseViewModel() {
 
@@ -65,9 +64,9 @@ class CharacterViewModel(
     val staffMedia: Observable<List<ListItem<Media>>>
         get() = _staffMedia
 
-    private val _mediaLink = PublishSubject.create<String>()
-    val mediaLink: Observable<String>
-        get() = _mediaLink
+    private val _characterLink = PublishSubject.create<String>()
+    val characterLink: Observable<String>
+        get() = _characterLink
 
     private val _characterImageForPreview = PublishSubject.create<String>()
     val characterImageForPreview: Observable<String>
@@ -178,11 +177,11 @@ class CharacterViewModel(
         _staffMedia.onNext(media.map { ListItem(it.node.getTitle(appSetting), it.node) })
     }
 
-    fun loadMediaLink() {
-        _mediaLink.onNext(character.siteUrl)
+    fun loadCharacterLink() {
+        _characterLink.onNext(character.siteUrl)
     }
 
-    fun copyMediaLink() {
+    fun copyCharacterLink() {
         disposables.add(
             clipboardService.copyPlainText(character.siteUrl)
                 .applyScheduler()

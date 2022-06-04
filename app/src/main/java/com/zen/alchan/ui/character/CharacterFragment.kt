@@ -58,12 +58,12 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             menuCopyLink = characterToolbar.menu.findItem(R.id.itemCopyLink)
 
             menuViewOnAniList?.setOnMenuItemClickListener {
-                viewModel.loadMediaLink()
+                viewModel.loadCharacterLink()
                 true
             }
 
             menuCopyLink?.setOnMenuItemClickListener {
-                viewModel.copyMediaLink()
+                viewModel.copyCharacterLink()
                 true
             }
 
@@ -170,7 +170,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
                     navigation.navigateToMedia(data.getId())
                 }
             },
-            viewModel.mediaLink.subscribe {
+            viewModel.characterLink.subscribe {
                 navigation.openWebView(it)
             },
             viewModel.characterImageForPreview.subscribe {

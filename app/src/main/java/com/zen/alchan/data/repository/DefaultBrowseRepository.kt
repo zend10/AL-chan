@@ -6,6 +6,7 @@ import com.zen.alchan.data.manager.BrowseManager
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListType
 import io.reactivex.Observable
+import type.CharacterSort
 import type.MediaSort
 import type.StaffLanguage
 import type.UserStatisticsSort
@@ -69,8 +70,14 @@ class DefaultBrowseRepository(
         }
     }
 
-    override fun getStaff(id: Int): Observable<Staff> {
-        return browseDataSource.getStaffQuery(id).map {
+    override fun getStaff(
+        id: Int,
+        page: Int,
+        staffMediaSort: List<MediaSort>,
+        characterSort: List<CharacterSort>,
+        characterMediaSort: List<MediaSort>
+    ): Observable<Staff> {
+        return browseDataSource.getStaffQuery(id, page, staffMediaSort, characterSort, characterMediaSort).map {
             it.data?.convert()
         }
     }

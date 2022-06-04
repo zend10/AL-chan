@@ -20,6 +20,7 @@ data class Staff(
     val siteUrl: String = "",
     val staffMedia: MediaConnection = MediaConnection(),
     val characters: CharacterConnection = CharacterConnection(),
+    val characterMedia: MediaConnection = MediaConnection(),
     val favourites: Int = 0
 ) {
     fun getImage(appSetting: AppSetting): String {
