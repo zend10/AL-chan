@@ -13,7 +13,8 @@ data class MediaEdge(
     val roleNotes: String = "",
     val dubGroup: String = "",
     val voiceActorRoles: List<StaffRoleType> = listOf(),
-    val staffRole: String = ""
+    val staffRole: String = "",
+    val isMainStudio: Boolean = false
 ) {
     fun getRelationTypeString(): String {
         return relationType?.name?.convertFromSnakeCase(true) ?: ""

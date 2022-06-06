@@ -1,0 +1,33 @@
+query StudioQuery($id:Int, $sort:[MediaSort], $page:Int) {
+    Studio(id:$id) {
+      id
+      name
+      isAnimationStudio
+      media(page:$page, sort:$sort) {
+        edges {
+          node {
+            id
+            title {
+              romaji
+              english
+              native
+              userPreferred
+            }
+            type
+            format
+          }
+          isMainStudio
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+      siteUrl
+      isFavourite
+      favourites
+    }
+}

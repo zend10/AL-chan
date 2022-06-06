@@ -23,4 +23,5 @@ interface BrowseRepository {
         characterSort: List<CharacterSort> = listOf(CharacterSort.FAVOURITES_DESC),
         characterMediaSort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC)
     ): Observable<Staff>
+    fun getStudio(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC)): Observable<Studio>
 }

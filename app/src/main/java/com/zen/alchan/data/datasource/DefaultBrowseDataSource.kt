@@ -5,6 +5,7 @@ import MediaCharactersQuery
 import MediaQuery
 import MediaStaffQuery
 import StaffQuery
+import StudioQuery
 import UserQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -67,6 +68,15 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
             characterSort = Input.optional(characterSort),
             characterMediaSort = Input.optional(characterMediaSort)
         )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getStudioQuery(
+        id: Int,
+        page: Int,
+        sort: List<MediaSort>
+    ): Observable<Response<StudioQuery.Data>> {
+        val query = StudioQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), sort = Input.optional(sort))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 }
