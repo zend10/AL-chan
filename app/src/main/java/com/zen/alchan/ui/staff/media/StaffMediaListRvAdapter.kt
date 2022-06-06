@@ -51,8 +51,6 @@ class StaffMediaListRvAdapter(
                 cardText.maxLines = 2
 
                 cardSubtitle.text = item.staffRole
-                cardSubtitle.setLines(2)
-                cardSubtitle.maxLines = 2
 
                 cardInfoLayout.show(true)
                 cardInfoText.text = item.node.getFormattedMediaFormat(true)

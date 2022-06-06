@@ -51,6 +51,8 @@ class MediaCharacterListRvAdapter(
                 cardText.setLines(2)
                 cardText.maxLines = 2
                 cardSubtitle.text = item.role?.name?.convertFromSnakeCase(false)
+                cardText.setLines(1)
+                cardText.maxLines = 1
 
                 cardRecyclerView.adapter = MediaCharacterListVoiceActorRvAdapter(context, item.voiceActorRoles, appSetting, listener)
                 cardRecyclerView.show(item.voiceActorRoles.isNotEmpty())
