@@ -189,7 +189,9 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
             }
 
             override fun navigateToStaffMedia() {
-
+                arguments?.getInt(STAFF_ID)?.let {
+                    navigation.navigateToStaffMedia(it)
+                }
             }
 
             override val staffCharacterListener: StaffListener.StaffCharacterListener = object : StaffListener.StaffCharacterListener {

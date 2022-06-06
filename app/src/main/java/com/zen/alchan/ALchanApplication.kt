@@ -42,12 +42,14 @@ import com.zen.alchan.ui.social.SocialViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 import com.zen.alchan.ui.staff.StaffViewModel
 import com.zen.alchan.ui.staff.character.StaffCharacterListViewModel
+import com.zen.alchan.ui.staff.media.StaffMediaListViewModel
 import com.zen.alchan.ui.userstats.UserStatsViewModel
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.dsl.module
 
 class ALchanApplication : Application() {
@@ -144,12 +146,13 @@ class ALchanApplication : Application() {
         viewModel { CharacterMediaListViewModel(get(), get()) }
         viewModel { StaffViewModel(get(), get(), get()) }
         viewModel { StaffCharacterListViewModel(get(), get()) }
+        viewModel { StaffMediaListViewModel(get(), get()) }
     }
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidLogger()
+            androidLogger(Level.ERROR)
             androidContext(this@ALchanApplication)
             modules(appModules)
         }

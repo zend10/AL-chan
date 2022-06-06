@@ -14,6 +14,7 @@ interface BrowseNavigationManager {
         CHARACTER_MEDIA,
         STAFF,
         STAFF_CHARACTER,
+        STAFF_MEDIA,
         USER,
         STUDIO,
         ANIME_MEDIA_LIST,
