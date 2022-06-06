@@ -183,7 +183,9 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
     private fun getStaffListener(): StaffListener {
         return object : StaffListener {
             override fun navigateToStaffCharacter() {
-
+                arguments?.getInt(STAFF_ID)?.let {
+                    navigation.navigateToStaffCharacter(it)
+                }
             }
 
             override fun navigateToStaffMedia() {

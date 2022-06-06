@@ -144,6 +144,10 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(BrowseNavigationManager.Page.STAFF, id)
     }
 
+    override fun navigateToStaffCharacter(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.STAFF_CHARACTER, id)
+    }
+
     override fun navigateToUser(id: Int) {
         pushBrowseScreenPage(BrowseNavigationManager.Page.USER, id)
     }

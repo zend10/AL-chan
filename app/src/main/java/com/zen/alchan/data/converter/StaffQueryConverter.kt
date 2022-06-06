@@ -88,7 +88,24 @@ fun StaffQuery.Data.convert(): Staff {
                             )
                         ),
                         role = it.role,
-                        name = it.name ?: ""
+                        name = it.name ?: "",
+                        media = it.media?.map {
+                            Media(
+                                idAniList = it?.id ?: 0,
+                                title = MediaTitle(
+                                    romaji = it?.title?.romaji ?: "",
+                                    english = it?.title?.english ?: "",
+                                    native = it?.title?.native_ ?: "",
+                                    userPreferred = it?.title?.userPreferred ?: ""
+                                ),
+                                coverImage = MediaCoverImage(
+                                    extraLarge = it?.coverImage?.extraLarge ?: "",
+                                    large = it?.coverImage?.large ?: "",
+                                    medium = it?.coverImage?.medium ?: ""
+
+                                )
+                            )
+                        } ?: listOf()
                     )
                 } ?: listOf(),
                 pageInfo = PageInfo(

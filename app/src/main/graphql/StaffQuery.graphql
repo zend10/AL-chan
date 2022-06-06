@@ -83,6 +83,20 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                 }
                 role
                 name
+                media {
+                  id
+                  title {
+                    romaji
+                    english
+                    native
+                    userPreferred
+                  }
+                  coverImage {
+                    extraLarge
+                    large
+                    medium
+                  }
+                }
             }
             pageInfo {
                 total
