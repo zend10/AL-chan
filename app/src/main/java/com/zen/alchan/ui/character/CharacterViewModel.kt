@@ -48,6 +48,10 @@ class CharacterViewModel(
     val mediaCount: Observable<Int>
         get() = _mediaCount
 
+    private val _mediaCountVisibility = BehaviorSubject.createDefault(false)
+    val mediaCountVisibility: Observable<Boolean>
+        get() = _mediaCountVisibility
+
     private val _favoritesCount = BehaviorSubject.createDefault(0)
     val favoritesCount: Observable<Int>
         get() = _favoritesCount
@@ -139,6 +143,7 @@ class CharacterViewModel(
                         _characterName.onNext(character.name.userPreferred)
                         _characterNativeName.onNext(character.name.native)
                         _mediaCount.onNext(character.media.pageInfo.total)
+                        _mediaCountVisibility.onNext(!character.media.pageInfo.hasNextPage)
                         _favoritesCount.onNext(character.favourites)
                         _isFavorite.onNext(character.isFavourite)
 

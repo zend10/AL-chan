@@ -388,6 +388,7 @@
     <string name="long_press_to_view_series_they_feature_in">Long press to view series they feature in</string>
     <string name="media_list">Media List</string>
     <string name="your_favorite">Your Favorite</string>
+    <string name="roles">Roles</string>
 
 
     <plurals name="minute">

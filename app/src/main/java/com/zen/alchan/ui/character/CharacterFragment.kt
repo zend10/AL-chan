@@ -15,10 +15,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.databinding.FragmentCharacterBinding
-import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
-import com.zen.alchan.helper.extensions.clicks
-import com.zen.alchan.helper.extensions.getAttrValue
-import com.zen.alchan.helper.extensions.getNumberFormatting
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
@@ -139,6 +136,10 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             },
             viewModel.mediaCount.subscribe {
                 binding.characterMediaText.text = it.getNumberFormatting()
+            },
+            viewModel.mediaCountVisibility.subscribe {
+                binding.characterMediaLayout.show(it)
+                binding.characterBarDivider1.show(it)
             },
             viewModel.favoritesCount.subscribe {
                 binding.characterFavoritesText.text = it.getNumberFormatting()

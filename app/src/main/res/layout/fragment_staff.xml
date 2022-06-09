@@ -170,6 +170,7 @@
                             android:layout_height="wrap_content"/>
 
                         <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/staffMediaLabel"
                             style="?themeSmallFont"
                             android:text="@string/media"
                             android:textAlignment="center"

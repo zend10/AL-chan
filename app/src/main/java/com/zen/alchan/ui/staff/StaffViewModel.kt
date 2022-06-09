@@ -36,6 +36,18 @@ class StaffViewModel(
     val staffName: Observable<String>
         get() = _staffName
 
+    private val _mediaOrCharacterCount = BehaviorSubject.createDefault(0)
+    val mediaOrCharacterCount: Observable<Int>
+        get() = _mediaOrCharacterCount
+
+    private val _mediaOrCharacterText = BehaviorSubject.createDefault(R.string.media)
+    val mediaOrCharacterText: Observable<Int>
+        get() = _mediaOrCharacterText
+
+    private val _mediaOrCharacterCountVisibility = BehaviorSubject.createDefault(false)
+    val mediaOrCharacterCountVisibility: Observable<Boolean>
+        get() = _mediaOrCharacterCountVisibility
+
     private val _favoritesCount = BehaviorSubject.createDefault(0)
     val favoritesCount: Observable<Int>
         get() = _favoritesCount
@@ -143,6 +155,18 @@ class StaffViewModel(
                                 }
                             }
                             itemList.add(StaffItem(staff = staff, media = media, viewType = StaffItem.VIEW_TYPE_MEDIA))
+                        }
+
+                        val mediaCount = staff.staffMedia.pageInfo.total
+                        val characterCount = staff.characters.pageInfo.total
+                        if (mediaCount > characterCount) {
+                            _mediaOrCharacterCount.onNext(mediaCount)
+                            _mediaOrCharacterText.onNext(R.string.media)
+                            _mediaOrCharacterCountVisibility.onNext(!staff.staffMedia.pageInfo.hasNextPage)
+                        } else {
+                            _mediaOrCharacterCount.onNext(characterCount)
+                            _mediaOrCharacterText.onNext(R.string.roles)
+                            _mediaOrCharacterCountVisibility.onNext(!staff.characters.pageInfo.hasNextPage)
                         }
 
                         _staffItemList.onNext(itemList)
