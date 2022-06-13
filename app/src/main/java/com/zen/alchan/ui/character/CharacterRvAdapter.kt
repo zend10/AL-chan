@@ -55,6 +55,7 @@ class CharacterRvAdapter(
                 view.listRecyclerView.layoutManager = GridLayoutManager(context, 3)
                 view.listRecyclerView.adapter = characterMediaAdapter
                 view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, context.resources.getDimensionPixelSize(R.dimen.marginNormal), false))
+                view.listRecyclerView.isNestedScrollingEnabled = false
                 return MediaViewHolder(view)
             }
             else -> {

@@ -20,7 +20,12 @@ fun StudioQuery.Data.convert(): Studio {
                                 userPreferred = it?.node?.title?.userPreferred ?: ""
                             ),
                             type = it?.node?.type,
-                            format = it?.node?.format
+                            format = it?.node?.format,
+                            coverImage = MediaCoverImage(
+                                extraLarge = it?.node?.coverImage?.extraLarge ?: "",
+                                large = it?.node?.coverImage?.large ?: "",
+                                medium = it?.node?.coverImage?.medium ?: ""
+                            )
                         ),
                         isMainStudio = it?.isMainStudio ?: false
                     )

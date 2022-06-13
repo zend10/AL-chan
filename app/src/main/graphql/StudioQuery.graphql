@@ -15,6 +15,11 @@ query StudioQuery($id:Int, $sort:[MediaSort], $page:Int) {
             }
             type
             format
+            coverImage {
+                extraLarge
+                large
+                medium
+            }
           }
           isMainStudio
         }

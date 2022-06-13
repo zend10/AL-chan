@@ -80,9 +80,8 @@
                                 app:layout_constraintTop_toBottomOf="@id/studioHeaderGap"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginTop="@dimen/marginPageBig"
-                                android:layout_marginStart="@dimen/marginPageNormal"
-                                android:layout_marginEnd="@dimen/marginPageBig"
+                                android:layout_marginTop="@dimen/marginFar"
+                                android:layout_marginHorizontal="@dimen/marginPageBig"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content">
 

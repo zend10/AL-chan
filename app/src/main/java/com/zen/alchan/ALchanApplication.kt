@@ -43,6 +43,7 @@ import com.zen.alchan.ui.splash.SplashViewModel
 import com.zen.alchan.ui.staff.StaffViewModel
 import com.zen.alchan.ui.staff.character.StaffCharacterListViewModel
 import com.zen.alchan.ui.staff.media.StaffMediaListViewModel
+import com.zen.alchan.ui.studio.StudioViewModel
 import com.zen.alchan.ui.userstats.UserStatsViewModel
 
 import org.koin.android.ext.koin.androidContext
@@ -147,6 +148,7 @@ class ALchanApplication : Application() {
         viewModel { StaffViewModel(get(), get(), get()) }
         viewModel { StaffCharacterListViewModel(get(), get()) }
         viewModel { StaffMediaListViewModel(get(), get()) }
+        viewModel { StudioViewModel(get(), get(), get()) }
     }
 
     override fun onCreate() {
