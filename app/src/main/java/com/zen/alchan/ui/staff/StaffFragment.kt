@@ -31,6 +31,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
 
     private var scaleUpAnimation: Animation? = null
     private var scaleDownAnimation: Animation? = null
+    private var isToolbarExpanded = true
 
     private var staffAdapter: StaffRvAdapter? = null
 
@@ -48,6 +49,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
         binding.apply {
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+            staffAppBarLayout.setExpanded(isToolbarExpanded)
 
             setUpToolbar(staffToolbar, "", R.drawable.ic_delete) {
                 navigation.closeBrowseScreen()
@@ -71,7 +73,8 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
             assignAdapter(AppSetting())
 
             staffAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                staffSwipeRefresh.isEnabled = verticalOffset == 0
+                isToolbarExpanded = verticalOffset == 0
+                staffSwipeRefresh.isEnabled = isToolbarExpanded
 
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
                     if (staffBannerContentLayout.isVisible) {

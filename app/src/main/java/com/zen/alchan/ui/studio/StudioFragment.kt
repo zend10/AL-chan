@@ -29,6 +29,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
 
     private var scaleUpAnimation: Animation? = null
     private var scaleDownAnimation: Animation? = null
+    private var isToolbarExpanded = true
 
     private var studioAdapter: StudioRvAdapter? = null
 
@@ -46,6 +47,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
         binding.apply {
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+            studioAppBarLayout.setExpanded(isToolbarExpanded)
 
             setUpToolbar(studioToolbar, "", R.drawable.ic_delete) {
                 navigation.closeBrowseScreen()
@@ -69,7 +71,8 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
             assignAdapter(AppSetting())
 
             studioAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                studioSwipeRefresh.isEnabled = verticalOffset == 0
+                isToolbarExpanded = verticalOffset == 0
+                studioSwipeRefresh.isEnabled = isToolbarExpanded
 
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
                     if (studioBannerContentLayout.isVisible) {

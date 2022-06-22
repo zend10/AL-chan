@@ -32,6 +32,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
     private var scaleUpAnimation: Animation? = null
     private var scaleDownAnimation: Animation? = null
+    private var isToolbarExpanded = true
 
     private var mediaAdapter: MediaRvAdapter? = null
 
@@ -46,6 +47,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         binding.apply {
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+            mediaAppBarLayout.setExpanded(isToolbarExpanded)
 
             setUpToolbar(mediaToolbar, "", R.drawable.ic_custom_close) {
                 navigation.closeBrowseScreen()
@@ -55,7 +57,8 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             assignAdapter(AppSetting())
 
             mediaAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                mediaSwipeRefresh.isEnabled = verticalOffset == 0
+                isToolbarExpanded = verticalOffset == 0
+                mediaSwipeRefresh.isEnabled = isToolbarExpanded
 
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
                     if (mediaBannerContentLayout.isVisible) {

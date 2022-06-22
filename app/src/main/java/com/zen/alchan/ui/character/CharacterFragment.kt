@@ -28,6 +28,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
 
     private var scaleUpAnimation: Animation? = null
     private var scaleDownAnimation: Animation? = null
+    private var isToolbarExpanded = true
 
     private var characterAdapter: CharacterRvAdapter? = null
 
@@ -45,6 +46,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
         binding.apply {
             scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+            characterAppBarLayout.setExpanded(isToolbarExpanded)
 
             setUpToolbar(characterToolbar, "", R.drawable.ic_delete) {
                 navigation.closeBrowseScreen()
@@ -68,7 +70,8 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             assignAdapter(AppSetting())
 
             characterAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                characterSwipeRefresh.isEnabled = verticalOffset == 0
+                isToolbarExpanded = verticalOffset == 0
+                characterSwipeRefresh.isEnabled = isToolbarExpanded
 
                 if (abs(verticalOffset) - appBarLayout.totalScrollRange >= -50) {
                     if (characterBannerContentLayout.isVisible) {
