@@ -160,6 +160,10 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(BrowseNavigationManager.Page.STUDIO, id)
     }
 
+    override fun navigateToStudioMedia(id: Int) {
+        pushBrowseScreenPage(BrowseNavigationManager.Page.STUDIO_MEDIA, id)
+    }
+
     override fun navigateToAnimeMediaList(id: Int) {
         pushBrowseScreenPage(BrowseNavigationManager.Page.ANIME_MEDIA_LIST, id)
     }

@@ -17,6 +17,7 @@ interface BrowseNavigationManager {
         STAFF_MEDIA,
         USER,
         STUDIO,
+        STUDIO_MEDIA,
         ANIME_MEDIA_LIST,
         MANGA_MEDIA_LIST,
         FOLLOWING,

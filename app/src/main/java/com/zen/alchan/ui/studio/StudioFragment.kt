@@ -179,7 +179,9 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
             }
 
             override fun navigateToStudioMedia() {
-
+                arguments?.getInt(STUDIO_ID)?.let {
+                    navigation.navigateToStudioMedia(it)
+                }
             }
         }
     }

@@ -19,6 +19,7 @@ import com.zen.alchan.ui.staff.StaffFragment
 import com.zen.alchan.ui.staff.character.StaffCharacterListFragment
 import com.zen.alchan.ui.staff.media.StaffMediaListFragment
 import com.zen.alchan.ui.studio.StudioFragment
+import com.zen.alchan.ui.studio.media.StudioMediaListFragment
 import com.zen.alchan.ui.userstats.UserStatsFragment
 
 class DefaultBrowseNavigationManager(
@@ -67,6 +68,10 @@ class DefaultBrowseNavigationManager(
         swapPage(StudioFragment.newInstance(studioId))
     }
 
+    private fun navigateToStudioMedia(studioId: Int) {
+        swapPage(StudioMediaListFragment.newInstance(studioId))
+    }
+
     private fun navigateToAnimeMediaList(userId: Int) {
         swapPage(MediaListFragment.newInstance(MediaType.ANIME, userId))
     }
@@ -107,6 +112,7 @@ class DefaultBrowseNavigationManager(
             BrowseNavigationManager.Page.STAFF_CHARACTER -> id?.let { navigateToStaffCharacter(id) }
             BrowseNavigationManager.Page.STAFF_MEDIA -> id?.let { navigateToStaffMedia(id) }
             BrowseNavigationManager.Page.STUDIO -> id?.let { navigateToStudio(id) }
+            BrowseNavigationManager.Page.STUDIO_MEDIA -> id?.let { navigateToStudioMedia(id) }
             BrowseNavigationManager.Page.ANIME_MEDIA_LIST -> id?.let { navigateToAnimeMediaList(id) }
             BrowseNavigationManager.Page.MANGA_MEDIA_LIST -> id?.let { navigateToMangaMediaList(id) }
             BrowseNavigationManager.Page.FOLLOWING -> id?.let { navigateToFollowing(id) }

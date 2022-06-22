@@ -49,7 +49,7 @@ class StudioRvAdapter(
             binding.apply {
                 titleText.text = context.getString(R.string.media)
                 seeMoreText.show(item.studio.media.edges.size > MEDIA_LIMIT)
-                seeMoreText.clicks { }
+                seeMoreText.clicks { listener.navigateToStudioMedia() }
                 studioMediaAdapter?.updateData(item.studio.media.edges.take(MEDIA_LIMIT))
             }
         }

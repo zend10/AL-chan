@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.staff.media
+package com.zen.alchan.ui.studio.media
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,12 +16,11 @@ import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, StudioMediaListViewModel>() {
 
-class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, StaffMediaListViewModel>() {
+    override val viewModel: StudioMediaListViewModel by viewModel()
 
-    override val viewModel: StaffMediaListViewModel by viewModel()
-
-    private var adapter: StaffMediaListRvAdapter? = null
+    private var adapter: StudioMediaListRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -34,7 +33,7 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.media_list))
 
-            adapter = StaffMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffMediaListListener())
+            adapter = StudioMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStudioMediaListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
@@ -68,7 +67,7 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
                 dialog.showToast(it)
             },
             viewModel.appSetting.subscribe {
-                adapter = StaffMediaListRvAdapter(requireContext(), listOf(), it, getStaffMediaListListener())
+                adapter = StudioMediaListRvAdapter(requireContext(), listOf(), it, getStudioMediaListListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },
             viewModel.media.subscribe {
@@ -80,12 +79,12 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
         )
 
         arguments?.let {
-            viewModel.loadData(it.getInt(STAFF_ID))
+            viewModel.loadData(it.getInt(STUDIO_ID))
         }
     }
 
-    private fun getStaffMediaListListener(): StaffMediaListRvAdapter.StaffMediaListListener {
-        return object : StaffMediaListRvAdapter.StaffMediaListListener {
+    private fun getStudioMediaListListener(): StudioMediaListRvAdapter.StudioMediaListListener {
+        return object : StudioMediaListRvAdapter.StudioMediaListListener {
             override fun navigateToMedia(media: Media) {
                 navigation.navigateToMedia(media.getId())
             }
@@ -98,13 +97,12 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
     }
 
     companion object {
-        const val STAFF_ID = "staffId"
+        const val STUDIO_ID = "studioId"
         @JvmStatic
-        fun newInstance(staffId: Int) =
-            StaffMediaListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(STAFF_ID, staffId)
-                }
+        fun newInstance(studioId: Int) = StudioMediaListFragment().apply {
+            arguments = Bundle().apply {
+                putInt(STUDIO_ID, studioId)
             }
+        }
     }
 }
