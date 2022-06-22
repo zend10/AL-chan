@@ -2,6 +2,7 @@ package com.zen.alchan.ui.character.media
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,10 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
 
     private var adapter: CharacterMediaRvAdapter? = null
 
+    private var menuSortBy: MenuItem? = null
+    private var menuMediaType: MenuItem? = null
+    private var menuShowHideOnList: MenuItem? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -37,6 +42,25 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.media_list))
+            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_character_media_list)
+            menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
+            menuMediaType = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemMediaType)
+            menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
+
+            menuSortBy?.setOnMenuItemClickListener {
+                viewModel.loadMediaSorts()
+                true
+            }
+
+            menuMediaType?.setOnMenuItemClickListener {
+                viewModel.loadMediaTypes()
+                true
+            }
+
+            menuShowHideOnList?.setOnMenuItemClickListener {
+                viewModel.loadShowHideOnLists()
+                true
+            }
 
             adapter = CharacterMediaRvAdapter(requireContext(), listOf(), AppSetting(), getCharacterMediaListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -80,6 +104,21 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.mediaSortList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateMediaSort(data)
+                }
+            },
+            viewModel.mediaTypeList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateMediaType(data)
+                }
+            },
+            viewModel.showHideOnListList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateShowHideOnList(data)
+                }
             }
         )
 
@@ -99,6 +138,9 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        menuSortBy = null
+        menuMediaType = null
+        menuShowHideOnList = null
     }
 
     companion object {

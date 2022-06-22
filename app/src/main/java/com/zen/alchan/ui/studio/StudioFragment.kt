@@ -192,6 +192,8 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
     override fun onDestroyView() {
         super.onDestroyView()
         studioAdapter = null
+        menuCopyLink = null
+        menuViewOnAniList = null
     }
 
     companion object {

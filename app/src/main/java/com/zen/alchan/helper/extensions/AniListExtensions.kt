@@ -78,6 +78,17 @@ fun StaffLanguage.getString(): String {
     return name.convertFromSnakeCase(true)
 }
 
+fun MediaSort.getStringResource(): Int {
+    return when (this) {
+        MediaSort.POPULARITY_DESC -> R.string.popularity
+        MediaSort.START_DATE_DESC -> R.string.latest_release
+        MediaSort.START_DATE -> R.string.earliest_release
+        MediaSort.FAVOURITES_DESC -> R.string.favorites
+        MediaSort.SCORE_DESC -> R.string.score
+        else -> 0
+    }
+}
+
 inline fun <reified T: Enum<*>> getNonUnknownValues(): List<T> {
     return enumValues<T>().filter { it.name != "UNKNOWN__" }
 }

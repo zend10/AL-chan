@@ -221,6 +221,8 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
     override fun onDestroyView() {
         super.onDestroyView()
         staffAdapter = null
+        menuCopyLink = null
+        menuViewOnAniList = null
     }
 
     companion object {

@@ -12,10 +12,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Observable
-import type.CharacterSort
-import type.MediaSort
-import type.StaffLanguage
-import type.UserStatisticsSort
+import type.*
 
 class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : BrowseDataSource {
 
@@ -49,8 +46,8 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
         return apolloHandler.apolloClient.rxQuery(query)
     }
 
-    override fun getCharacterQuery(id: Int, page: Int, sort: List<MediaSort>): Observable<Response<CharacterQuery.Data>> {
-        val query = CharacterQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), sort = Input.optional(sort))
+    override fun getCharacterQuery(id: Int, page: Int, sort: List<MediaSort>, type: MediaType?, onList: Boolean?): Observable<Response<CharacterQuery.Data>> {
+        val query = CharacterQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), sort = Input.optional(sort), type = Input.optional(type), onList = Input.optional(onList))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

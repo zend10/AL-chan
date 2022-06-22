@@ -219,6 +219,8 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
     override fun onDestroyView() {
         super.onDestroyView()
         characterAdapter = null
+        menuCopyLink = null
+        menuViewOnAniList = null
     }
 
     companion object {

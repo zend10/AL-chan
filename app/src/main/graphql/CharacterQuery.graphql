@@ -1,4 +1,4 @@
-query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort]) {
+query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort],$type:MediaType,$onList:Boolean) {
     Character(id:$id) {
         id
         name {
@@ -26,7 +26,7 @@ query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort]) {
         bloodType
         isFavourite
         siteUrl
-        media(page:$page,sort:$sort) {
+        media(page:$page,sort:$sort,type:$type,onList:$onList) {
             edges {
                 node {
                     id

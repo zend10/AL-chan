@@ -389,6 +389,14 @@
     <string name="media_list">Media List</string>
     <string name="your_favorite">Your Favorite</string>
     <string name="roles">Roles</string>
+    <string name="show_hide_series_on_list">Show/Hide series on list</string>
+    <string name="latest_release">Latest Release</string>
+    <string name="earliest_release">Earliest Release</string>
+    <string name="show_all">Show all</string>
+    <string name="only_show_series_on_my_list">Only show series on my list</string>
+    <string name="hide_series_on_my_list">Hide series on my list</string>
+    <string name="all">All</string>
+    <string name="show_anime_manga">Show Anime/Manga</string>
 
 
     <plurals name="minute">
