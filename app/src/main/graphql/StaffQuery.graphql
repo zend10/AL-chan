@@ -1,4 +1,4 @@
-query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[CharacterSort], $characterMediaSort:[MediaSort], $page:Int) {
+query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[CharacterSort], $characterMediaSort:[MediaSort], $onList: Boolean, $page:Int) {
     Staff(id:$id) {
         id
         name {
@@ -34,7 +34,7 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
         bloodType
         isFavourite
         siteUrl
-        staffMedia(sort:$staffMediaSort, page:$page) {
+        staffMedia(sort:$staffMediaSort, onList:$onList page:$page) {
             edges {
                 node {
                     id
@@ -106,7 +106,7 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                 hasNextPage
             }
         }
-        characterMedia(sort:$characterMediaSort, page:$page) {
+        characterMedia(sort:$characterMediaSort, onList:$onList, page:$page) {
             edges {
               	node {
                   	id
@@ -121,6 +121,7 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                       large
                       medium
                     }
+                    format
                 }
               	characters {
                   	id

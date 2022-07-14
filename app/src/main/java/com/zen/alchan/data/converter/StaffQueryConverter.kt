@@ -131,7 +131,8 @@ fun StaffQuery.Data.convert(): Staff {
                                 extraLarge = it.node?.coverImage?.extraLarge ?: "",
                                 large = it.node?.coverImage?.large ?: "",
                                 medium = it.node?.coverImage?.medium ?: "",
-                            )
+                            ),
+                            format = it.node?.format
                         ),
                         characters = it.characters?.filterNotNull()?.map {
                             Character(

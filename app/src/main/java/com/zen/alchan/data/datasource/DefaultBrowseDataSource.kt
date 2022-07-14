@@ -56,14 +56,16 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
         page: Int,
         staffMediaSort: List<MediaSort>,
         characterSort: List<CharacterSort>,
-        characterMediaSort: List<MediaSort>
+        characterMediaSort: List<MediaSort>,
+        onList: Boolean?
     ): Observable<Response<StaffQuery.Data>> {
         val query = StaffQuery(
             id = Input.fromNullable(id),
             page = Input.fromNullable(page),
             staffMediaSort = Input.optional(staffMediaSort),
             characterSort = Input.optional(characterSort),
-            characterMediaSort = Input.optional(characterMediaSort)
+            characterMediaSort = Input.optional(characterMediaSort),
+            onList = Input.optional(onList)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

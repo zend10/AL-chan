@@ -85,6 +85,9 @@ fun MediaSort.getStringResource(): Int {
         MediaSort.START_DATE -> R.string.earliest_release
         MediaSort.FAVOURITES_DESC -> R.string.favorites
         MediaSort.SCORE_DESC -> R.string.score
+        MediaSort.TITLE_ROMAJI -> R.string.title_romaji
+        MediaSort.TITLE_ENGLISH -> R.string.title_english
+        MediaSort.TITLE_NATIVE -> R.string.title_native
         else -> 0
     }
 }

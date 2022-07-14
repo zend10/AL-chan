@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.media.character
+package com.zen.alchan.ui.staff.character
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,23 +7,22 @@ import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
-import com.zen.alchan.data.response.anilist.CharacterEdge
-import com.zen.alchan.data.response.anilist.Staff
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.databinding.ListCardImageAndTextBinding
 import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.helper.extensions.clicks
-import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
-class MediaCharacterListRvAdapter(
+class StaffCharacterMediaListRvAdapter(
     private val context: Context,
-    list: List<CharacterEdge?>,
+    list: List<MediaEdge?>,
     private val appSetting: AppSetting,
-    private val listener: MediaCharacterListListener
-): BaseRecyclerViewAdapter<CharacterEdge?, ViewBinding>(list) {
+    private val listener: StaffCharacterListListener
+) : BaseRecyclerViewAdapter<MediaEdge?, ViewBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,35 +40,32 @@ class MediaCharacterListRvAdapter(
     }
 
     inner class ItemViewHolder(private val binding: ListCardImageAndTextBinding) : ViewHolder(binding) {
-        override fun bind(item: CharacterEdge?, index: Int) {
+        override fun bind(item: MediaEdge?, index: Int) {
             if (item == null)
                 return
 
             binding.apply {
-                ImageUtil.loadImage(context, item.node.getImage(appSetting), cardImage)
-                cardText.text = item.node.name.userPreferred
+                ImageUtil.loadImage(context, item.node.getCoverImage(appSetting), cardImage)
+                cardText.text = item.node.getTitle(appSetting)
                 cardText.setLines(2)
                 cardText.maxLines = 2
-                cardSubtitle.text = item.role?.name?.convertFromSnakeCase(false)
-                cardSubtitle.setLines(1)
-                cardSubtitle.maxLines = 1
 
-                cardRecyclerView.adapter = MediaCharacterListVoiceActorRvAdapter(context, item.voiceActorRoles, appSetting, listener)
-                cardRecyclerView.show(item.voiceActorRoles.isNotEmpty())
+                cardInfoText.text = item.node.getFormattedMediaFormat(true)
+                cardInfoLayout.show(true)
 
-                root.clicks { listener.navigateToCharacter(item.node) }
+                cardSubtitle.show(false)
+
+                cardRecyclerView.adapter = StaffCharacterMediaListCharacterRvAdapter(context, item.characters, appSetting, listener)
+                cardRecyclerView.show(item.characters.isNotEmpty())
+
+                root.clicks { listener.navigateToMedia(item.node) }
             }
         }
     }
 
     inner class LoadingViewHolder(private val binding: ListLoadingBinding) : ViewHolder(binding) {
-        override fun bind(item: CharacterEdge?, index: Int) {
+        override fun bind(item: MediaEdge?, index: Int) {
             // do nothing
         }
-    }
-
-    interface MediaCharacterListListener {
-        fun navigateToCharacter(character: Character)
-        fun navigateToStaff(staff: Staff)
     }
 }

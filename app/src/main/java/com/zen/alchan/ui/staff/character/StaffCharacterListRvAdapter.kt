@@ -68,9 +68,4 @@ class StaffCharacterListRvAdapter(
             // do nothing
         }
     }
-
-    interface StaffCharacterListListener {
-        fun navigateToCharacter(character: Character)
-        fun navigateToMedia(media: Media)
-    }
 }

@@ -3,6 +3,7 @@ package com.zen.alchan.ui.staff.character
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +29,11 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override val viewModel: StaffCharacterListViewModel by viewModel()
 
     private var adapter: StaffCharacterListRvAdapter? = null
+    private var mediaAdapter: StaffCharacterMediaListRvAdapter? = null
+
+    private var menuShowCharacters: MenuItem? = null
+    private var menuSortBy: MenuItem? = null
+    private var menuShowHideOnList: MenuItem? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -39,11 +45,32 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.character_list))
+            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_staff_character_list)
+            menuShowCharacters = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowCharacters)
+            menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
+            menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
+
+            menuShowCharacters?.setOnMenuItemClickListener {
+                viewModel.updateShowCharacters()
+                true
+            }
+
+            menuSortBy?.setOnMenuItemClickListener {
+                viewModel.loadMediaSorts()
+                true
+            }
+
+            menuShowHideOnList?.setOnMenuItemClickListener {
+                viewModel.loadShowHideOnLists()
+                true
+            }
 
             adapter = StaffCharacterListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffCharacterListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
+
+            mediaAdapter = StaffCharacterMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffCharacterListListener())
 
             infiniteScrollingSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -80,8 +107,33 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             viewModel.characters.subscribe {
                 adapter?.updateData(it, true)
             },
+            viewModel.media.subscribe {
+                mediaAdapter?.updateData(it, true)
+            },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.showCharactersText.subscribe {
+                menuShowCharacters?.title = getString(it)
+            },
+            viewModel.showCharacters.subscribe {
+                binding.infiniteScrollingRecyclerView.adapter = if (it) adapter else mediaAdapter
+            },
+            viewModel.mediaSortVisibility.subscribe {
+                menuSortBy?.isVisible = it
+            },
+            viewModel.mediaSortList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateMediaSort(data)
+                }
+            },
+            viewModel.showHideOnListVisibility.subscribe {
+                menuShowHideOnList?.isVisible = it
+            },
+            viewModel.showHideOnListList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateShowHideOnList(data)
+                }
             }
         )
 
@@ -90,8 +142,8 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
         }
     }
 
-    private fun getStaffCharacterListListener(): StaffCharacterListRvAdapter.StaffCharacterListListener {
-        return object : StaffCharacterListRvAdapter.StaffCharacterListListener {
+    private fun getStaffCharacterListListener(): StaffCharacterListListener {
+        return object : StaffCharacterListListener {
             override fun navigateToCharacter(character: Character) {
                 navigation.navigateToCharacter(character.id)
             }
@@ -105,6 +157,9 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        menuShowCharacters = null
+        menuSortBy = null
+        menuShowHideOnList = null
     }
 
     companion object {

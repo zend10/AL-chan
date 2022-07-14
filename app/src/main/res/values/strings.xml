@@ -397,6 +397,11 @@
     <string name="hide_series_on_my_list">Hide series on my list</string>
     <string name="all">All</string>
     <string name="show_anime_manga">Show Anime/Manga</string>
+    <string name="title_romaji">Title Romaji</string>
+    <string name="title_english">Title English</string>
+    <string name="title_native">Title Native</string>
+    <string name="show_characters">Show Characters</string>
+    <string name="show_media">Show Media</string>
 
 
     <plurals name="minute">

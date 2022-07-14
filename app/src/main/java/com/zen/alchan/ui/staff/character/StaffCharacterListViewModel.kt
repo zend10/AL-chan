@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.staff.character
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
@@ -28,12 +29,42 @@ class StaffCharacterListViewModel(
     val characters: Observable<List<CharacterEdge>>
         get() = _characters
 
+    private val _media = BehaviorSubject.createDefault<List<MediaEdge>>(listOf())
+    val media: Observable<List<MediaEdge>>
+        get() = _media
+
     private val _emptyLayoutVisibility = BehaviorSubject.createDefault(false)
     val emptyLayoutVisibility: Observable<Boolean>
         get() = _emptyLayoutVisibility
 
+    private val _showCharactersText = BehaviorSubject.createDefault(R.string.show_media)
+    val showCharactersText: Observable<Int>
+        get() = _showCharactersText
+
+    private val _showCharacters = BehaviorSubject.createDefault(true)
+    val showCharacters: Observable<Boolean>
+        get() = _showCharacters
+
+    private val _mediaSortVisibility = BehaviorSubject.createDefault(false)
+    val mediaSortVisibility: Observable<Boolean>
+        get() = _mediaSortVisibility
+
+    private val _mediaSortList = PublishSubject.create<List<ListItem<MediaSort>>>()
+    val mediaSortList: Observable<List<ListItem<MediaSort>>>
+        get() = _mediaSortList
+
+    private val _showHideOnListVisibility = BehaviorSubject.createDefault(false)
+    val showHideOnListVisibility: Observable<Boolean>
+        get() = _showHideOnListVisibility
+
+    private val _showHideOnListList = PublishSubject.create<List<ListItem<Boolean?>>>()
+    val showHideOnListList: Observable<List<ListItem<Boolean?>>>
+        get() = _showHideOnListList
+
     private var staffId = 0
     private var characterSort = CharacterSort.FAVOURITES_DESC
+    private var mediaSort = MediaSort.POPULARITY_DESC
+    private var onList: Boolean? = null
 
     private var hasNextPage = false
     private var currentPage = 0
@@ -63,9 +94,15 @@ class StaffCharacterListViewModel(
 
     fun loadNextPage() {
         if ((state == State.LOADED || state == State.ERROR) && hasNextPage) {
-            val currentCharacters = ArrayList(_characters.value ?: listOf())
-            currentCharacters.add(null)
-            _characters.onNext(currentCharacters)
+            if (_showCharacters.value == true) {
+                val currentCharacters = ArrayList(_characters.value ?: listOf())
+                currentCharacters.add(null)
+                _characters.onNext(currentCharacters)
+            } else {
+                val currentMedia = ArrayList(_media.value ?: listOf())
+                currentMedia.add(null)
+                _media.onNext(currentMedia)
+            }
 
             loadCharacter(true)
         }
@@ -78,7 +115,7 @@ class StaffCharacterListViewModel(
         state = State.LOADING
 
         disposables.add(
-            browseRepository.getStaff(staffId, if (isLoadingNextPage) currentPage + 1 else 1, characterSort = listOf(characterSort))
+            browseRepository.getStaff(staffId, if (isLoadingNextPage) currentPage + 1 else 1, characterSort = listOf(characterSort), characterMediaSort = listOf(mediaSort), onList = onList)
                 .applyScheduler()
                 .doFinally {
                     if (!isLoadingNextPage) {
@@ -92,12 +129,23 @@ class StaffCharacterListViewModel(
                         currentPage = staff.characters.pageInfo.currentPage
 
                         if (isLoadingNextPage) {
-                            val currentCharacters = ArrayList(_characters.value ?: listOf())
-                            currentCharacters.remove(null)
-                            currentCharacters.addAll(staff.characters.edges)
-                            _characters.onNext(currentCharacters)
+                            if (_showCharacters.value == true) {
+                                val currentCharacters = ArrayList(_characters.value ?: listOf())
+                                currentCharacters.remove(null)
+                                currentCharacters.addAll(staff.characters.edges)
+                                _characters.onNext(currentCharacters)
+                            } else {
+                                val currentMedia = ArrayList(_media.value ?: listOf())
+                                currentMedia.remove(null)
+                                currentMedia.addAll(staff.characterMedia.edges)
+                                _media.onNext(currentMedia)
+                            }
                         } else {
-                            _characters.onNext(staff.characters.edges)
+                            if (_showCharacters.value == true) {
+                                _characters.onNext(staff.characters.edges)
+                            } else {
+                                _media.onNext(staff.characterMedia.edges)
+                            }
                         }
 
                         state = State.LOADED
@@ -107,6 +155,64 @@ class StaffCharacterListViewModel(
                         state  = State.ERROR
                     }
                 )
+        )
+    }
+
+    fun updateShowCharacters() {
+        _showCharacters.value?.let {
+            val newShouldShowCharacter = !it
+            if (newShouldShowCharacter) {
+                _showCharactersText.onNext(R.string.show_characters)
+            } else {
+                _showCharactersText.onNext(R.string.show_media)
+            }
+            _mediaSortVisibility.onNext(!newShouldShowCharacter)
+            _showHideOnListVisibility.onNext(!newShouldShowCharacter)
+            _showCharacters.onNext(newShouldShowCharacter)
+            reloadData()
+        }
+    }
+
+    fun updateMediaSort(newMediaSort: MediaSort) {
+        mediaSort = newMediaSort
+        reloadData()
+    }
+
+    fun loadMediaSorts() {
+        val mediaSorts = listOf(
+            MediaSort.POPULARITY_DESC,
+            MediaSort.START_DATE_DESC,
+            MediaSort.START_DATE,
+            MediaSort.FAVOURITES_DESC,
+            MediaSort.SCORE_DESC,
+            MediaSort.TITLE_ROMAJI,
+            MediaSort.TITLE_ENGLISH,
+            MediaSort.TITLE_NATIVE
+        )
+
+        _mediaSortList.onNext(
+            mediaSorts.map {
+                ListItem(it.getStringResource(), it)
+            }
+        )
+    }
+
+    fun updateShowHideOnList(newShowHideOnList: Boolean?) {
+        onList = newShowHideOnList
+        reloadData()
+    }
+
+    fun loadShowHideOnLists() {
+        val showHideOnLists = listOf(
+            null to R.string.show_all,
+            true to R.string.only_show_series_on_my_list,
+            false to R.string.hide_series_on_my_list
+        )
+
+        _showHideOnListList.onNext(
+            showHideOnLists.map {
+                ListItem(it.second, it.first)
+            }
         )
     }
 }

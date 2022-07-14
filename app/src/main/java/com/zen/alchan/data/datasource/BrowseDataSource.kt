@@ -15,7 +15,8 @@ interface BrowseDataSource {
         page: Int,
         staffMediaSort: List<MediaSort>,
         characterSort: List<CharacterSort>,
-        characterMediaSort: List<MediaSort>
+        characterMediaSort: List<MediaSort>,
+        onList: Boolean?
     ): Observable<Response<StaffQuery.Data>>
     fun getStudioQuery(id: Int, page: Int, sort: List<MediaSort>): Observable<Response<StudioQuery.Data>>
 }

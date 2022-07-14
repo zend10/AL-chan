@@ -72,9 +72,10 @@ class DefaultBrowseRepository(
         page: Int,
         staffMediaSort: List<MediaSort>,
         characterSort: List<CharacterSort>,
-        characterMediaSort: List<MediaSort>
+        characterMediaSort: List<MediaSort>,
+        onList: Boolean?
     ): Observable<Staff> {
-        return browseDataSource.getStaffQuery(id, page, staffMediaSort, characterSort, characterMediaSort).map {
+        return browseDataSource.getStaffQuery(id, page, staffMediaSort, characterSort, characterMediaSort, onList).map {
             it.data?.convert()
         }
     }

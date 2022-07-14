@@ -15,7 +15,7 @@ class StaffCharacterListMediaRvAdapter(
     private val context: Context,
     list: List<Media>,
     private val appSetting: AppSetting,
-    private val listener: StaffCharacterListRvAdapter.StaffCharacterListListener
+    private val listener: StaffCharacterListListener
 ) : BaseRecyclerViewAdapter<Media, ListStaffCharacterMediaBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
