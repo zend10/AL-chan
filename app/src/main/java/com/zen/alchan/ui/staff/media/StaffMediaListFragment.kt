@@ -2,6 +2,7 @@ package com.zen.alchan.ui.staff.media
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,9 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
 
     private var adapter: StaffMediaListRvAdapter? = null
 
+    private var menuSortBy: MenuItem? = null
+    private var menuShowHideOnList: MenuItem? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -33,6 +37,19 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.media_list))
+            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_staff_media_list)
+            menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
+            menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
+
+            menuSortBy?.setOnMenuItemClickListener {
+                viewModel.loadMediaSorts()
+                true
+            }
+
+            menuShowHideOnList?.setOnMenuItemClickListener {
+                viewModel.loadShowHideOnLists()
+                true
+            }
 
             adapter = StaffMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffMediaListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -76,6 +93,16 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.mediaSortList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateMediaSort(data)
+                }
+            },
+            viewModel.showHideOnListList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateShowHideOnList(data)
+                }
             }
         )
 
@@ -95,6 +122,8 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        menuSortBy = null
+        menuShowHideOnList = null
     }
 
     companion object {
