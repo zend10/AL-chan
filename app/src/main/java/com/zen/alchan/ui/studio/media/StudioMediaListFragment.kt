@@ -2,6 +2,7 @@ package com.zen.alchan.ui.studio.media
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,9 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
 
     private var adapter: StudioMediaListRvAdapter? = null
 
+    private var menuSortBy: MenuItem? = null
+    private var menuShowHideOnList: MenuItem? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -32,6 +36,19 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.media_list))
+            defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_studio_media_list)
+            menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
+            menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
+
+            menuSortBy?.setOnMenuItemClickListener {
+                viewModel.loadMediaSorts()
+                true
+            }
+
+            menuShowHideOnList?.setOnMenuItemClickListener {
+                viewModel.loadShowHideOnLists()
+                true
+            }
 
             adapter = StudioMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStudioMediaListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -75,6 +92,16 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.mediaSortList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateMediaSort(data)
+                }
+            },
+            viewModel.showHideOnListList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateShowHideOnList(data)
+                }
             }
         )
 
@@ -94,6 +121,8 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        menuSortBy = null
+        menuShowHideOnList = null
     }
 
     companion object {

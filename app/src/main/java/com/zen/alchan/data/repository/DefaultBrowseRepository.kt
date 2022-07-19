@@ -80,8 +80,8 @@ class DefaultBrowseRepository(
         }
     }
 
-    override fun getStudio(id: Int, page: Int, sort: List<MediaSort>): Observable<Studio> {
-        return browseDataSource.getStudioQuery(id, page, sort).map {
+    override fun getStudio(id: Int, page: Int, sort: List<MediaSort>, onList: Boolean?): Observable<Studio> {
+        return browseDataSource.getStudioQuery(id, page, sort, onList).map {
             it.data?.convert()
         }
     }

@@ -1,9 +1,9 @@
-query StudioQuery($id:Int, $sort:[MediaSort], $page:Int) {
+query StudioQuery($id:Int, $sort:[MediaSort], $onList:Boolean $page:Int) {
     Studio(id:$id) {
       id
       name
       isAnimationStudio
-      media(page:$page, sort:$sort) {
+      media(page:$page, sort:$sort, onList:$onList) {
         edges {
           node {
             id

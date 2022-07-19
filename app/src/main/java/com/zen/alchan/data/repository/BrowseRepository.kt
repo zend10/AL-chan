@@ -21,5 +21,5 @@ interface BrowseRepository {
         characterMediaSort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC),
         onList: Boolean? = null
     ): Observable<Staff>
-    fun getStudio(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC)): Observable<Studio>
+    fun getStudio(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC), onList: Boolean? = null): Observable<Studio>
 }

@@ -73,9 +73,15 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
     override fun getStudioQuery(
         id: Int,
         page: Int,
-        sort: List<MediaSort>
+        sort: List<MediaSort>,
+        onList: Boolean?
     ): Observable<Response<StudioQuery.Data>> {
-        val query = StudioQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), sort = Input.optional(sort))
+        val query = StudioQuery(
+            id = Input.fromNullable(id),
+            page = Input.fromNullable(page),
+            sort = Input.optional(sort),
+            onList = Input.optional(onList)
+        )
         return apolloHandler.apolloClient.rxQuery(query)
     }
 }
