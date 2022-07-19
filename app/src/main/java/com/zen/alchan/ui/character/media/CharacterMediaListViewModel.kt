@@ -117,6 +117,12 @@ class CharacterMediaListViewModel(
                         state = State.LOADED
                     },
                     {
+                        if (isLoadingNextPage) {
+                            val currentMedia = ArrayList(_media.value ?: listOf())
+                            currentMedia.remove(null)
+                            _media.onNext(currentMedia)
+                        }
+
                         _error.onNext(it.getStringResource())
                         state = State.ERROR
                     }

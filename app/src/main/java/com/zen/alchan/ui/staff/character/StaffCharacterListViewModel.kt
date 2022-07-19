@@ -151,6 +151,18 @@ class StaffCharacterListViewModel(
                         state = State.LOADED
                     },
                     {
+                        if (isLoadingNextPage) {
+                            if (_showCharacters.value == true) {
+                                val currentCharacters = ArrayList(_characters.value ?: listOf())
+                                currentCharacters.remove(null)
+                                _characters.onNext(currentCharacters)
+                            } else {
+                                val currentMedia = ArrayList(_media.value ?: listOf())
+                                currentMedia.remove(null)
+                                _media.onNext(currentMedia)
+                            }
+                        }
+
                         _error.onNext(it.getStringResource())
                         state  = State.ERROR
                     }
