@@ -3,7 +3,6 @@ package com.zen.alchan.ui.media.staff
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.StaffEdge
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
@@ -15,7 +14,7 @@ import io.reactivex.subjects.PublishSubject
 class MediaStaffListViewModel(
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository
-) : BaseViewModel<MediaStaffParam>() {
+) : BaseViewModel<MediaStaffListParam>() {
 
     private val _appSetting = PublishSubject.create<AppSetting>()
     val appSetting: Observable<AppSetting>
@@ -34,7 +33,7 @@ class MediaStaffListViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData(param: MediaStaffParam) {
+    override fun loadData(param: MediaStaffListParam) {
         loadOnce {
             mediaId = param.mediaId
 

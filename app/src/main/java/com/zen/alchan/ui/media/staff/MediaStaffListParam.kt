@@ -1,5 +1,5 @@
 package com.zen.alchan.ui.media.staff
 
-data class MediaStaffParam(
+data class MediaStaffListParam(
     val mediaId: Int
 )

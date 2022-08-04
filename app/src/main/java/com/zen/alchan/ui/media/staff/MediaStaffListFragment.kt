@@ -79,7 +79,7 @@ class MediaStaffListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Medi
         )
 
         arguments?.getInt(MEDIA_ID)?.let {
-            viewModel.loadData(MediaStaffParam(it))
+            viewModel.loadData(MediaStaffListParam(it))
         }
     }
 

@@ -17,8 +17,6 @@ import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.character.CharacterListener
 import com.zen.alchan.ui.character.CharacterMediaRvAdapter
-import com.zen.alchan.ui.media.MediaCharacterRvAdapter
-import com.zen.alchan.ui.media.character.MediaCharacterListRvAdapter
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -123,7 +121,7 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
         )
 
         arguments?.getInt(CHARACTER_ID)?.let {
-            viewModel.loadData(CharacterMediaParam(it))
+            viewModel.loadData(CharacterMediaListParam(it))
         }
     }
 

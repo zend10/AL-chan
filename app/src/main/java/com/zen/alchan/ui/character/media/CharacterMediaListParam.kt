@@ -1,5 +1,5 @@
 package com.zen.alchan.ui.character.media
 
-data class CharacterMediaParam(
+data class CharacterMediaListParam(
     val characterId: Int
 )

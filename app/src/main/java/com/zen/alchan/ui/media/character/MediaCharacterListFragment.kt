@@ -96,7 +96,7 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
         )
 
         arguments?.getInt(MEDIA_ID)?.let {
-            viewModel.loadData(MediaCharacterParam(it))
+            viewModel.loadData(MediaCharacterListParam(it))
         }
     }
 
