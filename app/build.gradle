@@ -94,6 +94,9 @@ dependencies {
 //    compileOnly "org.jetbrains:annotations:16.0.1"
 //    testCompileOnly "org.jetbrains:annotations:16.0.1"
 
+    // OkHttp
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
     // Retrofit
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
