@@ -3,7 +3,7 @@ package com.zen.alchan.data.network.apollo
 import com.apollographql.apollo.ApolloClient
 import com.zen.alchan.data.network.apollo.adapter.CountryCodeAdapter
 import com.zen.alchan.data.network.apollo.adapter.JsonAdapter
-import com.zen.alchan.data.network.header.HeaderInterceptor
+import com.zen.alchan.data.network.interceptor.HeaderInterceptor
 import type.CustomType
 
 class AniListApolloHandler(

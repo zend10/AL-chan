@@ -1,4 +1,4 @@
-package com.zen.alchan.data.network.header
+package com.zen.alchan.data.network.interceptor
 
 import com.zen.alchan.data.manager.UserManager
 import okhttp3.Interceptor

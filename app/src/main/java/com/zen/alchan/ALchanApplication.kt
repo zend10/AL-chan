@@ -7,8 +7,8 @@ import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.manager.*
 import com.zen.alchan.data.network.apollo.AniListApolloHandler
 import com.zen.alchan.data.network.apollo.ApolloHandler
-import com.zen.alchan.data.network.header.AniListHeaderInterceptorImpl
-import com.zen.alchan.data.network.header.HeaderInterceptor
+import com.zen.alchan.data.network.interceptor.AniListHeaderInterceptorImpl
+import com.zen.alchan.data.network.interceptor.HeaderInterceptor
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.service.clipboard.ClipboardService
