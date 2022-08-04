@@ -64,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     private fun getHomeListener(): HomeListener {

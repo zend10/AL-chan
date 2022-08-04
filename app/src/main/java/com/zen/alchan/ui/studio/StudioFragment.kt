@@ -166,7 +166,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
         )
 
         arguments?.getInt(STUDIO_ID)?.let {
-            viewModel.loadData(it)
+            viewModel.loadData(StudioParam(it))
         }
     }
 

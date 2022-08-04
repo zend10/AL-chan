@@ -5,6 +5,8 @@ import java.util.*
 
 fun String.convertFromSnakeCase(toUpper: Boolean = false): String {
     val splitText = this.split("_")
-    val jointText = splitText.joinToString(" ") { it.toLowerCase(Locale.getDefault()).capitalize(Locale.getDefault()) }
-    return if (toUpper) jointText.toUpperCase(Locale.getDefault()) else jointText
+    val jointText = splitText.joinToString(" ") {
+        it.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    }
+    return if (toUpper) jointText.uppercase() else jointText
 }

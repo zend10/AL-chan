@@ -18,7 +18,7 @@ import kotlin.collections.ArrayList
 
 class AppSettingsViewModel(
     private val userRepository: UserRepository
-) : BaseViewModel() {
+) : BaseViewModel<Unit>() {
 
     private val _appTheme = BehaviorSubject.createDefault(AppTheme.DEFAULT_THEME_YELLOW)
     val appTheme: Observable<AppTheme>
@@ -135,7 +135,7 @@ class AppSettingsViewModel(
     private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
                 userRepository.getViewer(Source.CACHE)
@@ -328,7 +328,8 @@ class AppSettingsViewModel(
             val appThemeName = splitAppThemeName
                 .take(splitAppThemeName.size - 1)
                 .joinToString(" ") {
-                    it.toLowerCase(Locale.getDefault()).capitalize(Locale.getDefault())
+                    it.lowercase()
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                 }
             if (currentHeader != appThemeName) {
                 currentHeader = appThemeName

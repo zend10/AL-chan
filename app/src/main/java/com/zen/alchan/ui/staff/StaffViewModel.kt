@@ -22,7 +22,7 @@ class StaffViewModel(
     private val browseRepository: BrowseRepository,
     private val userRepository: UserRepository,
     private val clipboardService: ClipboardService
-) : BaseViewModel() {
+) : BaseViewModel<StaffParam>() {
 
     private val _staffAdapterComponent = PublishSubject.create<AppSetting>()
     val staffAdapterComponent: Observable<AppSetting>
@@ -73,13 +73,9 @@ class StaffViewModel(
     private var staff: Staff = Staff()
     private var appSetting: AppSetting = AppSetting()
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(staffId: Int) {
+    override fun loadData(param: StaffParam) {
         loadOnce {
-            this.staffId = staffId
+            staffId = param.staffId
 
             disposables.add(
                 userRepository.getIsAuthenticated().zipWith(userRepository.getAppSetting()) { isAuthenticated, appSetting ->
@@ -120,7 +116,7 @@ class StaffViewModel(
         )
     }
 
-    private fun loadStaff(isReloading: Boolean = false) {
+    private fun loadStaff() {
         _loading.onNext(true)
 
         disposables.add(

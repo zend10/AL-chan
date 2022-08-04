@@ -5,7 +5,7 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class SharedMainViewModel : BaseViewModel() {
+class SharedMainViewModel : BaseViewModel<Unit>() {
 
     private val _scrollHomeToTop = PublishSubject.create<Unit>()
     private val _scrollAnimeToTop = PublishSubject.create<Unit>()
@@ -25,9 +25,7 @@ class SharedMainViewModel : BaseViewModel() {
     val bottomSheetNavigation: Observable<Int>
         get() = _bottomSheetNavigation
 
-    override fun loadData() {
-        // do nothing
-    }
+    override fun loadData(param: Unit) = Unit
 
     fun scrollToTop(pageIndex: Int) {
         scrollEvents.toList()[pageIndex].second.onNext(Unit)

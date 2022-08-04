@@ -24,7 +24,7 @@ import type.*
 class FilterViewModel(
     private val contentRepository: ContentRepository,
     private val mediaListRepository: MediaListRepository
-) : BaseViewModel() {
+) : BaseViewModel<FilterParam>() {
 
     private val _mediaFilter = PublishSubject.create<MediaFilter>()
     val mediaFilter: Observable<MediaFilter>
@@ -276,17 +276,13 @@ class FilterViewModel(
 
     private var scoreFormat = ScoreFormat.POINT_100
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(mediaFilter: MediaFilter, mediaType: MediaType, scoreFormat: ScoreFormat, isUserList: Boolean, isCurrentUser: Boolean) {
+    override fun loadData(param: FilterParam) {
         loadOnce {
-            this.currentMediaFilter = mediaFilter
-            this.mediaType = mediaType
-            this.scoreFormat = scoreFormat
-            this.isUserList = isUserList
-            this.isCurrentUser = isCurrentUser
+            currentMediaFilter = param.mediaFilter
+            mediaType = param.mediaType
+            scoreFormat = param.scoreFormat
+            isUserList = param.isUserList
+            isCurrentUser = param.isCurrentUser
 
             _filterSettingsVisibility.onNext(isUserList && isCurrentUser)
 

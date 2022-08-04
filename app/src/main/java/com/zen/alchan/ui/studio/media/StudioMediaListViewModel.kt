@@ -17,7 +17,7 @@ import type.MediaSort
 class StudioMediaListViewModel(
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository
-) : BaseViewModel() {
+) : BaseViewModel<StudioMediaListParam>() {
 
     private val _appSetting = PublishSubject.create<AppSetting>()
     val appSetting: Observable<AppSetting>
@@ -46,13 +46,9 @@ class StudioMediaListViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(studioId: Int) {
+    override fun loadData(param: StudioMediaListParam) {
         loadOnce {
-            this.studioId = studioId
+            studioId = param.studioId
 
             disposables.add(
                 userRepository.getAppSetting()

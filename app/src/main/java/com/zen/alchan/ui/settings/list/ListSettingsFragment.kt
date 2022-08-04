@@ -251,7 +251,7 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     private fun showAdvancedScoringDialog(currentText: String, index: Int? = null) {

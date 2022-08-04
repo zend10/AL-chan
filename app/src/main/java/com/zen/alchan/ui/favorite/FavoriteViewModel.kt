@@ -14,7 +14,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewModel<FavoriteParam>() {
 
     private val _toolbarTitle = BehaviorSubject.createDefault(R.string.favorites)
     val toolbarTitle: Observable<Int>
@@ -46,13 +46,9 @@ class FavoriteViewModel(private val userRepository: UserRepository) : BaseViewMo
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(userId: Int, favorite: Favorite) {
-        this.userId = userId
-        this.favorite = favorite
+    override fun loadData(param: FavoriteParam) {
+        userId = param.userId
+        favorite = param.favorite
 
         _toolbarTitle.onNext(
             when (favorite) {

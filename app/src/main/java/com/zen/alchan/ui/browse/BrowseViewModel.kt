@@ -2,9 +2,7 @@ package com.zen.alchan.ui.browse
 
 import com.zen.alchan.ui.base.BaseViewModel
 
-class BrowseViewModel : BaseViewModel() {
+class BrowseViewModel : BaseViewModel<Unit>() {
 
-    override fun loadData() {
-        // do nothing
-    }
+    override fun loadData(param: Unit) = Unit
 }

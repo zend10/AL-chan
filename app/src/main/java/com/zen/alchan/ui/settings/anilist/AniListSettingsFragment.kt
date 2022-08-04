@@ -99,7 +99,7 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     companion object {

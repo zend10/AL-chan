@@ -14,7 +14,7 @@ import io.reactivex.subjects.PublishSubject
 
 class FollowViewModel(
     private val userRepository: UserRepository
-) : BaseViewModel() {
+) : BaseViewModel<FollowParam>() {
 
     private val _followAdapterComponent = PublishSubject.create<AppSetting>()
     val followAdapterComponent: Observable<AppSetting>
@@ -36,14 +36,10 @@ class FollowViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(userId: Int, isFollowingScreen: Boolean) {
+    override fun loadData(param: FollowParam) {
         loadOnce {
-            this.userId = userId
-            this.isFollowingScreen = isFollowingScreen
+            userId = param.userId
+            isFollowingScreen = param.isFollowingScreen
 
             disposables.add(
                 userRepository.getAppSetting()

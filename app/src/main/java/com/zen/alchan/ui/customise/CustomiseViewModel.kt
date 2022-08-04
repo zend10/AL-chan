@@ -16,7 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-class CustomiseViewModel(private val userRepository: UserRepository, private val mediaListRepository: MediaListRepository) : BaseViewModel() {
+class CustomiseViewModel(private val userRepository: UserRepository, private val mediaListRepository: MediaListRepository) : BaseViewModel<CustomiseParam>() {
 
     private val _listStyle = PublishSubject.create<ListStyle>()
     val listStyle: Observable<ListStyle>
@@ -204,13 +204,9 @@ class CustomiseViewModel(private val userRepository: UserRepository, private val
 
     private var isBackgroundImageChanged = false
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(mediaType: MediaType) {
+    override fun loadData(param: CustomiseParam) {
         loadOnce {
-            this.mediaType = mediaType
+            mediaType = param.mediaType
 
             disposables.add(
                 userRepository.getAppSetting()

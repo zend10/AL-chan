@@ -13,13 +13,13 @@ import io.reactivex.subjects.BehaviorSubject
 class HomeViewModel(
     private val contentRepository: ContentRepository,
     private val userRepository: UserRepository
-) : BaseViewModel() {
+) : BaseViewModel<Unit>() {
 
     private val _homeItemList = BehaviorSubject.createDefault(listOf<HomeItem>())
     val homeItemList: Observable<List<HomeItem>>
         get() = _homeItemList
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         getHomeData()
     }
 

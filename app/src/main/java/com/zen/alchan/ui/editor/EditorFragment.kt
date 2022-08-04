@@ -282,7 +282,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     private fun setScore(score: Double) {

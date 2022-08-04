@@ -122,8 +122,8 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             }
         )
 
-        arguments?.let {
-            viewModel.loadData(it.getInt(CHARACTER_ID))
+        arguments?.getInt(CHARACTER_ID)?.let {
+            viewModel.loadData(CharacterMediaParam(it))
         }
     }
 

@@ -114,7 +114,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     }
 
     override fun setUpObserver() {
-        viewModel.loadData()
+        viewModel.loadData(Unit)
 
         sharedDisposables.add(
             incomingDeepLink.subscribe {

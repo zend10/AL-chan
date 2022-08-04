@@ -181,7 +181,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
         )
 
         arguments?.getInt(STAFF_ID)?.let {
-            viewModel.loadData(it)
+            viewModel.loadData(StaffParam(it))
         }
     }
 

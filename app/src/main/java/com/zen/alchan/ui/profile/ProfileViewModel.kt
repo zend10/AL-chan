@@ -30,7 +30,7 @@ class ProfileViewModel(
     private val browseRepository: BrowseRepository,
     private val mediaListRepository: MediaListRepository,
     private val clipboardService: ClipboardService
-) : BaseViewModel() {
+) : BaseViewModel<ProfileParam>() {
 
     private val _profileAdapterComponent = PublishSubject.create<AppSetting>()
     val profileAdapterComponent: Observable<AppSetting>
@@ -115,12 +115,8 @@ class ProfileViewModel(
     private var user = User()
     private var appSetting = AppSetting()
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(userId: Int) {
-        this.userId = userId
+    override fun loadData(param: ProfileParam) {
+        userId = param.userId
 
         loadOnce {
             disposables.add(
@@ -461,7 +457,7 @@ class ProfileViewModel(
         var startYear = ""
         var completedSeriesPercentage = ""
 
-        val totalCount = statistics.statuses.filter { it.status != MediaListStatus.PLANNING }.sumBy { it.count }.toDouble()
+        val totalCount = statistics.statuses.filter { it.status != MediaListStatus.PLANNING }.sumOf { it.count }.toDouble()
 
         if (statistics.genres.isNotEmpty()) {
             val genreWeightedScores = statistics.genres.map {
@@ -508,7 +504,7 @@ class ProfileViewModel(
         if (statistics.statuses.isNotEmpty()) {
             val completedTotal = statistics.statuses.filter {
                 it.status == MediaListStatus.COMPLETED || it.status == MediaListStatus.REPEATING
-            }.sumBy { it.count }
+            }.sumOf { it.count }
 
             if (totalCount != 0.0) {
                 val completedPercentage = completedTotal.toDouble() / totalCount

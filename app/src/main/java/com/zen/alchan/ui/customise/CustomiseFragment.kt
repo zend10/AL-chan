@@ -388,7 +388,9 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             }
         )
 
-        viewModel.loadData(MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name))
+        arguments?.getString(MEDIA_TYPE)?.let {
+            viewModel.loadData(CustomiseParam(MediaType.valueOf(it)))
+        }
     }
 
     private fun showColorPickerDialog(@ColorInt currentColor: Int, hasAlpha: Boolean, action: (hexColor: String) -> Unit) {

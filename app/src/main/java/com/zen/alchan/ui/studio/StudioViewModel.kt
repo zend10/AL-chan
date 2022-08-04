@@ -21,7 +21,7 @@ class StudioViewModel(
     private val browseRepository: BrowseRepository,
     private val userRepository: UserRepository,
     private val clipboardService: ClipboardService
-) : BaseViewModel() {
+) : BaseViewModel<StudioParam>() {
 
     private val _studioAdapterComponent = PublishSubject.create<AppSetting>()
     val studioAdapterComponent: Observable<AppSetting>
@@ -60,11 +60,7 @@ class StudioViewModel(
     private var studio: Studio = Studio()
     private var appSetting: AppSetting = AppSetting()
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(studioId: Int) {
+    override fun loadData(param: StudioParam) {
         loadOnce {
             this.studioId = studioId
 
@@ -107,7 +103,7 @@ class StudioViewModel(
         )
     }
 
-    private fun loadStudio(isReloading: Boolean = false) {
+    private fun loadStudio() {
         _loading.onNext(true)
 
         disposables.add(

@@ -7,15 +7,13 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
     private val _loginTrigger = PublishSubject.create<Unit>()
     val loginTrigger: Observable<Unit>
         get() = _loginTrigger
 
-    override fun loadData() {
-        // do nothing
-    }
+    override fun loadData(param: Unit) = Unit
 
     fun login(bearerToken: String) {
         _loading.onNext(true)

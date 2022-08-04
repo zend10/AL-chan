@@ -110,7 +110,7 @@ class UserStatsFragment : BaseFragment<FragmentUserStatsBinding, UserStatsViewMo
             }
         )
 
-        viewModel.loadData(arguments?.getInt(USER_ID) ?: 0)
+        viewModel.loadData(UserStatsParam(arguments?.getInt(USER_ID) ?: 0))
     }
 
     override fun onDestroyView() {

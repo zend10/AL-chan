@@ -18,7 +18,7 @@ import type.MediaType
 class CharacterMediaListViewModel(
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository
-) : BaseViewModel() {
+) : BaseViewModel<CharacterMediaParam>() {
 
     private val _appSetting = PublishSubject.create<AppSetting>()
     val appSetting: Observable<AppSetting>
@@ -52,13 +52,9 @@ class CharacterMediaListViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(characterId: Int) {
+    override fun loadData(param: CharacterMediaParam) {
         loadOnce {
-            this.characterId = characterId
+            characterId = param.characterId
 
             disposables.add(
                 userRepository.getAppSetting()

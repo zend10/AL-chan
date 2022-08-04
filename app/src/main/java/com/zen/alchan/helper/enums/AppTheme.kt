@@ -42,7 +42,8 @@ enum class AppTheme(val colors: Triple<Int, Int, Int>) {
 }
 
 fun AppTheme.getColorName(): String {
-    return this.name.split("_").last().toLowerCase(Locale.getDefault()).capitalize(Locale.getDefault())
+    return this.name.split("_").last().lowercase()
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 }
 
 fun AppTheme.getString(): String {

@@ -222,7 +222,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     private fun modifyLayoutStyle(isViewer: Boolean, listStyle: ListStyle, appSetting: AppSetting, mediaListOptions: MediaListOptions, backgroundUri: Uri?) {

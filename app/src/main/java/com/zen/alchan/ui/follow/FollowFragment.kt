@@ -79,7 +79,7 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
             }
         )
 
-        viewModel.loadData(arguments?.getInt(USER_ID) ?: 0, arguments?.getBoolean(IS_FOLLOWING) ?: false)
+        viewModel.loadData(FollowParam(arguments?.getInt(USER_ID) ?: 0, arguments?.getBoolean(IS_FOLLOWING) ?: false))
     }
 
     private fun getFollowListener(): FollowRvAdapter.FollowListener {

@@ -132,7 +132,7 @@ class NotificationsSettingsFragment : BaseFragment<FragmentNotificationsSettings
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     companion object {

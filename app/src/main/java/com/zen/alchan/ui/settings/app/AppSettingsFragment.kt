@@ -281,7 +281,7 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             }
         )
 
-        viewModel.loadData()
+        viewModel.loadData(Unit)
     }
 
     private fun setPushNotificationsInfoTextLink() {

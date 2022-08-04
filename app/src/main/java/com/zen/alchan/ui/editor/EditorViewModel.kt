@@ -33,7 +33,7 @@ import kotlin.collections.LinkedHashMap
 class EditorViewModel(
     private val mediaListRepository: MediaListRepository,
     private val userRepository: UserRepository
-) : BaseViewModel() {
+) : BaseViewModel<Unit>() {
 
     private val _title = BehaviorSubject.createDefault("")
     val title: Observable<String>
@@ -166,7 +166,7 @@ class EditorViewModel(
     private var media = Media()
     private var appSetting = AppSetting()
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             _loading.onNext(true)
 

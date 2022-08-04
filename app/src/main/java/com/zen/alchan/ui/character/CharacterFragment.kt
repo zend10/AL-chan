@@ -183,7 +183,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
         )
 
         arguments?.getInt(CHARACTER_ID)?.let {
-            viewModel.loadData(it)
+            viewModel.loadData(CharacterParam(it))
         }
     }
 

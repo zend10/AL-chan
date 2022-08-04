@@ -6,13 +6,13 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class SplashViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class SplashViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
     private val _isLoggedIn = PublishSubject.create<Boolean>()
     val isLoggedIn: Observable<Boolean>
         get() = _isLoggedIn
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             checkIsLoggedIn()
         }

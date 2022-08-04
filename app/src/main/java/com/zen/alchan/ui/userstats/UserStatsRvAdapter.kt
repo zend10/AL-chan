@@ -209,7 +209,7 @@ class UserStatsRvAdapter(
                     }
                 }
 
-                val lineEntries = item.chart?.mapIndexed { index, chart -> Entry(chart.label.toFloat(), chart.value.toFloat()) }
+                val lineEntries = item.chart?.mapIndexed { _, chart -> Entry(chart.label.toFloat(), chart.value.toFloat()) }
                 val lineDataSet = LineDataSet(lineEntries, "")
                 lineDataSet.color = context.getAttrValue(R.attr.themeSecondaryColor)
                 lineDataSet.setDrawFilled(true)
@@ -256,7 +256,7 @@ class UserStatsRvAdapter(
     inner class PieChartViewHolder(private val binding: ListStatsChartPieBinding) : ViewHolder(binding) {
         override fun bind(item: UserStatsItem, index: Int) {
             binding.apply {
-                val pieEntries = item.chart?.mapIndexed { index, chart -> PieEntry(chart.value.toFloat(), chart.label) }
+                val pieEntries = item.chart?.mapIndexed { _, chart -> PieEntry(chart.value.toFloat(), chart.label) }
                 val pieDataSet = PieDataSet(pieEntries, "")
                 pieDataSet.colors = item.chart?.map { if (it.color.isNullOrBlank()) context.getAttrValue(R.attr.themeSecondaryColor) else Color.parseColor(it.color) }
 

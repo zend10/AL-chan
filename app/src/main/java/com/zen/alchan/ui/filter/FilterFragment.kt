@@ -431,11 +431,13 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
         )
 
         viewModel.loadData(
-            oldMediaFilter ?: MediaFilter(),
-            MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name),
-            ScoreFormat.valueOf(arguments?.getString(SCORE_FORMAT) ?: ScoreFormat.POINT_100.name),
-            arguments?.getBoolean(IS_USER_LIST) ?: false,
-            arguments?.getBoolean(IS_CURRENT_USER) ?: false
+            FilterParam(
+                oldMediaFilter ?: MediaFilter(),
+                MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name),
+                ScoreFormat.valueOf(arguments?.getString(SCORE_FORMAT) ?: ScoreFormat.POINT_100.name),
+                arguments?.getBoolean(IS_USER_LIST) ?: false,
+                arguments?.getBoolean(IS_CURRENT_USER) ?: false
+            )
         )
     }
 

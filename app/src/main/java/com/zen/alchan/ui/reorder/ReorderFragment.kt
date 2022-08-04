@@ -71,8 +71,8 @@ class ReorderFragment : BaseFragment<FragmentReorderBinding, ReorderViewModel>()
             }
         )
 
-        arguments?.let {
-            viewModel.loadData(it.getStringArrayList(ITEM_LIST)?.toList() ?: listOf())
+        arguments?.getStringArrayList(ITEM_LIST)?.toList()?.let {
+            viewModel.loadData(ReorderParam(it))
         }
     }
 

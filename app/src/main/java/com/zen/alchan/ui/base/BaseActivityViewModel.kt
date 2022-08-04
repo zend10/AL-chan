@@ -7,11 +7,9 @@ import com.zen.alchan.helper.extensions.applyScheduler
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class BaseActivityViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class BaseActivityViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
-    override fun loadData() {
-        // do nothing
-    }
+    override fun loadData(param: Unit) = Unit
 
     fun isLightMode(): Boolean {
         return userRepository.getAppTheme().name.contains("LIGHT")

@@ -17,7 +17,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.ScoreFormat
 
-class ListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class ListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
     private val _scoreFormat = BehaviorSubject.createDefault(ScoreFormat.POINT_100)
     val scoreFormat: Observable<ScoreFormat>
@@ -98,7 +98,7 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     private var viewer: User? = null
     private var currentListSettings: MediaListOptions? = null
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         if (state == State.LOADED)
             return
 

@@ -1,10 +1,8 @@
 package com.zen.alchan.ui.staff.character
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +16,6 @@ import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
-import com.zen.alchan.ui.character.CharacterMediaRvAdapter
-import com.zen.alchan.ui.character.media.CharacterMediaListFragment
-import com.zen.alchan.ui.staff.StaffListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -137,8 +132,8 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             }
         )
 
-        arguments?.let {
-            viewModel.loadData(it.getInt(STAFF_ID))
+        arguments?.getInt(STAFF_ID)?.let {
+            viewModel.loadData(StaffCharacterListParam(it))
         }
     }
 

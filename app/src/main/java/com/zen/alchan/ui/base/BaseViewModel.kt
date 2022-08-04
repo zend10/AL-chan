@@ -6,7 +6,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-abstract class BaseViewModel : ViewModel(), ViewModelContract {
+abstract class BaseViewModel<T> : ViewModel(), ViewModelContract<T> {
 
     protected val disposables = CompositeDisposable()
 

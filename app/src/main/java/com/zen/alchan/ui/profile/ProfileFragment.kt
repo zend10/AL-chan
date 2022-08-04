@@ -274,7 +274,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
         )
 
-        viewModel.loadData(arguments?.getInt(USER_ID) ?: 0)
+        viewModel.loadData(ProfileParam(arguments?.getInt(USER_ID) ?: 0))
     }
 
     private fun assignAdapter(appSetting: AppSetting) {

@@ -19,7 +19,7 @@ import type.MediaSort
 class StaffCharacterListViewModel(
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository
-) : BaseViewModel() {
+) : BaseViewModel<StaffCharacterListParam>() {
 
     private val _appSetting = PublishSubject.create<AppSetting>()
     val appSetting: Observable<AppSetting>
@@ -69,13 +69,9 @@ class StaffCharacterListViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(staffId: Int) {
+    override fun loadData(param: StaffCharacterListParam) {
         loadOnce {
-            this.staffId = staffId
+            staffId = param.staffId
 
             disposables.add(
                 userRepository.getAppSetting()

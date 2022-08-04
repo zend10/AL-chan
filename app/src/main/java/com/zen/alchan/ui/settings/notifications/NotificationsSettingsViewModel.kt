@@ -11,7 +11,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import type.NotificationType
 
-class NotificationsSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class NotificationsSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
     private val _activityReply = BehaviorSubject.createDefault(false)
     val activityReply: Observable<Boolean>
@@ -63,7 +63,7 @@ class NotificationsSettingsViewModel(private val userRepository: UserRepository)
 
     private var currentNotificationOptions: ArrayList<NotificationOption>? = null
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
                 userRepository.getViewer(Source.CACHE)

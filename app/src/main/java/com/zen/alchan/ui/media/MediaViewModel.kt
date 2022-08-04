@@ -28,7 +28,7 @@ class MediaViewModel(
     private val browseRepository: BrowseRepository,
     private val userRepository: UserRepository,
     private val mediaListRepository: MediaListRepository
-) : BaseViewModel() {
+) : BaseViewModel<MediaParam>() {
 
     private val _mediaAdapterComponent = PublishSubject.create<AppSetting>()
     val mediaAdapterComponent: Observable<AppSetting>
@@ -115,13 +115,9 @@ class MediaViewModel(
         Pair(MediaRelation.OTHER, 12)
     )
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(mediaId: Int) {
+    override fun loadData(param: MediaParam) {
         loadOnce {
-            this.mediaId = mediaId
+            mediaId = param.mediaId
 
             disposables.add(
                 userRepository.getIsAuthenticated().zipWith(userRepository.getAppSetting()) { isAuthenticated, appSetting ->
@@ -135,10 +131,10 @@ class MediaViewModel(
                         loadMedia()
                     }
             )
-        }
 
-        if (media.getId() != 0)
-            checkMediaList()
+            if (media.getId() != 0)
+                checkMediaList()
+        }
     }
 
     private fun checkMediaList() {
@@ -176,7 +172,7 @@ class MediaViewModel(
         )
     }
 
-    private fun loadMedia(isReloading: Boolean = false) {
+    private fun loadMedia() {
         _loading.onNext(true)
 
         disposables.add(

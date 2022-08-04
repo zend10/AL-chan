@@ -16,7 +16,7 @@ import io.reactivex.subjects.PublishSubject
 import type.UserStaffNameLanguage
 import type.UserTitleLanguage
 
-class AniListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel() {
+class AniListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
     private val _titleLanguage = BehaviorSubject.createDefault(UserTitleLanguage.ROMAJI)
     val titleLanguage: Observable<UserTitleLanguage>
@@ -53,7 +53,7 @@ class AniListSettingsViewModel(private val userRepository: UserRepository) : Bas
     private var viewer: User? = null
     private var currentAniListSetting: UserOptions? = null
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
                 userRepository.getViewer(Source.CACHE)

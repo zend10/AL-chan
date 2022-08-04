@@ -24,7 +24,7 @@ import kotlin.math.roundToInt
 class UserStatsViewModel(
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository
-) : BaseViewModel() {
+) : BaseViewModel<UserStatsParam>() {
 
     private val _mediaType = BehaviorSubject.createDefault(MediaType.ANIME)
     val mediaType: Observable<MediaType>
@@ -69,13 +69,9 @@ class UserStatsViewModel(
     private val mangaLengths = arrayListOf("1", "2-10", "11-25", "26-50", "51-100", "101-200", "201+", "")
     private val scoreList = arrayListOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(userId: Int) {
+    override fun loadData(param: UserStatsParam) {
         loadOnce {
-            this.userId = userId
+            userId = param.userId
 
             val userObservable = if (userId == 0) {
                 userRepository.getViewer(Source.CACHE)

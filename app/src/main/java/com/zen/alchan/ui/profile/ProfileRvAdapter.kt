@@ -213,7 +213,7 @@ class ProfileRvAdapter(
                 return null
 
             val text = context.getString(stringId, value)
-            val textWithoutValue = text.split(value ?: "")
+            val textWithoutValue = text.split(value)
             val spannableStringBuilder = SpannableStringBuilder()
             textWithoutValue.forEachIndexed { index, it ->
                 spannableStringBuilder.append(it)

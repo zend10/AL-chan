@@ -8,12 +8,12 @@ import com.zen.alchan.ui.base.BaseViewModel
 class MainViewModel(
     private val userRepository: UserRepository,
     private val contentRepository: ContentRepository
-) : BaseViewModel() {
+) : BaseViewModel<Unit>() {
 
     val isViewerAuthenticated: Boolean
         get() = userRepository.getIsAuthenticated().blockingFirst()
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
                 contentRepository.getGenres().subscribe({}, {})

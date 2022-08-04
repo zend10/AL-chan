@@ -47,7 +47,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             navigation.navigateToMain(deepLink)
             deepLink = null
         } else {
-            viewModel.loadData()
+            viewModel.loadData(Unit)
         }
     }
 

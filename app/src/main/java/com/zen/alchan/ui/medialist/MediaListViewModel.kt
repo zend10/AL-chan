@@ -28,7 +28,7 @@ class MediaListViewModel(
     private val mediaListRepository: MediaListRepository,
     private val userRepository: UserRepository,
     private val browseRepository: BrowseRepository
-) : BaseViewModel() {
+) : BaseViewModel<Unit>() {
 
     private val _toolbarTitle = BehaviorSubject.createDefault(R.string.anime_list)
     val toolbarTitle: Observable<Int>
@@ -91,7 +91,7 @@ class MediaListViewModel(
     private var selectedSectionIndex = 0
     private var searchKeyword = ""
 
-    override fun loadData() {
+    override fun loadData(param: Unit) {
         loadOnce {
             isViewer = userId == 0
 
@@ -236,7 +236,7 @@ class MediaListViewModel(
                     .applyScheduler()
                     .subscribe {
                         state = State.INIT
-                        loadData()
+                        loadData(Unit)
                     }
             )
         }
@@ -547,11 +547,11 @@ class MediaListViewModel(
             filterEntries.removeAll { mediaList ->
                 !mediaFilter.streamingOn
                     .map {
-                        it.siteName.toLowerCase()
+                        it.siteName.lowercase()
                     }
                     .any { siteName ->
                         mediaList.media.externalLinks
-                            .map { it.site.toLowerCase() }
+                            .map { it.site.lowercase() }
                             .contains(siteName)
                     }
             }
@@ -561,11 +561,11 @@ class MediaListViewModel(
             filterEntries.removeAll { mediaList ->
                 !mediaFilter.includedGenres
                     .map {
-                        it.toLowerCase()
+                        it.lowercase()
                     }
                     .any { genre ->
                         mediaList.media.genres
-                            .map { it.name.toLowerCase() }
+                            .map { it.name.lowercase() }
                             .contains(genre)
                     }
             }
@@ -575,11 +575,11 @@ class MediaListViewModel(
             filterEntries.removeAll { mediaList ->
                 mediaFilter.excludedGenres
                     .map {
-                        it.toLowerCase()
+                        it.lowercase()
                     }
                     .any { genre ->
                         mediaList.media.genres
-                            .map { it.name.toLowerCase() }
+                            .map { it.name.lowercase() }
                             .contains(genre)
                     }
             }

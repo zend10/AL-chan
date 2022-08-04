@@ -105,8 +105,8 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
             }
         )
 
-        arguments?.let {
-            viewModel.loadData(it.getInt(STUDIO_ID))
+        arguments?.getInt(STUDIO_ID)?.let {
+            viewModel.loadData(StudioMediaListParam(it))
         }
     }
 

@@ -106,8 +106,8 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
             }
         )
 
-        arguments?.let {
-            viewModel.loadData(it.getInt(STAFF_ID))
+        arguments?.getInt(STAFF_ID)?.let {
+            viewModel.loadData(StaffMediaListParam(it))
         }
     }
 

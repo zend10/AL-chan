@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-class ReorderViewModel : BaseViewModel() {
+class ReorderViewModel : BaseViewModel<ReorderParam>() {
 
     private val _itemList = BehaviorSubject.createDefault(listOf<String>())
     val itemList: Observable<List<String>>
@@ -15,13 +15,9 @@ class ReorderViewModel : BaseViewModel() {
     val reorderResult: Observable<List<String>>
         get() = _reorderResult
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(itemList: List<String>) {
+    override fun loadData(param: ReorderParam) {
         loadOnce {
-            _itemList.onNext(itemList)
+            _itemList.onNext(param.itemList)
         }
     }
 

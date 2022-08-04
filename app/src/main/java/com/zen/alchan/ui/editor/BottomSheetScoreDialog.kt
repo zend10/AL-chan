@@ -45,7 +45,7 @@ class BottomSheetScoreDialog : BaseDialogFragment<DialogBottomSheetScoreBinding>
                     advancedScores!![newScore.first] = newScore.second
 
                     val nonZeroAdvancedScores = advancedScores!!.filterValues { it != 0.0 }.toList()
-                    currentScore = nonZeroAdvancedScores.sumByDouble { it.second } / nonZeroAdvancedScores.size
+                    currentScore = nonZeroAdvancedScores.sumOf { it.second } / nonZeroAdvancedScores.size
 
                     binding.scoreInputEditText.setText(
                         when (scoreFormat) {

@@ -104,7 +104,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
             }
         )
 
-        viewModel.loadData(arguments?.getInt(USER_ID) ?: 0, Favorite.valueOf(arguments?.getString(FAVORITE) ?: Favorite.ANIME.name))
+        viewModel.loadData(FavoriteParam(arguments?.getInt(USER_ID) ?: 0, Favorite.valueOf(arguments?.getString(FAVORITE) ?: Favorite.ANIME.name)))
     }
 
     private fun getFavoriteListener(): FavoriteAdapter.FavoriteListener {

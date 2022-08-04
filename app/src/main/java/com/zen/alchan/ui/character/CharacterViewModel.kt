@@ -26,7 +26,7 @@ class CharacterViewModel(
     private val browseRepository: BrowseRepository,
     private val userRepository: UserRepository,
     private val clipboardService: ClipboardService
-) : BaseViewModel() {
+) : BaseViewModel<CharacterParam>() {
 
     private val _characterAdapterComponent = PublishSubject.create<AppSetting>()
     val characterAdapterComponent: Observable<AppSetting>
@@ -81,13 +81,9 @@ class CharacterViewModel(
     private var character: Character = Character()
     private var appSetting: AppSetting = AppSetting()
 
-    override fun loadData() {
-        // do nothing
-    }
-
-    fun loadData(characterId: Int) {
+    override fun loadData(param: CharacterParam) {
         loadOnce {
-            this.characterId = characterId
+            characterId = param.characterId
 
             disposables.add(
                 userRepository.getIsAuthenticated().zipWith(userRepository.getAppSetting()) { isAuthenticated, appSetting ->
@@ -128,7 +124,7 @@ class CharacterViewModel(
         )
     }
 
-    private fun loadCharacter(isReloading: Boolean = false) {
+    private fun loadCharacter() {
         _loading.onNext(true)
 
         disposables.add(
