@@ -2,6 +2,7 @@ package com.zen.alchan.ui.main
 
 import android.net.Uri
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.get
 import androidx.viewpager2.widget.ViewPager2
@@ -14,8 +15,11 @@ import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
@@ -112,9 +116,9 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     override fun setUpObserver() {
         viewModel.loadData()
 
-        disposables.add(
+        sharedDisposables.add(
             incomingDeepLink.subscribe {
-                handleDeepLinkNavigation(it)
+                deepLink = it
             }
         )
 
@@ -153,6 +157,9 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     navigation.navigateToSettings()
                     navigation.navigateToAppSettings()
                 }
+            }
+            deepLink.isSpoiler() -> {
+                dialog.showSpoilerDialog(deepLink.getQueryParamOfOrNull("data") ?: "")
             }
         }
 

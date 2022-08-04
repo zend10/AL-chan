@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.launch.LaunchActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".ui.root.RootActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
@@ -39,5 +39,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

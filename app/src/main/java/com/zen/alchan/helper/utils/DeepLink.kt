@@ -20,6 +20,12 @@ class DeepLink(
 
     fun isAppSettings() = getAuthority() == SETTINGS && getFirstPath() == APP_SETTINGS
 
+    fun isSpoiler() = getAuthority() == SPOILER
+
+    fun getQueryParamOfOrNull(key: String): String? {
+        return uri?.getQueryParameter(key)
+    }
+
     companion object {
         fun create(uri: Uri?): DeepLink {
             return DeepLink(uri)
@@ -34,6 +40,8 @@ class DeepLink(
 
         private const val SETTINGS = "settings"
         private const val APP_SETTINGS = "app"
+
+        private const val SPOILER = "spoiler"
 
         fun generateAppSettings() = generateDeepLink(SETTINGS, APP_SETTINGS)
 

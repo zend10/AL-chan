@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment()
 
     protected val disposables = CompositeDisposable()
     private var insetsController: WindowInsetsControllerCompat? = null
+
+    protected var screenWidth = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,11 @@ abstract class BaseDialogFragment<VB: ViewBinding> : BottomSheetDialogFragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        screenWidth = displayMetrics.widthPixels
+
         setUpLayout()
     }
 

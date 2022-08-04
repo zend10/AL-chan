@@ -40,5 +40,7 @@ interface DialogManager {
 
     fun showDatePicker(calendar: Calendar, action: (year: Int, month: Int, dayOfMonth: Int) -> Unit)
 
+    fun showSpoilerDialog(spoilerText: String)
+
     fun showShareSheet(text: String)
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,8 @@ import com.zen.alchan.ui.root.RootActivity
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), ViewContract {
+
+    private val className = javaClass.simpleName
 
     private val rootActivity: RootActivity
         get() = activity as RootActivity
@@ -77,11 +80,13 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
 
     override fun onStart() {
         super.onStart()
+        Log.d(className, "onStart")
         setUpObserver()
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d(className, "onResume")
         if (disposables.isDisposed || disposables.size() == 0) {
             setUpObserver()
         }
@@ -89,11 +94,13 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
 
     override fun onPause() {
         super.onPause()
+        Log.d(className, "onPause")
         disposables.clear()
     }
 
     override fun onStop() {
         super.onStop()
+        Log.d(className, "onStop")
         disposables.clear()
     }
 
@@ -104,6 +111,7 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel> : Fragment(), Vi
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(className, "onDestroy")
         disposables.clear()
         sharedDisposables.clear()
     }

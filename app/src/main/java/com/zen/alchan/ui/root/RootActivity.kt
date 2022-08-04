@@ -20,6 +20,8 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
     val incomingDeepLink: Observable<DeepLink>
         get() = _incomingDeepLink
 
+    private var newIntent: Intent? = null
+
     override fun generateViewBinding(): ActivityRootBinding {
         return ActivityRootBinding.inflate(layoutInflater)
     }
@@ -37,11 +39,19 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
         // do nothing
     }
 
+    override fun onResume() {
+        super.onResume()
+        newIntent?.let {
+            handleDeepLink(it)
+            newIntent = null
+        }
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
         if (intent?.data != null) {
-            handleDeepLink(intent)
+            newIntent = intent
         }
     }
 

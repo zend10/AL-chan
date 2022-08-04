@@ -17,6 +17,7 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding>() {
 
     override fun setUpLayout() {
         val targetIntent = Intent(this, RootActivity::class.java)
+        targetIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         targetIntent.data = intent.data
         targetIntent.putExtra("RESTART", intent.getBooleanExtra("RESTART", false))
         startActivity(targetIntent)

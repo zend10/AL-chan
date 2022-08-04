@@ -29,6 +29,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetTagDialog: BottomSheetTagDialog? = null
     private var bottomSheetProgressDialog: BottomSheetProgressDialog? = null
     private var bottomSheetScoreDialog: BottomSheetScoreDialog? = null
+    private var bottomSheetSpoilerDialog: BottomSheetSpoilerDialog? = null
 
     private var datePickerDialog: DatePickerDialog? = null
 
@@ -235,6 +236,16 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
             datePickerDialog = null
         }
         datePickerDialog?.show()
+    }
+
+    override fun showSpoilerDialog(spoilerText: String) {
+        bottomSheetSpoilerDialog = BottomSheetSpoilerDialog.newInstance(spoilerText)
+        bottomSheetSpoilerDialog?.dialog?.setOnCancelListener {
+            bottomSheetSpoilerDialog = null
+        }
+        (context as? AppCompatActivity)?.supportFragmentManager?.let {
+            bottomSheetSpoilerDialog?.show(it, null)
+        }
     }
 
     override fun showShareSheet(text: String) {
