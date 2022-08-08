@@ -65,7 +65,6 @@ interface NavigationManager {
 
     fun isAtPreLoginScreen(): Boolean
     fun isAtBrowseScreen(): Boolean
-    fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?)
     fun popBrowseScreenPage()
     fun shouldPopFromBrowseScreen(): Boolean
     fun closeBrowseScreen()

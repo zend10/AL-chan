@@ -17,12 +17,21 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.browse.BrowseFragment
+import com.zen.alchan.ui.character.CharacterFragment
+import com.zen.alchan.ui.character.media.CharacterMediaListFragment
 import com.zen.alchan.ui.customise.CustomiseFragment
 import com.zen.alchan.ui.editor.EditorFragment
+import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.filter.FilterFragment
+import com.zen.alchan.ui.follow.FollowFragment
 import com.zen.alchan.ui.landing.LandingFragment
 import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
+import com.zen.alchan.ui.media.MediaFragment
+import com.zen.alchan.ui.media.character.MediaCharacterListFragment
+import com.zen.alchan.ui.media.staff.MediaStaffListFragment
+import com.zen.alchan.ui.medialist.MediaListFragment
+import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
 import com.zen.alchan.ui.settings.SettingsFragment
 import com.zen.alchan.ui.settings.about.AboutFragment
@@ -32,6 +41,13 @@ import com.zen.alchan.ui.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.settings.list.ListSettingsFragment
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsFragment
 import com.zen.alchan.ui.splash.SplashFragment
+import com.zen.alchan.ui.staff.StaffFragment
+import com.zen.alchan.ui.staff.character.StaffCharacterListFragment
+import com.zen.alchan.ui.staff.media.StaffMediaListFragment
+import com.zen.alchan.ui.studio.StudioFragment
+import com.zen.alchan.ui.studio.media.StudioMediaListFragment
+import com.zen.alchan.ui.userstats.UserStatsFragment
+import io.reactivex.disposables.Disposable
 import type.ScoreFormat
 
 class DefaultNavigationManager(
@@ -121,78 +137,71 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToMedia(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.MEDIA, id)
+        pushBrowseScreenPage(MediaFragment.newInstance(id))
     }
 
     override fun navigateToMediaCharacters(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.MEDIA_CHARACTERS, id)
+        pushBrowseScreenPage(MediaCharacterListFragment.newInstance(id))
     }
 
     override fun navigateToMediaStaff(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.MEDIA_STAFF, id)
+        pushBrowseScreenPage(MediaStaffListFragment.newInstance(id))
     }
 
     override fun navigateToCharacter(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.CHARACTER, id)
+        pushBrowseScreenPage(CharacterFragment.newInstance(id))
     }
 
     override fun navigateToCharacterMedia(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.CHARACTER_MEDIA, id)
+        pushBrowseScreenPage(CharacterMediaListFragment.newInstance(id))
     }
 
     override fun navigateToStaff(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.STAFF, id)
+        pushBrowseScreenPage(StaffFragment.newInstance(id))
     }
 
     override fun navigateToStaffCharacter(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.STAFF_CHARACTER, id)
+        pushBrowseScreenPage(StaffCharacterListFragment.newInstance(id))
     }
 
     override fun navigateToStaffMedia(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.STAFF_MEDIA, id)
+        pushBrowseScreenPage(StaffMediaListFragment.newInstance(id))
     }
 
     override fun navigateToUser(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.USER, id)
+        pushBrowseScreenPage(ProfileFragment.newInstance(id))
     }
 
     override fun navigateToStudio(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.STUDIO, id)
+        pushBrowseScreenPage(StudioFragment.newInstance(id))
     }
 
     override fun navigateToStudioMedia(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.STUDIO_MEDIA, id)
+        pushBrowseScreenPage(StudioMediaListFragment.newInstance(id))
     }
 
     override fun navigateToAnimeMediaList(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.ANIME_MEDIA_LIST, id)
+        pushBrowseScreenPage(MediaListFragment.newInstance(MediaType.ANIME, id))
     }
 
     override fun navigateToMangaMediaList(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.MANGA_MEDIA_LIST, id)
+        pushBrowseScreenPage(MediaListFragment.newInstance(MediaType.MANGA, id))
     }
 
     override fun navigateToFollowing(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.FOLLOWING, id)
+        pushBrowseScreenPage(FollowFragment.newInstance(id, true))
     }
 
     override fun navigateToFollowers(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.FOLLOWERS, id)
+        pushBrowseScreenPage(FollowFragment.newInstance(id, false))
     }
 
     override fun navigateToUserStats(id: Int) {
-        pushBrowseScreenPage(BrowseNavigationManager.Page.USER_STATS, id)
+        pushBrowseScreenPage(UserStatsFragment.newInstance(id))
     }
 
     override fun navigateToFavorite(id: Int, favorite: Favorite) {
-        val browseScreenPage = when (favorite) {
-            Favorite.ANIME -> BrowseNavigationManager.Page.FAVORITE_ANIME
-            Favorite.MANGA -> BrowseNavigationManager.Page.FAVORITE_MANGA
-            Favorite.CHARACTERS -> BrowseNavigationManager.Page.FAVORITE_CHARACTERS
-            Favorite.STAFF -> BrowseNavigationManager.Page.FAVORITE_STAFF
-            Favorite.STUDIOS -> BrowseNavigationManager.Page.FAVORITE_STUDIOS
-        }
-        pushBrowseScreenPage(browseScreenPage, id)
+        pushBrowseScreenPage(FavoriteFragment.newInstance(id, favorite))
     }
 
     override fun openWebView(url: String) {
@@ -247,26 +256,41 @@ class DefaultNavigationManager(
         return lastFragment is BrowseFragment
     }
 
-    override fun pushBrowseScreenPage(page: BrowseNavigationManager.Page, id: Int?) {
+    private fun pushBrowseScreenPage(fragment: Fragment, skipBackStack: Boolean = false) {
         if (isAtBrowseScreen()) {
             val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
-            browseFragment.browseNavigationManager.pushBrowseScreenPage(page, id)
+            val fragmentTransaction = browseFragment.childFragmentManager.beginTransaction()
+            fragmentTransaction.replace(browseFragment.layout.id, fragment)
+            if (!skipBackStack) {
+                fragmentTransaction.addToBackStack(fragment.toString())
+            }
+            fragmentTransaction.commit()
         } else {
-            stackPage(BrowseFragment.newInstance(page, id))
+            val browseFragment = BrowseFragment.newInstance()
+            var disposable: Disposable? = null
+            disposable = browseFragment.layoutSet
+                .doFinally {
+                    disposable?.dispose()
+                    disposable = null
+                }
+                .subscribe {
+                    pushBrowseScreenPage(fragment, skipBackStack)
+                }
+            stackPage(browseFragment)
         }
     }
 
     override fun popBrowseScreenPage() {
         if (isAtBrowseScreen()) {
             val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
-            browseFragment.browseNavigationManager.popBrowseScreenPage()
+            browseFragment.childFragmentManager.popBackStack()
         }
     }
 
     override fun shouldPopFromBrowseScreen(): Boolean {
         if (isAtBrowseScreen()) {
             val browseFragment = fragmentManager.fragments.filterIsInstance<BrowseFragment>().last()
-            return browseFragment.browseNavigationManager.backStackCount() > 1
+            return browseFragment.childFragmentManager.backStackEntryCount > 1
         } else {
             return false
         }
