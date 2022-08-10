@@ -19,5 +19,6 @@ data class User(
     val siteUrl: String = "",
     val donatorTier: Int = 0,
     val donatorBadge: String = "",
-    val moderatorRoles: List<ModRole> = listOf()
+    val moderatorRoles: List<ModRole> = listOf(),
+    val createdAt: Int = 0
 )

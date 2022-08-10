@@ -28,7 +28,14 @@ fun UserQuery.Data.convert(): User {
             } ?: listOf(),
             timezone = user?.options?.timezone,
             activityMergeTime = user?.options?.activityMergeTime ?: 0,
-            staffNameLanguage = user?.options?.staffNameLanguage
+            staffNameLanguage = user?.options?.staffNameLanguage,
+            restrictMessagesToFollowing = user?.options?.restrictMessagesToFollowing ?: false,
+            disabledListActivity = user?.options?.disabledListActivity?.map {
+                ListActivityOption(
+                    disabled = it?.disabled ?: false,
+                    type = it?.type
+                )
+            } ?: listOf()
         ),
         mediaListOptions = MediaListOptions(
             scoreFormat = user?.mediaListOptions?.scoreFormat,
@@ -63,7 +70,8 @@ fun UserQuery.Data.convert(): User {
         siteUrl = user?.siteUrl ?: "",
         donatorTier = user?.donatorTier ?: 0,
         donatorBadge = user?.donatorBadge ?: "",
-        moderatorRoles = user?.moderatorRoles?.filterNotNull() ?: listOf()
+        moderatorRoles = user?.moderatorRoles?.filterNotNull() ?: listOf(),
+        createdAt = user?.createdAt ?: 0
     )
 }
 

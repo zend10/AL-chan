@@ -27,7 +27,14 @@ fun ViewerQuery.Data.convert(): User {
             } ?: listOf(),
             timezone = viewer?.options?.timezone,
             activityMergeTime = viewer?.options?.activityMergeTime ?: 0,
-            staffNameLanguage = viewer?.options?.staffNameLanguage
+            staffNameLanguage = viewer?.options?.staffNameLanguage,
+            restrictMessagesToFollowing = viewer?.options?.restrictMessagesToFollowing ?: false,
+            disabledListActivity = viewer?.options?.disabledListActivity?.map {
+                ListActivityOption(
+                    disabled = it?.disabled ?: false,
+                    type = it?.type
+                )
+            } ?: listOf()
         ),
         mediaListOptions = MediaListOptions(
             scoreFormat = viewer?.mediaListOptions?.scoreFormat,
@@ -62,7 +69,8 @@ fun ViewerQuery.Data.convert(): User {
         siteUrl = viewer?.siteUrl ?: "",
         donatorTier = viewer?.donatorTier ?: 0,
         donatorBadge = viewer?.donatorBadge ?: "",
-        moderatorRoles = viewer?.moderatorRoles?.filterNotNull() ?: listOf()
+        moderatorRoles = viewer?.moderatorRoles?.filterNotNull() ?: listOf(),
+        createdAt = viewer?.createdAt ?: 0
     )
 }
 

@@ -9,7 +9,9 @@ mutation UpdateUserMutation(
   $activityMergeTime:Int,
   $animeListOptions:MediaListOptionsInput,
   $mangaListOptions:MediaListOptionsInput,
-  $staffNameLanguage:UserStaffNameLanguage
+  $staffNameLanguage:UserStaffNameLanguage,
+  $restrictMessagesToFollowing:Boolean,
+  $disabledListActivity:[ListActivityOptionInput]
 ) {
   UpdateUser(
     titleLanguage:$titleLanguage,
@@ -22,7 +24,9 @@ mutation UpdateUserMutation(
     activityMergeTime:$activityMergeTime,
     animeListOptions:$animeListOptions,
     mangaListOptions:$mangaListOptions,
-    staffNameLanguage:$staffNameLanguage
+    staffNameLanguage:$staffNameLanguage,
+    restrictMessagesToFollowing:$restrictMessagesToFollowing,
+    disabledListActivity:$disabledListActivity
   ) {
     id
     name
@@ -43,6 +47,11 @@ mutation UpdateUserMutation(
       timezone
       activityMergeTime
       staffNameLanguage
+      restrictMessagesToFollowing
+      disabledListActivity {
+        disabled
+        type
+      }
     }
     mediaListOptions {
       scoreFormat
@@ -67,5 +76,6 @@ mutation UpdateUserMutation(
     donatorBadge
     moderatorRoles
     siteUrl
+    createdAt
   }
 }

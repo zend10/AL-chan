@@ -2,6 +2,7 @@ package com.zen.alchan.ui.settings.list
 
 import com.zen.alchan.R
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.anilist.ListActivityOption
 import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListOrder
@@ -15,6 +16,7 @@ import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import type.MediaListStatus
 import type.ScoreFormat
 
 class ListSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
@@ -95,8 +97,40 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
     val mangaSectionOrderItems: Observable<List<String>>
         get() = _mangaSectionOrderItems
 
+    private val _disableWatchingActivity = BehaviorSubject.createDefault(false)
+    val disableWatchingActivity: Observable<Boolean>
+        get() = _disableWatchingActivity
+
+    private val _disablePlanningActivity = BehaviorSubject.createDefault(false)
+    val disablePlanningActivity: Observable<Boolean>
+        get() = _disablePlanningActivity
+
+    private val _disableCompletedActivity = BehaviorSubject.createDefault(false)
+    val disableCompletedActivity: Observable<Boolean>
+        get() = _disableCompletedActivity
+
+    private val _disableDroppedActivity = BehaviorSubject.createDefault(false)
+    val disableDroppedActivity: Observable<Boolean>
+        get() = _disableDroppedActivity
+
+    private val _disablePausedActivity = BehaviorSubject.createDefault(false)
+    val disablePausedActivity: Observable<Boolean>
+        get() = _disablePausedActivity
+
+    private val _disableRepeatingActivity = BehaviorSubject.createDefault(false)
+    val disableRepeatingActivity: Observable<Boolean>
+        get() = _disableRepeatingActivity
+
     private var viewer: User? = null
     private var currentListSettings: MediaListOptions? = null
+    private var disabledListActivity: ArrayList<ListActivityOption> = arrayListOf(
+        ListActivityOption(type = MediaListStatus.CURRENT),
+        ListActivityOption(type = MediaListStatus.PLANNING),
+        ListActivityOption(type = MediaListStatus.COMPLETED),
+        ListActivityOption(type = MediaListStatus.DROPPED),
+        ListActivityOption(type = MediaListStatus.PAUSED),
+        ListActivityOption(type = MediaListStatus.REPEATING)
+    )
 
     override fun loadData(param: Unit) {
         if (state == State.LOADED)
@@ -109,7 +143,9 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     viewer = it
 
                     val mediaListOptions = it.mediaListOptions
+                    val options = it.options
                     currentListSettings = mediaListOptions
+
 
                     updateScoreFormat(mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100)
                     updateAdvancedScoringEnabled(mediaListOptions.animeList.advancedScoringEnabled)
@@ -127,6 +163,12 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     updateSectionOrder(MediaType.ANIME, mediaListOptions.animeList.sectionOrder)
                     updateSectionOrder(MediaType.MANGA, mediaListOptions.mangaList.sectionOrder)
 
+                    options.disabledListActivity.forEach { listActivityOption ->
+                        listActivityOption.type?.let { mediaListStatus ->
+                            updateDisableListActivity(mediaListStatus, listActivityOption.disabled)
+                        }
+                    }
+
                     state = State.LOADED
                 }
         )
@@ -141,7 +183,8 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                     scoreFormat ?: ScoreFormat.POINT_100,
                     rowOrder,
                     animeList,
-                    mangaList
+                    mangaList,
+                    disabledListActivity
                 )
                     .applyScheduler()
                     .doFinally { _loading.onNext(false) }
@@ -381,6 +424,22 @@ class ListSettingsViewModel(private val userRepository: UserRepository) : BaseVi
                 _mangaSectionOrder.onNext(newSectionOrder)
             }
         }
+    }
+
+    fun updateDisableListActivity(mediaListStatus: MediaListStatus, shouldDisable: Boolean) {
+        val index = disabledListActivity.indexOfFirst { it.type == mediaListStatus }
+        if (index == -1) return
+        disabledListActivity[index] = ListActivityOption(shouldDisable, mediaListStatus)
+        val disableListActivitySubject = when (mediaListStatus) {
+            MediaListStatus.CURRENT -> _disableWatchingActivity
+            MediaListStatus.PLANNING -> _disablePlanningActivity
+            MediaListStatus.COMPLETED -> _disableCompletedActivity
+            MediaListStatus.DROPPED -> _disableDroppedActivity
+            MediaListStatus.PAUSED -> _disablePausedActivity
+            MediaListStatus.REPEATING -> _disableRepeatingActivity
+            else -> return
+        }
+        disableListActivitySubject.onNext(shouldDisable)
     }
 
     fun loadScoreFormatItems() {

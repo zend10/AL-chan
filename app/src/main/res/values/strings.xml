@@ -402,6 +402,13 @@
     <string name="title_native">Title Native</string>
     <string name="show_characters">Show Characters</string>
     <string name="show_media">Show Media</string>
+    <string name="disable_list_activity_creation">Disable List Activity Creation</string>
+    <string name="stop_creating_watching_reading_activity">Stop creating Watching/Reading activity</string>
+    <string name="stop_creating_planning_activity">Stop creating Planning activity</string>
+    <string name="stop_creating_completed_activity">Stop creating Completed activity</string>
+    <string name="stop_creating_dropped_activity">Stop creating Dropped activity</string>
+    <string name="stop_creating_paused_activity">Stop creating Paused activity</string>
+    <string name="stop_creating_rewatching_rereading_activity">Stop creating Rewatching/Rereading activity</string>
 
 
     <plurals name="minute">

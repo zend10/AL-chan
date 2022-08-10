@@ -235,10 +235,11 @@ class DefaultUserRepository(
         scoreFormat: ScoreFormat,
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
-        mangaListOptions: MediaListTypeOptions
+        mangaListOptions: MediaListTypeOptions,
+        disabledListActivity: List<ListActivityOption>
     ): Observable<User> {
         return userDataSource.updateListSettings(
-            scoreFormat, rowOrder, animeListOptions, mangaListOptions
+            scoreFormat, rowOrder, animeListOptions, mangaListOptions, disabledListActivity
         )
             .toObservable()
             .doFinally {

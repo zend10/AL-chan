@@ -14,6 +14,7 @@ import com.zen.alchan.ui.common.ChipRvAdapter
 import com.zen.alchan.ui.reorder.ReorderRvAdapter
 import io.reactivex.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaListStatus
 
 class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSettingsViewModel>() {
 
@@ -163,6 +164,30 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 viewModel.loadSectionOrderItems(MediaType.MANGA)
             }
 
+            listSettingsStopWatchingReadingCheckBox.setOnClickListener {
+                viewModel.updateDisableListActivity(MediaListStatus.CURRENT, listSettingsStopWatchingReadingCheckBox.isChecked)
+            }
+
+            listSettingsStopPlanningCheckBox.setOnClickListener {
+                viewModel.updateDisableListActivity(MediaListStatus.PLANNING, listSettingsStopPlanningCheckBox.isChecked)
+            }
+
+            listSettingsStopCompletedCheckBox.setOnClickListener {
+                viewModel.updateDisableListActivity(MediaListStatus.COMPLETED, listSettingsStopCompletedCheckBox.isChecked)
+            }
+
+            listSettingsStopDroppedCheckBox.setOnClickListener {
+                viewModel.updateDisableListActivity(MediaListStatus.DROPPED, listSettingsStopDroppedCheckBox.isChecked)
+            }
+
+            listSettingsStopPausedCheckBox.setOnClickListener {
+                viewModel.updateDisableListActivity(MediaListStatus.PAUSED, listSettingsStopPausedCheckBox.isChecked)
+            }
+
+            listSettingsStopRepeatingCheckBox.setOnClickListener {
+                viewModel.updateDisableListActivity(MediaListStatus.REPEATING, listSettingsStopRepeatingCheckBox.isChecked)
+            }
+
             listSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
             listSettingsSaveLayout.positiveButton.clicks {
                 viewModel.saveListSettings()
@@ -248,6 +273,24 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
                 navigation.navigateToReorder(it) { orderedList ->
                     viewModel.updateSectionOrder(MediaType.MANGA, orderedList)
                 }
+            },
+            viewModel.disableWatchingActivity.subscribe {
+                binding.listSettingsStopWatchingReadingCheckBox.isChecked = it
+            },
+            viewModel.disablePlanningActivity.subscribe {
+                binding.listSettingsStopPlanningCheckBox.isChecked = it
+            },
+            viewModel.disableCompletedActivity.subscribe {
+                binding.listSettingsStopCompletedCheckBox.isChecked = it
+            },
+            viewModel.disableDroppedActivity.subscribe {
+                binding.listSettingsStopDroppedCheckBox.isChecked = it
+            },
+            viewModel.disablePausedActivity.subscribe {
+                binding.listSettingsStopPausedCheckBox.isChecked = it
+            },
+            viewModel.disableRepeatingActivity.subscribe {
+                binding.listSettingsStopRepeatingCheckBox.isChecked = it
             }
         )
 

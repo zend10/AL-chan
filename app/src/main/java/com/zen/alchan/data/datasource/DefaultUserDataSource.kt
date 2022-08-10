@@ -16,6 +16,7 @@ import com.apollographql.apollo.rx2.rxMutate
 import com.apollographql.apollo.rx2.rxPrefetch
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
+import com.zen.alchan.data.response.anilist.ListActivityOption
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.helper.enums.Favorite
@@ -125,7 +126,8 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
         scoreFormat: ScoreFormat,
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
-        mangaListOptions: MediaListTypeOptions
+        mangaListOptions: MediaListTypeOptions,
+        disabledListActivity: List<ListActivityOption>
     ): Single<Response<UpdateUserMutation.Data>> {
         val mutation = UpdateUserMutation(
             scoreFormat = Input.fromNullable(scoreFormat),
@@ -147,6 +149,14 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
                     advancedScoring = Input.fromNullable(mangaListOptions.advancedScoring),
                     advancedScoringEnabled = Input.fromNullable(mangaListOptions.advancedScoringEnabled)
                 )
+            ),
+            disabledListActivity = Input.fromNullable(
+                disabledListActivity.map {
+                    ListActivityOptionInput(
+                        disabled = Input.fromNullable(it.disabled),
+                        type = Input.fromNullable(it.type)
+                    )
+                }
             )
         )
         return apolloHandler.apolloClient.rxMutate(mutation)

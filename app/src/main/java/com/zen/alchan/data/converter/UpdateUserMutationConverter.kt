@@ -24,7 +24,14 @@ fun UpdateUserMutation.Data.convert(): User {
             } ?: listOf(),
             timezone = updateUser?.options?.timezone,
             activityMergeTime = updateUser?.options?.activityMergeTime ?: 0,
-            staffNameLanguage = updateUser?.options?.staffNameLanguage
+            staffNameLanguage = updateUser?.options?.staffNameLanguage,
+            restrictMessagesToFollowing = updateUser?.options?.restrictMessagesToFollowing ?: false,
+            disabledListActivity = updateUser?.options?.disabledListActivity?.map {
+                ListActivityOption(
+                    disabled = it?.disabled ?: false,
+                    type = it?.type
+                )
+            } ?: listOf()
         ),
         mediaListOptions = MediaListOptions(
             scoreFormat = updateUser?.mediaListOptions?.scoreFormat,
@@ -48,6 +55,7 @@ fun UpdateUserMutation.Data.convert(): User {
         siteUrl = updateUser?.siteUrl ?: "",
         donatorTier = updateUser?.donatorTier ?: 0,
         donatorBadge = updateUser?.donatorBadge ?: "",
-        moderatorRoles = updateUser?.moderatorRoles?.filterNotNull() ?: listOf()
+        moderatorRoles = updateUser?.moderatorRoles?.filterNotNull() ?: listOf(),
+        createdAt = updateUser?.createdAt ?: 0
     )
 }

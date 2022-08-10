@@ -11,5 +11,8 @@ data class UserOptions(
     val notificationOptions: List<NotificationOption> = listOf(),
     val timezone: String? = null,
     var activityMergeTime: Int = 0,
-    var staffNameLanguage: UserStaffNameLanguage? = null
+    var staffNameLanguage: UserStaffNameLanguage? = null,
+    var restrictMessagesToFollowing: Boolean = false,
+    var disabledListActivity: List<ListActivityOption> = listOf()
+
 )

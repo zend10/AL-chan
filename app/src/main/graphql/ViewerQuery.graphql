@@ -22,6 +22,11 @@ query ViewerQuery($sort: [UserStatisticsSort]) {
       timezone
       activityMergeTime
       staffNameLanguage
+      restrictMessagesToFollowing
+      disabledListActivity {
+        disabled
+        type
+      }
     }
     mediaListOptions {
       scoreFormat
@@ -137,5 +142,6 @@ query ViewerQuery($sort: [UserStatisticsSort]) {
     donatorBadge
     moderatorRoles
     siteUrl
+    createdAt
   }
 }

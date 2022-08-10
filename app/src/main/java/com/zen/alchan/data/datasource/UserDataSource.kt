@@ -1,6 +1,7 @@
 package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo.api.Response
+import com.zen.alchan.data.response.anilist.ListActivityOption
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.helper.enums.Favorite
@@ -33,7 +34,8 @@ interface UserDataSource {
         scoreFormat: ScoreFormat,
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
-        mangaListOptions: MediaListTypeOptions
+        mangaListOptions: MediaListTypeOptions,
+        disabledListActivity: List<ListActivityOption>
     ): Single<Response<UpdateUserMutation.Data>>
     fun updateNotificationsSettings(
         notificationOptions: List<NotificationOption>

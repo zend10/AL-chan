@@ -70,7 +70,8 @@ interface UserRepository {
         scoreFormat: ScoreFormat,
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
-        mangaListOptions: MediaListTypeOptions
+        mangaListOptions: MediaListTypeOptions,
+        disabledListActivity: List<ListActivityOption>
     ): Observable<User>
 
     fun updateNotificationsSettings(
