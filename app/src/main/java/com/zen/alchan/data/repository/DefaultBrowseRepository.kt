@@ -15,14 +15,14 @@ class DefaultBrowseRepository(
 
     private val userIdToUserMap = HashMap<Int, User>()
 
-    override fun getUser(id: Int, sort: List<UserStatisticsSort>): Observable<User> {
+    override fun getUser(id: Int?, name: String?, sort: List<UserStatisticsSort>): Observable<User> {
         return if (userIdToUserMap.containsKey(id)) {
             Observable.just(userIdToUserMap[id])
         } else {
-            browseDataSource.getUserQuery(id, sort).map {
+            browseDataSource.getUserQuery(id, name, sort).map {
                 val newUser = it.data?.convert()
                 if (newUser != null) {
-                    userIdToUserMap[id] = newUser
+                    userIdToUserMap[newUser.id] = newUser
                 }
                 newUser
             }

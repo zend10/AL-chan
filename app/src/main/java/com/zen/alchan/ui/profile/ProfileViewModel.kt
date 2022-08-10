@@ -108,15 +108,21 @@ class ProfileViewModel(
     val bannerUrlForPreview: Observable<String>
         get() = _bannerUrlForPreview
 
+    private val _currentUserId = PublishSubject.create<Int>()
+    val currentUserId: Observable<Int>
+        get() = _currentUserId
+
     private var isViewer = false
     private var viewerId = 0
 
-    private var userId = 0
+    private var userId: Int? = null
+    private var name: String? = null
     private var user = User()
     private var appSetting = AppSetting()
 
     override fun loadData(param: ProfileParam) {
         userId = param.userId
+        name = param.username
 
         loadOnce {
             disposables.add(
@@ -125,8 +131,8 @@ class ProfileViewModel(
                 }
                     .applyScheduler()
                     .subscribe { (isAuthenticated, appSetting) ->
-                        _notLoggedInLayoutVisibility.onNext(userId == 0 && !isAuthenticated)
-                        _viewerMenuItemVisibility.onNext(userId == 0)
+                        _notLoggedInLayoutVisibility.onNext(userId == null && name == null && !isAuthenticated)
+                        _viewerMenuItemVisibility.onNext(userId == null && name == null)
                         _profileAdapterComponent.onNext(appSetting)
                         loadUserData()
                     }
@@ -193,7 +199,7 @@ class ProfileViewModel(
         _loading.onNext(true)
 
         disposables.add(
-            userRepository.toggleFollow(userId)
+            userRepository.toggleFollow(user.id)
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .subscribe(
@@ -211,7 +217,7 @@ class ProfileViewModel(
     private fun loadUserData() {
         _loading.onNext(true)
 
-        val userObservable = if (userId == 0)
+        val userObservable = if (userId == null && name == null)
             userRepository.getViewer()
                 .map { user ->
                     isViewer = true
@@ -219,7 +225,7 @@ class ProfileViewModel(
                     user
                 }
         else
-            browseRepository.getUser(userId)
+            browseRepository.getUser(userId, name)
                 .flatMap { user ->
                     userRepository.getViewer(Source.CACHE)
                         .map { viewer ->
@@ -245,6 +251,7 @@ class ProfileViewModel(
                         this.user = user
                         this.appSetting = appSetting
 
+                        _currentUserId.onNext(user.id)
                         _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
                         _bannerUrl.onNext(user.bannerImage)
                         _username.onNext(user.name)
@@ -323,8 +330,8 @@ class ProfileViewModel(
 
         disposables.add(
             Observable.zip(
-                mediaListRepository.getMediaListCollection(userId = userId, mediaType = MediaType.ANIME),
-                mediaListRepository.getMediaListCollection(userId = userId, mediaType = MediaType.MANGA)
+                mediaListRepository.getMediaListCollection(userId = user.id, mediaType = MediaType.ANIME),
+                mediaListRepository.getMediaListCollection(userId = user.id, mediaType = MediaType.MANGA)
             ) { otherPersonAnimeList, otherPersonMangaList ->
                 val otherPersonAnimeMediaIdToScoreMap = HashMap<Int, Double>()
                 val otherPersonMangaMediaIdToScoreMap = HashMap<Int, Double>()

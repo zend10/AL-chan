@@ -1,5 +1,5 @@
-query UserQuery($id: Int, $sort: [UserStatisticsSort]) {
-  User(id: $id) {
+query UserQuery($id: Int, $name: String, $sort: [UserStatisticsSort]) {
+  User(id: $id, name: $name) {
     id
     name
     about(asHtml: false)

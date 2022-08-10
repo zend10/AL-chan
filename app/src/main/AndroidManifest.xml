@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.launch.LaunchActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".ui.root.RootActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
@@ -36,6 +36,37 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="alchan" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/anime/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/manga/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/character/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/staff/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/studio/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="anilist.co"
+                    android:pathPattern="/user/.*"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>

@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import type.*
 
 interface BrowseRepository {
-    fun getUser(id: Int, sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)): Observable<User>
+    fun getUser(id: Int? = null, name: String? = null, sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)): Observable<User>
     fun getOthersListType(): Observable<ListType>
     fun updateOthersListType(newListType: ListType)
     fun getMedia(id: Int): Observable<Media>

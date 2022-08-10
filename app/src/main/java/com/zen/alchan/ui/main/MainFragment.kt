@@ -150,6 +150,12 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     binding.mainViewPager.currentItem = mangaListIndex
                 }
             }
+            deepLink.isProfile() && isViewerAuthenticated -> {
+                val profileIndex = fragments?.indexOfFirst { it == profileFragment }
+                if (profileIndex != null && profileIndex != -1) {
+                    binding.mainViewPager.currentItem = profileIndex
+                }
+            }
             deepLink.isAppSettings() && isViewerAuthenticated -> {
                 val profileIndex = fragments?.indexOfFirst { it == profileFragment }
                 if (profileIndex != null && profileIndex != -1) {
@@ -160,6 +166,27 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             }
             deepLink.isSpoiler() -> {
                 dialog.showSpoilerDialog(deepLink.getQueryParamOfOrNull("data") ?: "")
+            }
+            deepLink.isAnime() || deepLink.isManga() -> {
+                deepLink.getAniListPageId()?.let { navigation.navigateToMedia(it.toInt()) }
+            }
+            deepLink.isCharacter() -> {
+                deepLink.getAniListPageId()?.let { navigation.navigateToCharacter(it.toInt()) }
+            }
+            deepLink.isStaff() -> {
+                deepLink.getAniListPageId()?.let { navigation.navigateToStaff(it.toInt()) }
+            }
+            deepLink.isStudio() -> {
+                deepLink.getAniListPageId()?.let { navigation.navigateToStudio(it.toInt()) }
+            }
+            deepLink.isUser() -> {
+                deepLink.getAniListPageId()?.let {
+                    val isUsername = it.toIntOrNull() == null
+                    if (isUsername)
+                        navigation.navigateToUser(username = it)
+                    else
+                        navigation.navigateToUser(id = it.toInt())
+                }
             }
         }
 

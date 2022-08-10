@@ -168,8 +168,8 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(StaffMediaListFragment.newInstance(id))
     }
 
-    override fun navigateToUser(id: Int) {
-        pushBrowseScreenPage(ProfileFragment.newInstance(id))
+    override fun navigateToUser(id: Int?, username: String?) {
+        pushBrowseScreenPage(ProfileFragment.newInstance(id, username))
     }
 
     override fun navigateToStudio(id: Int) {

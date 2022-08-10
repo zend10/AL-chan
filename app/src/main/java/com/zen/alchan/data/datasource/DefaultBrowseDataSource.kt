@@ -17,10 +17,11 @@ import type.*
 class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : BrowseDataSource {
 
     override fun getUserQuery(
-        id: Int,
+        id: Int?,
+        name:  String?,
         sort: List<UserStatisticsSort>
     ): Observable<Response<UserQuery.Data>> {
-        val query = UserQuery(id = Input.fromNullable(id), sort = Input.optional(sort))
+        val query = UserQuery(id = Input.optional(id), name = Input.optional(name), sort = Input.optional(sort))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

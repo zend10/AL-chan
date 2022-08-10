@@ -50,6 +50,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private var isToolbarExpanded = true
 
     private var profileAdapter: ProfileRvAdapter? = null
+    private var currentUserId = 0
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -64,7 +65,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
             profileAppBarLayout.setExpanded(isToolbarExpanded)
 
-            if (arguments?.getInt(USER_ID) != 0) {
+            if (!isViewer()) {
                 setUpToolbar(profileToolbar, "", R.drawable.ic_custom_close) {
                     navigation.closeBrowseScreen()
                 }
@@ -152,34 +153,32 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             profileAnimeCountLayout.clicks {
-                val userId = arguments?.getInt(USER_ID) ?: 0
-                if (userId == 0)
+                if (isViewer())
                     sharedViewModel.navigateTo(SharedMainViewModel.Page.ANIME)
                 else
-                    navigation.navigateToAnimeMediaList(userId)
+                    navigation.navigateToAnimeMediaList(currentUserId)
             }
 
             profileMangaCountLayout.clicks {
-                val userId = arguments?.getInt(USER_ID) ?: 0
-                if (userId == 0)
+                if (isViewer())
                     sharedViewModel.navigateTo(SharedMainViewModel.Page.MANGA)
                 else
-                    navigation.navigateToMangaMediaList(userId)
+                    navigation.navigateToMangaMediaList(currentUserId)
             }
 
             profileFollowingCountLayout.clicks {
-                navigation.navigateToFollowing(arguments?.getInt(USER_ID) ?: 0)
+                navigation.navigateToFollowing(currentUserId)
             }
 
             profileFollowersCountLayout.clicks {
-                navigation.navigateToFollowers(arguments?.getInt(USER_ID) ?: 0)
+                navigation.navigateToFollowers(currentUserId)
             }
         }
     }
 
     override fun setUpInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.profileCollapsingToolbar, null)
-        if (arguments?.getInt(USER_ID) != 0) {
+        if (!isViewer()) {
             binding.profileRecyclerView.applyBottomPaddingInsets()
         }
     }
@@ -271,10 +270,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                     it,
                     binding.profileBannerImage
                 )
+            },
+            viewModel.currentUserId.subscribe {
+                currentUserId = it
             }
         )
 
-        viewModel.loadData(ProfileParam(arguments?.getInt(USER_ID) ?: 0))
+        viewModel.loadData(
+            ProfileParam(
+                arguments?.getInt(USER_ID)?.let { if (it == 0) null else it },
+                arguments?.getString(USERNAME)
+            )
+        )
     }
 
     private fun assignAdapter(appSetting: AppSetting) {
@@ -295,7 +302,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getStatsListener(): ProfileListener.StatsListener {
         return object : ProfileListener.StatsListener {
             override fun navigateToStatsDetail() {
-                navigation.navigateToUserStats(arguments?.getInt(USER_ID) ?: 0)
+                navigation.navigateToUserStats(currentUserId)
             }
         }
     }
@@ -307,7 +314,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                     MediaType.ANIME -> Favorite.ANIME
                     MediaType.MANGA -> Favorite.MANGA
                 }
-                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, favorite)
+                navigation.navigateToFavorite(currentUserId, favorite)
             }
 
             override fun navigateToMedia(media: Media, mediaType: MediaType) {
@@ -319,7 +326,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteCharacterListener(): ProfileListener.FavoriteCharacterListener {
         return object : ProfileListener.FavoriteCharacterListener {
             override fun navigateToFavoriteCharacter() {
-                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, Favorite.CHARACTERS)
+                navigation.navigateToFavorite(currentUserId, Favorite.CHARACTERS)
             }
 
             override fun navigateToCharacter(character: Character) {
@@ -331,7 +338,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteStaffListener(): ProfileListener.FavoriteStaffListener {
         return object : ProfileListener.FavoriteStaffListener {
             override fun navigateToFavoriteStaff() {
-                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, Favorite.STAFF)
+                navigation.navigateToFavorite(currentUserId, Favorite.STAFF)
             }
 
             override fun navigateToStaff(staff: Staff) {
@@ -343,7 +350,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteStudioListener(): ProfileListener.FavoriteStudioListener {
         return object : ProfileListener.FavoriteStudioListener {
             override fun navigateToFavoriteStudio() {
-                navigation.navigateToFavorite(arguments?.getInt(USER_ID) ?: 0, Favorite.STUDIOS)
+                navigation.navigateToFavorite(currentUserId, Favorite.STUDIOS)
             }
 
             override fun navigateToStudio(studio: Studio) {
@@ -351,6 +358,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
         }
     }
+
+    private fun isViewer(): Boolean {
+        return arguments?.getInt(USER_ID) == 0 && arguments?.getString(USERNAME) == null
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -365,12 +377,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     companion object {
         private const val USER_ID = "userId"
+        private const val USERNAME = "username"
 
         @JvmStatic
-        fun newInstance(userId: Int = 0) =
+        fun newInstance(userId: Int? = null, username: String? = null) =
             ProfileFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(USER_ID, userId)
+                    if (userId != null) putInt(USER_ID, userId)
+                    if (username != null) putString(USERNAME, username)
                 }
             }
     }
