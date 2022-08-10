@@ -190,7 +190,7 @@
     <string name="account_settings_can_only_be_managed_on_the_web_make_sure_the_url_is_anilist_co_before_doing_anything">Account settings can only be managed on the web. Make sure the URL is anilist.co before doing anything.</string>
     <string name="update_profile">Update Profile</string>
     <string name="update_account">Update Account</string>
-    <string name="force_update_stats">Force Update Stats</string>
+    <string name="force_update_stats">Force Update Stats, Unhide Entries, Reset Score, Delete List</string>
     <string name="import_lists">Import Lists</string>
     <string name="connect_account_with_twitter">Connect Account with Twitter</string>
     <string name="logout">Logout</string>
