@@ -13,6 +13,7 @@ import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
+import com.zen.alchan.ui.notifications.NotificationsFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.social.SocialFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,7 +34,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     private var homeFragment: HomeFragment? = null
     private var animeListFragment: MediaListFragment? = null
     private var mangaListFragment: MediaListFragment? = null
-    private var socialFragment: SocialFragment? = null
+    private var notificationsFragment: NotificationsFragment? = null
     private var profileFragment: ProfileFragment? = null
 
     private var deepLink: DeepLink? = null
@@ -50,7 +51,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             val isViewerAuthenticated = viewModel.isViewerAuthenticated
 
             homeFragment = HomeFragment.newInstance()
-            socialFragment = SocialFragment.newInstance()
+            notificationsFragment = NotificationsFragment.newInstance()
             animeListFragment = MediaListFragment.newInstance(MediaType.ANIME)
             mangaListFragment = MediaListFragment.newInstance(MediaType.MANGA)
             profileFragment = ProfileFragment.newInstance()
@@ -60,13 +61,12 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     homeFragment,
                     animeListFragment,
                     mangaListFragment,
-                    socialFragment,
+                    notificationsFragment,
                     profileFragment
                 )
             } else {
                 listOf(
                     homeFragment,
-                    socialFragment,
                     profileFragment
                 )
             }
@@ -83,6 +83,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
             binding.mainBottomNavigation.menu.findItem(R.id.menuAnime).isVisible = isViewerAuthenticated
             binding.mainBottomNavigation.menu.findItem(R.id.menuManga).isVisible = isViewerAuthenticated
+            binding.mainBottomNavigation.menu.findItem(R.id.menuNotifications).isVisible = isViewerAuthenticated
 
             mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -98,8 +99,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     // manually manage the order
                     when (it.itemId) {
                         R.id.menuHome -> 0
-                        R.id.menuSocial -> 1
-                        R.id.menuProfile -> 2
+                        R.id.menuProfile -> 1
                         else -> 0
                     }
                 }
@@ -150,6 +150,12 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     binding.mainViewPager.currentItem = mangaListIndex
                 }
             }
+            deepLink.isNotifications() && isViewerAuthenticated -> {
+                val notificationsIndex = fragments?.indexOfFirst { it == notificationsFragment }
+                if (notificationsIndex != null && notificationsIndex != -1) {
+                    binding.mainViewPager.currentItem = notificationsIndex
+                }
+            }
             deepLink.isProfile() && isViewerAuthenticated -> {
                 val profileIndex = fragments?.indexOfFirst { it == profileFragment }
                 if (profileIndex != null && profileIndex != -1) {
@@ -198,7 +204,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         viewPagerAdapter = null
         fragments = null
         homeFragment = null
-        socialFragment = null
+        notificationsFragment = null
         animeListFragment = null
         mangaListFragment = null
         profileFragment = null

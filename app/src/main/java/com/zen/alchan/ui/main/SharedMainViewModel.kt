@@ -10,14 +10,14 @@ class SharedMainViewModel : BaseViewModel<Unit>() {
     private val _scrollHomeToTop = PublishSubject.create<Unit>()
     private val _scrollAnimeToTop = PublishSubject.create<Unit>()
     private val _scrollMangaToTop = PublishSubject.create<Unit>()
-    private val _scrollSocialToTop = PublishSubject.create<Unit>()
+    private val _scrollNotificationsToTop = PublishSubject.create<Unit>()
     private val _scrollProfileToTop = PublishSubject.create<Unit>()
 
     private val scrollEvents = linkedMapOf(
         Page.HOME to _scrollAnimeToTop,
         Page.ANIME to _scrollAnimeToTop,
         Page.MANGA to _scrollMangaToTop,
-        Page.SOCIAL to _scrollSocialToTop,
+        Page.NOTIFICATIONS to _scrollNotificationsToTop,
         Page.PROFILE to _scrollProfileToTop
     )
 
@@ -50,7 +50,7 @@ class SharedMainViewModel : BaseViewModel<Unit>() {
         HOME,
         ANIME,
         MANGA,
-        SOCIAL,
+        NOTIFICATIONS,
         PROFILE
     }
 }

@@ -12,10 +12,10 @@
         android:orderInCategory="2"
         android:icon="@drawable/ic_book"
         android:title="@string/manga"/>
-    <item android:id="@+id/menuSocial"
+    <item android:id="@+id/menuNotifications"
         android:orderInCategory="3"
-        android:icon="@drawable/ic_chat"
-        android:title="@string/social"/>
+        android:icon="@drawable/ic_notification"
+        android:title="@string/notifications"/>
     <item android:id="@+id/menuProfile"
         android:orderInCategory="4"
         android:icon="@drawable/ic_person"
