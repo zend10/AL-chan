@@ -73,6 +73,22 @@ class NotificationsSettingsFragment : BaseFragment<FragmentNotificationsSettings
                 viewModel.updateNotificationOption(NotificationType.THREAD_LIKE, notificationsSettingsSomeoneLikesForumThreadCheckBox.isChecked)
             }
 
+            notificationsSettingsEntryCreatedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.RELATED_MEDIA_ADDITION, notificationsSettingsEntryCreatedCheckBox.isChecked)
+            }
+
+            notificationsSettingsDataChangedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.MEDIA_DATA_CHANGE, notificationsSettingsDataChangedCheckBox.isChecked)
+            }
+
+            notificationsSettingsEntryMergedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.MEDIA_MERGE, notificationsSettingsEntryMergedCheckBox.isChecked)
+            }
+
+            notificationsSettingsEntryDeletedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.MEDIA_DELETION, notificationsSettingsEntryDeletedCheckBox.isChecked)
+            }
+
             notificationsSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
             notificationsSettingsSaveLayout.positiveButton.clicks {
                 viewModel.saveNotificationsSettings()
@@ -129,6 +145,18 @@ class NotificationsSettingsFragment : BaseFragment<FragmentNotificationsSettings
             },
             viewModel.threadLike.subscribe {
                 binding.notificationsSettingsSomeoneLikesForumThreadCheckBox.isChecked = it
+            },
+            viewModel.relatedMediaAddition.subscribe {
+                binding.notificationsSettingsEntryCreatedCheckBox.isChecked = it
+            },
+            viewModel.mediaDataChange.subscribe {
+                binding.notificationsSettingsDataChangedCheckBox.isChecked = it
+            },
+            viewModel.mediaMerge.subscribe {
+                binding.notificationsSettingsEntryMergedCheckBox.isChecked = it
+            },
+            viewModel.mediaDeletion.subscribe {
+                binding.notificationsSettingsEntryDeletedCheckBox.isChecked = it
             }
         )
 

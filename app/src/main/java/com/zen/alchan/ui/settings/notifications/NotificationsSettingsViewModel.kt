@@ -61,6 +61,22 @@ class NotificationsSettingsViewModel(private val userRepository: UserRepository)
     val threadLike: Observable<Boolean>
         get() = _threadLike
 
+    private val _relatedMediaAddition = BehaviorSubject.createDefault(false)
+    val relatedMediaAddition: Observable<Boolean>
+        get() = _relatedMediaAddition
+
+    private val _mediaDataChange = BehaviorSubject.createDefault(false)
+    val mediaDataChange: Observable<Boolean>
+        get() = _mediaDataChange
+
+    private val _mediaMerge = BehaviorSubject.createDefault(false)
+    val mediaMerge: Observable<Boolean>
+        get() = _mediaMerge
+
+    private val _mediaDeletion = BehaviorSubject.createDefault(false)
+    val mediaDeletion: Observable<Boolean>
+        get() = _mediaDeletion
+
     private var currentNotificationOptions: ArrayList<NotificationOption>? = null
 
     override fun loadData(param: Unit) {
@@ -74,6 +90,7 @@ class NotificationsSettingsViewModel(private val userRepository: UserRepository)
                         /*
                             Automatically subscribe me to activity I create -> ACTIVITY_REPLY
                             Automatically subscribe me to activity I reply to -> ACTIVITY_REPLY_SUBSCRIBED
+
                             When someone follows me -> FOLLOWING
                             When I receive message -> ACTIVITY_MESSAGE
                             When I am @ mentioned in an activity or activity reply -> ACTIVITY_MENTION
@@ -84,7 +101,13 @@ class NotificationsSettingsViewModel(private val userRepository: UserRepository)
                             When someone likes my forum comment -> THREAD_COMMENT_LIKE
                             When someone replies to a forum thread I'm subscribed to -> THREAD_SUBSCRIBED
                             When someone likes my forum thread -> THREAD_LIKE
-                            AIRING and RELATED_MEDIA_ADDITION are not in AniList notification settings
+
+                            When an anime or manga in my list has a new related entry created -> RELATED_MEDIA_ADDITION
+                            When an anime or manga in my list has its data changed that affects my list -> MEDIA_DATA_CHANGE
+                            When one or more anime or manga in my list are merged into another -> MEDIA_MERGE
+                            When an anime or manga in my list is deleted from the site -> MEDIA_DELETION
+
+                            AIRING not used
                          */
 
                         updateNotificationOption(NotificationType.ACTIVITY_REPLY, currentNotificationOptions?.find { it.type == NotificationType.ACTIVITY_REPLY }?.enabled ?: false)
@@ -99,6 +122,10 @@ class NotificationsSettingsViewModel(private val userRepository: UserRepository)
                         updateNotificationOption(NotificationType.THREAD_COMMENT_LIKE, currentNotificationOptions?.find { it.type == NotificationType.THREAD_COMMENT_LIKE }?.enabled ?: false)
                         updateNotificationOption(NotificationType.THREAD_SUBSCRIBED, currentNotificationOptions?.find { it.type == NotificationType.THREAD_SUBSCRIBED }?.enabled ?: false)
                         updateNotificationOption(NotificationType.THREAD_LIKE, currentNotificationOptions?.find { it.type == NotificationType.THREAD_LIKE }?.enabled ?: false)
+                        updateNotificationOption(NotificationType.RELATED_MEDIA_ADDITION, currentNotificationOptions?.find { it.type == NotificationType.RELATED_MEDIA_ADDITION }?.enabled ?: false)
+                        updateNotificationOption(NotificationType.MEDIA_DATA_CHANGE, currentNotificationOptions?.find { it.type == NotificationType.MEDIA_DATA_CHANGE }?.enabled ?: false)
+                        updateNotificationOption(NotificationType.MEDIA_MERGE, currentNotificationOptions?.find { it.type == NotificationType.MEDIA_MERGE }?.enabled ?: false)
+                        updateNotificationOption(NotificationType.MEDIA_DELETION, currentNotificationOptions?.find { it.type == NotificationType.MEDIA_DELETION }?.enabled ?: false)
                     }
             )
         }
@@ -143,6 +170,10 @@ class NotificationsSettingsViewModel(private val userRepository: UserRepository)
             NotificationType.THREAD_COMMENT_LIKE -> _threadCommentLike
             NotificationType.THREAD_SUBSCRIBED -> _threadSubscribed
             NotificationType.THREAD_LIKE -> _threadLike
+            NotificationType.RELATED_MEDIA_ADDITION -> _relatedMediaAddition
+            NotificationType.MEDIA_DATA_CHANGE -> _mediaDataChange
+            NotificationType.MEDIA_MERGE -> _mediaMerge
+            NotificationType.MEDIA_DELETION -> _mediaDeletion
             else -> null
         }
 

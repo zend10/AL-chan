@@ -409,6 +409,11 @@
     <string name="stop_creating_dropped_activity">Stop creating Dropped activity</string>
     <string name="stop_creating_paused_activity">Stop creating Paused activity</string>
     <string name="stop_creating_rewatching_rereading_activity">Stop creating Rewatching/Rereading activity</string>
+    <string name="site_data_changes">Site Data Changes</string>
+    <string name="when_an_anime_or_manga_in_my_list_has_a_new_related_entry_created">When an anime or manga in my list has a new related entry created</string>
+    <string name="when_an_anime_or_manga_in_my_list_has_its_data_changed_that_affects_my_list">When an anime or manga in my list has its data changed that affects my list</string>
+    <string name="when_one_or_more_anime_or_manga_in_my_list_are_merged_into_another">When one or more anime or manga in my list are merged into another</string>
+    <string name="when_an_anime_or_manga_in_my_list_is_deleted_from_the_site">When an anime or manga in my list is deleted from the site</string>
 
 
     <plurals name="minute">

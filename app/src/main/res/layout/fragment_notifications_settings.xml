@@ -90,15 +90,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/notificationsSettingsNotificationsLayout"
+                android:id="@+id/notificationsSettingsSocialLayout"
                 app:layout_constraintTop_toBottomOf="@id/notificationsSettingsActivitySubscriptionLayout"
                 android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/notificationsSettingsNotificationsTitle"
-                    android:text="@string/notifications"
+                    android:id="@+id/notificationsSettingsSocialTitle"
+                    android:text="@string/social"
                     style="?themeRegularBoldFont"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/notificationsSettingsSomeoneFollowLayout"
-                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsNotificationsTitle"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSocialTitle"
                     android:layout_marginTop="@dimen/marginNormal"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -339,6 +339,120 @@
 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/notificationsSettingsSomeoneLikesForumThreadCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/notificationsSettingsSiteDataChangesLayout"
+                app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSocialLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/notificationsSettingsSiteDataChangesTitle"
+                    android:text="@string/site_data_changes"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsEntryCreatedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSiteDataChangesTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_an_anime_or_manga_in_my_list_has_a_new_related_entry_created"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsEntryCreatedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsDataChangedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsEntryCreatedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_an_anime_or_manga_in_my_list_has_its_data_changed_that_affects_my_list"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsDataChangedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsEntryMergedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsDataChangedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_one_or_more_anime_or_manga_in_my_list_are_merged_into_another"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsEntryMergedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsEntryDeletedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsEntryMergedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_an_anime_or_manga_in_my_list_is_deleted_from_the_site"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsEntryDeletedCheckBox"
                         style="?themeRegularCheckBox"
                         android:layout_width="@dimen/iconSize"
                         android:layout_height="@dimen/iconSize"/>
