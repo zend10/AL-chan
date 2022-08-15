@@ -10,6 +10,7 @@ import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.pojo.NullableItem
@@ -18,10 +19,7 @@ import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import type.ScoreFormat
-import type.UserStaffNameLanguage
-import type.UserStatisticsSort
-import type.UserTitleLanguage
+import type.*
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
@@ -264,5 +262,15 @@ class DefaultUserRepository(
                 }
                 newViewer
             }
+    }
+
+    override fun getNotifications(
+        page: Int,
+        typeIn: List<NotificationType>?,
+        resetNotificationCount: Boolean
+    ): Observable<NotificationData> {
+        return userDataSource.getNotifications(page, typeIn, resetNotificationCount).map {
+            it.data?.convert()
+        }
     }
 }

@@ -30,6 +30,7 @@ import com.zen.alchan.ui.media.character.MediaCharacterListViewModel
 import com.zen.alchan.ui.media.MediaViewModel
 import com.zen.alchan.ui.media.staff.MediaStaffListViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
+import com.zen.alchan.ui.notifications.NotificationsViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
@@ -120,6 +121,7 @@ class ALchanApplication : Application() {
 
         viewModel { MediaListViewModel(get(), get(), get()) }
 
+        viewModel { NotificationsViewModel(get()) }
         viewModel { SocialViewModel() }
 
         viewModel { ProfileViewModel(get(), get(), get(), get()) }

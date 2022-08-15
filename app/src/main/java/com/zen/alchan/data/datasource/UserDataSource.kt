@@ -8,10 +8,7 @@ import com.zen.alchan.helper.enums.Favorite
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import type.ScoreFormat
-import type.UserStaffNameLanguage
-import type.UserStatisticsSort
-import type.UserTitleLanguage
+import type.*
 
 interface UserDataSource {
     fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<Response<ViewerQuery.Data>>
@@ -40,4 +37,5 @@ interface UserDataSource {
     fun updateNotificationsSettings(
         notificationOptions: List<NotificationOption>
     ): Single<Response<UpdateUserMutation.Data>>
+    fun getNotifications(page: Int, typeIn: List<NotificationType>?, resetNotificationCount: Boolean): Observable<Response<NotificationsQuery.Data>>
 }

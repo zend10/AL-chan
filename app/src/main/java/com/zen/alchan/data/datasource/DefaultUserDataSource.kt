@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import FollowersQuery
 import FollowingAndFollowersCountQuery
 import FollowingQuery
+import NotificationsQuery
 import ToggleFavouriteMutation
 import ToggleFollowMutation
 import UpdateFavouriteOrderMutation
@@ -169,5 +170,18 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
             })
         )
         return apolloHandler.apolloClient.rxMutate(mutation)
+    }
+
+    override fun getNotifications(
+        page: Int,
+        typeIn: List<NotificationType>?,
+        resetNotificationCount: Boolean
+    ): Observable<Response<NotificationsQuery.Data>> {
+        val query = NotificationsQuery(
+            page = Input.fromNullable(page),
+            type_in = Input.optional(typeIn),
+            resetNotificationCount = Input.fromNullable(resetNotificationCount)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
     }
 }

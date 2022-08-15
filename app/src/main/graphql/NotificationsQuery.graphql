@@ -1,0 +1,409 @@
+query NotificationsQuery(
+    $page: Int,
+    $type_in: [NotificationType],
+    $resetNotificationCount: Boolean
+) {
+    Page(page: $page, perPage: 25) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        notifications(
+            type_in: $type_in,
+            resetNotificationCount: $resetNotificationCount
+        ) {
+            __typename
+            ... onAiringNotification
+            ... onFollowingNotification
+            ... onActivityMessageNotification
+            ... onActivityMentionNotification
+            ... onActivityReplyNotification
+            ... onActivityReplySubscribedNotification
+            ... onActivityLikeNotification
+            ... onActivityReplyLikeNotification
+            ... onThreadCommentMentionNotification
+            ... onThreadCommentReplyNotification
+            ... onThreadCommentSubscribedNotification
+            ... onThreadCommentLikeNotification
+            ... onThreadLikeNotification
+            ... onRelatedMediaAdditionNotification
+            ... onMediaDataChangeNotification
+            ... onMediaMergeNotification
+            ... onMediaDeletionNotification
+        }
+    }
+    Viewer {
+        unreadNotificationCount
+    }
+}
+
+fragment onAiringNotification on AiringNotification {
+    id
+    type
+    animeId
+    episode
+    contexts
+    createdAt
+    media {
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        type
+    }
+}
+
+fragment onFollowingNotification on FollowingNotification {
+    id
+    userId
+    type
+    context
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onActivityMessageNotification on ActivityMessageNotification {
+    id
+    userId
+    type
+    activityId
+    context
+    createdAt
+    message {
+        id
+        type
+        message(asHtml: false)
+    }
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onActivityMentionNotification on ActivityMentionNotification {
+    id
+    userId
+    type
+    activityId
+    context
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onActivityReplyNotification on ActivityReplyNotification {
+    id
+    userId
+    type
+    activityId
+    context
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onActivityReplySubscribedNotification on ActivityReplySubscribedNotification {
+    id
+    userId
+    type
+    activityId
+    context
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onActivityLikeNotification on ActivityLikeNotification {
+    id
+    userId
+    type
+    activityId
+    context
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onActivityReplyLikeNotification on ActivityReplyLikeNotification {
+    id
+    userId
+    type
+    activityId
+    context
+    createdAt
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onThreadCommentMentionNotification on ThreadCommentMentionNotification {
+    id
+    userId
+    type
+    commentId
+    context
+    createdAt
+    thread {
+        id
+        title
+        siteUrl
+    }
+    comment {
+        id
+        threadId
+        comment(asHtml: false)
+        siteUrl
+    }
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onThreadCommentReplyNotification on ThreadCommentReplyNotification {
+    id
+    userId
+    type
+    commentId
+    context
+    createdAt
+    thread {
+        id
+        title
+        siteUrl
+    }
+    comment {
+        id
+        threadId
+        comment(asHtml: false)
+        siteUrl
+    }
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onThreadCommentSubscribedNotification on ThreadCommentSubscribedNotification {
+    id
+    userId
+    type
+    commentId
+    context
+    createdAt
+    thread {
+        id
+        title
+        siteUrl
+    }
+    comment {
+        id
+        threadId
+        comment(asHtml: false)
+        siteUrl
+    }
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onThreadCommentLikeNotification on ThreadCommentLikeNotification {
+    id
+    userId
+    type
+    commentId
+    context
+    createdAt
+    thread {
+        id
+        title
+        siteUrl
+    }
+    comment {
+        id
+        threadId
+        comment(asHtml: false)
+        siteUrl
+    }
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onThreadLikeNotification on ThreadLikeNotification {
+    id
+    userId
+    type
+    threadId
+    context
+    createdAt
+    thread {
+        id
+        title
+        siteUrl
+    }
+    comment {
+        id
+        threadId
+        comment(asHtml: false)
+        siteUrl
+    }
+    user {
+        id
+        name
+        avatar {
+            large
+            medium
+        }
+    }
+}
+
+fragment onRelatedMediaAdditionNotification on RelatedMediaAdditionNotification {
+    id
+    type
+    mediaId
+    context
+    createdAt
+    media {
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        type
+    }
+}
+
+fragment onMediaDataChangeNotification on MediaDataChangeNotification {
+    id
+    type
+    mediaId
+    context
+    reason
+    createdAt
+    media {
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        type
+    }
+}
+
+fragment onMediaMergeNotification on MediaMergeNotification {
+    id
+    type
+    mediaId
+    deletedMediaTitles
+    context
+    reason
+    createdAt
+    media {
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        type
+    }
+}
+
+fragment onMediaDeletionNotification on MediaDeletionNotification {
+    id
+    type
+    deletedMediaTitle
+    context
+    reason
+    createdAt
+}

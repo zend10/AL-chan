@@ -7,15 +7,13 @@ import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.pojo.NullableItem
 import io.reactivex.Completable
 import io.reactivex.Observable
-import type.ScoreFormat
-import type.UserStaffNameLanguage
-import type.UserStatisticsSort
-import type.UserTitleLanguage
+import type.*
 
 interface UserRepository {
 
@@ -77,4 +75,10 @@ interface UserRepository {
     fun updateNotificationsSettings(
         notificationOptions: List<NotificationOption>
     ): Observable<User>
+
+    fun getNotifications(
+        page: Int,
+        typeIn: List<NotificationType>?,
+        resetNotificationCount: Boolean
+    ): Observable<NotificationData>
 }
