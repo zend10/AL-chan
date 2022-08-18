@@ -24,6 +24,8 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity(), ViewContract 
     abstract fun generateViewBinding(): T
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         val appThemeResource = viewModel.getAppThemeResource()
         val isLightMode = viewModel.isLightMode()
 
@@ -33,7 +35,6 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity(), ViewContract 
             if (isLightMode) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_YES
         )
 
-        super.onCreate(savedInstanceState)
         _binding = generateViewBinding()
         setContentView(binding.root)
 
