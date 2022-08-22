@@ -531,4 +531,9 @@
     <string name="hide_media_format">Hide media format</string>
     <string name="hide_score_when_not_scored">Hide score when not scored</string>
     <string name="hide_airing_indicator">Hide airing indicator</string>
+    <string name="report">Report</string>
+    <string name="please_click_on_the_more_icon_beside_the_date_and_click_report">Please click on the "More" icon beside the date and click "Report"</string>
+    <string name="please_click_on_the_arrow_icon_on_the_top_left_and_click_report_block">Please click on the arrow icon on the top left and click "Report/Block"</string>
+    <string name="report_block">Report/Block</string>
+    <string name="you_ve_blocked_this_user">You\'ve blocked this user. You can unblock this user in Account Settings > Update Account.</string>
 </resources>

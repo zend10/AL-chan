@@ -309,6 +309,8 @@ class ActivityDetailFragment : BaseFragment() {
                 findItem(R.id.itemDelete).isVisible = (act is TextActivity && act.userId == viewModel.userId) ||
                         (act is ListActivity && act.userId == viewModel.userId) ||
                         (act is MessageActivity && (act.recipientId == viewModel.userId || act.messengerId == viewModel.userId))
+                findItem(R.id.itemReport).isVisible = (act is TextActivity && act.userId != viewModel.userId) ||
+                        (act is MessageActivity && act.messengerId != viewModel.userId)
             }
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
@@ -328,6 +330,10 @@ class ActivityDetailFragment : BaseFragment() {
                     R.id.itemDelete -> deleteActivity(act.id)
                     R.id.itemViewOnAniList -> viewOnAniList(act.siteUrl)
                     R.id.itemCopyLink -> copyLink(act.siteUrl)
+                    R.id.itemReport -> {
+                        viewOnAniList(act.siteUrl)
+                        DialogUtility.showToast(context, R.string.please_click_on_the_more_icon_beside_the_date_and_click_report)
+                    }
                 }
                 true
             }
@@ -547,6 +553,10 @@ class ActivityDetailFragment : BaseFragment() {
                     bundle.putString(LikesDialog.USER_LIST, viewModel.gson.toJson(likes))
                     dialog.arguments = bundle
                     dialog.show(childFragmentManager, null)
+                }
+
+                override fun viewOnAniList() {
+                    this@ActivityDetailFragment.viewOnAniList(viewModel.activityDetail?.siteUrl)
                 }
             }
         )

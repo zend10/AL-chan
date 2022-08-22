@@ -155,6 +155,8 @@ class ActivityListRvAdapter(
                 findItem(R.id.itemDelete).isVisible = (act is TextActivity && act.userId == currentUserId) ||
                         (act is ListActivity && act.userId == currentUserId) ||
                         (act is MessageActivity && (act.recipientId == currentUserId || act.messengerId == currentUserId))
+                findItem(R.id.itemReport).isVisible = (act is TextActivity && act.userId != currentUserId) ||
+                        (act is MessageActivity && act.messengerId != currentUserId)
             }
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
@@ -174,6 +176,10 @@ class ActivityListRvAdapter(
                     R.id.itemDelete -> listener.deleteActivity(act.id)
                     R.id.itemViewOnAniList -> listener.viewOnAniList(act.siteUrl)
                     R.id.itemCopyLink -> listener.copyLink(act.siteUrl)
+                    R.id.itemReport -> {
+                        listener.viewOnAniList(act.siteUrl)
+                        DialogUtility.showToast(context, R.string.please_click_on_the_more_icon_beside_the_date_and_click_report)
+                    }
                 }
                 true
             }

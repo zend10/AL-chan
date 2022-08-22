@@ -20,6 +20,8 @@ import com.zen.alchan.R
 import com.zen.alchan.data.response.User
 import com.zen.alchan.helper.libs.GlideApp
 import com.zen.alchan.helper.pojo.ActivityReply
+import com.zen.alchan.helper.pojo.MessageActivity
+import com.zen.alchan.helper.pojo.TextActivity
 import com.zen.alchan.helper.secondsToDateTime
 import com.zen.alchan.helper.utils.AndroidUtility
 import com.zen.alchan.helper.utils.DialogUtility
@@ -41,6 +43,7 @@ class ActivityRepliesRvAdapter(private val context: Context,
         fun deleteReply(replyId: Int)
         fun likeReply(replyId: Int)
         fun showLikes(likes: List<User>)
+        fun viewOnAniList()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -121,12 +124,6 @@ class ActivityRepliesRvAdapter(private val context: Context,
             listener.showLikes(item.likes!!)
         }
 
-        if (item.userId != currentUserId) {
-            holder.activityMoreLayout.visibility = View.GONE
-        } else {
-            holder.activityMoreLayout.visibility = View.VISIBLE
-        }
-
         holder.activityMoreLayout.setOnClickListener {
             // view pop up menu (edit, delete, view in anilist, copy link)
             val wrapper = ContextThemeWrapper(context, R.style.PopupTheme)
@@ -138,12 +135,17 @@ class ActivityRepliesRvAdapter(private val context: Context,
                 findItem(R.id.itemDelete).isVisible = item.userId == currentUserId
                 findItem(R.id.itemViewOnAniList).isVisible = false
                 findItem(R.id.itemCopyLink).isVisible = false
+                findItem(R.id.itemReport).isVisible = item.userId != currentUserId
             }
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem? ->
                 when (menuItem?.itemId) {
                     R.id.itemEdit -> listener.editReply(item.id, item.text ?: "")
                     R.id.itemDelete -> listener.deleteReply(item.id)
+                    R.id.itemReport -> {
+                        listener.viewOnAniList()
+                        DialogUtility.showToast(context, R.string.please_click_on_the_more_icon_beside_the_date_and_click_report)
+                    }
                 }
                 true
             }

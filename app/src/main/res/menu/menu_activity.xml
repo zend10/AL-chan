@@ -10,4 +10,6 @@
         android:title="@string/view_on_anilist"/>
     <item android:id="@+id/itemCopyLink"
         android:title="@string/copy_link"/>
+    <item android:id="@+id/itemReport"
+        android:title="@string/report"/>
 </menu>
