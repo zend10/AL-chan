@@ -14,6 +14,10 @@ fun View.show(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
+fun View.makeVisible(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+}
+
 fun View.applyTopPaddingInsets() {
     val initialPadding = InitialPadding(paddingTop = paddingTop)
     setOnApplyWindowInsetsListener(this) { view, windowInsets ->

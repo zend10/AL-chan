@@ -110,11 +110,12 @@ class NotificationsViewModel(private val userRepository: UserRepository) : BaseV
         )
     }
 
-    fun loadNotificationTypes() {
-
-    }
-
     fun updateSelectedNotificationTypes(newNotificationTypes: List<NotificationType>?) {
         selectedNotificationTypes = newNotificationTypes
+        reloadData()
+    }
+
+    fun loadNotificationTypes() {
+
     }
 }
