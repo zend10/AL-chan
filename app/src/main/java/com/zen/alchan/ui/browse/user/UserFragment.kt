@@ -58,6 +58,7 @@ class UserFragment : BaseFragment() {
     private var itemBestFriend: MenuItem? = null
     private var itemViewInAniList: MenuItem? = null
     private var itemCopyLink: MenuItem? = null
+    private var itemReportBlock: MenuItem? = null
 
     companion object {
         const val USER_ID = "userId"
@@ -101,6 +102,7 @@ class UserFragment : BaseFragment() {
             itemBestFriend = findItem(R.id.itemBestFriend)
             itemViewInAniList = findItem(R.id.itemViewOnAniList)
             itemCopyLink = findItem(R.id.itemShareProfile)
+            itemReportBlock = findItem(R.id.itemReportBlock)
         }
 
         setupObserver()
@@ -114,6 +116,11 @@ class UserFragment : BaseFragment() {
 
         viewModel.userData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                if (viewModel.isInit && viewModel.userId == it.user?.id && it.user?.isBlocked == true) {
+                    viewModel.setBlocked(true)
+                    return@Observer
+                }
+
                 viewModel.currentIsFollowing = it.user?.isFollowing
                 if (viewModel.isBestFriend) {
                     viewModel.handleBestFriend(true)
@@ -195,6 +202,14 @@ class UserFragment : BaseFragment() {
                     userMangaAffinityIcon.visibility = View.VISIBLE
                     viewModel.mangaAffinityText = getString(R.string.failed_to_calculate_manga_affinity)
                 }
+            }
+        })
+
+        viewModel.isBlocked.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                DialogUtility.showToast(activity, R.string.you_ve_blocked_this_user)
+                viewModel.setBlocked(false)
+                activity?.onBackPressed()
             }
         })
 
@@ -408,6 +423,16 @@ class UserFragment : BaseFragment() {
             true
         }
 
+        itemReportBlock?.setOnMenuItemClickListener {
+            if (user?.siteUrl == null) {
+                DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
+            } else {
+                CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(user.siteUrl))
+                DialogUtility.showToast(activity, R.string.please_click_on_the_arrow_icon_on_the_top_left_and_click_report_block)
+            }
+            true
+        }
+
         userAnimeAffinityIcon.setOnClickListener {
             createTooltip(it, viewModel.animeAffinityText)
         }
@@ -478,5 +503,6 @@ class UserFragment : BaseFragment() {
         itemBestFriend = null
         itemViewInAniList = null
         itemCopyLink = null
+        itemReportBlock = null
     }
 }

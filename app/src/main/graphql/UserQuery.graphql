@@ -48,6 +48,7 @@ query UserQuery($id: Int) {
         }
         isFollowing
         isFollower
+        isBlocked
         donatorTier
         donatorBadge
         moderatorStatus

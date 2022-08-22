@@ -22,8 +22,13 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
     val currentSection: LiveData<ProfileSection>
         get() = _currentSection
 
+    private val _isBlocked = MutableLiveData<Boolean>()
+    val isBlocked: LiveData<Boolean>
+        get() = _isBlocked
+
     var userId: Int? = null
     var currentIsFollowing: Boolean? = null
+    var isInit = false
 
     val currentUserId: Int
         get() = userRepository.currentUser?.id!!
@@ -88,10 +93,16 @@ class UserViewModel(private val otherUserRepository: OtherUserRepository,
         if (currentSection.value == null) {
             _currentSection.postValue(ProfileSection.BIO)
         }
+
+        isInit = true
     }
 
     fun setProfileSection(section: ProfileSection) {
         _currentSection.postValue(section)
+    }
+
+    fun setBlocked(isBlocked: Boolean) {
+        _isBlocked.postValue(isBlocked)
     }
 
     fun retrieveUserData() {
