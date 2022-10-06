@@ -422,7 +422,6 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                     else -> AiringNotification()
                 }
             } ?: listOf()
-        ),
-        unreadNotificationCount = viewer?.unreadNotificationCount ?: 0
+        )
     )
 }

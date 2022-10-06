@@ -35,9 +35,6 @@ query NotificationsQuery(
             ... onMediaDeletionNotification
         }
     }
-    Viewer {
-        unreadNotificationCount
-    }
 }
 
 fragment onAiringNotification on AiringNotification {

@@ -415,6 +415,10 @@
     <string name="when_one_or_more_anime_or_manga_in_my_list_are_merged_into_another">When one or more anime or manga in my list are merged into another</string>
     <string name="when_an_anime_or_manga_in_my_list_is_deleted_from_the_site">When an anime or manga in my list is deleted from the site</string>
     <string name="view_detail">View Detail</string>
+    <string name="airing">Airing</string>
+    <string name="activity">Activity</string>
+    <string name="forum">Forum</string>
+    <string name="follows">Follows</string>
 
 
     <plurals name="minute">

@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.notifications
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,8 @@ import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.main.SharedMainViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, NotificationsViewModel>() {
@@ -21,6 +24,9 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
     private var adapter: NotificationsAdapter? = null
 
     override val viewModel: NotificationsViewModel by viewModel()
+    private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
+
+    private var itemFilter: MenuItem? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -33,6 +39,13 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
         binding.apply {
             defaultToolbar.defaultToolbar.apply {
                 title = getString(R.string.notifications)
+                inflateMenu(R.menu.menu_notifications)
+                itemFilter = menu.findItem(R.id.itemFilter)
+            }
+
+            itemFilter?.setOnMenuItemClickListener {
+                viewModel.loadNotificationTypes()
+                true
             }
 
             adapter = NotificationsAdapter(requireContext(), listOf(), AppSetting(), getNotificationsListener())
@@ -70,11 +83,23 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
                 adapter = NotificationsAdapter(requireContext(), listOf(), it, getNotificationsListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },
-            viewModel.notifications.subscribe {
-                adapter?.updateData(it, true)
+            viewModel.notificationsAndUnreadCount.subscribe { (notifications, unreadNotificationCount) ->
+                adapter?.setUnreadNotificationCount(unreadNotificationCount)
+                adapter?.updateData(notifications, true)
             },
             viewModel.emptyLayoutVisibility.subscribe {
                 binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.notificationTypeList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    viewModel.updateSelectedNotificationTypes(data)
+                }
+            }
+        )
+
+        sharedDisposables.add(
+            sharedViewModel.getScrollToTopObservable(SharedMainViewModel.Page.NOTIFICATIONS).subscribe {
+                binding.infiniteScrollingRecyclerView.smoothScrollToPosition(0)
             }
         )
 
@@ -112,6 +137,7 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        itemFilter = null
     }
 
     companion object {

@@ -93,6 +93,9 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             })
 
             mainBottomNavigation.setOnItemSelectedListener {
+                if (it.itemId == R.id.menuNotifications)
+                    viewModel.clearUnreadNotificationCountBadge()
+
                 val index = if (fragments?.size == mainBottomNavigation.menu.size()) {
                     it.order
                 } else {
@@ -125,6 +128,15 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         sharedDisposables.add(
             sharedViewModel.bottomSheetNavigation.subscribe {
                 binding.mainViewPager.setCurrentItem(it, true)
+            }
+        )
+
+        disposables.add(
+            viewModel.unreadNotificationCount.subscribe {
+                if (it == 0)
+                    binding.mainBottomNavigation.removeBadge(R.id.menuNotifications)
+                else
+                    binding.mainBottomNavigation.getOrCreateBadge(R.id.menuNotifications).number = it
             }
         )
 

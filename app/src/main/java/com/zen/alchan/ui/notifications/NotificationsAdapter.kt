@@ -10,6 +10,7 @@ import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.databinding.ListNotificationBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.makeVisible
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -20,6 +21,8 @@ class NotificationsAdapter(
     private val appSetting: AppSetting,
     private val listener: NotificationsListener
 ) : BaseRecyclerViewAdapter<Notification?, ViewBinding>(list) {
+
+    private var unreadNotificationCount = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -33,6 +36,10 @@ class NotificationsAdapter(
                 ItemViewHolder(view)
             }
         }
+    }
+
+    fun setUnreadNotificationCount(newUnreadNotificationCount: Int) {
+        unreadNotificationCount = newUnreadNotificationCount
     }
 
     inner class ItemViewHolder(private val binding: ListNotificationBinding) : ViewHolder(binding) {
@@ -66,6 +73,7 @@ class NotificationsAdapter(
             }
 
             binding.notificationDate.text = TimeUtil.displayInDayDateTimeFormat(item.createdAt)
+            binding.notificationUnreadOverlay.show(index < unreadNotificationCount)
         }
 
         private fun handleAiringNotification(notification: AiringNotification) {

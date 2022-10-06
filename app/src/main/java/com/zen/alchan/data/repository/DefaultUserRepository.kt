@@ -18,6 +18,7 @@ import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.*
 
@@ -33,6 +34,10 @@ class DefaultUserRepository(
     private val _refreshFavoriteTrigger = PublishSubject.create<User>()
     override val refreshFavoriteTrigger: Observable<User>
         get() = _refreshFavoriteTrigger
+
+    private val _unreadNotificationCount = BehaviorSubject.createDefault(0)
+    override val unreadNotificationCount: Observable<Int>
+        get() = _unreadNotificationCount
 
     override fun getIsLoggedInAsGuest(): Observable<Boolean> {
         return Observable.just(userManager.isLoggedInAsGuest)
@@ -60,6 +65,7 @@ class DefaultUserRepository(
                     val newViewer = it.data?.convert()
                     if (newViewer != null) {
                         userManager.viewerData = SaveItem(newViewer)
+                        _unreadNotificationCount.onNext(newViewer.unreadNotificationCount)
                     }
                     newViewer ?: throw Throwable()
                 }.onErrorReturn {
@@ -272,5 +278,9 @@ class DefaultUserRepository(
         return userDataSource.getNotifications(page, typeIn, resetNotificationCount).map {
             it.data?.convert()
         }
+    }
+
+    override fun clearUnreadNotificationCount() {
+        _unreadNotificationCount.onNext(0)
     }
 }

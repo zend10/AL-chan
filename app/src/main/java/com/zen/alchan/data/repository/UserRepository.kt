@@ -19,6 +19,7 @@ interface UserRepository {
 
     val refreshMainScreenTrigger: Observable<Unit>
     val refreshFavoriteTrigger: Observable<User>
+    val unreadNotificationCount: Observable<Int>
 
     fun getIsLoggedInAsGuest(): Observable<Boolean>
     fun getIsAuthenticated(): Observable<Boolean>
@@ -81,4 +82,6 @@ interface UserRepository {
         typeIn: List<NotificationType>?,
         resetNotificationCount: Boolean
     ): Observable<NotificationData>
+
+    fun clearUnreadNotificationCount()
 }
