@@ -419,6 +419,8 @@
     <string name="activity">Activity</string>
     <string name="forum">Forum</string>
     <string name="follows">Follows</string>
+    <string name="this_thread_is_already_removed">This thread is already removed</string>
+    <string name="this_thread_comment_is_already_removed">This comment is already removed</string>
 
 
     <plurals name="minute">

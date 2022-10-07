@@ -121,11 +121,17 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
             }
 
             override fun navigateToThreadComment(threadComment: ThreadComment) {
-                navigation.openWebView(threadComment.siteUrl)
+                if (threadComment.siteUrl.isNotBlank())
+                    navigation.openWebView(threadComment.siteUrl)
+                else
+                    dialog.showToast(R.string.this_thread_comment_is_already_removed)
             }
 
             override fun navigateToThread(thread: Thread) {
-                navigation.openWebView(thread.siteUrl)
+                if (thread.siteUrl.isNotBlank())
+                    navigation.openWebView(thread.siteUrl)
+                else
+                    dialog.showToast(R.string.this_thread_is_already_removed)
             }
 
             override fun showDetail(text: String) {
