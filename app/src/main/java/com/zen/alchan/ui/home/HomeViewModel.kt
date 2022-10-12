@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.home
 
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.Source
@@ -9,6 +10,7 @@ import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 
 class HomeViewModel(
     private val contentRepository: ContentRepository,
@@ -19,8 +21,21 @@ class HomeViewModel(
     val homeItemList: Observable<List<HomeItem>>
         get() = _homeItemList
 
+    private val _adapterComponent = PublishSubject.create<AppSetting>()
+    val adapterComponent: Observable<AppSetting>
+        get() = _adapterComponent
+
     override fun loadData(param: Unit) {
-        getHomeData()
+        loadOnce {
+            disposables.add(
+                userRepository.getAppSetting()
+                    .applyScheduler()
+                    .subscribe {
+                        _adapterComponent.onNext(it)
+                        getHomeData()
+                    }
+            )
+        }
     }
 
     fun reloadData() {
@@ -55,7 +70,7 @@ class HomeViewModel(
                     {
                         _homeItemList.onNext(
                             listOf(
-                                HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
+                                HomeItem(media = it.trendingAnime.filter { it.bannerImage.isNotBlank() } + it.trendingManga.filter { it.bannerImage.isNotBlank() }, viewType = HomeItem.VIEW_TYPE_HEADER),
                                 HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
                                 HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                                 HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)

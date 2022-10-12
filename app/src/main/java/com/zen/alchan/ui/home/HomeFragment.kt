@@ -3,6 +3,7 @@ package com.zen.alchan.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.R
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.FragmentHomeBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
@@ -28,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun setUpLayout() {
         binding.apply {
-            homeAdapter = HomeRvAdapter(requireContext(), listOf(), screenWidth, getHomeListener())
+            homeAdapter = HomeRvAdapter(requireContext(), listOf(), AppSetting(), screenWidth, getHomeListener())
             homeRecyclerView.adapter = homeAdapter
 
             homeSwipeRefresh.setOnRefreshListener { viewModel.reloadData() }
@@ -36,23 +37,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     override fun setUpInsets() {
-        binding.homeRecyclerView.applyTopPaddingInsets()
+
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.error.subscribe {
-                dialog.showToast(R.string.app_name)
-            }
-        )
-
-        disposables.add(
+                dialog.showToast(it)
+            },
             viewModel.loading.subscribe {
                 binding.homeSwipeRefresh.isRefreshing = it
-            }
-        )
-
-        disposables.add(
+            },
+            viewModel.adapterComponent.subscribe {
+                homeAdapter = HomeRvAdapter(requireContext(), listOf(), it, screenWidth, getHomeListener())
+                binding.homeRecyclerView.adapter = homeAdapter
+            },
             viewModel.homeItemList.subscribe {
                 homeAdapter?.updateData(it)
             }

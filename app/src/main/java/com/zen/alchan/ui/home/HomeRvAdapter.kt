@@ -7,17 +7,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.LayoutHomeHeaderBinding
 import com.zen.alchan.databinding.LayoutHomeMenuBinding
 import com.zen.alchan.databinding.LayoutHomeTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.HomeItem
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class HomeRvAdapter(
     private val context: Context,
     list: List<HomeItem>,
+    private val appSetting: AppSetting,
     private val width: Int,
     private val listener: HomeListener
 ) : BaseRecyclerViewAdapter<HomeItem, ViewBinding>(list) {
@@ -50,7 +53,12 @@ class HomeRvAdapter(
 
     inner class HeaderViewHolder(private val binding: LayoutHomeHeaderBinding) : ViewHolder(binding) {
         override fun bind(item: HomeItem, index: Int) {
-            binding.searchLayout.clicks { listener.headerListener.navigateToSearch() }
+            binding.apply {
+                item.media.randomOrNull()?.let {
+                    ImageUtil.loadImage(context, it.bannerImage, headerImage)
+                }
+                searchLayout.clicks { listener.headerListener.navigateToSearch() }
+            }
         }
     }
 
