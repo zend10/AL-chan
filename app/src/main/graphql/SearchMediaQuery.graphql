@@ -1,0 +1,42 @@
+query SearchMediaQuery($page:Int, $statusVersion:Int, $search:String, $type:MediaType) {
+  Page(page:$page) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    media(search:$search, type:$type) {
+      id
+      idMal
+      title {
+        romaji
+        english
+        native
+        userPreferred
+      }
+      type
+      format
+      status(version:$statusVersion)
+      startDate {
+        year
+        month
+        day
+      }
+      coverImage {
+        extraLarge
+        large
+        medium
+      }
+      bannerImage
+      averageScore
+      meanScore
+      popularity
+      favourites
+      mediaListEntry {
+        status
+      }
+    }
+  }
+}

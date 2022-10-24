@@ -17,6 +17,8 @@ interface NavigationManager {
     fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false)
     fun navigateToMain(deepLink: DeepLink? = null)
 
+    fun navigateToSearch()
+
     fun navigateToActivities()
     fun navigateToSettings()
     fun navigateToAppSettings()

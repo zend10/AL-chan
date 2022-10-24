@@ -33,6 +33,7 @@ import com.zen.alchan.ui.media.staff.MediaStaffListFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
+import com.zen.alchan.ui.search.SearchFragment
 import com.zen.alchan.ui.settings.SettingsFragment
 import com.zen.alchan.ui.settings.about.AboutFragment
 import com.zen.alchan.ui.settings.account.AccountSettingsFragment
@@ -70,6 +71,10 @@ class DefaultNavigationManager(
 
     override fun navigateToMain(deepLink: DeepLink?) {
         swapPage(MainFragment.newInstance(deepLink), true)
+    }
+
+    override fun navigateToSearch() {
+        stackPage(SearchFragment.newInstance())
     }
 
     override fun navigateToActivities() {

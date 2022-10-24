@@ -33,6 +33,7 @@ import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.notifications.NotificationsViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
+import com.zen.alchan.ui.search.SearchViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.account.AccountSettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -93,10 +94,10 @@ class ALchanApplication : Application() {
         single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
 
         // data source
-        single<ContentDataSource> { DefaultContentDataSource(get()) }
+        single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
         single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
-        single<BrowseDataSource> { DefaultBrowseDataSource(get()) }
+        single<BrowseDataSource> { DefaultBrowseDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION, Constant.ANILIST_API_RELATION_TYPE_VERSION) }
 
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
@@ -118,6 +119,7 @@ class ALchanApplication : Application() {
         viewModel { MainViewModel(get(), get()) }
 
         viewModel { HomeViewModel(get(), get()) }
+        viewModel { SearchViewModel(get(), get()) }
 
         viewModel { MediaListViewModel(get(), get(), get()) }
 

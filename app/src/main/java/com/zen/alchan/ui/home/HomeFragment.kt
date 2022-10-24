@@ -80,7 +80,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun getHeaderListener(): HomeListener.HeaderListener {
         return object : HomeListener.HeaderListener {
             override fun navigateToSearch() {
-
+                navigation.navigateToSearch()
             }
         }
     }

@@ -14,7 +14,12 @@ import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Observable
 import type.*
 
-class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : BrowseDataSource {
+class DefaultBrowseDataSource(
+    private val apolloHandler: ApolloHandler,
+    private val statusVersion: Int,
+    private val sourceVersion: Int,
+    private val relationTypeVersion: Int
+) : BrowseDataSource {
 
     override fun getUserQuery(
         id: Int?,
@@ -26,7 +31,12 @@ class DefaultBrowseDataSource(private val apolloHandler: ApolloHandler) : Browse
     }
 
     override fun getMediaQuery(id: Int): Observable<Response<MediaQuery.Data>> {
-        val query = MediaQuery(id = Input.fromNullable(id))
+        val query = MediaQuery(
+            id = Input.fromNullable(id),
+            statusVersion = Input.fromNullable(statusVersion),
+            sourceVersion = Input.fromNullable(sourceVersion),
+            relationTypeVersion = Input.fromNullable(relationTypeVersion)
+        )
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

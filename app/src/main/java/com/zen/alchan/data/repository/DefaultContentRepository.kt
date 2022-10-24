@@ -8,9 +8,12 @@ import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.data.response.Genre
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Page
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
+import type.MediaType
 
 class DefaultContentRepository(
     private val contentDataSource: ContentDataSource,
@@ -77,6 +80,16 @@ class DefaultContentRepository(
                 }
         } else {
             Observable.just(savedItem.data)
+        }
+    }
+
+    override fun searchMedia(
+        searchQuery: String,
+        type: MediaType,
+        page: Int
+    ): Observable<Page<Media>> {
+        return contentDataSource.searchMedia(searchQuery, type, page).map {
+            it.data?.convert()
         }
     }
 }
