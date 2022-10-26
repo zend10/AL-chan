@@ -421,6 +421,13 @@
     <string name="follows">Follows</string>
     <string name="this_thread_is_already_removed">This thread is already removed</string>
     <string name="this_thread_comment_is_already_removed">This comment is already removed</string>
+    <string name="users">Users</string>
+    <string name="search_anime">Search Anime</string>
+    <string name="search_manga">Search Manga</string>
+    <string name="search_characters">Search Characters</string>
+    <string name="search_staff">Search Staff</string>
+    <string name="search_studios">Search Studios</string>
+    <string name="search_users">Search Users</string>
 
 
     <plurals name="minute">

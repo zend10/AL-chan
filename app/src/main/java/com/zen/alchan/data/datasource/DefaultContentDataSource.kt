@@ -2,7 +2,11 @@ package com.zen.alchan.data.datasource
 
 import GenreQuery
 import HomeDataQuery
+import SearchCharacterQuery
 import SearchMediaQuery
+import SearchStaffQuery
+import SearchStudioQuery
+import SearchUserQuery
 import TagQuery
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -38,6 +42,50 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             type = Input.fromNullable(type),
             page = Input.fromNullable(page),
             statusVersion = Input.fromNullable(statusVersion)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun searchCharacter(
+        searchQuery: String,
+        page: Int
+    ): Observable<Response<SearchCharacterQuery.Data>> {
+        val query = SearchCharacterQuery(
+            search = Input.fromNullable(searchQuery),
+            page = Input.fromNullable(page)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun searchStaff(
+        searchQuery: String,
+        page: Int
+    ): Observable<Response<SearchStaffQuery.Data>> {
+        val query = SearchStaffQuery(
+            search = Input.fromNullable(searchQuery),
+            page = Input.fromNullable(page)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun searchStudio(
+        searchQuery: String,
+        page: Int
+    ): Observable<Response<SearchStudioQuery.Data>> {
+        val query = SearchStudioQuery(
+            search = Input.fromNullable(searchQuery),
+            page = Input.fromNullable(page)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun searchUser(
+        searchQuery: String,
+        page: Int
+    ): Observable<Response<SearchUserQuery.Data>> {
+        val query = SearchUserQuery(
+            search = Input.fromNullable(searchQuery),
+            page = Input.fromNullable(page)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.databinding.ListSearchBinding
 import com.zen.alchan.helper.enums.SearchCategory
@@ -48,16 +48,24 @@ class SearchRvAdapter(
                         root.clicks { listener.navigateToMedia(item.media) }
                     }
                     SearchCategory.CHARACTER -> {
-
+                        ImageUtil.loadImage(context, item.character.getImage(appSetting), searchImage)
+                        searchTitle.text = item.character.name.userPreferred
+                        root.clicks { listener.navigateToCharacter(item.character) }
                     }
                     SearchCategory.STAFF -> {
-
+                        ImageUtil.loadImage(context, item.staff.getImage(appSetting), searchImage)
+                        searchTitle.text = item.staff.name.userPreferred
+                        root.clicks { listener.navigateToStaff(item.staff) }
                     }
                     SearchCategory.STUDIO -> {
-
+                        ImageUtil.loadImage(context, item.studio.media.nodes.firstOrNull()?.getCoverImage(appSetting) ?: "", searchImage)
+                        searchTitle.text = item.studio.name
+                        root.clicks { listener.navigateToStudio(item.studio) }
                     }
                     SearchCategory.USER -> {
-
+                        ImageUtil.loadImage(context, item.user.avatar.getImageUrl(appSetting), searchImage)
+                        searchTitle.text = item.user.name
+                        root.clicks { listener.navigateToUser(item.user) }
                     }
                 }
             }
@@ -72,5 +80,9 @@ class SearchRvAdapter(
 
     interface SearchListener {
         fun navigateToMedia(media: Media)
+        fun navigateToCharacter(character: Character)
+        fun navigateToStaff(staff: Staff)
+        fun navigateToStudio(studio: Studio)
+        fun navigateToUser(user: User)
     }
 }

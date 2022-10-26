@@ -4,12 +4,10 @@ import com.zen.alchan.data.datasource.ContentDataSource
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.manager.ContentManager
 import com.zen.alchan.data.response.HomeData
-import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.data.response.Genre
-import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.Page
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
@@ -89,6 +87,30 @@ class DefaultContentRepository(
         page: Int
     ): Observable<Page<Media>> {
         return contentDataSource.searchMedia(searchQuery, type, page).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun searchCharacter(searchQuery: String, page: Int): Observable<Page<Character>> {
+        return contentDataSource.searchCharacter(searchQuery, page).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun searchStaff(searchQuery: String, page: Int): Observable<Page<Staff>> {
+        return contentDataSource.searchStaff(searchQuery, page).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun searchStudio(searchQuery: String, page: Int): Observable<Page<Studio>> {
+        return contentDataSource.searchStudio(searchQuery, page).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun searchUser(searchQuery: String, page: Int): Observable<Page<User>> {
+        return contentDataSource.searchUser(searchQuery, page).map {
             it.data?.convert()
         }
     }

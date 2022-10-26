@@ -62,7 +62,7 @@ class StudioViewModel(
 
     override fun loadData(param: StudioParam) {
         loadOnce {
-            this.studioId = studioId
+            this.studioId = param.studioId
 
             disposables.add(
                 userRepository.getIsAuthenticated().zipWith(userRepository.getAppSetting()) { isAuthenticated, appSetting ->

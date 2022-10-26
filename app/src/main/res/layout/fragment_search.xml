@@ -46,7 +46,7 @@
                     android:id="@+id/searchEditText"
                     style="?themeRegularFont"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/blackLight"
+                    android:textColorHint="@color/blackLightTransparent80"
                     android:hint="@string/search"
                     android:inputType="textCapWords"
                     android:imeOptions="actionSearch"
@@ -100,6 +100,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/layout_empty"/>
+    <include layout="@layout/layout_empty"
+        android:id="@+id/emptyLayout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

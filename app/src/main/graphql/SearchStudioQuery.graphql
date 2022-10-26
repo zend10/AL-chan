@@ -1,0 +1,33 @@
+query SearchStudioQuery($page:Int, $search:String) {
+  Page(page:$page) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    studios(search:$search) {
+      id
+      name
+      favourites
+      media(sort:[POPULARITY_DESC], perPage:1) {
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+            color
+          }
+        }
+      }
+    }
+  }
+}
