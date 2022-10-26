@@ -8,7 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsetsController
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
@@ -142,5 +146,15 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
         startActivity(intent)
         rootActivity.overridePendingTransition(0, 0)
         rootActivity.finish()
+    }
+
+    protected fun toggleKeyboard(shouldOpen: Boolean) {
+        activity?.window?.let { window ->
+            val controller = WindowInsetsControllerCompat(window, window.decorView)
+            if (shouldOpen)
+                controller.show(WindowInsetsCompat.Type.ime())
+            else
+                controller.hide(WindowInsetsCompat.Type.ime())
+        }
     }
 }

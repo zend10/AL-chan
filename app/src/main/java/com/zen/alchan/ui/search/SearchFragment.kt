@@ -41,6 +41,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             }
 
             searchSettingButton.clicks {
+                searchEditText.clearFocus()
                 viewModel.loadSearchCategories()
             }
 
@@ -52,6 +53,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             }
 
             searchRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy != 0) searchEditText.clearFocus()
+                }
+
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_IDLE && !recyclerView.canScrollVertically(1)) {
@@ -59,6 +65,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                     }
                 }
             })
+
+            searchEditText.setOnFocusChangeListener { _, hasFocus ->
+                toggleKeyboard(hasFocus)
+            }
         }
     }
 
@@ -70,6 +80,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     override fun setUpObserver() {
         disposables.add(
             RxTextView.textChanges(binding.searchEditText)
+                .skipInitialValue()
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { viewModel.doSearch(it.toString()) }
@@ -108,22 +119,27 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     private fun getSearchListener(): SearchRvAdapter.SearchListener {
         return object : SearchRvAdapter.SearchListener {
             override fun navigateToMedia(media: Media) {
+                binding.searchEditText.clearFocus()
                 navigation.navigateToMedia(media.getId())
             }
 
             override fun navigateToCharacter(character: Character) {
+                binding.searchEditText.clearFocus()
                 navigation.navigateToCharacter(character.id)
             }
 
             override fun navigateToStaff(staff: Staff) {
+                binding.searchEditText.clearFocus()
                 navigation.navigateToStaff(staff.id)
             }
 
             override fun navigateToStudio(studio: Studio) {
+                binding.searchEditText.clearFocus()
                 navigation.navigateToStudio(studio.id)
             }
 
             override fun navigateToUser(user: User) {
+                binding.searchEditText.clearFocus()
                 navigation.navigateToUser(user.id)
             }
         }

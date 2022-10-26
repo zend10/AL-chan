@@ -39,12 +39,12 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/searchLayout"
-            app:contentPadding="@dimen/marginSmall"
+            app:contentPadding="@dimen/marginNormal"
             app:layout_constraintTop_toBottomOf="@id/welcomeText"
             android:layout_marginTop="@dimen/marginNormal"
             app:cardElevation="0dp"
             app:strokeWidth="@dimen/lineWidth"
-            app:strokeColor="@color/blackLight"
+            app:strokeColor="@color/white"
             app:cardBackgroundColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -52,7 +52,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:text="@string/what_are_you_looking_for"
                 style="?themeRegularFont"
-                android:textColor="@color/black"
+                android:textColor="@color/blackLightTransparent80"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
