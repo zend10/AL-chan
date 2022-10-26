@@ -43,6 +43,98 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/searchMediaExtraInfoLayout"
+            app:layout_constraintTop_toBottomOf="@id/searchTitle"
+            app:layout_constraintStart_toStartOf="@id/searchTitle"
+            android:layout_marginTop="@dimen/marginClose"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/searchMediaYearText"
+                style="?themeSmallFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/searchMediaInfoDividerIcon"
+                app:srcCompat="@drawable/ic_filled_circle_small"
+                app:tint="?themeContentColor"
+                android:layout_marginHorizontal="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/searchMediaFormatText"
+                style="?themeSmallFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/searchStatsLayout"
+            app:layout_constraintTop_toBottomOf="@id/searchMediaExtraInfoLayout"
+            app:layout_constraintStart_toStartOf="@id/searchMediaExtraInfoLayout"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/searchScoreText"
+                app:drawableStartCompat="@drawable/ic_star_filled"
+                app:drawableTint="@color/brightYellow"
+                android:drawablePadding="@dimen/marginClose"
+                style="?themeRegularBoldFont"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:id="@+id/searchStatsDivider"
+                android:layout_width="@dimen/marginNormal"
+                android:layout_height="0dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/searchFavouriteText"
+                app:drawableStartCompat="@drawable/ic_heart_outline"
+                app:drawableTint="@color/brightRed"
+                android:drawablePadding="@dimen/marginClose"
+                style="?themeRegularBoldFont"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/searchMediaListStatusLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/searchTitle"
+            android:layout_marginBottom="@dimen/marginSmall"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/searchMediaListStatusIcon"
+                app:srcCompat="@drawable/ic_filled_circle"
+                app:tint="?themeSecondaryColor"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/searchMediaListStatusText"
+                style="?themeSmallFont"
+                android:textColor="?themeSecondaryColor"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

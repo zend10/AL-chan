@@ -5,10 +5,7 @@ import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.*
-import com.zen.alchan.helper.extensions.applyScheduler
-import com.zen.alchan.helper.extensions.convertFromSnakeCase
-import com.zen.alchan.helper.extensions.formatTwoDecimal
-import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.Chart
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.UserStatsItem
@@ -291,14 +288,7 @@ class UserStatsViewModel(
     private fun getChartColor(userStatisticsDetail: UserStatisticsDetail): String? {
         return when (userStatisticsDetail) {
             is UserStatusStatistic -> {
-                when (userStatisticsDetail.status) {
-                    MediaListStatus.CURRENT -> "#9256F3"
-                    MediaListStatus.PLANNING -> "#02A9FF"
-                    MediaListStatus.COMPLETED -> "#68D639"
-                    MediaListStatus.DROPPED -> "#F779A4"
-                    MediaListStatus.PAUSED -> "#E85D75"
-                    else -> null
-                }
+                userStatisticsDetail.status?.getColor()
             }
             is UserFormatStatistic -> {
                 when (userStatisticsDetail.format) {

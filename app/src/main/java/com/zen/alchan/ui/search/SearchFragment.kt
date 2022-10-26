@@ -69,6 +69,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             searchEditText.setOnFocusChangeListener { _, hasFocus ->
                 toggleKeyboard(hasFocus)
             }
+
+            searchEditText.requestFocus()
         }
     }
 
@@ -105,6 +107,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             },
             viewModel.searchCategoryList.subscribe {
                 dialog.showListDialog(it) { data, _ ->
+                    binding.searchRecyclerView.scrollToPosition(0)
                     viewModel.updateSelectedSearchCategory(data)
                 }
             },
