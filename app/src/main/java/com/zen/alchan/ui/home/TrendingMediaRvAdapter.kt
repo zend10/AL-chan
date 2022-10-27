@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.ListMediaTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
@@ -52,7 +53,7 @@ class TrendingMediaRvAdapter(
                 trendingMediaScoreText.text = item.averageScore.getNumberFormatting()
                 trendingMediaFavouriteText.text = item.favourites.getNumberFormatting()
 
-                trendingMediaGenreRecyclerView.adapter = GenreRvAdapter(context, item.genres)
+                trendingMediaGenreRecyclerView.adapter = GenreRvAdapter(context, item.genres.take(3)) // taking only 3 to avoid text getting cut off
                 (trendingMediaGenreRecyclerView.layoutManager as? FlexboxLayoutManager)?.maxLine = 1
 
                 trendingMediaDescriptionText.text = HtmlCompat.fromHtml(item.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
