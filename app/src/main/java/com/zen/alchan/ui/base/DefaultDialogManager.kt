@@ -16,8 +16,14 @@ import com.zen.alchan.ui.common.BottomSheetTagDialog
 import com.zen.alchan.ui.common.TagRvAdapter
 import com.zen.alchan.ui.editor.BottomSheetProgressDialog
 import com.zen.alchan.ui.editor.BottomSheetScoreDialog
+import io.reactivex.Scheduler
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.operators.single.SingleTimer
+import io.reactivex.schedulers.Schedulers
 import type.ScoreFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 
@@ -33,12 +39,36 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
 
     private var datePickerDialog: DatePickerDialog? = null
 
+    private var isToastShowing = false
+
     override fun showToast(message: Int) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        if (!isToastShowing) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            startToastTimer()
+        }
     }
 
     override fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        if (!isToastShowing) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            startToastTimer()
+        }
+    }
+
+    private fun startToastTimer() {
+        isToastShowing = true
+
+        Single.timer(2, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    isToastShowing = false
+                },
+                {
+
+                }
+            )
     }
 
     override fun showMessageDialog(title: Int, message: Int, positiveButton: Int) {
