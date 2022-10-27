@@ -6,6 +6,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.utils.DeepLink
 import type.ScoreFormat
 
@@ -18,6 +19,7 @@ interface NavigationManager {
     fun navigateToMain(deepLink: DeepLink? = null)
 
     fun navigateToSearch()
+    fun navigateToExplore(searchCategory: SearchCategory)
 
     fun navigateToActivities()
     fun navigateToSettings()

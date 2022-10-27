@@ -18,6 +18,7 @@ import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.character.media.CharacterMediaListViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
+import com.zen.alchan.ui.explore.ExploreViewModel
 import com.zen.alchan.ui.favorite.FavoriteViewModel
 import com.zen.alchan.ui.filter.FilterViewModel
 import com.zen.alchan.ui.follow.FollowViewModel
@@ -120,6 +121,7 @@ class ALchanApplication : Application() {
 
         viewModel { HomeViewModel(get(), get()) }
         viewModel { SearchViewModel(get(), get()) }
+        viewModel { ExploreViewModel() }
 
         viewModel { MediaListViewModel(get(), get(), get()) }
 

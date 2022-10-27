@@ -428,6 +428,11 @@
     <string name="search_staff">Search Staff</string>
     <string name="search_studios">Search Studios</string>
     <string name="search_users">Search Users</string>
+    <string name="explore_anime">Explore Anime</string>
+    <string name="explore_manga">Explore Manga</string>
+    <string name="explore_characters">Explore Characters</string>
+    <string name="explore_staff">Explore Staff</string>
+    <string name="explore_studios">Explore Studios</string>
 
 
     <plurals name="minute">

@@ -14,6 +14,7 @@ import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.activity.ActivityFragment
 import com.zen.alchan.ui.browse.BrowseFragment
@@ -21,6 +22,7 @@ import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.character.media.CharacterMediaListFragment
 import com.zen.alchan.ui.customise.CustomiseFragment
 import com.zen.alchan.ui.editor.EditorFragment
+import com.zen.alchan.ui.explore.ExploreFragment
 import com.zen.alchan.ui.favorite.FavoriteFragment
 import com.zen.alchan.ui.filter.FilterFragment
 import com.zen.alchan.ui.follow.FollowFragment
@@ -75,6 +77,10 @@ class DefaultNavigationManager(
 
     override fun navigateToSearch() {
         stackPage(SearchFragment.newInstance())
+    }
+
+    override fun navigateToExplore(searchCategory: SearchCategory) {
+        stackPage(ExploreFragment.newInstance(searchCategory))
     }
 
     override fun navigateToActivities() {

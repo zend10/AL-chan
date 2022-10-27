@@ -1,12 +1,15 @@
 package com.zen.alchan.ui.home
 
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.HomeItem
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -24,6 +27,10 @@ class HomeViewModel(
     private val _adapterComponent = PublishSubject.create<AppSetting>()
     val adapterComponent: Observable<AppSetting>
         get() = _adapterComponent
+
+    private val _searchCategoryList = PublishSubject.create<List<ListItem<SearchCategory>>>()
+    val searchCategoryList: Observable<List<ListItem<SearchCategory>>>
+        get() = _searchCategoryList
 
     override fun loadData(param: Unit) {
         loadOnce {
@@ -90,5 +97,15 @@ class HomeViewModel(
                     }
                 )
         )
+    }
+
+    fun loadSearchCategories() {
+        val list = ArrayList<ListItem<SearchCategory>>()
+        list.add(ListItem(R.string.explore_anime, SearchCategory.ANIME))
+        list.add(ListItem(R.string.explore_manga, SearchCategory.MANGA))
+        list.add(ListItem(R.string.explore_characters, SearchCategory.CHARACTER))
+        list.add(ListItem(R.string.explore_staff, SearchCategory.STAFF))
+        list.add(ListItem(R.string.explore_studios, SearchCategory.STUDIO))
+        _searchCategoryList.onNext(list)
     }
 }

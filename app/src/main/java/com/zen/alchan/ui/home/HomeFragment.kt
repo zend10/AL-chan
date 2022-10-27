@@ -54,6 +54,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             },
             viewModel.homeItemList.subscribe {
                 homeAdapter?.updateData(it)
+            },
+            viewModel.searchCategoryList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
+                    navigation.navigateToExplore(data)
+                }
             }
         )
 
@@ -92,7 +97,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
 
             override fun showExploreDialog() {
-
+                viewModel.loadSearchCategories()
             }
 
             override fun navigateToReviews() {
