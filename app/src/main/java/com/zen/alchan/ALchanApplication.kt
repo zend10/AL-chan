@@ -121,7 +121,7 @@ class ALchanApplication : Application() {
 
         viewModel { HomeViewModel(get(), get()) }
         viewModel { SearchViewModel(get(), get()) }
-        viewModel { ExploreViewModel() }
+        viewModel { ExploreViewModel(get(), get()) }
 
         viewModel { MediaListViewModel(get(), get(), get()) }
 
