@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AL-chan (Dev)</string>
+    <string name="app_name">AL-chan</string>
     <string name="home">Home</string>
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
@@ -421,6 +421,7 @@
     <string name="follows">Follows</string>
     <string name="this_thread_is_already_removed">This thread is already removed</string>
     <string name="this_thread_comment_is_already_removed">This comment is already removed</string>
+    <string name="this_activity_is_already_removed">This activity is already removed</string>
     <string name="users">Users</string>
     <string name="search_anime">Search Anime</string>
     <string name="search_manga">Search Manga</string>

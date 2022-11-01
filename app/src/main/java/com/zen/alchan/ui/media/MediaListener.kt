@@ -39,6 +39,7 @@ interface MediaListener {
 
     interface MediaLinksListener {
         fun navigateToUrl(mediaExternalLink: MediaExternalLink)
+        fun copyExternalLink(mediaExternalLink: MediaExternalLink)
     }
 
     val mediaGenreListener: MediaGenreListener

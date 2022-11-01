@@ -59,6 +59,11 @@ class MediaLinksRvAdapter(
                 linkCard.clicks {
                     listener.navigateToUrl(item)
                 }
+
+                linkCard.setOnLongClickListener {
+                    listener.copyExternalLink(item)
+                    true
+                }
             }
         }
     }

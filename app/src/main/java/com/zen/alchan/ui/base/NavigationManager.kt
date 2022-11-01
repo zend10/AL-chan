@@ -63,7 +63,7 @@ interface NavigationManager {
     fun navigateToFavorite(id: Int, favorite: Favorite)
 
     fun openWebView(url: String)
-    fun openWebView(url: Url)
+    fun openWebView(url: Url, id: Int? = null)
     fun openEmailClient()
     fun openGallery(launcher: ActivityResultLauncher<Intent>)
 
@@ -82,6 +82,7 @@ interface NavigationManager {
         ANILIST_LISTS_SETTINGS,
         ANILIST_IMPORT_LISTS,
         ANILIST_CONNECT_WITH_TWITTER,
+        ANLIST_ACTIVITY,
         ALCHAN_FORUM_THREAD,
         ALCHAN_GITHUB,
         ALCHAN_PLAY_STORE,

@@ -15,7 +15,7 @@ abstract class BaseApolloHandler(private val headerInterceptor: HeaderIntercepto
 
     protected val okHttpClient: OkHttpClient = OkHttpClient.Builder()
         .addNetworkInterceptor(headerInterceptor)
-        .addInterceptor(httpLoggingInterceptor)
+//        .addInterceptor(httpLoggingInterceptor)
         .connectTimeout(20, TimeUnit.SECONDS)
         .writeTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)

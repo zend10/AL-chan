@@ -7,6 +7,7 @@ import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaExternalLink
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
@@ -15,6 +16,7 @@ import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.MediaItem
 import com.zen.alchan.helper.pojo.NullableItem
+import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -27,7 +29,8 @@ import type.MediaStatus
 class MediaViewModel(
     private val browseRepository: BrowseRepository,
     private val userRepository: UserRepository,
-    private val mediaListRepository: MediaListRepository
+    private val mediaListRepository: MediaListRepository,
+    private val clipboardService: ClipboardService
 ) : BaseViewModel<MediaParam>() {
 
     private val _mediaAdapterComponent = PublishSubject.create<AppSetting>()
@@ -255,5 +258,20 @@ class MediaViewModel(
             currentMediaListItems[tagsSectionIndex].showSpoilerTags = shouldShowSpoiler
             _mediaItemList.onNext(currentMediaListItems)
         }
+    }
+
+    fun copyExternalLink(mediaExternalLink: MediaExternalLink) {
+        disposables.add(
+            clipboardService.copyPlainText(mediaExternalLink.url)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        _success.onNext(R.string.link_copied)
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
+        )
     }
 }

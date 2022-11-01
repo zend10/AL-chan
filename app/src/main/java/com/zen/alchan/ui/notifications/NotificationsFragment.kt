@@ -15,6 +15,7 @@ import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.base.NavigationManager
 import com.zen.alchan.ui.main.SharedMainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -116,8 +117,11 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
                 navigation.navigateToMedia(media.getId())
             }
 
-            override fun navigateToActivity() {
-
+            override fun navigateToActivity(activityId: Int) {
+                if (activityId != 0)
+                    navigation.openWebView(NavigationManager.Url.ANLIST_ACTIVITY, activityId)
+                else
+                    dialog.showToast(R.string.this_activity_is_already_removed)
             }
 
             override fun navigateToThreadComment(threadComment: ThreadComment) {

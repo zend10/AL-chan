@@ -58,7 +58,7 @@ class HomeViewModel(
             _homeItemList.onNext(
                 listOf(
                     HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
+                    /*HomeItem(viewType = HomeItem.VIEW_TYPE_MENU), TODO: readd back for dev*/
                     HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
                 )
@@ -78,7 +78,7 @@ class HomeViewModel(
                         _homeItemList.onNext(
                             listOf(
                                 HomeItem(media = it.trendingAnime.filter { it.bannerImage.isNotBlank() } + it.trendingManga.filter { it.bannerImage.isNotBlank() }, viewType = HomeItem.VIEW_TYPE_HEADER),
-                                HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
+                                /*HomeItem(viewType = HomeItem.VIEW_TYPE_MENU), TODO: readd back for dev*/
                                 HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                                 HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
                             )

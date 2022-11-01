@@ -17,6 +17,7 @@ object Constant {
     const val ANILIST_LISTS_SETTINGS_URL = "$ANILIST_PROFILE_SETTINGS_URL/lists"
     const val ANILIST_IMPORT_LISTS_URL = "$ANILIST_PROFILE_SETTINGS_URL/import"
     const val ANILIST_CONNECT_WITH_TWITTER_URL = "$ANILIST_PROFILE_SETTINGS_URL/twitter"
+    const val ANILIST_ACTIVITY = "$ANILIST_WEBSITE_URL/activity/"
 
     const val ALCHAN_FORUM_THREAD_URL = "${ANILIST_WEBSITE_URL}/forum/thread/12889"
     const val ALCHAN_GITHUB_URL = "https://github.com/zend10/AL-chan"

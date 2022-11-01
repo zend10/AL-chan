@@ -114,6 +114,9 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             viewModel.loading.subscribe {
                 binding.mediaSwipeRefresh.isRefreshing = it
             },
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
@@ -290,6 +293,10 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
         return object : MediaListener.MediaLinksListener {
             override fun navigateToUrl(mediaExternalLink: MediaExternalLink) {
                 navigation.openWebView(mediaExternalLink.url)
+            }
+
+            override fun copyExternalLink(mediaExternalLink: MediaExternalLink) {
+                viewModel.copyExternalLink(mediaExternalLink)
             }
         }
     }

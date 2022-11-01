@@ -104,7 +104,7 @@ class NotificationsAdapter(
             binding.apply {
                 notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
-                notificationViewDetail.makeVisible(true)
+                notificationViewDetail.makeVisible(false)
                 notificationViewDetail.clicks {
 
                 }
@@ -112,7 +112,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity()
+                    listener.navigateToActivity(notification.activityId)
                 }
                 root.isClickable = true
             }
@@ -122,7 +122,7 @@ class NotificationsAdapter(
             binding.apply {
                 notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
-                notificationViewDetail.makeVisible(true)
+                notificationViewDetail.makeVisible(false)
                 notificationViewDetail.clicks {
 
                 }
@@ -130,7 +130,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity()
+                    listener.navigateToActivity(notification.activityId)
                 }
                 root.isClickable = true
             }
@@ -140,7 +140,7 @@ class NotificationsAdapter(
             binding.apply {
                 notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
-                notificationViewDetail.makeVisible(true)
+                notificationViewDetail.makeVisible(false)
                 notificationViewDetail.clicks {
 
                 }
@@ -148,7 +148,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity()
+                    listener.navigateToActivity(notification.activityId)
                 }
                 root.isClickable = true
             }
@@ -158,7 +158,7 @@ class NotificationsAdapter(
             binding.apply {
                 notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
-                notificationViewDetail.makeVisible(true)
+                notificationViewDetail.makeVisible(false)
                 notificationViewDetail.clicks {
 
                 }
@@ -166,7 +166,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity()
+                    listener.navigateToActivity(notification.activityId)
                 }
                 root.isClickable = true
             }
@@ -176,7 +176,7 @@ class NotificationsAdapter(
             binding.apply {
                 notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
-                notificationViewDetail.makeVisible(true)
+                notificationViewDetail.makeVisible(false)
                 notificationViewDetail.clicks {
 
                 }
@@ -184,7 +184,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity()
+                    listener.navigateToActivity(notification.activityId)
                 }
                 root.isClickable = true
             }
@@ -194,7 +194,7 @@ class NotificationsAdapter(
             binding.apply {
                 notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
-                notificationViewDetail.makeVisible(true)
+                notificationViewDetail.makeVisible(false)
                 notificationViewDetail.clicks {
 
                 }
@@ -202,7 +202,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity()
+                    listener.navigateToActivity(notification.activityId)
                 }
                 root.isClickable = true
             }
@@ -363,7 +363,7 @@ class NotificationsAdapter(
     interface NotificationsListener {
         fun navigateToUser(user: User)
         fun navigateToMedia(media: Media)
-        fun navigateToActivity()
+        fun navigateToActivity(activityId: Int) // TODO: temporary, will navigate to Activity page after it's implemented
         fun navigateToThreadComment(threadComment: ThreadComment)
         fun navigateToThread(thread: Thread)
         fun showDetail(text: String)

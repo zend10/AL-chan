@@ -54,7 +54,9 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"/>
 
+<!--            TODO: readd back for dev -->
             <com.google.android.material.textview.MaterialTextView
+                android:visibility="gone"
                 android:id="@+id/loginEnterAsGuestButton"
                 android:text="@string/login_as_guest"
                 style="?themeRegularClickableFont"

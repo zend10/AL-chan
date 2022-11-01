@@ -116,7 +116,9 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <!--    TODO: Readd back for dev -->
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
                     android:id="@+id/appSettingsRecentReviewsLayout"
                     app:layout_constraintTop_toBottomOf="@id/appSettingsCircularAvatarLayout"
                     android:layout_marginTop="@dimen/marginNormal"
@@ -250,7 +252,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <!--    TODO: Readd back for dev -->
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
                     android:id="@+id/appSettingsStaffNameLayout"
                     app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
                     android:layout_marginTop="@dimen/marginNormal"
@@ -377,7 +381,9 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!--    TODO: Readd back for dev -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
                 android:id="@+id/appSettingsPushNotificationsLayout"
                 app:layout_constraintTop_toBottomOf="@id/appSettingsNamingLayout"
                 android:layout_marginTop="@dimen/marginFar"
@@ -573,7 +579,9 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!--    TODO: Readd back for dev -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
                 android:id="@+id/appSettingsMemorySaverLayout"
                 app:layout_constraintTop_toBottomOf="@id/appSettingsPushNotificationsLayout"
                 android:layout_marginTop="@dimen/marginFar"

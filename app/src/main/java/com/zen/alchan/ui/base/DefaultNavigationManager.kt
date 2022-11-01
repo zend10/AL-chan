@@ -219,7 +219,7 @@ class DefaultNavigationManager(
         launchWebView(Uri.parse(url))
     }
 
-    override fun openWebView(url: NavigationManager.Url) {
+    override fun openWebView(url: NavigationManager.Url, id: Int?) {
         launchWebView(
             Uri.parse(
                 when (url) {
@@ -231,6 +231,7 @@ class DefaultNavigationManager(
                     NavigationManager.Url.ANILIST_LISTS_SETTINGS -> Constant.ANILIST_LISTS_SETTINGS_URL
                     NavigationManager.Url.ANILIST_IMPORT_LISTS -> Constant.ANILIST_IMPORT_LISTS_URL
                     NavigationManager.Url.ANILIST_CONNECT_WITH_TWITTER -> Constant.ANILIST_CONNECT_WITH_TWITTER_URL
+                    NavigationManager.Url.ANLIST_ACTIVITY -> Constant.ANILIST_ACTIVITY + id
                     NavigationManager.Url.ALCHAN_FORUM_THREAD -> Constant.ALCHAN_FORUM_THREAD_URL
                     NavigationManager.Url.ALCHAN_GITHUB -> Constant.ALCHAN_GITHUB_URL
                     NavigationManager.Url.ALCHAN_PLAY_STORE -> Constant.ALCHAN_PLAY_STORE_URL
