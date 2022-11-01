@@ -44,6 +44,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private var menuItemViewOnAniList: MenuItem? = null
     private var menuItemShareProfile: MenuItem? = null
     private var menuItemCopyLink: MenuItem? = null
+    private var menuItemReport: MenuItem? = null
 
     private var scaleUpAnimation: Animation? = null
     private var scaleDownAnimation: Animation? = null
@@ -78,6 +79,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 menuItemViewOnAniList = findItem(R.id.itemViewOnAniList)
                 menuItemShareProfile = findItem(R.id.itemShareProfile)
                 menuItemCopyLink = findItem(R.id.itemCopyLink)
+                menuItemReport = findItem(R.id.itemReport)
             }
 
             profileToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_custom_more)
@@ -112,6 +114,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
             menuItemCopyLink?.setOnMenuItemClickListener {
                 viewModel.copyProfileUrl()
+                true
+            }
+
+            menuItemReport?.setOnMenuItemClickListener {
+                dialog.showToast(R.string.please_click_on_the_arrow_icon_on_the_top_left_and_click_report_block)
+                viewModel.loadProfileUrlForWebView()
                 true
             }
 
@@ -206,6 +214,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             },
             viewModel.bestFriendVisibility.subscribe {
                 menuItemAddAsBestFriend?.isVisible = it
+            },
+            viewModel.reportMenuItemVisibility.subscribe {
+                menuItemReport?.isVisible = it
             },
             viewModel.avatarUrl.subscribe { (avatarUrl, useCircular) ->
                 binding.profileAvatarCircleImage.show(useCircular)
@@ -372,6 +383,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         menuItemViewOnAniList = null
         menuItemShareProfile = null
         menuItemCopyLink = null
+        menuItemReport = null
         profileAdapter = null
     }
 

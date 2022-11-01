@@ -434,6 +434,8 @@
     <string name="explore_characters">Explore Characters</string>
     <string name="explore_staff">Explore Staff</string>
     <string name="explore_studios">Explore Studios</string>
+    <string name="report_block">Report/Block</string>
+    <string name="please_click_on_the_arrow_icon_on_the_top_left_and_click_report_block">Please click on the arrow icon on the top left and click Report/Block</string>
 
 
     <plurals name="minute">

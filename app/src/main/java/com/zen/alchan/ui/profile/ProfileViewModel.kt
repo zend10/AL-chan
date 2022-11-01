@@ -44,6 +44,10 @@ class ProfileViewModel(
     val bestFriendVisibility: Observable<Boolean>
         get() = _bestFriendVisibility
 
+    private val _reportMenuItemVisibility = BehaviorSubject.createDefault(false)
+    val reportMenuItemVisibility: Observable<Boolean>
+        get() = _reportMenuItemVisibility
+
     private val _notLoggedInLayoutVisibility = BehaviorSubject.createDefault(false)
     val notLoggedInLayoutVisibility: Observable<Boolean>
         get() = _notLoggedInLayoutVisibility
@@ -251,6 +255,7 @@ class ProfileViewModel(
                         this.user = user
                         this.appSetting = appSetting
 
+                        _reportMenuItemVisibility.onNext(!isViewer)
                         _currentUserId.onNext(user.id)
                         _avatarUrl.onNext(user.avatar.large to appSetting.useCircularAvatarForProfile)
                         _bannerUrl.onNext(user.bannerImage)

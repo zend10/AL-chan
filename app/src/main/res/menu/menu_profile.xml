@@ -24,4 +24,8 @@
     <item android:id="@+id/itemCopyLink"
         android:title="@string/copy_link"
         app:showAsAction="never"/>
+    <item android:id="@+id/itemReport"
+        android:title="@string/report_block"
+        android:visible="false"
+        app:showAsAction="never"/>
 </menu>
