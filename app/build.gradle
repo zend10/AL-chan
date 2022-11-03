@@ -8,7 +8,7 @@ apply plugin: 'com.apollographql.apollo'
 android {
     compileSdkVersion 32
     defaultConfig {
-        applicationId "com.zen.alchan.dev"
+        applicationId "com.zen.alchan"
         minSdkVersion 23
         targetSdkVersion 32
         versionCode 100900
