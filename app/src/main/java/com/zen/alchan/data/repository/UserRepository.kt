@@ -17,7 +17,6 @@ import type.*
 
 interface UserRepository {
 
-    val refreshMainScreenTrigger: Observable<Unit>
     val refreshFavoriteTrigger: Observable<User>
     val unreadNotificationCount: Observable<Int>
 

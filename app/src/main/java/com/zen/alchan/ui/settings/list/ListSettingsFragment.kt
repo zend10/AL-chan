@@ -9,6 +9,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.TextInputSetting
+import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.ChipRvAdapter
 import com.zen.alchan.ui.reorder.ReorderRvAdapter
@@ -190,7 +191,16 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
 
             listSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
             listSettingsSaveLayout.positiveButton.clicks {
-                viewModel.saveListSettings()
+                dialog.showConfirmationDialog(
+                    R.string.save_changes,
+                    R.string.the_app_will_be_restarted_to_apply_the_change,
+                    R.string.save,
+                    {
+                        viewModel.saveListSettings()
+                    },
+                    R.string.cancel,
+                    {}
+                )
             }
         }
     }
@@ -206,7 +216,11 @@ class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSetti
             viewModel.loading.subscribe {
                 binding.loadingLayout.loadingLayout.show(it)
             },
-            Observable.merge(viewModel.success, viewModel.error).subscribe {
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+                restartApp(DeepLink.generateListSettings(), false)
+            },
+            viewModel.error.subscribe {
                 dialog.showToast(it)
             },
             viewModel.scoreFormat.subscribe {

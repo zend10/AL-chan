@@ -27,10 +27,6 @@ class DefaultUserRepository(
     private val userManager: UserManager
 ) : UserRepository {
 
-    private val _refreshMainScreenTrigger = PublishSubject.create<Unit>()
-    override val refreshMainScreenTrigger: Observable<Unit>
-        get() = _refreshMainScreenTrigger
-
     private val _refreshFavoriteTrigger = PublishSubject.create<User>()
     override val refreshFavoriteTrigger: Observable<User>
         get() = _refreshFavoriteTrigger
@@ -223,9 +219,6 @@ class DefaultUserRepository(
             airingNotifications
         )
             .toObservable()
-            .doFinally {
-                _refreshMainScreenTrigger.onNext(Unit)
-            }
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {
@@ -246,9 +239,6 @@ class DefaultUserRepository(
             scoreFormat, rowOrder, animeListOptions, mangaListOptions, disabledListActivity
         )
             .toObservable()
-            .doFinally {
-                _refreshMainScreenTrigger.onNext(Unit)
-            }
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {

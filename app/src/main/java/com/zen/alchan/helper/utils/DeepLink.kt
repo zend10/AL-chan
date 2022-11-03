@@ -34,6 +34,8 @@ class DeepLink(
     fun isNotifications() = isAlChanScheme() && getAuthority() == NOTIFICATIONS
     fun isProfile() = isAlChanScheme() && getAuthority() == PROFILE
     fun isAppSettings() = isAlChanScheme() && getAuthority() == SETTINGS && getFirstPath() == APP_SETTINGS
+    fun isAniListSettings() = isAlChanScheme() && getAuthority() == SETTINGS && getFirstPath() == ANILIST_SETTINGS
+    fun isListSettings() = isAlChanScheme() && getAuthority() == SETTINGS && getFirstPath() == LIST_SETTINGS
     fun isSpoiler() = isAlChanScheme() && getAuthority() == SPOILER
 
     private fun isAniListAuthority() = getAuthority() == ANILIST_AUTHORITY
@@ -63,10 +65,14 @@ class DeepLink(
 
         private const val SETTINGS = "settings"
         private const val APP_SETTINGS = "app"
+        private const val ANILIST_SETTINGS = "anilist"
+        private const val LIST_SETTINGS = "list"
 
         private const val SPOILER = "spoiler"
 
         fun generateAppSettings() = generateDeepLink(SETTINGS, APP_SETTINGS)
+        fun generateAniListSettings() = generateDeepLink(SETTINGS, ANILIST_SETTINGS)
+        fun generateListSettings() = generateDeepLink(SETTINGS, LIST_SETTINGS)
 
         private fun generateDeepLink(vararg paths: String): DeepLink {
             return create(Uri.parse("${SCHEME}://${paths.joinToString("/")}"))

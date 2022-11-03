@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.ListMediaTrendingBinding
@@ -19,6 +20,7 @@ import type.MediaType
 class TrendingMediaRvAdapter(
     private val context: Context,
     list: List<Media>,
+    private val appSetting: AppSetting,
     private val width: Int,
     private val listener: HomeListener.TrendingMediaListener
 ) : BaseRecyclerViewAdapter<Media, ListMediaTrendingBinding>(list) {
@@ -33,9 +35,9 @@ class TrendingMediaRvAdapter(
         override fun bind(item: Media, index: Int) {
             binding.apply {
                 ImageUtil.loadImage(context, item.bannerImage, trendingBannerImage)
-                ImageUtil.loadImage(context, item.coverImage.extraLarge, trendingCoverImage)
+                ImageUtil.loadImage(context, item.getCoverImage(appSetting), trendingCoverImage)
 
-                trendingMediaTitleText.text = item.title.userPreferred
+                trendingMediaTitleText.text = item.getTitle(appSetting)
                 trendingMediaProducerText.text = if (item.type == MediaType.ANIME) {
                     item.studios.edges
                         .filter { it.isMain }

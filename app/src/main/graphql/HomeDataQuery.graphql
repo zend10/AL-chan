@@ -52,6 +52,9 @@ fragment HomeMedia on Media {
   id
   idMal
   title {
+    romaji
+    english
+    native
     userPreferred
   }
   type

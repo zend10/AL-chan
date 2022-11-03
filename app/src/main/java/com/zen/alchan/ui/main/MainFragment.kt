@@ -182,6 +182,22 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     navigation.navigateToAppSettings()
                 }
             }
+            deepLink.isAniListSettings() && isViewerAuthenticated -> {
+                val profileIndex = fragments?.indexOfFirst { it == profileFragment }
+                if (profileIndex != null && profileIndex != -1) {
+                    binding.mainViewPager.currentItem = profileIndex
+                    navigation.navigateToSettings()
+                    navigation.navigateToAniListSettings()
+                }
+            }
+            deepLink.isListSettings() && isViewerAuthenticated -> {
+                val profileIndex = fragments?.indexOfFirst { it == profileFragment }
+                if (profileIndex != null && profileIndex != -1) {
+                    binding.mainViewPager.currentItem = profileIndex
+                    navigation.navigateToSettings()
+                    navigation.navigateToListSettings()
+                }
+            }
             deepLink.isSpoiler() -> {
                 dialog.showSpoilerDialog(deepLink.getQueryParamOfOrNull("data") ?: "")
             }

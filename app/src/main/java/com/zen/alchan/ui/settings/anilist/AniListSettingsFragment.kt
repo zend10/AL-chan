@@ -6,6 +6,7 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentAnilistSettingsBinding
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
 import io.reactivex.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,7 +49,16 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
 
             aniListSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
             aniListSettingsSaveLayout.positiveButton.clicks {
-                viewModel.saveAniListSettings()
+                dialog.showConfirmationDialog(
+                    R.string.save_changes,
+                    R.string.the_app_will_be_restarted_to_apply_the_change,
+                    R.string.save,
+                    {
+                        viewModel.saveAniListSettings()
+                    },
+                    R.string.cancel,
+                    {}
+                )
             }
         }
     }
@@ -64,7 +74,11 @@ class AniListSettingsFragment : BaseFragment<FragmentAnilistSettingsBinding, Ani
             viewModel.loading.subscribe {
                 binding.loadingLayout.loadingLayout.show(it)
             },
-            Observable.merge(viewModel.success, viewModel.error).subscribe {
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+                restartApp(DeepLink.generateAniListSettings(), false)
+            },
+            viewModel.error.subscribe {
                 dialog.showToast(it)
             },
             viewModel.titleLanguage.subscribe {

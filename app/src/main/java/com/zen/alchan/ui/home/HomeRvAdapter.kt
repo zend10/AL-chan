@@ -83,7 +83,7 @@ class HomeRvAdapter(
                 }
 
                 if (item.media.isNotEmpty()) {
-                    trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, item.media, width, listener.trendingMediaListener)
+                    trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, item.media, appSetting, width, listener.trendingMediaListener)
                     trendingProgressBar.visibility = View.GONE
                 } else {
                     trendingProgressBar.visibility = View.VISIBLE

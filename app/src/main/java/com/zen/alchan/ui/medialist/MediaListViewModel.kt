@@ -17,6 +17,7 @@ import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
+import io.reactivex.Observable.zip
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaListStatus
@@ -231,14 +232,7 @@ class MediaListViewModel(
                     }
             )
 
-            disposables.add(
-                userRepository.refreshMainScreenTrigger
-                    .applyScheduler()
-                    .subscribe {
-                        state = State.INIT
-                        loadData(Unit)
-                    }
-            )
+
         }
     }
 
