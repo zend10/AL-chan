@@ -3,40 +3,38 @@ package com.zen.alchan.data.response.anilist
 import com.zen.alchan.data.entity.AppSetting
 import type.ActivityType
 
-data class MessageActivity(
+data class TextActivity(
     override val id: Int = 0,
-    val recipientId: Int = 0,
-    val messengerId: Int = 0,
-    override val type: ActivityType = ActivityType.MESSAGE,
+    val userId: Int = 0,
+    override val type: ActivityType = ActivityType.TEXT,
     override val replyCount: Int = 0,
-    val message: String = "",
+    val text: String = "",
     override val isLocked: Boolean = false,
     override var isSubscribed: Boolean = false,
     override var likeCount: Int = 0,
     override var isLiked: Boolean = false,
-    val isPrivate: Boolean = false,
+    val isPinned: Boolean = false,
     override val siteUrl: String = "",
     override val createdAt: Int = 0,
-    val recipient: User = User(),
-    val messenger: User = User(),
+    val user: User = User(),
     override val replies: List<ActivityReply> = listOf(),
     override val likes: List<User> = listOf()
 ) : Activity {
 
     override fun user(): User {
-        return messenger
+        return user
     }
 
     override fun hasRecipient(): Boolean {
-        return true
+        return false
     }
 
     override fun recipient(): User {
-        return recipient
+        return User()
     }
 
     override fun message(appSetting: AppSetting): String {
-        return message
+        return text
     }
 
     override fun hasMedia(): Boolean {

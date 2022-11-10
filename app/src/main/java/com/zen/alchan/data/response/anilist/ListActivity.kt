@@ -2,48 +2,54 @@ package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.data.entity.AppSetting
 import type.ActivityType
+import java.util.*
 
-data class MessageActivity(
+data class ListActivity(
     override val id: Int = 0,
-    val recipientId: Int = 0,
-    val messengerId: Int = 0,
-    override val type: ActivityType = ActivityType.MESSAGE,
+    val userId: Int = 0,
+    override val type: ActivityType = ActivityType.MEDIA_LIST,
     override val replyCount: Int = 0,
-    val message: String = "",
+    val status: String = "",
+    val progress: String = "",
     override val isLocked: Boolean = false,
     override var isSubscribed: Boolean = false,
     override var likeCount: Int = 0,
     override var isLiked: Boolean = false,
-    val isPrivate: Boolean = false,
+    val isPinned: Boolean = false,
     override val siteUrl: String = "",
     override val createdAt: Int = 0,
-    val recipient: User = User(),
-    val messenger: User = User(),
+    val user: User = User(),
+    val media: Media = Media(),
     override val replies: List<ActivityReply> = listOf(),
     override val likes: List<User> = listOf()
 ) : Activity {
 
     override fun user(): User {
-        return messenger
+        return user
     }
 
     override fun hasRecipient(): Boolean {
-        return true
-    }
-
-    override fun recipient(): User {
-        return recipient
-    }
-
-    override fun message(appSetting: AppSetting): String {
-        return message
-    }
-
-    override fun hasMedia(): Boolean {
         return false
     }
 
+    override fun recipient(): User {
+        return User()
+    }
+
+    override fun message(appSetting: AppSetting): String {
+        return "$status $progress ${media.getTitle(appSetting)}".replaceFirstChar {
+            if (it.isLowerCase())
+                it.titlecase(Locale.getDefault())
+            else
+                it.toString()
+        }
+    }
+
+    override fun hasMedia(): Boolean {
+        return true
+    }
+
     override fun media(): Media {
-        return Media()
+        return media
     }
 }

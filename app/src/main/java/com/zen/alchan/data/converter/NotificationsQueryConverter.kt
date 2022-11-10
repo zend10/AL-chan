@@ -71,7 +71,6 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 createdAt = it.createdAt ?: 0,
                                 message = MessageActivity(
                                     id = it.message?.id ?: 0,
-                                    type = it.message?.type,
                                     message = it.message?.message ?: ""
                                 ),
                                 user = User(

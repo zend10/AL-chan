@@ -20,6 +20,7 @@ interface NavigationManager {
 
     fun navigateToSearch()
     fun navigateToExplore(searchCategory: SearchCategory)
+    fun navigateToSocial()
 
     fun navigateToActivities()
     fun navigateToSettings()

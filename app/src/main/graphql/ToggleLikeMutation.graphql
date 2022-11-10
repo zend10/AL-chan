@@ -1,0 +1,5 @@
+mutation ToggleLikeMutation($id:Int, $likeableType:LikeableType) {
+  ToggleLikeV2(id:$id, type:$likeableType) {
+    __typename
+  }
+}

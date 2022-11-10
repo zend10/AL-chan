@@ -18,5 +18,6 @@ data class HomeItem(
         const val VIEW_TYPE_NEW_MANGA = 401
         const val VIEW_TYPE_FIRST_REVIEW =  500
         const val VIEW_TYPE_REVIEW = 501
+        const val VIEW_TYPE_SOCIAL = 600
     }
 }

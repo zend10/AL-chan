@@ -43,6 +43,7 @@ import com.zen.alchan.ui.settings.anilist.AniListSettingsFragment
 import com.zen.alchan.ui.settings.app.AppSettingsFragment
 import com.zen.alchan.ui.settings.list.ListSettingsFragment
 import com.zen.alchan.ui.settings.notifications.NotificationsSettingsFragment
+import com.zen.alchan.ui.social.SocialFragment
 import com.zen.alchan.ui.splash.SplashFragment
 import com.zen.alchan.ui.staff.StaffFragment
 import com.zen.alchan.ui.staff.character.StaffCharacterListFragment
@@ -81,6 +82,10 @@ class DefaultNavigationManager(
 
     override fun navigateToExplore(searchCategory: SearchCategory) {
         stackPage(ExploreFragment.newInstance(searchCategory))
+    }
+
+    override fun navigateToSocial() {
+        stackPage(SocialFragment.newInstance())
     }
 
     override fun navigateToActivities() {

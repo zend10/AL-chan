@@ -76,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             override val headerListener: HomeListener.HeaderListener = getHeaderListener()
             override val menuListener: HomeListener.MenuListener = getHomeMenuListener()
             override val releasingTodayListener: HomeListener.ReleasingTodayListener = getReleasingTodayListener()
+            override val socialListener: HomeListener.SocialListener = getSocialListener()
             override val trendingMediaListener: HomeListener.TrendingMediaListener = getTrendingMediaListener()
             override val newMediaListener: HomeListener.NewMediaListener = getNewMediaListener()
             override val recentReviewsListener: HomeListener.RecentReviewsListener = getRecentReviewsListener()
@@ -113,6 +114,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun getReleasingTodayListener(): HomeListener.ReleasingTodayListener {
         return object : HomeListener.ReleasingTodayListener {
 
+        }
+    }
+
+    private fun getSocialListener(): HomeListener.SocialListener {
+        return object : HomeListener.SocialListener {
+            override fun navigateToSocial() {
+                navigation.navigateToSocial()
+            }
         }
     }
 

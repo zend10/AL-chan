@@ -435,7 +435,16 @@
     <string name="explore_staff">Explore Staff</string>
     <string name="explore_studios">Explore Studios</string>
     <string name="report_block">Report/Block</string>
-    <string name="please_click_on_the_arrow_icon_on_the_top_left_and_click_report_block">Please click on the arrow icon on the top left and click Report/Block</string>
+    <string name="please_click_on_the_arrow_icon_on_the_top_left_and_click_report_block">Please click on the arrow icon on the top left and click \"Report/Block\"</string>
+    <string name="visit_social_hub">Visit Social Hub</string>
+    <string name="see_what_s_everyone_up_to_get_yourself_involved_with_the_community">See what\'s everyone up to. Get yourself involved with the community.</string>
+    <string name="social_hub">Social Hub</string>
+    <string name="friends_recent_activities">Friends Recent Activities</string>
+    <string name="global_activity">Global Activity</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="report">Report</string>
+    <string name="please_click_on_the_more_icon_beside_the_date_and_click_report">Please click on the \"More\" icon beside the date and click \"Report\"</string>
 
 
     <plurals name="minute">

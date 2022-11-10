@@ -11,6 +11,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.LayoutHomeHeaderBinding
 import com.zen.alchan.databinding.LayoutHomeMenuBinding
+import com.zen.alchan.databinding.LayoutHomeSocialBinding
 import com.zen.alchan.databinding.LayoutHomeTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.HomeItem
@@ -35,6 +36,10 @@ class HomeRvAdapter(
             HomeItem.VIEW_TYPE_MENU -> {
                 val view = LayoutHomeMenuBinding.inflate(inflater, parent, false)
                 return MenuViewHolder(view)
+            }
+            HomeItem.VIEW_TYPE_SOCIAL -> {
+                val view = LayoutHomeSocialBinding.inflate(inflater, parent, false)
+                return SocialViewHolder(view)
             }
             HomeItem.VIEW_TYPE_TRENDING_ANIME, HomeItem.VIEW_TYPE_TRENDING_MANGA -> {
                 val view = LayoutHomeTrendingBinding.inflate(inflater, parent, false)
@@ -69,6 +74,14 @@ class HomeRvAdapter(
                 exploreMenu.clicks { listener.menuListener.showExploreDialog() }
                 reviewsMenu.clicks { listener.menuListener.navigateToReviews() }
                 calendarMenu.clicks { listener.menuListener.navigateToCalendar() }
+            }
+        }
+    }
+
+    inner class SocialViewHolder(private val binding: LayoutHomeSocialBinding) : ViewHolder(binding) {
+        override fun bind(item: HomeItem, index: Int) {
+            binding.apply {
+                homeSocialJoinButton.clicks { listener.socialListener.navigateToSocial() }
             }
         }
     }

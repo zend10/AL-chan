@@ -99,12 +99,14 @@ class ALchanApplication : Application() {
         single<UserDataSource> { DefaultUserDataSource(get()) }
         single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
         single<BrowseDataSource> { DefaultBrowseDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION, Constant.ANILIST_API_RELATION_TYPE_VERSION) }
+        single<SocialDataSource> { DefaultSocialDataSource(get()) }
 
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
         single<UserRepository> { DefaultUserRepository(get(), get()) }
         single<MediaListRepository> { DefaultMediaListRepository(get(), get()) }
         single<BrowseRepository> { DefaultBrowseRepository(get(), get()) }
+        single<SocialRepository> { DefaultSocialRepository(get()) }
 
         // service
         single<ClipboardService> { DefaultClipboardService(this.androidContext()) }
@@ -126,7 +128,7 @@ class ALchanApplication : Application() {
         viewModel { MediaListViewModel(get(), get(), get()) }
 
         viewModel { NotificationsViewModel(get()) }
-        viewModel { SocialViewModel() }
+        viewModel { SocialViewModel(get(), get(), get()) }
 
         viewModel { ProfileViewModel(get(), get(), get(), get()) }
         viewModel { FollowViewModel(get()) }

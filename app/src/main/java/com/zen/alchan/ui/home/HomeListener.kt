@@ -19,6 +19,10 @@ interface HomeListener {
 
     }
 
+    interface SocialListener {
+        fun navigateToSocial()
+    }
+
     interface TrendingMediaListener {
         fun navigateToMedia(media: Media)
     }
@@ -34,6 +38,7 @@ interface HomeListener {
     val headerListener: HeaderListener
     val menuListener: MenuListener
     val releasingTodayListener: ReleasingTodayListener
+    val socialListener: SocialListener
     val trendingMediaListener: TrendingMediaListener
     val newMediaListener: NewMediaListener
     val recentReviewsListener: RecentReviewsListener
