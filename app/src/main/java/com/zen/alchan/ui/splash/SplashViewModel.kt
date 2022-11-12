@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.splash
 
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -39,14 +40,25 @@ class SplashViewModel(private val userRepository: UserRepository) : BaseViewMode
 
     private fun loadViewerData() {
         disposables.add(
-            userRepository.getViewer()
+            userRepository.getViewer(Source.NETWORK)
                 .applyScheduler()
                 .subscribe(
                     {
                         _isLoggedIn.onNext(true)
                     },
                     {
-                        _isLoggedIn.onNext(false)
+                        disposables.add(
+                            userRepository.getViewer(Source.CACHE)
+                                .applyScheduler()
+                                .subscribe(
+                                    {
+                                        _isLoggedIn.onNext(true)
+                                    },
+                                    {
+                                        _isLoggedIn.onNext(false)
+                                    }
+                                )
+                        )
                     }
                 )
         )

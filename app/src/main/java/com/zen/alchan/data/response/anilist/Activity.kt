@@ -22,4 +22,7 @@ interface Activity {
     fun message(appSetting: AppSetting): String
     fun hasMedia(): Boolean
     fun media(): Media
+    fun isEditable(viewer: User?): Boolean
+    fun isDeletable(viewer: User?): Boolean
+    fun isReportable(viewer: User?): Boolean
 }

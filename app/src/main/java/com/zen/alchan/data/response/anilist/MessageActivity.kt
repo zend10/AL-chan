@@ -46,4 +46,16 @@ data class MessageActivity(
     override fun media(): Media {
         return Media()
     }
+
+    override fun isEditable(viewer: User?): Boolean {
+        return viewer != null && viewer.id == messenger.id
+    }
+
+    override fun isDeletable(viewer: User?): Boolean {
+        return viewer != null && (viewer.id == messenger.id || viewer.id == recipient.id)
+    }
+
+    override fun isReportable(viewer: User?): Boolean {
+        return viewer != null && viewer.id != messenger.id
+    }
 }

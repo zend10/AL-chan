@@ -92,12 +92,12 @@ class DefaultMediaListRepository(
                 when (mediaType) {
                     MediaType.ANIME -> userManager.animeList?.data
                     MediaType.MANGA -> userManager.mangaList?.data
-                } ?: throw NotInStorageException()
+                } ?: return Observable.error(NotInStorageException())
             } else {
                 when (mediaType) {
                     MediaType.ANIME -> userIdToAnimeListCollectionMap[userId]
                     MediaType.MANGA -> userIdToMangaListCollectionMap[userId]
-                } ?: throw NotInStorageException()
+                } ?: return Observable.error(NotInStorageException())
             }
 
             Observable.just(mediaListCollection)

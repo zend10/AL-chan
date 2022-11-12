@@ -13,6 +13,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.Favorite
+import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
@@ -44,31 +45,33 @@ class DefaultUserRepository(
     }
 
     override fun getViewer(source: Source?, sort: List<UserStatisticsSort>): Observable<User> {
-        when (source) {
-            Source.CACHE -> {
-                return Observable.create { emitter ->
-                    val savedViewer = userManager.viewerData?.data
-                    if (savedViewer != null) {
-                        emitter.onNext(savedViewer)
-                        emitter.onComplete()
-                    } else {
-                        emitter.onError(NotInStorageException())
-                    }
-                }
-            }
+        return when (source) {
+            Source.CACHE -> getViewerFromCache()
+            Source.NETWORK -> getViewerFromNetwork(sort)
             else -> {
-                return userDataSource.getViewerQuery(sort).map {
-                    val newViewer = it.data?.convert()
-                    if (newViewer != null) {
-                        userManager.viewerData = SaveItem(newViewer)
-                        _unreadNotificationCount.onNext(newViewer.unreadNotificationCount)
-                    }
-                    newViewer ?: throw Throwable()
-                }.onErrorReturn {
-                    val savedViewer = userManager.viewerData?.data
-                    savedViewer ?: throw NotInStorageException()
+                val savedItem = userManager.viewerData
+                if (savedItem == null || savedItem.saveTime.moreThanADay()) {
+                    getViewerFromNetwork(sort)
+                } else {
+                    Observable.just(savedItem.data)
                 }
             }
+        }
+    }
+
+    private fun getViewerFromCache(): Observable<User> {
+        val savedItem = userManager.viewerData?.data
+        return if (savedItem != null) Observable.just(savedItem) else Observable.error(NotInStorageException())
+    }
+
+    private fun getViewerFromNetwork(sort: List<UserStatisticsSort>): Observable<User> {
+        return userDataSource.getViewerQuery(sort).map {
+            val newViewer = it.data?.convert()
+            if (newViewer != null) {
+                userManager.viewerData = SaveItem(newViewer)
+                _unreadNotificationCount.onNext(newViewer.unreadNotificationCount)
+            }
+            newViewer
         }
     }
 

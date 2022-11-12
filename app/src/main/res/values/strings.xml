@@ -445,6 +445,8 @@
     <string name="delete">Delete</string>
     <string name="report">Report</string>
     <string name="please_click_on_the_more_icon_beside_the_date_and_click_report">Please click on the \"More\" icon beside the date and click \"Report\"</string>
+    <string name="activity_detail">Activity Detail</string>
+    <string name="activity_list">Activity List</string>
 
 
     <plurals name="minute">

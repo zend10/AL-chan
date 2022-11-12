@@ -1,5 +1,7 @@
 package com.zen.alchan.data.datasource
 
+import ActivityListQuery
+import ActivityQuery
 import SocialDataQuery
 import ToggleActivitySubscriptionMutation
 import ToggleLikeMutation
@@ -10,12 +12,33 @@ import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import io.reactivex.Completable
 import io.reactivex.Observable
+import type.ActivityType
 import type.LikeableType
 
 class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : SocialDataSource {
 
     override fun getSocialData(): Observable<Response<SocialDataQuery.Data>> {
         val query = SocialDataQuery()
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getActivityDetail(id: Int): Observable<Response<ActivityQuery.Data>> {
+        val query = ActivityQuery(id = Input.fromNullable(id))
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getActivityList(
+        page: Int,
+        userId: Int?,
+        type: ActivityType?,
+        isFollowing: Boolean?
+    ): Observable<Response<ActivityListQuery.Data>> {
+        val query = ActivityListQuery(
+            page = Input.fromNullable(page),
+            userId = Input.optional(userId),
+            type = Input.optional(type),
+            isFollowing = Input.optional(isFollowing)
+        )
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

@@ -93,7 +93,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             menuItemActivities?.setOnMenuItemClickListener {
-                navigation.navigateToActivities()
+                // TODO: get user id first
+                navigation.navigateToActivityList()
                 true
             }
 

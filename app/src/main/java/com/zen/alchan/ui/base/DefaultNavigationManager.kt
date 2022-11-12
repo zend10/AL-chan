@@ -16,7 +16,8 @@ import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.utils.DeepLink
-import com.zen.alchan.ui.activity.ActivityFragment
+import com.zen.alchan.ui.activity.ActivityDetailFragment
+import com.zen.alchan.ui.activity.ActivityListFragment
 import com.zen.alchan.ui.browse.BrowseFragment
 import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.character.media.CharacterMediaListFragment
@@ -88,8 +89,12 @@ class DefaultNavigationManager(
         stackPage(SocialFragment.newInstance())
     }
 
-    override fun navigateToActivities() {
-        swapPage(ActivityFragment.newInstance())
+    override fun navigateToActivityDetail(id: Int) {
+        pushBrowseScreenPage(ActivityDetailFragment.newInstance(id))
+    }
+
+    override fun navigateToActivityList(id: Int?) {
+        pushBrowseScreenPage(ActivityListFragment.newInstance(id))
     }
 
     override fun navigateToSettings() {

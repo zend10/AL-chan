@@ -21,8 +21,9 @@ interface NavigationManager {
     fun navigateToSearch()
     fun navigateToExplore(searchCategory: SearchCategory)
     fun navigateToSocial()
+    fun navigateToActivityDetail(id: Int)
+    fun navigateToActivityList(id: Int? = null)
 
-    fun navigateToActivities()
     fun navigateToSettings()
     fun navigateToAppSettings()
     fun navigateToAniListSettings()

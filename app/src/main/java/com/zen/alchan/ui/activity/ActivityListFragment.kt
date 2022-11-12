@@ -1,70 +1,70 @@
-package com.zen.alchan.ui.social
+package com.zen.alchan.ui.activity
 
+import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.databinding.FragmentSocialBinding
+import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.social.SocialListener
+import com.zen.alchan.ui.social.SocialRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
+class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, ActivityListViewModel>() {
 
-    override val viewModel: SocialViewModel by viewModel()
+    override val viewModel: ActivityListViewModel by viewModel()
 
     private var adapter: SocialRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentSocialBinding {
-        return FragmentSocialBinding.inflate(inflater, container, false)
+    ): LayoutInfiniteScrollingBinding {
+        return LayoutInfiniteScrollingBinding.inflate(inflater, container, false)
     }
 
     override fun setUpLayout() {
-        binding.apply {
-            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.social_hub), R.drawable.ic_delete)
+        with(binding) {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.activity_list))
             adapter = SocialRvAdapter(requireContext(), listOf(), null, AppSetting(), false, getSocialListener())
-            socialRecyclerView.adapter = adapter
+            infiniteScrollingRecyclerView.adapter = adapter
 
-            socialSwipeRefresh.setOnRefreshListener {
-                viewModel.reloadData()
+            infiniteScrollingSwipeRefresh.setOnRefreshListener {
+
             }
         }
     }
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-        binding.socialRecyclerView.applyBottomSidePaddingInsets()
+        binding.infiniteScrollingRecyclerView.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {
         disposables.addAll(
-            viewModel.error.subscribe {
-                dialog.showToast(it)
-            },
             viewModel.success.subscribe {
                 dialog.showToast(it)
             },
+            viewModel.error.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.loading.subscribe {
-                binding.socialSwipeRefresh.isRefreshing = it
-            },
-            viewModel.adapterComponent.subscribe {
-                adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
-                binding.socialRecyclerView.adapter = adapter
-            },
-            viewModel.socialItemList.subscribe {
-                adapter?.updateData(it, true)
+                binding.infiniteScrollingSwipeRefresh.isRefreshing = it
             }
         )
 
-        viewModel.loadData(Unit)
+        arguments?.getInt(USER_ID)?.let {
+            viewModel.loadData(ActivityListParam(it))
+        }
     }
 
     private fun getSocialListener(): SocialListener {
@@ -82,11 +82,11 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             }
 
             override fun navigateToActivityList() {
-                navigation.navigateToActivityList()
+
             }
 
             override fun toggleLike(activity: Activity) {
-                viewModel.toggleLike(activity)
+//                viewModel.toggleLike(activity)
             }
 
             override fun viewLikes(activity: Activity) {
@@ -94,7 +94,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             }
 
             override fun toggleSubscribe(activity: Activity) {
-                viewModel.toggleSubscription(activity)
+//                viewModel.toggleSubscription(activity)
             }
 
             override fun viewOnAniList(activity: Activity) {
@@ -105,7 +105,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             }
 
             override fun copyActivityLink(activity: Activity) {
-                viewModel.copyActivityLink(activity)
+//                viewModel.copyActivityLink(activity)
             }
 
             override fun report(activity: Activity) {
@@ -132,11 +132,17 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        adapter = null
+
     }
 
     companion object {
+        private const val USER_ID = "userId"
         @JvmStatic
-        fun newInstance() = SocialFragment()
+        fun newInstance(userId: Int?) =
+            ActivityListFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(USER_ID, userId ?: 0)
+                }
+            }
     }
 }

@@ -32,7 +32,7 @@ fun SocialDataQuery.Data.convert(): SocialData {
     )
 }
 
-private fun OnTextActivity.convert(): TextActivity {
+fun OnTextActivity.convert(): TextActivity {
     return TextActivity(
         id = id,
         userId = userId ?: 0,
@@ -55,7 +55,7 @@ private fun OnTextActivity.convert(): TextActivity {
     )
 }
 
-private fun OnListActivity.convert() : ListActivity {
+fun OnListActivity.convert() : ListActivity {
     return ListActivity(
         id = id,
         userId = userId ?: 0,
@@ -110,7 +110,7 @@ private fun OnListActivity.convert() : ListActivity {
     )
 }
 
-private fun OnMessageActivity.convert() : MessageActivity {
+fun OnMessageActivity.convert() : MessageActivity {
     return MessageActivity(
         id = id,
         recipientId = recipientId ?: 0,

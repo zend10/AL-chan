@@ -52,4 +52,16 @@ data class ListActivity(
     override fun media(): Media {
         return media
     }
+
+    override fun isEditable(viewer: User?): Boolean {
+        return false
+    }
+
+    override fun isDeletable(viewer: User?): Boolean {
+        return viewer != null && viewer.id == user.id
+    }
+
+    override fun isReportable(viewer: User?): Boolean {
+        return false
+    }
 }

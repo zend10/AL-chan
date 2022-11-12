@@ -158,7 +158,7 @@ class ProfileViewModel(
     }
 
     fun reloadData() {
-        loadUserData()
+        loadUserData(true)
     }
 
     fun loadProfileUrlForWebView() {
@@ -218,11 +218,11 @@ class ProfileViewModel(
         )
     }
 
-    private fun loadUserData() {
+    private fun loadUserData(isReloading: Boolean = false) {
         _loading.onNext(true)
 
         val userObservable = if (userId == null && name == null)
-            userRepository.getViewer()
+            userRepository.getViewer(if (isReloading) Source.NETWORK else null)
                 .map { user ->
                     isViewer = true
                     viewerId = user.id

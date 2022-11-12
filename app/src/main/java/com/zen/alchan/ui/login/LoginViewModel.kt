@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.login
 
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.ui.base.BaseViewModel
@@ -20,7 +21,7 @@ class LoginViewModel(private val userRepository: UserRepository) : BaseViewModel
         userRepository.saveBearerToken(bearerToken)
 
         disposables.add(
-            userRepository.getViewer()
+            userRepository.getViewer(Source.NETWORK)
                 .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)

@@ -13,6 +13,8 @@ import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.helper.service.clipboard.DefaultClipboardService
+import com.zen.alchan.ui.activity.ActivityDetailViewModel
+import com.zen.alchan.ui.activity.ActivityListViewModel
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.character.media.CharacterMediaListViewModel
@@ -128,7 +130,6 @@ class ALchanApplication : Application() {
         viewModel { MediaListViewModel(get(), get(), get()) }
 
         viewModel { NotificationsViewModel(get()) }
-        viewModel { SocialViewModel(get(), get(), get()) }
 
         viewModel { ProfileViewModel(get(), get(), get(), get()) }
         viewModel { FollowViewModel(get()) }
@@ -159,6 +160,10 @@ class ALchanApplication : Application() {
         viewModel { StaffMediaListViewModel(get(), get()) }
         viewModel { StudioViewModel(get(), get(), get()) }
         viewModel { StudioMediaListViewModel(get(), get()) }
+
+        viewModel { SocialViewModel(get(), get(), get()) }
+        viewModel { ActivityDetailViewModel(get(), get(), get()) }
+        viewModel { ActivityListViewModel(get(), get(), get()) }
     }
 
     override fun onCreate() {

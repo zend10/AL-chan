@@ -5,8 +5,10 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.SocialAdapterComponent
 import com.zen.alchan.helper.pojo.SocialItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
@@ -27,14 +29,17 @@ class SocialViewModel(
     val socialItemList: Observable<List<SocialItem>>
         get() = _socialItemList
 
-    private val _adapterComponent = PublishSubject.create<AppSetting>()
-    val adapterComponent: Observable<AppSetting>
+    private val _adapterComponent = PublishSubject.create<SocialAdapterComponent>()
+    val adapterComponent: Observable<SocialAdapterComponent>
         get() = _adapterComponent
 
     override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
                 userRepository.getAppSetting()
+                    .zipWith(userRepository.getViewer(Source.CACHE).onErrorReturn { null }) { appSetting, viewer ->
+                        SocialAdapterComponent(viewer = viewer, appSetting = appSetting)
+                    }
                     .applyScheduler()
                     .subscribe {
                         _adapterComponent.onNext(it)
@@ -65,7 +70,7 @@ class SocialViewModel(
                             newSocialItemList.add(SocialItem(viewType = SocialItem.VIEW_TYPE_FRIENDS_ACTIVITY_HEADER))
                             newSocialItemList.addAll(
                                 it.friendsActivities.map { activity ->
-                                    SocialItem(activity = activity, viewType = SocialItem.VIEW_TYPE_FRIENDS_ACTIVITY)
+                                    SocialItem(activity = activity, viewType = SocialItem.VIEW_TYPE_ACTIVITY)
                                 }
                             )
                             newSocialItemList.add(SocialItem(viewType = SocialItem.VIEW_TYPE_FRIENDS_ACTIVITY_SEE_MORE))
@@ -74,7 +79,7 @@ class SocialViewModel(
                             newSocialItemList.add(SocialItem(viewType = SocialItem.VIEW_TYPE_GLOBAL_ACTIVITY_HEADER))
                             newSocialItemList.addAll(
                                 it.globalActivities.map { activity ->
-                                    SocialItem(activity = activity, viewType = SocialItem.VIEW_TYPE_GLOBAL_ACTIVITY)
+                                    SocialItem(activity = activity, viewType = SocialItem.VIEW_TYPE_ACTIVITY)
                                 }
                             )
                             newSocialItemList.add(SocialItem(viewType = SocialItem.VIEW_TYPE_GLOBAL_ACTIVITY_SEE_MORE))

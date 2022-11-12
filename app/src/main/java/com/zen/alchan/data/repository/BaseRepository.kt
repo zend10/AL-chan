@@ -1,11 +1,7 @@
 package com.zen.alchan.data.repository
 
+import io.reactivex.Observable
+
 abstract class BaseRepository {
 
-    protected open fun <T> passSavedDataOrThrowable(savedData: T?, throwable: Throwable): T {
-        if (savedData != null)
-            return savedData
-        else
-            throw throwable
-    }
 }

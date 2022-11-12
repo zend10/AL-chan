@@ -55,8 +55,8 @@ class DefaultContentRepository(
                     contentManager.genres = SaveItem(newGenres)
                     newGenres
                 }
-                .doOnError {
-                    passSavedDataOrThrowable(savedItem?.data, it)
+                .onErrorReturn {
+                    savedItem?.data ?: listOf()
                 }
 
         } else {
@@ -73,8 +73,8 @@ class DefaultContentRepository(
                     contentManager.tags = SaveItem(newTags)
                     newTags
                 }
-                .doOnError {
-                    passSavedDataOrThrowable(savedItem?.data, it)
+                .onErrorReturn {
+                    savedItem?.data ?: listOf()
                 }
         } else {
             Observable.just(savedItem.data)

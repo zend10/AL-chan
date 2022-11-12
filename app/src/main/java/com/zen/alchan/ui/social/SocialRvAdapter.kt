@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.widget.TextViewCompat
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.ListActivityBinding
 import com.zen.alchan.databinding.ListTextBinding
 import com.zen.alchan.helper.extensions.*
@@ -24,7 +24,9 @@ import type.MediaStatus
 class SocialRvAdapter(
     private val context: Context,
     list: List<SocialItem>,
+    private val viewer: User?,
     private val appSetting: AppSetting,
+    private val viewDetails: Boolean,
     private val listener: SocialListener
 ) : BaseRecyclerViewAdapter<SocialItem, ViewBinding>(list) {
 
@@ -47,7 +49,7 @@ class SocialRvAdapter(
                 val view = ListTextBinding.inflate(inflater, parent, false)
                 GlobalActivitySeeMoreViewHolder(view)
             }
-            SocialItem.VIEW_TYPE_FRIENDS_ACTIVITY, SocialItem.VIEW_TYPE_GLOBAL_ACTIVITY -> {
+            SocialItem.VIEW_TYPE_ACTIVITY -> {
                 val view = ListActivityBinding.inflate(inflater, parent, false)
                 ActivityViewHolder(view)
             }
@@ -103,7 +105,7 @@ class SocialRvAdapter(
                 activityReplyText.show(activity.replyCount != 0)
                 activityReplyText.text = activity.replyCount.getNumberFormatting()
                 activityReplyLayout.clicks {
-                    listener.navigateToActivity(activity)
+                    listener.navigateToActivityDetail(activity)
                 }
 
                 activityLikeText.show(activity.likeCount != 0)
@@ -130,8 +132,13 @@ class SocialRvAdapter(
                     val popupWrapper = ContextThemeWrapper(context, R.style.PopupTheme)
                     val popupMenu = PopupMenu(popupWrapper, activityMoreIcon)
                     popupMenu.menuInflater.inflate(R.menu.menu_activity, popupMenu.menu)
+                    popupMenu.menu.findItem(R.id.itemEdit).isVisible = activity.isEditable(viewer)
+                    popupMenu.menu.findItem(R.id.itemDelete).isVisible = activity.isDeletable(viewer)
+                    popupMenu.menu.findItem(R.id.itemReport).isVisible = activity.isReportable(viewer)
                     popupMenu.setOnMenuItemClickListener { menuItem ->
                         when (menuItem.itemId) {
+                            R.id.itemEdit -> listener.edit(activity)
+                            R.id.itemDelete -> listener.delete(activity)
                             R.id.itemViewOnAniList -> listener.viewOnAniList(activity)
                             R.id.itemCopyLink -> listener.copyActivityLink(activity)
                             R.id.itemReport -> listener.report(activity)
@@ -139,6 +146,10 @@ class SocialRvAdapter(
                         true
                     }
                     popupMenu.show()
+                }
+
+                root.clicks {
+                    listener.navigateToActivityDetail(activity)
                 }
             }
         }
@@ -159,7 +170,7 @@ class SocialRvAdapter(
                 upperItemDivider.root.show(false)
                 lowerItemDivider.root.show(true)
                 root.clicks {
-
+                    listener.navigateToActivityList()
                 }
             }
         }
@@ -180,7 +191,7 @@ class SocialRvAdapter(
                 upperItemDivider.root.show(false)
                 lowerItemDivider.root.show(true)
                 root.clicks {
-
+                    listener.navigateToActivityList()
                 }
             }
         }
