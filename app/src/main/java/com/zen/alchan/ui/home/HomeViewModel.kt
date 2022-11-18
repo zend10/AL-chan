@@ -8,6 +8,7 @@ import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.HomeAdapterComponent
 import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
@@ -24,8 +25,8 @@ class HomeViewModel(
     val homeItemList: Observable<List<HomeItem>>
         get() = _homeItemList
 
-    private val _adapterComponent = PublishSubject.create<AppSetting>()
-    val adapterComponent: Observable<AppSetting>
+    private val _adapterComponent = PublishSubject.create<HomeAdapterComponent>()
+    val adapterComponent: Observable<HomeAdapterComponent>
         get() = _adapterComponent
 
     private val _searchCategoryList = PublishSubject.create<List<ListItem<SearchCategory>>>()
@@ -36,6 +37,9 @@ class HomeViewModel(
         loadOnce {
             disposables.add(
                 userRepository.getAppSetting()
+                    .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, user ->
+                        HomeAdapterComponent(user, appSetting)
+                    }
                     .applyScheduler()
                     .subscribe {
                         _adapterComponent.onNext(it)
@@ -78,7 +82,7 @@ class HomeViewModel(
                     {
                         _homeItemList.onNext(
                             listOf(
-                                HomeItem(media = it.trendingAnime.filter { it.bannerImage.isNotBlank() } + it.trendingManga.filter { it.bannerImage.isNotBlank() }, viewType = HomeItem.VIEW_TYPE_HEADER),
+                                HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
                                 /*HomeItem(viewType = HomeItem.VIEW_TYPE_MENU), TODO: readd back for dev*/
                                 HomeItem(viewType = HomeItem.VIEW_TYPE_SOCIAL),
                                 HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),

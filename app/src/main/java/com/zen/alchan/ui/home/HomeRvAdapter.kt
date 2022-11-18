@@ -9,11 +9,13 @@ import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.LayoutHomeHeaderBinding
 import com.zen.alchan.databinding.LayoutHomeMenuBinding
 import com.zen.alchan.databinding.LayoutHomeSocialBinding
 import com.zen.alchan.databinding.LayoutHomeTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -21,6 +23,7 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 class HomeRvAdapter(
     private val context: Context,
     list: List<HomeItem>,
+    private val user: User?,
     private val appSetting: AppSetting,
     private val width: Int,
     private val listener: HomeListener
@@ -59,9 +62,22 @@ class HomeRvAdapter(
     inner class HeaderViewHolder(private val binding: LayoutHomeHeaderBinding) : ViewHolder(binding) {
         override fun bind(item: HomeItem, index: Int) {
             binding.apply {
-                item.media.randomOrNull()?.let {
-                    ImageUtil.loadImage(context, it.bannerImage, headerImage)
-                }
+                if (user?.bannerImage?.isNotBlank() == true)
+                    ImageUtil.loadImage(context, user.bannerImage, headerImage)
+
+                if (user?.name?.isNotBlank() == true)
+                    welcomeText.text = context.getString(R.string.hello_user, user.name)
+                else
+                    welcomeText.text = context.getString(R.string.hello)
+
+                user?.let {
+                    homeHeaderAvatar.show(true)
+                    if (appSetting.useCircularAvatarForProfile)
+                        ImageUtil.loadCircleImage(context, it.avatar.getImageUrl(appSetting), homeHeaderAvatar)
+                    else
+                        ImageUtil.loadRectangleImage(context, it.avatar.getImageUrl(appSetting), homeHeaderAvatar)
+                } ?: homeHeaderAvatar.show(false)
+
                 searchLayout.clicks { listener.headerListener.navigateToSearch() }
             }
         }
@@ -82,6 +98,7 @@ class HomeRvAdapter(
         override fun bind(item: HomeItem, index: Int) {
             binding.apply {
                 homeSocialJoinButton.clicks { listener.socialListener.navigateToSocial() }
+                root.clicks { listener.socialListener.navigateToSocial() }
             }
         }
     }

@@ -21,7 +21,6 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingHorizontal="@dimen/marginPageNormal"
-        android:paddingTop="@dimen/marginFar"
         android:paddingBottom="@dimen/marginPageBig"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
@@ -33,9 +32,20 @@
             style="?themeTitleFont"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/homeHeaderAvatar"
+            android:layout_marginTop="140dp"
+            android:layout_marginEnd="@dimen/marginPageNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="invisible"
+            android:id="@+id/homeHeaderAvatar"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/welcomeText"
+            android:layout_width="@dimen/imageCircleSize"
+            android:layout_height="@dimen/imageCircleSize"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/searchLayout"

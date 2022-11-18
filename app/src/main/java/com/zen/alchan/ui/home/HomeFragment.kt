@@ -29,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun setUpLayout() {
         binding.apply {
-            homeAdapter = HomeRvAdapter(requireContext(), listOf(), AppSetting(), screenWidth, getHomeListener())
+            homeAdapter = HomeRvAdapter(requireContext(), listOf(), null, AppSetting(), screenWidth, getHomeListener())
             homeRecyclerView.adapter = homeAdapter
 
             homeSwipeRefresh.setOnRefreshListener { viewModel.reloadData() }
@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 binding.homeSwipeRefresh.isRefreshing = it
             },
             viewModel.adapterComponent.subscribe {
-                homeAdapter = HomeRvAdapter(requireContext(), listOf(), it, screenWidth, getHomeListener())
+                homeAdapter = HomeRvAdapter(requireContext(), listOf(), it.user, it.appSetting, screenWidth, getHomeListener())
                 binding.homeRecyclerView.adapter = homeAdapter
             },
             viewModel.homeItemList.subscribe {

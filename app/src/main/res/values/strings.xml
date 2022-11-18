@@ -450,6 +450,7 @@
     <string name="activity_deleted">Activity Deleted</string>
     <string name="reply_deleted">Reply Deleted</string>
     <string name="select_activity_type">Select Activity Type</string>
+    <string name="hello_user">Hello, %1$s!</string>
 
 
     <plurals name="minute">
