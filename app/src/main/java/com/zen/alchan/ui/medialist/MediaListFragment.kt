@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
+import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +30,7 @@ import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.main.SharedMainViewModel
+import com.zen.alchan.ui.search.SearchRvAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
@@ -78,6 +81,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
 
             searchView = menuItemSearch?.actionView as? SearchView
             searchView?.queryHint = getString(R.string.search)
+            searchView?.imeOptions = EditorInfo.IME_ACTION_SEARCH
             searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return true
@@ -88,6 +92,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                     return true
                 }
             })
+            searchView?.setOnQueryTextFocusChangeListener { _, hasFocus ->
+                toggleKeyboard(hasFocus)
+            }
 
             assignAdapter(viewModel.isViewer, viewModel.listStyle, viewModel.appSetting, viewModel.user.mediaListOptions)
 
@@ -96,6 +103,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemCustomiseList?.setOnMenuItemClickListener {
+                searchView?.clearFocus()
                 navigation.navigateToCustomise(viewModel.mediaType) { customiseResult ->
                     viewModel.updateListStyle(customiseResult)
                 }
@@ -108,6 +116,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             menuItemFilter?.setOnMenuItemClickListener {
+                searchView?.clearFocus()
                 navigation.navigateToFilter(viewModel.mediaFilter, viewModel.mediaType, viewModel.user.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100, true, viewModel.isViewer) { filterResult ->
                     viewModel.updateMediaFilter(filterResult)
                 }
@@ -124,6 +133,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                         mediaListSwitchListButton.hide()
                     else
                         mediaListSwitchListButton.show()
+
+                    if (dy != 0)
+                        searchView?.clearFocus()
                 }
             })
         }
@@ -298,10 +310,12 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
     private fun getMediaListListener(): BaseMediaListRvAdapter.MediaListListener {
         return object : BaseMediaListRvAdapter.MediaListListener {
             override fun navigateToMedia(media: Media) {
+                searchView?.clearFocus()
                 navigation.navigateToMedia(media.getId())
             }
 
             override fun navigateToListEditor(mediaList: MediaList) {
+                searchView?.clearFocus()
                 navigation.navigateToEditor(mediaList.media.idAniList, true)
             }
 
