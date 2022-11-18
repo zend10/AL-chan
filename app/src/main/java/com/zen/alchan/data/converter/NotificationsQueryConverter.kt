@@ -2,8 +2,8 @@ package com.zen.alchan.data.converter
 
 import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
-import fragment.OnAiringNotification
-import kotlin.reflect.KClass
+import com.zen.alchan.data.response.anilist.ActivityReply
+import fragment.*
 
 fun NotificationsQuery.Data.convert() : NotificationData {
     return NotificationData(
@@ -69,10 +69,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
-                                message = MessageActivity(
-                                    id = it.message?.id ?: 0,
-                                    message = it.message?.message ?: ""
-                                ),
+                                message = it.message?.fragments?.onNotificationMessageActivity?.convert(),
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -92,6 +89,18 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
+                                activity = when (it.activity?.__typename) {
+                                    TextActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                    }
+                                    ListActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                    }
+                                    MessageActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                    }
+                                    else -> null
+                                },
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -111,6 +120,18 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
+                                activity = when (it.activity?.__typename) {
+                                    TextActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                    }
+                                    ListActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                    }
+                                    MessageActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                    }
+                                    else -> null
+                                },
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -130,6 +151,18 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
+                                activity = when (it.activity?.__typename) {
+                                    TextActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                    }
+                                    ListActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                    }
+                                    MessageActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                    }
+                                    else -> null
+                                },
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -149,6 +182,18 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
+                                activity = when (it.activity?.__typename) {
+                                    TextActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                    }
+                                    ListActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                    }
+                                    MessageActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                    }
+                                    else -> null
+                                },
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -168,6 +213,18 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
+                                activity = when (it.activity?.__typename) {
+                                    TextActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                    }
+                                    ListActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                    }
+                                    MessageActivity::class.java.simpleName -> {
+                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                    }
+                                    else -> null
+                                },
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -422,5 +479,41 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                 }
             } ?: listOf()
         )
+    )
+}
+
+private fun OnNotificationTextActivity.convert(): TextActivity {
+    return TextActivity(
+        id = id,
+        text = text ?: "",
+        siteUrl = siteUrl ?: "",
+    )
+}
+
+private fun OnNotificationListActivity.convert() : ListActivity {
+    return ListActivity(
+        id = id,
+        status = status ?: "",
+        progress = progress ?: "",
+        siteUrl = siteUrl ?: "",
+        media = media?.let {
+            Media(
+                idAniList = it.id,
+                title = MediaTitle(
+                    romaji = it.title?.romaji ?: "",
+                    english = it.title?.english ?: "",
+                    native = it.title?.native_ ?: "",
+                    userPreferred = it.title?.userPreferred ?: ""
+                )
+            )
+        } ?: Media(),
+    )
+}
+
+private fun OnNotificationMessageActivity.convert() : MessageActivity {
+    return MessageActivity(
+        id = id,
+        message = message ?: "",
+        siteUrl = siteUrl ?: "",
     )
 }

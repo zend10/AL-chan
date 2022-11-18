@@ -85,9 +85,7 @@ fragment onActivityMessageNotification on ActivityMessageNotification {
     context
     createdAt
     message {
-        id
-        type
-        message(asHtml: false)
+        ... onNotificationMessageActivity
     }
     user {
         id
@@ -106,6 +104,12 @@ fragment onActivityMentionNotification on ActivityMentionNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
@@ -123,6 +127,12 @@ fragment onActivityReplyNotification on ActivityReplyNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
@@ -140,6 +150,12 @@ fragment onActivityReplySubscribedNotification on ActivityReplySubscribedNotific
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
@@ -157,6 +173,12 @@ fragment onActivityLikeNotification on ActivityLikeNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
@@ -174,6 +196,12 @@ fragment onActivityReplyLikeNotification on ActivityReplyLikeNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
@@ -403,4 +431,32 @@ fragment onMediaDeletionNotification on MediaDeletionNotification {
     context
     reason
     createdAt
+}
+
+fragment onNotificationTextActivity on TextActivity {
+  id
+  text(asHtml:false)
+  siteUrl
+}
+
+fragment onNotificationListActivity on ListActivity {
+  id
+  status
+  progress
+  siteUrl
+  media {
+    id
+    title {
+      romaji
+      english
+      native
+      userPreferred
+    }
+  }
+}
+
+fragment onNotificationMessageActivity on MessageActivity {
+  id
+  message(asHtml:false)
+  siteUrl
 }

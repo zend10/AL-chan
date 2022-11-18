@@ -7,10 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.Thread
-import com.zen.alchan.data.response.anilist.ThreadComment
-import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show
@@ -117,11 +114,10 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
                 navigation.navigateToMedia(media.getId())
             }
 
-            override fun navigateToActivity(activityId: Int) {
-                if (activityId != 0)
-                    navigation.openWebView(NavigationManager.Url.ANLIST_ACTIVITY, activityId)
-                else
-                    dialog.showToast(R.string.this_activity_is_already_removed)
+            override fun navigateToActivity(activity: Activity?) {
+                activity?.let {
+                    navigation.navigateToActivityDetail(activity.id) { _, _ -> }
+                } ?: dialog.showToast(getString(R.string.this_activity_is_already_removed))
             }
 
             override fun navigateToThreadComment(threadComment: ThreadComment) {

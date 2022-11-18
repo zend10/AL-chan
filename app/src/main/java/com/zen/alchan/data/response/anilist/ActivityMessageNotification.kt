@@ -9,6 +9,6 @@ data class ActivityMessageNotification(
     val activityId: Int = 0,
     val context: String = "",
     override val createdAt: Int = 0,
-    val message: MessageActivity = MessageActivity(),
+    val message: MessageActivity? = null,
     val user: User = User()
 ) : Notification
