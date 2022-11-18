@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
+import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.SearchCategory
@@ -21,8 +23,8 @@ interface NavigationManager {
     fun navigateToSearch()
     fun navigateToExplore(searchCategory: SearchCategory)
     fun navigateToSocial()
-    fun navigateToActivityDetail(id: Int)
-    fun navigateToActivityList(id: Int? = null)
+    fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit)
+    fun navigateToActivityList(activityListPage: ActivityListPage, id: Int? = null)
 
     fun navigateToSettings()
     fun navigateToAppSettings()

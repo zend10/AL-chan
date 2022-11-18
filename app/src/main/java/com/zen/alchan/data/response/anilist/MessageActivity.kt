@@ -8,7 +8,7 @@ data class MessageActivity(
     val recipientId: Int = 0,
     val messengerId: Int = 0,
     override val type: ActivityType = ActivityType.MESSAGE,
-    override val replyCount: Int = 0,
+    override var replyCount: Int = 0,
     val message: String = "",
     override val isLocked: Boolean = false,
     override var isSubscribed: Boolean = false,
@@ -20,7 +20,7 @@ data class MessageActivity(
     val recipient: User = User(),
     val messenger: User = User(),
     override val replies: List<ActivityReply> = listOf(),
-    override val likes: List<User> = listOf()
+    override var likes: List<User> = listOf()
 ) : Activity {
 
     override fun user(): User {
@@ -33,6 +33,10 @@ data class MessageActivity(
 
     override fun recipient(): User {
         return recipient
+    }
+
+    override fun isPrivateMessage(): Boolean {
+        return isPrivate
     }
 
     override fun message(appSetting: AppSetting): String {

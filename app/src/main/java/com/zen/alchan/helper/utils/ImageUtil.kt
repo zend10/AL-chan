@@ -2,6 +2,8 @@ package com.zen.alchan.helper.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.view.View
@@ -15,12 +17,15 @@ import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
 import coil.imageLoader
 import coil.load
+import coil.request.Disposable
+import coil.request.ImageRequest
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.zen.alchan.BuildConfig
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.getAttrValue
+import com.zen.overlapimagelistview.OverlapImageListView
 
 object ImageUtil {
 
@@ -70,5 +75,30 @@ object ImageUtil {
         StfalconImageViewer.Builder<String>(context, arrayOf(url)) { view, image ->
             view.load(image)
         }.withTransitionFrom(imageView).withHiddenStatusBar(false).show(true)
+    }
+
+    fun loadImagesIntoOverlapImageListView(context: Context, urls: List<String>, overlapImageListView: OverlapImageListView) {
+        val bitmaps = ArrayList<Bitmap>()
+
+        urls.forEach {
+            val loader = ImageLoader(context)
+            var disposable: Disposable? = null
+
+            val request = ImageRequest.Builder(context)
+                .data(it)
+                .transformations(CircleCropTransformation())
+                .target { drawable ->
+                    bitmaps.add((drawable as BitmapDrawable).bitmap)
+
+                    if (bitmaps.size == overlapImageListView.circleCount) {
+                        overlapImageListView.imageList = bitmaps
+                        disposable?.dispose()
+                        disposable = null
+                    }
+                }
+                .build()
+
+            disposable = loader.enqueue(request)
+        }
     }
 }

@@ -7,7 +7,7 @@ data class TextActivity(
     override val id: Int = 0,
     val userId: Int = 0,
     override val type: ActivityType = ActivityType.TEXT,
-    override val replyCount: Int = 0,
+    override var replyCount: Int = 0,
     val text: String = "",
     override val isLocked: Boolean = false,
     override var isSubscribed: Boolean = false,
@@ -18,7 +18,7 @@ data class TextActivity(
     override val createdAt: Int = 0,
     val user: User = User(),
     override val replies: List<ActivityReply> = listOf(),
-    override val likes: List<User> = listOf()
+    override var likes: List<User> = listOf()
 ) : Activity {
 
     override fun user(): User {
@@ -31,6 +31,10 @@ data class TextActivity(
 
     override fun recipient(): User {
         return User()
+    }
+
+    override fun isPrivateMessage(): Boolean {
+        return false
     }
 
     override fun message(appSetting: AppSetting): String {

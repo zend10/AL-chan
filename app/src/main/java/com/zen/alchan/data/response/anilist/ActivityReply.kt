@@ -5,9 +5,9 @@ data class ActivityReply(
     val userId: Int = 0,
     val activityId: Int = 0,
     val text: String = "",
-    val likeCount: Int = 0,
-    val isLiked: Boolean = false,
+    var likeCount: Int = 0,
+    var isLiked: Boolean = false,
     val createdAt: Int = 0,
     val user: User = User(),
-    val likes: List<User> = listOf()
+    var likes: List<User> = listOf()
 )

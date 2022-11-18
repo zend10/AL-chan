@@ -27,10 +27,10 @@ class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : 
     override fun getActivityList(
         page: Int,
         userId: Int?,
-        type: ActivityType?,
+        typeIn: List<ActivityType>?,
         isFollowing: Boolean?
     ): Observable<Page<Activity>> {
-        return socialDataSource.getActivityList(page, userId, type, isFollowing).map {
+        return socialDataSource.getActivityList(page, userId, typeIn, isFollowing).map {
             it.data?.convert()
         }
     }
@@ -41,5 +41,13 @@ class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : 
 
     override fun toggleLike(id: Int, likeableType: LikeableType): Completable {
         return socialDataSource.toggleLike(id, likeableType)
+    }
+
+    override fun deleteActivity(id: Int): Completable {
+        return socialDataSource.deleteActivity(id)
+    }
+
+    override fun deleteActivityReply(id: Int): Completable {
+        return socialDataSource.deleteActivityReply(id)
     }
 }

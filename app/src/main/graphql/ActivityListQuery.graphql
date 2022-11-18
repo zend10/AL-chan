@@ -1,4 +1,4 @@
-query ActivityListQuery($page:Int, $userId:Int, $type:ActivityType, $isFollowing:Boolean) {
+query ActivityListQuery($page:Int, $userId:Int, $typeIn:[ActivityType], $isFollowing:Boolean) {
   Page(page:$page) {
     pageInfo {
       total
@@ -7,7 +7,7 @@ query ActivityListQuery($page:Int, $userId:Int, $type:ActivityType, $isFollowing
       lastPage
       hasNextPage
     }
-    activities(userId:$userId, type:$type, isFollowing:$isFollowing, sort:[ID_DESC]) {
+    activities(userId:$userId, type_in:$typeIn, isFollowing:$isFollowing, sort:[ID_DESC]) {
       __typename
     ... onTextActivity
     ... onListActivity

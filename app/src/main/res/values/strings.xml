@@ -439,7 +439,7 @@
     <string name="visit_social_hub">Visit Social Hub</string>
     <string name="see_what_s_everyone_up_to_get_yourself_involved_with_the_community">See what\'s everyone up to. Get yourself involved with the community.</string>
     <string name="social_hub">Social Hub</string>
-    <string name="friends_recent_activities">Friends Recent Activities</string>
+    <string name="friends_recent_activities">Friends Activity</string>
     <string name="global_activity">Global Activity</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -447,6 +447,9 @@
     <string name="please_click_on_the_more_icon_beside_the_date_and_click_report">Please click on the \"More\" icon beside the date and click \"Report\"</string>
     <string name="activity_detail">Activity Detail</string>
     <string name="activity_list">Activity List</string>
+    <string name="activity_deleted">Activity Deleted</string>
+    <string name="reply_deleted">Reply Deleted</string>
+    <string name="select_activity_type">Select Activity Type</string>
 
 
     <plurals name="minute">

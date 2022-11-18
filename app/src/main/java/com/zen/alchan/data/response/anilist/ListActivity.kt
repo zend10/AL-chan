@@ -8,7 +8,7 @@ data class ListActivity(
     override val id: Int = 0,
     val userId: Int = 0,
     override val type: ActivityType = ActivityType.MEDIA_LIST,
-    override val replyCount: Int = 0,
+    override var replyCount: Int = 0,
     val status: String = "",
     val progress: String = "",
     override val isLocked: Boolean = false,
@@ -21,7 +21,7 @@ data class ListActivity(
     val user: User = User(),
     val media: Media = Media(),
     override val replies: List<ActivityReply> = listOf(),
-    override val likes: List<User> = listOf()
+    override var likes: List<User> = listOf()
 ) : Activity {
 
     override fun user(): User {
@@ -34,6 +34,10 @@ data class ListActivity(
 
     override fun recipient(): User {
         return User()
+    }
+
+    override fun isPrivateMessage(): Boolean {
+        return false
     }
 
     override fun message(appSetting: AppSetting): String {

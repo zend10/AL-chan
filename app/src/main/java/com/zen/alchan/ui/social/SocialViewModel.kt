@@ -1,10 +1,10 @@
 package com.zen.alchan.ui.social
 
 import com.zen.alchan.R
-import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
@@ -13,8 +13,6 @@ import com.zen.alchan.helper.pojo.SocialItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.LikeableType
@@ -33,11 +31,14 @@ class SocialViewModel(
     val adapterComponent: Observable<SocialAdapterComponent>
         get() = _adapterComponent
 
+    private var viewer = User()
+
     override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
                 userRepository.getAppSetting()
                     .zipWith(userRepository.getViewer(Source.CACHE).onErrorReturn { null }) { appSetting, viewer ->
+                        this.viewer = viewer
                         SocialAdapterComponent(viewer = viewer, appSetting = appSetting)
                     }
                     .applyScheduler()
@@ -115,8 +116,7 @@ class SocialViewModel(
 
         disposables.add(
             socialRepository.toggleLike(activity.id, LikeableType.ACTIVITY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .subscribe(
                     {
@@ -124,8 +124,11 @@ class SocialViewModel(
                         val editedActivityIndex = currentSocialItems.indexOfFirst { it.activity?.id == activity.id }
                         if (editedActivityIndex != -1) {
                             val isNowLiked = !activity.isLiked
+                            val likeUsers = ArrayList(activity.likes)
+                            if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeIf { it.id == viewer.id }
                             currentSocialItems[editedActivityIndex].activity?.isLiked = isNowLiked
                             currentSocialItems[editedActivityIndex].activity?.likeCount = if (isNowLiked) activity.likeCount + 1 else activity.likeCount - 1
+                            currentSocialItems[editedActivityIndex].activity?.likes = likeUsers
                             _socialItemList.onNext(currentSocialItems)
                         }
                     },
@@ -141,8 +144,7 @@ class SocialViewModel(
 
         disposables.add(
             socialRepository.toggleActivitySubscription(activity.id, !activity.isSubscribed)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .subscribe(
                     {
@@ -158,5 +160,56 @@ class SocialViewModel(
                     }
                 )
         )
+    }
+
+    fun deleteActivity(activity: Activity) {
+        _loading.onNext(true)
+
+        disposables.add(
+            socialRepository.deleteActivity(activity.id)
+                .applyScheduler()
+                .doFinally { _loading.onNext(false) }
+                .subscribe(
+                    {
+                        val currentSocialItems = ArrayList(_socialItemList.value ?: listOf())
+
+                        if (currentSocialItems.size <= 5)
+                            reloadData()
+                        else {
+                            val editedActivityIndex = currentSocialItems.indexOfFirst { it.activity?.id == activity.id }
+                            if (editedActivityIndex != -1) {
+                                currentSocialItems.removeAt(editedActivityIndex)
+                                _socialItemList.onNext(currentSocialItems)
+                            }
+                        }
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
+    }
+
+    fun handleActivityDetailResult(activity: Activity, isDeleted: Boolean) {
+        val currentSocialItems = ArrayList(_socialItemList.value ?: listOf())
+
+        if (isDeleted) {
+            if (currentSocialItems.size <= 5)
+                reloadData()
+            else {
+                val editedActivityIndex = currentSocialItems.indexOfFirst { it.activity?.id == activity.id }
+                if (editedActivityIndex != -1) {
+                    currentSocialItems.removeAt(editedActivityIndex)
+                    _socialItemList.onNext(currentSocialItems)
+                }
+            }
+        } else {
+            val editedActivityIndex = currentSocialItems.indexOfFirst { it.activity?.id == activity.id }
+            if (editedActivityIndex != -1) {
+                currentSocialItems.removeAt(editedActivityIndex)
+                currentSocialItems.add(editedActivityIndex, SocialItem(activity = activity, viewType = SocialItem.VIEW_TYPE_ACTIVITY))
+                _socialItemList.onNext(currentSocialItems)
+            }
+        }
     }
 }

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?themeCardColor"
+    app:contentPadding="@dimen/marginNormal"
+    android:layout_marginHorizontal="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/activityAvatarGuideline"
+            app:layout_constraintGuide_percent="@fraction/listImageSmallRatio"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/activityUserAvatar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/activityAvatarGuideline"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="@id/activityUserAvatar"
+            app:layout_constraintBottom_toBottomOf="@id/activityUserAvatar"
+            app:layout_constraintStart_toEndOf="@id/activityAvatarGuideline"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activityUserName"
+                style="?themeRegularClickableBoldFont"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activityTime"
+                style="?themeSmallFont"
+                android:layout_marginTop="@dimen/marginClose"
+                app:layout_constraintStart_toStartOf="@id/activityUserName"
+                app:layout_constraintTop_toBottomOf="@id/activityUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/activityText"
+            style="?themeRegularFont"
+            app:layout_constraintTop_toBottomOf="@id/activityUserAvatar"
+            app:layout_constraintStart_toEndOf="@id/activityAvatarGuideline"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/activityReplyLayout"
+            app:layout_constraintTop_toBottomOf="@id/activityText"
+            app:layout_constraintStart_toStartOf="@id/activityText"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/iconPadding"
+            android:layout_marginTop="@dimen/marginPageNormal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activityReplyIcon"
+                app:srcCompat="@drawable/ic_baseline_chat_bubble"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/activityLikeLayout"
+            app:layout_constraintTop_toTopOf="@id/activityReplyLayout"
+            app:layout_constraintStart_toEndOf="@id/activityReplyLayout"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/iconPadding"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activityLikeIcon"
+                app:srcCompat="@drawable/ic_heart_outline"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activityLikeText"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.zen.overlapimagelistview.OverlapImageListView
+            android:id="@+id/activityLikeAvatar"
+            app:strokeWidth="@dimen/lineWidth"
+            app:strokeColor="?themeContentColor"
+            app:fillColor="?themeCardColor"
+            app:layout_constraintStart_toEndOf="@id/activityLikeLayout"
+            app:layout_constraintTop_toTopOf="@id/activityLikeLayout"
+            app:layout_constraintBottom_toBottomOf="@id/activityLikeLayout"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/iconSize"/>
+
+        <FrameLayout
+            android:id="@+id/activityMoreLayout"
+            android:padding="@dimen/iconPadding"
+            android:foreground="?selectableItemBackground"
+            app:layout_constraintTop_toTopOf="@id/activityReplyLayout"
+            app:layout_constraintBottom_toBottomOf="@id/activityReplyLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/activityMoreIcon"
+                app:srcCompat="@drawable/ic_more_horiz"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.data.response.anilist.ActivityReply
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.FragmentActivityDetailBinding
+import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.social.LikeRvAdapter
 import com.zen.alchan.ui.social.SocialListener
 import com.zen.alchan.ui.social.SocialRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,6 +27,8 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
     override val viewModel: ActivityDetailViewModel by viewModel()
 
     private var adapter: SocialRvAdapter? = null
+    private var likeAdapter: LikeRvAdapter? = null
+    private var listener: ActivityDetailListener? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -37,6 +42,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.activity_detail))
             adapter = SocialRvAdapter(requireContext(), listOf(), null, AppSetting(), true, getSocialListener())
             activityRecyclerView.adapter = adapter
+            likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
 
             activitySwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -63,9 +69,14 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             viewModel.adapterComponent.subscribe {
                 adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, true, getSocialListener())
                 binding.activityRecyclerView.adapter = adapter
+                likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
             },
             viewModel.socialItemList.subscribe {
                 adapter?.updateData(it, true)
+            },
+            viewModel.activityDetailResult.subscribe {
+                listener?.getActivityDetailResult(it.first, it.second)
+                if (it.second) goBack()
             }
         )
 
@@ -86,23 +97,26 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             }
 
             override fun navigateToActivityDetail(activity: Activity) {
-                navigation.navigateToActivityDetail(activity.id)
+                // no need to handle
             }
 
-            override fun navigateToActivityList() {
-
+            override fun navigateToActivityList(activityListPage: ActivityListPage) {
+                // no need to handle
             }
 
-            override fun toggleLike(activity: Activity) {
-//                viewModel.toggleLike(activity)
+            override fun toggleLike(activity: Activity, activityReply: ActivityReply?) {
+                activityReply?.let { viewModel.toggleLike(it) } ?: viewModel.toggleLike(activity)
             }
 
-            override fun viewLikes(activity: Activity) {
-
+            override fun viewLikes(activity: Activity, activityReply: ActivityReply?) {
+                likeAdapter?.let {
+                    activityReply?.let { likeAdapter?.updateData(it.likes) } ?: it.updateData(activity.likes)
+                    dialog.showListDialog(it)
+                }
             }
 
             override fun toggleSubscribe(activity: Activity) {
-//                viewModel.toggleSubscription(activity)
+                viewModel.toggleSubscription(activity)
             }
 
             override fun viewOnAniList(activity: Activity) {
@@ -113,7 +127,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             }
 
             override fun copyActivityLink(activity: Activity) {
-//                viewModel.copyActivityLink(activity)
+                viewModel.copyActivityLink(activity)
             }
 
             override fun report(activity: Activity) {
@@ -124,16 +138,25 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
                     dialog.showToast(R.string.this_activity_is_already_removed)
             }
 
-            override fun edit(activity: Activity) {
-
+            override fun edit(activity: Activity, activityReply: ActivityReply?) {
+                // TODO: navigate to editor
             }
 
-            override fun delete(activity: Activity) {
-
+            override fun delete(activity: Activity, activityReply: ActivityReply?) {
+                activityReply?.let { viewModel.deleteActivityReply(activityReply) } ?: viewModel.deleteActivity(activity)
             }
 
-            override fun reply(activity: Activity) {
+            override fun reply(activity: Activity, activityReply: ActivityReply?) {
+                // TODO: navigate to editor
+            }
+        }
+    }
 
+    private fun getLikeListener(): LikeRvAdapter.LikeListener {
+        return object : LikeRvAdapter.LikeListener {
+            override fun navigateToUser(user: User) {
+                dialog.dismissListDialog()
+                navigation.navigateToUser(user.id)
             }
         }
     }
@@ -141,17 +164,23 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        likeAdapter = null
     }
 
     companion object {
         private const val ACTIVITY_ID = "activityId"
 
         @JvmStatic
-        fun newInstance(activityId: Int) =
+        fun newInstance(activityId: Int, listener: ActivityDetailListener) =
             ActivityDetailFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ACTIVITY_ID, activityId)
                 }
+                this.listener = listener
             }
+    }
+
+    interface ActivityDetailListener {
+        fun getActivityDetailResult(activity: Activity, isDeleted: Boolean)
     }
 }

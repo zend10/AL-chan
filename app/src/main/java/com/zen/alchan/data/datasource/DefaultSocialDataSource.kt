@@ -2,6 +2,8 @@ package com.zen.alchan.data.datasource
 
 import ActivityListQuery
 import ActivityQuery
+import DeleteActivityMutation
+import DeleteActivityReplyMutation
 import SocialDataQuery
 import ToggleActivitySubscriptionMutation
 import ToggleLikeMutation
@@ -30,13 +32,13 @@ class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : Social
     override fun getActivityList(
         page: Int,
         userId: Int?,
-        type: ActivityType?,
+        typeIn: List<ActivityType>?,
         isFollowing: Boolean?
     ): Observable<Response<ActivityListQuery.Data>> {
         val query = ActivityListQuery(
             page = Input.fromNullable(page),
             userId = Input.optional(userId),
-            type = Input.optional(type),
+            typeIn = Input.optional(typeIn),
             isFollowing = Input.optional(isFollowing)
         )
         return apolloHandler.apolloClient.rxQuery(query)
@@ -49,6 +51,16 @@ class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : Social
 
     override fun toggleLike(id: Int, likeableType: LikeableType): Completable {
         val mutation = ToggleLikeMutation(id = Input.fromNullable(id), likeableType = Input.fromNullable(likeableType))
+        return apolloHandler.apolloClient.rxPrefetch(mutation)
+    }
+
+    override fun deleteActivity(id: Int): Completable {
+        val mutation = DeleteActivityMutation(id = Input.fromNullable(id))
+        return apolloHandler.apolloClient.rxPrefetch(mutation)
+    }
+
+    override fun deleteActivityReply(id: Int): Completable {
+        val mutation = DeleteActivityReplyMutation(id = Input.fromNullable(id))
         return apolloHandler.apolloClient.rxPrefetch(mutation)
     }
 }

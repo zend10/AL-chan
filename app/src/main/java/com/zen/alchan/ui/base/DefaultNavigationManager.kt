@@ -11,7 +11,9 @@ import androidx.fragment.app.FragmentManager
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
+import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.helper.Constant
+import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.SearchCategory
@@ -89,12 +91,16 @@ class DefaultNavigationManager(
         stackPage(SocialFragment.newInstance())
     }
 
-    override fun navigateToActivityDetail(id: Int) {
-        pushBrowseScreenPage(ActivityDetailFragment.newInstance(id))
+    override fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {
+        pushBrowseScreenPage(ActivityDetailFragment.newInstance(id, object : ActivityDetailFragment.ActivityDetailListener {
+            override fun getActivityDetailResult(activity: Activity, isDeleted: Boolean) {
+                action(activity, isDeleted)
+            }
+        }))
     }
 
-    override fun navigateToActivityList(id: Int?) {
-        pushBrowseScreenPage(ActivityListFragment.newInstance(id))
+    override fun navigateToActivityList(activityListPage: ActivityListPage, id: Int?) {
+        pushBrowseScreenPage(ActivityListFragment.newInstance(activityListPage, id))
     }
 
     override fun navigateToSettings() {

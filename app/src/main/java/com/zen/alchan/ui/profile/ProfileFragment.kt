@@ -19,6 +19,7 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.databinding.FragmentProfileBinding
+import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
@@ -93,8 +94,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             menuItemActivities?.setOnMenuItemClickListener {
-                // TODO: get user id first
-                navigation.navigateToActivityList()
+                doIfUserIdIsLoaded {
+                    navigation.navigateToActivityList(ActivityListPage.SPECIFIC_USER, currentUserId)
+                }
                 true
             }
 
@@ -164,23 +166,33 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             profileAnimeCountLayout.clicks {
                 if (isViewer())
                     sharedViewModel.navigateTo(SharedMainViewModel.Page.ANIME)
-                else
-                    navigation.navigateToAnimeMediaList(currentUserId)
+                else {
+                    doIfUserIdIsLoaded {
+                        navigation.navigateToAnimeMediaList(currentUserId)
+                    }
+                }
             }
 
             profileMangaCountLayout.clicks {
                 if (isViewer())
                     sharedViewModel.navigateTo(SharedMainViewModel.Page.MANGA)
-                else
-                    navigation.navigateToMangaMediaList(currentUserId)
+                else {
+                    doIfUserIdIsLoaded {
+                        navigation.navigateToMangaMediaList(currentUserId)
+                    }
+                }
             }
 
             profileFollowingCountLayout.clicks {
-                navigation.navigateToFollowing(currentUserId)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToFollowing(currentUserId)
+                }
             }
 
             profileFollowersCountLayout.clicks {
-                navigation.navigateToFollowers(currentUserId)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToFollowers(currentUserId)
+                }
             }
         }
     }
@@ -314,7 +326,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getStatsListener(): ProfileListener.StatsListener {
         return object : ProfileListener.StatsListener {
             override fun navigateToStatsDetail() {
-                navigation.navigateToUserStats(currentUserId)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToUserStats(currentUserId)
+                }
             }
         }
     }
@@ -326,7 +340,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                     MediaType.ANIME -> Favorite.ANIME
                     MediaType.MANGA -> Favorite.MANGA
                 }
-                navigation.navigateToFavorite(currentUserId, favorite)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToFavorite(currentUserId, favorite)
+                }
             }
 
             override fun navigateToMedia(media: Media, mediaType: MediaType) {
@@ -338,7 +354,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteCharacterListener(): ProfileListener.FavoriteCharacterListener {
         return object : ProfileListener.FavoriteCharacterListener {
             override fun navigateToFavoriteCharacter() {
-                navigation.navigateToFavorite(currentUserId, Favorite.CHARACTERS)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToFavorite(currentUserId, Favorite.CHARACTERS)
+                }
             }
 
             override fun navigateToCharacter(character: Character) {
@@ -350,7 +368,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteStaffListener(): ProfileListener.FavoriteStaffListener {
         return object : ProfileListener.FavoriteStaffListener {
             override fun navigateToFavoriteStaff() {
-                navigation.navigateToFavorite(currentUserId, Favorite.STAFF)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToFavorite(currentUserId, Favorite.STAFF)
+                }
             }
 
             override fun navigateToStaff(staff: Staff) {
@@ -362,7 +382,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun getFavoriteStudioListener(): ProfileListener.FavoriteStudioListener {
         return object : ProfileListener.FavoriteStudioListener {
             override fun navigateToFavoriteStudio() {
-                navigation.navigateToFavorite(currentUserId, Favorite.STUDIOS)
+                doIfUserIdIsLoaded {
+                    navigation.navigateToFavorite(currentUserId, Favorite.STUDIOS)
+                }
             }
 
             override fun navigateToStudio(studio: Studio) {
@@ -375,6 +397,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         return arguments?.getInt(USER_ID) == 0 && arguments?.getString(USERNAME) == null
     }
 
+    private fun doIfUserIdIsLoaded(action: () -> Unit) {
+        if (currentUserId != 0)
+            action()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

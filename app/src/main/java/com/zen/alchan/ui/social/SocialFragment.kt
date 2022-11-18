@@ -5,11 +5,14 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.data.response.anilist.ActivityReply
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.FragmentSocialBinding
+import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,6 +22,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
     override val viewModel: SocialViewModel by viewModel()
 
     private var adapter: SocialRvAdapter? = null
+    private var likeAdapter: LikeRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -32,6 +36,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.social_hub), R.drawable.ic_delete)
             adapter = SocialRvAdapter(requireContext(), listOf(), null, AppSetting(), false, getSocialListener())
             socialRecyclerView.adapter = adapter
+            likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
 
             socialSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -58,6 +63,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             viewModel.adapterComponent.subscribe {
                 adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
                 binding.socialRecyclerView.adapter = adapter
+                likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
             },
             viewModel.socialItemList.subscribe {
                 adapter?.updateData(it, true)
@@ -78,19 +84,24 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             }
 
             override fun navigateToActivityDetail(activity: Activity) {
-                navigation.navigateToActivityDetail(activity.id)
+                navigation.navigateToActivityDetail(activity.id) { activityResult, isDeleted ->
+                    viewModel.handleActivityDetailResult(activityResult, isDeleted)
+                }
             }
 
-            override fun navigateToActivityList() {
-                navigation.navigateToActivityList()
+            override fun navigateToActivityList(activityListPage: ActivityListPage) {
+                navigation.navigateToActivityList(activityListPage)
             }
 
-            override fun toggleLike(activity: Activity) {
+            override fun toggleLike(activity: Activity, activityReply: ActivityReply?) {
                 viewModel.toggleLike(activity)
             }
 
-            override fun viewLikes(activity: Activity) {
-
+            override fun viewLikes(activity: Activity, activityReply: ActivityReply?) {
+                likeAdapter?.let {
+                    it.updateData(activity.likes)
+                    dialog.showListDialog(it)
+                }
             }
 
             override fun toggleSubscribe(activity: Activity) {
@@ -116,16 +127,27 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
                     dialog.showToast(R.string.this_activity_is_already_removed)
             }
 
-            override fun edit(activity: Activity) {
-
+            override fun edit(activity: Activity, activityReply: ActivityReply?) {
+                // TODO: navigate to editor
             }
 
-            override fun delete(activity: Activity) {
-
+            override fun delete(activity: Activity, activityReply: ActivityReply?) {
+                viewModel.deleteActivity(activity)
             }
 
-            override fun reply(activity: Activity) {
+            override fun reply(activity: Activity, activityReply: ActivityReply?) {
+                navigation.navigateToActivityDetail(activity.id) { activityResult, isDeleted ->
+                    viewModel.handleActivityDetailResult(activityResult, isDeleted)
+                }
+            }
+        }
+    }
 
+    private fun getLikeListener(): LikeRvAdapter.LikeListener {
+        return object : LikeRvAdapter.LikeListener {
+            override fun navigateToUser(user: User) {
+                dialog.dismissListDialog()
+                navigation.navigateToUser(user.id)
             }
         }
     }
@@ -133,6 +155,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        likeAdapter = null
     }
 
     companion object {

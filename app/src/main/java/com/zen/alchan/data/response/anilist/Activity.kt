@@ -6,7 +6,7 @@ import type.ActivityType
 interface Activity {
     val id: Int
     val type: ActivityType
-    val replyCount: Int
+    var replyCount: Int
     val isLocked: Boolean
     var isSubscribed: Boolean
     var likeCount: Int
@@ -14,11 +14,12 @@ interface Activity {
     val siteUrl: String
     val createdAt: Int
     val replies: List<ActivityReply>
-    val likes: List<User>
+    var likes: List<User>
 
     fun user(): User
     fun hasRecipient(): Boolean
     fun recipient(): User
+    fun isPrivateMessage(): Boolean
     fun message(appSetting: AppSetting): String
     fun hasMedia(): Boolean
     fun media(): Media
