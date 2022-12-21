@@ -135,7 +135,7 @@ class NotificationsFragment : BaseFragment<LayoutInfiniteScrollingBinding, Notif
             }
 
             override fun showDetail(text: String) {
-                dialog.showSpoilerDialog(text)
+                dialog.showSpoilerDialog(text, null)
             }
         }
     }

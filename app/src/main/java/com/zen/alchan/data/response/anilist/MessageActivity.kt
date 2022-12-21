@@ -19,7 +19,7 @@ data class MessageActivity(
     override val createdAt: Int = 0,
     val recipient: User = User(),
     val messenger: User = User(),
-    override val replies: List<ActivityReply> = listOf(),
+    override var replies: List<ActivityReply> = listOf(),
     override var likes: List<User> = listOf()
 ) : Activity {
 

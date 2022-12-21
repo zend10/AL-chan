@@ -3,6 +3,7 @@ package com.zen.alchan.ui.base
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
@@ -13,10 +14,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.enums.ActivityListPage
-import com.zen.alchan.helper.enums.Favorite
-import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.enums.SearchCategory
+import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.activity.ActivityDetailFragment
 import com.zen.alchan.ui.activity.ActivityListFragment
@@ -53,6 +51,8 @@ import com.zen.alchan.ui.staff.character.StaffCharacterListFragment
 import com.zen.alchan.ui.staff.media.StaffMediaListFragment
 import com.zen.alchan.ui.studio.StudioFragment
 import com.zen.alchan.ui.studio.media.StudioMediaListFragment
+import com.zen.alchan.ui.texteditor.TextEditorActivity
+import com.zen.alchan.ui.texteditor.TextEditorFragment
 import com.zen.alchan.ui.userstats.UserStatsFragment
 import io.reactivex.disposables.Disposable
 import type.ScoreFormat
@@ -101,6 +101,33 @@ class DefaultNavigationManager(
 
     override fun navigateToActivityList(activityListPage: ActivityListPage, id: Int?) {
         pushBrowseScreenPage(ActivityListFragment.newInstance(activityListPage, id))
+    }
+
+    override fun navigateToTextEditor(
+        textEditorType: TextEditorType,
+        activityId: Int?,
+        activityReplyId: Int?,
+        recipientId: Int?,
+        username: String?
+    ) {
+        val intent = Intent(context, TextEditorActivity::class.java)
+        val bundle = Bundle().apply {
+            activityId?.let {
+                putInt(TextEditorActivity.ACTIVITY_ID, activityId)
+            }
+            activityReplyId?.let {
+                putInt(TextEditorActivity.ACTIVITY_REPLY_ID, activityReplyId)
+            }
+            recipientId?.let {
+                putInt(TextEditorActivity.RECIPIENT_ID, recipientId)
+            }
+            username?.let {
+                putString(TextEditorActivity.USERNAME, username)
+            }
+            putString(TextEditorActivity.TEXT_EDITOR_TYPE, textEditorType.name)
+        }
+        intent.putExtras(bundle)
+        context.startActivity(intent)
     }
 
     override fun navigateToSettings() {
@@ -363,7 +390,6 @@ class DefaultNavigationManager(
     }
 
     private fun launchWebView(uri: Uri) {
-        // TODO: fix crash issue
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(context, uri)

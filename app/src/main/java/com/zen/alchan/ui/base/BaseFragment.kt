@@ -30,19 +30,19 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
 
     private val className = javaClass.simpleName
 
-    private val rootActivity: RootActivity
-        get() = activity as RootActivity
+    private val parentActivity: BaseActivity<*>
+        get() = activity as BaseActivity<*>
 
     protected val navigation by lazy {
-        rootActivity.navigationManager
+        parentActivity.navigationManager
     }
 
     protected val dialog by lazy {
-        rootActivity.dialogManager
+        parentActivity.dialogManager
     }
 
     protected val incomingDeepLink by lazy {
-        rootActivity.incomingDeepLink
+        parentActivity.incomingDeepLink
     }
 
     protected abstract val viewModel: VM
@@ -121,7 +121,7 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
     }
 
     protected fun goBack() {
-        rootActivity.onBackPressed()
+        parentActivity.onBackPressed()
     }
 
     protected fun setUpToolbar(
@@ -138,14 +138,14 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
     }
 
     protected fun restartApp(deepLink: DeepLink? = null, skipSplashScreen: Boolean = true) {
-        val intent = Intent(rootActivity, LaunchActivity::class.java)
+        val intent = Intent(parentActivity, LaunchActivity::class.java)
         if (deepLink?.uri != null) {
             intent.data = deepLink.uri
             intent.putExtra("RESTART", skipSplashScreen)
         }
         startActivity(intent)
-        rootActivity.overridePendingTransition(0, 0)
-        rootActivity.finish()
+        parentActivity.overridePendingTransition(0, 0)
+        parentActivity.finish()
     }
 
     protected fun toggleKeyboard(shouldOpen: Boolean) {

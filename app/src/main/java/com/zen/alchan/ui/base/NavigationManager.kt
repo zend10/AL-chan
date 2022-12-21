@@ -1,40 +1,47 @@
 package com.zen.alchan.ui.base
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
+import androidx.browser.customtabs.CustomTabsIntent
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.Activity
-import com.zen.alchan.helper.enums.ActivityListPage
-import com.zen.alchan.helper.enums.Favorite
-import com.zen.alchan.helper.enums.MediaType
-import com.zen.alchan.helper.enums.SearchCategory
+import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
 import type.ScoreFormat
 
 
 interface NavigationManager {
 
-    fun navigateToSplash(deepLink: DeepLink? = null, bypassSplash: Boolean = false)
-    fun navigateToLanding()
-    fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false)
-    fun navigateToMain(deepLink: DeepLink? = null)
+    fun navigateToSplash(deepLink: DeepLink? = null, bypassSplash: Boolean = false) {}
+    fun navigateToLanding() {}
+    fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false) {}
+    fun navigateToMain(deepLink: DeepLink? = null) {}
 
-    fun navigateToSearch()
-    fun navigateToExplore(searchCategory: SearchCategory)
-    fun navigateToSocial()
-    fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit)
-    fun navigateToActivityList(activityListPage: ActivityListPage, id: Int? = null)
+    fun navigateToSearch() {}
+    fun navigateToExplore(searchCategory: SearchCategory) {}
+    fun navigateToSocial() {}
+    fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {}
+    fun navigateToActivityList(activityListPage: ActivityListPage, id: Int? = null) {}
+    fun navigateToTextEditor(
+        textEditorType: TextEditorType,
+        activityId: Int? = null,
+        activityReplyId: Int? = null,
+        recipientId: Int? = null,
+        username: String? = null
+    ) {}
 
-    fun navigateToSettings()
-    fun navigateToAppSettings()
-    fun navigateToAniListSettings()
-    fun navigateToListSettings()
-    fun navigateToNotificationsSettings()
-    fun navigateToAccountSettings()
-    fun navigateToAbout()
+    fun navigateToSettings() {}
+    fun navigateToAppSettings() {}
+    fun navigateToAniListSettings() {}
+    fun navigateToListSettings() {}
+    fun navigateToNotificationsSettings() {}
+    fun navigateToAccountSettings() {}
+    fun navigateToAbout() {}
 
-    fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit)
+    fun navigateToReorder(itemList: List<String>, action: (reorderResult: List<String>) -> Unit) {}
     fun navigateToFilter(
         mediaFilter: MediaFilter?,
         mediaType: MediaType,
@@ -42,40 +49,40 @@ interface NavigationManager {
         isUserList: Boolean,
         isCurrentUser: Boolean,
         action: (filterResult: MediaFilter) -> Unit
-    )
-    fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit)
+    ) {}
+    fun navigateToCustomise(mediaType: MediaType, action: (customiseResult: ListStyle) -> Unit) {}
 
-    fun navigateToEditor(mediaId: Int, fromMediaList: Boolean, action: (() -> Unit)? = null)
+    fun navigateToEditor(mediaId: Int, fromMediaList: Boolean, action: (() -> Unit)? = null) {}
 
-    fun navigateToMedia(id: Int)
-    fun navigateToMediaCharacters(id: Int)
-    fun navigateToMediaStaff(id: Int)
-    fun navigateToCharacter(id: Int)
-    fun navigateToCharacterMedia(id: Int)
-    fun navigateToStaff(id: Int)
-    fun navigateToStaffCharacter(id: Int)
-    fun navigateToStaffMedia(id: Int)
-    fun navigateToUser(id: Int? = null, username: String? = null)
-    fun navigateToStudio(id: Int)
-    fun navigateToStudioMedia(id: Int)
+    fun navigateToMedia(id: Int) {}
+    fun navigateToMediaCharacters(id: Int) {}
+    fun navigateToMediaStaff(id: Int) {}
+    fun navigateToCharacter(id: Int) {}
+    fun navigateToCharacterMedia(id: Int) {}
+    fun navigateToStaff(id: Int) {}
+    fun navigateToStaffCharacter(id: Int) {}
+    fun navigateToStaffMedia(id: Int) {}
+    fun navigateToUser(id: Int? = null, username: String? = null) {}
+    fun navigateToStudio(id: Int) {}
+    fun navigateToStudioMedia(id: Int) {}
 
-    fun navigateToAnimeMediaList(id: Int)
-    fun navigateToMangaMediaList(id: Int)
-    fun navigateToFollowing(id: Int)
-    fun navigateToFollowers(id: Int)
-    fun navigateToUserStats(id: Int)
-    fun navigateToFavorite(id: Int, favorite: Favorite)
+    fun navigateToAnimeMediaList(id: Int) {}
+    fun navigateToMangaMediaList(id: Int) {}
+    fun navigateToFollowing(id: Int) {}
+    fun navigateToFollowers(id: Int) {}
+    fun navigateToUserStats(id: Int) {}
+    fun navigateToFavorite(id: Int, favorite: Favorite) {}
 
-    fun openWebView(url: String)
-    fun openWebView(url: Url, id: Int? = null)
-    fun openEmailClient()
-    fun openGallery(launcher: ActivityResultLauncher<Intent>)
+    fun openWebView(url: String) {}
+    fun openWebView(url: Url, id: Int? = null) {}
+    fun openEmailClient() {}
+    fun openGallery(launcher: ActivityResultLauncher<Intent>) {}
 
-    fun isAtPreLoginScreen(): Boolean
-    fun isAtBrowseScreen(): Boolean
-    fun popBrowseScreenPage()
-    fun shouldPopFromBrowseScreen(): Boolean
-    fun closeBrowseScreen()
+    fun isAtPreLoginScreen(): Boolean { return false }
+    fun isAtBrowseScreen(): Boolean { return false }
+    fun popBrowseScreenPage() {}
+    fun shouldPopFromBrowseScreen(): Boolean { return false }
+    fun closeBrowseScreen() {}
 
     enum class Url {
         ANILIST_WEBSITE,

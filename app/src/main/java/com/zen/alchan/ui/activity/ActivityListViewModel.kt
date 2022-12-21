@@ -43,6 +43,10 @@ class ActivityListViewModel(
     val activityTypeList: Observable<Pair<List<ListItem<ActivityType>>, ArrayList<Int>>>
         get() = _activityTypeList
 
+    private val _toolbarTitle = BehaviorSubject.createDefault(R.string.activity_list)
+    val toolbarTitle: Observable<Int>
+        get() = _toolbarTitle
+
     private val activityTypes = listOf(
         ActivityType.TEXT,
         ActivityType.MESSAGE,
@@ -66,9 +70,11 @@ class ActivityListViewModel(
                 ActivityListPage.FRIENDS -> {
                     selectedActivityTypes = arrayListOf(ActivityType.TEXT, ActivityType.ANIME_LIST, ActivityType.MANGA_LIST)
                     isFollowing = true
+                    _toolbarTitle.onNext(R.string.friends_recent_activities)
                 }
                 ActivityListPage.GLOBAL -> {
                     selectedActivityTypes = arrayListOf(ActivityType.TEXT)
+                    _toolbarTitle.onNext(R.string.global_activity)
                 }
             }
 
@@ -85,6 +91,26 @@ class ActivityListViewModel(
                     }
             )
         }
+    }
+
+    fun checkIfNeedReload() {
+        disposables.add(
+            socialRepository.newOrEditedActivity
+                .applyScheduler()
+                .filter { it.data != null }
+                .subscribe {
+                    val activity = it.data
+                    val currentActivities = ArrayList(_socialItemList.value ?: listOf())
+                    val index = currentActivities.indexOfFirst { it?.activity?.id == activity?.id }
+                    if (index != -1) {
+                        currentActivities[index] = currentActivities[index]?.copy(activity = activity)
+                        _socialItemList.onNext(currentActivities)
+                    } else {
+                        currentActivities.add(0, SocialItem(activity, viewType = SocialItem.VIEW_TYPE_ACTIVITY))
+                        _socialItemList.onNext(currentActivities)
+                    }
+                }
+        )
     }
 
     fun reloadData() {
@@ -184,7 +210,7 @@ class ActivityListViewModel(
                         if (editedActivityIndex != -1) {
                             val isNowLiked = !activity.isLiked
                             val likeUsers = ArrayList(activity.likes)
-                            if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeIf { it.id == viewer.id }
+                            if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeAll { it.id == viewer.id }
                             currentSocialItems[editedActivityIndex]?.activity?.isLiked = isNowLiked
                             currentSocialItems[editedActivityIndex]?.activity?.likeCount = if (isNowLiked) activity.likeCount + 1 else activity.likeCount - 1
                             currentSocialItems[editedActivityIndex]?.activity?.likes = likeUsers

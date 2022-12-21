@@ -20,7 +20,7 @@ data class ListActivity(
     override val createdAt: Int = 0,
     val user: User = User(),
     val media: Media = Media(),
-    override val replies: List<ActivityReply> = listOf(),
+    override var replies: List<ActivityReply> = listOf(),
     override var likes: List<User> = listOf()
 ) : Activity {
 

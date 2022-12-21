@@ -59,6 +59,46 @@ data class ActivityDetailViewModel(
         }
     }
 
+    fun checkIfNeedReload() {
+        disposables.add(
+            socialRepository.newOrEditedActivity
+                .applyScheduler()
+                .filter { it.data != null }
+                .subscribe {
+                    val activity = it.data
+                    val currentActivities = ArrayList(_socialItemList.value ?: listOf())
+                    currentActivities[0] = currentActivities[0]?.copy(activity = activity)
+                    _socialItemList.onNext(currentActivities)
+                    socialRepository.clearNewOrEditedActivity()
+                }
+        )
+
+        disposables.add(
+            socialRepository.newOrEditedReply
+                .applyScheduler()
+                .filter { it.data != null }
+                .subscribe {
+                    val activityReply = it.data
+                    val currentSocialItems = ArrayList(_socialItemList.value ?: listOf())
+                    val index = currentSocialItems.indexOfFirst { it?.activityReply?.id == activityReply?.id }
+                    if (index != -1) {
+                        currentSocialItems[index] = currentSocialItems[index]?.copy(activityReply = activityReply)
+                        _socialItemList.onNext(currentSocialItems)
+                    } else {
+                        currentSocialItems.firstOrNull()?.activity?.let {
+                            val replies = ArrayList(it.replies)
+                            replies.add(activityReply)
+                            it.replies = replies
+                            it.replyCount = replies.size
+                        }
+                        currentSocialItems.add(SocialItem(activity = currentSocialItems.firstOrNull()?.activity, activityReply = activityReply, viewType = SocialItem.VIEW_TYPE_ACTIVITY_REPLY))
+                        _socialItemList.onNext(currentSocialItems)
+                    }
+                    socialRepository.clearNewOrEditedReply()
+                }
+        )
+    }
+
     fun reloadData() {
         loadActivity()
     }
@@ -134,7 +174,7 @@ data class ActivityDetailViewModel(
                                 currentSocialItems[editedActivityIndex].activity?.let {
                                     val isNowLiked = !it.isLiked
                                     val likeUsers = ArrayList(it.likes)
-                                    if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeIf { it.id == viewer.id }
+                                    if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeAll { it.id == viewer.id }
                                     currentSocialItems[editedActivityIndex].activity?.isLiked = isNowLiked
                                     currentSocialItems[editedActivityIndex].activity?.likeCount = if (isNowLiked) it.likeCount + 1 else it.likeCount - 1
                                     currentSocialItems[editedActivityIndex].activity?.likes = likeUsers
@@ -143,13 +183,17 @@ data class ActivityDetailViewModel(
                                 currentSocialItems[editedActivityIndex].activityReply?.let {
                                     val isNowLiked = !it.isLiked
                                     val likeUsers = ArrayList(it.likes)
-                                    if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeIf { it.id == viewer.id }
+                                    if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeAll { it.id == viewer.id }
                                     currentSocialItems[editedActivityIndex].activityReply?.isLiked = isNowLiked
                                     currentSocialItems[editedActivityIndex].activityReply?.likeCount = if (isNowLiked) it.likeCount + 1 else it.likeCount - 1
                                     currentSocialItems[editedActivityIndex].activityReply?.likes = likeUsers
                                 }
                             }
                             _socialItemList.onNext(currentSocialItems)
+
+                            currentSocialItems.firstOrNull()?.activity?.let {
+                                _activityDetailResult.onNext(it to false)
+                            }
                         }
                     },
                     {
@@ -225,5 +269,13 @@ data class ActivityDetailViewModel(
                     }
                 )
         )
+    }
+
+    fun setActivityToBeEdited(activity: Activity) {
+        socialRepository.updateActivityToBeEdited(activity)
+    }
+
+    fun setReplyToBeEdited(activityReply: ActivityReply) {
+        socialRepository.updateReplyToBeEdited(activityReply)
     }
 }

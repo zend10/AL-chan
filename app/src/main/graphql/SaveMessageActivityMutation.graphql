@@ -1,0 +1,5 @@
+mutation SaveMessageActivityMutation($id:Int, $recipientId:Int, $message:String, $private:Boolean) {
+  SaveMessageActivity(id:$id, recipientId:$recipientId, message:$message, private:$private) {
+    ... onMessageActivity
+  }
+}

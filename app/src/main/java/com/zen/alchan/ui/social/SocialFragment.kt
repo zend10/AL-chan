@@ -2,6 +2,7 @@ package com.zen.alchan.ui.social
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Activity
@@ -10,8 +11,10 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.FragmentSocialBinding
 import com.zen.alchan.helper.enums.ActivityListPage
+import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,6 +27,8 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
     private var adapter: SocialRvAdapter? = null
     private var likeAdapter: LikeRvAdapter? = null
 
+    private var currentViewer: User? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -31,15 +36,34 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
         return FragmentSocialBinding.inflate(inflater, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkIfNeedReload()
+    }
+
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.social_hub), R.drawable.ic_delete)
-            adapter = SocialRvAdapter(requireContext(), listOf(), null, AppSetting(), false, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), currentViewer, AppSetting(), false, getSocialListener())
             socialRecyclerView.adapter = adapter
             likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
 
             socialSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
+            }
+
+            socialRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0)
+                        socialPostNewActivityButton.hide()
+                    else
+                        socialPostNewActivityButton.show()
+                }
+            })
+
+            socialPostNewActivityButton.clicks {
+                navigation.navigateToTextEditor(TextEditorType.TEXT_ACTIVITY)
             }
         }
     }
@@ -47,6 +71,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
         binding.socialRecyclerView.applyBottomSidePaddingInsets()
+        binding.socialPostNewActivityLayout.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -61,6 +86,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
                 binding.socialSwipeRefresh.isRefreshing = it
             },
             viewModel.adapterComponent.subscribe {
+                currentViewer = it.viewer
                 adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
                 binding.socialRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())

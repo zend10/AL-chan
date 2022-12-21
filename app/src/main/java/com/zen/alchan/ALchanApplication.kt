@@ -50,6 +50,7 @@ import com.zen.alchan.ui.staff.character.StaffCharacterListViewModel
 import com.zen.alchan.ui.staff.media.StaffMediaListViewModel
 import com.zen.alchan.ui.studio.StudioViewModel
 import com.zen.alchan.ui.studio.media.StudioMediaListViewModel
+import com.zen.alchan.ui.texteditor.TextEditorViewModel
 import com.zen.alchan.ui.userstats.UserStatsViewModel
 
 import org.koin.android.ext.koin.androidContext
@@ -164,6 +165,7 @@ class ALchanApplication : Application() {
         viewModel { SocialViewModel(get(), get(), get()) }
         viewModel { ActivityDetailViewModel(get(), get(), get()) }
         viewModel { ActivityListViewModel(get(), get(), get()) }
+        viewModel { TextEditorViewModel(get(), get()) }
     }
 
     override fun onCreate() {

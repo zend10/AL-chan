@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.root
 
 import android.content.Intent
+import androidx.lifecycle.Lifecycle
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
@@ -10,14 +11,12 @@ import io.reactivex.subjects.PublishSubject
 
 class RootActivity : BaseActivity<ActivityRootBinding>() {
 
-    lateinit var navigationManager: NavigationManager
-        private set
+    override lateinit var dialogManager: DialogManager
 
-    lateinit var dialogManager: DialogManager
-        private set
+    override lateinit var navigationManager: NavigationManager
 
     private val _incomingDeepLink = PublishSubject.create<DeepLink>()
-    val incomingDeepLink: Observable<DeepLink>
+    override val incomingDeepLink: Observable<DeepLink>
         get() = _incomingDeepLink
 
     private var newIntent: Intent? = null

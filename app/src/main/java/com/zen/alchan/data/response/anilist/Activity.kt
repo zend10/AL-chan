@@ -13,7 +13,7 @@ interface Activity {
     var isLiked: Boolean
     val siteUrl: String
     val createdAt: Int
-    val replies: List<ActivityReply>
+    var replies: List<ActivityReply>
     var likes: List<User>
 
     fun user(): User

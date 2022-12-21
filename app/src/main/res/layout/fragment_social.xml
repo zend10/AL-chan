@@ -29,4 +29,22 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <FrameLayout
+        android:id="@+id/socialPostNewActivityLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/socialPostNewActivityButton"
+            android:src="@drawable/ic_create"
+            android:layout_margin="@dimen/marginPageNormal"
+            app:backgroundTint="?themeSecondaryColor"
+            app:tint="?themeBackgroundColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

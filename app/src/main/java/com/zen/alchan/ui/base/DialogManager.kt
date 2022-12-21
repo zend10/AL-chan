@@ -22,7 +22,9 @@ interface DialogManager {
         positiveButton: Int, 
         positiveAction: () -> Unit, 
         negativeButton: Int, 
-        negativeAction: () -> Unit
+        negativeAction: () -> Unit,
+        thirdButton: Int? = null,
+        thirdAction: (() -> Unit)? = null
     )
 
     fun <T> showListDialog(list: List<ListItem<T>>, action: (data: T, index: Int) -> Unit)
@@ -40,7 +42,7 @@ interface DialogManager {
 
     fun showDatePicker(calendar: Calendar, action: (year: Int, month: Int, dayOfMonth: Int) -> Unit)
 
-    fun showSpoilerDialog(spoilerText: String)
+    fun showSpoilerDialog(spoilerText: String, onLinkClickAction: ((link: String) -> Unit)?)
 
     fun showShareSheet(text: String)
 }

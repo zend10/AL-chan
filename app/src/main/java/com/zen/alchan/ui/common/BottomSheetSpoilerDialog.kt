@@ -9,6 +9,7 @@ import com.zen.alchan.ui.base.BaseDialogFragment
 class BottomSheetSpoilerDialog : BaseDialogFragment<DialogBottomSheetSpoilerBinding>() {
 
     private var spoilerText = ""
+    private var listener: SpoilerListener? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -18,7 +19,14 @@ class BottomSheetSpoilerDialog : BaseDialogFragment<DialogBottomSheetSpoilerBind
     }
 
     override fun setUpLayout() {
-        val markdownSetup = MarkdownUtil.getMarkdownSetup(requireContext(), screenWidth)
+        val markdownSetup = if (listener != null) {
+            MarkdownUtil.getMarkdownSetup(requireContext(), screenWidth) {
+                listener?.onLinkClick(it)
+            }
+        } else {
+            MarkdownUtil.getMarkdownSetup(requireContext(), screenWidth, null)
+        }
+
         MarkdownUtil.applyMarkdown(requireContext(), markdownSetup, binding.dialogSpoilerText, spoilerText)
     }
 
@@ -27,9 +35,14 @@ class BottomSheetSpoilerDialog : BaseDialogFragment<DialogBottomSheetSpoilerBind
     }
 
     companion object {
-        fun newInstance(spoilerText: String) =
+        fun newInstance(spoilerText: String, listener: SpoilerListener?) =
             BottomSheetSpoilerDialog().apply {
                 this.spoilerText = spoilerText
+                this.listener = listener
             }
+    }
+
+    interface SpoilerListener {
+        fun onLinkClick(link: String)
     }
 }

@@ -151,7 +151,7 @@ private fun ActivityUser.convert() : User {
     )
 }
 
-private fun ActivityReply.convert(): com.zen.alchan.data.response.anilist.ActivityReply {
+fun ActivityReply.convert(): com.zen.alchan.data.response.anilist.ActivityReply {
     return com.zen.alchan.data.response.anilist.ActivityReply(
         id = id,
         userId = userId ?: 0,

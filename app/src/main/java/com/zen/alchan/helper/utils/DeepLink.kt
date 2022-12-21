@@ -88,5 +88,7 @@ class DeepLink(
         private const val ANILIST_STUDIO = "studio"
         private const val ANILIST_USER = "user"
         // endregion
+
+        const val QUERY_PARAM_DATA = "data"
     }
 }

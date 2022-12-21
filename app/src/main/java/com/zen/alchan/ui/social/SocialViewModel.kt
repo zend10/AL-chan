@@ -50,6 +50,20 @@ class SocialViewModel(
         }
     }
 
+    fun checkIfNeedReload() {
+//        disposables.add(
+//            socialRepository.refreshActivityTrigger
+//                .applyScheduler()
+//                .filter { it }
+//                .flatMap {
+//                    socialRepository.resetRefreshActivityTrigger()
+//                }
+//                .subscribe {
+//                    reloadData()
+//                }
+//        )
+    }
+
     fun reloadData() {
         loadSocialData(true)
     }
@@ -125,7 +139,7 @@ class SocialViewModel(
                         if (editedActivityIndex != -1) {
                             val isNowLiked = !activity.isLiked
                             val likeUsers = ArrayList(activity.likes)
-                            if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeIf { it.id == viewer.id }
+                            if (isNowLiked) likeUsers.add(viewer) else likeUsers.removeAll { it.id == viewer.id }
                             currentSocialItems[editedActivityIndex].activity?.isLiked = isNowLiked
                             currentSocialItems[editedActivityIndex].activity?.likeCount = if (isNowLiked) activity.likeCount + 1 else activity.likeCount - 1
                             currentSocialItems[editedActivityIndex].activity?.likes = likeUsers

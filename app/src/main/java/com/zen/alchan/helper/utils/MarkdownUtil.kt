@@ -2,6 +2,7 @@ package com.zen.alchan.helper.utils
 
 import android.content.Context
 import android.graphics.Color
+import android.net.Uri
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.AlignmentSpan
@@ -59,7 +60,7 @@ typealias MarkdownSetup = Markwon
 
 object MarkdownUtil {
 
-    fun getMarkdownSetup(context: Context, maxWidth: Int): MarkdownSetup {
+    fun getMarkdownSetup(context: Context, maxWidth: Int, linkClickAction: ((String) -> Unit)?): MarkdownSetup {
         return Markwon.builder(context)
             .usePlugin(
                 ImagesPlugin.create { plugin ->
@@ -85,6 +86,14 @@ object MarkdownUtil {
                         it.addOnTextAddedListener(MentionTextAddedListener())
                     }
                 }
+
+                override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                    linkClickAction?.let {
+                        builder.linkResolver { view, link ->
+                            linkClickAction(link)
+                        }
+                    }
+                }
             })
             .build()
     }
@@ -92,7 +101,7 @@ object MarkdownUtil {
     fun applyMarkdown(context: Context, markdownSetup: MarkdownSetup?, textView: AppCompatTextView, markdownText: String) {
         try {
             val markdownTextModified = replaceMarkdownText(markdownText)
-            val markdownSetup = markdownSetup ?: getMarkdownSetup(context, 0)
+            val markdownSetup = markdownSetup ?: getMarkdownSetup(context, 0, null)
             val node = markdownSetup.parse(markdownTextModified)
             val markdown = markdownSetup.render(node)
             markdownSetup.setParsedMarkdown(textView, markdown)
@@ -105,7 +114,7 @@ object MarkdownUtil {
     fun applyMarkdown(context: Context, textView: AppCompatTextView, markdownText: String) {
         try {
             val markdownTextModified = replaceMarkdownText(markdownText)
-            val markdownSetup = getMarkdownSetup(context, 0)
+            val markdownSetup = getMarkdownSetup(context, 0, null)
             val node = markdownSetup.parse(markdownTextModified)
             val markdown = markdownSetup.render(node)
             markdownSetup.setParsedMarkdown(textView, markdown)
@@ -137,8 +146,12 @@ object MarkdownUtil {
             }
             .replace(youtubeRegex) {
                 val value = it.value
-                val youtubeId = value.substring(value.indexOf("(") + 1, value.indexOf(")"))
-                "[<img alt=\"youtube\" src=\"${Constant.ALCHAN_YOUTUBE_THUMBNAIL_URL}\">](https://www.youtube.com/watch?v=$youtubeId)"
+                val youtubeUrl = value.substring(value.indexOf("(") + 1, value.indexOf(")"))
+                val isIdOnly = !(youtubeUrl.contains("youtube.com") || youtubeUrl.contains("youtu.be"))
+                if (isIdOnly)
+                    "[<img alt=\"youtube\" src=\"${Constant.ALCHAN_YOUTUBE_THUMBNAIL_URL}\">](https://www.youtube.com/watch?v=$youtubeUrl)"
+                else
+                    "[<img alt=\"youtube\" src=\"${Constant.ALCHAN_YOUTUBE_THUMBNAIL_URL}\">]($youtubeUrl)"
             }
             .replace(webmRegex) {
                 val value = it.value

@@ -61,9 +61,10 @@
             style="?themeRegularFont"
             app:layout_constraintTop_toBottomOf="@id/activityUserAvatar"
             app:layout_constraintStart_toEndOf="@id/activityAvatarGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/marginNormal"
             android:layout_marginTop="@dimen/marginNormal"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat

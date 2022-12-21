@@ -451,6 +451,27 @@
     <string name="reply_deleted">Reply Deleted</string>
     <string name="select_activity_type">Select Activity Type</string>
     <string name="hello_user">Hello, %1$s!</string>
+    <string name="text_editor">Text Editor</string>
+    <string name="post">Post</string>
+    <string name="preview">Preview</string>
+    <string name="type_the_link_here">Type the link here</string>
+    <string name="type_the_image_link_here">Type the image link here</string>
+    <string name="type_the_youtube_video_link_here">Type the YouTube video link here</string>
+    <string name="type_the_video_link_here">Type the video link here</string>
+    <string name="the_text_must_be_at_least_5_characters">The text must be at least 5 characters</string>
+    <string name="post_this_message">Post this Message</string>
+    <string name="are_you_sure_you_want_to_post_this_message">Are you sure you want to post this message?</string>
+    <string name="please_write_something">Please write something</string>
+    <string name="send_this_message">Send this Message</string>
+    <string name="are_you_sure_you_want_to_send_this_message">Are you sure you want to send this message?</string>
+    <string name="send">Send</string>
+    <string name="send_private">Send Private</string>
+    <string name="send_this_reply">Send this Reply</string>
+    <string name="are_you_sure_you_want_to_send_this_reply">Are you sure you want to send this reply?</string>
+    <string name="message_sent">Message sent</string>
+    <string name="reply_sent">Reply sent</string>
+    <string name="message_posted">Message posted</string>
+    <string name="review_posted">Review posted</string>
 
 
     <plurals name="minute">

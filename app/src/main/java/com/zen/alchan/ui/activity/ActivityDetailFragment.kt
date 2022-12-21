@@ -5,16 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.Activity
-import com.zen.alchan.data.response.anilist.ActivityReply
-import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentActivityDetailBinding
 import com.zen.alchan.helper.enums.ActivityListPage
+import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.social.LikeRvAdapter
 import com.zen.alchan.ui.social.SocialListener
@@ -30,11 +30,18 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
     private var likeAdapter: LikeRvAdapter? = null
     private var listener: ActivityDetailListener? = null
 
+    private var currentActivityId = 0
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentActivityDetailBinding {
         return FragmentActivityDetailBinding.inflate(inflater, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkIfNeedReload()
     }
 
     override fun setUpLayout() {
@@ -47,12 +54,26 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             activitySwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
             }
+
+            activityRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0)
+                        activityReplyButton.hide()
+                    else
+                        activityReplyButton.show()
+                }
+            })
+
+            activityReplyButton.clicks {
+                navigation.navigateToTextEditor(TextEditorType.ACTIVITY_REPLY, currentActivityId)
+            }
         }
     }
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
         binding.activityRecyclerView.applyBottomSidePaddingInsets()
+        binding.activityReplyLayout.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {
@@ -139,7 +160,19 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             }
 
             override fun edit(activity: Activity, activityReply: ActivityReply?) {
-                // TODO: navigate to editor
+                activityReply?.let {
+                    viewModel.setReplyToBeEdited(activityReply)
+                    navigation.navigateToTextEditor(TextEditorType.ACTIVITY_REPLY, activity.id, activityReply.id, null, null)
+                } ?: run {
+                    viewModel.setActivityToBeEdited(activity)
+                    navigation.navigateToTextEditor(
+                        if (activity is MessageActivity) TextEditorType.MESSAGE else TextEditorType.TEXT_ACTIVITY,
+                        activity.id,
+                        null,
+                        if (activity is MessageActivity) activity.recipientId else null,
+                        null
+                    )
+                }
             }
 
             override fun delete(activity: Activity, activityReply: ActivityReply?) {
@@ -147,7 +180,9 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             }
 
             override fun reply(activity: Activity, activityReply: ActivityReply?) {
-                // TODO: navigate to editor
+                activityReply?.let {
+                    navigation.navigateToTextEditor(TextEditorType.ACTIVITY_REPLY, activity.id, null, null, activityReply.user.name)
+                } ?: navigation.navigateToTextEditor(TextEditorType.ACTIVITY_REPLY, activity.id, null, null, activity.user().name)
             }
         }
     }
@@ -173,6 +208,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
         @JvmStatic
         fun newInstance(activityId: Int, listener: ActivityDetailListener) =
             ActivityDetailFragment().apply {
+                currentActivityId = activityId
                 arguments = Bundle().apply {
                     putInt(ACTIVITY_ID, activityId)
                 }

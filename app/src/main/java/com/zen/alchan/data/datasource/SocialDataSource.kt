@@ -14,4 +14,7 @@ interface SocialDataSource {
     fun toggleLike(id: Int, likeableType: LikeableType): Completable
     fun deleteActivity(id: Int): Completable
     fun deleteActivityReply(id: Int): Completable
+    fun saveTextActivity(id: Int?, text: String): Observable<Response<SaveTextActivityMutation.Data>>
+    fun saveActivityReply(id: Int?, activityId: Int, text: String): Observable<Response<SaveActivityReplyMutation.Data>>
+    fun saveMessageActivity(id: Int?, recipientId: Int, message: String, private: Boolean): Observable<Response<SaveMessageActivityMutation.Data>>
 }

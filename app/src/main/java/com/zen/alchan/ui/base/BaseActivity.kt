@@ -8,12 +8,23 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
+import com.zen.alchan.helper.utils.DeepLink
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseActivity<T: ViewBinding> : AppCompatActivity(), ViewContract {
 
     private val viewModel by viewModel<BaseActivityViewModel>()
+
+    abstract var navigationManager: NavigationManager
+        protected set
+
+    abstract var dialogManager: DialogManager
+        protected set
+
+    abstract val incomingDeepLink: Observable<DeepLink>
 
     protected val disposables = CompositeDisposable()
 

@@ -1,0 +1,5 @@
+mutation SaveActivityReplyMutation($id:Int, $activityId:Int, $text:String) {
+  SaveActivityReply(id:$id, activityId:$activityId, text:$text) {
+    ... activityReply
+  }
+}

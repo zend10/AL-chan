@@ -199,7 +199,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                 }
             }
             deepLink.isSpoiler() -> {
-                dialog.showSpoilerDialog(deepLink.getQueryParamOfOrNull("data") ?: "")
+                dialog.showSpoilerDialog(deepLink.getQueryParamOfOrNull("data") ?: "", null)
             }
             deepLink.isAnime() || deepLink.isManga() -> {
                 deepLink.getAniListPageId()?.let { navigation.navigateToMedia(it.toInt()) }

@@ -17,8 +17,10 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.enums.ActivityListPage
+import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.social.LikeRvAdapter
@@ -36,11 +38,18 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
 
     private var menuItemSelectActivityType: MenuItem? = null
 
+    private var currentViewer: User? = null
+
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): LayoutInfiniteScrollingBinding {
         return LayoutInfiniteScrollingBinding.inflate(inflater, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkIfNeedReload()
     }
 
     override fun setUpLayout() {
@@ -58,7 +67,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
 
             infiniteScrollingRecyclerView.updatePadding(left = 0, right = 0)
 
-            adapter = SocialRvAdapter(requireContext(), listOf(), null, AppSetting(), false, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), currentViewer, AppSetting(), false, getSocialListener())
             infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             infiniteScrollingRecyclerView.adapter = adapter
             likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
@@ -74,17 +83,35 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
                         viewModel.loadNextPage()
                     }
                 }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0)
+                        infiniteScrollingActionButton.hide()
+                    else
+                        infiniteScrollingActionButton.show()
+                }
             })
+
+            infiniteScrollingActionButton.clicks {
+                navigation.navigateToTextEditor(TextEditorType.TEXT_ACTIVITY)
+            }
+
+            infiniteScrollingActionButtonLayout.show(true)
         }
     }
 
     override fun setUpInsets() {
         binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
         binding.infiniteScrollingRecyclerView.applyBottomSidePaddingInsets()
+        binding.infiniteScrollingActionButtonLayout.applyBottomSidePaddingInsets()
     }
 
     override fun setUpObserver() {
         disposables.addAll(
+            viewModel.toolbarTitle.subscribe {
+                binding.defaultToolbar.defaultToolbar.title = getString(it)
+            },
             viewModel.loading.subscribe {
                 binding.infiniteScrollingSwipeRefresh.isRefreshing = it
             },
@@ -95,6 +122,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
                 dialog.showToast(it)
             },
             viewModel.adapterComponent.subscribe {
+                currentViewer = it.viewer
                 adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
@@ -174,7 +202,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
             }
 
             override fun edit(activity: Activity, activityReply: ActivityReply?) {
-                // TODO: navigate to editor
+
             }
 
             override fun delete(activity: Activity, activityReply: ActivityReply?) {

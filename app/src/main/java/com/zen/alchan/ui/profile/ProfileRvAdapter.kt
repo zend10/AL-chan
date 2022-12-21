@@ -45,7 +45,7 @@ class ProfileRvAdapter(
         when (viewType) {
             ProfileItem.VIEW_TYPE_BIO -> {
                 val view = LayoutTitleAndTextBinding.inflate(inflater, parent, false)
-                markdownSetup = MarkdownUtil.getMarkdownSetup(context, width)
+                markdownSetup = MarkdownUtil.getMarkdownSetup(context, width, null)
                 return BioViewHolder(view)
             }
             ProfileItem.VIEW_TYPE_AFFINITY -> {

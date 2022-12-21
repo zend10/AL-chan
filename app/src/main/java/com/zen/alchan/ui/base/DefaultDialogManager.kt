@@ -95,15 +95,21 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         positiveButton: Int,
         positiveAction: () -> Unit,
         negativeButton: Int,
-        negativeAction: () -> Unit
+        negativeAction: () -> Unit,
+        thirdButton: Int?,
+        thirdAction: (() -> Unit)?
     ) {
-        AlertDialog.Builder(context)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
-            .setNegativeButton(negativeButton) { _, _ -> negativeAction() }
-            .setCancelable(false)
-            .show()
+        val builder = AlertDialog.Builder(context)
+        builder.apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            setNegativeButton(negativeButton) { _, _ -> negativeAction() }
+            if (thirdButton != null) setNeutralButton(thirdButton) { _, _ -> thirdAction?.invoke() }
+            setCancelable(false)
+            show()
+        }
+
     }
 
     override fun <T> showListDialog(
@@ -268,8 +274,21 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         datePickerDialog?.show()
     }
 
-    override fun showSpoilerDialog(spoilerText: String) {
-        bottomSheetSpoilerDialog = BottomSheetSpoilerDialog.newInstance(spoilerText)
+
+    override fun showSpoilerDialog(
+        spoilerText: String,
+        onLinkClickAction: ((link: String) -> Unit)?
+    ) {
+        if (onLinkClickAction != null) {
+            bottomSheetSpoilerDialog = BottomSheetSpoilerDialog.newInstance(spoilerText, object : BottomSheetSpoilerDialog.SpoilerListener {
+                override fun onLinkClick(link: String) {
+                    onLinkClickAction(link)
+                }
+            })
+        } else {
+            bottomSheetSpoilerDialog = BottomSheetSpoilerDialog.newInstance(spoilerText, null)
+        }
+
         bottomSheetSpoilerDialog?.dialog?.setOnCancelListener {
             bottomSheetSpoilerDialog = null
         }

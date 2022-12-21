@@ -29,6 +29,7 @@ class BottomSheetTextInputDialog : BaseDialogFragment<DialogBottomSheetTextInput
                 inputType = textInputSetting.inputType
                 isSingleLine = textInputSetting.singleLine
                 filters = arrayOf(InputFilter.LengthFilter(textInputSetting.characterLimit))
+                hint = getString(textInputSetting.hintStringResource)
                 setSelection(0, dialogEditText.text?.length ?: 0)
             }
 

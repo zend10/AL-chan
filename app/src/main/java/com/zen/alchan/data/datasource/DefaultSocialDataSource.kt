@@ -4,11 +4,15 @@ import ActivityListQuery
 import ActivityQuery
 import DeleteActivityMutation
 import DeleteActivityReplyMutation
+import SaveActivityReplyMutation
+import SaveMessageActivityMutation
+import SaveTextActivityMutation
 import SocialDataQuery
 import ToggleActivitySubscriptionMutation
 import ToggleLikeMutation
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.rx2.rxMutate
 import com.apollographql.apollo.rx2.rxPrefetch
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
@@ -62,5 +66,30 @@ class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : Social
     override fun deleteActivityReply(id: Int): Completable {
         val mutation = DeleteActivityReplyMutation(id = Input.fromNullable(id))
         return apolloHandler.apolloClient.rxPrefetch(mutation)
+    }
+
+    override fun saveTextActivity(id: Int?, text: String): Observable<Response<SaveTextActivityMutation.Data>> {
+        val mutation = SaveTextActivityMutation(id = Input.optional(id), text = Input.fromNullable(text))
+        return apolloHandler.apolloClient.rxMutate(mutation).toObservable()
+    }
+
+    override fun saveActivityReply(id: Int?, activityId: Int, text: String): Observable<Response<SaveActivityReplyMutation.Data>> {
+        val mutation = SaveActivityReplyMutation(id = Input.optional(id), activityId = Input.fromNullable(activityId), text = Input.fromNullable(text))
+        return apolloHandler.apolloClient.rxMutate(mutation).toObservable()
+    }
+
+    override fun saveMessageActivity(
+        id: Int?,
+        recipientId: Int,
+        message: String,
+        private: Boolean
+    ): Observable<Response<SaveMessageActivityMutation.Data>> {
+        val mutation = SaveMessageActivityMutation(
+            id = Input.optional(id),
+            recipientId = Input.fromNullable(recipientId),
+            message = Input.fromNullable(message),
+            private_ = Input.fromNullable(private)
+        )
+        return apolloHandler.apolloClient.rxMutate(mutation).toObservable()
     }
 }
