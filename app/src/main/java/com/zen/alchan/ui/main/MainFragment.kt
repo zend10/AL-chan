@@ -119,17 +119,21 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
     override fun setUpObserver() {
         viewModel.loadData(Unit)
 
-        sharedDisposables.add(
-            incomingDeepLink.subscribe {
-                deepLink = it
-            }
-        )
+        if (!sharedDisposablesAdded) {
+            sharedDisposables.add(
+                incomingDeepLink.subscribe {
+                    handleDeepLinkNavigation(it)
+                }
+            )
 
-        sharedDisposables.add(
-            sharedViewModel.bottomSheetNavigation.subscribe {
-                binding.mainViewPager.setCurrentItem(it, true)
-            }
-        )
+            sharedDisposables.add(
+                sharedViewModel.bottomSheetNavigation.subscribe {
+                    binding.mainViewPager.setCurrentItem(it, true)
+                }
+            )
+
+            sharedDisposablesAdded = true
+        }
 
         disposables.add(
             viewModel.unreadNotificationCount.subscribe {

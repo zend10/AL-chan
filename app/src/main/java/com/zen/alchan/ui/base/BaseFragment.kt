@@ -55,6 +55,7 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
 
     protected val disposables = CompositeDisposable()
     protected val sharedDisposables = CompositeDisposable()
+    protected var sharedDisposablesAdded = false
 
     protected var screenWidth = 0
 
@@ -118,6 +119,7 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
         Log.d(className, "onDestroy")
         disposables.clear()
         sharedDisposables.clear()
+        sharedDisposablesAdded = false
     }
 
     protected fun goBack() {

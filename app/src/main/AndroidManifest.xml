@@ -25,25 +25,11 @@
             android:name=".ui.texteditor.TextEditorActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.launch.LaunchActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.root.RootActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
+            android:name=".ui.deeplink.DeepLinkActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -84,6 +70,21 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.launch.LaunchActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.root.RootActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustNothing" />
     </application>
 
 </manifest>
