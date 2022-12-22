@@ -39,6 +39,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
     private var menuItemSelectActivityType: MenuItem? = null
 
     private var currentViewer: User? = null
+    private var currentActivityUserId = 0
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -94,7 +95,13 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
             })
 
             infiniteScrollingActionButton.clicks {
-                navigation.navigateToTextEditor(TextEditorType.TEXT_ACTIVITY)
+                navigation.navigateToTextEditor(
+                    if (isViewerActivity()) TextEditorType.TEXT_ACTIVITY else TextEditorType.MESSAGE,
+                    null,
+                    null,
+                    if (isViewerActivity()) null else currentActivityUserId,
+                    null
+                )
             }
 
             infiniteScrollingActionButtonLayout.show(true)
@@ -142,8 +149,8 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
 
         arguments?.let {
             val activityListPage = ActivityListPage.valueOf(it.getString(ACTIVITY_LIST_PAGE) ?: ActivityListPage.SPECIFIC_USER.name)
-            val userId = it.getInt(USER_ID, 0)
-            viewModel.loadData(ActivityListParam(activityListPage, userId))
+            currentActivityUserId = it.getInt(USER_ID, 0)
+            viewModel.loadData(ActivityListParam(activityListPage, currentActivityUserId))
         }
     }
 
@@ -224,6 +231,10 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
                 navigation.navigateToUser(user.id)
             }
         }
+    }
+
+    private fun isViewerActivity(): Boolean {
+        return currentActivityUserId == 0 || currentActivityUserId == currentViewer?.id
     }
 
     override fun onDestroyView() {

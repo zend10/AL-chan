@@ -18,6 +18,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.LikeableType
+import java.util.concurrent.TimeUnit
 
 data class ActivityDetailViewModel(
     private val userRepository: UserRepository,
@@ -95,6 +96,16 @@ data class ActivityDetailViewModel(
                         _socialItemList.onNext(currentSocialItems)
                     }
                     socialRepository.clearNewOrEditedReply()
+
+                    currentSocialItems.firstOrNull()?.activity?.let { activity ->
+                        disposables.add(
+                            Observable.timer(1000L, TimeUnit.MILLISECONDS)
+                                .applyScheduler()
+                                .subscribe {
+                                    _activityDetailResult.onNext(activity to false)
+                                }
+                        )
+                    }
                 }
         )
     }

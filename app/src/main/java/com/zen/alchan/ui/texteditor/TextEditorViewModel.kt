@@ -146,7 +146,7 @@ class TextEditorViewModel(
                 val message = R.string.are_you_sure_you_want_to_send_this_message
                 val positiveButton = R.string.send
                 val negativeButton = R.string.cancel
-                val thirdButton = R.string.send_private
+                val thirdButton = if (activityId == null) R.string.send_private else null
                 _postDialog.onNext(
                     Pair(
                         Pair(title, message),
