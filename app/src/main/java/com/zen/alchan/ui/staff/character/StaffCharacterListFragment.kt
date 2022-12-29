@@ -61,8 +61,8 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             }
 
             adapter = StaffCharacterListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffCharacterListListener())
-            infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
+            infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
+            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
 
             mediaAdapter = StaffCharacterMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffCharacterListListener())

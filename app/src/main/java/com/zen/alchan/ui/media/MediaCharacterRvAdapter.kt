@@ -3,6 +3,7 @@ package com.zen.alchan.ui.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.databinding.ListCircularBinding
@@ -20,7 +21,7 @@ class MediaCharacterRvAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListCircularBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        view.root.layoutParams.width = (width.toDouble() / 5).toInt()
+        view.root.layoutParams.width = (width.toDouble() / context.resources.getInteger(R.integer.horizontalListCharacterDivider)).toInt()
         return ItemViewHolder(view)
     }
 

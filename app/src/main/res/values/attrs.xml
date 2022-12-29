@@ -41,9 +41,15 @@
     <attr name="themeNegativeBorderButton" format="reference"/>
 
     <attr name="themeRegularCheckBox" format="reference"/>
-    
+
+    <integer name="gridSpan">3</integer>
+    <integer name="horizontalListCharacterDivider">5</integer>
+    <integer name="horizontalListRelationDivider">3</integer>
+
     <fraction name="listImageRatio">0.25</fraction>
     <fraction name="listImageBigRatio">0.35</fraction>
     <fraction name="listImageMediumRatio">0.20</fraction>
     <fraction name="listImageSmallRatio">0.15</fraction>
+
+    <fraction name="chartRatio">1</fraction>
 </resources>

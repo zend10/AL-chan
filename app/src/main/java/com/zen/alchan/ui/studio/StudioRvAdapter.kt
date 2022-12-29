@@ -19,7 +19,6 @@ class StudioRvAdapter(
     private val context: Context,
     list: List<StudioItem>,
     private val appSetting: AppSetting,
-    private val width: Int,
     private val listener: StudioListener
 ) : BaseRecyclerViewAdapter<StudioItem, ViewBinding>(list) {
 
@@ -33,9 +32,9 @@ class StudioRvAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
         studioMediaAdapter = StudioMediaRvAdapter(context, listOf(), appSetting, listener)
-        view.listRecyclerView.layoutManager = GridLayoutManager(context, 3)
+        view.listRecyclerView.layoutManager = GridLayoutManager(context, context.resources.getInteger(R.integer.gridSpan))
         view.listRecyclerView.adapter = studioMediaAdapter
-        view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, context.resources.getDimensionPixelSize(R.dimen.marginNormal), false))
+        view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(context.resources.getInteger(R.integer.gridSpan), context.resources.getDimensionPixelSize(R.dimen.marginNormal), false))
         view.listRecyclerView.isNestedScrollingEnabled = false
         return MediaViewHolder(view)
     }

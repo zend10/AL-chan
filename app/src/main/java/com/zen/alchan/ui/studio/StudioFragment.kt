@@ -171,7 +171,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
     }
 
     private fun assignAdapter(appSetting: AppSetting) {
-        studioAdapter = StudioRvAdapter(requireContext(), listOf(), appSetting, screenWidth, getStudioListener())
+        studioAdapter = StudioRvAdapter(requireContext(), listOf(), appSetting, getStudioListener())
         binding.studioRecyclerView.adapter = studioAdapter
     }
 

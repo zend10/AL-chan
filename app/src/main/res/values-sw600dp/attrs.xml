@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="gridSpan">4</integer>
+    <integer name="horizontalListCharacterDivider">7</integer>
+    <integer name="horizontalListRelationDivider">5</integer>
+
+    <fraction name="listImageRatio">0.15</fraction>
+    <fraction name="listImageBigRatio">0.21</fraction>
+    <fraction name="listImageMediumRatio">0.12</fraction>
+    <fraction name="listImageSmallRatio">0.09</fraction>
+
+    <fraction name="chartRatio">1.5</fraction>
+</resources>

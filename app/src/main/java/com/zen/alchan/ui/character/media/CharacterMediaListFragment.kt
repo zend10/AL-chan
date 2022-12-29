@@ -61,8 +61,8 @@ class CharacterMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             }
 
             adapter = CharacterMediaRvAdapter(requireContext(), listOf(), AppSetting(), getCharacterMediaListener())
-            infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
+            infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
+            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
 
             infiniteScrollingSwipeRefresh.setOnRefreshListener {

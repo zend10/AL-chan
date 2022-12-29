@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.apollographql.apollo.api.toInput
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.databinding.ListCardImageAndTextBinding
@@ -28,13 +29,13 @@ class StaffMediaRvAdapter(
             VIEW_TYPE_LOADING -> {
                 val view = ListLoadingBinding.inflate(inflater, parent, false)
                 if (width != null)
-                    view.root.layoutParams.width = (width.toDouble() / 3).toInt()
+                    view.root.layoutParams.width = (width.toDouble() / context.resources.getInteger(R.integer.horizontalListRelationDivider)).toInt()
                 LoadingViewHolder(view)
             }
              else -> {
                  val view = ListCardImageAndTextBinding.inflate(inflater, parent, false)
                  if (width != null)
-                     view.root.layoutParams.width = (width.toDouble() / 3).toInt()
+                     view.root.layoutParams.width = (width.toDouble() / context.resources.getInteger(R.integer.horizontalListRelationDivider)).toInt()
                  ItemViewHolder(view)
              }
         }

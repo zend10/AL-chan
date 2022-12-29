@@ -103,7 +103,7 @@ class ProfileRvAdapter(
     }
 
     private fun setUpGridRecyclerView(recyclerView: RecyclerView, adapter: BaseRecyclerViewAdapter<*, *>?) {
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = GridLayoutManager(context, context.resources.getInteger(R.integer.gridSpan))
         recyclerView.adapter = adapter
     }
 

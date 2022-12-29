@@ -3,6 +3,7 @@ package com.zen.alchan.ui.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaEdge
@@ -21,7 +22,7 @@ class MediaRelationsRvAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListMediaRelationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        view.root.layoutParams.width = (width.toDouble() / 3).toInt()
+        view.root.layoutParams.width = (width.toDouble() / context.resources.getInteger(R.integer.horizontalListRelationDivider)).toInt()
         return ItemViewHolder(view)
     }
 

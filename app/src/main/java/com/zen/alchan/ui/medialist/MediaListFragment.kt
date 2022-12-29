@@ -288,7 +288,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
             ListType.GRID -> {
                 adapter = MediaListGridRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
-                binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+                binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             }
             ListType.SIMPLIFIED -> {
                 adapter = MediaListSimplifiedRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
@@ -296,12 +296,12 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
             ListType.ALBUM -> {
                 adapter = MediaListAlbumRvAdapter(requireContext(), listOf(), isViewer, appSetting, listStyle, mediaListOptions, getMediaListListener())
-                binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+                binding.mediaListRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             }
         }
         (binding.mediaListRecyclerView.layoutManager as? GridLayoutManager)?.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return if (adapter?.getItemViewType(position) == MediaListItem.VIEW_TYPE_TITLE) 3 else 1
+                return if (adapter?.getItemViewType(position) == MediaListItem.VIEW_TYPE_TITLE) resources.getInteger(R.integer.gridSpan) else 1
             }
         }
         binding.mediaListRecyclerView.adapter = adapter

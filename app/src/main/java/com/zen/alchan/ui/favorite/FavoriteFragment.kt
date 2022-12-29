@@ -48,9 +48,9 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
             infiniteScrollingRecyclerView.layoutManager = if (arguments?.getString(FAVORITE) == Favorite.STUDIOS.name)
                 FlexboxLayoutManager(requireContext())
             else
-                GridLayoutManager(requireContext(), 3)
+                GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
 
-            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.marginNormal), false))
+            infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
 
             infiniteScrollingSwipeRefresh.setOnRefreshListener {
