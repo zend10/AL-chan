@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.Activity
-import com.zen.alchan.data.response.anilist.ActivityReply
-import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.enums.TextEditorType
@@ -209,7 +206,14 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
             }
 
             override fun edit(activity: Activity, activityReply: ActivityReply?) {
-
+                viewModel.setActivityToBeEdited(activity)
+                navigation.navigateToTextEditor(
+                    if (activity is MessageActivity) TextEditorType.MESSAGE else TextEditorType.TEXT_ACTIVITY,
+                    activity.id,
+                    null,
+                    if (activity is MessageActivity) activity.recipientId else null,
+                    null
+                )
             }
 
             override fun delete(activity: Activity, activityReply: ActivityReply?) {

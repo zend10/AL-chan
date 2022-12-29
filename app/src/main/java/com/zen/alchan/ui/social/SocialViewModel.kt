@@ -51,17 +51,23 @@ class SocialViewModel(
     }
 
     fun checkIfNeedReload() {
-//        disposables.add(
-//            socialRepository.refreshActivityTrigger
-//                .applyScheduler()
-//                .filter { it }
-//                .flatMap {
-//                    socialRepository.resetRefreshActivityTrigger()
-//                }
-//                .subscribe {
-//                    reloadData()
-//                }
-//        )
+        disposables.add(
+            socialRepository.newOrEditedActivity
+                .applyScheduler()
+                .filter { it.data != null }
+                .subscribe {
+                    val activity = it.data
+                    val currentActivities = ArrayList(_socialItemList.value ?: listOf())
+                    val index = currentActivities.indexOfFirst { it?.activity?.id == activity?.id }
+                    if (index != -1) {
+                        currentActivities[index] = currentActivities[index]?.copy(activity = activity)
+                        _socialItemList.onNext(currentActivities)
+                    } else {
+                        currentActivities.add(1, SocialItem(activity, viewType = SocialItem.VIEW_TYPE_ACTIVITY))
+                        _socialItemList.onNext(currentActivities)
+                    }
+                }
+        )
     }
 
     fun reloadData() {
@@ -225,5 +231,9 @@ class SocialViewModel(
                 _socialItemList.onNext(currentSocialItems)
             }
         }
+    }
+
+    fun setActivityToBeEdited(activity: Activity) {
+        socialRepository.updateActivityToBeEdited(activity)
     }
 }

@@ -326,4 +326,8 @@ class ActivityListViewModel(
 
         reloadData()
     }
+
+    fun setActivityToBeEdited(activity: Activity) {
+        socialRepository.updateActivityToBeEdited(activity)
+    }
 }
