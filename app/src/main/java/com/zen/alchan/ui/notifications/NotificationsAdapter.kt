@@ -114,7 +114,7 @@ class NotificationsAdapter(
                     listener.navigateToUser(notification.user)
                 }
                 root.clicks {
-                    listener.navigateToActivity(notification.message)
+                    listener.navigateToActivity(MessageActivity(notification.activityId))
                 }
                 root.isClickable = true
             }
