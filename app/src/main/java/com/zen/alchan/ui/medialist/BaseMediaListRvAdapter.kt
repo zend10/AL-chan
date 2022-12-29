@@ -117,7 +117,7 @@ abstract class BaseMediaListRvAdapter(
         protected fun getPriorityColor(mediaList: MediaList): Int {
             return Color.parseColor(
                 when (mediaList.priority) {
-                    1 -> "FF0000"
+                    1 -> "#FF0000"
                     2 -> "#FFFF00"
                     3 -> "#00FF00"
                     4 -> "#00FFFF"
