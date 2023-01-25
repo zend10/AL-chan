@@ -6,6 +6,7 @@ import FollowingQuery
 import NotificationsQuery
 import ToggleFavouriteMutation
 import ToggleFollowMutation
+import UnreadNotificationCountQuery
 import UpdateFavouriteOrderMutation
 import UpdateUserMutation
 import UserFavouritesQuery
@@ -182,6 +183,11 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
             type_in = Input.optional(typeIn),
             resetNotificationCount = Input.fromNullable(resetNotificationCount)
         )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getUnreadNotificationCount(): Observable<Response<UnreadNotificationCountQuery.Data>> {
+        val query = UnreadNotificationCountQuery()
         return apolloHandler.apolloClient.rxQuery(query)
     }
 }

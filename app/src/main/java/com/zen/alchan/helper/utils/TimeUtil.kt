@@ -58,4 +58,10 @@ object TimeUtil {
         val hours = (minutes - (days * 60 * 24)) / 60
         return days to hours
     }
+
+    fun getMinutesRemainingUntilTheNextHour(): Int {
+        val calendar = Calendar.getInstance()
+        val minutes = calendar.get(Calendar.MINUTE)
+        return 60 - minutes
+    }
 }

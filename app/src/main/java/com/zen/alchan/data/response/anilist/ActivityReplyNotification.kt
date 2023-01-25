@@ -1,5 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
+import com.zen.alchan.data.entity.AppSetting
 import type.NotificationType
 
 data class ActivityReplyNotification(
@@ -11,4 +12,8 @@ data class ActivityReplyNotification(
     override val createdAt: Int = 0,
     val activity: Activity? = null,
     val user: User = User()
-) : Notification
+) : Notification {
+    override fun getMessage(appSetting: AppSetting): String {
+        return "${user.name}${context}"
+    }
+}

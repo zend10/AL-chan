@@ -16,4 +16,5 @@ interface SharedPreferencesHandler {
     var followingCount: Int?
     var followersCount: Int?
     var othersListType: ListType?
+    var lastNotificationId: Int?
 }

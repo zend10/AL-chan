@@ -1,5 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
+import com.zen.alchan.data.entity.AppSetting
 import type.NotificationType
 
 data class ThreadCommentLikeNotification(
@@ -12,4 +13,8 @@ data class ThreadCommentLikeNotification(
     val thread: Thread = Thread(),
     val comment: ThreadComment = ThreadComment(),
     val user: User = User()
-) : Notification
+) : Notification {
+    override fun getMessage(appSetting: AppSetting): String {
+        return "${user.name}${context}${thread.title}"
+    }
+}

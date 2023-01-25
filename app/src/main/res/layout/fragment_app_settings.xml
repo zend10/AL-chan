@@ -381,9 +381,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--    TODO: Readd back for dev -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:visibility="gone"
                 android:id="@+id/appSettingsPushNotificationsLayout"
                 app:layout_constraintTop_toBottomOf="@id/appSettingsNamingLayout"
                 android:layout_marginTop="@dimen/marginFar"
@@ -552,7 +550,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/show_push_notifications_not_earlier_then_every"
+                        android:text="@string/show_push_notifications_not_earlier_than_every"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"

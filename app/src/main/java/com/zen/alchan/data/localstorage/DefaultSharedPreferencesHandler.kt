@@ -53,6 +53,10 @@ class DefaultSharedPreferencesHandler(
         get() = ListType.valueOf(getData(OTHERS_LIST_TYPE) ?: ListType.LINEAR.name)
         set(value) { setData(OTHERS_LIST_TYPE, value?.name) }
 
+    override var lastNotificationId: Int?
+        get() = getData(LAST_NOTIFICATION_ID)?.toIntOrNull()
+        set(value) { setData(LAST_NOTIFICATION_ID, value.toString()) }
+
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val GUEST_LOGIN = "guestLogin"
@@ -64,5 +68,6 @@ class DefaultSharedPreferencesHandler(
         private const val FOLLOWING_COUNT = "followingCount"
         private const val FOLLOWERS_COUNT = "followersCount"
         private const val OTHERS_LIST_TYPE = "othersListType"
+        private const val LAST_NOTIFICATION_ID = "lastNotificationId"
     }
 }

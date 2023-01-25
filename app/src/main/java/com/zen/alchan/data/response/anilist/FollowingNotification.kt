@@ -1,5 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
+import com.zen.alchan.data.entity.AppSetting
 import type.NotificationType
 
 data class FollowingNotification(
@@ -9,4 +10,8 @@ data class FollowingNotification(
     val context: String = "",
     override val createdAt: Int = 0,
     val user: User = User()
-) : Notification
+) : Notification {
+    override fun getMessage(appSetting: AppSetting): String {
+        return "${user.name}${context}"
+    }
+}

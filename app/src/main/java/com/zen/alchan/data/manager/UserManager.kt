@@ -32,4 +32,6 @@ interface UserManager {
 
     var animeList: SaveItem<MediaListCollection>?
     var mangaList: SaveItem<MediaListCollection>?
+
+    var lastNotificationId: Int?
 }

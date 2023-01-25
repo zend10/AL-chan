@@ -13,6 +13,8 @@ import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.helper.service.clipboard.DefaultClipboardService
+import com.zen.alchan.helper.service.pushnotification.DefaultPushNotificationService
+import com.zen.alchan.helper.service.pushnotification.PushNotificationService
 import com.zen.alchan.ui.activity.ActivityDetailViewModel
 import com.zen.alchan.ui.activity.ActivityListViewModel
 import com.zen.alchan.ui.base.BaseActivityViewModel
@@ -113,6 +115,7 @@ class ALchanApplication : Application() {
 
         // service
         single<ClipboardService> { DefaultClipboardService(this.androidContext()) }
+        single<PushNotificationService> { DefaultPushNotificationService(this.androidContext(), get()) }
 
         // view model
         viewModel { BaseActivityViewModel(get()) }
@@ -122,7 +125,7 @@ class ALchanApplication : Application() {
         viewModel { LoginViewModel(get()) }
 
         viewModel { SharedMainViewModel() }
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
 
         viewModel { HomeViewModel(get(), get()) }
         viewModel { SearchViewModel(get(), get()) }
@@ -138,7 +141,7 @@ class ALchanApplication : Application() {
         viewModel { FavoriteViewModel(get()) }
 
         viewModel { SettingsViewModel() }
-        viewModel { AppSettingsViewModel(get()) }
+        viewModel { AppSettingsViewModel(get(), get()) }
         viewModel { AniListSettingsViewModel(get()) }
         viewModel { ListSettingsViewModel(get()) }
         viewModel { NotificationsSettingsViewModel(get()) }

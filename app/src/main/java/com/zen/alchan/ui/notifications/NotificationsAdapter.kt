@@ -72,13 +72,13 @@ class NotificationsAdapter(
                 }
             }
 
+            binding.notificationsText.text = item.getMessage(appSetting)
             binding.notificationDate.text = TimeUtil.displayInDayDateTimeFormat(item.createdAt)
             binding.notificationUnreadOverlay.show(index < unreadNotificationCount)
         }
 
         private fun handleAiringNotification(notification: AiringNotification) {
             binding.apply {
-                notificationsText.text = "${notification.contexts[0]}${notification.episode}${notification.contexts[1]}${notification.media.getTitle(appSetting)}${notification.contexts[2]}"
                 ImageUtil.loadImage(context, notification.media.getCoverImage(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(false)
                 root.clicks {
@@ -90,7 +90,6 @@ class NotificationsAdapter(
 
         private fun handleFollowingNotification(notification: FollowingNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(false)
                 root.clicks {
@@ -102,7 +101,6 @@ class NotificationsAdapter(
 
         private fun handleActivityMessageNotification(notification: ActivityMessageNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(notification.message != null)
                 notificationViewDetail.clicks {
@@ -122,7 +120,6 @@ class NotificationsAdapter(
 
         private fun handleActivityMentionNotification(notification: ActivityMentionNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(notification.activity != null)
                 notificationViewDetail.clicks {
@@ -142,7 +139,6 @@ class NotificationsAdapter(
 
         private fun handleActivityReplyNotification(notification: ActivityReplyNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(notification.activity != null)
                 notificationViewDetail.clicks {
@@ -162,7 +158,6 @@ class NotificationsAdapter(
 
         private fun handleActivityReplySubscribedNotification(notification: ActivityReplySubscribedNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(notification.activity != null)
                 notificationViewDetail.clicks {
@@ -182,7 +177,6 @@ class NotificationsAdapter(
 
         private fun handleActivityLikeNotification(notification: ActivityLikeNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(notification.activity != null)
                 notificationViewDetail.clicks {
@@ -202,7 +196,6 @@ class NotificationsAdapter(
 
         private fun handleActivityReplyLikeNotification(notification: ActivityReplyLikeNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(notification.activity != null)
                 notificationViewDetail.clicks {
@@ -222,7 +215,6 @@ class NotificationsAdapter(
 
         private fun handleThreadCommentMentionNotification(notification: ThreadCommentMentionNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}${notification.thread.title}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {
@@ -240,7 +232,6 @@ class NotificationsAdapter(
 
         private fun handleThreadCommentReplyNotification(notification: ThreadCommentReplyNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}${notification.thread.title}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {
@@ -258,7 +249,6 @@ class NotificationsAdapter(
 
         private fun handleThreadCommentSubscribedNotification(notification: ThreadCommentSubscribedNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}${notification.thread.title}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {
@@ -279,7 +269,6 @@ class NotificationsAdapter(
 
         private fun handleThreadCommentLikeNotification(notification: ThreadCommentLikeNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}${notification.thread.title}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {
@@ -297,7 +286,6 @@ class NotificationsAdapter(
 
         private fun handleThreadLikeNotification(notification: ThreadLikeNotification) {
             binding.apply {
-                notificationsText.text = "${notification.user.name}${notification.context}${notification.thread.title}"
                 ImageUtil.loadImage(context, notification.user.avatar.getImageUrl(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(false)
                 notificationImage.clicks {
@@ -312,7 +300,6 @@ class NotificationsAdapter(
 
         private fun handleRelatedMediaAdditionNotification(notification: RelatedMediaAdditionNotification) {
             binding.apply {
-                notificationsText.text = "${notification.media.getTitle(appSetting)}${notification.context}"
                 ImageUtil.loadImage(context, notification.media.getCoverImage(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(false)
                 root.clicks {
@@ -324,7 +311,6 @@ class NotificationsAdapter(
 
         private fun handleMediaDataChangeNotification(notification: MediaDataChangeNotification) {
             binding.apply {
-                notificationsText.text = "${notification.media.getTitle(appSetting)}${notification.context}"
                 ImageUtil.loadImage(context, notification.media.getCoverImage(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {
@@ -339,7 +325,6 @@ class NotificationsAdapter(
 
         private fun handleMediaMergeNotification(notification: MediaMergeNotification) {
             binding.apply {
-                notificationsText.text = "${notification.deletedMediaTitles.joinToString(", ")}${notification.context}"
                 ImageUtil.loadImage(context, notification.media.getCoverImage(appSetting), notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {
@@ -354,7 +339,6 @@ class NotificationsAdapter(
 
         private fun handleMediaDeletionNotification(notification: MediaDeletionNotification) {
             binding.apply {
-                notificationsText.text = "${notification.deletedMediaTitle}${notification.context}"
                 ImageUtil.loadImage(context, 0, notificationImage)
                 notificationViewDetail.makeVisible(true)
                 notificationViewDetail.clicks {

@@ -96,9 +96,9 @@
     <string name="send_activity_push_notifications">Send Activity push notifications</string>
     <string name="send_forum_push_notifications">Send Forum push notifications</string>
     <string name="send_follows_push_notifications">Send Follows push notifications</string>
-    <string name="send_relations_push_notifications">Send Relations push notifications</string>
-    <string name="merge_activity_forum_follows_and_relations_push_notifications_into_one">Merge Activity, Forum, Follows, and Relations push notifications into one</string>
-    <string name="show_push_notifications_not_earlier_then_every">Show push notifications not earlier then every</string>
+    <string name="send_relations_push_notifications">Send Media push notifications</string>
+    <string name="merge_activity_forum_follows_and_relations_push_notifications_into_one">Merge Activity, Forum, Follows, and Media push notifications into one</string>
+    <string name="show_push_notifications_not_earlier_than_every">Show push notifications not earlier than every</string>
     <string name="important_to_know_n1_push_notifications_will_show_up_periodically_not_real_time_n2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com">Important to know:\n1. Push notifications will show up periodically, not real time.\n2. Depending on your ROM and phone setting, it might not show up at all. (reference: https://dontkillmyapp.com/)</string>
     <string name="memory_saver">Memory Saver</string>
     <string name="use_the_highest_quality_image">Use the highest quality image</string>
@@ -472,6 +472,7 @@
     <string name="reply_sent">Reply sent</string>
     <string name="message_posted">Message posted</string>
     <string name="review_posted">Review posted</string>
+    <string name="you_have_unread_notifications">You have unread notifications</string>
 
 
     <plurals name="minute">

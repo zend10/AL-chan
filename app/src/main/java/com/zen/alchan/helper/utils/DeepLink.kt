@@ -70,6 +70,7 @@ class DeepLink(
 
         private const val SPOILER = "spoiler"
 
+        fun generateNotifications() = generateDeepLink(NOTIFICATIONS)
         fun generateAppSettings() = generateDeepLink(SETTINGS, APP_SETTINGS)
         fun generateAniListSettings() = generateDeepLink(SETTINGS, ANILIST_SETTINGS)
         fun generateListSettings() = generateDeepLink(SETTINGS, LIST_SETTINGS)

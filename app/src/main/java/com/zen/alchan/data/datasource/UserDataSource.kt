@@ -38,4 +38,5 @@ interface UserDataSource {
         notificationOptions: List<NotificationOption>
     ): Single<Response<UpdateUserMutation.Data>>
     fun getNotifications(page: Int, typeIn: List<NotificationType>?, resetNotificationCount: Boolean): Observable<Response<NotificationsQuery.Data>>
+    fun getUnreadNotificationCount(): Observable<Response<UnreadNotificationCountQuery.Data>>
 }

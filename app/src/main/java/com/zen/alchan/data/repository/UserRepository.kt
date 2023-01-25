@@ -82,5 +82,10 @@ interface UserRepository {
         resetNotificationCount: Boolean
     ): Observable<NotificationData>
 
+    fun getLatestUnreadNotificationCount(): Observable<Int>
+
     fun clearUnreadNotificationCount()
+
+    fun getLastNotificationId(): Observable<Int>
+    fun setLastNotificationId(lastNotificationId: Int)
 }

@@ -92,6 +92,14 @@ class NotificationsViewModel(private val userRepository: UserRepository) : BaseV
 
         disposables.add(
             userRepository.getNotifications(if (isLoadingNextPage) currentPage + 1 else 1, selectedNotificationTypes, true)
+                .zipWith(userRepository.getLastNotificationId()) { notifications, lastNotificationId ->
+                    notifications.page.data.firstOrNull()?.let {
+                        if (it.id > lastNotificationId)
+                            userRepository.setLastNotificationId(it.id)
+                    }
+
+                    notifications
+                }
                 .applyScheduler()
                 .doFinally {
                     if (!isLoadingNextPage) {

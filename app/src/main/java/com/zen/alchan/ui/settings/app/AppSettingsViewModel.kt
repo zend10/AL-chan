@@ -13,11 +13,13 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.service.pushnotification.PushNotificationService
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AppSettingsViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val pushNotificationService: PushNotificationService
 ) : BaseViewModel<Unit>() {
 
     private val _appTheme = BehaviorSubject.createDefault(AppTheme.DEFAULT_THEME_YELLOW)
@@ -186,6 +188,18 @@ class AppSettingsViewModel(
             userRepository.setAppSetting(currentAppSetting)
                 .applyScheduler()
                 .subscribe{
+                    currentAppSetting?.let {
+                        if (it.sendFollowsPushNotifications ||
+                            it.sendRelationsPushNotifications ||
+                            it.sendForumPushNotifications ||
+                            it.sendActivityPushNotifications ||
+                            it.sendAiringPushNotifications
+                        ) {
+                            pushNotificationService.startPushNotification()
+                        } else {
+                            pushNotificationService.stopPushNotification()
+                        }
+                    }
                     _success.onNext(R.string.settings_saved)
                 }
         )
@@ -196,6 +210,7 @@ class AppSettingsViewModel(
             userRepository.setAppSetting(null)
                 .applyScheduler()
                 .subscribe {
+                    pushNotificationService.startPushNotification()
                     _success.onNext(R.string.settings_saved)
                 }
         )

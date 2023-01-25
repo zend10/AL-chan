@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.root
 
 import android.content.Intent
-import androidx.lifecycle.Lifecycle
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
@@ -69,13 +68,13 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
                 } else {
                     navigationManager.navigateToMain(deepLink)
                 }
+                intent.data = null
             }
             deepLink.uri != null -> {
                 _incomingDeepLink.onNext(deepLink)
+                intent.data = null
             }
         }
-
-        intent.data = null
     }
 
     override fun onBackPressed() {

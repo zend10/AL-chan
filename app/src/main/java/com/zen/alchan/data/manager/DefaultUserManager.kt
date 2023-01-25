@@ -83,4 +83,8 @@ class DefaultUserManager(
     override var mangaList: SaveItem<MediaListCollection>?
         get() = jsonStorageHandler.mangaList
         set(value) { jsonStorageHandler.mangaList = value }
+
+    override var lastNotificationId: Int?
+        get() = sharedPreferencesHandler.lastNotificationId
+        set(value) { sharedPreferencesHandler.lastNotificationId = value }
 }

@@ -103,7 +103,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Koin DI
-    implementation "io.insert-koin:koin-android:3.1.5"
+    def koin_version = "3.2.0"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Firebase
 //    implementation 'com.google.firebase:firebase-analytics:18.0.2'
@@ -126,6 +127,10 @@ dependencies {
     implementation "io.noties.markwon:html:$markwon_version"
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
+
+    def work_version = "2.7.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation "androidx.work:work-rxjava2:$work_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }

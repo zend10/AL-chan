@@ -1,5 +1,6 @@
 package com.zen.alchan.data.response.anilist
 
+import com.zen.alchan.data.entity.AppSetting
 import type.NotificationType
 
 data class RelatedMediaAdditionNotification(
@@ -9,4 +10,8 @@ data class RelatedMediaAdditionNotification(
     val context: String = "",
     override val createdAt: Int = 0,
     val media: Media = Media()
-) : Notification
+) : Notification {
+    override fun getMessage(appSetting: AppSetting): String {
+        return "${media.getTitle(appSetting)}${context}"
+    }
+}

@@ -273,7 +273,21 @@ class DefaultUserRepository(
         }
     }
 
+    override fun getLatestUnreadNotificationCount(): Observable<Int> {
+        return userDataSource.getUnreadNotificationCount().map {
+            it.data?.viewer?.unreadNotificationCount ?: 0
+        }
+    }
+
     override fun clearUnreadNotificationCount() {
         _unreadNotificationCount.onNext(0)
+    }
+
+    override fun getLastNotificationId(): Observable<Int> {
+        return Observable.just(userManager.lastNotificationId ?: 0)
+    }
+
+    override fun setLastNotificationId(lastNotificationId: Int) {
+        userManager.lastNotificationId = lastNotificationId
     }
 }
