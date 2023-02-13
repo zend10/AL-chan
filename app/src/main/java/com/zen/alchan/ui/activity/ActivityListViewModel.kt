@@ -76,6 +76,7 @@ class ActivityListViewModel(
                     selectedActivityTypes = arrayListOf(ActivityType.TEXT)
                     _toolbarTitle.onNext(R.string.global_activity)
                 }
+                else -> {}
             }
 
             disposables.add(

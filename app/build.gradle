@@ -6,11 +6,11 @@ apply plugin: 'com.apollographql.apollo'
 //apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.zen.alchan"
         minSdkVersion 23
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 100902
         versionName "1.9.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -22,11 +22,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         viewBinding true
@@ -37,15 +37,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.browser:browser:1.4.0'
+    implementation 'androidx.browser:browser:1.5.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Google Material
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // JUnit4 for Instrumentation Test
@@ -80,7 +80,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // Coil
     def coil_version = "1.4.0"
@@ -128,7 +128,7 @@ dependencies {
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
 
-    def work_version = "2.7.1"
+    def work_version = "2.8.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation "androidx.work:work-rxjava2:$work_version"
 

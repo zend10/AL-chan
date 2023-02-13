@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.6.10'
-    ext.apollo_version = '2.5.4'
+    ext.kotlin_version = '1.8.0'
+    ext.apollo_version = '2.5.13'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:7.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.apollographql.apollo:apollo-gradle-plugin:$apollo_version"
 //        classpath 'com.google.gms:google-services:4.3.5'

@@ -109,6 +109,6 @@ fun ActivityType.getString(): String {
     return name.convertFromSnakeCase(false)
 }
 
-inline fun <reified T: Enum<*>> getNonUnknownValues(): List<T> {
+inline fun <reified T: Enum<T>> getNonUnknownValues(): List<T> {
     return enumValues<T>().filter { it.name != "UNKNOWN__" }
 }
