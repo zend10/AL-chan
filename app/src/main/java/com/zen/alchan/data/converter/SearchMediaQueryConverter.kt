@@ -41,6 +41,7 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                 averageScore = it.averageScore ?: 0,
                 meanScore = it.meanScore ?: 0,
                 popularity = it.popularity ?: 0,
+                trending = it.trending ?: 0,
                 favourites = it.favourites ?: 0,
                 mediaListEntry = if (it.mediaListEntry != null) MediaList(status = it.mediaListEntry.status) else null
             )

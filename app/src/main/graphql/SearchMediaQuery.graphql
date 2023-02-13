@@ -1,4 +1,38 @@
-query SearchMediaQuery($page:Int, $statusVersion:Int, $search:String, $type:MediaType) {
+query SearchMediaQuery(
+  $page:Int,
+  $statusVersion:Int,
+  $search:String,
+  $type:MediaType,
+  $sort: [MediaSort],
+  $formatIn: [MediaFormat],
+  $statusIn: [MediaStatus],
+  $sourceIn: [MediaSource],
+  $countryOfOrigin: CountryCode,
+  $season: MediaSeason,
+  $startDateGreater: FuzzyDateInt,
+  $startDateLesser: FuzzyDateInt,
+  $isAdult: Boolean,
+  $onList: Boolean,
+  $genreIn: [String],
+  $genreNotIn: [String],
+  $minimumTagRank: Int,
+  $tagIn: [String],
+  $tagNotIn: [String],
+  $licensedByIn: [String],
+  $episodesGreater: Int,
+  $episodesLesser: Int,
+  $durationGreater: Int,
+  $durationLesser: Int,
+  $chaptersGreater: Int,
+  $chaptersLesser: Int,
+  $volumesGreater: Int,
+  $volumesLesser: Int,
+  $averageScoreGreater: Int,
+  $averageScoreLesser: Int,
+  $popularityGreater: Int,
+  $popularityLesser: Int,
+  $isLicensed: Boolean
+) {
   Page(page:$page) {
     pageInfo {
       total
@@ -7,7 +41,39 @@ query SearchMediaQuery($page:Int, $statusVersion:Int, $search:String, $type:Medi
       lastPage
       hasNextPage
     }
-    media(search:$search, type:$type) {
+    media(
+      search:$search,
+      type:$type,
+      sort:$sort,
+      format_in: $formatIn,
+      status_in: $statusIn,
+      source_in: $sourceIn,
+      countryOfOrigin: $countryOfOrigin,
+      season: $season,
+      startDate_greater: $startDateGreater,
+      startDate_lesser: $startDateLesser,
+      isAdult: $isAdult,
+      onList: $onList,
+      genre_in: $genreIn,
+      genre_not_in: $genreNotIn,
+      minimumTagRank: $minimumTagRank,
+      tag_in: $tagIn,
+      tag_not_in: $tagNotIn,
+      licensedBy_in: $licensedByIn,
+      episodes_greater: $episodesGreater,
+      episodes_lesser: $episodesLesser,
+      duration_greater: $durationGreater,
+      duration_lesser: $durationLesser,
+      chapters_greater: $chaptersGreater,
+      chapters_lesser: $chaptersLesser,
+      volumes_greater: $volumesGreater,
+      volumes_lesser: $volumesLesser,
+      averageScore_greater: $averageScoreGreater,
+      averageScore_lesser: $averageScoreLesser,
+      popularity_greater: $popularityGreater,
+      popularity_lesser: $popularityLesser,
+      isLicensed: $isLicensed
+    ) {
       id
       idMal
       title {
@@ -19,10 +85,37 @@ query SearchMediaQuery($page:Int, $statusVersion:Int, $search:String, $type:Medi
       type
       format
       status(version:$statusVersion)
+      episodes
+      chapters
+      volumes
       startDate {
         year
         month
         day
+      }
+      genres
+      studios(isMain:true) {
+        edges {
+          node {
+            name
+          }
+        }
+      }
+      staff {
+        edges {
+          node {
+            name {
+              first
+              middle
+              last
+              full
+              native
+              alternative
+              userPreferred
+            }
+          }
+          role
+        }
       }
       coverImage {
         extraLarge
@@ -33,6 +126,7 @@ query SearchMediaQuery($page:Int, $statusVersion:Int, $search:String, $type:Medi
       averageScore
       meanScore
       popularity
+      trending
       favourites
       mediaListEntry {
         status

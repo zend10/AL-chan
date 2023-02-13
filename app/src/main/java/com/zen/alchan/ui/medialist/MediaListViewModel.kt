@@ -434,6 +434,8 @@ class MediaListViewModel(
             Sort.RELEASE_DATE -> sortUsing(entriesSortedByTitle, isDescending) { TimeUtil.getMillisFromFuzzyDate(media.startDate) }
             Sort.AVERAGE_SCORE -> sortUsing(entriesSortedByTitle, isDescending) { media.averageScore }
             Sort.POPULARITY -> sortUsing(entriesSortedByTitle, isDescending) { media.popularity }
+            Sort.FAVORITES -> sortUsing(entriesSortedByTitle, isDescending) { media.favourites }
+            Sort.TRENDING -> sortUsing(entriesSortedByTitle, isDescending) { media.trending }
             Sort.PRIORITY -> sortUsing(entriesSortedByTitle, isDescending) { priority }
             Sort.NEXT_AIRING -> {
                 val defaultValueForNullAiringTime = if (isDescending) Int.MIN_VALUE else Int.MAX_VALUE

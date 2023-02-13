@@ -87,6 +87,8 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             averageScore = media?.averageScore ?: 0,
             meanScore = media?.meanScore ?: 0,
             popularity = media?.popularity ?: 0,
+            trending = media?.trending ?: 0,
+            favourites = media?.favourites ?: 0,
             tags = media?.tags?.mapNotNull {
                 MediaTag(
                     id = it?.id ?: 0,

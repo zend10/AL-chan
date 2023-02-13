@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.datasource.ContentDataSource
 import com.zen.alchan.data.converter.convert
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.manager.ContentManager
 import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.enums.Source
@@ -84,9 +85,10 @@ class DefaultContentRepository(
     override fun searchMedia(
         searchQuery: String,
         type: MediaType,
+        mediaFilter: MediaFilter?,
         page: Int
     ): Observable<Page<Media>> {
-        return contentDataSource.searchMedia(searchQuery, type, page).map {
+        return contentDataSource.searchMedia(searchQuery, type, mediaFilter, page).map {
             it.data?.convert()
         }
     }

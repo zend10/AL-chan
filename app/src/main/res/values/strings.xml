@@ -473,6 +473,7 @@
     <string name="message_posted">Message posted</string>
     <string name="review_posted">Review posted</string>
     <string name="you_have_unread_notifications">You have unread notifications</string>
+    <string name="trending">Trending</string>
 
 
     <plurals name="minute">

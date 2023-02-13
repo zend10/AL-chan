@@ -1,4 +1,4 @@
-query SearchStudioQuery($page:Int, $search:String) {
+query SearchStudioQuery($page:Int, $search:String, $sort: [StudioSort]) {
   Page(page:$page) {
     pageInfo {
       total
@@ -7,7 +7,7 @@ query SearchStudioQuery($page:Int, $search:String) {
       lastPage
       hasNextPage
     }
-    studios(search:$search) {
+    studios(search:$search, sort: $sort) {
       id
       name
       favourites

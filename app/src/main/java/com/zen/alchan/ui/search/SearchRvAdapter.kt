@@ -58,7 +58,7 @@ class SearchRvAdapter(
                         searchScoreText.show(true)
                         searchFavouriteText.show(true)
                         searchScoreText.text = item.media.averageScore.toString()
-                        searchFavouriteText.text = item.media.favourites.toString()
+                        searchFavouriteText.text = item.media.favourites.getNumberFormatting()
                         searchStatsDivider.show(true)
                         searchMediaListStatusLayout.show(item.media.mediaListEntry != null)
                         val statusColor = item.media.mediaListEntry?.status?.getColor()?.let {
@@ -76,7 +76,7 @@ class SearchRvAdapter(
                         searchStatsLayout.show(true)
                         searchScoreText.show(false)
                         searchFavouriteText.show(true)
-                        searchFavouriteText.text = item.character.favourites.toString()
+                        searchFavouriteText.text = item.character.favourites.getNumberFormatting()
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToCharacter(item.character) }
@@ -88,7 +88,7 @@ class SearchRvAdapter(
                         searchStatsLayout.show(true)
                         searchScoreText.show(false)
                         searchFavouriteText.show(true)
-                        searchFavouriteText.text = item.staff.favourites.toString()
+                        searchFavouriteText.text = item.staff.favourites.getNumberFormatting()
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToStaff(item.staff) }
@@ -100,7 +100,7 @@ class SearchRvAdapter(
                         searchStatsLayout.show(true)
                         searchScoreText.show(false)
                         searchFavouriteText.show(true)
-                        searchFavouriteText.text = item.studio.favourites.toString()
+                        searchFavouriteText.text = item.studio.favourites.getNumberFormatting()
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToStudio(item.studio) }

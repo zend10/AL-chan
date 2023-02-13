@@ -68,6 +68,8 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
           averageScore
           meanScore
           popularity
+          trending
+          favourites
           tags {
             id
             name

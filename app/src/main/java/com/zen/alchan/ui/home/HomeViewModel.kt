@@ -62,7 +62,7 @@ class HomeViewModel(
             _homeItemList.onNext(
                 listOf(
                     HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
-                    /*HomeItem(viewType = HomeItem.VIEW_TYPE_MENU), TODO: readd back for dev*/
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_SOCIAL),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
@@ -83,7 +83,7 @@ class HomeViewModel(
                         _homeItemList.onNext(
                             listOf(
                                 HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
-                                /*HomeItem(viewType = HomeItem.VIEW_TYPE_MENU), TODO: readd back for dev*/
+                                HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
                                 HomeItem(viewType = HomeItem.VIEW_TYPE_SOCIAL),
                                 HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                                 HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)

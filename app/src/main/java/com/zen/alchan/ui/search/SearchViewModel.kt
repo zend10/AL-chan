@@ -85,8 +85,8 @@ class SearchViewModel(
 
         disposables.add(
             when (currentSearchCategory) {
-                SearchCategory.ANIME -> contentRepository.searchMedia(searchQuery, MediaType.ANIME, page)
-                SearchCategory.MANGA -> contentRepository.searchMedia(searchQuery, MediaType.MANGA, page)
+                SearchCategory.ANIME -> contentRepository.searchMedia(searchQuery, MediaType.ANIME, null, page)
+                SearchCategory.MANGA -> contentRepository.searchMedia(searchQuery, MediaType.MANGA, null, page)
                 SearchCategory.CHARACTER -> contentRepository.searchCharacter(searchQuery, page)
                 SearchCategory.STAFF -> contentRepository.searchStaff(searchQuery, page)
                 SearchCategory.STUDIO -> contentRepository.searchStudio(searchQuery, page)

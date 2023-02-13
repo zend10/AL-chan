@@ -1,4 +1,4 @@
-query SearchCharacterQuery($page:Int, $search:String) {
+query SearchCharacterQuery($page:Int, $search:String, $sort:[CharacterSort]) {
   Page(page:$page) {
     pageInfo {
       total
@@ -7,7 +7,7 @@ query SearchCharacterQuery($page:Int, $search:String) {
       lastPage
       hasNextPage
     }
-    characters(search:$search) {
+    characters(search:$search, sort:$sort) {
       id
       name {
         first

@@ -1,4 +1,4 @@
-query SearchStaffQuery($page:Int, $search:String) {
+query SearchStaffQuery($page:Int, $search:String, $sort: [StaffSort]) {
   Page(page:$page) {
     pageInfo {
       total
@@ -7,7 +7,7 @@ query SearchStaffQuery($page:Int, $search:String) {
       lastPage
       hasNextPage
     }
-    staff(search:$search) {
+    staff(search:$search, sort: $sort) {
       id
       name {
         first

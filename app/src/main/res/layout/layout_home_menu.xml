@@ -103,10 +103,10 @@
                     android:layout_height="match_parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        app:srcCompat="@drawable/ic_compass"
-                        app:tint="?themePrimaryColor"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_compass"
+                        app:tint="?themePrimaryColor" />
 
                 </RelativeLayout>
 
