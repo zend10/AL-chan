@@ -1,12 +1,16 @@
 package com.zen.alchan.ui.search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.ListLoadingBinding
@@ -17,12 +21,14 @@ import com.zen.alchan.helper.pojo.SearchItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import com.zen.alchan.ui.common.GenreRvAdapter
 import type.MediaType
 
 class SearchRvAdapter(
     private val context: Context,
     list: List<SearchItem?>,
     private val appSetting: AppSetting,
+    private val showMoreDetails: Boolean,
     private val listener: SearchListener
 ) : BaseRecyclerViewAdapter<SearchItem?, ViewBinding>(list) {
 
@@ -64,10 +70,31 @@ class SearchRvAdapter(
                         val statusColor = item.media.mediaListEntry?.status?.getColor()?.let {
                             Color.parseColor(it)
                         } ?: context.getThemeSecondaryColor()
+
+                        val constraintSet = ConstraintSet()
+                        constraintSet.clone(searchRootLayout)
+                        if (showMoreDetails && item.media.genres.isNotEmpty()) {
+                            constraintSet.connect(searchMediaListStatusLayout.id, ConstraintSet.TOP, searchMediaGenre.id, ConstraintSet.BOTTOM)
+                            constraintSet.clear(searchMediaListStatusLayout.id, ConstraintSet.BOTTOM)
+                        } else {
+                            constraintSet.clear(searchMediaListStatusLayout.id, ConstraintSet.TOP)
+                            constraintSet.connect(searchMediaListStatusLayout.id, ConstraintSet.BOTTOM, searchRootLayout.id, ConstraintSet.BOTTOM)
+                        }
+                        constraintSet.applyTo(searchRootLayout)
                         searchMediaListStatusIcon.imageTintList = ColorStateList.valueOf(statusColor)
                         searchMediaListStatusText.text = item.media.mediaListEntry?.status?.getString(item.media.type?.getMediaType() ?: com.zen.alchan.helper.enums.MediaType.ANIME)?.uppercase()
                         searchMediaListStatusText.setTextColor(statusColor)
                         root.clicks { listener.navigateToMedia(item.media) }
+
+                        searchMediaLengthDividerIcon.show(showMoreDetails && item.media.getLength() != null)
+                        searchMediaLengthText.show(showMoreDetails && item.media.getLength() != null)
+                        searchMediaLengthText.text = when (item.media.type?.getMediaType()) {
+                            com.zen.alchan.helper.enums.MediaType.ANIME -> item.media.getLength()?.showUnit(context, R.plurals.episode)
+                            com.zen.alchan.helper.enums.MediaType.MANGA -> item.media.getLength()?.showUnit(context, R.plurals.chapter)
+                            else -> ""
+                        }
+                        searchMediaGenre.show(showMoreDetails)
+                        searchMediaGenre.adapter = GenreRvAdapter(context, item.media.genres)
                     }
                     SearchCategory.CHARACTER -> {
                         ImageUtil.loadImage(context, item.character.getImage(appSetting), searchImage)
@@ -80,6 +107,9 @@ class SearchRvAdapter(
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToCharacter(item.character) }
+
+                        searchMediaLengthDividerIcon.show(false)
+                        searchMediaLengthText.show(false)
                     }
                     SearchCategory.STAFF -> {
                         ImageUtil.loadImage(context, item.staff.getImage(appSetting), searchImage)
@@ -92,6 +122,9 @@ class SearchRvAdapter(
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToStaff(item.staff) }
+
+                        searchMediaLengthDividerIcon.show(false)
+                        searchMediaLengthText.show(false)
                     }
                     SearchCategory.STUDIO -> {
                         ImageUtil.loadImage(context, item.studio.media.nodes.firstOrNull()?.getCoverImage(appSetting) ?: "", searchImage)
@@ -104,6 +137,9 @@ class SearchRvAdapter(
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToStudio(item.studio) }
+
+                        searchMediaLengthDividerIcon.show(false)
+                        searchMediaLengthText.show(false)
                     }
                     SearchCategory.USER -> {
                         ImageUtil.loadImage(context, item.user.avatar.getImageUrl(appSetting), searchImage)
@@ -112,8 +148,15 @@ class SearchRvAdapter(
                         searchStatsLayout.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToUser(item.user) }
+
+                        searchMediaLengthDividerIcon.show(false)
+                        searchMediaLengthText.show(false)
                     }
                 }
+
+                searchRankBadge.badgeCard.show(showMoreDetails)
+                searchRankBadge.badgeCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.brightYellow))
+                searchRankBadge.badgeText.text = (index + 1).getNumberFormatting()
             }
         }
     }

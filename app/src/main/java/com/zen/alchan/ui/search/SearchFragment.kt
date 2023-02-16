@@ -45,7 +45,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                 viewModel.loadSearchCategories()
             }
 
-            adapter = SearchRvAdapter(requireContext(), listOf(), AppSetting(), getSearchListener())
+            adapter = SearchRvAdapter(requireContext(), listOf(), AppSetting(), false, getSearchListener())
             searchRecyclerView.adapter = adapter
 
             searchSwipeRefresh.setOnRefreshListener {
@@ -96,7 +96,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                 dialog.showToast(it)
             },
             viewModel.appSetting.subscribe {
-                adapter = SearchRvAdapter(requireContext(), listOf(), it, getSearchListener())
+                adapter = SearchRvAdapter(requireContext(), listOf(), it, false, getSearchListener())
                 binding.searchRecyclerView.adapter = adapter
             },
             viewModel.searchItems.subscribe {

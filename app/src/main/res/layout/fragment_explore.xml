@@ -68,6 +68,7 @@
             app:layout_constraintBottom_toBottomOf="@id/exploreBarLayout"
             app:layout_constraintDimensionRatio="1:1"
             android:layout_marginEnd="@dimen/marginPageNormal"
+            app:layout_goneMarginEnd="0dp"
             android:layout_width="0dp"
             android:layout_height="0dp">
 

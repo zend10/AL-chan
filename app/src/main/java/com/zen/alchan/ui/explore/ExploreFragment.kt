@@ -50,7 +50,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
 
             }
 
-            adapter = SearchRvAdapter(requireContext(), listOf(), AppSetting(), getSearchListener())
+            adapter = SearchRvAdapter(requireContext(), listOf(), AppSetting(), true, getSearchListener())
             exploreRecyclerView.adapter = adapter
 
             exploreSwipeRefresh.setOnRefreshListener {
@@ -99,7 +99,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
                 dialog.showToast(it)
             },
             viewModel.appSetting.subscribe {
-                adapter = SearchRvAdapter(requireContext(), listOf(), it, getSearchListener())
+                adapter = SearchRvAdapter(requireContext(), listOf(), it, true, getSearchListener())
                 binding.exploreRecyclerView.adapter = adapter
             },
             viewModel.searchItems.subscribe {
@@ -116,6 +116,9 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
             },
             viewModel.searchPlaceholderText.subscribe {
                 binding.exploreEditText.hint = getString(it)
+            },
+            viewModel.filterVisibility.subscribe {
+                binding.exploreSettingButton.show(it)
             }
         )
 

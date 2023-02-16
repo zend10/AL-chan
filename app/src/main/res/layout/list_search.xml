@@ -8,6 +8,7 @@
     app:cardBackgroundColor="?themeCardColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/searchRootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,6 +22,14 @@
             android:adjustViewBounds="true"
             android:layout_width="0dp"
             android:layout_height="0dp"/>
+
+        <include layout="@layout/layout_badge"
+            android:id="@+id/searchRankBadge"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/searchImageGuideline"
@@ -72,6 +81,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/searchMediaLengthDividerIcon"
+                app:srcCompat="@drawable/ic_filled_circle_small"
+                app:tint="?themeContentColor"
+                android:layout_marginHorizontal="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/searchMediaLengthText"
+                style="?themeSmallFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -109,11 +132,24 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchMediaGenre"
+            android:orientation="horizontal"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/searchStatsLayout"
+            app:layout_constraintStart_toStartOf="@id/searchTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/searchMediaListStatusLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/searchTitle"
-            android:layout_marginBottom="@dimen/marginSmall"
+            app:layout_constraintTop_toBottomOf="@id/searchMediaGenre"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:paddingBottom="@dimen/marginSmall"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">

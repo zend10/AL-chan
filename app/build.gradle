@@ -132,7 +132,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation "androidx.work:work-rxjava2:$work_version"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 }
 
 apollo {

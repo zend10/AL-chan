@@ -43,6 +43,10 @@ class ExploreViewModel(
     val searchPlaceholderText: Observable<Int>
         get() = _searchPlaceholderText
 
+    private val _filterVisibility = BehaviorSubject.createDefault(false)
+    val filterVisibility: Observable<Boolean>
+        get() = _filterVisibility
+
     private var currentSearchCategory = SearchCategory.ANIME
     private var currentSearchQuery = ""
     private var mediaFilter: MediaFilter = MediaFilter(sort = Sort.POPULARITY, orderByDescending = true)
@@ -51,7 +55,7 @@ class ExploreViewModel(
     private var currentPage = 0
 
     override fun loadData(param: SearchCategory) {
-        this.currentSearchCategory = param
+        currentSearchCategory = param
 
         loadOnce {
             disposables.add(
@@ -59,7 +63,7 @@ class ExploreViewModel(
                     .applyScheduler()
                     .subscribe {
                         _appSetting.onNext(it)
-                        doSearch("", false)
+                        updateSelectedSearchCategory(currentSearchCategory)
                     }
             )
         }
@@ -157,6 +161,16 @@ class ExploreViewModel(
                 SearchCategory.STAFF -> R.string.explore_staff
                 SearchCategory.STUDIO -> R.string.explore_studios
                 SearchCategory.USER -> R.string.search_users // should not be used
+            }
+        )
+        _filterVisibility.onNext(
+            when (newSearchCategory) {
+                SearchCategory.ANIME -> true
+                SearchCategory.MANGA -> true
+                SearchCategory.CHARACTER -> false
+                SearchCategory.STAFF -> false
+                SearchCategory.STUDIO -> false
+                SearchCategory.USER -> false // should not be used
             }
         )
         reloadData()

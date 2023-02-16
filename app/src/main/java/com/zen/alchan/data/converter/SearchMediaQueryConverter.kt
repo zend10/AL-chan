@@ -1,5 +1,6 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 
 fun SearchMediaQuery.Data.convert(): Page<Media> {
@@ -24,6 +25,9 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                 type = it.type,
                 format = it.format,
                 status = it.status,
+                episodes = it.episodes,
+                chapters = it.chapters,
+                volumes = it.volumes,
                 startDate = if (it.startDate != null)
                     FuzzyDate(
                         year = it.startDate.year,
@@ -32,6 +36,32 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                     )
                 else
                     null,
+                genres = it.genres?.filterNotNull()?.map { genre -> Genre(genre) } ?: listOf(),
+                studios = StudioConnection(
+                    edges = it.studios?.edges?.filterNotNull()?.map {
+                        StudioEdge(
+                            node = Studio(name = it.node?.name ?: "")
+                        )
+                    } ?: listOf()
+                ),
+                staff = StaffConnection(
+                    edges = it.staff?.edges?.filterNotNull()?.map {
+                        StaffEdge(
+                            node = Staff(
+                                name = StaffName(
+                                    first = it.node?.name?.first ?: "",
+                                    middle = it.node?.name?.middle ?: "",
+                                    last = it.node?.name?.last ?: "",
+                                    full = it.node?.name?.full ?: "",
+                                    native = it.node?.name?.native_ ?: "",
+                                    alternative = it.node?.name?.alternative?.filterNotNull() ?: listOf(),
+                                    userPreferred = it.node?.name?.userPreferred ?: ""
+                                )
+                            ),
+                            role = it.role ?: ""
+                        )
+                    } ?: listOf(),
+                ),
                 coverImage = MediaCoverImage(
                     extraLarge = it.coverImage?.extraLarge ?: "",
                     large = it.coverImage?.large ?: "",
