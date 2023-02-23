@@ -144,9 +144,8 @@ class ExploreViewModel(
                             _searchItems.onNext(currentSearchItems)
                         } else {
                             _searchItems.onNext(newSearchItems)
+                            _scrollToTopTrigger.onNext(Unit)
                         }
-
-                        _scrollToTopTrigger.onNext(Unit)
 
                         state = State.LOADED
                     },
@@ -185,6 +184,15 @@ class ExploreViewModel(
                 SearchCategory.STUDIO -> false
                 SearchCategory.USER -> false // should not be used
             }
+        )
+        mediaFilter = mediaFilter.copy(
+            mediaFormats = listOf(),
+            mediaSeasons = listOf(),
+            minEpisodes = null,
+            maxEpisodes = null,
+            minDuration = null,
+            maxDuration = null,
+            streamingOn = listOf()
         )
         reloadData()
     }

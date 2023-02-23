@@ -117,7 +117,8 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
                 MediaExternalLink(
                     id = it?.id ?: 0,
                     url = it?.url ?: "",
-                    site = it?.site ?: ""
+                    site = it?.site ?: "",
+                    siteId = it?.siteId ?: 0
                 )
             } ?: listOf(),
             siteUrl = media?.siteUrl ?: ""

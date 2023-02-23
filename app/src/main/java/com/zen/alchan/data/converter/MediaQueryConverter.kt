@@ -164,8 +164,8 @@ fun MediaQuery.Data.convert(): Media {
         ,
         externalLinks = listOf(MediaExternalLink(
             url = media?.siteUrl ?: "",
-            site = OtherLink.ANILIST.siteName,
-            color = OtherLink.ANILIST.hexColor.toHex()
+            site = "AniList",
+            color = "#324760"
         )) + (media?.externalLinks?.filterNotNull()?.map {
             MediaExternalLink(
                 id = it.id,

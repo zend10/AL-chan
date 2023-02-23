@@ -41,6 +41,10 @@ class SearchViewModel(
     val searchPlaceholderText: Observable<Int>
         get() = _searchPlaceholderText
 
+    private val _scrollToTopTrigger = PublishSubject.create<Unit>()
+    val scrollToTopTrigger: Observable<Unit>
+        get() = _scrollToTopTrigger
+
     private var currentSearchCategory = SearchCategory.ANIME
     private var currentSearchQuery = ""
 
@@ -122,6 +126,7 @@ class SearchViewModel(
                             _searchItems.onNext(currentSearchItems)
                         } else {
                             _searchItems.onNext(newSearchItems)
+                            _scrollToTopTrigger.onNext(Unit)
                         }
 
                         state = State.LOADED

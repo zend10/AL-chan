@@ -113,6 +113,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             },
             viewModel.searchPlaceholderText.subscribe {
                 binding.searchEditText.hint = getString(it)
+            },
+            viewModel.scrollToTopTrigger.subscribe {
+                binding.searchRecyclerView.scrollToPosition(0)
             }
         )
 

@@ -543,12 +543,12 @@ class MediaListViewModel(
             filterEntries.removeAll { mediaList ->
                 !mediaFilter.streamingOn
                     .map {
-                        it.siteName.lowercase()
+                        it.id
                     }
-                    .any { siteName ->
+                    .any { id ->
                         mediaList.media.externalLinks
-                            .map { it.site.lowercase() }
-                            .contains(siteName)
+                            .map { it.siteId }
+                            .contains(id)
                     }
             }
         }

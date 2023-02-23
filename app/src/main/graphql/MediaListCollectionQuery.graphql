@@ -92,6 +92,7 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
             id
             url
             site
+            siteId
           }
           siteUrl
         }

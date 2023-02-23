@@ -44,7 +44,7 @@ class MediaLinksRvAdapter(
                     item.icon.isNotBlank() -> {
                         ImageUtil.loadImage(context, item.icon, linkIcon)
                     }
-                    item.site == OtherLink.ANILIST.siteName -> {
+                    item.site == "AniList" -> {
                         ImageUtil.loadImage(context, R.drawable.ic_anilist, linkIcon)
                     }
                     else -> {

@@ -386,7 +386,12 @@ class FilterViewModel(
     }
 
     fun resetCurrentFilter() {
-        currentMediaFilter = MediaFilter()
+        currentMediaFilter =  if (isUserList) {
+            MediaFilter(sort = Sort.POPULARITY, orderByDescending = true)
+        } else {
+            MediaFilter()
+        }
+
         if (isCurrentUser) {
             mediaListRepository.setMediaFilter(mediaType, currentMediaFilter)
         }
@@ -1006,60 +1011,6 @@ class FilterViewModel(
     }
 
     private fun getOtherLinks(): List<OtherLink> {
-        return when (mediaType) {
-            MediaType.ANIME -> {
-                listOf(
-                    OtherLink.CRUNCHYROLL,
-                    OtherLink.YOUTUBE,
-                    OtherLink.FUNIMATION,
-                    OtherLink.HIDIVE,
-                    OtherLink.VRV,
-                    OtherLink.NETFLIX,
-                    OtherLink.AMAZON,
-                    OtherLink.HULU,
-                    OtherLink.HBO_MAX,
-                    OtherLink.ANIMELAB,
-                    OtherLink.VIZ,
-                    OtherLink.ADULT_SWIM,
-                    OtherLink.RETRO_CRUSH,
-                    OtherLink.MIDNIGHT_PULP,
-                    OtherLink.TUBI_TV,
-                    OtherLink.CONTV
-                )
-            }
-            MediaType.MANGA -> {
-                listOf(
-                    OtherLink.MANGA_PLUS,
-                    OtherLink.VIZ,
-                    OtherLink.CRUNCHYROLL,
-                    OtherLink.MANGA_CLUB,
-                    OtherLink.FAKKU,
-                    OtherLink.WEBTOONS,
-                    OtherLink.LEZHIN,
-                    OtherLink.TOOMICS,
-                    OtherLink.WEB_COMICS,
-                    OtherLink.COMICWALKER,
-                    OtherLink.PIXIV_COMIC,
-                    OtherLink.COMICO,
-                    OtherLink.MANGABOX,
-                    OtherLink.PIXIV_NOVEL,
-                    OtherLink.PICCOMA,
-                    OtherLink.POCKET_MAGAZINE,
-                    OtherLink.NICO_NICO_SEIGA,
-                    OtherLink.SHONEN_JUMP_PLUS,
-                    OtherLink.LEZHIN_KO,
-                    OtherLink.NAVER,
-                    OtherLink.DAUM_WEBTOON,
-                    OtherLink.TOOMICS_KO,
-                    OtherLink.BOMTOON,
-                    OtherLink.KAKAOPAGE,
-                    OtherLink.KUAIKAN_MANHUA,
-                    OtherLink.QQ,
-                    OtherLink.DAJIAOCHONG_MANHUA,
-                    OtherLink.WEIBO_MANHUA,
-                    OtherLink.MANMAN_MANHUA
-                )
-            }
-        }
+        return OtherLink.values().filter { it.mediaType == mediaType }
     }
 }
