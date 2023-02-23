@@ -8,15 +8,18 @@ import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.enums.Sort
+import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.MediaFilterComponent
 import com.zen.alchan.helper.pojo.SearchItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import type.MediaType
+import type.ScoreFormat
 
 class ExploreViewModel(
     private val userRepository: UserRepository,
@@ -46,6 +49,14 @@ class ExploreViewModel(
     private val _filterVisibility = BehaviorSubject.createDefault(false)
     val filterVisibility: Observable<Boolean>
         get() = _filterVisibility
+
+    private val _mediaFilterComponent = PublishSubject.create<MediaFilterComponent>()
+    val mediaFilterComponent: Observable<MediaFilterComponent>
+        get() = _mediaFilterComponent
+
+    private val _scrollToTopTrigger = PublishSubject.create<Unit>()
+    val scrollToTopTrigger: Observable<Unit>
+        get() = _scrollToTopTrigger
 
     private var currentSearchCategory = SearchCategory.ANIME
     private var currentSearchQuery = ""
@@ -135,6 +146,8 @@ class ExploreViewModel(
                             _searchItems.onNext(newSearchItems)
                         }
 
+                        _scrollToTopTrigger.onNext(Unit)
+
                         state = State.LOADED
                     },
                     {
@@ -184,5 +197,26 @@ class ExploreViewModel(
         list.add(ListItem(R.string.explore_staff, SearchCategory.STAFF))
         list.add(ListItem(R.string.explore_studios, SearchCategory.STUDIO))
         _searchCategoryList.onNext(list)
+    }
+
+    fun loadMediaFilterComponent() {
+        _mediaFilterComponent.onNext(
+            MediaFilterComponent(
+                mediaFilter,
+                when (currentSearchCategory) {
+                    SearchCategory.ANIME -> com.zen.alchan.helper.enums.MediaType.ANIME
+                    SearchCategory.MANGA -> com.zen.alchan.helper.enums.MediaType.MANGA
+                    else -> com.zen.alchan.helper.enums.MediaType.ANIME
+                },
+                ScoreFormat.POINT_100,
+                false,
+                false
+            )
+        )
+    }
+
+    fun updateMediaFilter(newFilter: MediaFilter) {
+        mediaFilter = newFilter
+        reloadData()
     }
 }

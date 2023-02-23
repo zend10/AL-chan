@@ -266,6 +266,10 @@ class FilterViewModel(
     val filterSettingsVisibility: Observable<Boolean>
         get() = _filterSettingsVisibility
 
+    private val _userListFilterVisibility = BehaviorSubject.createDefault(true)
+    val userListFilterVisibility: Observable<Boolean>
+        get() = _userListFilterVisibility
+
     private var mediaType: MediaType = MediaType.ANIME
     private var isUserList: Boolean = true
     private var isCurrentUser: Boolean = true
@@ -336,8 +340,20 @@ class FilterViewModel(
                 updateStartYears(minUserStartYear, maxUserStartYear)
                 updateCompletedYears(minUserCompletedYear, maxUserCompletedYear)
                 updatePriorities(minUserPriority, maxUserPriority)
-                updateHideDoujin(isDoujin == false)
-                updateOnlyShowDoujin(isDoujin == true)
+                when (isDoujin) {
+                    true -> {
+                        _hideDoujin.onNext(false)
+                        _onlyShowDoujin.onNext(true)
+                    }
+                    false -> {
+                        _hideDoujin.onNext(true)
+                        _onlyShowDoujin.onNext(false)
+                    }
+                    else -> {
+                        _hideDoujin.onNext(false)
+                        _onlyShowDoujin.onNext(false)
+                    }
+                }
             }
 
 
@@ -355,6 +371,8 @@ class FilterViewModel(
                     _streamingOnText.onNext(R.string.reading_on)
                 }
             }
+
+            _userListFilterVisibility.onNext(isUserList)
         }
     }
 
@@ -687,6 +705,11 @@ class FilterViewModel(
     fun loadSortByList() {
         val sortBy = ArrayList<ListItem<Sort>>()
         sortBy.addAll(Sort.values().map { ListItem(it.getStringResource(), it) })
+        if (!isUserList) {
+            sortBy.removeAll { it.data == Sort.FOLLOW_LIST_SETTINGS }
+            sortBy.removeAll { it.data == Sort.PRIORITY }
+            sortBy.removeAll { it.data == Sort.NEXT_AIRING }
+        }
         _sortByList.onNext(sortBy)
     }
 

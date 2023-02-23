@@ -427,6 +427,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             },
             viewModel.filterSettingsVisibility.subscribe {
                 binding.filterSettingsLayout.show(it)
+            },
+            viewModel.userListFilterVisibility.subscribe {
+                binding.filterUserListLayout.show(it)
             }
         )
 

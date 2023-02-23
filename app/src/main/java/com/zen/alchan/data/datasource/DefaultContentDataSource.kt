@@ -51,8 +51,8 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             sourceIn = Input.optional(if (mediaFilter?.mediaSources?.isNotEmpty() == true) mediaFilter.mediaSources else null),
             countryOfOrigin = Input.optional(mediaFilter?.countries?.firstOrNull()?.iso),
             season = Input.optional(mediaFilter?.mediaSeasons?.firstOrNull()),
-            startDateGreater = Input.optional(mediaFilter?.minYear?.toString()?.padEnd(6, '0')),
-            startDateLesser = Input.optional(mediaFilter?.maxYear?.toString()?.padEnd(6, '0')),
+            startDateGreater = Input.optional(mediaFilter?.minYear?.toString()?.padEnd(8, '0')),
+            startDateLesser = Input.optional(mediaFilter?.maxYear?.toString()?.padEnd(8, '0')),
             onList = Input.optional(mediaFilter?.onList),
             genreIn = Input.optional(if (mediaFilter?.includedGenres?.isNotEmpty() == true) mediaFilter.includedGenres else null),
             genreNotIn = Input.optional(if (mediaFilter?.excludedGenres?.isNotEmpty() == true) mediaFilter.excludedGenres else null),
@@ -72,7 +72,7 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             averageScoreLesser = Input.optional(mediaFilter?.maxAverageScore),
             popularityGreater = Input.optional(mediaFilter?.minPopularity),
             popularityLesser = Input.optional(mediaFilter?.maxPopularity),
-            isLicensed = Input.optional(mediaFilter?.isDoujin)
+            isLicensed = Input.optional(mediaFilter?.isDoujin?.not())
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

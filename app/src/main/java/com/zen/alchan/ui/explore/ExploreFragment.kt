@@ -47,7 +47,8 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
             }
 
             exploreSettingButton.clicks {
-
+                exploreEditText.clearFocus()
+                viewModel.loadMediaFilterComponent()
             }
 
             adapter = SearchRvAdapter(requireContext(), listOf(), AppSetting(), true, getSearchListener())
@@ -119,6 +120,14 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
             },
             viewModel.filterVisibility.subscribe {
                 binding.exploreSettingButton.show(it)
+            },
+            viewModel.mediaFilterComponent.subscribe {
+                navigation.navigateToFilter(it.mediaFilter, it.mediaType, it.scoreFormat, it.isUserList, it.isViewer) {
+                    viewModel.updateMediaFilter(it)
+                }
+            },
+            viewModel.scrollToTopTrigger.subscribe {
+                binding.exploreRecyclerView.scrollToPosition(0)
             }
         )
 
