@@ -128,6 +128,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:visibility="invisible"
         android:id="@+id/reviewsMenu"
         android:orientation="vertical"
         android:gravity="center"
@@ -189,6 +190,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:visibility="invisible"
         android:id="@+id/calendarMenu"
         android:orientation="vertical"
         android:gravity="center"
