@@ -148,6 +148,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                 binding.searchEditText.clearFocus()
                 navigation.navigateToUser(user.id)
             }
+
+            override fun showQuickDetail(media: Media) {
+                dialog.showMediaQuickDetailDialog(media)
+            }
         }
     }
 

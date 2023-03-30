@@ -18,6 +18,7 @@ data class MediaFilter(
     var mediaSources: List<MediaSource> = listOf(),
     var countries: List<Country> = listOf(),
     var mediaSeasons: List<MediaSeason> = listOf(),
+    var seasonYear: Int? = null,
     var minYear: Int? = null,
     var maxYear: Int? = null,
     var minEpisodes: Int? = null,

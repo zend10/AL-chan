@@ -21,6 +21,7 @@ interface NavigationManager {
     fun navigateToMain(deepLink: DeepLink? = null) {}
 
     fun navigateToSearch() {}
+    fun navigateToSeasonal() {}
     fun navigateToExplore(searchCategory: SearchCategory) {}
     fun navigateToSocial() {}
     fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {}

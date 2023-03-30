@@ -9,9 +9,11 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import io.reactivex.Observable
+import type.MediaSeason
 import type.MediaType
 
 class DefaultContentRepository(
@@ -113,6 +115,20 @@ class DefaultContentRepository(
 
     override fun searchUser(searchQuery: String, page: Int): Observable<Page<User>> {
         return contentDataSource.searchUser(searchQuery, page).map {
+            it.data?.convert()
+        }
+    }
+
+    override fun getSeasonal(
+        page: Int,
+        year: Int,
+        season: MediaSeason,
+        sort: Sort,
+        orderByDescending: Boolean,
+        onlyShowOnList: Boolean?,
+        showAdult: Boolean
+    ): Observable<Page<Media>> {
+        return contentDataSource.getSeasonal(page, year, season, sort, orderByDescending, onlyShowOnList, showAdult).map {
             it.data?.convert()
         }
     }

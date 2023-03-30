@@ -6,7 +6,9 @@ import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.Sort
 import io.reactivex.Observable
+import type.MediaSeason
 import type.MediaType
 
 interface ContentRepository {
@@ -18,4 +20,5 @@ interface ContentRepository {
     fun searchStaff(searchQuery: String, page: Int): Observable<Page<Staff>>
     fun searchStudio(searchQuery: String, page: Int): Observable<Page<Studio>>
     fun searchUser(searchQuery: String, page: Int): Observable<Page<User>>
+    fun getSeasonal(page: Int, year: Int, season: MediaSeason, sort: Sort, orderByDescending: Boolean, onlyShowOnList: Boolean?, showAdult: Boolean): Observable<Page<Media>>
 }

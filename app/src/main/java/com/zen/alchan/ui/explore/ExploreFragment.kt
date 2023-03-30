@@ -162,6 +162,10 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
                 binding.exploreEditText.clearFocus()
                 navigation.navigateToUser(user.id)
             }
+
+            override fun showQuickDetail(media: Media) {
+                dialog.showMediaQuickDetailDialog(media)
+            }
         }
     }
 

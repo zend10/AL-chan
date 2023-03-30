@@ -37,6 +37,7 @@ import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
 import com.zen.alchan.ui.search.SearchFragment
+import com.zen.alchan.ui.seasonal.SeasonalFragment
 import com.zen.alchan.ui.settings.SettingsFragment
 import com.zen.alchan.ui.settings.about.AboutFragment
 import com.zen.alchan.ui.settings.account.AccountSettingsFragment
@@ -81,6 +82,10 @@ class DefaultNavigationManager(
 
     override fun navigateToSearch() {
         stackPage(SearchFragment.newInstance())
+    }
+
+    override fun navigateToSeasonal() {
+        stackPage(SeasonalFragment.newInstance())
     }
 
     override fun navigateToExplore(searchCategory: SearchCategory) {

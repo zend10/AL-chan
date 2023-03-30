@@ -170,9 +170,9 @@ class StaffCharacterListViewModel(
         _showCharacters.value?.let {
             val newShouldShowCharacter = !it
             if (newShouldShowCharacter) {
-                _showCharactersText.onNext(R.string.show_characters)
-            } else {
                 _showCharactersText.onNext(R.string.show_media)
+            } else {
+                _showCharactersText.onNext(R.string.show_characters)
             }
             _mediaSortVisibility.onNext(!newShouldShowCharacter)
             _showHideOnListVisibility.onNext(!newShouldShowCharacter)

@@ -85,6 +85,7 @@ class SearchRvAdapter(
                         searchMediaListStatusText.text = item.media.mediaListEntry?.status?.getString(item.media.type?.getMediaType() ?: com.zen.alchan.helper.enums.MediaType.ANIME)?.uppercase()
                         searchMediaListStatusText.setTextColor(statusColor)
                         root.clicks { listener.navigateToMedia(item.media) }
+                        root.setOnLongClickListener { listener.showQuickDetail(item.media); true }
 
                         searchMediaLengthDividerIcon.show(showMoreDetails && item.media.getLength() != null)
                         searchMediaLengthText.show(showMoreDetails && item.media.getLength() != null)
@@ -107,6 +108,7 @@ class SearchRvAdapter(
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToCharacter(item.character) }
+                        root.setOnLongClickListener(null)
 
                         searchMediaLengthDividerIcon.show(false)
                         searchMediaLengthText.show(false)
@@ -122,6 +124,7 @@ class SearchRvAdapter(
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToStaff(item.staff) }
+                        root.setOnLongClickListener(null)
 
                         searchMediaLengthDividerIcon.show(false)
                         searchMediaLengthText.show(false)
@@ -137,6 +140,7 @@ class SearchRvAdapter(
                         searchStatsDivider.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToStudio(item.studio) }
+                        root.setOnLongClickListener(null)
 
                         searchMediaLengthDividerIcon.show(false)
                         searchMediaLengthText.show(false)
@@ -148,6 +152,7 @@ class SearchRvAdapter(
                         searchStatsLayout.show(false)
                         searchMediaListStatusLayout.show(false)
                         root.clicks { listener.navigateToUser(item.user) }
+                        root.setOnLongClickListener(null)
 
                         searchMediaLengthDividerIcon.show(false)
                         searchMediaLengthText.show(false)
@@ -173,5 +178,6 @@ class SearchRvAdapter(
         fun navigateToStaff(staff: Staff)
         fun navigateToStudio(studio: Studio)
         fun navigateToUser(user: User)
+        fun showQuickDetail(media: Media)
     }
 }

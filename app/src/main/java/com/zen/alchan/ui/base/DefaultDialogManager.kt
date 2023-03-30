@@ -6,6 +6,8 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.pojo.ListItem
@@ -36,6 +38,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetProgressDialog: BottomSheetProgressDialog? = null
     private var bottomSheetScoreDialog: BottomSheetScoreDialog? = null
     private var bottomSheetSpoilerDialog: BottomSheetSpoilerDialog? = null
+    private var bottomSheetMediaQuickDetailDialog: BottomSheetMediaQuickDetailDialog? = null
 
     private var datePickerDialog: DatePickerDialog? = null
 
@@ -306,5 +309,15 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         context.startActivity(shareIntent)
+    }
+
+    override fun showMediaQuickDetailDialog(media: Media) {
+        bottomSheetMediaQuickDetailDialog = BottomSheetMediaQuickDetailDialog.newInstance(media)
+        bottomSheetMediaQuickDetailDialog?.dialog?.setOnCancelListener {
+            bottomSheetMediaQuickDetailDialog = null
+        }
+        (context as? AppCompatActivity?)?.supportFragmentManager?.let {
+            bottomSheetMediaQuickDetailDialog?.show(it, null)
+        }
     }
 }

@@ -94,7 +94,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun getHomeMenuListener(): HomeListener.MenuListener {
         return object : HomeListener.MenuListener {
             override fun navigateToSeasonal() {
-
+                navigation.navigateToSeasonal()
             }
 
             override fun showExploreDialog() {

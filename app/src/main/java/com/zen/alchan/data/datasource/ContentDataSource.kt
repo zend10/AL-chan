@@ -1,8 +1,11 @@
 package com.zen.alchan.data.datasource
 
+import SearchMediaQuery
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.entity.MediaFilter
+import com.zen.alchan.helper.enums.Sort
 import io.reactivex.Observable
+import type.MediaSeason
 import type.MediaSort
 import type.MediaType
 
@@ -15,4 +18,13 @@ interface ContentDataSource {
     fun searchStaff(searchQuery: String, page: Int): Observable<Response<SearchStaffQuery.Data>>
     fun searchStudio(searchQuery: String, page: Int): Observable<Response<SearchStudioQuery.Data>>
     fun searchUser(searchQuery: String, page: Int): Observable<Response<SearchUserQuery.Data>>
+    fun getSeasonal(
+        page: Int,
+        year: Int,
+        season: MediaSeason,
+        sort: Sort,
+        orderByDescending: Boolean,
+        onlyShowOnList: Boolean?,
+        showAdult: Boolean
+    ): Observable<Response<SearchMediaQuery.Data>>
 }

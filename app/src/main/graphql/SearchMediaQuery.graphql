@@ -1,6 +1,7 @@
 query SearchMediaQuery(
   $page:Int,
   $statusVersion:Int,
+  $sourceVersion: Int,
   $search:String,
   $type:MediaType,
   $sort: [MediaSort],
@@ -9,6 +10,7 @@ query SearchMediaQuery(
   $sourceIn: [MediaSource],
   $countryOfOrigin: CountryCode,
   $season: MediaSeason,
+  $seasonYear: Int,
   $startDateGreater: FuzzyDateInt,
   $startDateLesser: FuzzyDateInt,
   $isAdult: Boolean,
@@ -50,6 +52,7 @@ query SearchMediaQuery(
       source_in: $sourceIn,
       countryOfOrigin: $countryOfOrigin,
       season: $season,
+      seasonYear: $seasonYear,
       startDate_greater: $startDateGreater,
       startDate_lesser: $startDateLesser,
       isAdult: $isAdult,
@@ -85,6 +88,7 @@ query SearchMediaQuery(
       type
       format
       status(version:$statusVersion)
+      description(asHtml: false)
       episodes
       chapters
       volumes
@@ -117,6 +121,7 @@ query SearchMediaQuery(
           role
         }
       }
+      source(version:$sourceVersion)
       coverImage {
         extraLarge
         large
@@ -130,6 +135,16 @@ query SearchMediaQuery(
       favourites
       mediaListEntry {
         status
+      }
+      stats {
+          scoreDistribution {
+              score
+              amount
+          }
+          statusDistribution {
+              status
+              amount
+          }
       }
     }
   }

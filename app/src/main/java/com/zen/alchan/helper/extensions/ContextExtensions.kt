@@ -41,3 +41,7 @@ fun Context.getThemeFloatingButtonColor(): Int {
 fun Context.getThemeFloatingIconColor(): Int {
     return getAttrValue(R.attr.themeBackgroundColor)
 }
+
+fun Context.getThemeNegativeColor(): Int {
+    return getAttrValue(R.attr.themeNegativeColor)
+}

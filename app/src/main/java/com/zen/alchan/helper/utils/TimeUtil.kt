@@ -1,6 +1,7 @@
 package com.zen.alchan.helper.utils
 
 import com.zen.alchan.data.response.anilist.FuzzyDate
+import type.MediaSeason
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -12,6 +13,17 @@ object TimeUtil {
 
     fun getCurrentYear(): Int {
         return Calendar.getInstance().get(Calendar.YEAR)
+    }
+
+    fun getCurrentSeason(): MediaSeason {
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        return when (currentMonth) {
+            Calendar.DECEMBER, Calendar.JANUARY, Calendar.FEBRUARY -> MediaSeason.WINTER
+            in Calendar.MARCH..Calendar.MAY -> MediaSeason.SPRING
+            in Calendar.JUNE..Calendar.AUGUST -> MediaSeason.SUMMER
+            in Calendar.SEPTEMBER..Calendar.NOVEMBER -> MediaSeason.FALL
+            else -> MediaSeason.WINTER
+        }
     }
 
     fun getCurrentFuzzyDate(): FuzzyDate {

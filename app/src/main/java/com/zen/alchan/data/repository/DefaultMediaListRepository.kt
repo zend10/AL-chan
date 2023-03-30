@@ -221,6 +221,18 @@ class DefaultMediaListRepository(
         }
     }
 
+    override fun updateMediaListStatus(
+        mediaType: MediaType,
+        mediaId: Int,
+        status: MediaListStatus
+    ): Observable<MediaList> {
+        return mediaListDataSource.updateMediaListStatus(mediaId, status).map {
+            val newMediaList = it.data?.convert()
+            _refreshMediaListTrigger.onNext(mediaType to newMediaList)
+            newMediaList
+        }
+    }
+
     override fun getListStyle(mediaType: MediaType): Observable<ListStyle> {
         return Observable.just(
             when (mediaType) {

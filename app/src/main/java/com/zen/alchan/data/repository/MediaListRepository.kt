@@ -51,6 +51,7 @@ interface MediaListRepository {
         progress: Int?,
         progressVolumes: Int?
     ): Observable<MediaList>
+    fun updateMediaListStatus(mediaType: MediaType, mediaId: Int, status: MediaListStatus): Observable<MediaList>
 
     fun getListStyle(mediaType: MediaType): Observable<ListStyle>
     fun setListStyle(mediaType: MediaType, newListStyle: ListStyle)

@@ -474,6 +474,19 @@
     <string name="review_posted">Review posted</string>
     <string name="you_have_unread_notifications">You have unread notifications</string>
     <string name="trending">Trending</string>
+    <string name="year">Year</string>
+    <string name="show_adult_content">Show adult content</string>
+    <string name="seasonal_chart">Seasonal Chart</string>
+    <string name="tba">TBA</string>
+    <string name="add_to_planning">Add to Planning</string>
+    <string name="starts_on_x">Starts on %1$s</string>
+    <string name="adapted_from_x">Adapted from %1$s</string>
+    <string name="planning">Planning</string>
+    <string name="completed">Completed</string>
+    <string name="dropped">Dropped</string>
+    <string name="paused">Paused</string>
+    <string name="watching">Watching</string>
+    <string name="reading">Reading</string>
 
 
     <plurals name="minute">

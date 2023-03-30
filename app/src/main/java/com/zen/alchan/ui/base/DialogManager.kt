@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.base
 
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.pojo.ListItem
@@ -45,4 +47,6 @@ interface DialogManager {
     fun showSpoilerDialog(spoilerText: String, onLinkClickAction: ((link: String) -> Unit)?)
 
     fun showShareSheet(text: String)
+
+    fun showMediaQuickDetailDialog(media: Media)
 }

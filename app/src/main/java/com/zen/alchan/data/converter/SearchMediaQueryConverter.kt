@@ -25,6 +25,7 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                 type = it.type,
                 format = it.format,
                 status = it.status,
+                description = it.description ?: "",
                 episodes = it.episodes,
                 chapters = it.chapters,
                 volumes = it.volumes,
@@ -62,6 +63,7 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                         )
                     } ?: listOf(),
                 ),
+                source = it.source,
                 coverImage = MediaCoverImage(
                     extraLarge = it.coverImage?.extraLarge ?: "",
                     large = it.coverImage?.large ?: "",
@@ -73,7 +75,21 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                 popularity = it.popularity ?: 0,
                 trending = it.trending ?: 0,
                 favourites = it.favourites ?: 0,
-                mediaListEntry = if (it.mediaListEntry != null) MediaList(status = it.mediaListEntry.status) else null
+                mediaListEntry = if (it.mediaListEntry != null) MediaList(status = it.mediaListEntry.status) else null,
+                stats = MediaStats(
+                    scoreDistribution = it.stats?.scoreDistribution?.map {
+                        ScoreDistribution(
+                            score = it?.score ?: 0,
+                            amount = it?.amount ?: 0
+                        )
+                    } ?: listOf(),
+                    statusDistribution = it.stats?.statusDistribution?.map {
+                        StatusDistribution(
+                            status = it?.status,
+                            amount = it?.amount ?: 0
+                        )
+                    } ?: listOf()
+                )
             )
         } ?: listOf()
     )

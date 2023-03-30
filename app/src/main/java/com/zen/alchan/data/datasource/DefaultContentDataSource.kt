@@ -13,11 +13,12 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.network.apollo.ApolloHandler
+import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.helper.enums.getAniListMediaSort
 import io.reactivex.Observable
 import type.*
 
-class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private val statusVersion: Int) : ContentDataSource {
+class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private val statusVersion: Int, private val sourceVersion: Int) : ContentDataSource {
 
     override fun getHomeQuery(): Observable<Response<HomeDataQuery.Data>> {
         val query = HomeDataQuery()
@@ -45,12 +46,14 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             type = Input.fromNullable(type),
             page = Input.fromNullable(page),
             statusVersion = Input.fromNullable(statusVersion),
+            sourceVersion = Input.fromNullable(sourceVersion),
             sort = Input.fromNullable(mediaFilter?.let { listOf(mediaFilter.sort.getAniListMediaSort(mediaFilter.orderByDescending)) }),
             formatIn = Input.optional(if (mediaFilter?.mediaFormats?.isNotEmpty() == true) mediaFilter.mediaFormats else null),
             statusIn = Input.optional(if (mediaFilter?.mediaStatuses?.isNotEmpty() == true) mediaFilter.mediaStatuses else null),
             sourceIn = Input.optional(if (mediaFilter?.mediaSources?.isNotEmpty() == true) mediaFilter.mediaSources else null),
             countryOfOrigin = Input.optional(mediaFilter?.countries?.firstOrNull()?.iso),
             season = Input.optional(mediaFilter?.mediaSeasons?.firstOrNull()),
+            seasonYear = Input.optional(mediaFilter?.seasonYear),
             startDateGreater = Input.optional(mediaFilter?.minYear?.toString()?.padEnd(8, '0')),
             startDateLesser = Input.optional(mediaFilter?.maxYear?.toString()?.plus("1231")),
             onList = Input.optional(mediaFilter?.onList),
@@ -120,6 +123,29 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
         val query = SearchUserQuery(
             search = Input.optional(searchQuery.ifBlank { null }),
             page = Input.fromNullable(page)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getSeasonal(
+        page: Int,
+        year: Int,
+        season: MediaSeason,
+        sort: Sort,
+        orderByDescending: Boolean,
+        onlyShowOnList: Boolean?,
+        showAdult: Boolean
+    ): Observable<Response<SearchMediaQuery.Data>> {
+        val query = SearchMediaQuery(
+            type = Input.fromNullable(MediaType.ANIME),
+            page = Input.fromNullable(page),
+            statusVersion = Input.fromNullable(statusVersion),
+            sourceVersion = Input.fromNullable(sourceVersion),
+            seasonYear = Input.fromNullable(year),
+            season = Input.fromNullable(season),
+            sort = Input.fromNullable(listOf(sort.getAniListMediaSort(orderByDescending))),
+            onList = Input.optional(onlyShowOnList),
+            isAdult = Input.fromNullable(showAdult)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

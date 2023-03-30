@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import SaveMediaListEntryMutation
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.response.anilist.FuzzyDate
 import io.reactivex.Completable
@@ -41,5 +42,9 @@ interface MediaListDataSource {
         repeat: Int?,
         progress: Int?,
         progressVolumes: Int?
+    ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    fun updateMediaListStatus(
+        mediaId: Int,
+        status: MediaListStatus
     ): Observable<Response<SaveMediaListEntryMutation.Data>>
 }

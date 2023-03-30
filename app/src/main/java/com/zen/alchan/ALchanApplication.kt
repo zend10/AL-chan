@@ -20,6 +20,7 @@ import com.zen.alchan.ui.activity.ActivityListViewModel
 import com.zen.alchan.ui.base.BaseActivityViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.character.media.CharacterMediaListViewModel
+import com.zen.alchan.ui.common.BottomSheetMediaQuickDetailViewModel
 import com.zen.alchan.ui.customise.CustomiseViewModel
 import com.zen.alchan.ui.editor.EditorViewModel
 import com.zen.alchan.ui.explore.ExploreViewModel
@@ -39,6 +40,7 @@ import com.zen.alchan.ui.notifications.NotificationsViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
 import com.zen.alchan.ui.search.SearchViewModel
+import com.zen.alchan.ui.seasonal.SeasonalViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
 import com.zen.alchan.ui.settings.account.AccountSettingsViewModel
 import com.zen.alchan.ui.settings.anilist.AniListSettingsViewModel
@@ -100,7 +102,7 @@ class ALchanApplication : Application() {
         single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
 
         // data source
-        single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION) }
+        single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
         single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
         single<BrowseDataSource> { DefaultBrowseDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION, Constant.ANILIST_API_RELATION_TYPE_VERSION) }
@@ -127,8 +129,11 @@ class ALchanApplication : Application() {
         viewModel { SharedMainViewModel() }
         viewModel { MainViewModel(get(), get(), get()) }
 
+        viewModel { BottomSheetMediaQuickDetailViewModel(get()) }
+
         viewModel { HomeViewModel(get(), get()) }
         viewModel { SearchViewModel(get(), get()) }
+        viewModel { SeasonalViewModel(get(), get(), get()) }
         viewModel { ExploreViewModel(get(), get()) }
 
         viewModel { MediaListViewModel(get(), get(), get()) }
