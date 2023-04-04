@@ -40,7 +40,7 @@ class BottomSheetScoreDialog : BaseDialogFragment<DialogBottomSheetScoreBinding>
 
         if ((scoreFormat == ScoreFormat.POINT_100 || scoreFormat == ScoreFormat.POINT_10_DECIMAL) && !advancedScores.isNullOrEmpty()) {
             binding.scoreAdvancedScoringRecyclerView.show(true)
-            advancedScoringAdapter = AdvancedScoringRvAdapter(advancedScores!!.toList(), scoreFormat, object : AdvancedScoringRvAdapter.AdvancedScoringListener {
+            advancedScoringAdapter = AdvancedScoringRvAdapter(advancedScores!!.toList(), scoreFormat, false, object : AdvancedScoringRvAdapter.AdvancedScoringListener {
                 override fun getNewAdvancedScore(newScore: Pair<String, Double>) {
                     advancedScores!![newScore.first] = newScore.second
 

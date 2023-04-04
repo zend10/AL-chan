@@ -16,6 +16,7 @@ import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.databinding.FragmentMediaListBinding
@@ -187,7 +188,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             },
             viewModel.scoreValues.subscribe { (mediaList: MediaList, scoreFormat: ScoreFormat) ->
                 val currentScore = mediaList.score
-                val advancedScores = mediaList.advancedScores as? LinkedHashMap<String, Double>
+                val advancedScores = (mediaList.advancedScores as CustomTypeValue<*>).value as? LinkedHashMap<String, Double>
                 dialog.showScoreDialog(scoreFormat, currentScore, advancedScores) { newScore, newAdvancedScores ->
                     viewModel.updateScore(mediaList, newScore, newAdvancedScores)
                 }
@@ -320,7 +321,9 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             }
 
             override fun showQuickDetail(mediaList: MediaList) {
-
+                arguments?.getInt(USER_ID)?.let {
+                    dialog.showMediaListQuickDetailDialog(it, mediaList)
+                }
             }
 
             override fun showAiringText(airingText: String) {

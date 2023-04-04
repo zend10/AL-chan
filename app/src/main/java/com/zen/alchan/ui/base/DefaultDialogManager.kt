@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.pojo.ListItem
@@ -18,6 +19,7 @@ import com.zen.alchan.ui.common.BottomSheetTagDialog
 import com.zen.alchan.ui.common.TagRvAdapter
 import com.zen.alchan.ui.editor.BottomSheetProgressDialog
 import com.zen.alchan.ui.editor.BottomSheetScoreDialog
+import com.zen.alchan.ui.medialist.BottomSheetMediaListQuickDetailDialog
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -39,6 +41,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetScoreDialog: BottomSheetScoreDialog? = null
     private var bottomSheetSpoilerDialog: BottomSheetSpoilerDialog? = null
     private var bottomSheetMediaQuickDetailDialog: BottomSheetMediaQuickDetailDialog? = null
+    private var bottomSheetMediaListQuickDetailDialog: BottomSheetMediaListQuickDetailDialog? = null
 
     private var datePickerDialog: DatePickerDialog? = null
 
@@ -318,6 +321,16 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         }
         (context as? AppCompatActivity?)?.supportFragmentManager?.let {
             bottomSheetMediaQuickDetailDialog?.show(it, null)
+        }
+    }
+
+    override fun showMediaListQuickDetailDialog(userId: Int, mediaList: MediaList) {
+        bottomSheetMediaListQuickDetailDialog = BottomSheetMediaListQuickDetailDialog.newInstance(userId, mediaList)
+        bottomSheetMediaListQuickDetailDialog?.dialog?.setOnCancelListener {
+            bottomSheetMediaListQuickDetailDialog = null
+        }
+        (context as? AppCompatActivity?)?.supportFragmentManager?.let {
+            bottomSheetMediaListQuickDetailDialog?.show(it, null)
         }
     }
 }

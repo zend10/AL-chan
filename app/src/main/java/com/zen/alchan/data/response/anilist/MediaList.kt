@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.roundToOneDecimal
 import type.MediaListStatus
@@ -35,6 +36,18 @@ data class MediaList(
             2.0 -> R.drawable.ic_neutral
             3.0 -> R.drawable.ic_happy
             else -> R.drawable.ic_puzzled
+        }
+    }
+
+    @StringRes
+    fun getPriorityStringRes(): Int {
+        return when (priority) {
+            1 -> R.string.very_low
+            2 -> R.string.low
+            3 -> R.string.medium
+            4 -> R.string.high
+            5 -> R.string.very_high
+            else -> R.string.no_priority
         }
     }
 }

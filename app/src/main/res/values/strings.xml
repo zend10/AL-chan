@@ -292,9 +292,11 @@
     <string name="remove">Remove</string>
     <string name="general">General</string>
     <string name="episode">Episode</string>
+    <string name="chapter">Chapter</string>
     <string name="volume">Volume</string>
     <string name="finish_date">Finish Date</string>
     <string name="total_rewatches">Total Rewatches</string>
+    <string name="total_rereads">Total Rereads</string>
     <string name="notes">Notes</string>
     <string name="custom_lists">Custom Lists</string>
     <string name="hide_from_status_lists">Hide from status lists</string>
@@ -512,5 +514,9 @@
     <plurals name="chapter">
         <item quantity="one">chapter</item>
         <item quantity="other">chapters</item>
+    </plurals>
+    <plurals name="volume">
+        <item quantity="one">volume</item>
+        <item quantity="other">volumes</item>
     </plurals>
 </resources>

@@ -45,7 +45,7 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.list_editor))
 
-            customListsAdapter = CustomListsRvAdapter(listOf(), object : CustomListsRvAdapter.CustomListsListener {
+            customListsAdapter = CustomListsRvAdapter(listOf(), false, object : CustomListsRvAdapter.CustomListsListener {
                 override fun getNewCustomList(newCustomList: Pair<String, Boolean>) {
                     viewModel.updateCustomList(newCustomList)
                 }
@@ -185,6 +185,9 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             viewModel.score.subscribe {
                 setScore(it)
             },
+            viewModel.progressLabel.subscribe {
+                binding.editorProgressLabel.text = getString(it)
+            },
             viewModel.progress.subscribe {
                 binding.editorProgressText.text = it.toString()
             },
@@ -196,6 +199,9 @@ class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
             },
             viewModel.finishDate.subscribe {
                 binding.editorFinishDateText.text = TimeUtil.getReadableDateFromFuzzyDate(it.data)
+            },
+            viewModel.totalRewatchesLabel.subscribe {
+                binding.editorTotalRewatchesLabel.text = getString(it)
             },
             viewModel.totalRewatches.subscribe {
                 binding.editorTotalRewatchesText.text = it.toString()

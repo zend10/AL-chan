@@ -131,6 +131,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/editorProgressLabel"
                         android:text="@string/episode"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"
@@ -263,6 +264,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/editorTotalRewatchesLabel"
                         android:text="@string/total_rewatches"
                         style="?themeRegularFont"
                         android:layout_marginEnd="@dimen/marginNormal"

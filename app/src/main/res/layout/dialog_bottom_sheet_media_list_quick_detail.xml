@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="@dimen/marginPageBig"
+        android:paddingHorizontal="@dimen/marginNormal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/dragIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="?themeDividerColor"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_width="@dimen/marginFar"
+            android:layout_height="@dimen/marginClose"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dialogMediaListTitle"
+            style="?themeTitleFont"
+            app:layout_constraintTop_toBottomOf="@id/dragIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dialogMediaListFormat"
+            style="?themeSmallFont"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListStatusLayout"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListFormat"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:gravity="center_vertical|start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListStatus"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/dialogMediaListProgressDivider"
+                app:srcCompat="@drawable/ic_filled_circle_small"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListProgress"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/dialogMediaListProgressVolumeDivider"
+                app:srcCompat="@drawable/ic_filled_circle_small"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListProgressVolume"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <LinearLayout
+            android:id="@+id/dialogMediaListScoreLayout"
+            app:layout_constraintTop_toBottomOf="@+id/dialogMediaListStatusLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:gravity="center_vertical|start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/dialogMediaListScoreIcon"
+                app:srcCompat="@drawable/ic_star_filled"
+                android:layout_marginEnd="@dimen/marginClose"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListScoreText"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/dialogMediaListScoreSmiley"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialogMediaListAdvancedScoring"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListScoreLayout"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListStartDateLayout"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListAdvancedScoring"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/start_date"
+                style="?themeSmallFont"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListStartDate"
+                style="?themeSmallFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListFinishDateLayout"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListStartDateLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginClose"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/finish_date"
+                style="?themeSmallFont"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListFinishDate"
+                style="?themeSmallFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListRepeatingLayout"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListFinishDateLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginClose"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListRepeatingLabel"
+                style="?themeSmallFont"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListRepeating"
+                style="?themeSmallFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListNotesLayout"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListRepeatingLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginClose"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/notes"
+                style="?themeSmallFont"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListNotes"
+                style="?themeSmallFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListPriorityLayout"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListNotesLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginClose"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/priority"
+                style="?themeSmallFont"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dialogMediaListPriority"
+                style="?themeSmallFont"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dialogMediaListCustomListsLayout"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/dialogMediaListPriorityLayout"
+            android:layout_marginTop="@dimen/marginPageBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/custom_lists"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dialogMediaListCustomListRecyclerView"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

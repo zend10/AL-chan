@@ -26,7 +26,7 @@ fun Int.formatTwoDigit(): String {
 }
 
 fun Int.showUnit(context: Context, @PluralsRes pluralResId: Int): String {
-    return "$this ${context.resources.getQuantityString(pluralResId, this)}"
+    return "${this.getNumberFormatting()} ${context.resources.getQuantityString(pluralResId, this)}"
 }
 
 fun Int.convertSecondsToDays(): Int {

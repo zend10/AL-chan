@@ -12,6 +12,7 @@ import type.ScoreFormat
 class AdvancedScoringRvAdapter(
     list: List<Pair<String, Double>>,
     private val scoreFormat: ScoreFormat,
+    private val readOnly: Boolean,
     private val listener: AdvancedScoringListener
 ) : BaseRecyclerViewAdapter<Pair<String, Double>, ListAdvancedScoringBinding>(list) {
 
@@ -23,7 +24,8 @@ class AdvancedScoringRvAdapter(
     inner class ItemViewHolder(private val binding: ListAdvancedScoringBinding) : ViewHolder(binding) {
         override fun bind(item: Pair<String, Double>, index: Int) {
             binding.advancedScoringName.text = item.first
-            binding.advancedScoringValue.setText(if (item.second == 0.0) "" else item.second.roundToOneDecimal())
+            binding.advancedScoringValue.isEnabled = !readOnly
+            binding.advancedScoringValue.setText(if (item.second == 0.0 && !readOnly) "" else item.second.roundToOneDecimal())
             binding.advancedScoringValue.addTextChangedListener {
                 var newScore = it.toString().toDoubleOrNull() ?: 0.0
                 newScore = if (scoreFormat == ScoreFormat.POINT_100 && newScore > 100)

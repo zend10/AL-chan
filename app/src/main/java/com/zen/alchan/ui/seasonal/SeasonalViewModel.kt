@@ -129,9 +129,6 @@ class SeasonalViewModel(
         disposables.add(
             contentRepository.getSeasonal(page, _year.value ?: TimeUtil.getCurrentYear(), _season.value ?: TimeUtil.getCurrentSeason(), _sort.value ?: Sort.POPULARITY, _orderByDescending.value ?: true, getOnlyShowOnList(), _showAdult.value ?: false)
                 .applyScheduler()
-                .doFinally {
-                    _loading.onNext(false)
-                }
                 .subscribe(
                     {
                         if (it.pageInfo.hasNextPage) {
@@ -152,12 +149,14 @@ class SeasonalViewModel(
                             _seasonalItems.onNext(items)
                             state = State.LOADED
                             previousPagesSeasonals.clear()
+                            _loading.onNext(false)
                         }
                     },
                     {
                         _error.onNext(it.getStringResource())
                         state = State.ERROR
                         previousPagesSeasonals.clear()
+                        _loading.onNext(false)
                     }
                 )
         )

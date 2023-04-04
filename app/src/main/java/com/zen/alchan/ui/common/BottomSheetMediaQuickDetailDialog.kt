@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.databinding.DialogBottomSheetQuickDetailBinding
+import com.zen.alchan.databinding.DialogBottomSheetMediaQuickDetailBinding
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.utils.MarkdownUtil
@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import type.MediaListStatus
 import type.MediaType
 
-class BottomSheetMediaQuickDetailDialog : BaseDialogFragment<DialogBottomSheetQuickDetailBinding>() {
+class BottomSheetMediaQuickDetailDialog : BaseDialogFragment<DialogBottomSheetMediaQuickDetailBinding>() {
 
     private val viewModel by viewModel<BottomSheetMediaQuickDetailViewModel>()
 
@@ -26,8 +26,8 @@ class BottomSheetMediaQuickDetailDialog : BaseDialogFragment<DialogBottomSheetQu
     override fun generateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): DialogBottomSheetQuickDetailBinding {
-        return DialogBottomSheetQuickDetailBinding.inflate(inflater, container, false)
+    ): DialogBottomSheetMediaQuickDetailBinding {
+        return DialogBottomSheetMediaQuickDetailBinding.inflate(inflater, container, false)
     }
 
     override fun setUpLayout() {
@@ -68,6 +68,11 @@ class BottomSheetMediaQuickDetailDialog : BaseDialogFragment<DialogBottomSheetQu
         )
 
         viewModel.loadData(Unit)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        genreAdapter = null
     }
 
     companion object {

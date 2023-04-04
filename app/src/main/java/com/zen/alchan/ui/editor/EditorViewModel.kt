@@ -55,6 +55,10 @@ class EditorViewModel(
     val advancedScores: Observable<NullableItem<LinkedHashMap<String, Double>>>
         get() = _advancedScores
 
+    private val _progressLabel = BehaviorSubject.createDefault(R.string.episode)
+    val progressLabel: Observable<Int>
+        get() = _progressLabel
+
     private val _progress = BehaviorSubject.createDefault(0)
     val progress: Observable<Int>
         get() = _progress
@@ -70,6 +74,10 @@ class EditorViewModel(
     private val _finishDate = BehaviorSubject.createDefault(NullableItem<FuzzyDate>(null))
     val finishDate: Observable<NullableItem<FuzzyDate>>
         get() = _finishDate
+
+    private val _totalRewatchesLabel = BehaviorSubject.createDefault(R.string.total_rewatches)
+    val totalRewatchesLabel: Observable<Int>
+        get() = _totalRewatchesLabel
 
     private val _totalRewatches = BehaviorSubject.createDefault(0)
     val totalRewatches: Observable<Int>
@@ -201,10 +209,22 @@ class EditorViewModel(
                                 updateStatus(it.status ?: MediaListStatus.PLANNING)
                                 updateScore(it.score)
                                 updateAdvancedScores((it.advancedScores as? CustomTypeValue<LinkedHashMap<String, Double>>)?.value)
+                                _progressLabel.onNext(
+                                    when (mediaType) {
+                                        MediaType.ANIME -> R.string.episode
+                                        MediaType.MANGA -> R.string.chapter
+                                    }
+                                )
                                 updateProgress(it.progress)
                                 updateProgressVolume(it.progressVolumes ?: 0)
                                 updateStartDate(it.startedAt)
                                 updateFinishDate(it.completedAt)
+                                _totalRewatchesLabel.onNext(
+                                    when (mediaType) {
+                                        MediaType.ANIME -> R.string.total_rewatches
+                                        MediaType.MANGA -> R.string.total_rereads
+                                    }
+                                )
                                 updateTotalRewatches(it.repeat)
                                 updateNotes(it.notes)
                                 updatePriority(it.priority)
