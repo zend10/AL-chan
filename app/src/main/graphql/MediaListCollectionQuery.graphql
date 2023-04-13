@@ -88,6 +88,14 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
             timeUntilAiring
             episode
           }
+          airingSchedule(notYetAired: false) {
+            nodes {
+              id
+              airingAt
+              timeUntilAiring
+              episode
+            }
+          }
           externalLinks {
             id
             url

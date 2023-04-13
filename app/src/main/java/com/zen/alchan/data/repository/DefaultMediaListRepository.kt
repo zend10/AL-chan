@@ -81,6 +81,10 @@ class DefaultMediaListRepository(
     override val refreshMediaListTrigger: Observable<Pair<MediaType, MediaList?>>
         get() = _refreshMediaListTrigger
 
+    private val _releasingTodayTrigger = PublishSubject.create<Unit>()
+    override val releasingTodayTrigger: Observable<Unit>
+        get() = _releasingTodayTrigger
+
     override fun getMediaListCollection(
         source: Source,
         userId: Int,
@@ -143,6 +147,8 @@ class DefaultMediaListRepository(
             MediaType.ANIME -> userManager.animeList = SaveItem(mediaListCollection)
             MediaType.MANGA -> userManager.mangaList = SaveItem(mediaListCollection)
         }
+
+        _releasingTodayTrigger.onNext(Unit)
     }
 
     override fun getMediaWithMediaList(mediaId: Int): Observable<Media> {
@@ -289,5 +295,9 @@ class DefaultMediaListRepository(
             MediaType.ANIME -> userManager.animeFilter = newMediaFilter
             MediaType.MANGA -> userManager.mangaFilter = newMediaFilter
         }
+    }
+
+    override fun triggerReleasingToday() {
+        _releasingTodayTrigger.onNext(Unit)
     }
 }

@@ -489,6 +489,12 @@
     <string name="paused">Paused</string>
     <string name="watching">Watching</string>
     <string name="reading">Reading</string>
+    <string name="no_new_episode_today">No new episode today</string>
+    <string name="releasing_today">Releasing Today</string>
+    <string name="ep_x_in_y_hours">Ep. %1$d in %2$dh</string>
+    <string name="ep_x_in_y_minutes">Ep. %1$d in %2$dm</string>
+    <string name="ep_x_y_hours_ago">Ep. %1$d (%2$dh ago)</string>
+    <string name="ep_x_y_minutes_ago">Ep. %1$d (%2$dm ago)</string>
 
 
     <plurals name="minute">

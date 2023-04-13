@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.home
 
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
 
 interface HomeListener {
 
@@ -16,7 +17,9 @@ interface HomeListener {
     }
 
     interface ReleasingTodayListener {
-
+        fun navigateToMedia(media: Media)
+        fun navigateToListEditor(mediaList: MediaList)
+        fun showProgressDialog(mediaList: MediaList)
     }
 
     interface SocialListener {

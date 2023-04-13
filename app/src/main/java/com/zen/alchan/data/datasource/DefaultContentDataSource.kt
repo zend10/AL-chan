@@ -21,7 +21,7 @@ import type.*
 class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private val statusVersion: Int, private val sourceVersion: Int) : ContentDataSource {
 
     override fun getHomeQuery(): Observable<Response<HomeDataQuery.Data>> {
-        val query = HomeDataQuery()
+        val query = HomeDataQuery(statusVersion = Input.fromNullable(statusVersion))
         return apolloHandler.apolloClient.rxQuery(query)
     }
 

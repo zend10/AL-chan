@@ -113,6 +113,16 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             } else {
                 null
             },
+            airingSchedule = AiringScheduleConnection(
+                nodes = media?.airingSchedule?.nodes?.filterNotNull()?.map {
+                    AiringSchedule(
+                        id = it.id,
+                        airingAt = it.airingAt,
+                        timeUntilAiring = it.timeUntilAiring,
+                        episode = it.episode
+                    )
+                } ?: listOf()
+            ),
             externalLinks = media?.externalLinks?.mapNotNull {
                 MediaExternalLink(
                     id = it?.id ?: 0,

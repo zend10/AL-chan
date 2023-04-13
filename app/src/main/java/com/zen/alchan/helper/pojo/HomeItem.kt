@@ -1,10 +1,12 @@
 package com.zen.alchan.helper.pojo
 
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.Review
 
 data class HomeItem(
     val media: List<Media> = listOf(),
+    val releasingToday: List<ReleasingTodayItem> = listOf(),
     val review: Review = Review(),
     val viewType: Int = 0
 ) {

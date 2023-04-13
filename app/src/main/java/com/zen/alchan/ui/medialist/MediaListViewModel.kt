@@ -354,6 +354,9 @@ class MediaListViewModel(
                         if (searchKeyword.isNotBlank())
                             filterByText(searchKeyword)
 
+                        if (mediaType == MediaType.ANIME)
+                            mediaListRepository.triggerReleasingToday()
+                        
                         state = State.LOADED
                     },
                     {

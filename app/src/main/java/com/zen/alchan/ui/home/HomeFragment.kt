@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.databinding.FragmentHomeBinding
+import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.main.SharedMainViewModel
@@ -113,7 +115,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun getReleasingTodayListener(): HomeListener.ReleasingTodayListener {
         return object : HomeListener.ReleasingTodayListener {
+            override fun navigateToMedia(media: Media) {
+                navigation.navigateToMedia(media.getId())
+            }
 
+            override fun navigateToListEditor(mediaList: MediaList) {
+                navigation.navigateToEditor(mediaList.media.getId(), true)
+            }
+
+            override fun showProgressDialog(mediaList: MediaList) {
+                dialog.showProgressDialog(MediaType.ANIME, mediaList.progress, mediaList.media.episodes, false) {
+                    viewModel.updateProgress(mediaList, it)
+                }
+            }
         }
     }
 

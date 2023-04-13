@@ -133,7 +133,7 @@ class ALchanApplication : Application() {
         viewModel { BottomSheetMediaQuickDetailViewModel(get()) }
         viewModel { BottomSheetMediaListQuickDetailViewModel(get(), get()) }
 
-        viewModel { HomeViewModel(get(), get()) }
+        viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel(get(), get()) }
         viewModel { SeasonalViewModel(get(), get(), get()) }
         viewModel { ExploreViewModel(get(), get()) }

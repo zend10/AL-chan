@@ -20,6 +20,8 @@ interface MediaListRepository {
     val defaultMangaList: List<String>
     val defaultMangaListSplitCompletedSectionByFormat: List<String>
     val refreshMediaListTrigger: Observable<Pair<MediaType, MediaList?>>
+    val releasingTodayTrigger: Observable<Unit>
+
     fun getMediaListCollection(source: Source = Source.NETWORK, userId: Int, mediaType: MediaType): Observable<MediaListCollection>
     fun updateCacheMediaList(mediaType: MediaType, mediaListCollection: MediaListCollection)
     fun getMediaWithMediaList(mediaId: Int): Observable<Media>
@@ -59,4 +61,5 @@ interface MediaListRepository {
     fun setListBackground(mediaType: MediaType, newUri: Uri?): Observable<Unit>
     fun getMediaFilter(mediaType: MediaType): Observable<MediaFilter>
     fun setMediaFilter(mediaType: MediaType, newMediaFilter: MediaFilter)
+    fun triggerReleasingToday()
 }

@@ -12,6 +12,7 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.LayoutHomeHeaderBinding
 import com.zen.alchan.databinding.LayoutHomeMenuBinding
+import com.zen.alchan.databinding.LayoutHomeReleasingTodayBinding
 import com.zen.alchan.databinding.LayoutHomeSocialBinding
 import com.zen.alchan.databinding.LayoutHomeTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
@@ -39,6 +40,10 @@ class HomeRvAdapter(
             HomeItem.VIEW_TYPE_MENU -> {
                 val view = LayoutHomeMenuBinding.inflate(inflater, parent, false)
                 return MenuViewHolder(view)
+            }
+            HomeItem.VIEW_TYPE_RELEASING_TODAY -> {
+                val view = LayoutHomeReleasingTodayBinding.inflate(inflater, parent, false)
+                return ReleasingTodayViewHolder(view)
             }
             HomeItem.VIEW_TYPE_SOCIAL -> {
                 val view = LayoutHomeSocialBinding.inflate(inflater, parent, false)
@@ -94,6 +99,19 @@ class HomeRvAdapter(
         }
     }
 
+    inner class ReleasingTodayViewHolder(private val binding: LayoutHomeReleasingTodayBinding) : ViewHolder(binding) {
+        override fun bind(item: HomeItem, index: Int) {
+            with(binding) {
+                if (item.releasingToday.isNotEmpty()) {
+                    releasingTodayRecyclerView.adapter = ReleasingTodayRvAdapter(context, item.releasingToday, appSetting, listener.releasingTodayListener)
+                    releasingTodayEmptyText.show(false)
+                } else {
+                    releasingTodayEmptyText.show(true)
+                }
+            }
+        }
+    }
+
     inner class SocialViewHolder(private val binding: LayoutHomeSocialBinding) : ViewHolder(binding) {
         override fun bind(item: HomeItem, index: Int) {
             binding.apply {
@@ -114,9 +132,9 @@ class HomeRvAdapter(
 
                 if (item.media.isNotEmpty()) {
                     trendingListRecyclerView.adapter = TrendingMediaRvAdapter(context, item.media, appSetting, width, listener.trendingMediaListener)
-                    trendingProgressBar.visibility = View.GONE
+                    trendingProgressBar.show(false)
                 } else {
-                    trendingProgressBar.visibility = View.VISIBLE
+                    trendingProgressBar.show(true)
                 }
             }
         }

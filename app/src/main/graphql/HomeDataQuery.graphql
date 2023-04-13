@@ -1,4 +1,4 @@
-query HomeDataQuery {
+query HomeDataQuery($statusVersion:Int) {
   trendingAnime: Page(page: 1, perPage: 10) {
     media(type: ANIME, sort: [TRENDING_DESC], isAdult: false) {
       ...HomeMedia
@@ -58,7 +58,7 @@ fragment HomeMedia on Media {
     userPreferred
   }
   type
-  status(version: 2)
+  status(version: $statusVersion)
   format
   description
   coverImage {
