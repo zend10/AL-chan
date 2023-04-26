@@ -132,4 +132,14 @@ class DefaultContentRepository(
             it.data?.convert()
         }
     }
+
+    override fun getAiringSchedule(
+        page: Int,
+        airingAtGreater: Int,
+        airingAtLesser: Int
+    ): Observable<Page<AiringSchedule>> {
+        return contentDataSource.getAiringSchedule(page, airingAtGreater, airingAtLesser).map {
+            it.data?.convert()
+        }
+    }
 }

@@ -21,4 +21,5 @@ interface ContentRepository {
     fun searchStudio(searchQuery: String, page: Int): Observable<Page<Studio>>
     fun searchUser(searchQuery: String, page: Int): Observable<Page<User>>
     fun getSeasonal(page: Int, year: Int, season: MediaSeason, sort: Sort, orderByDescending: Boolean, onlyShowOnList: Boolean?, showAdult: Boolean): Observable<Page<Media>>
+    fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<Page<AiringSchedule>>
 }

@@ -108,7 +108,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
 
             override fun navigateToCalendar() {
-
+                navigation.navigateToCalendar()
             }
         }
     }

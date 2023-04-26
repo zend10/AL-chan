@@ -24,6 +24,7 @@ interface NavigationManager {
     fun navigateToSeasonal() {}
     fun navigateToExplore(searchCategory: SearchCategory) {}
     fun navigateToSocial() {}
+    fun navigateToCalendar() {}
     fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {}
     fun navigateToActivityList(activityListPage: ActivityListPage, id: Int? = null) {}
     fun navigateToTextEditor(

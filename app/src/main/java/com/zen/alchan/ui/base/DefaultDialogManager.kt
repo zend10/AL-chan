@@ -274,6 +274,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+//        datePickerDialog?.datePicker?.minDate =
         datePickerDialog?.setOnCancelListener {
             datePickerDialog = null
         }

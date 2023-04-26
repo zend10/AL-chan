@@ -19,6 +19,7 @@ import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.activity.ActivityDetailFragment
 import com.zen.alchan.ui.activity.ActivityListFragment
 import com.zen.alchan.ui.browse.BrowseFragment
+import com.zen.alchan.ui.calendar.CalendarFragment
 import com.zen.alchan.ui.character.CharacterFragment
 import com.zen.alchan.ui.character.media.CharacterMediaListFragment
 import com.zen.alchan.ui.customise.CustomiseFragment
@@ -94,6 +95,10 @@ class DefaultNavigationManager(
 
     override fun navigateToSocial() {
         stackPage(SocialFragment.newInstance())
+    }
+
+    override fun navigateToCalendar() {
+        stackPage(CalendarFragment.newInstance())
     }
 
     override fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginHorizontal="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginNormal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/calendarBannerImage"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <View
+            android:background="@drawable/background_gradient_two"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/calendarTime"
+            style="?themeTitleFont"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="12:00"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/calendarTitle"
+            style="?themeRegularBoldFont"
+            app:layout_constraintTop_toTopOf="@+id/calendarTime"
+            app:layout_constraintStart_toEndOf="@id/calendarTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/calendarRemainingTime"
+            style="?themeSmallFont"
+            app:layout_constraintTop_toBottomOf="@id/calendarTitle"
+            app:layout_constraintStart_toStartOf="@id/calendarTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/calendarMediaListStatusLayout"
+            app:layout_constraintStart_toStartOf="@id/calendarTitle"
+            app:layout_constraintTop_toBottomOf="@id/calendarRemainingTime"
+            android:layout_marginTop="@dimen/marginBig"
+            android:paddingBottom="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/calendarMediaListStatusIcon"
+                app:srcCompat="@drawable/ic_filled_circle"
+                app:tint="?themeSecondaryColor"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/calendarMediaListStatusText"
+                style="?themeSmallFont"
+                android:textColor="?themeSecondaryColor"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendarStreamingRecyclerView"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/calendarMediaListStatusLayout"
+            app:layout_constraintStart_toStartOf="@id/calendarTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginClose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

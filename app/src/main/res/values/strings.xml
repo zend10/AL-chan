@@ -495,6 +495,10 @@
     <string name="ep_x_in_y_minutes">Ep. %1$d in %2$dm</string>
     <string name="ep_x_y_hours_ago">Ep. %1$d (%2$dh ago)</string>
     <string name="ep_x_y_minutes_ago">Ep. %1$d (%2$dm ago)</string>
+    <string name="date">Date</string>
+    <string name="show_only_in_your_watching_and_planning_list">Show only in your Watching and Planning list</string>
+    <string name="show_only_from_current_season">Show only from current season</string>
+    <string name="ep_x">Ep. %1$d</string>
 
 
     <plurals name="minute">

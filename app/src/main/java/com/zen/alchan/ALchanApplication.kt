@@ -18,6 +18,7 @@ import com.zen.alchan.helper.service.pushnotification.PushNotificationService
 import com.zen.alchan.ui.activity.ActivityDetailViewModel
 import com.zen.alchan.ui.activity.ActivityListViewModel
 import com.zen.alchan.ui.base.BaseActivityViewModel
+import com.zen.alchan.ui.calendar.CalendarViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.character.media.CharacterMediaListViewModel
 import com.zen.alchan.ui.common.BottomSheetMediaQuickDetailViewModel
@@ -137,6 +138,7 @@ class ALchanApplication : Application() {
         viewModel { SearchViewModel(get(), get()) }
         viewModel { SeasonalViewModel(get(), get(), get()) }
         viewModel { ExploreViewModel(get(), get()) }
+        viewModel { CalendarViewModel(get(), get()) }
 
         viewModel { MediaListViewModel(get(), get(), get()) }
 

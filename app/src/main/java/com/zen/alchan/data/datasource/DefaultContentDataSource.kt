@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import AiringScheduleQuery
 import GenreQuery
 import HomeDataQuery
 import SearchCharacterQuery
@@ -146,6 +147,19 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             sort = Input.fromNullable(listOf(sort.getAniListMediaSort(orderByDescending))),
             onList = Input.optional(onlyShowOnList),
             isAdult = Input.fromNullable(showAdult)
+        )
+        return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getAiringSchedule(
+        page: Int,
+        airingAtGreater: Int,
+        airingAtLesser: Int
+    ): Observable<Response<AiringScheduleQuery.Data>> {
+        val query = AiringScheduleQuery(
+            page = Input.fromNullable(page),
+            airingAtGreater = Input.fromNullable(airingAtGreater),
+            airingAtLesser = Input.fromNullable(airingAtLesser)
         )
         return apolloHandler.apolloClient.rxQuery(query)
     }

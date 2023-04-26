@@ -1,5 +1,6 @@
 package com.zen.alchan.data.datasource
 
+import AiringScheduleQuery
 import SearchMediaQuery
 import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.entity.MediaFilter
@@ -27,4 +28,6 @@ interface ContentDataSource {
         onlyShowOnList: Boolean?,
         showAdult: Boolean
     ): Observable<Response<SearchMediaQuery.Data>>
+
+    fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<Response<AiringScheduleQuery.Data>>
 }

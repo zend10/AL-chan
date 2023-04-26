@@ -129,6 +129,10 @@ class SeasonalViewModel(
         disposables.add(
             contentRepository.getSeasonal(page, _year.value ?: TimeUtil.getCurrentYear(), _season.value ?: TimeUtil.getCurrentSeason(), _sort.value ?: Sort.POPULARITY, _orderByDescending.value ?: true, getOnlyShowOnList(), _showAdult.value ?: false)
                 .applyScheduler()
+                .doFinally {
+                    if (state != State.LOADING)
+                        _emptyLayoutVisibility.onNext(_seasonalItems.value.isNullOrEmpty())
+                }
                 .subscribe(
                     {
                         if (it.pageInfo.hasNextPage) {
@@ -286,6 +290,7 @@ class SeasonalViewModel(
                         val editedItem = currentSeasonalItems[index]
                         currentSeasonalItems[index] = editedItem.copy(media = editedItem.media.copy(mediaListEntry = it))
                         _seasonalItems.onNext(currentSeasonalItems)
+                        state = State.LOADED
                     },
                     {
                         _error.onNext(it.getStringResource())

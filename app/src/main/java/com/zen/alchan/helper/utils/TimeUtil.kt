@@ -65,6 +65,18 @@ object TimeUtil {
         return dateFormat.format(date)
     }
 
+    fun displayInDateFormat(seconds: Int): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val date = Date(seconds * 1000L)
+        return dateFormat.format(date)
+    }
+
+    fun displayInTimeFormat(seconds: Int): String {
+        val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val date = Date (seconds * 1000L)
+        return dateFormat.format(date)
+    }
+
     fun getDaysAndHours(minutes: Int): Pair<Int, Int> {
         val days = minutes / 60 / 24
         val hours = (minutes - (days * 60 * 24)) / 60
@@ -75,5 +87,14 @@ object TimeUtil {
         val calendar = Calendar.getInstance()
         val minutes = calendar.get(Calendar.MINUTE)
         return 60 - minutes
+    }
+
+    fun getTodayInSeconds(): Int {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return (calendar.timeInMillis / 1000).toInt()
     }
 }

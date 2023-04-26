@@ -19,8 +19,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/infiniteScrollingRecyclerView"
-            android:paddingTop="@dimen/marginPageNormal"
-            android:paddingHorizontal="@dimen/marginPageNormal"
+            android:paddingTop="@dimen/marginNormal"
+            android:paddingHorizontal="@dimen/marginNormal"
+            android:paddingBottom="@dimen/marginNormal"
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

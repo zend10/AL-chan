@@ -22,7 +22,7 @@
         app:spanCount="@integer/gridSpan"
         app:layout_constraintTop_toBottomOf="@id/releasingTodayText"
         android:layout_marginTop="@dimen/marginNormal"
-        android:paddingStart="@dimen/marginNormal"
+        android:paddingStart="@dimen/marginPageNormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
