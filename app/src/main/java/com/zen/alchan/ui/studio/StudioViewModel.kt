@@ -82,6 +82,10 @@ class StudioViewModel(
             checkFavorite()
     }
 
+    fun reloadData() {
+        loadStudio()
+    }
+
     private fun checkFavorite() {
         if (studio.id == 0)
             return

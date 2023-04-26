@@ -90,6 +90,10 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
             studioSetAsFavoriteButton.clicks {
                 viewModel.toggleFavorite()
             }
+
+            studioSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadData()
+            }
         }
     }
 

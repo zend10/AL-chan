@@ -103,6 +103,10 @@ class CharacterViewModel(
             checkFavorite()
     }
 
+    fun reloadData() {
+        loadCharacter()
+    }
+
     private fun checkFavorite() {
         if (character.id == 0)
             return

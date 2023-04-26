@@ -95,6 +95,10 @@ class StaffViewModel(
             checkFavorite()
     }
 
+    fun reloadData() {
+        loadStaff()
+    }
+
     private fun checkFavorite() {
         if (staff.id == 0)
             return

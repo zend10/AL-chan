@@ -84,9 +84,13 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             mediaAddToListButton.clicks {
                 arguments?.getInt(MEDIA_ID)?.let { mediaId ->
                     navigation.navigateToEditor(mediaId, false) {
-                        viewModel.loadData(MediaParam(mediaId))
+                        // do nothing
                     }
                 }
+            }
+
+            mediaSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadData()
             }
         }
     }

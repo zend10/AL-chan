@@ -96,6 +96,10 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
             staffSetAsFavoriteButton.clicks {
                 viewModel.toggleFavorite()
             }
+
+            staffSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadData()
+            }
         }
     }
 

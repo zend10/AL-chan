@@ -137,7 +137,19 @@ class MediaViewModel(
 
             if (media.getId() != 0)
                 checkMediaList()
+
+            disposables.add(
+                mediaListRepository.refreshMediaListTrigger
+                    .applyScheduler()
+                    .subscribe { (mediaType, mediaList) ->
+                        _addToListButtonText.onNext(mediaList?.status?.getString(mediaType) ?: "")
+                    }
+            )
         }
+    }
+
+    fun reloadData() {
+        loadMedia()
     }
 
     private fun checkMediaList() {

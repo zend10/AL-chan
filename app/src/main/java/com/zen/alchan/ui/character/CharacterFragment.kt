@@ -93,6 +93,10 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             characterSetAsFavoriteButton.clicks {
                 viewModel.toggleFavorite()
             }
+
+            characterSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadData()
+            }
         }
     }
 
