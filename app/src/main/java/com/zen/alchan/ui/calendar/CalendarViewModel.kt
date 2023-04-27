@@ -137,17 +137,23 @@ class CalendarViewModel(
 
     fun updateShowOnlyWatchingAndPlanning(shouldShowOnlyWatchingAndPlanning: Boolean) {
         _showOnlyWatchingAndPlanning.onNext(shouldShowOnlyWatchingAndPlanning)
-        _airingSchedules.onNext(getFilteredAiringSchedules())
+        val filteredAiringSchedules = getFilteredAiringSchedules()
+        _airingSchedules.onNext(filteredAiringSchedules)
+        _emptyLayoutVisibility.onNext(filteredAiringSchedules.isEmpty())
     }
 
     fun updateShowOnlyCurrentSeason(shouldShowOnlyCurrentSeason: Boolean) {
         _showOnlyCurrentSeason.onNext(shouldShowOnlyCurrentSeason)
-        _airingSchedules.onNext(getFilteredAiringSchedules())
+        val filteredAiringSchedules = getFilteredAiringSchedules()
+        _airingSchedules.onNext(filteredAiringSchedules)
+        _emptyLayoutVisibility.onNext(filteredAiringSchedules.isEmpty())
     }
 
     fun updateShowAdult(shouldShowAdult: Boolean) {
         _showAdult.onNext(shouldShowAdult)
-        _airingSchedules.onNext(getFilteredAiringSchedules())
+        val filteredAiringSchedules = getFilteredAiringSchedules()
+        _airingSchedules.onNext(filteredAiringSchedules)
+        _emptyLayoutVisibility.onNext(filteredAiringSchedules.isEmpty())
     }
 
     private fun getFilteredAiringSchedules(): List<AiringSchedule> {
