@@ -15,8 +15,6 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import com.zen.alchan.ui.media.MediaLinksRvAdapter
-import com.zen.alchan.ui.media.MediaListener
 
 class CalendarRvAdapter(
     private val context: Context,
@@ -67,11 +65,7 @@ class CalendarRvAdapter(
                 calendarMediaListStatusText.setTextColor(statusColor)
 
                 calendarStreamingRecyclerView.show(item.media.externalLinks.isNotEmpty())
-                calendarStreamingRecyclerView.adapter = MediaLinksRvAdapter(context, item.media.externalLinks, object : MediaListener.MediaLinksListener {
-                    override fun copyExternalLink(mediaExternalLink: MediaExternalLink) {
-                        // do nothing
-                    }
-
+                calendarStreamingRecyclerView.adapter = CalendarMediaLinksRvAdapter(context, item.media.externalLinks, object : CalendarMediaLinksRvAdapter.CalendarMediaLinksListener {
                     override fun navigateToUrl(mediaExternalLink: MediaExternalLink) {
                         listener.navigateToUrl(mediaExternalLink)
                     }
