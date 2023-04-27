@@ -1,8 +1,6 @@
 package com.zen.alchan.ui.main
 
-import android.net.Uri
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.get
 import androidx.viewpager2.widget.ViewPager2
@@ -15,7 +13,7 @@ import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.notifications.NotificationsFragment
 import com.zen.alchan.ui.profile.ProfileFragment
-import com.zen.alchan.ui.social.SocialFragment
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -157,25 +155,25 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             deepLink.isAnimeList() && isViewerAuthenticated -> {
                 val animeListIndex = fragments?.indexOfFirst { it == animeListFragment  }
                 if (animeListIndex != null && animeListIndex != -1) {
-                    binding.mainViewPager.currentItem = animeListIndex
+                    changeTabWithDelay(animeListIndex)
                 }
             }
             deepLink.isMangaList() && isViewerAuthenticated -> {
                 val mangaListIndex = fragments?.indexOfFirst { it == mangaListFragment  }
                 if (mangaListIndex != null && mangaListIndex != -1) {
-                    binding.mainViewPager.currentItem = mangaListIndex
+                    changeTabWithDelay(mangaListIndex)
                 }
             }
             deepLink.isNotifications() && isViewerAuthenticated -> {
                 val notificationsIndex = fragments?.indexOfFirst { it == notificationsFragment }
                 if (notificationsIndex != null && notificationsIndex != -1) {
-                    binding.mainViewPager.currentItem = notificationsIndex
+                    changeTabWithDelay(notificationsIndex)
                 }
             }
             deepLink.isProfile() && isViewerAuthenticated -> {
                 val profileIndex = fragments?.indexOfFirst { it == profileFragment }
                 if (profileIndex != null && profileIndex != -1) {
-                    binding.mainViewPager.currentItem = profileIndex
+                    changeTabWithDelay(profileIndex)
                 }
             }
             deepLink.isAppSettings() && isViewerAuthenticated -> {
@@ -229,6 +227,19 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         }
 
         this.deepLink = null
+    }
+
+    private fun changeTabWithDelay(index: Int) {
+        Single.timer(1, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    binding.mainViewPager.currentItem = index
+                },
+                {
+                }
+            )
     }
 
     override fun onDestroyView() {
