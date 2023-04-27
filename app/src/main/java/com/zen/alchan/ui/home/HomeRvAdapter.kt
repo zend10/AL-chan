@@ -104,8 +104,10 @@ class HomeRvAdapter(
             with(binding) {
                 if (item.releasingToday.isNotEmpty()) {
                     releasingTodayRecyclerView.adapter = ReleasingTodayRvAdapter(context, item.releasingToday, appSetting, listener.releasingTodayListener)
+                    releasingTodayRecyclerView.show(true)
                     releasingTodayEmptyText.show(false)
                 } else {
+                    releasingTodayRecyclerView.show(false)
                     releasingTodayEmptyText.show(true)
                 }
             }
