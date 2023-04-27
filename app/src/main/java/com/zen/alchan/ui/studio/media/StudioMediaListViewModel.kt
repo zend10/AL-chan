@@ -8,6 +8,7 @@ import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.StudioMediaListAdapterComponent
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -19,9 +20,9 @@ class StudioMediaListViewModel(
     private val browseRepository: BrowseRepository
 ) : BaseViewModel<StudioMediaListParam>() {
 
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    val appSetting: Observable<AppSetting>
-        get() = _appSetting
+    private val _adapterComponent = PublishSubject.create<StudioMediaListAdapterComponent>()
+    val adapterComponent: Observable<StudioMediaListAdapterComponent>
+        get() = _adapterComponent
 
     private val _media = BehaviorSubject.createDefault<List<MediaEdge>>(listOf())
     val media: Observable<List<MediaEdge>>
@@ -39,6 +40,8 @@ class StudioMediaListViewModel(
     val showHideOnListList: Observable<List<ListItem<Boolean?>>>
         get() = _showHideOnListList
 
+    private var appSetting = AppSetting()
+
     private var studioId = 0
     private var mediaSort = MediaSort.POPULARITY_DESC
     private var onList: Boolean? = null
@@ -54,7 +57,8 @@ class StudioMediaListViewModel(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
-                        _appSetting.onNext(it)
+                        appSetting = it
+                        _adapterComponent.onNext(StudioMediaListAdapterComponent(appSetting, mediaSort))
                         loadMedia()
                     }
             )
@@ -122,6 +126,7 @@ class StudioMediaListViewModel(
 
     fun updateMediaSort(newMediaSort: MediaSort) {
         mediaSort = newMediaSort
+        _adapterComponent.onNext(StudioMediaListAdapterComponent(appSetting, mediaSort))
         reloadData()
     }
 

@@ -25,7 +25,15 @@ fun StudioQuery.Data.convert(): Studio {
                                 extraLarge = it?.node?.coverImage?.extraLarge ?: "",
                                 large = it?.node?.coverImage?.large ?: "",
                                 medium = it?.node?.coverImage?.medium ?: ""
-                            )
+                            ),
+                            averageScore = it?.node?.averageScore ?: 0,
+                            meanScore = it?.node?.meanScore ?: 0,
+                            popularity = it?.node?.popularity ?: 0,
+                            favourites = it?.node?.favourites ?: 0,
+                            startDate = if (it?.node?.startDate != null)
+                                FuzzyDate(year = it?.node.startDate.year, month = it.node.startDate.month, day = it.node.startDate.day)
+                            else
+                                null
                         ),
                         isMainStudio = it?.isMainStudio ?: false
                     )

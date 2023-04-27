@@ -9,6 +9,7 @@ import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.StaffCharacterListAdapterComponent
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -21,9 +22,9 @@ class StaffCharacterListViewModel(
     private val browseRepository: BrowseRepository
 ) : BaseViewModel<StaffCharacterListParam>() {
 
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    val appSetting: Observable<AppSetting>
-        get() = _appSetting
+    private val _adapterComponent = PublishSubject.create<StaffCharacterListAdapterComponent>()
+    val adapterComponent: Observable<StaffCharacterListAdapterComponent>
+        get() = _adapterComponent
 
     private val _characters = BehaviorSubject.createDefault<List<CharacterEdge>>(listOf())
     val characters: Observable<List<CharacterEdge>>
@@ -41,7 +42,7 @@ class StaffCharacterListViewModel(
     val showCharactersText: Observable<Int>
         get() = _showCharactersText
 
-    private val _showCharacters = BehaviorSubject.createDefault(true)
+    private val _showCharacters = PublishSubject.create<Boolean>()
     val showCharacters: Observable<Boolean>
         get() = _showCharacters
 
@@ -61,6 +62,9 @@ class StaffCharacterListViewModel(
     val showHideOnListList: Observable<List<ListItem<Boolean?>>>
         get() = _showHideOnListList
 
+    private var appSetting = AppSetting()
+    private var shouldShowCharacters = true
+
     private var staffId = 0
     private var characterSort = CharacterSort.FAVOURITES_DESC
     private var mediaSort = MediaSort.POPULARITY_DESC
@@ -77,7 +81,8 @@ class StaffCharacterListViewModel(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
-                        _appSetting.onNext(it)
+                        appSetting = it
+                        _adapterComponent.onNext(StaffCharacterListAdapterComponent(appSetting, mediaSort))
                         loadCharacter()
                     }
             )
@@ -90,7 +95,7 @@ class StaffCharacterListViewModel(
 
     fun loadNextPage() {
         if ((state == State.LOADED || state == State.ERROR) && hasNextPage) {
-            if (_showCharacters.value == true) {
+            if (shouldShowCharacters) {
                 val currentCharacters = ArrayList(_characters.value ?: listOf())
                 currentCharacters.add(null)
                 _characters.onNext(currentCharacters)
@@ -125,7 +130,7 @@ class StaffCharacterListViewModel(
                         currentPage = staff.characters.pageInfo.currentPage
 
                         if (isLoadingNextPage) {
-                            if (_showCharacters.value == true) {
+                            if (shouldShowCharacters) {
                                 val currentCharacters = ArrayList(_characters.value ?: listOf())
                                 currentCharacters.remove(null)
                                 currentCharacters.addAll(staff.characters.edges)
@@ -137,7 +142,7 @@ class StaffCharacterListViewModel(
                                 _media.onNext(currentMedia)
                             }
                         } else {
-                            if (_showCharacters.value == true) {
+                            if (shouldShowCharacters) {
                                 _characters.onNext(staff.characters.edges)
                             } else {
                                 _media.onNext(staff.characterMedia.edges)
@@ -148,7 +153,7 @@ class StaffCharacterListViewModel(
                     },
                     {
                         if (isLoadingNextPage) {
-                            if (_showCharacters.value == true) {
+                            if (shouldShowCharacters) {
                                 val currentCharacters = ArrayList(_characters.value ?: listOf())
                                 currentCharacters.remove(null)
                                 _characters.onNext(currentCharacters)
@@ -167,22 +172,22 @@ class StaffCharacterListViewModel(
     }
 
     fun updateShowCharacters() {
-        _showCharacters.value?.let {
-            val newShouldShowCharacter = !it
-            if (newShouldShowCharacter) {
-                _showCharactersText.onNext(R.string.show_media)
-            } else {
-                _showCharactersText.onNext(R.string.show_characters)
-            }
-            _mediaSortVisibility.onNext(!newShouldShowCharacter)
-            _showHideOnListVisibility.onNext(!newShouldShowCharacter)
-            _showCharacters.onNext(newShouldShowCharacter)
-            reloadData()
+        val newShouldShowCharacter = !shouldShowCharacters
+        if (newShouldShowCharacter) {
+            _showCharactersText.onNext(R.string.show_media)
+        } else {
+            _showCharactersText.onNext(R.string.show_characters)
         }
+        _mediaSortVisibility.onNext(!newShouldShowCharacter)
+        _showHideOnListVisibility.onNext(!newShouldShowCharacter)
+        shouldShowCharacters = newShouldShowCharacter
+        _showCharacters.onNext(newShouldShowCharacter)
+        reloadData()
     }
 
     fun updateMediaSort(newMediaSort: MediaSort) {
         mediaSort = newMediaSort
+        _adapterComponent.onNext(StaffCharacterListAdapterComponent(appSetting, mediaSort))
         reloadData()
     }
 

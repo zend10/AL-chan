@@ -12,10 +12,13 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.pojo.StaffMediaListAdapterComponent
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import type.MediaSort
 
 
 class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, StaffMediaListViewModel>() {
@@ -23,6 +26,7 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
     override val viewModel: StaffMediaListViewModel by viewModel()
 
     private var adapter: StaffMediaListRvAdapter? = null
+    private var adapterComponent = StaffMediaListAdapterComponent()
 
     private var menuSortBy: MenuItem? = null
     private var menuShowHideOnList: MenuItem? = null
@@ -38,6 +42,8 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.media_list))
             defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_staff_media_list)
+            defaultToolbar.defaultToolbar.subtitle = getString(R.string.sorted_by_x, getString(adapterComponent.mediaSort.getStringResource()))
+
             menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
             menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
 
@@ -51,7 +57,7 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
                 true
             }
 
-            adapter = StaffMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffMediaListListener())
+            adapter = StaffMediaListRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, adapterComponent.mediaSort, getStaffMediaListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
@@ -84,9 +90,11 @@ class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Staf
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
-            viewModel.appSetting.subscribe {
-                adapter = StaffMediaListRvAdapter(requireContext(), listOf(), it, getStaffMediaListListener())
+            viewModel.adapterComponent.subscribe {
+                adapterComponent = it
+                adapter = StaffMediaListRvAdapter(requireContext(), listOf(), it.appSetting, it.mediaSort, getStaffMediaListListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
+                binding.defaultToolbar.defaultToolbar.subtitle = getString(R.string.sorted_by_x, getString(it.mediaSort.getStringResource()))
             },
             viewModel.media.subscribe {
                 adapter?.updateData(it, true)

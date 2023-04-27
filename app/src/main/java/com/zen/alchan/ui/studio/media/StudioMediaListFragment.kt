@@ -12,7 +12,9 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.pojo.StudioMediaListAdapterComponent
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +24,7 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
     override val viewModel: StudioMediaListViewModel by viewModel()
 
     private var adapter: StudioMediaListRvAdapter? = null
+    private var adapterComponent = StudioMediaListAdapterComponent()
 
     private var menuSortBy: MenuItem? = null
     private var menuShowHideOnList: MenuItem? = null
@@ -37,6 +40,8 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.media_list))
             defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_studio_media_list)
+            defaultToolbar.defaultToolbar.subtitle = getString(R.string.sorted_by_x, getString(adapterComponent.mediaSort.getStringResource()))
+
             menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
             menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
 
@@ -50,7 +55,7 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
                 true
             }
 
-            adapter = StudioMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStudioMediaListListener())
+            adapter = StudioMediaListRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, adapterComponent.mediaSort, getStudioMediaListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
@@ -83,9 +88,11 @@ class StudioMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Stu
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
-            viewModel.appSetting.subscribe {
-                adapter = StudioMediaListRvAdapter(requireContext(), listOf(), it, getStudioMediaListListener())
+            viewModel.adapterComponent.subscribe {
+                adapterComponent = it
+                adapter = StudioMediaListRvAdapter(requireContext(), listOf(), it.appSetting, it.mediaSort, getStudioMediaListListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
+                binding.defaultToolbar.defaultToolbar.subtitle = getString(R.string.sorted_by_x, getString(it.mediaSort.getStringResource()))
             },
             viewModel.media.subscribe {
                 adapter?.updateData(it, true)

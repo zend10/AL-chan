@@ -40,6 +40,38 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardExtraInfoLayout"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/cardImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardBackgroundColor="?themeCardTransparentColor"
+            app:contentPadding="@dimen/marginClose"
+            android:layout_margin="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cardExtraInfoIcon"
+                    android:layout_marginEnd="@dimen/marginClose"
+                    android:layout_width="@dimen/iconSmallSize"
+                    android:layout_height="@dimen/iconSmallSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/cardExtraInfoText"
+                    style="?themeSmallFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardText"
             style="?themeRegularClickableFont"

@@ -13,7 +13,9 @@ import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.pojo.StaffCharacterListAdapterComponent
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,6 +27,8 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
 
     private var adapter: StaffCharacterListRvAdapter? = null
     private var mediaAdapter: StaffCharacterMediaListRvAdapter? = null
+    private var adapterComponent = StaffCharacterListAdapterComponent()
+    private var useMediaAdapter = false
 
     private var menuShowCharacters: MenuItem? = null
     private var menuSortBy: MenuItem? = null
@@ -41,6 +45,8 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.character_list))
             defaultToolbar.defaultToolbar.inflateMenu(R.menu.menu_staff_character_list)
+            handleSubtitle()
+
             menuShowCharacters = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowCharacters)
             menuSortBy = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemSortBy)
             menuShowHideOnList = defaultToolbar.defaultToolbar.menu.findItem(R.id.itemShowHideOnList)
@@ -60,12 +66,13 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
                 true
             }
 
-            adapter = StaffCharacterListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffCharacterListListener())
+            adapter = StaffCharacterListRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, getStaffCharacterListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
-            infiniteScrollingRecyclerView.adapter = adapter
 
-            mediaAdapter = StaffCharacterMediaListRvAdapter(requireContext(), listOf(), AppSetting(), getStaffCharacterListListener())
+            mediaAdapter = StaffCharacterMediaListRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, adapterComponent.mediaSort, getStaffCharacterListListener())
+
+            infiniteScrollingRecyclerView.adapter = if (useMediaAdapter) mediaAdapter else adapter
 
             infiniteScrollingSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -95,9 +102,12 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
-            viewModel.appSetting.subscribe {
-                adapter = StaffCharacterListRvAdapter(requireContext(), listOf(), it, getStaffCharacterListListener())
-                binding.infiniteScrollingRecyclerView.adapter = adapter
+            viewModel.adapterComponent.subscribe {
+                adapterComponent = it
+                adapter = StaffCharacterListRvAdapter(requireContext(), listOf(), it.appSetting, getStaffCharacterListListener())
+                mediaAdapter = StaffCharacterMediaListRvAdapter(requireContext(), listOf(), it.appSetting, it.mediaSort, getStaffCharacterListListener())
+                binding.infiniteScrollingRecyclerView.adapter = if (useMediaAdapter) mediaAdapter else adapter
+                handleSubtitle()
             },
             viewModel.characters.subscribe {
                 adapter?.updateData(it, true)
@@ -112,7 +122,9 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
                 menuShowCharacters?.title = getString(it)
             },
             viewModel.showCharacters.subscribe {
-                binding.infiniteScrollingRecyclerView.adapter = if (it) adapter else mediaAdapter
+                useMediaAdapter = !it
+                binding.infiniteScrollingRecyclerView.adapter = if (useMediaAdapter) mediaAdapter else adapter
+                handleSubtitle()
             },
             viewModel.mediaSortVisibility.subscribe {
                 menuSortBy?.isVisible = it
@@ -149,9 +161,17 @@ class StaffCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
         }
     }
 
+    private fun handleSubtitle() {
+        binding.defaultToolbar.defaultToolbar.subtitle = if (useMediaAdapter)
+            getString(R.string.sorted_by_x, getString(adapterComponent.mediaSort.getStringResource()))
+        else
+            ""
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+        mediaAdapter = null
         menuShowCharacters = null
         menuSortBy = null
         menuShowHideOnList = null

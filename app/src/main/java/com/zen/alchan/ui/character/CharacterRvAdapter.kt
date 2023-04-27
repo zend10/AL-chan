@@ -19,6 +19,7 @@ import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import type.MediaSort
 
 class CharacterRvAdapter(
     private val context: Context,
@@ -51,7 +52,7 @@ class CharacterRvAdapter(
             }
             CharacterItem.VIEW_TYPE_MEDIA -> {
                 val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
-                characterMediaAdapter = CharacterMediaRvAdapter(context, listOf(), appSetting, listener.characterMediaListener)
+                characterMediaAdapter = CharacterMediaRvAdapter(context, listOf(), appSetting, null, listener.characterMediaListener)
                 view.listRecyclerView.layoutManager = GridLayoutManager(context, context.resources.getInteger(R.integer.gridSpan))
                 view.listRecyclerView.adapter = characterMediaAdapter
                 view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(context.resources.getInteger(R.integer.gridSpan), context.resources.getDimensionPixelSize(R.dimen.marginNormal), false))

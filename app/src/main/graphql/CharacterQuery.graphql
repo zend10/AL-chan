@@ -43,6 +43,15 @@ query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort],$type:MediaType,$onList
                     }
                     type
                     format
+                    averageScore
+                    meanScore
+                    popularity
+                    favourites
+                    startDate {
+                        year
+                        month
+                        day
+                    }
                 }
                 characterRole
               	voiceActorRoles {

@@ -1,23 +1,29 @@
 package com.zen.alchan.ui.character
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.databinding.ListCardImageAndTextBinding
 import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.databinding.ListMediaRelationBinding
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
+import type.MediaSort
 
 class CharacterMediaRvAdapter(
     private val context: Context,
     list: List<MediaEdge?>,
     private val appSetting: AppSetting,
+    private val mediaSort: MediaSort?,
     private val listener: CharacterListener.CharacterMediaListener
 ) : BaseRecyclerViewAdapter<MediaEdge?, ViewBinding>(list) {
 
@@ -53,6 +59,40 @@ class CharacterMediaRvAdapter(
 
                 cardInfoLayout.show(true)
                 cardInfoText.text = item.node.getFormattedMediaFormat(true)
+
+                cardExtraInfoLayout.show(mediaSort != null)
+                cardExtraInfoIcon.show(
+                    listOf(
+                        MediaSort.POPULARITY_DESC,
+                        MediaSort.FAVOURITES_DESC,
+                        MediaSort.SCORE_DESC
+                    ).any {
+                        it == mediaSort
+                    }
+                )
+                when (mediaSort) {
+                    MediaSort.POPULARITY_DESC -> {
+                        ImageUtil.loadImage(context, R.drawable.ic_calculator, cardExtraInfoIcon)
+                        cardExtraInfoIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.brightGreen))
+                        cardExtraInfoText.text = item.node.popularity.getNumberFormatting()
+                    }
+                    MediaSort.FAVOURITES_DESC -> {
+                        ImageUtil.loadImage(context, R.drawable.ic_heart_outline, cardExtraInfoIcon)
+                        cardExtraInfoIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.brightRed))
+                        cardExtraInfoText.text = item.node.favourites.getNumberFormatting()
+                    }
+                    MediaSort.SCORE_DESC -> {
+                        ImageUtil.loadImage(context, R.drawable.ic_star_filled, cardExtraInfoIcon)
+                        cardExtraInfoIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.brightYellow))
+                        cardExtraInfoText.text = item.node.averageScore.getNumberFormatting()
+                    }
+                    MediaSort.START_DATE_DESC, MediaSort.START_DATE -> {
+                        cardExtraInfoText.text = item.node.startDate?.year?.toString() ?: "TBA"
+                    }
+                    else -> {
+                        cardExtraInfoText.text = ""
+                    }
+                }
 
                 cardRecyclerView.show(false)
 

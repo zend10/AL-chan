@@ -20,6 +20,15 @@ query StudioQuery($id:Int, $sort:[MediaSort], $onList:Boolean $page:Int) {
                 large
                 medium
             }
+            averageScore
+            meanScore
+            popularity
+            favourites
+            startDate {
+                year
+                month
+                day
+            }
           }
           isMainStudio
         }

@@ -47,7 +47,15 @@ fun CharacterQuery.Data.convert(): Character {
                             medium = it.node?.coverImage?.medium ?: "",
                         ),
                         type = it.node?.type,
-                        format = it.node?.format
+                        format = it.node?.format,
+                        averageScore = it.node?.averageScore ?: 0,
+                        meanScore = it.node?.meanScore ?: 0,
+                        popularity = it.node?.popularity ?: 0,
+                        favourites = it.node?.favourites ?: 0,
+                        startDate = if (it.node?.startDate != null)
+                            FuzzyDate(year = it.node.startDate.year, month = it.node.startDate.month, day = it.node.startDate.day)
+                        else
+                            null
                     ),
                     characterRole = it.characterRole,
                     voiceActorRoles = it.voiceActorRoles?.filterNotNull()?.map {

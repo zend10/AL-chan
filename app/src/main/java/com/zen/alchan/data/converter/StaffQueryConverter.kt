@@ -54,7 +54,15 @@ fun StaffQuery.Data.convert(): Staff {
                                 medium = it.node?.coverImage?.medium ?: "",
                             ),
                             type = it.node?.type,
-                            format = it.node?.format
+                            format = it.node?.format,
+                            averageScore = it.node?.averageScore ?: 0,
+                            meanScore = it.node?.meanScore ?: 0,
+                            popularity = it.node?.popularity ?: 0,
+                            favourites = it.node?.favourites ?: 0,
+                            startDate = if (it.node?.startDate != null)
+                                FuzzyDate(year = it.node.startDate.year, month = it.node.startDate.month, day = it.node.startDate.day)
+                            else
+                                null
                         ),
                         staffRole = it.staffRole ?: ""
                     )
@@ -132,7 +140,15 @@ fun StaffQuery.Data.convert(): Staff {
                                 large = it.node?.coverImage?.large ?: "",
                                 medium = it.node?.coverImage?.medium ?: "",
                             ),
-                            format = it.node?.format
+                            format = it.node?.format,
+                            averageScore = it.node?.averageScore ?: 0,
+                            meanScore = it.node?.meanScore ?: 0,
+                            popularity = it.node?.popularity ?: 0,
+                            favourites = it.node?.favourites ?: 0,
+                            startDate = if (it.node?.startDate != null)
+                                FuzzyDate(year = it.node.startDate.year, month = it.node.startDate.month, day = it.node.startDate.day)
+                            else
+                                null
                         ),
                         characters = it.characters?.filterNotNull()?.map {
                             Character(

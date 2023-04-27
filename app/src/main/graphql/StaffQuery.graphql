@@ -51,6 +51,15 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                     }
                     type
                     format
+                    averageScore
+                    meanScore
+                    popularity
+                    favourites
+                    startDate {
+                        year
+                        month
+                        day
+                    }
                 }
                 staffRole
             }
@@ -122,6 +131,15 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                       medium
                     }
                     format
+                    averageScore
+                    meanScore
+                    popularity
+                    favourites
+                    startDate {
+                        year
+                        month
+                        day
+                    }
                 }
               	characters {
                   	id

@@ -8,6 +8,7 @@ import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.StaffMediaListAdapterComponent
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -19,9 +20,9 @@ class StaffMediaListViewModel(
     private val browseRepository: BrowseRepository
 ) : BaseViewModel<StaffMediaListParam>() {
 
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    val appSetting: Observable<AppSetting>
-        get() = _appSetting
+    private val _adapterComponent = PublishSubject.create<StaffMediaListAdapterComponent>()
+    val adapterComponent: Observable<StaffMediaListAdapterComponent>
+        get() = _adapterComponent
 
     private val _media = BehaviorSubject.createDefault<List<MediaEdge>>(listOf())
     val media: Observable<List<MediaEdge>>
@@ -39,6 +40,8 @@ class StaffMediaListViewModel(
     val showHideOnListList: Observable<List<ListItem<Boolean?>>>
         get() = _showHideOnListList
 
+    private var appSetting = AppSetting()
+
     private var staffId = 0
     private var mediaSort = MediaSort.POPULARITY_DESC
     private var onList: Boolean? = null
@@ -54,7 +57,8 @@ class StaffMediaListViewModel(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
-                        _appSetting.onNext(it)
+                        appSetting = it
+                        _adapterComponent.onNext(StaffMediaListAdapterComponent(appSetting, mediaSort))
                         loadMedia()
                     }
             )
@@ -122,6 +126,7 @@ class StaffMediaListViewModel(
 
     fun updateMediaSort(newMediaSort: MediaSort) {
         mediaSort = newMediaSort
+        _adapterComponent.onNext(StaffMediaListAdapterComponent(appSetting, mediaSort))
         reloadData()
     }
 

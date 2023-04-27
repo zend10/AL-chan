@@ -7,6 +7,7 @@ import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.MediaEdge
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.CharacterMediaListAdapterComponent
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -20,9 +21,9 @@ class CharacterMediaListViewModel(
     private val browseRepository: BrowseRepository
 ) : BaseViewModel<CharacterMediaListParam>() {
 
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    val appSetting: Observable<AppSetting>
-        get() = _appSetting
+    private val _adapterComponent = PublishSubject.create<CharacterMediaListAdapterComponent>()
+    val adapterComponent: Observable<CharacterMediaListAdapterComponent>
+        get() = _adapterComponent
 
     private val _media = BehaviorSubject.createDefault<List<MediaEdge>>(listOf())
     val media: Observable<List<MediaEdge>>
@@ -44,6 +45,8 @@ class CharacterMediaListViewModel(
     val showHideOnListList: Observable<List<ListItem<Boolean?>>>
         get() = _showHideOnListList
 
+    private var appSetting = AppSetting()
+
     private var characterId = 0
     private var mediaSort = MediaSort.POPULARITY_DESC
     private var mediaType: MediaType? = null
@@ -60,7 +63,8 @@ class CharacterMediaListViewModel(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
-                        _appSetting.onNext(it)
+                        appSetting = it
+                        _adapterComponent.onNext(CharacterMediaListAdapterComponent(appSetting, mediaSort))
                         loadMedia()
                     }
             )
@@ -128,6 +132,7 @@ class CharacterMediaListViewModel(
 
     fun updateMediaSort(newMediaSort: MediaSort) {
         mediaSort = newMediaSort
+        _adapterComponent.onNext(CharacterMediaListAdapterComponent(appSetting, mediaSort))
         reloadData()
     }
 
