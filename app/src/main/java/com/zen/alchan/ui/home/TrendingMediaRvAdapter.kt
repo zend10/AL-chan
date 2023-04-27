@@ -43,13 +43,7 @@ class TrendingMediaRvAdapter(
                         .filter { it.isMain }
                         .joinToString(", ") { it.node.name }
                 } else {
-                    item.staff.edges
-                        .filter {
-                            it.role.contains("art", true) ||
-                                    it.role.contains("story", true) ||
-                                    it.role.contains("creator", true) ||
-                                    it.role.contains("original", true)
-                        }
+                    item.getMainStaff()
                         .joinToString(", ") { it.node.name.full }
                 }
                 trendingMediaScoreText.text = item.averageScore.getNumberFormatting()
