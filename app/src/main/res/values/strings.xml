@@ -502,6 +502,8 @@
     <string name="sorted_by_x">Sorted by %1$s</string>
     <string name="your_session_has_ended">Your session has ended, but don\'t worry about it. Please try to relog and it should be fine again.</string>
     <string name="something_went_wrong_please_try_again_in_few_minutes">Something went wrong. Please try again in few minutes.</string>
+    <string name="session_expired">Session Expired</string>
+    <string name="something_went_wrong_seems_like_a_connection_issue">Something went wrong. Seems like a connection issue.</string>
 
 
     <plurals name="minute">

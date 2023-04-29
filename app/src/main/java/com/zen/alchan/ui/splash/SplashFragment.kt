@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentSplashBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
@@ -29,7 +30,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     }
 
     override fun setUpObserver() {
-        disposables.add(
+        disposables.addAll(
             viewModel.isLoggedIn.subscribe {
                 // in a case where there's a deep link passed to Splash screen,
                 // navigate directly to Main screen
@@ -39,6 +40,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 } else {
                     navigation.navigateToLanding()
                 }
+            },
+            viewModel.isSessionExpired.subscribe {
+                dialog.showMessageDialog(R.string.session_expired, R.string.your_session_has_ended, R.string.ok)
             }
         )
 
