@@ -14,10 +14,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            app:srcCompat="@drawable/ic_sad"
-            android:layout_width="@dimen/imageCircleSize"
-            android:layout_height="@dimen/imageCircleSize"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:text="【・ヘ・?】"
+            style="?themeBigFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:text="@string/there_s_nothing_here"
