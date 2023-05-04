@@ -54,9 +54,10 @@ class SplashViewModel(
     private fun loadAnnouncement() {
         disposables.add(
             infoRepository.getAnnouncement()
-                .zipWith(infoRepository.getLastAnnouncementId()) { annoucement, lastAnnouncementId ->
-                    annoucement to lastAnnouncementId
+                .zipWith(infoRepository.getLastAnnouncementId()) { announcement, lastAnnouncementId ->
+                    announcement to lastAnnouncementId
                 }
+                .applyScheduler()
                 .subscribe(
                     { (announcement, lastAnnouncementId) ->
                         this.announcement = announcement
@@ -87,6 +88,7 @@ class SplashViewModel(
                         goToNextPage()
                     },
                     {
+                        it.printStackTrace()
                         goToNextPage()
                     }
                 )
