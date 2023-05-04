@@ -57,6 +57,10 @@ class DefaultSharedPreferencesHandler(
         get() = getData(LAST_NOTIFICATION_ID)?.toIntOrNull()
         set(value) { setData(LAST_NOTIFICATION_ID, value.toString()) }
 
+    override var lastAnnouncementId: String?
+        get() = getData(LAST_ANNOUNCEMENT_ID)
+        set(value) { setData(LAST_ANNOUNCEMENT_ID, value) }
+
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val GUEST_LOGIN = "guestLogin"
@@ -69,5 +73,6 @@ class DefaultSharedPreferencesHandler(
         private const val FOLLOWERS_COUNT = "followersCount"
         private const val OTHERS_LIST_TYPE = "othersListType"
         private const val LAST_NOTIFICATION_ID = "lastNotificationId"
+        private const val LAST_ANNOUNCEMENT_ID = "lastAnnouncementId"
     }
 }

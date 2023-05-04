@@ -87,4 +87,8 @@ class DefaultUserManager(
     override var lastNotificationId: Int?
         get() = sharedPreferencesHandler.lastNotificationId
         set(value) { sharedPreferencesHandler.lastNotificationId = value }
+
+    override var lastAnnouncementId: String?
+        get() = sharedPreferencesHandler.lastAnnouncementId
+        set(value) { sharedPreferencesHandler.lastAnnouncementId =  value }
 }

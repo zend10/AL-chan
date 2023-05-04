@@ -19,12 +19,23 @@ interface DialogManager {
     fun showToast(message: String)
     fun showMessageDialog(title: Int, message: Int, positiveButton: Int)
     fun showMessageDialog(title: String, message: String, positiveButton: Int)
+    fun showActionDialog(title: String, message: String, positiveButton: Int, positiveAction: () -> Unit)
     fun showConfirmationDialog(
         title: Int,
         message: Int, 
         positiveButton: Int, 
         positiveAction: () -> Unit, 
         negativeButton: Int, 
+        negativeAction: () -> Unit,
+        thirdButton: Int? = null,
+        thirdAction: (() -> Unit)? = null
+    )
+    fun showConfirmationDialog(
+        title: String,
+        message: String,
+        positiveButton: Int,
+        positiveAction: () -> Unit,
+        negativeButton: Int,
         negativeAction: () -> Unit,
         thirdButton: Int? = null,
         thirdAction: (() -> Unit)? = null

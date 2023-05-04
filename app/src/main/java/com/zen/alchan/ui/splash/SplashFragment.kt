@@ -8,6 +8,7 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentSplashBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
+import com.zen.alchan.ui.base.NavigationManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -43,6 +44,44 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             },
             viewModel.isSessionExpired.subscribe {
                 dialog.showMessageDialog(R.string.session_expired, R.string.your_session_has_ended, R.string.ok)
+            },
+            viewModel.updateDialog.subscribe { (message, requiredUpdate) ->
+                if (requiredUpdate) {
+                    dialog.showActionDialog(
+                        getString(R.string.new_update_is_available),
+                        message,
+                        R.string.ok
+                    ) {
+                        navigation.openWebView(NavigationManager.Url.ALCHAN_PLAY_STORE)
+                    }
+                } else {
+                    dialog.showConfirmationDialog(
+                        getString(R.string.new_update_is_available),
+                        message,
+                        R.string.ok,
+                        {
+                            navigation.openWebView(NavigationManager.Url.ALCHAN_PLAY_STORE)
+                        },
+                        R.string.later,
+                        {
+                            viewModel.goToNextPage()
+                        }
+                    )
+                }
+            },
+            viewModel.announcementDialog.subscribe {
+                dialog.showConfirmationDialog(
+                    getString(R.string.announcement),
+                    it,
+                    R.string.ok,
+                    {
+                        viewModel.goToNextPage()
+                    },
+                    R.string.dont_show_again,
+                    {
+                        viewModel.setNotShowAgain()
+                    }
+                )
             }
         )
 

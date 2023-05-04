@@ -5,10 +5,14 @@ import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.manager.*
+import com.zen.alchan.data.network.DefaultOkHttpHandler
+import com.zen.alchan.data.network.OkHttpHandler
 import com.zen.alchan.data.network.apollo.AniListApolloHandler
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.network.interceptor.AniListHeaderInterceptorImpl
 import com.zen.alchan.data.network.interceptor.HeaderInterceptor
+import com.zen.alchan.data.network.retrofit.DefaultRetrofitHandler
+import com.zen.alchan.data.network.retrofit.RetrofitHandler
 import com.zen.alchan.data.repository.*
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.service.clipboard.ClipboardService
@@ -100,8 +104,10 @@ class ALchanApplication : Application() {
         single<BrowseManager> { DefaultBrowseManager(get()) }
 
         // network
+        single<OkHttpHandler> { DefaultOkHttpHandler() }
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
-        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
+        single<ApolloHandler> { AniListApolloHandler(get(), get(), Constant.ANILIST_API_BASE_URL) }
+        single<RetrofitHandler> { DefaultRetrofitHandler(get(), Constant.ALCHAN_RAW_GITHUB_URL) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
@@ -109,6 +115,7 @@ class ALchanApplication : Application() {
         single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
         single<BrowseDataSource> { DefaultBrowseDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION, Constant.ANILIST_API_RELATION_TYPE_VERSION) }
         single<SocialDataSource> { DefaultSocialDataSource(get()) }
+        single<InfoDataSource> { DefaultInfoDataSource(get()) }
 
         // repository
         single<ContentRepository> { DefaultContentRepository(get(), get()) }
@@ -116,6 +123,7 @@ class ALchanApplication : Application() {
         single<MediaListRepository> { DefaultMediaListRepository(get(), get()) }
         single<BrowseRepository> { DefaultBrowseRepository(get(), get()) }
         single<SocialRepository> { DefaultSocialRepository(get()) }
+        single<InfoRepository> { DefaultInfoRepository(get(), get()) }
 
         // service
         single<ClipboardService> { DefaultClipboardService(this.androidContext()) }
@@ -124,7 +132,7 @@ class ALchanApplication : Application() {
         // view model
         viewModel { BaseActivityViewModel(get()) }
 
-        viewModel { SplashViewModel(get()) }
+        viewModel { SplashViewModel(get(), get()) }
         viewModel { LandingViewModel() }
         viewModel { LoginViewModel(get()) }
 

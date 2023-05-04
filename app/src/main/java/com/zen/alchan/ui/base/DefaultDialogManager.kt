@@ -95,9 +95,46 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
             .show()
     }
 
+    override fun showActionDialog(
+        title: String,
+        message: String,
+        positiveButton: Int,
+        positiveAction: () -> Unit
+    ) {
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            .setCancelable(false)
+            .show()
+    }
+
     override fun showConfirmationDialog(
         title: Int,
         message: Int,
+        positiveButton: Int,
+        positiveAction: () -> Unit,
+        negativeButton: Int,
+        negativeAction: () -> Unit,
+        thirdButton: Int?,
+        thirdAction: (() -> Unit)?
+    ) {
+        val builder = AlertDialog.Builder(context)
+        builder.apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton(positiveButton) { _, _ -> positiveAction() }
+            setNegativeButton(negativeButton) { _, _ -> negativeAction() }
+            if (thirdButton != null) setNeutralButton(thirdButton) { _, _ -> thirdAction?.invoke() }
+            setCancelable(false)
+            show()
+        }
+
+    }
+
+    override fun showConfirmationDialog(
+        title: String,
+        message: String,
         positiveButton: Int,
         positiveAction: () -> Unit,
         negativeButton: Int,

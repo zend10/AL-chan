@@ -97,4 +97,16 @@ object TimeUtil {
         calendar.set(Calendar.MILLISECOND, 0)
         return (calendar.timeInMillis / 1000).toInt()
     }
+
+    fun isBetweenTwoDates(fromDateString: String, untilDateString: String): Boolean {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
+        return try {
+            val fromDate = dateFormat.parse(fromDateString)?.time ?: 0
+            val untilDate = dateFormat.parse(untilDateString)?.time ?: 0
+            val today = getCurrentTimeInMillis()
+            today in fromDate..untilDate
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

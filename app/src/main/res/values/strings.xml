@@ -504,6 +504,10 @@
     <string name="something_went_wrong_please_try_again_in_few_minutes">Something went wrong. Please try again in few minutes.</string>
     <string name="session_expired">Session Expired</string>
     <string name="something_went_wrong_seems_like_a_connection_issue">Something went wrong. Seems like a connection issue.</string>
+    <string name="new_update_is_available">New Update is Available</string>
+    <string name="later">Later</string>
+    <string name="announcement">Announcement</string>
+    <string name="dont_show_again">Don\'t Show Again</string>
 
 
     <plurals name="minute">

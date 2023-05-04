@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.apollo'
-//apply plugin: 'com.google.gms.google-services'
-//apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 33
@@ -91,8 +89,6 @@ dependencies {
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_version"
-//    compileOnly "org.jetbrains:annotations:16.0.1"
-//    testCompileOnly "org.jetbrains:annotations:16.0.1"
 
     // OkHttp
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
@@ -101,16 +97,11 @@ dependencies {
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
     // Koin DI
     def koin_version = "3.2.0"
     implementation "io.insert-koin:koin-android:$koin_version"
-
-    // Firebase
-//    implementation 'com.google.firebase:firebase-analytics:18.0.2'
-//    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
-//    implementation 'com.google.firebase:firebase-messaging:21.0.1'
-//    implementation 'com.google.firebase:firebase-database:19.6.0'
 
     // Others
     implementation 'com.jaredrummler:colorpicker:1.1.0'
@@ -118,8 +109,6 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.github.zend10:OverlapImageListView:v1.0.1'
-//    implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'
-//    implementation 'com.crystal:crystalrangeseekbar:1.1.3'
 
     def markwon_version = "4.6.2"
     implementation "io.noties.markwon:core:$markwon_version"
