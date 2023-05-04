@@ -31,4 +31,6 @@ object Constant {
     const val ALCHAN_YOUTUBE_THUMBNAIL_URL = "${ALCHAN_RAW_GITHUB_URL}docs/images/youtube_thumbnail.png"
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
+
+    const val JIKAN_URL = "https://api.jikan.moe/v4/"
 }

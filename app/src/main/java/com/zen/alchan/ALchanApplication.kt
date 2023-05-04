@@ -107,7 +107,7 @@ class ALchanApplication : Application() {
         single<OkHttpHandler> { DefaultOkHttpHandler() }
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
         single<ApolloHandler> { AniListApolloHandler(get(), get(), Constant.ANILIST_API_BASE_URL) }
-        single<RetrofitHandler> { DefaultRetrofitHandler(get(), Constant.ALCHAN_RAW_GITHUB_URL) }
+        single<RetrofitHandler> { DefaultRetrofitHandler(get(), Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
