@@ -113,7 +113,7 @@ class ALchanApplication : Application() {
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
         single<UserDataSource> { DefaultUserDataSource(get()) }
         single<MediaListDataSource> { DefaultMediaListDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
-        single<BrowseDataSource> { DefaultBrowseDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION, Constant.ANILIST_API_RELATION_TYPE_VERSION) }
+        single<BrowseDataSource> { DefaultBrowseDataSource(get(), get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION, Constant.ANILIST_API_RELATION_TYPE_VERSION) }
         single<SocialDataSource> { DefaultSocialDataSource(get()) }
         single<InfoDataSource> { DefaultInfoDataSource(get()) }
 

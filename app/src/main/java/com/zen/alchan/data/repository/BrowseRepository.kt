@@ -1,5 +1,6 @@
 package com.zen.alchan.data.repository
 
+import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListType
 import io.reactivex.Observable
@@ -22,4 +23,6 @@ interface BrowseRepository {
         onList: Boolean? = null
     ): Observable<Staff>
     fun getStudio(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC), onList: Boolean? = null): Observable<Studio>
+
+    fun getMangaDetails(malId: Int): Observable<Manga>
 }

@@ -379,6 +379,32 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mediaInfoSerializationsLayout"
+        app:layout_constraintTop_toBottomOf="@id/mediaInfoProducersLayout"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/serializations"
+            style="?themeSmallFont"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mediaInfoSerializationsRecyclerView"
+            style="?themeRegularFont"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
     <include layout="@layout/divider"
         android:id="@+id/mediaInfoDividerThree"
         app:layout_constraintTop_toBottomOf="@id/mediaInfoProducersLayout"

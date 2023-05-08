@@ -11,11 +11,14 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx2.rxQuery
 import com.zen.alchan.data.network.apollo.ApolloHandler
+import com.zen.alchan.data.network.retrofit.RetrofitHandler
+import com.zen.alchan.data.response.mal.MangaResponse
 import io.reactivex.Observable
 import type.*
 
 class DefaultBrowseDataSource(
     private val apolloHandler: ApolloHandler,
+    private val retrofitHandler: RetrofitHandler,
     private val statusVersion: Int,
     private val sourceVersion: Int,
     private val relationTypeVersion: Int
@@ -94,5 +97,9 @@ class DefaultBrowseDataSource(
             onList = Input.optional(onList)
         )
         return apolloHandler.apolloClient.rxQuery(query)
+    }
+
+    override fun getMangaDetails(malId: Int): Observable<MangaResponse> {
+        return retrofitHandler.jikanRetrofitClient().getMangaDetails(malId)
     }
 }

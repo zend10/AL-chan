@@ -36,6 +36,7 @@ class MediaRvAdapter(
     private var studiosAdapter: TextRvAdapter? = null
     private var tagsAdapter: MediaTagsRvAdapter? = null
     private var producersAdapter: TextRvAdapter? = null
+    private var serializationsAdapter: TextRvAdapter? = null
     private var staffAdapter: MediaStaffRvAdapter? = null
     private var relationsAdapter: MediaRelationsRvAdapter? = null
     private var recommendationsAdapter: MediaRecommendationsRvAdapter? = null
@@ -74,6 +75,8 @@ class MediaRvAdapter(
                 view.mediaInfoStudiosRecyclerView.adapter = studiosAdapter
                 producersAdapter = TextRvAdapter(context, listOf(), getTextListener())
                 view.mediaInfoProducersRecyclerView.adapter = producersAdapter
+                serializationsAdapter = TextRvAdapter(context, listOf())
+                view.mediaInfoSerializationsRecyclerView.adapter = serializationsAdapter
                 return InfoViewHolder(view)
             }
             MediaItem.VIEW_TYPE_TAGS -> {
@@ -163,21 +166,24 @@ class MediaRvAdapter(
         override fun bind(item: MediaItem, index: Int) {
             binding.apply {
                 val fallbackTitle = item.media.title.romaji
-
                 mediaInfoRomajiText.text = item.media.title.romaji
                 mediaInfoRomajiText.clicks {
-
+                    listener.mediaInfoListener.copyTitle(item.media.title.romaji)
                 }
-                mediaInfoEnglishText.text = if (item.media.title.english.isNotBlank()) item.media.title.english else fallbackTitle
+
+                val englishTitle = item.media.title.english.ifBlank { fallbackTitle }
+                mediaInfoEnglishText.text = englishTitle
                 mediaInfoEnglishText.clicks {
-
+                    listener.mediaInfoListener.copyTitle(englishTitle)
                 }
-                mediaInfoNativeText.text = if (item.media.title.native.isNotBlank()) item.media.title.native else fallbackTitle
+
+                val nativeTitle = item.media.title.native.ifBlank { fallbackTitle }
+                mediaInfoNativeText.text = nativeTitle
                 mediaInfoNativeText.clicks {
-
+                    listener.mediaInfoListener.copyTitle(nativeTitle)
                 }
 
-                synonymsAdapter?.updateData(if (item.media.synonyms.isNotEmpty()) item.media.synonyms else listOf(fallbackTitle))
+                synonymsAdapter?.updateData(item.media.synonyms.ifEmpty { listOf(fallbackTitle) })
 
                 mediaInfoFormatText.text = item.media.getFormattedMediaFormat(true)
 
@@ -218,11 +224,14 @@ class MediaRvAdapter(
 
                 val studios = item.media.studios.edges.filter { it.isMain }.map { it.node.name }
                 val producers = item.media.studios.edges.filter { !it.isMain }.map { it.node.name }
+                val serializations = item.media.mangaSerialization?.map { it.name } ?: listOf()
                 studiosAdapter?.updateData(studios)
                 producersAdapter?.updateData(producers)
+                serializationsAdapter?.updateData(serializations)
                 mediaInfoStudiosLayout.show(studios.isNotEmpty())
                 mediaInfoProducersLayout.show(producers.isNotEmpty())
-                mediaInfoDividerThree.root.show(studios.isNotEmpty() || producers.isNotEmpty())
+                mediaInfoSerializationsLayout.show(serializations.isNotEmpty())
+                mediaInfoDividerThree.root.show(studios.isNotEmpty() || producers.isNotEmpty() || serializations.isNotEmpty())
             }
         }
     }

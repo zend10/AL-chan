@@ -192,6 +192,14 @@ class MediaViewModel(
 
         disposables.add(
             browseRepository.getMedia(mediaId)
+                .flatMap { media ->
+                    if (media.type == type.MediaType.MANGA && media.idMal != null)
+                        browseRepository.getMangaDetails(media.idMal).map {
+                            media.copy(mangaSerialization = it.serializations)
+                        }
+                    else
+                        Observable.just(media)
+                }
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .map { media ->
@@ -279,6 +287,21 @@ class MediaViewModel(
                 .subscribe(
                     {
                         _success.onNext(R.string.link_copied)
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
+        )
+    }
+
+    fun copyText(text: String) {
+        disposables.add(
+            clipboardService.copyPlainText(text)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        _success.onNext(R.string.text_copied)
                     },
                     {
                         it.printStackTrace()

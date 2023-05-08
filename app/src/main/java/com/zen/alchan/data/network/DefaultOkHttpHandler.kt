@@ -1,6 +1,5 @@
 package com.zen.alchan.data.network
 
-import com.zen.alchan.data.network.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit

@@ -5,6 +5,7 @@ import com.zen.alchan.helper.enums.Country
 import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.data.response.Genre
+import com.zen.alchan.data.response.MangaSerialization
 import type.*
 
 data class Media(
@@ -50,7 +51,8 @@ data class Media(
     val recommendations: RecommendationConnection = RecommendationConnection(),
     val stats: MediaStats? = null,
     val siteUrl: String = "",
-    val mediaListEntry: MediaList? = null
+    val mediaListEntry: MediaList? = null,
+    val mangaSerialization: List<MangaSerialization>? = null
 ) {
     fun getId() : Int {
         return idAniList

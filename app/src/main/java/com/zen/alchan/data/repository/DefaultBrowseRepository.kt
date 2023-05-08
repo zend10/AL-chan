@@ -3,6 +3,7 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
+import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.ListType
 import io.reactivex.Observable
@@ -83,6 +84,12 @@ class DefaultBrowseRepository(
     override fun getStudio(id: Int, page: Int, sort: List<MediaSort>, onList: Boolean?): Observable<Studio> {
         return browseDataSource.getStudioQuery(id, page, sort, onList).map {
             it.data?.convert()
+        }
+    }
+
+    override fun getMangaDetails(malId: Int): Observable<Manga> {
+        return browseDataSource.getMangaDetails(malId).map {
+            it.convert()
         }
     }
 }

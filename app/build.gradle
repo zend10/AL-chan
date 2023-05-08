@@ -91,7 +91,9 @@ dependencies {
     implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_version"
 
     // OkHttp
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    def okhttp_version = "4.10.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // Retrofit
     def retrofit_version = "2.9.0"

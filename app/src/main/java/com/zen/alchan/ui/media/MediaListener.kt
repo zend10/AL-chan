@@ -5,6 +5,10 @@ import com.zen.alchan.data.response.anilist.*
 
 interface MediaListener {
 
+    interface MediaInfoListener {
+        fun copyTitle(title: String)
+    }
+
     interface MediaGenreListener {
         fun navigateToExplore(genre: Genre)
     }
@@ -42,6 +46,7 @@ interface MediaListener {
         fun copyExternalLink(mediaExternalLink: MediaExternalLink)
     }
 
+    val mediaInfoListener: MediaInfoListener
     val mediaGenreListener: MediaGenreListener
     val mediaCharacterListener: MediaCharacterListener
     val mediaStudioListener: MediaStudioListener
