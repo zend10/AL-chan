@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.ModRole
+import com.zen.alchan.type.ModRole
+
 
 data class User(
     val id: Int = 0,

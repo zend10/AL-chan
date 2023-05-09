@@ -1,23 +1,19 @@
 package com.zen.alchan.data.datasource
 
-import DeleteMediaListEntryMutation
-import MediaListCollectionQuery
-import MediaWithMediaListQuery
-import SaveMediaListEntryMutation
-import ToggleFavouriteMutation
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.rx2.Rx2Apollo
-import com.apollographql.apollo.rx2.rxMutate
-import com.apollographql.apollo.rx2.rxPrefetch
-import com.apollographql.apollo.rx2.rxQuery
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo3.rx3.rxSingle
+import com.zen.alchan.DeleteMediaListEntryMutation
+import com.zen.alchan.MediaListCollectionQuery
+import com.zen.alchan.MediaWithMediaListQuery
+import com.zen.alchan.SaveMediaListEntryMutation
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.response.anilist.FuzzyDate
-import io.reactivex.Completable
-import io.reactivex.Observable
-import type.FuzzyDateInput
-import type.MediaListStatus
-import type.MediaType
+import com.zen.alchan.type.FuzzyDateInput
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.MediaType
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultMediaListDataSource(
     private val apolloHandler: ApolloHandler,
@@ -28,23 +24,23 @@ class DefaultMediaListDataSource(
     override fun getMediaListCollectionQuery(
         userId: Int,
         mediaType: MediaType
-    ): Observable<Response<MediaListCollectionQuery.Data>> {
+    ): Observable<ApolloResponse<MediaListCollectionQuery.Data>> {
         val query = MediaListCollectionQuery(
-            Input.fromNullable(userId),
-            Input.fromNullable(mediaType),
-            Input.fromNullable(statusVersion),
-            Input.fromNullable(sourceVersion)
+            Optional.present(userId),
+            Optional.present(mediaType),
+            Optional.present(statusVersion),
+            Optional.present(sourceVersion)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getMediaWithMediaListQuery(
         mediaId: Int
-    ): Observable<Response<MediaWithMediaListQuery.Data>> {
+    ): Observable<ApolloResponse<MediaWithMediaListQuery.Data>> {
         val query = MediaWithMediaListQuery(
-            Input.fromNullable(mediaId)
+            Optional.present(mediaId)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun updateMediaListEntry(
@@ -63,55 +59,55 @@ class DefaultMediaListDataSource(
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
-    ): Observable<Response<SaveMediaListEntryMutation.Data>> {
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>> {
         val mutation = SaveMediaListEntryMutation(
-            id = Input.optional(id),
-            mediaId = Input.optional(mediaId),
-            status = Input.fromNullable(status),
-            score = Input.fromNullable(score),
-            progress = Input.fromNullable(progress),
-            progressVolumes = Input.fromNullable(progressVolumes),
-            repeat = Input.fromNullable(repeat),
-            priority = Input.fromNullable(priority),
-            isPrivate = Input.fromNullable(isPrivate),
-            notes = Input.fromNullable(notes),
-            hiddenFromStatusLists = Input.fromNullable(hiddenFromStatusLists),
-            customLists = Input.fromNullable(customLists),
-            advancedScores = Input.fromNullable(advancedScores),
-            startedAt = Input.fromNullable(
+            id = Optional.presentIfNotNull(id),
+            mediaId = Optional.presentIfNotNull(mediaId),
+            status = Optional.present(status),
+            score = Optional.present(score),
+            progress = Optional.present(progress),
+            progressVolumes = Optional.present(progressVolumes),
+            repeat = Optional.present(repeat),
+            priority = Optional.present(priority),
+            isPrivate = Optional.present(isPrivate),
+            notes = Optional.present(notes),
+            hiddenFromStatusLists = Optional.present(hiddenFromStatusLists),
+            customLists = Optional.present(customLists),
+            advancedScores = Optional.present(advancedScores),
+            startedAt = Optional.present(
                 FuzzyDateInput(
-                    year = Input.fromNullable(startedAt?.year),
-                    month = Input.fromNullable(startedAt?.month),
-                    day = Input.fromNullable(startedAt?.day)
+                    year = Optional.present(startedAt?.year),
+                    month = Optional.present(startedAt?.month),
+                    day = Optional.present(startedAt?.day)
                 )
             ),
-            completedAt = Input.fromNullable(
+            completedAt = Optional.present(
                 FuzzyDateInput(
-                    year = Input.fromNullable(completedAt?.year),
-                    month = Input.fromNullable(completedAt?.month),
-                    day = Input.fromNullable(completedAt?.day)
+                    year = Optional.present(completedAt?.year),
+                    month = Optional.present(completedAt?.month),
+                    day = Optional.present(completedAt?.day)
                 )
             )
         )
-        return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun deleteMediaListEntry(id: Int): Completable {
-        val mutation = DeleteMediaListEntryMutation(Input.fromNullable(id))
-        return apolloHandler.apolloClient.rxPrefetch(mutation)
+        val mutation = DeleteMediaListEntryMutation(Optional.present(id))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().ignoreElement()
     }
 
     override fun updateMediaListScore(
         id: Int,
         score: Double,
         advancedScores: List<Double>?
-    ): Observable<Response<SaveMediaListEntryMutation.Data>> {
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>> {
         val mutation = SaveMediaListEntryMutation(
-            id = Input.fromNullable(id),
-            score = Input.fromNullable(score),
-            advancedScores = Input.optional(advancedScores)
+            id = Optional.present(id),
+            score = Optional.present(score),
+            advancedScores = Optional.presentIfNotNull(advancedScores)
         )
-        return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun updateMediaListProgress(
@@ -120,25 +116,25 @@ class DefaultMediaListDataSource(
         repeat: Int?,
         progress: Int?,
         progressVolumes: Int?
-    ): Observable<Response<SaveMediaListEntryMutation.Data>> {
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>> {
         val mutation = SaveMediaListEntryMutation(
-            id = Input.fromNullable(id),
-            status = Input.optional(status),
-            repeat = Input.optional(repeat),
-            progress = Input.optional(progress),
-            progressVolumes = Input.optional(progressVolumes)
+            id = Optional.present(id),
+            status = Optional.presentIfNotNull(status),
+            repeat = Optional.presentIfNotNull(repeat),
+            progress = Optional.presentIfNotNull(progress),
+            progressVolumes = Optional.presentIfNotNull(progressVolumes)
         )
-        return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun updateMediaListStatus(
         mediaId: Int,
         status: MediaListStatus
-    ): Observable<Response<SaveMediaListEntryMutation.Data>> {
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>> {
         val mutation = SaveMediaListEntryMutation(
-            mediaId = Input.fromNullable(mediaId),
-            status = Input.fromNullable(status)
+            mediaId = Optional.present(mediaId),
+            status = Optional.present(status)
         )
-        return Rx2Apollo.from(apolloHandler.apolloClient.mutate(mutation))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 }

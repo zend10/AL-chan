@@ -4,10 +4,10 @@ import android.view.View
 import androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding4.view.clicks
 import com.zen.alchan.helper.pojo.InitialPadding
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 fun View.show(isVisible: Boolean) {
@@ -74,7 +74,7 @@ fun View.applyBottomSidePaddingInsets() {
 }
 
 fun View.clicks(action: () -> Unit): Disposable {
-    return RxView.clicks(this)
+    return this.clicks()
         .throttleFirst(1000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
         .subscribe {
             action()

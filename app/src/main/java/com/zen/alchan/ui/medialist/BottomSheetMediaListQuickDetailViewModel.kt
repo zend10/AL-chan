@@ -7,9 +7,9 @@ import com.zen.alchan.data.response.anilist.MediaListOptions
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.Observable.zip
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observable.zip
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class BottomSheetMediaListQuickDetailViewModel(
     private val userRepository: UserRepository,

@@ -1,24 +1,22 @@
 package com.zen.alchan.data.datasource
 
-import AiringScheduleQuery
-import SearchMediaQuery
-import com.apollographql.apollo.api.Response
+import com.apollographql.apollo3.api.ApolloResponse
+import com.zen.alchan.*
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.helper.enums.Sort
-import io.reactivex.Observable
-import type.MediaSeason
-import type.MediaSort
-import type.MediaType
+import com.zen.alchan.type.MediaSeason
+import com.zen.alchan.type.MediaType
+import io.reactivex.rxjava3.core.Observable
 
 interface ContentDataSource {
-    fun getHomeQuery(): Observable<Response<HomeDataQuery.Data>>
-    fun getGenres(): Observable<Response<GenreQuery.Data>>
-    fun getTags(): Observable<Response<TagQuery.Data>>
-    fun searchMedia(searchQuery: String, type: MediaType, mediaFilter: MediaFilter?, page: Int): Observable<Response<SearchMediaQuery.Data>>
-    fun searchCharacter(searchQuery: String, page: Int): Observable<Response<SearchCharacterQuery.Data>>
-    fun searchStaff(searchQuery: String, page: Int): Observable<Response<SearchStaffQuery.Data>>
-    fun searchStudio(searchQuery: String, page: Int): Observable<Response<SearchStudioQuery.Data>>
-    fun searchUser(searchQuery: String, page: Int): Observable<Response<SearchUserQuery.Data>>
+    fun getHomeQuery(): Observable<ApolloResponse<HomeDataQuery.Data>>
+    fun getGenres(): Observable<ApolloResponse<GenreQuery.Data>>
+    fun getTags(): Observable<ApolloResponse<TagQuery.Data>>
+    fun searchMedia(searchQuery: String, type: MediaType, mediaFilter: MediaFilter?, page: Int): Observable<ApolloResponse<SearchMediaQuery.Data>>
+    fun searchCharacter(searchQuery: String, page: Int): Observable<ApolloResponse<SearchCharacterQuery.Data>>
+    fun searchStaff(searchQuery: String, page: Int): Observable<ApolloResponse<SearchStaffQuery.Data>>
+    fun searchStudio(searchQuery: String, page: Int): Observable<ApolloResponse<SearchStudioQuery.Data>>
+    fun searchUser(searchQuery: String, page: Int): Observable<ApolloResponse<SearchUserQuery.Data>>
     fun getSeasonal(
         page: Int,
         year: Int,
@@ -27,7 +25,7 @@ interface ContentDataSource {
         orderByDescending: Boolean,
         onlyShowOnList: Boolean?,
         showAdult: Boolean
-    ): Observable<Response<SearchMediaQuery.Data>>
+    ): Observable<ApolloResponse<SearchMediaQuery.Data>>
 
-    fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<Response<AiringScheduleQuery.Data>>
+    fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<ApolloResponse<AiringScheduleQuery.Data>>
 }

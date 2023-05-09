@@ -1,8 +1,9 @@
 package com.zen.alchan.data.response.anilist
 
-import type.MediaFormat
-import type.MediaRankType
-import type.MediaSeason
+import com.zen.alchan.type.MediaFormat
+import com.zen.alchan.type.MediaRankType
+import com.zen.alchan.type.MediaSeason
+
 
 data class MediaRank(
     val id: Int = 0,

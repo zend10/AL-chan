@@ -1,13 +1,10 @@
 package com.zen.alchan.ui.explore
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jakewharton.rxbinding2.widget.RxTextView
-import com.zen.alchan.R
+import com.jakewharton.rxbinding4.widget.textChanges
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentExploreBinding
@@ -18,7 +15,7 @@ import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.search.SearchRvAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -85,7 +82,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
 
     override fun setUpObserver() {
         disposables.add(
-            RxTextView.textChanges(binding.exploreEditText)
+            binding.exploreEditText.textChanges()
                 .skipInitialValue()
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())

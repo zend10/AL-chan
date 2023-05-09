@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.RecommendationRating
+import com.zen.alchan.type.RecommendationRating
+
 
 data class Recommendation(
     val id: Int = 0,

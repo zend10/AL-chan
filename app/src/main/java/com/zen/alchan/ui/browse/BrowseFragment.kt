@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentContainerView
 import com.zen.alchan.databinding.FragmentBrowseBinding
 import com.zen.alchan.ui.base.BaseFragment
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BrowseFragment : BaseFragment<FragmentBrowseBinding, BrowseViewModel>() {

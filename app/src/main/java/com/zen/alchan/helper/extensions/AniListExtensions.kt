@@ -1,11 +1,9 @@
 package com.zen.alchan.helper.extensions
 
 import android.content.Context
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.MediaType
-import type.*
+import com.zen.alchan.type.*
 
 fun ScoreFormat.getString(context: Context): String {
     return context.getString(getStringResource())
@@ -22,11 +20,11 @@ fun ScoreFormat.getStringResource(): Int {
     }
 }
 
-fun type.MediaType.getMediaType(): MediaType {
+fun com.zen.alchan.type.MediaType.getMediaType(): MediaType {
     return when (this) {
-        type.MediaType.ANIME -> MediaType.ANIME
-        type.MediaType.MANGA -> MediaType.MANGA
-        type.MediaType.UNKNOWN__ -> MediaType.ANIME
+        com.zen.alchan.type.MediaType.ANIME -> MediaType.ANIME
+        com.zen.alchan.type.MediaType.MANGA -> MediaType.MANGA
+        else -> MediaType.ANIME
     }
 }
 

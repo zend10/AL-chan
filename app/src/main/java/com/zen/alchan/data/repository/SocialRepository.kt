@@ -3,11 +3,10 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.response.SocialData
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
-import type.ActivityType
-import type.LikeableType
+import com.zen.alchan.type.ActivityType
+import com.zen.alchan.type.LikeableType
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 interface SocialRepository {
     val activityToBeEdited: Observable<NullableItem<Activity>>

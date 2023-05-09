@@ -4,10 +4,17 @@ import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
 import com.zen.alchan.data.response.Manga
-import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.CharacterEdge
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.Staff
+import com.zen.alchan.data.response.anilist.StaffEdge
+import com.zen.alchan.data.response.anilist.Studio
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListType
-import io.reactivex.Observable
-import type.*
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultBrowseRepository(
     private val browseDataSource: BrowseDataSource,
@@ -18,14 +25,14 @@ class DefaultBrowseRepository(
 
     override fun getUser(id: Int?, name: String?, sort: List<UserStatisticsSort>): Observable<User> {
         return if (userIdToUserMap.containsKey(id)) {
-            Observable.just(userIdToUserMap[id])
+            Observable.just(userIdToUserMap[id] ?: User())
         } else {
             browseDataSource.getUserQuery(id, name, sort).map {
                 val newUser = it.data?.convert()
                 if (newUser != null) {
                     userIdToUserMap[newUser.id] = newUser
                 }
-                newUser
+                newUser ?: User()
             }
         }
     }
@@ -40,7 +47,7 @@ class DefaultBrowseRepository(
 
     override fun getMedia(id: Int): Observable<Media> {
         return browseDataSource.getMediaQuery(id).map {
-            it.data?.convert()
+            it.data?.convert() ?: Media()
         }
     }
 
@@ -64,7 +71,7 @@ class DefaultBrowseRepository(
 
     override fun getCharacter(id: Int, page: Int, sort: List<MediaSort>, type: MediaType?, onList: Boolean?): Observable<Character> {
         return browseDataSource.getCharacterQuery(id, page, sort, type, onList).map {
-            it.data?.convert()
+            it.data?.convert() ?: Character()
         }
     }
 
@@ -77,13 +84,13 @@ class DefaultBrowseRepository(
         onList: Boolean?
     ): Observable<Staff> {
         return browseDataSource.getStaffQuery(id, page, staffMediaSort, characterSort, characterMediaSort, onList).map {
-            it.data?.convert()
+            it.data?.convert() ?: Staff()
         }
     }
 
     override fun getStudio(id: Int, page: Int, sort: List<MediaSort>, onList: Boolean?): Observable<Studio> {
         return browseDataSource.getStudioQuery(id, page, sort, onList).map {
-            it.data?.convert()
+            it.data?.convert() ?: Studio()
         }
     }
 

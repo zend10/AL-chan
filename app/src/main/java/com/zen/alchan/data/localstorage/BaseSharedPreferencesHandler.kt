@@ -1,7 +1,6 @@
 package com.zen.alchan.data.localstorage
 
 import android.content.Context
-import com.google.gson.Gson
 
 abstract class BaseSharedPreferencesHandler(
     private val context: Context,

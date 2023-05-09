@@ -1,7 +1,7 @@
 package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.response.Announcement
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 interface InfoRepository {
     fun getAnnouncement(): Observable<Announcement>

@@ -1,10 +1,17 @@
 package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.response.Manga
-import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.CharacterEdge
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.Staff
+import com.zen.alchan.data.response.anilist.StaffEdge
+import com.zen.alchan.data.response.anilist.Studio
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListType
-import io.reactivex.Observable
-import type.*
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Observable
 
 interface BrowseRepository {
     fun getUser(id: Int? = null, name: String? = null, sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)): Observable<User>

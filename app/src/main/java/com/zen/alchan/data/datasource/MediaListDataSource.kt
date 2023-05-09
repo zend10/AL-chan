@@ -1,16 +1,18 @@
 package com.zen.alchan.data.datasource
 
-import SaveMediaListEntryMutation
-import com.apollographql.apollo.api.Response
+import com.apollographql.apollo3.api.ApolloResponse
+import com.zen.alchan.MediaListCollectionQuery
+import com.zen.alchan.MediaWithMediaListQuery
+import com.zen.alchan.SaveMediaListEntryMutation
 import com.zen.alchan.data.response.anilist.FuzzyDate
-import io.reactivex.Completable
-import io.reactivex.Observable
-import type.MediaListStatus
-import type.MediaType
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.MediaType
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 interface MediaListDataSource {
-    fun getMediaListCollectionQuery(userId: Int, mediaType: MediaType): Observable<Response<MediaListCollectionQuery.Data>>
-    fun getMediaWithMediaListQuery(mediaId: Int): Observable<Response<MediaWithMediaListQuery.Data>>
+    fun getMediaListCollectionQuery(userId: Int, mediaType: MediaType): Observable<ApolloResponse<MediaListCollectionQuery.Data>>
+    fun getMediaWithMediaListQuery(mediaId: Int): Observable<ApolloResponse<MediaWithMediaListQuery.Data>>
     fun updateMediaListEntry(
         id: Int?,
         mediaId: Int?,
@@ -27,7 +29,7 @@ interface MediaListDataSource {
         advancedScores: List<Double>?,
         startedAt: FuzzyDate?,
         completedAt: FuzzyDate?
-    ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>>
     fun deleteMediaListEntry(
         id: Int
     ): Completable
@@ -35,16 +37,16 @@ interface MediaListDataSource {
         id: Int,
         score: Double,
         advancedScores: List<Double>?
-    ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>>
     fun updateMediaListProgress(
         id: Int,
         status: MediaListStatus?,
         repeat: Int?,
         progress: Int?,
         progressVolumes: Int?
-    ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>>
     fun updateMediaListStatus(
         mediaId: Int,
         status: MediaListStatus
-    ): Observable<Response<SaveMediaListEntryMutation.Data>>
+    ): Observable<ApolloResponse<SaveMediaListEntryMutation.Data>>
 }

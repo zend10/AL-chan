@@ -1,29 +1,40 @@
 package com.zen.alchan.data.network.retrofit
 
-import com.zen.alchan.data.network.OkHttpHandler
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import java.util.concurrent.TimeUnit
 
 class DefaultRetrofitHandler(
-    private val okHttpHandler: OkHttpHandler,
     private val gitHubBaseUrl: String,
     private val jikanBaseUrl: String
 ) : RetrofitHandler {
+
+    private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        setLevel(HttpLoggingInterceptor.Level.BODY)
+        redactHeader("Authorization")
+        redactHeader("Cookie")
+    }
 
     private var gitHubRestService: GitHubRestService? = null
     private var jikanRestService: JikanRestService? = null
 
     override fun gitHubRetrofitClient(): GitHubRestService {
         if (gitHubRestService == null) {
-            val okHttpClient = okHttpHandler.okHttpClientBuilder
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(gitHubBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build()
 
@@ -36,13 +47,17 @@ class DefaultRetrofitHandler(
 
     override fun jikanRetrofitClient(): JikanRestService {
         if (jikanRestService == null) {
-            val okHttpClient = okHttpHandler.okHttpClientBuilder
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(jikanBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build()
 

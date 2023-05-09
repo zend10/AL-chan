@@ -4,10 +4,10 @@ import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.helper.enums.Country
 import com.zen.alchan.helper.enums.OtherLink
 import com.zen.alchan.helper.enums.Sort
-import type.MediaFormat
-import type.MediaSeason
-import type.MediaSource
-import type.MediaStatus
+import com.zen.alchan.type.MediaFormat
+import com.zen.alchan.type.MediaSeason
+import com.zen.alchan.type.MediaSource
+import com.zen.alchan.type.MediaStatus
 
 data class MediaFilter(
     var persistFilter: Boolean = false,

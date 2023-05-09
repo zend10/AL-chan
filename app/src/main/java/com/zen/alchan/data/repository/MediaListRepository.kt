@@ -10,9 +10,9 @@ import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Completable
-import io.reactivex.Observable
-import type.MediaListStatus
+import com.zen.alchan.type.MediaListStatus
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 interface MediaListRepository {
     val defaultAnimeList: List<String>

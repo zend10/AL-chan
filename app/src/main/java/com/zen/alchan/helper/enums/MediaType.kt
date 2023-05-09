@@ -7,10 +7,10 @@ enum class MediaType {
     MANGA
 }
 
-fun MediaType.getAniListMediaType(): type.MediaType {
+fun MediaType.getAniListMediaType(): com.zen.alchan.type.MediaType {
     return when (this) {
-        MediaType.ANIME -> type.MediaType.ANIME
-        MediaType.MANGA -> type.MediaType.MANGA
+        MediaType.ANIME -> com.zen.alchan.type.MediaType.ANIME
+        MediaType.MANGA -> com.zen.alchan.type.MediaType.MANGA
     }
 }
 

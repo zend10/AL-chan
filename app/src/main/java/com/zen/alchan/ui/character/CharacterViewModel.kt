@@ -3,7 +3,6 @@ package com.zen.alchan.ui.character
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
-import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
@@ -16,11 +15,9 @@ import com.zen.alchan.helper.pojo.CharacterItem
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class CharacterViewModel(
     private val browseRepository: BrowseRepository,
@@ -211,8 +208,7 @@ class CharacterViewModel(
 
         disposables.add(
             userRepository.toggleFavorite(characterId = character.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)
                 }

@@ -12,7 +12,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.MediaStatus
+import com.zen.alchan.type.MediaStatus
 
 class MediaRecommendationsRvAdapter(
     private val context: Context,

@@ -5,8 +5,6 @@ import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.manager.*
-import com.zen.alchan.data.network.DefaultOkHttpHandler
-import com.zen.alchan.data.network.OkHttpHandler
 import com.zen.alchan.data.network.apollo.AniListApolloHandler
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.network.interceptor.AniListHeaderInterceptorImpl
@@ -104,10 +102,9 @@ class ALchanApplication : Application() {
         single<BrowseManager> { DefaultBrowseManager(get()) }
 
         // network
-        single<OkHttpHandler> { DefaultOkHttpHandler() }
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
-        single<ApolloHandler> { AniListApolloHandler(get(), get(), Constant.ANILIST_API_BASE_URL) }
-        single<RetrofitHandler> { DefaultRetrofitHandler(get(), Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL) }
+        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
+        single<RetrofitHandler> { DefaultRetrofitHandler(Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }

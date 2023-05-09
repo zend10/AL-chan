@@ -16,10 +16,10 @@ import com.zen.alchan.helper.enums.getAniListMediaType
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
-import type.MediaListStatus
+import com.zen.alchan.type.MediaListStatus
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class DefaultMediaListRepository(
     private val mediaListDataSource: MediaListDataSource,
@@ -109,11 +109,11 @@ class DefaultMediaListRepository(
             // for other person's list, simply get from memory cache if exist
             if (!isViewer) {
                 if (mediaType == MediaType.ANIME && userIdToAnimeListCollectionMap.containsKey(userId)) {
-                    return Observable.just(userIdToAnimeListCollectionMap[userId])
+                    return Observable.just(userIdToAnimeListCollectionMap[userId] ?: MediaListCollection())
                 }
 
                 if (mediaType == MediaType.MANGA && userIdToMangaListCollectionMap.containsKey(userId)) {
-                    return Observable.just(userIdToMangaListCollectionMap[userId])
+                    return Observable.just(userIdToMangaListCollectionMap[userId] ?: MediaListCollection())
                 }
             }
 
@@ -134,7 +134,7 @@ class DefaultMediaListRepository(
                     }
                 }
 
-                newMediaListCollection
+                newMediaListCollection ?: MediaListCollection()
             }
         }
     }
@@ -153,7 +153,7 @@ class DefaultMediaListRepository(
 
     override fun getMediaWithMediaList(mediaId: Int): Observable<Media> {
         return mediaListDataSource.getMediaWithMediaListQuery(mediaId).map {
-            it.data?.convert()
+            it.data?.convert() ?: Media()
         }
     }
 
@@ -194,7 +194,7 @@ class DefaultMediaListRepository(
         ).map {
             val newMediaList = it.data?.convert()
             _refreshMediaListTrigger.onNext(mediaType to newMediaList)
-            newMediaList
+            newMediaList ?: MediaList()
         }
     }
 
@@ -208,7 +208,7 @@ class DefaultMediaListRepository(
         return mediaListDataSource.updateMediaListScore(id = id, score = score, advancedScores = advancedScores).map {
             val newMediaList = it.data?.convert()
             _refreshMediaListTrigger.onNext(mediaType to newMediaList)
-            newMediaList
+            newMediaList ?: MediaList()
         }
     }
 
@@ -223,7 +223,7 @@ class DefaultMediaListRepository(
         return mediaListDataSource.updateMediaListProgress(id, status, repeat, progress, progressVolumes).map {
             val newMediaList = it.data?.convert()
             _refreshMediaListTrigger.onNext(mediaType to newMediaList)
-            newMediaList
+            newMediaList ?: MediaList()
         }
     }
 
@@ -235,7 +235,7 @@ class DefaultMediaListRepository(
         return mediaListDataSource.updateMediaListStatus(mediaId, status).map {
             val newMediaList = it.data?.convert()
             _refreshMediaListTrigger.onNext(mediaType to newMediaList)
-            newMediaList
+            newMediaList ?: MediaList()
         }
     }
 

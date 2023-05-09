@@ -15,11 +15,11 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.MediaFilterComponent
 import com.zen.alchan.helper.pojo.SearchItem
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaType
-import type.ScoreFormat
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ScoreFormat
 
 class ExploreViewModel(
     private val userRepository: UserRepository,

@@ -1,15 +1,16 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.HomeDataQuery
 import com.zen.alchan.data.response.*
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.data.response.Genre
-import fragment.HomeMedia
+import com.zen.alchan.fragment.HomeMedia
 
 fun HomeDataQuery.Data.convert(): HomeData {
-    val trendingAnime = trendingAnime?.media?.mapNotNull { it?.fragments?.homeMedia?.convert() } ?: listOf()
-    val trendingManga = trendingManga?.media?.mapNotNull { it?.fragments?.homeMedia?.convert() } ?: listOf()
-    val newAnime = newAnime?.media?.mapNotNull { it?.fragments?.homeMedia?.convert() } ?: listOf()
-    val newManga = newManga?.media?.mapNotNull { it?.fragments?.homeMedia?.convert() } ?: listOf()
+    val trendingAnime = trendingAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+    val trendingManga = trendingManga?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+    val newAnime = newAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+    val newManga = newManga?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
     val review = review?.reviews?.mapNotNull {
         Review(
             id = it?.id ?: 0,
@@ -49,7 +50,7 @@ private fun HomeMedia?.convert(): Media {
     return Media(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,
-        title = MediaTitle(romaji = this?.title?.romaji ?: "", english = this?.title?.english ?: "", native = this?.title?.native_ ?: "", userPreferred = this?.title?.userPreferred ?: ""),
+        title = MediaTitle(romaji = this?.title?.romaji ?: "", english = this?.title?.english ?: "", native = this?.title?.native ?: "", userPreferred = this?.title?.userPreferred ?: ""),
         type = this?.type,
         format = this?.format,
         status = this?.status,

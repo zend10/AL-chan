@@ -1,6 +1,5 @@
 package com.zen.alchan.ui.base
 
-import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaTag
@@ -8,8 +7,7 @@ import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
-import com.zen.alchan.ui.common.BottomSheetTextInputDialog
-import type.ScoreFormat
+import com.zen.alchan.type.ScoreFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap

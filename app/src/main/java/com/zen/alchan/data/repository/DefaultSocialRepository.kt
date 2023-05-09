@@ -5,12 +5,12 @@ import com.zen.alchan.data.datasource.SocialDataSource
 import com.zen.alchan.data.response.SocialData
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.ActivityType
-import type.LikeableType
+import com.zen.alchan.type.ActivityType
+import com.zen.alchan.type.LikeableType
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : SocialRepository {
 
@@ -56,13 +56,13 @@ class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : 
 
     override fun getSocialData(): Observable<SocialData> {
         return socialDataSource.getSocialData().map {
-            it.data?.convert()
+            it.data?.convert() ?: SocialData()
         }
     }
 
     override fun getActivityDetail(id: Int): Observable<Activity> {
         return socialDataSource.getActivityDetail(id).map {
-            it.data?.convert()
+            it.data?.convert() ?: TextActivity()
         }
     }
 
@@ -73,7 +73,7 @@ class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : 
         isFollowing: Boolean?
     ): Observable<Page<Activity>> {
         return socialDataSource.getActivityList(page, userId, typeIn, isFollowing).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
@@ -95,17 +95,17 @@ class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : 
 
     override fun saveTextActivity(id: Int?, text: String): Observable<TextActivity> {
         return socialDataSource.saveTextActivity(id, text).map {
-            val textActivity = it.data?.saveTextActivity?.fragments?.onTextActivity?.convert()
+            val textActivity = it.data?.SaveTextActivity?.onTextActivity?.convert()
             _newOrEditedActivity.onNext(NullableItem(textActivity))
-            textActivity
+            textActivity ?: TextActivity()
         }
     }
 
     override fun saveActivityReply(id: Int?, activityId: Int, text: String): Observable<ActivityReply> {
         return socialDataSource.saveActivityReply(id, activityId, text).map {
-            val activityReply = it.data?.saveActivityReply?.fragments?.activityReply?.convert()
+            val activityReply = it.data?.SaveActivityReply?.activityReply?.convert()
             _newOrEditedReply.onNext(NullableItem(activityReply))
-            activityReply
+            activityReply ?: ActivityReply()
         }
     }
 
@@ -116,9 +116,9 @@ class DefaultSocialRepository(private val socialDataSource: SocialDataSource) : 
         private: Boolean
     ): Observable<MessageActivity> {
         return socialDataSource.saveMessageActivity(id, recipientId, message, private).map {
-            val messageActivity = it.data?.saveMessageActivity?.fragments?.onMessageActivity?.convert()
+            val messageActivity = it.data?.SaveMessageActivity?.onMessageActivity?.convert()
             _newOrEditedActivity.onNext(NullableItem(messageActivity))
-            messageActivity
+            messageActivity ?: MessageActivity()
         }
     }
 }

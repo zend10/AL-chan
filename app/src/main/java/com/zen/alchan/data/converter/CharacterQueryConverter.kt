@@ -1,37 +1,38 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.CharacterQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun CharacterQuery.Data.convert(): Character {
     return Character(
-        id = character?.id ?: 0,
+        id = Character?.id ?: 0,
         name = CharacterName(
-            first = character?.name?.first ?: "",
-            middle = character?.name?.middle ?: "",
-            last = character?.name?.last ?: "",
-            full = character?.name?.full ?: "",
-            native = character?.name?.native_ ?: "",
-            alternative = character?.name?.alternative?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
-            alternativeSpoiler = character?.name?.alternativeSpoiler?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
-            userPreferred = character?.name?.userPreferred ?: "",
+            first = Character?.name?.first ?: "",
+            middle = Character?.name?.middle ?: "",
+            last = Character?.name?.last ?: "",
+            full = Character?.name?.full ?: "",
+            native = Character?.name?.native ?: "",
+            alternative = Character?.name?.alternative?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
+            alternativeSpoiler = Character?.name?.alternativeSpoiler?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
+            userPreferred = Character?.name?.userPreferred ?: "",
         ),
         image = CharacterImage(
-            large = character?.image?.large ?: "",
-            medium = character?.image?.medium ?: ""
+            large = Character?.image?.large ?: "",
+            medium = Character?.image?.medium ?: ""
         ),
-        description = character?.description ?: "",
-        gender = character?.gender ?: "",
-        dateOfBirth = if (character?.dateOfBirth != null)
-            FuzzyDate(year = character.dateOfBirth.year, month = character.dateOfBirth.month, day = character.dateOfBirth.day)
+        description = Character?.description ?: "",
+        gender = Character?.gender ?: "",
+        dateOfBirth = if (Character?.dateOfBirth != null)
+            FuzzyDate(year = Character.dateOfBirth.year, month = Character.dateOfBirth.month, day = Character.dateOfBirth.day)
         else
             null
         ,
-        age = character?.age ?: "",
-        bloodType = character?.bloodType ?: "",
-        isFavourite = character?.isFavourite ?: false,
-        siteUrl = character?.siteUrl ?: "",
+        age = Character?.age ?: "",
+        bloodType = Character?.bloodType ?: "",
+        isFavourite = Character?.isFavourite ?: false,
+        siteUrl = Character?.siteUrl ?: "",
         media = MediaConnection(
-            edges = character?.media?.edges?.filterNotNull()?.map {
+            edges = Character?.media?.edges?.filterNotNull()?.map {
                 MediaEdge(
                     node = Media(
                         idAniList = it.node?.id ?: 0,
@@ -67,7 +68,7 @@ fun CharacterQuery.Data.convert(): Character {
                                     middle = it.voiceActor?.name?.middle ?: "",
                                     last = it.voiceActor?.name?.last ?: "",
                                     full = it.voiceActor?.name?.full ?: "",
-                                    native = it.voiceActor?.name?.native_ ?: "",
+                                    native = it.voiceActor?.name?.native ?: "",
                                     alternative = it.voiceActor?.name?.alternative?.filterNotNull() ?: listOf(),
                                     userPreferred = it.voiceActor?.name?.userPreferred ?: "",
                                 ),
@@ -84,13 +85,13 @@ fun CharacterQuery.Data.convert(): Character {
                 )
             } ?: listOf(),
             pageInfo = PageInfo(
-                total = character?.media?.pageInfo?.total ?: 0,
-                perPage = character?.media?.pageInfo?.perPage ?: 0,
-                currentPage = character?.media?.pageInfo?.currentPage ?: 0,
-                lastPage = character?.media?.pageInfo?.lastPage ?: 0,
-                hasNextPage = character?.media?.pageInfo?.hasNextPage ?: false
+                total = Character?.media?.pageInfo?.total ?: 0,
+                perPage = Character?.media?.pageInfo?.perPage ?: 0,
+                currentPage = Character?.media?.pageInfo?.currentPage ?: 0,
+                lastPage = Character?.media?.pageInfo?.lastPage ?: 0,
+                hasNextPage = Character?.media?.pageInfo?.hasNextPage ?: false
             )
         ),
-        favourites = character?.favourites ?: 0
+        favourites = Character?.favourites ?: 0
     )
 }

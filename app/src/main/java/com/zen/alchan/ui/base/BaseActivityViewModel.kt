@@ -3,9 +3,6 @@ package com.zen.alchan.ui.base
 import com.zen.alchan.R
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.AppTheme
-import com.zen.alchan.helper.extensions.applyScheduler
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 
 class BaseActivityViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 
@@ -15,7 +12,6 @@ class BaseActivityViewModel(private val userRepository: UserRepository) : BaseVi
         return userRepository.getAppTheme().name.contains("LIGHT")
     }
 
-    // TODO: Readd back for dev
     fun getAppThemeResource(): Int {
         return when (userRepository.getAppTheme()) {
             AppTheme.DEFAULT_THEME_YELLOW -> R.style.AppTheme_ThemeDefaultYellow

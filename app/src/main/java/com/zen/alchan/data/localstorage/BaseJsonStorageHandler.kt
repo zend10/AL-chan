@@ -2,8 +2,6 @@ package com.zen.alchan.data.localstorage
 
 import android.content.Context
 import com.google.gson.reflect.TypeToken
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import java.io.*
 import java.lang.reflect.Type
 

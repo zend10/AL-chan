@@ -1,17 +1,18 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.SearchCharacterQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun SearchCharacterQuery.Data.convert(): Page<Character> {
     return Page(
         pageInfo = PageInfo(
-            total = page?.pageInfo?.total ?: 0,
-            perPage = page?.pageInfo?.perPage ?: 0,
-            currentPage = page?.pageInfo?.currentPage ?: 0,
-            lastPage = page?.pageInfo?.lastPage ?: 0,
-            hasNextPage = page?.pageInfo?.hasNextPage ?: false
+            total = Page?.pageInfo?.total ?: 0,
+            perPage = Page?.pageInfo?.perPage ?: 0,
+            currentPage = Page?.pageInfo?.currentPage ?: 0,
+            lastPage = Page?.pageInfo?.lastPage ?: 0,
+            hasNextPage = Page?.pageInfo?.hasNextPage ?: false
         ),
-        data = page?.characters?.filterNotNull()?.map {
+        data = Page?.characters?.filterNotNull()?.map {
             Character(
                 id = it.id,
                 name = CharacterName(
@@ -19,7 +20,7 @@ fun SearchCharacterQuery.Data.convert(): Page<Character> {
                     middle = it.name?.middle ?: "",
                     last = it.name?.last ?: "",
                     full = it.name?.full ?: "",
-                    native = it.name?.native_ ?: "",
+                    native = it.name?.native ?: "",
                     alternative = it.name?.alternative?.filterNotNull() ?: listOf(),
                     alternativeSpoiler = it.name?.alternativeSpoiler?.filterNotNull() ?: listOf(),
                     userPreferred = it.name?.userPreferred ?: ""

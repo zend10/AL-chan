@@ -1,63 +1,62 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.MediaQuery
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.helper.enums.OtherLink
-import com.zen.alchan.helper.extensions.toHex
 
 fun MediaQuery.Data.convert(): Media {
     return Media(
-        idAniList = media?.id ?: 0,
-        idMal = media?.idMal,
+        idAniList = Media?.id ?: 0,
+        idMal = Media?.idMal,
         title = MediaTitle(
-            romaji = media?.title?.romaji ?: "",
-            english = media?.title?.english ?: "",
-            native = media?.title?.native_ ?: "",
-            userPreferred = media?.title?.userPreferred ?: ""
+            romaji = Media?.title?.romaji ?: "",
+            english = Media?.title?.english ?: "",
+            native = Media?.title?.native ?: "",
+            userPreferred = Media?.title?.userPreferred ?: ""
         ),
-        type = media?.type,
-        format = media?.format,
-        status = media?.status,
-        description = media?.description ?: "",
-        startDate = if (media?.startDate != null)
-            FuzzyDate(year = media.startDate.year, month = media.startDate.month, day = media.startDate.day)
+        type = Media?.type,
+        format = Media?.format,
+        status = Media?.status,
+        description = Media?.description ?: "",
+        startDate = if (Media?.startDate != null)
+            FuzzyDate(year = Media.startDate.year, month = Media.startDate.month, day = Media.startDate.day)
         else
             null,
-        endDate = if (media?.endDate != null)
-            FuzzyDate(year = media.endDate.year, month = media.endDate.month, day = media.endDate.day)
+        endDate = if (Media?.endDate != null)
+            FuzzyDate(year = Media.endDate.year, month = Media.endDate.month, day = Media.endDate.day)
         else
             null,
-        season = media?.season,
-        seasonYear = media?.seasonYear,
-        episodes = media?.episodes,
-        duration = media?.duration,
-        chapters = media?.chapters,
-        volumes = media?.volumes,
-        countryOfOrigin = media?.countryOfOrigin,
-        isLicensed = media?.isLicensed,
-        source = media?.source,
-        trailer = if (media?.trailer != null)
+        season = Media?.season,
+        seasonYear = Media?.seasonYear,
+        episodes = Media?.episodes,
+        duration = Media?.duration,
+        chapters = Media?.chapters,
+        volumes = Media?.volumes,
+        countryOfOrigin = Media?.countryOfOrigin,
+        isLicensed = Media?.isLicensed,
+        source = Media?.source,
+        trailer = if (Media?.trailer != null)
             MediaTrailer(
-                id = media.trailer.id ?: "",
-                site = media.trailer.site ?: "",
-                thumbnail = media.trailer.thumbnail ?: ""
+                id = Media.trailer.id ?: "",
+                site = Media.trailer.site ?: "",
+                thumbnail = Media.trailer.thumbnail ?: ""
             )
         else
             null,
         coverImage = MediaCoverImage(
-            extraLarge = media?.coverImage?.extraLarge ?: "",
-            large = media?.coverImage?.large ?: "",
-            medium = media?.coverImage?.medium ?: ""
+            extraLarge = Media?.coverImage?.extraLarge ?: "",
+            large = Media?.coverImage?.large ?: "",
+            medium = Media?.coverImage?.medium ?: ""
         ),
-        bannerImage = media?.bannerImage ?: "",
-        genres = media?.genres?.filterNotNull()?.map { Genre(name = it) } ?: listOf(),
-        synonyms = media?.synonyms?.filterNotNull() ?: listOf(),
-        averageScore = media?.averageScore ?: 0,
-        meanScore = media?.meanScore ?: 0,
-        popularity = media?.popularity ?: 0,
-        trending = media?.trending ?: 0,
-        favourites = media?.favourites ?: 0,
-        tags = media?.tags?.filterNotNull()?.map {
+        bannerImage = Media?.bannerImage ?: "",
+        genres = Media?.genres?.filterNotNull()?.map { Genre(name = it) } ?: listOf(),
+        synonyms = Media?.synonyms?.filterNotNull() ?: listOf(),
+        averageScore = Media?.averageScore ?: 0,
+        meanScore = Media?.meanScore ?: 0,
+        popularity = Media?.popularity ?: 0,
+        trending = Media?.trending ?: 0,
+        favourites = Media?.favourites ?: 0,
+        tags = Media?.tags?.filterNotNull()?.map {
             MediaTag(
                 id = it.id,
                 name = it.name,
@@ -70,14 +69,14 @@ fun MediaQuery.Data.convert(): Media {
             )
         } ?: listOf(),
         relations = MediaConnection(
-            edges = media?.relations?.edges?.map {
+            edges = Media?.relations?.edges?.map {
                 MediaEdge(
                     node = Media(
                         idAniList = it?.node?.id ?: 0,
                         title = MediaTitle(
                             romaji = it?.node?.title?.romaji ?: "",
                             english = it?.node?.title?.english ?: "",
-                            native = it?.node?.title?.native_ ?: "",
+                            native = it?.node?.title?.native ?: "",
                             userPreferred = it?.node?.title?.userPreferred ?: "",
                         ),
                         type = it?.node?.type,
@@ -93,7 +92,7 @@ fun MediaQuery.Data.convert(): Media {
             } ?: listOf()
         ),
         characters = CharacterConnection(
-            nodes = media?.characters?.nodes?.filterNotNull()?.map {
+            nodes = Media?.characters?.nodes?.filterNotNull()?.map {
                 Character(
                     id = it.id,
                     name = CharacterName(
@@ -101,7 +100,7 @@ fun MediaQuery.Data.convert(): Media {
                         middle = it.name?.middle ?: "",
                         last = it.name?.last ?: "",
                         full = it.name?.full ?: "",
-                        native = it.name?.native_ ?: "",
+                        native = it.name?.native ?: "",
                         alternative = it.name?.alternative?.filterNotNull() ?: listOf(),
                         alternativeSpoiler = it.name?.alternativeSpoiler?.filterNotNull() ?: listOf(),
                         userPreferred = it.name?.userPreferred ?: "",
@@ -114,7 +113,7 @@ fun MediaQuery.Data.convert(): Media {
             } ?: listOf()
         ),
         staff = StaffConnection(
-            edges = media?.staff?.edges?.map {
+            edges = Media?.staff?.edges?.map {
                 StaffEdge(
                     node = Staff(
                         id = it?.node?.id ?: 0,
@@ -123,7 +122,7 @@ fun MediaQuery.Data.convert(): Media {
                             middle = it?.node?.name?.middle ?: "",
                             last = it?.node?.name?.last ?: "",
                             full = it?.node?.name?.full ?: "",
-                            native = it?.node?.name?.native_ ?: "",
+                            native = it?.node?.name?.native ?: "",
                             alternative = it?.node?.name?.alternative?.filterNotNull() ?: listOf(),
                             userPreferred = it?.node?.name?.userPreferred ?: "",
                         ),
@@ -138,7 +137,7 @@ fun MediaQuery.Data.convert(): Media {
             } ?: listOf()
         ),
         studios = StudioConnection(
-            edges = media?.studios?.edges?.map {
+            edges = Media?.studios?.edges?.map {
                 StudioEdge(
                     node = Studio(
                         id = it?.node?.id ?: 0,
@@ -150,23 +149,23 @@ fun MediaQuery.Data.convert(): Media {
                 )
             } ?: listOf()
         ),
-        isFavourite = media?.isFavourite ?: false,
-        isAdult = media?.isAdult ?: false,
-        nextAiringEpisode = if (media?.nextAiringEpisode != null)
+        isFavourite = Media?.isFavourite ?: false,
+        isAdult = Media?.isAdult ?: false,
+        nextAiringEpisode = if (Media?.nextAiringEpisode != null)
             AiringSchedule(
-                id = media.nextAiringEpisode.id,
-                airingAt = media.nextAiringEpisode.airingAt,
-                timeUntilAiring = media.nextAiringEpisode.timeUntilAiring,
-                episode = media.nextAiringEpisode.episode
+                id = Media.nextAiringEpisode.id,
+                airingAt = Media.nextAiringEpisode.airingAt,
+                timeUntilAiring = Media.nextAiringEpisode.timeUntilAiring,
+                episode = Media.nextAiringEpisode.episode
             )
         else
             null
         ,
         externalLinks = listOf(MediaExternalLink(
-            url = media?.siteUrl ?: "",
+            url = Media?.siteUrl ?: "",
             site = "AniList",
             color = "#324760"
-        )) + (media?.externalLinks?.filterNotNull()?.map {
+        )) + (Media?.externalLinks?.filterNotNull()?.map {
             MediaExternalLink(
                 id = it.id,
                 url = it.url ?: "",
@@ -178,7 +177,7 @@ fun MediaQuery.Data.convert(): Media {
                 icon = it.icon ?: ""
             )
         } ?: listOf()),
-        rankings = media?.rankings?.map {
+        rankings = Media?.rankings?.map {
             MediaRank(
                 id = it?.id ?: 0,
                 rank = it?.rank ?: 0,
@@ -191,7 +190,7 @@ fun MediaQuery.Data.convert(): Media {
             )
         } ?: listOf(),
         recommendations = RecommendationConnection(
-            nodes = media?.recommendations?.nodes?.map {
+            nodes = Media?.recommendations?.nodes?.map {
                 Recommendation(
                     id = it?.id ?: 0,
                     rating = it?.rating ?: 0,
@@ -201,7 +200,7 @@ fun MediaQuery.Data.convert(): Media {
                         title = MediaTitle(
                             romaji = it?.mediaRecommendation?.title?.romaji ?: "",
                             english = it?.mediaRecommendation?.title?.english ?: "",
-                            native = it?.mediaRecommendation?.title?.native_ ?: "",
+                            native = it?.mediaRecommendation?.title?.native ?: "",
                             userPreferred = it?.mediaRecommendation?.title?.userPreferred ?: ""
                         ),
                         type = it?.mediaRecommendation?.type,
@@ -225,19 +224,19 @@ fun MediaQuery.Data.convert(): Media {
             } ?: listOf()
         ),
         stats = MediaStats(
-            scoreDistribution = media?.stats?.scoreDistribution?.map {
+            scoreDistribution = Media?.stats?.scoreDistribution?.map {
                 ScoreDistribution(
                     score = it?.score ?: 0,
                     amount = it?.amount ?: 0
                 )
             } ?: listOf(),
-            statusDistribution = media?.stats?.statusDistribution?.map {
+            statusDistribution = Media?.stats?.statusDistribution?.map {
                 StatusDistribution(
                     status = it?.status,
                     amount = it?.amount ?: 0
                 )
             } ?: listOf()
         ),
-        siteUrl = media?.siteUrl ?: ""
+        siteUrl = Media?.siteUrl ?: ""
     )
 }

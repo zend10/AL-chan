@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.MediaType
+import com.zen.alchan.type.MediaType
+
 
 data class Review(
     val id: Int = 0,

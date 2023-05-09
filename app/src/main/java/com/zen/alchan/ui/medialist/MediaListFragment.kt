@@ -12,16 +12,16 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
-import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.apollographql.apollo.api.CustomTypeValue
+import com.apollographql.apollo3.api.nullable
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.databinding.FragmentMediaListBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.network.apollo.adapter.JsonAdapter
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListOptions
@@ -31,11 +31,10 @@ import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.main.SharedMainViewModel
-import com.zen.alchan.ui.search.SearchRvAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaListStatus
-import type.ScoreFormat
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.ScoreFormat
 
 class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewModel>() {
 
@@ -188,7 +187,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             },
             viewModel.scoreValues.subscribe { (mediaList: MediaList, scoreFormat: ScoreFormat) ->
                 val currentScore = mediaList.score
-                val advancedScores = (mediaList.advancedScores as CustomTypeValue<*>).value as? LinkedHashMap<String, Double>
+                val advancedScores = mediaList.advancedScores as? LinkedHashMap<String, Double>
                 dialog.showScoreDialog(scoreFormat, currentScore, advancedScores) { newScore, newAdvancedScores ->
                     viewModel.updateScore(mediaList, newScore, newAdvancedScores)
                 }

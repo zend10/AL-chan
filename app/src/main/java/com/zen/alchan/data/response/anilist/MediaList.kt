@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.roundToOneDecimal
-import type.MediaListStatus
+import com.zen.alchan.type.MediaListStatus
 
 data class MediaList(
     val id: Int? = null,

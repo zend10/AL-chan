@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
 import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream

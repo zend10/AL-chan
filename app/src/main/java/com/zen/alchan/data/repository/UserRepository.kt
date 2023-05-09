@@ -1,19 +1,22 @@
 package com.zen.alchan.data.repository
 
-import android.net.Uri
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.helper.enums.AppTheme
-import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
-import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.data.response.anilist.Favourites
+import com.zen.alchan.data.response.anilist.ListActivityOption
+import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
+import com.zen.alchan.data.response.anilist.Page
+import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.UserStatisticTypes
 import com.zen.alchan.helper.enums.Favorite
-import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Completable
-import io.reactivex.Observable
-import type.*
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 interface UserRepository {
 
@@ -36,8 +39,8 @@ interface UserRepository {
         source: Source? = null
     ): Observable<Pair<Int, Int>>
 
-    fun getFollowing(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
-    fun getFollowers(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>>
+    fun getFollowing(userId: Int, page: Int): Observable<Page<User>>
+    fun getFollowers(userId: Int, page: Int): Observable<Page<User>>
     fun toggleFollow(userId: Int): Observable<Boolean>
 
     fun getUserStatistics(userId: Int, sort: UserStatisticsSort): Observable<UserStatisticTypes>

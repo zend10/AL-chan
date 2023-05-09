@@ -1,8 +1,8 @@
 package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
-import type.CharacterRole
-import type.MediaRelation
+import com.zen.alchan.type.CharacterRole
+import com.zen.alchan.type.MediaRelation
 
 data class MediaEdge(
     val node: Media = Media(),

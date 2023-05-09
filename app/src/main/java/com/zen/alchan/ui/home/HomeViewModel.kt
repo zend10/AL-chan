@@ -19,10 +19,10 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.ReleasingTodayItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaListStatus
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaListStatus
 import kotlin.math.abs
 
 class HomeViewModel(

@@ -11,11 +11,9 @@ import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.StudioItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class StudioViewModel(
     private val browseRepository: BrowseRepository,
@@ -162,8 +160,7 @@ class StudioViewModel(
 
         disposables.add(
             userRepository.toggleFavorite(studioId = studio.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)
                 }

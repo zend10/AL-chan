@@ -6,9 +6,9 @@ import com.zen.alchan.data.response.mal.MangaResponse
 
 fun MangaResponse.convert(): Manga {
     return Manga(
-        malId = malId ?: 0,
-        title = title ?: "",
-        serializations = serializations?.map {
+        malId = data?.malId ?: 0,
+        title = data?.title ?: "",
+        serializations = data?.serializations?.map {
             MangaSerialization(
                 name = it.name ?: "",
                 url = it.url ?: ""

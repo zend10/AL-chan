@@ -1,7 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.data.entity.AppSetting
-import type.ActivityType
+import com.zen.alchan.type.ActivityType
 
 data class TextActivity(
     override val id: Int = 0,

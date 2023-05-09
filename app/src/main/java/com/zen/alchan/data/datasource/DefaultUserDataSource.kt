@@ -1,93 +1,78 @@
 package com.zen.alchan.data.datasource
 
-import FollowersQuery
-import FollowingAndFollowersCountQuery
-import FollowingQuery
-import NotificationsQuery
-import ToggleFavouriteMutation
-import ToggleFollowMutation
-import UnreadNotificationCountQuery
-import UpdateFavouriteOrderMutation
-import UpdateUserMutation
-import UserFavouritesQuery
-import UserStatisticsQuery
-import ViewerQuery
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.rx2.rxMutate
-import com.apollographql.apollo.rx2.rxPrefetch
-import com.apollographql.apollo.rx2.rxQuery
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo3.rx3.rxSingle
+import com.zen.alchan.*
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.response.anilist.ListActivityOption
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.helper.enums.Favorite
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import type.*
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserDataSource {
 
-    override fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<Response<ViewerQuery.Data>> {
-        val query = ViewerQuery(sort = Input.optional(sort))
-        return apolloHandler.apolloClient.rxQuery(query)
+    override fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<ApolloResponse<ViewerQuery.Data>> {
+        val query = ViewerQuery(sort = Optional.presentIfNotNull(sort))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getFollowingAndFollowersCount(userId: Int): Observable<Response<FollowingAndFollowersCountQuery.Data>> {
+    override fun getFollowingAndFollowersCount(userId: Int): Observable<ApolloResponse<FollowingAndFollowersCountQuery.Data>> {
         val query = FollowingAndFollowersCountQuery(userId = userId)
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getFollowing(userId: Int, page: Int): Observable<Response<FollowingQuery.Data>> {
-        val query = FollowingQuery(userId = userId, page = Input.fromNullable(page))
-        return apolloHandler.apolloClient.rxQuery(query)
+    override fun getFollowing(userId: Int, page: Int): Observable<ApolloResponse<FollowingQuery.Data>> {
+        val query = FollowingQuery(userId = userId, page = Optional.present(page))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getFollowers(userId: Int, page: Int): Observable<Response<FollowersQuery.Data>> {
-        val query = FollowersQuery(userId = userId, page = Input.fromNullable(page))
-        return apolloHandler.apolloClient.rxQuery(query)
+    override fun getFollowers(userId: Int, page: Int): Observable<ApolloResponse<FollowersQuery.Data>> {
+        val query = FollowersQuery(userId = userId, page = Optional.present(page))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun toggleFollow(userId: Int): Single<Response<ToggleFollowMutation.Data>> {
-        val mutation = ToggleFollowMutation(Input.fromNullable(userId))
-        return apolloHandler.apolloClient.rxMutate(mutation)
+    override fun toggleFollow(userId: Int): Observable<ApolloResponse<ToggleFollowMutation.Data>> {
+        val mutation = ToggleFollowMutation(Optional.present(userId))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun getUserStatistics(
         userId: Int,
         sort: List<UserStatisticsSort>
-    ): Observable<Response<UserStatisticsQuery.Data>> {
-        val query = UserStatisticsQuery(Input.fromNullable(userId), Input.fromNullable(sort))
-        return apolloHandler.apolloClient.rxQuery(query)
+    ): Observable<ApolloResponse<UserStatisticsQuery.Data>> {
+        val query = UserStatisticsQuery(Optional.present(userId), Optional.present(sort))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getFavorites(
         userId: Int,
         page: Int
-    ): Observable<Response<UserFavouritesQuery.Data>> {
-        val query = UserFavouritesQuery(Input.fromNullable(userId), Input.fromNullable(page))
-        return apolloHandler.apolloClient.rxQuery(query)
+    ): Observable<ApolloResponse<UserFavouritesQuery.Data>> {
+        val query = UserFavouritesQuery(Optional.present(userId), Optional.present(page))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun updateFavoriteOrder(
         ids: List<Int>,
         favorite: Favorite
-    ): Single<Response<UpdateFavouriteOrderMutation.Data>> {
+    ): Observable<ApolloResponse<UpdateFavouriteOrderMutation.Data>> {
         val order = ids.mapIndexed { index, _ -> index + 1 }
         val mutation = UpdateFavouriteOrderMutation(
-            animeIds = Input.optional(if (favorite == Favorite.ANIME) ids else null),
-            mangaIds = Input.optional(if (favorite == Favorite.MANGA) ids else null),
-            characterIds = Input.optional(if (favorite == Favorite.CHARACTERS) ids else null),
-            staffIds = Input.optional(if (favorite == Favorite.STAFF) ids else null),
-            studioIds = Input.optional(if (favorite == Favorite.STUDIOS) ids else null),
-            animeOrder = Input.optional(if (favorite == Favorite.ANIME) order else null),
-            mangaOrder = Input.optional(if (favorite == Favorite.MANGA) order else null),
-            characterOrder = Input.optional(if (favorite == Favorite.CHARACTERS) order else null),
-            staffOrder = Input.optional(if (favorite == Favorite.STAFF) order else null),
-            studioOrder = Input.optional(if (favorite == Favorite.STUDIOS) order else null)
+            animeIds = Optional.presentIfNotNull(if (favorite == Favorite.ANIME) ids else null),
+            mangaIds = Optional.presentIfNotNull(if (favorite == Favorite.MANGA) ids else null),
+            characterIds = Optional.presentIfNotNull(if (favorite == Favorite.CHARACTERS) ids else null),
+            staffIds = Optional.presentIfNotNull(if (favorite == Favorite.STAFF) ids else null),
+            studioIds = Optional.presentIfNotNull(if (favorite == Favorite.STUDIOS) ids else null),
+            animeOrder = Optional.presentIfNotNull(if (favorite == Favorite.ANIME) order else null),
+            mangaOrder = Optional.presentIfNotNull(if (favorite == Favorite.MANGA) order else null),
+            characterOrder = Optional.presentIfNotNull(if (favorite == Favorite.CHARACTERS) order else null),
+            staffOrder = Optional.presentIfNotNull(if (favorite == Favorite.STAFF) order else null),
+            studioOrder = Optional.presentIfNotNull(if (favorite == Favorite.STUDIOS) order else null)
         )
-        return apolloHandler.apolloClient.rxMutate(mutation)
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun toggleFavorite(
@@ -96,15 +81,15 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
         characterId: Int?,
         staffId: Int?,
         studioId: Int?
-    ): Single<Response<ToggleFavouriteMutation.Data>> {
+    ): Observable<ApolloResponse<ToggleFavouriteMutation.Data>> {
         val mutation = ToggleFavouriteMutation(
-            animeId = Input.optional(animeId),
-            mangaId = Input.optional(mangaId),
-            characterId = Input.optional(characterId),
-            staffId = Input.optional(staffId),
-            studioId = Input.optional(studioId)
+            animeId = Optional.presentIfNotNull(animeId),
+            mangaId = Optional.presentIfNotNull(mangaId),
+            characterId = Optional.presentIfNotNull(characterId),
+            staffId = Optional.presentIfNotNull(staffId),
+            studioId = Optional.presentIfNotNull(studioId)
         )
-        return apolloHandler.apolloClient.rxMutate(mutation)
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun updateAniListSettings(
@@ -113,15 +98,15 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
         activityMergeTime: Int,
         displayAdultContent: Boolean,
         airingNotifications: Boolean
-    ): Single<Response<UpdateUserMutation.Data>> {
+    ): Observable<ApolloResponse<UpdateUserMutation.Data>> {
         val mutation = UpdateUserMutation(
-            titleLanguage = Input.fromNullable(titleLanguage),
-            staffNameLanguage = Input.fromNullable(staffNameLanguage),
-            activityMergeTime = Input.fromNullable(activityMergeTime),
-            displayAdultContent = Input.fromNullable(displayAdultContent),
-            airingNotifications = Input.fromNullable(airingNotifications)
+            titleLanguage = Optional.present(titleLanguage),
+            staffNameLanguage = Optional.present(staffNameLanguage),
+            activityMergeTime = Optional.present(activityMergeTime),
+            displayAdultContent = Optional.present(displayAdultContent),
+            airingNotifications = Optional.present(airingNotifications)
         )
-        return apolloHandler.apolloClient.rxMutate(mutation)
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun updateListSettings(
@@ -130,64 +115,64 @@ class DefaultUserDataSource(private val apolloHandler: ApolloHandler) : UserData
         animeListOptions: MediaListTypeOptions,
         mangaListOptions: MediaListTypeOptions,
         disabledListActivity: List<ListActivityOption>
-    ): Single<Response<UpdateUserMutation.Data>> {
+    ): Observable<ApolloResponse<UpdateUserMutation.Data>> {
         val mutation = UpdateUserMutation(
-            scoreFormat = Input.fromNullable(scoreFormat),
-            rowOrder = Input.fromNullable(rowOrder),
-            animeListOptions = Input.fromNullable(
+            scoreFormat = Optional.present(scoreFormat),
+            rowOrder = Optional.present(rowOrder),
+            animeListOptions = Optional.present(
                 MediaListOptionsInput(
-                    sectionOrder = Input.fromNullable(animeListOptions.sectionOrder),
-                    splitCompletedSectionByFormat = Input.fromNullable(animeListOptions.splitCompletedSectionByFormat),
-                    customLists = Input.fromNullable(animeListOptions.customLists),
-                    advancedScoring = Input.fromNullable(animeListOptions.advancedScoring),
-                    advancedScoringEnabled = Input.fromNullable(animeListOptions.advancedScoringEnabled)
+                    sectionOrder = Optional.present(animeListOptions.sectionOrder),
+                    splitCompletedSectionByFormat = Optional.present(animeListOptions.splitCompletedSectionByFormat),
+                    customLists = Optional.present(animeListOptions.customLists),
+                    advancedScoring = Optional.present(animeListOptions.advancedScoring),
+                    advancedScoringEnabled = Optional.present(animeListOptions.advancedScoringEnabled)
                 )
             ),
-            mangaListOptions = Input.fromNullable(
+            mangaListOptions = Optional.present(
                 MediaListOptionsInput(
-                    sectionOrder = Input.fromNullable(mangaListOptions.sectionOrder),
-                    splitCompletedSectionByFormat = Input.fromNullable(mangaListOptions.splitCompletedSectionByFormat),
-                    customLists = Input.fromNullable(mangaListOptions.customLists),
-                    advancedScoring = Input.fromNullable(mangaListOptions.advancedScoring),
-                    advancedScoringEnabled = Input.fromNullable(mangaListOptions.advancedScoringEnabled)
+                    sectionOrder = Optional.present(mangaListOptions.sectionOrder),
+                    splitCompletedSectionByFormat = Optional.present(mangaListOptions.splitCompletedSectionByFormat),
+                    customLists = Optional.present(mangaListOptions.customLists),
+                    advancedScoring = Optional.present(mangaListOptions.advancedScoring),
+                    advancedScoringEnabled = Optional.present(mangaListOptions.advancedScoringEnabled)
                 )
             ),
-            disabledListActivity = Input.fromNullable(
+            disabledListActivity = Optional.present(
                 disabledListActivity.map {
                     ListActivityOptionInput(
-                        disabled = Input.fromNullable(it.disabled),
-                        type = Input.fromNullable(it.type)
+                        disabled = Optional.present(it.disabled),
+                        type = Optional.present(it.type)
                     )
                 }
             )
         )
-        return apolloHandler.apolloClient.rxMutate(mutation)
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
-    override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>): Single<Response<UpdateUserMutation.Data>> {
+    override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>): Observable<ApolloResponse<UpdateUserMutation.Data>> {
         val mutation = UpdateUserMutation(
-            notificationOptions = Input.fromNullable(notificationOptions.map {
-                NotificationOptionInput(Input.fromNullable(it.type), Input.fromNullable(it.enabled))
+            notificationOptions = Optional.present(notificationOptions.map {
+                NotificationOptionInput(Optional.present(it.type), Optional.present(it.enabled))
             })
         )
-        return apolloHandler.apolloClient.rxMutate(mutation)
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun getNotifications(
         page: Int,
         typeIn: List<NotificationType>?,
         resetNotificationCount: Boolean
-    ): Observable<Response<NotificationsQuery.Data>> {
+    ): Observable<ApolloResponse<NotificationsQuery.Data>> {
         val query = NotificationsQuery(
-            page = Input.fromNullable(page),
-            type_in = Input.optional(typeIn),
-            resetNotificationCount = Input.fromNullable(resetNotificationCount)
+            page = Optional.present(page),
+            type_in = Optional.presentIfNotNull(typeIn),
+            resetNotificationCount = Optional.present(resetNotificationCount)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getUnreadNotificationCount(): Observable<Response<UnreadNotificationCountQuery.Data>> {
+    override fun getUnreadNotificationCount(): Observable<ApolloResponse<UnreadNotificationCountQuery.Data>> {
         val query = UnreadNotificationCountQuery()
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 }

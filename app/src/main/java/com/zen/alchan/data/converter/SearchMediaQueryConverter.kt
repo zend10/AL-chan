@@ -1,25 +1,26 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.SearchMediaQuery
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 
 fun SearchMediaQuery.Data.convert(): Page<Media> {
     return Page(
         pageInfo = PageInfo(
-            total = page?.pageInfo?.total ?: 0,
-            perPage = page?.pageInfo?.perPage ?: 0,
-            currentPage = page?.pageInfo?.currentPage ?: 0,
-            lastPage = page?.pageInfo?.lastPage ?: 0,
-            hasNextPage = page?.pageInfo?.hasNextPage ?: false
+            total = Page?.pageInfo?.total ?: 0,
+            perPage = Page?.pageInfo?.perPage ?: 0,
+            currentPage = Page?.pageInfo?.currentPage ?: 0,
+            lastPage = Page?.pageInfo?.lastPage ?: 0,
+            hasNextPage = Page?.pageInfo?.hasNextPage ?: false
         ),
-        data = page?.media?.filterNotNull()?.map {
+        data = Page?.media?.filterNotNull()?.map {
             Media(
                 idAniList = it.id,
                 idMal = it.idMal,
                 title = MediaTitle(
                     romaji = it.title?.romaji ?: "",
                     english = it.title?.english ?: "",
-                    native = it.title?.native_ ?: "",
+                    native = it.title?.native ?: "",
                     userPreferred = it.title?.userPreferred ?: ""
                 ),
                 type = it.type,
@@ -54,7 +55,7 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                                     middle = it.node?.name?.middle ?: "",
                                     last = it.node?.name?.last ?: "",
                                     full = it.node?.name?.full ?: "",
-                                    native = it.node?.name?.native_ ?: "",
+                                    native = it.node?.name?.native ?: "",
                                     alternative = it.node?.name?.alternative?.filterNotNull() ?: listOf(),
                                     userPreferred = it.node?.name?.userPreferred ?: ""
                                 )

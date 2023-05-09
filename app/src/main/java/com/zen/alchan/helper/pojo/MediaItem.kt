@@ -1,6 +1,5 @@
 package com.zen.alchan.helper.pojo
 
-import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 
 data class MediaItem(

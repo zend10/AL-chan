@@ -12,10 +12,10 @@ import com.zen.alchan.helper.pojo.SocialAdapterComponent
 import com.zen.alchan.helper.pojo.SocialItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.LikeableType
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.LikeableType
 
 class SocialViewModel(
     private val userRepository: UserRepository,
@@ -37,7 +37,7 @@ class SocialViewModel(
         loadOnce {
             disposables.add(
                 userRepository.getAppSetting()
-                    .zipWith(userRepository.getViewer(Source.CACHE).onErrorReturn { null }) { appSetting, viewer ->
+                    .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, viewer ->
                         this.viewer = viewer
                         SocialAdapterComponent(viewer = viewer, appSetting = appSetting)
                     }

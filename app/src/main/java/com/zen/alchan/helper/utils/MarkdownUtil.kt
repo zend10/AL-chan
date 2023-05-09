@@ -2,24 +2,13 @@ package com.zen.alchan.helper.utils
 
 import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.AlignmentSpan
 import android.text.style.CharacterStyle
-import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
-import android.util.Log
-import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
-import androidx.core.text.toSpannable
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.extensions.getAttrValue
-import com.zen.alchan.helper.extensions.getThemeSecondaryColor
-import com.zen.alchan.helper.extensions.getThemeTextColor
 import io.noties.markwon.*
 import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.core.CoreProps
@@ -29,7 +18,6 @@ import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.MarkwonHtmlRenderer
 import io.noties.markwon.html.TagHandler
-import io.noties.markwon.html.tag.SimpleTagHandler
 import io.noties.markwon.image.DefaultDownScalingMediaDecoder
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.gif.GifMediaDecoder
@@ -42,17 +30,8 @@ import android.text.Spanned
 
 import android.text.Spannable
 import android.text.style.StrikethroughSpan
-import androidx.annotation.NonNull
-import androidx.core.text.clearSpans
 
 import io.noties.markwon.AbstractMarkwonPlugin
-import io.noties.markwon.inlineparser.InlineProcessor
-import io.noties.markwon.inlineparser.MarkwonInlineParser
-import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
-import io.noties.markwon.inlineparser.OpenBracketInlineProcessor
-import org.commonmark.node.Node
-import org.commonmark.parser.Parser
-import org.commonmark.parser.delimiter.DelimiterProcessor
 import java.net.URLEncoder
 
 

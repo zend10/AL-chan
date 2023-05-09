@@ -1,5 +1,6 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.MediaWithMediaListQuery
 import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
@@ -7,44 +8,44 @@ import com.zen.alchan.data.response.anilist.MediaTitle
 
 fun MediaWithMediaListQuery.Data.convert(): Media {
     return Media(
-        idAniList = media?.id ?: 0,
-        idMal = media?.idMal,
+        idAniList = Media?.id ?: 0,
+        idMal = Media?.idMal,
         title = MediaTitle(
-            romaji = media?.title?.romaji ?: "",
-            english = media?.title?.english ?: "",
-            native = media?.title?.native_ ?: "",
-            userPreferred = media?.title?.userPreferred ?: ""
+            romaji = Media?.title?.romaji ?: "",
+            english = Media?.title?.english ?: "",
+            native = Media?.title?.native ?: "",
+            userPreferred = Media?.title?.userPreferred ?: ""
         ),
-        type = media?.type,
-        episodes = media?.episodes,
-        chapters = media?.chapters,
-        volumes = media?.volumes,
-        isFavourite = media?.isFavourite ?: false,
+        type = Media?.type,
+        episodes = Media?.episodes,
+        chapters = Media?.chapters,
+        volumes = Media?.volumes,
+        isFavourite = Media?.isFavourite ?: false,
         mediaListEntry = MediaList(
-            id = media?.mediaListEntry?.id,
-            status = media?.mediaListEntry?.status,
-            score = media?.mediaListEntry?.score ?: 0.0,
-            progress = media?.mediaListEntry?.progress ?: 0,
-            progressVolumes = media?.mediaListEntry?.progressVolumes,
-            repeat = media?.mediaListEntry?.repeat ?: 0,
-            priority = media?.mediaListEntry?.priority ?: 0,
-            private = media?.mediaListEntry?.private_ ?: false,
-            notes = media?.mediaListEntry?.notes ?: "",
-            hiddenFromStatusLists = media?.mediaListEntry?.hiddenFromStatusLists ?: false,
-            customLists = media?.mediaListEntry?.customLists,
-            advancedScores = media?.mediaListEntry?.advancedScores,
-            startedAt = if (media?.mediaListEntry?.startedAt != null)
-                FuzzyDate(media.mediaListEntry.startedAt.year, media.mediaListEntry.startedAt.month, media.mediaListEntry.startedAt.day)
+            id = Media?.mediaListEntry?.id,
+            status = Media?.mediaListEntry?.status,
+            score = Media?.mediaListEntry?.score ?: 0.0,
+            progress = Media?.mediaListEntry?.progress ?: 0,
+            progressVolumes = Media?.mediaListEntry?.progressVolumes,
+            repeat = Media?.mediaListEntry?.repeat ?: 0,
+            priority = Media?.mediaListEntry?.priority ?: 0,
+            private = Media?.mediaListEntry?.private ?: false,
+            notes = Media?.mediaListEntry?.notes ?: "",
+            hiddenFromStatusLists = Media?.mediaListEntry?.hiddenFromStatusLists ?: false,
+            customLists = Media?.mediaListEntry?.customLists,
+            advancedScores = Media?.mediaListEntry?.advancedScores,
+            startedAt = if (Media?.mediaListEntry?.startedAt != null)
+                FuzzyDate(Media.mediaListEntry.startedAt.year, Media.mediaListEntry.startedAt.month, Media.mediaListEntry.startedAt.day)
             else
                 null
             ,
-            completedAt = if (media?.mediaListEntry?.completedAt != null)
-                FuzzyDate(media.mediaListEntry.completedAt.year, media.mediaListEntry.completedAt.month, media.mediaListEntry.completedAt.day)
+            completedAt = if (Media?.mediaListEntry?.completedAt != null)
+                FuzzyDate(Media.mediaListEntry.completedAt.year, Media.mediaListEntry.completedAt.month, Media.mediaListEntry.completedAt.day)
             else
                 null
             ,
-            updatedAt = media?.mediaListEntry?.updatedAt ?: 0,
-            createdAt = media?.mediaListEntry?.createdAt ?: 0
+            updatedAt = Media?.mediaListEntry?.updatedAt ?: 0,
+            createdAt = Media?.mediaListEntry?.createdAt ?: 0
         )
     )
 }

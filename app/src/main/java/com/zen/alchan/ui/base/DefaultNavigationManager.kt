@@ -16,6 +16,7 @@ import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
+import com.zen.alchan.type.ScoreFormat
 import com.zen.alchan.ui.activity.ActivityDetailFragment
 import com.zen.alchan.ui.activity.ActivityListFragment
 import com.zen.alchan.ui.browse.BrowseFragment
@@ -54,10 +55,8 @@ import com.zen.alchan.ui.staff.media.StaffMediaListFragment
 import com.zen.alchan.ui.studio.StudioFragment
 import com.zen.alchan.ui.studio.media.StudioMediaListFragment
 import com.zen.alchan.ui.texteditor.TextEditorActivity
-import com.zen.alchan.ui.texteditor.TextEditorFragment
 import com.zen.alchan.ui.userstats.UserStatsFragment
-import io.reactivex.disposables.Disposable
-import type.ScoreFormat
+import io.reactivex.rxjava3.disposables.Disposable
 
 class DefaultNavigationManager(
     private val context: Context,

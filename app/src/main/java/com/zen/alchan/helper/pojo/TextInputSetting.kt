@@ -1,6 +1,5 @@
 package com.zen.alchan.helper.pojo
 
-import android.text.InputFilter
 import android.text.InputType
 import com.zen.alchan.R
 

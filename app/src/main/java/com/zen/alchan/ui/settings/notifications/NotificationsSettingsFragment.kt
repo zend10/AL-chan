@@ -6,9 +6,9 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentNotificationsSettingsBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.NotificationType
+import com.zen.alchan.type.NotificationType
 
 class NotificationsSettingsFragment : BaseFragment<FragmentNotificationsSettingsBinding, NotificationsSettingsViewModel>() {
 

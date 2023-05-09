@@ -15,7 +15,7 @@ import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.ui.common.GenreRvAdapter
-import type.MediaType
+import com.zen.alchan.type.MediaType
 
 class TrendingMediaRvAdapter(
     private val context: Context,

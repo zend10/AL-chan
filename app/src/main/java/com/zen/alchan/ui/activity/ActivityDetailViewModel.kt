@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.activity
 
 import com.zen.alchan.R
-import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Activity
@@ -13,11 +12,11 @@ import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.SocialAdapterComponent
 import com.zen.alchan.helper.pojo.SocialItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
+import com.zen.alchan.type.LikeableType
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.LikeableType
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 data class ActivityDetailViewModel(
@@ -47,7 +46,7 @@ data class ActivityDetailViewModel(
 
             disposables.add(
                 userRepository.getAppSetting()
-                    .zipWith(userRepository.getViewer(Source.CACHE).onErrorReturn { null }) { appSetting, viewer ->
+                    .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, viewer ->
                         this.viewer = viewer
                         SocialAdapterComponent(viewer = viewer, appSetting = appSetting)
                     }

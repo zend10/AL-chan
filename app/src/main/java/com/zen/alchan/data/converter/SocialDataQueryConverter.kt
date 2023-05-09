@@ -1,22 +1,23 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.SocialDataQuery
 import com.zen.alchan.data.response.SocialData
 import com.zen.alchan.data.response.anilist.*
-import fragment.ActivityReply
-import fragment.ActivityUser
-import fragment.OnListActivity
-import fragment.OnMessageActivity
-import fragment.OnTextActivity
+import com.zen.alchan.fragment.ActivityUser
+import com.zen.alchan.fragment.ActivityReply
+import com.zen.alchan.fragment.OnListActivity
+import com.zen.alchan.fragment.OnMessageActivity
+import com.zen.alchan.fragment.OnTextActivity
 
 fun SocialDataQuery.Data.convert(): SocialData {
     return SocialData(
         friendsActivities = friendsActivities?.activities?.filterNotNull()?.map { activity ->
             when (activity.__typename) {
                 TextActivity::class.java.simpleName -> {
-                    activity.fragments.onTextActivity?.convert() ?: TextActivity()
+                    activity.onTextActivity?.convert() ?: TextActivity()
                 }
                 ListActivity::class.java.simpleName -> {
-                    activity.fragments.onListActivity?.convert() ?: ListActivity()
+                    activity.onListActivity?.convert() ?: ListActivity()
                 }
                 else -> TextActivity()
             }
@@ -24,7 +25,7 @@ fun SocialDataQuery.Data.convert(): SocialData {
         globalActivities = globalActivities?.activities?.filterNotNull()?.map { activity ->
             when (activity.__typename) {
                 TextActivity::class.java.simpleName -> {
-                    activity.fragments.onTextActivity?.convert() ?: TextActivity()
+                    activity.onTextActivity?.convert() ?: TextActivity()
                 }
                 else -> TextActivity()
             }
@@ -45,12 +46,12 @@ fun OnTextActivity.convert(): TextActivity {
         isPinned = isPinned ?: false,
         siteUrl = siteUrl ?: "",
         createdAt = createdAt,
-        user = user?.fragments?.activityUser?.convert() ?: User(),
+        user = user?.activityUser?.convert() ?: User(),
         replies = replies?.filterNotNull()?.map {
-            it.fragments.activityReply.convert()
+            it.activityReply.convert()
         } ?: listOf(),
         likes = likes?.filterNotNull()?.map {
-            it.fragments.activityUser.convert()
+            it.activityUser.convert()
         } ?: listOf()
     )
 }
@@ -69,7 +70,7 @@ fun OnListActivity.convert() : ListActivity {
         isPinned = isPinned ?: false,
         siteUrl = siteUrl ?: "",
         createdAt = createdAt,
-        user = user?.fragments?.activityUser?.convert() ?: User(),
+        user = user?.activityUser?.convert() ?: User(),
         media = media?.let {
             Media(
                 idAniList = it.id,
@@ -77,7 +78,7 @@ fun OnListActivity.convert() : ListActivity {
                 title = MediaTitle(
                     romaji = it.title?.romaji ?: "",
                     english = it.title?.english ?: "",
-                    native = it.title?.native_ ?: "",
+                    native = it.title?.native ?: "",
                     userPreferred = it.title?.userPreferred ?: ""
                 ),
                 type = it.type,
@@ -102,10 +103,10 @@ fun OnListActivity.convert() : ListActivity {
             )
         } ?: Media(),
         replies = replies?.filterNotNull()?.map {
-            it.fragments.activityReply.convert()
+            it.activityReply.convert()
         } ?: listOf(),
         likes = likes?.filterNotNull()?.map {
-            it.fragments.activityUser.convert()
+            it.activityUser.convert()
         } ?: listOf()
     )
 }
@@ -124,13 +125,13 @@ fun OnMessageActivity.convert() : MessageActivity {
         isPrivate = isPrivate ?: false,
         siteUrl = siteUrl ?: "",
         createdAt = createdAt,
-        recipient = recipient?.fragments?.activityUser?.convert() ?: User(),
-        messenger = messenger?.fragments?.activityUser?.convert() ?: User(),
+        recipient = recipient?.activityUser?.convert() ?: User(),
+        messenger = messenger?.activityUser?.convert() ?: User(),
         replies = replies?.filterNotNull()?.map {
-            it.fragments.activityReply.convert()
+            it.activityReply.convert()
         } ?: listOf(),
         likes = likes?.filterNotNull()?.map {
-            it.fragments.activityUser.convert()
+            it.activityUser.convert()
         } ?: listOf()
     )
 }
@@ -160,9 +161,9 @@ fun ActivityReply.convert(): com.zen.alchan.data.response.anilist.ActivityReply 
         likeCount = likeCount,
         isLiked = isLiked ?: false,
         createdAt = createdAt,
-        user =  user?.fragments?.activityUser?.convert() ?: User(),
+        user =  user?.activityUser?.convert() ?: User(),
         likes = likes?.filterNotNull()?.map {
-            it.fragments.activityUser.convert()
+            it.activityUser.convert()
         } ?: listOf()
     )
 }

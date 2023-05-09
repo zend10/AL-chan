@@ -3,6 +3,11 @@ package com.zen.alchan.data.response.mal
 import com.google.gson.annotations.SerializedName
 
 data class MangaResponse(
+    @SerializedName("data")
+    val data: MangaDataResponse? = null
+)
+
+data class MangaDataResponse(
     @SerializedName("mal_id")
     val malId: Int? = null,
     @SerializedName("title")

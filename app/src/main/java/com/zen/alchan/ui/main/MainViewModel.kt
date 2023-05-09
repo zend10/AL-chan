@@ -5,8 +5,8 @@ import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.service.pushnotification.PushNotificationService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class MainViewModel(
     private val userRepository: UserRepository,

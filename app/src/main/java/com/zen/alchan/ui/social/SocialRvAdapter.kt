@@ -22,7 +22,7 @@ import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.MediaStatus
+import com.zen.alchan.type.MediaStatus
 
 class SocialRvAdapter(
     private val context: Context,

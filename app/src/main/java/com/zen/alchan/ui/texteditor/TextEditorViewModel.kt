@@ -7,9 +7,9 @@ import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class TextEditorViewModel(
     private val socialRepository: SocialRepository,
@@ -46,7 +46,7 @@ class TextEditorViewModel(
                 disposables.add(
                     socialRepository.replyToBeEdited
                         .filter { it.data != null }
-                        .map { it.data }
+                        .map { it.data!! }
                         .applyScheduler()
                         .subscribe {
                             _mentionUser.onNext(it?.text ?: "")
@@ -57,7 +57,7 @@ class TextEditorViewModel(
                 disposables.add(
                     socialRepository.activityToBeEdited
                         .filter { it.data != null }
-                        .map { it.data }
+                        .map { it.data!! }
                         .zipWith(userRepository.getAppSetting()) { activity, appSetting ->
                             activity to appSetting
                         }

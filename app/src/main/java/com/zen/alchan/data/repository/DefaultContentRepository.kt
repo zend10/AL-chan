@@ -12,9 +12,9 @@ import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
-import io.reactivex.Observable
-import type.MediaSeason
-import type.MediaType
+import com.zen.alchan.type.MediaSeason
+import com.zen.alchan.type.MediaType
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultContentRepository(
     private val contentDataSource: ContentDataSource,
@@ -91,31 +91,31 @@ class DefaultContentRepository(
         page: Int
     ): Observable<Page<Media>> {
         return contentDataSource.searchMedia(searchQuery, type, mediaFilter, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
     override fun searchCharacter(searchQuery: String, page: Int): Observable<Page<Character>> {
         return contentDataSource.searchCharacter(searchQuery, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
     override fun searchStaff(searchQuery: String, page: Int): Observable<Page<Staff>> {
         return contentDataSource.searchStaff(searchQuery, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
     override fun searchStudio(searchQuery: String, page: Int): Observable<Page<Studio>> {
         return contentDataSource.searchStudio(searchQuery, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
     override fun searchUser(searchQuery: String, page: Int): Observable<Page<User>> {
         return contentDataSource.searchUser(searchQuery, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
@@ -129,7 +129,7 @@ class DefaultContentRepository(
         showAdult: Boolean
     ): Observable<Page<Media>> {
         return contentDataSource.getSeasonal(page, year, season, sort, orderByDescending, onlyShowOnList, showAdult).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
@@ -139,7 +139,7 @@ class DefaultContentRepository(
         airingAtLesser: Int
     ): Observable<Page<AiringSchedule>> {
         return contentDataSource.getAiringSchedule(page, airingAtGreater, airingAtLesser).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 }

@@ -1,9 +1,10 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.TagQuery
 import com.zen.alchan.data.response.anilist.MediaTag
 
 fun TagQuery.Data.convert(): List<MediaTag> {
-    return mediaTagCollection?.mapNotNull {
+    return MediaTagCollection?.mapNotNull {
         MediaTag(
             id = it?.id ?: 0,
             name = it?.name ?: "",

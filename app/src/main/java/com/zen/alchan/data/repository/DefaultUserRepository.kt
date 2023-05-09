@@ -12,16 +12,24 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.data.response.anilist.Favourites
+import com.zen.alchan.data.response.anilist.ListActivityOption
+import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
+import com.zen.alchan.data.response.anilist.Page
+import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.UserStatisticTypes
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.*
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class DefaultUserRepository(
     private val userDataSource: UserDataSource,
@@ -71,7 +79,7 @@ class DefaultUserRepository(
                 userManager.viewerData = SaveItem(newViewer)
                 _unreadNotificationCount.onNext(newViewer.unreadNotificationCount)
             }
-            newViewer
+            newViewer ?: User()
         }
     }
 
@@ -120,21 +128,21 @@ class DefaultUserRepository(
         }
     }
 
-    override fun getFollowing(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>> {
+    override fun getFollowing(userId: Int, page: Int): Observable<Page<User>> {
         return userDataSource.getFollowing(userId, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
-    override fun getFollowers(userId: Int, page: Int): Observable<Pair<PageInfo, List<User>>> {
+    override fun getFollowers(userId: Int, page: Int): Observable<Page<User>> {
         return userDataSource.getFollowers(userId, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Page()
         }
     }
 
     override fun toggleFollow(userId: Int): Observable<Boolean> {
-        return userDataSource.toggleFollow(userId).toObservable().map {
-            it.data?.toggleFollow?.isFollowing
+        return userDataSource.toggleFollow(userId).map {
+            it.data?.ToggleFollow?.isFollowing ?: false
         }
     }
 
@@ -143,18 +151,18 @@ class DefaultUserRepository(
         sort: UserStatisticsSort
     ): Observable<UserStatisticTypes> {
         return userDataSource.getUserStatistics(userId, listOf(sort)).map {
-            it.data?.convert()?.statistics
+            it.data?.convert()?.statistics ?: UserStatisticTypes()
         }
     }
 
     override fun getFavorites(userId: Int, page: Int): Observable<Favourites> {
         return userDataSource.getFavorites(userId, page).map {
-            it.data?.convert()
+            it.data?.convert() ?: Favourites()
         }
     }
 
     override fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Observable<Favourites> {
-        return userDataSource.updateFavoriteOrder(ids, favorite).toObservable()
+        return userDataSource.updateFavoriteOrder(ids, favorite)
             .map {
                 val newFavorites = it.data?.convert()
                 if (newFavorites != null) {
@@ -165,7 +173,7 @@ class DefaultUserRepository(
                         _refreshFavoriteTrigger.onNext(user)
                     }
                 }
-                newFavorites
+                newFavorites ?: Favourites()
             }
     }
 
@@ -221,13 +229,12 @@ class DefaultUserRepository(
             displayAdultContent,
             airingNotifications
         )
-            .toObservable()
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {
                     userManager.viewerData = SaveItem(newViewer)
                 }
-                newViewer
+                newViewer ?: User()
             }
     }
 
@@ -241,25 +248,23 @@ class DefaultUserRepository(
         return userDataSource.updateListSettings(
             scoreFormat, rowOrder, animeListOptions, mangaListOptions, disabledListActivity
         )
-            .toObservable()
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {
                     userManager.viewerData = SaveItem(newViewer)
                 }
-                newViewer
+                newViewer ?: User()
             }
     }
 
     override fun updateNotificationsSettings(notificationOptions: List<NotificationOption>): Observable<User> {
         return userDataSource.updateNotificationsSettings(notificationOptions)
-            .toObservable()
             .map {
                 val newViewer = it.data?.convert()
                 if (newViewer != null) {
                     userManager.viewerData = SaveItem(newViewer)
                 }
-                newViewer
+                newViewer ?: User()
             }
     }
 
@@ -269,13 +274,13 @@ class DefaultUserRepository(
         resetNotificationCount: Boolean
     ): Observable<NotificationData> {
         return userDataSource.getNotifications(page, typeIn, resetNotificationCount).map {
-            it.data?.convert()
+            it.data?.convert() ?: NotificationData()
         }
     }
 
     override fun getLatestUnreadNotificationCount(): Observable<Int> {
         return userDataSource.getUnreadNotificationCount().map {
-            it.data?.viewer?.unreadNotificationCount ?: 0
+            it.data?.Viewer?.unreadNotificationCount ?: 0
         }
     }
 

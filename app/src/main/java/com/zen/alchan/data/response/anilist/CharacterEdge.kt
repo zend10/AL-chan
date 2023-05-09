@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.CharacterRole
+import com.zen.alchan.type.CharacterRole
+
 
 data class CharacterEdge(
     val node: Character = Character(),

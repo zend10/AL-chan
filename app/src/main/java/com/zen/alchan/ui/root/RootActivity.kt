@@ -5,8 +5,8 @@ import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.*
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class RootActivity : BaseActivity<ActivityRootBinding>() {
 

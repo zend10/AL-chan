@@ -16,7 +16,7 @@ import com.zen.alchan.databinding.ListTitleBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil
-import type.MediaType
+import com.zen.alchan.type.MediaType
 
 class MediaListLinearRvAdapter(
     context: Context,

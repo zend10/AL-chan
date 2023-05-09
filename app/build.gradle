@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.apollographql.apollo'
+apply plugin: 'com.apollographql.apollo3'
 
 android {
     compileSdkVersion 33
@@ -67,9 +67,9 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.19.0'
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
+    implementation "io.reactivex.rxjava3:rxjava:3.1.6"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
     // LiveData and ViewModel
     def lifecycle_version = "2.5.1"
@@ -87,8 +87,9 @@ dependencies {
     implementation "io.coil-kt:coil-svg:$coil_version"
 
     // Apollo
-    implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
-    implementation "com.apollographql.apollo:apollo-rx2-support:$apollo_version"
+    implementation "com.apollographql.apollo3:apollo-runtime:$apollo_version"
+    implementation "com.apollographql.apollo3:apollo-rx3-support:$apollo_version"
+
 
     // OkHttp
     def okhttp_version = "4.10.0"
@@ -99,7 +100,7 @@ dependencies {
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
 
     // Koin DI
     def koin_version = "3.2.0"
@@ -119,17 +120,15 @@ dependencies {
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
 
-    def work_version = "2.8.0"
+    def work_version = "2.8.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
-    implementation "androidx.work:work-rxjava2:$work_version"
+    implementation "androidx.work:work-rxjava3:$work_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 }
 
 apollo {
-    customTypeMapping = [
-            "Json"       : "java.lang.Object",
-            "CountryCode": "kotlin.String"
-    ]
-    generateKotlinModels.set(true)
+    packageName.set("com.zen.alchan")
+    mapScalar("Json", "java.lang.Object")
+    mapScalar("CountryCode", "kotlin.String")
 }

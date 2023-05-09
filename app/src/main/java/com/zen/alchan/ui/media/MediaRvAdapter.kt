@@ -216,7 +216,7 @@ class MediaRvAdapter(
                 val endDate = TimeUtil.getReadableDateFromFuzzyDate(item.media.endDate)
                 mediaInfoEndDateText.text = if (endDate == "-") "?" else endDate
 
-                mediaInfoSeasonLayout.show(item.media.type == type.MediaType.ANIME && item.media.season != null && item.media.seasonYear != null)
+                mediaInfoSeasonLayout.show(item.media.type == com.zen.alchan.type.MediaType.ANIME && item.media.season != null && item.media.seasonYear != null)
                 mediaInfoSeasonText.text = "${item.media.season?.getString()} ${item.media.seasonYear}"
                 mediaInfoSeasonText.clicks {
 

@@ -12,11 +12,9 @@ import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.StaffItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class StaffViewModel(
     private val browseRepository: BrowseRepository,
@@ -207,8 +205,7 @@ class StaffViewModel(
 
         disposables.add(
             userRepository.toggleFavorite(staffId = staff.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)
                 }

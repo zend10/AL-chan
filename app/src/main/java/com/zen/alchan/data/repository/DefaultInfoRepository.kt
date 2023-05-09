@@ -4,8 +4,7 @@ import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.InfoDataSource
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.data.response.Announcement
-import com.zen.alchan.data.response.github.AnnouncementResponse
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultInfoRepository(private val infoDataSource: InfoDataSource, private val userManager: UserManager) : InfoRepository {
 

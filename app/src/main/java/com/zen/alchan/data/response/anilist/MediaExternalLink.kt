@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.ExternalLinkType
+import com.zen.alchan.type.ExternalLinkType
+
 
 data class MediaExternalLink(
     val id: Int = 0,

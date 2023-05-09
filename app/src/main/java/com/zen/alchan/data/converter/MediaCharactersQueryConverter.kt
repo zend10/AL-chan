@@ -1,9 +1,10 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.MediaCharactersQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun MediaCharactersQuery.Data.convert(): CharacterConnection {
-    val characterConnection = media?.characters ?: return CharacterConnection()
+    val characterConnection = Media?.characters ?: return CharacterConnection()
 
     return CharacterConnection(
         edges = characterConnection.edges?.map {
@@ -15,7 +16,7 @@ fun MediaCharactersQuery.Data.convert(): CharacterConnection {
                         middle = it?.node?.name?.middle ?: "",
                         last = it?.node?.name?.last ?: "",
                         full = it?.node?.name?.full ?: "",
-                        native = it?.node?.name?.native_ ?: "",
+                        native = it?.node?.name?.native ?: "",
                         alternative = it?.node?.name?.alternative?.filterNotNull() ?: listOf(),
                         alternativeSpoiler = it?.node?.name?.alternativeSpoiler?.filterNotNull() ?: listOf(),
                         userPreferred = it?.node?.name?.userPreferred ?: "",
@@ -35,7 +36,7 @@ fun MediaCharactersQuery.Data.convert(): CharacterConnection {
                                 middle = voiceActorRole?.voiceActor?.name?.middle ?: "",
                                 last = voiceActorRole?.voiceActor?.name?.last ?: "",
                                 full = voiceActorRole?.voiceActor?.name?.full ?: "",
-                                native = voiceActorRole?.voiceActor?.name?.native_ ?: "",
+                                native = voiceActorRole?.voiceActor?.name?.native ?: "",
                                 alternative = voiceActorRole?.voiceActor?.name?.alternative?.filterNotNull() ?: listOf(),
                                 userPreferred = voiceActorRole?.voiceActor?.name?.userPreferred ?: "",
                             ),

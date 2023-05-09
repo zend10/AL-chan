@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.utils
 
 import com.zen.alchan.data.response.anilist.FuzzyDate
-import type.MediaSeason
+import com.zen.alchan.type.MediaSeason
 import java.text.SimpleDateFormat
 import java.util.*
 

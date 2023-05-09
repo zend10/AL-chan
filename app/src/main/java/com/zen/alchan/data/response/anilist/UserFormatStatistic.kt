@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.MediaFormat
+import com.zen.alchan.type.MediaFormat
+
 
 data class UserFormatStatistic(
     override val count: Int = 0,

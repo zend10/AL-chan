@@ -1,11 +1,12 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.MediaListCollectionQuery
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.data.response.Genre
 
 fun MediaListCollectionQuery.Data.convert(): MediaListCollection {
     return MediaListCollection(
-        lists = mediaListCollection?.lists?.mapNotNull {
+        lists = MediaListCollection?.lists?.mapNotNull {
             MediaListGroup(
                 entries = it?.entries?.mapNotNull { entry -> entry?.convert() } ?: listOf(),
                 name = it?.name ?: "",
@@ -28,7 +29,7 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
         progressVolumes = progressVolumes,
         repeat = repeat ?: 0,
         priority = priority ?: 0,
-        private = private_ ?: false,
+        private = private ?: false,
         notes = notes ?: "",
         hiddenFromStatusLists = hiddenFromStatusLists ?: false,
         customLists = customLists,
@@ -51,7 +52,7 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             title = MediaTitle(
                 romaji = media?.title?.romaji ?: "",
                 english = media?.title?.english ?: "",
-                native = media?.title?.native_ ?: "",
+                native = media?.title?.native ?: "",
                 userPreferred = media?.title?.userPreferred ?: "",
             ),
             type = media?.type,

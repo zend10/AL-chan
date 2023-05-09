@@ -11,7 +11,7 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.ChipRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.ScoreFormat
+import com.zen.alchan.type.ScoreFormat
 
 
 class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {

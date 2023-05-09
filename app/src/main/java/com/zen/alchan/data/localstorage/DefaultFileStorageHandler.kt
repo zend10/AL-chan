@@ -3,8 +3,7 @@ package com.zen.alchan.data.localstorage
 import android.content.Context
 import android.net.Uri
 import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Observable
-import java.io.File
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultFileStorageHandler(context: Context) : FileStorageHandler, BaseFileStorageHandler(context) {
 

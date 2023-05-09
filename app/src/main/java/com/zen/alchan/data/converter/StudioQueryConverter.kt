@@ -1,9 +1,10 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.StudioQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun StudioQuery.Data.convert(): Studio {
-    return studio?.let {
+    return Studio?.let {
         Studio(
             id = it.id,
             name = it.name,
@@ -16,7 +17,7 @@ fun StudioQuery.Data.convert(): Studio {
                             title = MediaTitle(
                                 romaji = it?.node?.title?.romaji ?: "",
                                 english = it?.node?.title?.english ?: "",
-                                native = it?.node?.title?.native_ ?: "",
+                                native = it?.node?.title?.native ?: "",
                                 userPreferred = it?.node?.title?.userPreferred ?: ""
                             ),
                             type = it?.node?.type,

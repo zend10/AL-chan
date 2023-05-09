@@ -7,7 +7,7 @@ import androidx.core.widget.addTextChangedListener
 import com.zen.alchan.databinding.ListAdvancedScoringBinding
 import com.zen.alchan.helper.extensions.roundToOneDecimal
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.ScoreFormat
+import com.zen.alchan.type.ScoreFormat
 
 class AdvancedScoringRvAdapter(
     list: List<Pair<String, Double>>,

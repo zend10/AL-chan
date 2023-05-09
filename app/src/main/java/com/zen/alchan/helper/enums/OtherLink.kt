@@ -1,11 +1,5 @@
 package com.zen.alchan.helper.enums
 
-import android.graphics.Color
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
-import com.zen.alchan.R
-import com.zen.alchan.helper.extensions.convertFromSnakeCase
-
 /**
  * key, hexColor, icon no longer used
  */

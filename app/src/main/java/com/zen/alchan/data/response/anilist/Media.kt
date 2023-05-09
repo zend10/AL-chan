@@ -6,7 +6,7 @@ import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.MangaSerialization
-import type.*
+import com.zen.alchan.type.*
 
 data class Media(
     val idAniList: Int = 0,

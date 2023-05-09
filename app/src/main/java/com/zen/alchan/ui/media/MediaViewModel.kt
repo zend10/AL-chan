@@ -5,6 +5,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaExternalLink
@@ -18,13 +19,13 @@ import com.zen.alchan.helper.pojo.MediaItem
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaFormat
-import type.MediaListStatus
-import type.MediaRelation
-import type.MediaStatus
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaFormat
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.MediaRelation
+import com.zen.alchan.type.MediaStatus
 
 class MediaViewModel(
     private val browseRepository: BrowseRepository,
@@ -193,8 +194,8 @@ class MediaViewModel(
         disposables.add(
             browseRepository.getMedia(mediaId)
                 .flatMap { media ->
-                    if (media.type == type.MediaType.MANGA && media.idMal != null)
-                        browseRepository.getMangaDetails(media.idMal).map {
+                    if (media.type == com.zen.alchan.type.MediaType.MANGA && media.idMal != null)
+                        browseRepository.getMangaDetails(media.idMal).onErrorReturn { Manga() }.map {
                             media.copy(mangaSerialization = it.serializations)
                         }
                     else

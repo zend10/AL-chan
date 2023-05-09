@@ -1,7 +1,7 @@
 package com.zen.alchan.ui.editor
 
 import android.text.InputType
-import com.apollographql.apollo.api.CustomTypeValue
+import com.apollographql.apollo3.api.Adapter
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
@@ -20,13 +20,11 @@ import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaListStatus
-import type.ScoreFormat
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.ScoreFormat
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -208,7 +206,7 @@ class EditorViewModel(
                             mediaList?.let {
                                 updateStatus(it.status ?: MediaListStatus.PLANNING)
                                 updateScore(it.score)
-                                updateAdvancedScores((it.advancedScores as? CustomTypeValue<LinkedHashMap<String, Double>>)?.value)
+                                updateAdvancedScores(it.advancedScores as? LinkedHashMap<String, Double>?)
                                 _progressLabel.onNext(
                                     when (mediaType) {
                                         MediaType.ANIME -> R.string.episode
@@ -236,7 +234,7 @@ class EditorViewModel(
                                     MediaType.ANIME -> user.mediaListOptions.animeList.sectionOrder
                                     MediaType.MANGA -> user.mediaListOptions.mangaList.sectionOrder
                                 }
-                                val customLists = (it.customLists as? CustomTypeValue<LinkedHashMap<String, Boolean>>)?.value
+                                val customLists = it.customLists as? LinkedHashMap<String, Boolean>
                                 val sortedCustomLists = LinkedHashMap<String, Boolean>()
                                 sectionOrder.forEach { section ->
                                     if (customLists?.containsKey(section) == true)
@@ -301,8 +299,7 @@ class EditorViewModel(
                 animeId = if (mediaType == MediaType.ANIME) mediaId else null,
                 mangaId = if (mediaType == MediaType.MANGA) mediaId else null
             )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .applyScheduler()
                 .doFinally {
                     _loading.onNext(false)
                 }
@@ -324,8 +321,7 @@ class EditorViewModel(
 
             disposables.add(
                 mediaListRepository.deleteMediaListEntry(mediaType, id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .applyScheduler()
                     .doFinally {
                         _loading.onNext(false)
                     }

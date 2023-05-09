@@ -13,9 +13,9 @@ import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.common.ChipRvAdapter
 import com.zen.alchan.ui.reorder.ReorderRvAdapter
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaListStatus
+import com.zen.alchan.type.MediaListStatus
 
 class ListSettingsFragment : BaseFragment<FragmentListSettingsBinding, ListSettingsViewModel>() {
 

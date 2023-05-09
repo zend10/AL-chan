@@ -1,36 +1,25 @@
 package com.zen.alchan.data.datasource
 
-import ActivityListQuery
-import ActivityQuery
-import DeleteActivityMutation
-import DeleteActivityReplyMutation
-import SaveActivityReplyMutation
-import SaveMessageActivityMutation
-import SaveTextActivityMutation
-import SocialDataQuery
-import ToggleActivitySubscriptionMutation
-import ToggleLikeMutation
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.rx2.rxMutate
-import com.apollographql.apollo.rx2.rxPrefetch
-import com.apollographql.apollo.rx2.rxQuery
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo3.rx3.rxSingle
+import com.zen.alchan.*
 import com.zen.alchan.data.network.apollo.ApolloHandler
-import io.reactivex.Completable
-import io.reactivex.Observable
-import type.ActivityType
-import type.LikeableType
+import com.zen.alchan.type.ActivityType
+import com.zen.alchan.type.LikeableType
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : SocialDataSource {
 
-    override fun getSocialData(): Observable<Response<SocialDataQuery.Data>> {
+    override fun getSocialData(): Observable<ApolloResponse<SocialDataQuery.Data>> {
         val query = SocialDataQuery()
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getActivityDetail(id: Int): Observable<Response<ActivityQuery.Data>> {
-        val query = ActivityQuery(id = Input.fromNullable(id))
-        return apolloHandler.apolloClient.rxQuery(query)
+    override fun getActivityDetail(id: Int): Observable<ApolloResponse<ActivityQuery.Data>> {
+        val query = ActivityQuery(id = Optional.present(id))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getActivityList(
@@ -38,44 +27,44 @@ class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : Social
         userId: Int?,
         typeIn: List<ActivityType>?,
         isFollowing: Boolean?
-    ): Observable<Response<ActivityListQuery.Data>> {
+    ): Observable<ApolloResponse<ActivityListQuery.Data>> {
         val query = ActivityListQuery(
-            page = Input.fromNullable(page),
-            userId = Input.optional(userId),
-            typeIn = Input.optional(typeIn),
-            isFollowing = Input.optional(isFollowing)
+            page = Optional.present(page),
+            userId = Optional.presentIfNotNull(userId),
+            typeIn = Optional.presentIfNotNull(typeIn),
+            isFollowing = Optional.presentIfNotNull(isFollowing)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun toggleActivitySubscription(id: Int, isSubscribe: Boolean): Completable {
-        val mutation = ToggleActivitySubscriptionMutation(activityId = Input.fromNullable(id), subscribe = Input.fromNullable(isSubscribe))
-        return apolloHandler.apolloClient.rxPrefetch(mutation)
+        val mutation = ToggleActivitySubscriptionMutation(activityId = Optional.present(id), subscribe = Optional.present(isSubscribe))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().ignoreElement()
     }
 
     override fun toggleLike(id: Int, likeableType: LikeableType): Completable {
-        val mutation = ToggleLikeMutation(id = Input.fromNullable(id), likeableType = Input.fromNullable(likeableType))
-        return apolloHandler.apolloClient.rxPrefetch(mutation)
+        val mutation = ToggleLikeMutation(id = Optional.present(id), likeableType = Optional.present(likeableType))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().ignoreElement()
     }
 
     override fun deleteActivity(id: Int): Completable {
-        val mutation = DeleteActivityMutation(id = Input.fromNullable(id))
-        return apolloHandler.apolloClient.rxPrefetch(mutation)
+        val mutation = DeleteActivityMutation(id = Optional.present(id))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().ignoreElement()
     }
 
     override fun deleteActivityReply(id: Int): Completable {
-        val mutation = DeleteActivityReplyMutation(id = Input.fromNullable(id))
-        return apolloHandler.apolloClient.rxPrefetch(mutation)
+        val mutation = DeleteActivityReplyMutation(id = Optional.present(id))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().ignoreElement()
     }
 
-    override fun saveTextActivity(id: Int?, text: String): Observable<Response<SaveTextActivityMutation.Data>> {
-        val mutation = SaveTextActivityMutation(id = Input.optional(id), text = Input.fromNullable(text))
-        return apolloHandler.apolloClient.rxMutate(mutation).toObservable()
+    override fun saveTextActivity(id: Int?, text: String): Observable<ApolloResponse<SaveTextActivityMutation.Data>> {
+        val mutation = SaveTextActivityMutation(id = Optional.presentIfNotNull(id), text = Optional.present(text))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
-    override fun saveActivityReply(id: Int?, activityId: Int, text: String): Observable<Response<SaveActivityReplyMutation.Data>> {
-        val mutation = SaveActivityReplyMutation(id = Input.optional(id), activityId = Input.fromNullable(activityId), text = Input.fromNullable(text))
-        return apolloHandler.apolloClient.rxMutate(mutation).toObservable()
+    override fun saveActivityReply(id: Int?, activityId: Int, text: String): Observable<ApolloResponse<SaveActivityReplyMutation.Data>> {
+        val mutation = SaveActivityReplyMutation(id = Optional.presentIfNotNull(id), activityId = Optional.present(activityId), text = Optional.present(text))
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 
     override fun saveMessageActivity(
@@ -83,13 +72,13 @@ class DefaultSocialDataSource(private val apolloHandler: ApolloHandler) : Social
         recipientId: Int,
         message: String,
         private: Boolean
-    ): Observable<Response<SaveMessageActivityMutation.Data>> {
+    ): Observable<ApolloResponse<SaveMessageActivityMutation.Data>> {
         val mutation = SaveMessageActivityMutation(
-            id = Input.optional(id),
-            recipientId = Input.fromNullable(recipientId),
-            message = Input.fromNullable(message),
-            private_ = Input.fromNullable(private)
+            id = Optional.presentIfNotNull(id),
+            recipientId = Optional.present(recipientId),
+            message = Optional.present(message),
+            private = Optional.present(private)
         )
-        return apolloHandler.apolloClient.rxMutate(mutation).toObservable()
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
     }
 }

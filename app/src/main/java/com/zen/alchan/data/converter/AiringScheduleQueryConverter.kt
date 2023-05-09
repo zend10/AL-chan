@@ -1,18 +1,18 @@
 package com.zen.alchan.data.converter
 
-import AiringScheduleQuery
+import com.zen.alchan.AiringScheduleQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun AiringScheduleQuery.Data.convert(): Page<AiringSchedule> {
     return Page(
         pageInfo = PageInfo(
-            total = page?.pageInfo?.total ?: 0,
-            perPage = page?.pageInfo?.perPage ?: 0,
-            currentPage = page?.pageInfo?.currentPage ?: 0,
-            lastPage = page?.pageInfo?.lastPage ?: 0,
-            hasNextPage = page?.pageInfo?.hasNextPage ?: false
+            total = Page?.pageInfo?.total ?: 0,
+            perPage = Page?.pageInfo?.perPage ?: 0,
+            currentPage = Page?.pageInfo?.currentPage ?: 0,
+            lastPage = Page?.pageInfo?.lastPage ?: 0,
+            hasNextPage = Page?.pageInfo?.hasNextPage ?: false
         ),
-        data = page?.airingSchedules?.filterNotNull()?.map {
+        data = Page?.airingSchedules?.filterNotNull()?.map {
             AiringSchedule(
                 id = it.id,
                 airingAt = it.airingAt,
@@ -24,7 +24,7 @@ fun AiringScheduleQuery.Data.convert(): Page<AiringSchedule> {
                         title = MediaTitle(
                             romaji = it.title?.romaji ?: "",
                             english = it.title?.english ?: "",
-                            native = it.title?.native_ ?: "",
+                            native = it.title?.native ?: "",
                             userPreferred = it.title?.userPreferred ?: ""
                         ),
                         season = it.season,

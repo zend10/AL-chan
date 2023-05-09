@@ -1,35 +1,36 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.ViewerQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun ViewerQuery.Data.convert(): User {
     return User(
-        id = viewer?.id ?: 0,
-        name = viewer?.name ?: "",
-        about = viewer?.about ?: "",
+        id = Viewer?.id ?: 0,
+        name = Viewer?.name ?: "",
+        about = Viewer?.about ?: "",
         avatar = UserAvatar(
-            large = viewer?.avatar?.large ?: "",
-            medium = viewer?.avatar?.medium ?: ""
+            large = Viewer?.avatar?.large ?: "",
+            medium = Viewer?.avatar?.medium ?: ""
         ),
-        bannerImage = viewer?.bannerImage ?: "",
-        isFollowing = viewer?.isFollowing ?: false,
-        isFollower = viewer?.isFollower ?: false,
-        isBlocked = viewer?.isBlocked ?: false,
+        bannerImage = Viewer?.bannerImage ?: "",
+        isFollowing = Viewer?.isFollowing ?: false,
+        isFollower = Viewer?.isFollower ?: false,
+        isBlocked = Viewer?.isBlocked ?: false,
         options = UserOptions(
-            titleLanguage = viewer?.options?.titleLanguage,
-            displayAdultContent = viewer?.options?.displayAdultContent ?: false,
-            airingNotifications = viewer?.options?.airingNotifications ?: false,
-            notificationOptions = viewer?.options?.notificationOptions?.map {
+            titleLanguage = Viewer?.options?.titleLanguage,
+            displayAdultContent = Viewer?.options?.displayAdultContent ?: false,
+            airingNotifications = Viewer?.options?.airingNotifications ?: false,
+            notificationOptions = Viewer?.options?.notificationOptions?.map {
                 NotificationOption(
                     type = it?.type,
                     enabled = it?.enabled ?: false
                 )
             } ?: listOf(),
-            timezone = viewer?.options?.timezone,
-            activityMergeTime = viewer?.options?.activityMergeTime ?: 0,
-            staffNameLanguage = viewer?.options?.staffNameLanguage,
-            restrictMessagesToFollowing = viewer?.options?.restrictMessagesToFollowing ?: false,
-            disabledListActivity = viewer?.options?.disabledListActivity?.map {
+            timezone = Viewer?.options?.timezone,
+            activityMergeTime = Viewer?.options?.activityMergeTime ?: 0,
+            staffNameLanguage = Viewer?.options?.staffNameLanguage,
+            restrictMessagesToFollowing = Viewer?.options?.restrictMessagesToFollowing ?: false,
+            disabledListActivity = Viewer?.options?.disabledListActivity?.map {
                 ListActivityOption(
                     disabled = it?.disabled ?: false,
                     type = it?.type
@@ -37,40 +38,40 @@ fun ViewerQuery.Data.convert(): User {
             } ?: listOf()
         ),
         mediaListOptions = MediaListOptions(
-            scoreFormat = viewer?.mediaListOptions?.scoreFormat,
-            rowOrder = viewer?.mediaListOptions?.rowOrder ?: "",
+            scoreFormat = Viewer?.mediaListOptions?.scoreFormat,
+            rowOrder = Viewer?.mediaListOptions?.rowOrder ?: "",
             animeList = MediaListTypeOptions(
-                sectionOrder = viewer?.mediaListOptions?.animeList?.sectionOrder?.filterNotNull() ?: listOf(),
-                splitCompletedSectionByFormat = viewer?.mediaListOptions?.animeList?.splitCompletedSectionByFormat ?: false,
-                customLists = viewer?.mediaListOptions?.animeList?.customLists?.filterNotNull() ?: listOf(),
-                advancedScoring = viewer?.mediaListOptions?.animeList?.advancedScoring?.filterNotNull() ?: listOf(),
-                advancedScoringEnabled = viewer?.mediaListOptions?.animeList?.advancedScoringEnabled ?: false
+                sectionOrder = Viewer?.mediaListOptions?.animeList?.sectionOrder?.filterNotNull() ?: listOf(),
+                splitCompletedSectionByFormat = Viewer?.mediaListOptions?.animeList?.splitCompletedSectionByFormat ?: false,
+                customLists = Viewer?.mediaListOptions?.animeList?.customLists?.filterNotNull() ?: listOf(),
+                advancedScoring = Viewer?.mediaListOptions?.animeList?.advancedScoring?.filterNotNull() ?: listOf(),
+                advancedScoringEnabled = Viewer?.mediaListOptions?.animeList?.advancedScoringEnabled ?: false
             ),
             mangaList = MediaListTypeOptions(
-                sectionOrder = viewer?.mediaListOptions?.mangaList?.sectionOrder?.filterNotNull() ?: listOf(),
-                splitCompletedSectionByFormat = viewer?.mediaListOptions?.mangaList?.splitCompletedSectionByFormat ?: false,
-                customLists = viewer?.mediaListOptions?.mangaList?.customLists?.filterNotNull() ?: listOf(),
-                advancedScoring = viewer?.mediaListOptions?.mangaList?.advancedScoring?.filterNotNull() ?: listOf(),
-                advancedScoringEnabled = viewer?.mediaListOptions?.mangaList?.advancedScoringEnabled ?: false
+                sectionOrder = Viewer?.mediaListOptions?.mangaList?.sectionOrder?.filterNotNull() ?: listOf(),
+                splitCompletedSectionByFormat = Viewer?.mediaListOptions?.mangaList?.splitCompletedSectionByFormat ?: false,
+                customLists = Viewer?.mediaListOptions?.mangaList?.customLists?.filterNotNull() ?: listOf(),
+                advancedScoring = Viewer?.mediaListOptions?.mangaList?.advancedScoring?.filterNotNull() ?: listOf(),
+                advancedScoringEnabled = Viewer?.mediaListOptions?.mangaList?.advancedScoringEnabled ?: false
             )
         ),
         favourites = Favourites(
-            anime = MediaConnection(nodes = viewer?.favourites?.anime?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
-            manga = MediaConnection(nodes = viewer?.favourites?.manga?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
-            characters = CharacterConnection(nodes = viewer?.favourites?.characters?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
-            staff = StaffConnection(nodes = viewer?.favourites?.staff?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
-            studios = StudioConnection(nodes = viewer?.favourites?.studios?.nodes?.mapNotNull { it?.convert() } ?: listOf())
+            anime = MediaConnection(nodes = Viewer?.favourites?.anime?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
+            manga = MediaConnection(nodes = Viewer?.favourites?.manga?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
+            characters = CharacterConnection(nodes = Viewer?.favourites?.characters?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
+            staff = StaffConnection(nodes = Viewer?.favourites?.staff?.nodes?.mapNotNull { it?.convert() } ?: listOf()),
+            studios = StudioConnection(nodes = Viewer?.favourites?.studios?.nodes?.mapNotNull { it?.convert() } ?: listOf())
         ),
         statistics = UserStatisticTypes(
-            anime = viewer?.statistics?.anime?.fragments?.userStatistics?.convert() ?: UserStatistics(),
-            manga = viewer?.statistics?.manga?.fragments?.userStatistics?.convert() ?: UserStatistics()
+            anime = Viewer?.statistics?.anime?.userStatistics?.convert() ?: UserStatistics(),
+            manga = Viewer?.statistics?.manga?.userStatistics?.convert() ?: UserStatistics()
         ),
-        unreadNotificationCount = viewer?.unreadNotificationCount ?: 0,
-        siteUrl = viewer?.siteUrl ?: "",
-        donatorTier = viewer?.donatorTier ?: 0,
-        donatorBadge = viewer?.donatorBadge ?: "",
-        moderatorRoles = viewer?.moderatorRoles?.filterNotNull() ?: listOf(),
-        createdAt = viewer?.createdAt ?: 0
+        unreadNotificationCount = Viewer?.unreadNotificationCount ?: 0,
+        siteUrl = Viewer?.siteUrl ?: "",
+        donatorTier = Viewer?.donatorTier ?: 0,
+        donatorBadge = Viewer?.donatorBadge ?: "",
+        moderatorRoles = Viewer?.moderatorRoles?.filterNotNull() ?: listOf(),
+        createdAt = Viewer?.createdAt ?: 0
     )
 }
 
@@ -80,7 +81,7 @@ private fun ViewerQuery.Node.convert(): Media {
         title = MediaTitle(
             romaji = this?.title?.romaji ?: "",
             english = this?.title?.english ?: "",
-            native = this?.title?.native_ ?: "",
+            native = this?.title?.native ?: "",
             userPreferred = this?.title?.userPreferred ?: "",
         ),
         coverImage = MediaCoverImage(
@@ -98,7 +99,7 @@ private fun ViewerQuery.Node1?.convert(): Media {
         title = MediaTitle(
             romaji = this?.title?.romaji ?: "",
             english = this?.title?.english ?: "",
-            native = this?.title?.native_ ?: "",
+            native = this?.title?.native ?: "",
             userPreferred = this?.title?.userPreferred ?: "",
         ),
         coverImage = MediaCoverImage(
@@ -118,7 +119,7 @@ private fun ViewerQuery.Node2?.convert(): Character {
             middle = this?.name?.middle ?: "",
             last = this?.name?.last ?: "",
             full = this?.name?.full ?: "",
-            native = this?.name?.native_ ?: "",
+            native = this?.name?.native ?: "",
             alternative = this?.name?.alternative?.filterNotNull() ?: listOf(),
             alternativeSpoiler = this?.name?.alternativeSpoiler?.filterNotNull() ?: listOf(),
             userPreferred = this?.name?.userPreferred ?: "",
@@ -139,7 +140,7 @@ private fun ViewerQuery.Node3?.convert(): Staff {
             middle = this?.name?.middle ?: "",
             last = this?.name?.last ?: "",
             full = this?.name?.full ?: "",
-            native = this?.name?.native_ ?: "",
+            native = this?.name?.native ?: "",
             alternative = this?.name?.alternative?.filterNotNull() ?: listOf(),
             userPreferred = this?.name?.userPreferred ?: "",
         ),

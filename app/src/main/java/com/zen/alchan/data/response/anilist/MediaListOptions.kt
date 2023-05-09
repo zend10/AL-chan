@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.ScoreFormat
+import com.zen.alchan.type.ScoreFormat
+
 
 data class MediaListOptions(
     var scoreFormat: ScoreFormat? = null,

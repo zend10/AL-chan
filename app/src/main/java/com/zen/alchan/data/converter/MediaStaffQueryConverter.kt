@@ -1,9 +1,10 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.MediaStaffQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun MediaStaffQuery.Data.convert(): StaffConnection {
-    val staffConnection = media?.staff ?: return StaffConnection()
+    val staffConnection = Media?.staff ?: return StaffConnection()
 
     return StaffConnection(
         edges = staffConnection.edges?.map {
@@ -15,7 +16,7 @@ fun MediaStaffQuery.Data.convert(): StaffConnection {
                         middle = it?.node?.name?.middle ?: "",
                         last = it?.node?.name?.last ?: "",
                         full = it?.node?.name?.full ?: "",
-                        native = it?.node?.name?.native_ ?: "",
+                        native = it?.node?.name?.native ?: "",
                         alternative = it?.node?.name?.alternative?.filterNotNull() ?: listOf(),
                         userPreferred = it?.node?.name?.userPreferred ?: ""
                     ),

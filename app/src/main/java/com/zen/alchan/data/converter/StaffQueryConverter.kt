@@ -1,9 +1,10 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.StaffQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun StaffQuery.Data.convert(): Staff {
-    return staff?.let {
+    return Staff?.let {
         Staff(
             id = it.id,
             name = StaffName(
@@ -11,7 +12,7 @@ fun StaffQuery.Data.convert(): Staff {
                 middle = it.name?.middle ?: "",
                 last = it.name?.last ?: "",
                 full = it.name?.full ?: "",
-                native = it.name?.native_ ?: "",
+                native = it.name?.native ?: "",
                 alternative = it.name?.alternative?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
                 userPreferred = it.name?.userPreferred ?: "",
             ),
@@ -45,7 +46,7 @@ fun StaffQuery.Data.convert(): Staff {
                             title = MediaTitle(
                                 romaji = it.node?.title?.romaji ?: "",
                                 english = it.node?.title?.english ?: "",
-                                native = it.node?.title?.native_ ?: "",
+                                native = it.node?.title?.native ?: "",
                                 userPreferred = it.node?.title?.userPreferred ?: "",
                             ),
                             coverImage = MediaCoverImage(
@@ -85,7 +86,7 @@ fun StaffQuery.Data.convert(): Staff {
                                 middle = it.node?.name?.middle ?: "",
                                 last = it.node?.name?.last ?: "",
                                 full = it.node?.name?.full ?: "",
-                                native = it.node?.name?.native_ ?: "",
+                                native = it.node?.name?.native ?: "",
                                 alternative = it.node?.name?.alternative?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
                                 alternativeSpoiler = it.node?.name?.alternativeSpoiler?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
                                 userPreferred = it.node?.name?.userPreferred ?: "",
@@ -103,7 +104,7 @@ fun StaffQuery.Data.convert(): Staff {
                                 title = MediaTitle(
                                     romaji = it?.title?.romaji ?: "",
                                     english = it?.title?.english ?: "",
-                                    native = it?.title?.native_ ?: "",
+                                    native = it?.title?.native ?: "",
                                     userPreferred = it?.title?.userPreferred ?: ""
                                 ),
                                 coverImage = MediaCoverImage(
@@ -132,7 +133,7 @@ fun StaffQuery.Data.convert(): Staff {
                             title = MediaTitle(
                                 romaji = it.node?.title?.romaji ?: "",
                                 english = it.node?.title?.english ?: "",
-                                native = it.node?.title?.native_ ?: "",
+                                native = it.node?.title?.native ?: "",
                                 userPreferred = it.node?.title?.userPreferred ?: "",
                             ),
                             coverImage = MediaCoverImage(
@@ -158,7 +159,7 @@ fun StaffQuery.Data.convert(): Staff {
                                     middle = it.name?.middle ?: "",
                                     last = it.name?.last ?: "",
                                     full = it.name?.full ?: "",
-                                    native = it.name?.native_ ?: "",
+                                    native = it.name?.native ?: "",
                                     alternative = it.name?.alternative?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
                                     alternativeSpoiler = it.name?.alternativeSpoiler?.filterNotNull()?.filterNot { it.isBlank() } ?: listOf(),
                                     userPreferred = it.name?.userPreferred ?: ""

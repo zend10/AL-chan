@@ -1,7 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.data.entity.AppSetting
-import type.NotificationType
+import com.zen.alchan.type.NotificationType
 
 data class MediaMergeNotification(
     override val id: Int = 0,

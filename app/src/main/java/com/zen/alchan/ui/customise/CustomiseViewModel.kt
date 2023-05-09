@@ -12,9 +12,9 @@ import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class CustomiseViewModel(private val userRepository: UserRepository, private val mediaListRepository: MediaListRepository) : BaseViewModel<CustomiseParam>() {
 

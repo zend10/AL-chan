@@ -1,24 +1,26 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.NotificationsQuery
 import com.zen.alchan.data.response.NotificationData
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.data.response.anilist.ActivityReply
-import fragment.*
+import com.zen.alchan.fragment.OnNotificationListActivity
+import com.zen.alchan.fragment.OnNotificationMessageActivity
+import com.zen.alchan.fragment.OnNotificationTextActivity
 
 fun NotificationsQuery.Data.convert() : NotificationData {
     return NotificationData(
         page = Page(
             pageInfo = PageInfo(
-                total = page?.pageInfo?.total ?: 0,
-                perPage = page?.pageInfo?.perPage ?: 0,
-                currentPage = page?.pageInfo?.currentPage ?: 0,
-                lastPage = page?.pageInfo?.lastPage ?: 0,
-                hasNextPage = page?.pageInfo?.hasNextPage ?: false
+                total = Page?.pageInfo?.total ?: 0,
+                perPage = Page?.pageInfo?.perPage ?: 0,
+                currentPage = Page?.pageInfo?.currentPage ?: 0,
+                lastPage = Page?.pageInfo?.lastPage ?: 0,
+                hasNextPage = Page?.pageInfo?.hasNextPage ?: false
             ),
-            data = page?.notifications?.filterNotNull()?.map { notification ->
+            data = Page?.notifications?.filterNotNull()?.map { notification ->
                 when (notification.__typename) {
                     AiringNotification::class.java.simpleName -> {
-                        notification.fragments.onAiringNotification?.let {
+                        notification.onAiringNotification?.let {
                             AiringNotification(
                                 id = it.id,
                                 animeId = it.animeId,
@@ -30,7 +32,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                     title = MediaTitle(
                                         romaji = it.media?.title?.romaji ?: "",
                                         english = it.media?.title?.english ?: "",
-                                        native = it.media?.title?.native_ ?: "",
+                                        native = it.media?.title?.native ?: "",
                                         userPreferred = it.media?.title?.userPreferred ?: ""
                                     ),
                                     coverImage = MediaCoverImage(
@@ -44,7 +46,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: AiringNotification()
                     }
                     FollowingNotification::class.java.simpleName -> {
-                        notification.fragments.onFollowingNotification?.let {
+                        notification.onFollowingNotification?.let {
                             FollowingNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -62,14 +64,14 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: FollowingNotification()
                     }
                     ActivityMessageNotification::class.java.simpleName -> {
-                        notification.fragments.onActivityMessageNotification?.let {
+                        notification.onActivityMessageNotification?.let {
                             ActivityMessageNotification(
                                 id = it.id,
                                 userId = it.userId,
                                 activityId = it.activityId,
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
-                                message = it.message?.fragments?.onNotificationMessageActivity?.convert(),
+                                message = it.message?.onNotificationMessageActivity?.convert(),
                                 user = User(
                                     id = it.user?.id ?: 0,
                                     name = it.user?.name ?: "",
@@ -82,7 +84,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ActivityMessageNotification()
                     }
                     ActivityMentionNotification::class.java.simpleName -> {
-                        notification.fragments.onActivityMentionNotification?.let {
+                        notification.onActivityMentionNotification?.let {
                             ActivityMentionNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -91,13 +93,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
                                     TextActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                        it.activity?.onNotificationTextActivity?.convert()
                                     }
                                     ListActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                        it.activity?.onNotificationListActivity?.convert()
                                     }
                                     MessageActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                        it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
                                 },
@@ -113,7 +115,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ActivityMentionNotification()
                     }
                     ActivityReplyNotification::class.java.simpleName -> {
-                        notification.fragments.onActivityReplyNotification?.let {
+                        notification.onActivityReplyNotification?.let {
                             ActivityReplyNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -122,13 +124,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
                                     TextActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                        it.activity?.onNotificationTextActivity?.convert()
                                     }
                                     ListActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                        it.activity?.onNotificationListActivity?.convert()
                                     }
                                     MessageActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                        it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
                                 },
@@ -144,7 +146,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ActivityReplyNotification()
                     }
                     ActivityReplySubscribedNotification::class.java.simpleName -> {
-                        notification.fragments.onActivityReplySubscribedNotification?.let {
+                        notification.onActivityReplySubscribedNotification?.let {
                             ActivityReplySubscribedNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -153,13 +155,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
                                     TextActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                        it.activity?.onNotificationTextActivity?.convert()
                                     }
                                     ListActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                        it.activity?.onNotificationListActivity?.convert()
                                     }
                                     MessageActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                        it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
                                 },
@@ -175,7 +177,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ActivityReplySubscribedNotification()
                     }
                     ActivityLikeNotification::class.java.simpleName -> {
-                        notification.fragments.onActivityLikeNotification?.let {
+                        notification.onActivityLikeNotification?.let {
                             ActivityLikeNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -184,13 +186,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
                                     TextActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                        it.activity?.onNotificationTextActivity?.convert()
                                     }
                                     ListActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                        it.activity?.onNotificationListActivity?.convert()
                                     }
                                     MessageActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                        it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
                                 },
@@ -206,7 +208,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ActivityLikeNotification()
                     }
                     ActivityReplyLikeNotification::class.java.simpleName -> {
-                        notification.fragments.onActivityReplyLikeNotification?.let {
+                        notification.onActivityReplyLikeNotification?.let {
                             ActivityReplyLikeNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -215,13 +217,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
                                     TextActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationTextActivity?.convert()
+                                        it.activity?.onNotificationTextActivity?.convert()
                                     }
                                     ListActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationListActivity?.convert()
+                                        it.activity?.onNotificationListActivity?.convert()
                                     }
                                     MessageActivity::class.java.simpleName -> {
-                                        it.activity?.fragments?.onNotificationMessageActivity?.convert()
+                                        it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
                                 },
@@ -237,7 +239,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ActivityReplyLikeNotification()
                     }
                     ThreadCommentMentionNotification::class.java.simpleName -> {
-                        notification.fragments.onThreadCommentMentionNotification?.let {
+                        notification.onThreadCommentMentionNotification?.let {
                             ThreadCommentMentionNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -267,7 +269,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ThreadCommentMentionNotification()
                     }
                     ThreadCommentReplyNotification::class.java.simpleName -> {
-                        notification.fragments.onThreadCommentReplyNotification?.let {
+                        notification.onThreadCommentReplyNotification?.let {
                             ThreadCommentReplyNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -297,7 +299,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ThreadCommentReplyNotification()
                     }
                     ThreadCommentSubscribedNotification::class.java.simpleName -> {
-                        notification.fragments.onThreadCommentSubscribedNotification?.let {
+                        notification.onThreadCommentSubscribedNotification?.let {
                             ThreadCommentSubscribedNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -327,7 +329,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ThreadCommentSubscribedNotification()
                     }
                     ThreadCommentLikeNotification::class.java.simpleName -> {
-                        notification.fragments.onThreadCommentLikeNotification?.let {
+                        notification.onThreadCommentLikeNotification?.let {
                             ThreadCommentLikeNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -357,7 +359,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ThreadCommentLikeNotification()
                     }
                     ThreadLikeNotification::class.java.simpleName -> {
-                        notification.fragments.onThreadLikeNotification?.let {
+                        notification.onThreadLikeNotification?.let {
                             ThreadLikeNotification(
                                 id = it.id,
                                 userId = it.userId,
@@ -387,7 +389,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: ThreadLikeNotification()
                     }
                     RelatedMediaAdditionNotification::class.java.simpleName -> {
-                        notification.fragments.onRelatedMediaAdditionNotification?.let {
+                        notification.onRelatedMediaAdditionNotification?.let {
                             RelatedMediaAdditionNotification(
                                 id = it.id,
                                 mediaId = it.mediaId,
@@ -398,7 +400,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                     title = MediaTitle(
                                         romaji = it.media?.title?.romaji ?: "",
                                         english = it.media?.title?.english ?: "",
-                                        native = it.media?.title?.native_ ?: "",
+                                        native = it.media?.title?.native ?: "",
                                         userPreferred = it.media?.title?.userPreferred ?: ""
                                     ),
                                     coverImage = MediaCoverImage(
@@ -412,7 +414,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: RelatedMediaAdditionNotification()
                     }
                     MediaDataChangeNotification::class.java.simpleName -> {
-                        notification.fragments.onMediaDataChangeNotification?.let {
+                        notification.onMediaDataChangeNotification?.let {
                             MediaDataChangeNotification(
                                 id = it.id,
                                 mediaId = it.mediaId,
@@ -424,7 +426,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                     title = MediaTitle(
                                         romaji = it.media?.title?.romaji ?: "",
                                         english = it.media?.title?.english ?: "",
-                                        native = it.media?.title?.native_ ?: "",
+                                        native = it.media?.title?.native ?: "",
                                         userPreferred = it.media?.title?.userPreferred ?: ""
                                     ),
                                     coverImage = MediaCoverImage(
@@ -438,7 +440,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: MediaDataChangeNotification()
                     }
                     MediaMergeNotification::class.java.simpleName -> {
-                        notification.fragments.onMediaMergeNotification?.let {
+                        notification.onMediaMergeNotification?.let {
                             MediaMergeNotification(
                                 id = it.id,
                                 mediaId = it.mediaId,
@@ -451,7 +453,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                     title = MediaTitle(
                                         romaji = it.media?.title?.romaji ?: "",
                                         english = it.media?.title?.english ?: "",
-                                        native = it.media?.title?.native_ ?: "",
+                                        native = it.media?.title?.native ?: "",
                                         userPreferred = it.media?.title?.userPreferred ?: ""
                                     ),
                                     coverImage = MediaCoverImage(
@@ -465,7 +467,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                         } ?: MediaMergeNotification()
                     }
                     MediaDeletionNotification::class.java.simpleName -> {
-                        notification.fragments.onMediaDeletionNotification?.let {
+                        notification.onMediaDeletionNotification?.let {
                             MediaDeletionNotification(
                                 id = it.id,
                                 deletedMediaTitle = it.deletedMediaTitle ?: "",
@@ -502,7 +504,7 @@ private fun OnNotificationListActivity.convert() : ListActivity {
                 title = MediaTitle(
                     romaji = it.title?.romaji ?: "",
                     english = it.title?.english ?: "",
-                    native = it.title?.native_ ?: "",
+                    native = it.title?.native ?: "",
                     userPreferred = it.title?.userPreferred ?: ""
                 )
             )

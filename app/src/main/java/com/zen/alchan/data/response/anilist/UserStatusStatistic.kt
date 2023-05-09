@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.MediaListStatus
+import com.zen.alchan.type.MediaListStatus
+
 
 data class UserStatusStatistic(
     override val count: Int = 0,

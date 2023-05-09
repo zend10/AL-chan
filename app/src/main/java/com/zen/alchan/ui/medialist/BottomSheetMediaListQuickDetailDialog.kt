@@ -3,23 +3,19 @@ package com.zen.alchan.ui.medialist
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.R
-import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.network.apollo.adapter.JsonAdapter
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.databinding.DialogBottomSheetMediaListQuickDetailBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
-import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseDialogFragment
 import com.zen.alchan.ui.editor.AdvancedScoringRvAdapter
 import com.zen.alchan.ui.editor.CustomListsRvAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaListStatus
-import type.MediaType
-import type.ScoreFormat
+import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ScoreFormat
 
 class BottomSheetMediaListQuickDetailDialog : BaseDialogFragment<DialogBottomSheetMediaListQuickDetailBinding>() {
 
@@ -96,7 +92,7 @@ class BottomSheetMediaListQuickDetailDialog : BaseDialogFragment<DialogBottomShe
                     if (!useAdvancedScoring) {
                         dialogMediaListAdvancedScoring.show(false)
                     } else {
-                        val advancedScores = ((mediaList.advancedScores as CustomTypeValue<*>).value as? LinkedHashMap<String, Double>?)?.toList() ?: listOf()
+                        val advancedScores = (mediaList.advancedScores as? LinkedHashMap<String, Double>?)?.toList() ?: listOf()
                         dialogMediaListAdvancedScoring.show(true)
                         advancedScoringAdapter = AdvancedScoringRvAdapter(
                             advancedScores,
@@ -132,7 +128,7 @@ class BottomSheetMediaListQuickDetailDialog : BaseDialogFragment<DialogBottomShe
                     if (!useCustomLists) {
                         dialogMediaListCustomListsLayout.show(false)
                     } else {
-                        val customLists = ((mediaList.customLists as CustomTypeValue<*>).value as? LinkedHashMap<String, Boolean>?)?.toList() ?: listOf()
+                        val customLists = (mediaList.customLists as? LinkedHashMap<String, Boolean>?)?.toList() ?: listOf()
                         dialogMediaListCustomListsLayout.show(true)
                         customListsAdapter = CustomListsRvAdapter(customLists, true, object : CustomListsRvAdapter.CustomListsListener {
                             override fun getNewCustomList(newCustomList: Pair<String, Boolean>) {

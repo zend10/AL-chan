@@ -4,7 +4,6 @@ import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import java.util.*
 
-// TODO: Readd back for dev
 enum class AppTheme(val colors: Triple<Int, Int, Int>) {
     DEFAULT_THEME_YELLOW(Triple(R.color.yellow, R.color.cyan, R.color.magentaDark)),
     DEFAULT_THEME_BLUE(Triple(R.color.blue, R.color.cream, R.color.gold)),

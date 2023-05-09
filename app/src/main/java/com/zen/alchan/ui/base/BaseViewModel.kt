@@ -1,10 +1,10 @@
 package com.zen.alchan.ui.base
 
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 abstract class BaseViewModel<T> : ViewModel(), ViewModelContract<T> {
 

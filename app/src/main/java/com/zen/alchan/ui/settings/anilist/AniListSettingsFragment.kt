@@ -8,7 +8,7 @@ import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

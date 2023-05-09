@@ -13,7 +13,7 @@ import com.zen.alchan.helper.pojo.ReleasingTodayItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.MediaType
+import com.zen.alchan.type.MediaType
 import kotlin.math.abs
 
 class ReleasingTodayRvAdapter(

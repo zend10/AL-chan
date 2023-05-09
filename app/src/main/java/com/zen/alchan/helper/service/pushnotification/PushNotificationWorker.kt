@@ -5,24 +5,19 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.work.RxWorker
 import androidx.work.WorkerParameters
+import androidx.work.rxjava3.RxWorker
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.repository.DefaultUserRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.deeplink.DeepLinkActivity
-import com.zen.alchan.ui.root.RootActivity
-import io.reactivex.Observable
-import io.reactivex.Single
-import okhttp3.internal.notify
+import io.reactivex.rxjava3.core.Single
 import org.koin.java.KoinJavaComponent.inject
 import kotlin.random.Random
 

@@ -1,7 +1,6 @@
 package com.zen.alchan.data.network.apollo
 
-import com.apollographql.apollo.ApolloClient
-import okhttp3.OkHttpClient
+import com.apollographql.apollo3.ApolloClient
 
 interface ApolloHandler {
     val apolloClient: ApolloClient

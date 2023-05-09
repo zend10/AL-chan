@@ -2,7 +2,7 @@ package com.zen.alchan.data.localstorage
 
 import android.net.Uri
 import com.zen.alchan.helper.pojo.NullableItem
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 interface FileStorageHandler {
     val animeListBackground: Observable<NullableItem<Uri>>

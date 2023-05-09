@@ -2,7 +2,7 @@ package com.zen.alchan.helper.enums
 
 import android.content.Context
 import com.zen.alchan.R
-import type.MediaSort
+import com.zen.alchan.type.MediaSort
 
 enum class Sort {
     FOLLOW_LIST_SETTINGS,

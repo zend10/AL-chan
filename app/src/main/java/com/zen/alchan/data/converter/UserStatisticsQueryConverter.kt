@@ -1,16 +1,17 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.UserStatisticsQuery
 import com.zen.alchan.data.response.anilist.*
-import fragment.UserStatistics
+import com.zen.alchan.fragment.UserStatistics
 
 fun UserStatisticsQuery.Data.convert(): User {
-    val user = this.user ?: return User()
+    val user = this.User ?: return User()
     return User(
         id = user.id,
         name = user.name,
         statistics = UserStatisticTypes(
-            anime = user.statistics?.anime?.fragments?.userStatistics?.convert() ?: UserStatistics(),
-            manga = user.statistics?.manga?.fragments?.userStatistics?.convert() ?: UserStatistics()
+            anime = user.statistics?.anime?.userStatistics?.convert() ?: UserStatistics(),
+            manga = user.statistics?.manga?.userStatistics?.convert() ?: UserStatistics()
         )
     )
 }
@@ -131,7 +132,7 @@ fun UserStatistics?.convert(): com.zen.alchan.data.response.anilist.UserStatisti
                         middle = it?.voiceActor?.name?.middle ?: "",
                         last = it?.voiceActor?.name?.last ?: "",
                         full = it?.voiceActor?.name?.full ?: "",
-                        native = it?.voiceActor?.name?.native_ ?: "",
+                        native = it?.voiceActor?.name?.native ?: "",
                         alternative = it?.voiceActor?.name?.alternative?.filterNotNull() ?: listOf(),
                         userPreferred = it?.voiceActor?.name?.userPreferred ?: "",
                     )
@@ -153,7 +154,7 @@ fun UserStatistics?.convert(): com.zen.alchan.data.response.anilist.UserStatisti
                         middle = it?.staff?.name?.middle ?: "",
                         last = it?.staff?.name?.last ?: "",
                         full = it?.staff?.name?.full ?: "",
-                        native = it?.staff?.name?.native_ ?: "",
+                        native = it?.staff?.name?.native ?: "",
                         alternative = it?.staff?.name?.alternative?.filterNotNull() ?: listOf(),
                         userPreferred = it?.staff?.name?.userPreferred ?: "",
                     )

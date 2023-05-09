@@ -7,9 +7,9 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import type.NotificationType
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import com.zen.alchan.type.NotificationType
 
 class NotificationsSettingsViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 

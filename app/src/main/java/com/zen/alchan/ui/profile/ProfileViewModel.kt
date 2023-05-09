@@ -18,10 +18,10 @@ import com.zen.alchan.helper.pojo.ProfileItem
 import com.zen.alchan.helper.pojo.Tendency
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaListStatus
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaListStatus
 import kotlin.math.pow
 import kotlin.math.sqrt
 

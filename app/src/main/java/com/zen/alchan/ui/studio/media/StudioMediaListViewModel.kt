@@ -10,10 +10,10 @@ import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.StudioMediaListAdapterComponent
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaSort
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaSort
 
 class StudioMediaListViewModel(
     private val userRepository: UserRepository,

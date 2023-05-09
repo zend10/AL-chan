@@ -17,7 +17,7 @@ import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.MediaSort
+import com.zen.alchan.type.MediaSort
 
 class CharacterMediaRvAdapter(
     private val context: Context,

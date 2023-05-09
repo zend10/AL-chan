@@ -12,7 +12,7 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.DialogBottomSheetScoreBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseDialogFragment
-import type.ScoreFormat
+import com.zen.alchan.type.ScoreFormat
 
 class BottomSheetScoreDialog : BaseDialogFragment<DialogBottomSheetScoreBinding>() {
 

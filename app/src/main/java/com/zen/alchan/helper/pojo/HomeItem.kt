@@ -1,7 +1,6 @@
 package com.zen.alchan.helper.pojo
 
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.Review
 
 data class HomeItem(

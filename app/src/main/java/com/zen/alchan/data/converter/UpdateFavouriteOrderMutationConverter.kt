@@ -1,9 +1,10 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.UpdateFavouriteOrderMutation
 import com.zen.alchan.data.response.anilist.*
 
 fun UpdateFavouriteOrderMutation.Data.convert(): Favourites {
-    val favourites = this.updateFavouriteOrder ?: return Favourites()
+    val favourites = this.UpdateFavouriteOrder ?: return Favourites()
     return Favourites(
         anime = MediaConnection(
             nodes = favourites.anime?.nodes?.map {
@@ -12,7 +13,7 @@ fun UpdateFavouriteOrderMutation.Data.convert(): Favourites {
                     title = MediaTitle(
                         romaji = it?.title?.romaji ?: "",
                         english = it?.title?.english ?: "",
-                        native = it?.title?.native_ ?: "",
+                        native = it?.title?.native ?: "",
                         userPreferred = it?.title?.userPreferred ?: "",
                     ),
                     coverImage = MediaCoverImage(
@@ -40,7 +41,7 @@ fun UpdateFavouriteOrderMutation.Data.convert(): Favourites {
                     title = MediaTitle(
                         romaji = it?.title?.romaji ?: "",
                         english = it?.title?.english ?: "",
-                        native = it?.title?.native_ ?: "",
+                        native = it?.title?.native ?: "",
                         userPreferred = it?.title?.userPreferred ?: "",
                     ),
                     coverImage = MediaCoverImage(
@@ -70,7 +71,7 @@ fun UpdateFavouriteOrderMutation.Data.convert(): Favourites {
                         middle = it?.name?.middle ?: "",
                         last = it?.name?.last ?: "",
                         full = it?.name?.full ?: "",
-                        native = it?.name?.native_ ?: "",
+                        native = it?.name?.native ?: "",
                         alternative = it?.name?.alternative?.filterNotNull() ?: listOf(),
                         alternativeSpoiler = it?.name?.alternativeSpoiler?.filterNotNull() ?: listOf(),
                         userPreferred = it?.name?.first ?: "",
@@ -101,7 +102,7 @@ fun UpdateFavouriteOrderMutation.Data.convert(): Favourites {
                         middle = it?.name?.middle ?: "",
                         last = it?.name?.last ?: "",
                         full = it?.name?.full ?: "",
-                        native = it?.name?.native_ ?: "",
+                        native = it?.name?.native ?: "",
                         alternative = it?.name?.alternative?.filterNotNull() ?: listOf(),
                         userPreferred = it?.name?.userPreferred ?: ""
                     ),

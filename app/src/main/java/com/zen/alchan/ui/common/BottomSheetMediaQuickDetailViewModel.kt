@@ -4,8 +4,8 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class BottomSheetMediaQuickDetailViewModel(private val userRepository: UserRepository) : BaseViewModel<Unit>() {
 

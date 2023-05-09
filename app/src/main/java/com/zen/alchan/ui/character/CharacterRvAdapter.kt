@@ -19,7 +19,7 @@ import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.MediaSort
+import com.zen.alchan.type.MediaSort
 
 class CharacterRvAdapter(
     private val context: Context,

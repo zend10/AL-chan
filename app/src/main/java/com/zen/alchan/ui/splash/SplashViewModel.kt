@@ -10,8 +10,8 @@ import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.extensions.isSessionExpired
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 class SplashViewModel(
     private val userRepository: UserRepository,

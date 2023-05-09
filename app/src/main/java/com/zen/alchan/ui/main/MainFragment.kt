@@ -13,9 +13,9 @@ import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.notifications.NotificationsFragment
 import com.zen.alchan.ui.profile.ProfileFragment
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit

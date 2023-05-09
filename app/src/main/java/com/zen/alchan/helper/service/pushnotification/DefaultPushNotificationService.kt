@@ -1,11 +1,10 @@
 package com.zen.alchan.helper.service.pushnotification
 
 import android.content.Context
-import android.os.Build
 import androidx.work.*
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.utils.TimeUtil
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 class DefaultPushNotificationService(
@@ -33,7 +32,7 @@ class DefaultPushNotificationService(
                     .setConstraints(constraints)
                     .setInitialDelay(delay, TimeUnit.MINUTES)
                     .build()
-                instance.enqueueUniquePeriodicWork(PUSH_NOTIFICATION_WORK, ExistingPeriodicWorkPolicy.REPLACE, workRequest)
+                instance.enqueueUniquePeriodicWork(PUSH_NOTIFICATION_WORK, ExistingPeriodicWorkPolicy.UPDATE, workRequest)
             }
     }
 

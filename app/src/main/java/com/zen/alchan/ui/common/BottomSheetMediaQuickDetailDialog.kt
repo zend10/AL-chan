@@ -12,8 +12,8 @@ import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaListStatus
-import type.MediaType
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.MediaType
 
 class BottomSheetMediaQuickDetailDialog : BaseDialogFragment<DialogBottomSheetMediaQuickDetailBinding>() {
 

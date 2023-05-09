@@ -1,20 +1,14 @@
 package com.zen.alchan.data.datasource
 
-import CharacterQuery
-import MediaCharactersQuery
-import MediaQuery
-import MediaStaffQuery
-import StaffQuery
-import StudioQuery
-import UserQuery
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.rx2.rxQuery
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo3.rx3.rxSingle
+import com.zen.alchan.*
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.network.retrofit.RetrofitHandler
 import com.zen.alchan.data.response.mal.MangaResponse
-import io.reactivex.Observable
-import type.*
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Observable
 
 class DefaultBrowseDataSource(
     private val apolloHandler: ApolloHandler,
@@ -28,41 +22,41 @@ class DefaultBrowseDataSource(
         id: Int?,
         name:  String?,
         sort: List<UserStatisticsSort>
-    ): Observable<Response<UserQuery.Data>> {
-        val query = UserQuery(id = Input.optional(id), name = Input.optional(name), sort = Input.optional(sort))
-        return apolloHandler.apolloClient.rxQuery(query)
+    ): Observable<ApolloResponse<UserQuery.Data>> {
+        val query = UserQuery(id = Optional.present(id), name = Optional.presentIfNotNull(name), sort = Optional.present(sort))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getMediaQuery(id: Int): Observable<Response<MediaQuery.Data>> {
+    override fun getMediaQuery(id: Int): Observable<ApolloResponse<MediaQuery.Data>> {
         val query = MediaQuery(
-            id = Input.fromNullable(id),
-            statusVersion = Input.fromNullable(statusVersion),
-            sourceVersion = Input.fromNullable(sourceVersion),
-            relationTypeVersion = Input.fromNullable(relationTypeVersion)
+            id = Optional.present(id),
+            statusVersion = Optional.present(statusVersion),
+            sourceVersion = Optional.present(sourceVersion),
+            relationTypeVersion = Optional.present(relationTypeVersion)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getMediaCharactersQuery(
         id: Int,
         page: Int,
         language: StaffLanguage
-    ): Observable<Response<MediaCharactersQuery.Data>> {
-        val query = MediaCharactersQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), language = Input.fromNullable(language))
-        return apolloHandler.apolloClient.rxQuery(query)
+    ): Observable<ApolloResponse<MediaCharactersQuery.Data>> {
+        val query = MediaCharactersQuery(id = Optional.present(id), page = Optional.present(page), language = Optional.present(language))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getMediaStaffQuery(
         id: Int,
         page: Int
-    ): Observable<Response<MediaStaffQuery.Data>> {
-        val query = MediaStaffQuery(id = Input.fromNullable(id), page = Input.fromNullable(page))
-        return apolloHandler.apolloClient.rxQuery(query)
+    ): Observable<ApolloResponse<MediaStaffQuery.Data>> {
+        val query = MediaStaffQuery(id = Optional.present(id), page = Optional.present(page))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
-    override fun getCharacterQuery(id: Int, page: Int, sort: List<MediaSort>, type: MediaType?, onList: Boolean?): Observable<Response<CharacterQuery.Data>> {
-        val query = CharacterQuery(id = Input.fromNullable(id), page = Input.fromNullable(page), sort = Input.optional(sort), type = Input.optional(type), onList = Input.optional(onList))
-        return apolloHandler.apolloClient.rxQuery(query)
+    override fun getCharacterQuery(id: Int, page: Int, sort: List<MediaSort>, type: MediaType?, onList: Boolean?): Observable<ApolloResponse<CharacterQuery.Data>> {
+        val query = CharacterQuery(id = Optional.present(id), page = Optional.present(page), sort = Optional.presentIfNotNull(sort), type = Optional.presentIfNotNull(type), onList = Optional.presentIfNotNull(onList))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getStaffQuery(
@@ -72,16 +66,16 @@ class DefaultBrowseDataSource(
         characterSort: List<CharacterSort>,
         characterMediaSort: List<MediaSort>,
         onList: Boolean?
-    ): Observable<Response<StaffQuery.Data>> {
+    ): Observable<ApolloResponse<StaffQuery.Data>> {
         val query = StaffQuery(
-            id = Input.fromNullable(id),
-            page = Input.fromNullable(page),
-            staffMediaSort = Input.optional(staffMediaSort),
-            characterSort = Input.optional(characterSort),
-            characterMediaSort = Input.optional(characterMediaSort),
-            onList = Input.optional(onList)
+            id = Optional.present(id),
+            page = Optional.present(page),
+            staffMediaSort = Optional.presentIfNotNull(staffMediaSort),
+            characterSort = Optional.presentIfNotNull(characterSort),
+            characterMediaSort = Optional.presentIfNotNull(characterMediaSort),
+            onList = Optional.presentIfNotNull(onList)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getStudioQuery(
@@ -89,14 +83,14 @@ class DefaultBrowseDataSource(
         page: Int,
         sort: List<MediaSort>,
         onList: Boolean?
-    ): Observable<Response<StudioQuery.Data>> {
+    ): Observable<ApolloResponse<StudioQuery.Data>> {
         val query = StudioQuery(
-            id = Input.fromNullable(id),
-            page = Input.fromNullable(page),
-            sort = Input.optional(sort),
-            onList = Input.optional(onList)
+            id = Optional.present(id),
+            page = Optional.present(page),
+            sort = Optional.presentIfNotNull(sort),
+            onList = Optional.presentIfNotNull(onList)
         )
-        return apolloHandler.apolloClient.rxQuery(query)
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
     override fun getMangaDetails(malId: Int): Observable<MangaResponse> {

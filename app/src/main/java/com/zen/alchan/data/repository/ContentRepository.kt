@@ -1,15 +1,14 @@
 package com.zen.alchan.data.repository
 
-import com.apollographql.apollo.api.Response
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.helper.enums.Sort
-import io.reactivex.Observable
-import type.MediaSeason
-import type.MediaType
+import com.zen.alchan.type.MediaSeason
+import com.zen.alchan.type.MediaType
+import io.reactivex.rxjava3.core.Observable
 
 interface ContentRepository {
     fun getHomeData(source: Source? = null): Observable<HomeData>

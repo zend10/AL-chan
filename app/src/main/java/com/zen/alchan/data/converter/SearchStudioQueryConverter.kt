@@ -1,17 +1,18 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.SearchStudioQuery
 import com.zen.alchan.data.response.anilist.*
 
 fun SearchStudioQuery.Data.convert(): Page<Studio> {
     return Page(
         pageInfo = PageInfo(
-            total = page?.pageInfo?.total ?: 0,
-            perPage = page?.pageInfo?.perPage ?: 0,
-            currentPage = page?.pageInfo?.currentPage ?: 0,
-            lastPage = page?.pageInfo?.lastPage ?: 0,
-            hasNextPage = page?.pageInfo?.hasNextPage ?: false
+            total = Page?.pageInfo?.total ?: 0,
+            perPage = Page?.pageInfo?.perPage ?: 0,
+            currentPage = Page?.pageInfo?.currentPage ?: 0,
+            lastPage = Page?.pageInfo?.lastPage ?: 0,
+            hasNextPage = Page?.pageInfo?.hasNextPage ?: false
         ),
-        data = page?.studios?.filterNotNull()?.map {
+        data = Page?.studios?.filterNotNull()?.map {
             Studio(
                 id = it.id,
                 name = it.name,
@@ -23,7 +24,7 @@ fun SearchStudioQuery.Data.convert(): Page<Studio> {
                             title = MediaTitle(
                                 romaji = it.title?.romaji ?: "",
                                 english = it.title?.english ?: "",
-                                native = it.title?.native_ ?: "",
+                                native = it.title?.native ?: "",
                                 userPreferred = it.title?.userPreferred ?: ""
                             ),
                             coverImage = MediaCoverImage(

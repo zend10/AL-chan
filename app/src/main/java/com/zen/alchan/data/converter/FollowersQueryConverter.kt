@@ -1,19 +1,21 @@
 package com.zen.alchan.data.converter
 
+import com.zen.alchan.FollowersQuery
+import com.zen.alchan.data.response.anilist.Page
 import com.zen.alchan.data.response.anilist.PageInfo
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserAvatar
 
-fun FollowersQuery.Data.convert(): Pair<PageInfo, List<User>> {
-    return Pair(
+fun FollowersQuery.Data.convert(): Page<User> {
+    return Page(
         PageInfo(
-            total = page?.pageInfo?.total ?: 0,
-            perPage = page?.pageInfo?.perPage ?: 0,
-            currentPage = page?.pageInfo?.currentPage ?: 0,
-            lastPage = page?.pageInfo?.lastPage ?: 0,
-            hasNextPage = page?.pageInfo?.hasNextPage ?: false
+            total = Page?.pageInfo?.total ?: 0,
+            perPage = Page?.pageInfo?.perPage ?: 0,
+            currentPage = Page?.pageInfo?.currentPage ?: 0,
+            lastPage = Page?.pageInfo?.lastPage ?: 0,
+            hasNextPage = Page?.pageInfo?.hasNextPage ?: false
         ),
-        page?.followers?.filterNotNull()?.map {
+        Page?.followers?.filterNotNull()?.map {
             User(
                 id = it.id,
                 name = it.name,

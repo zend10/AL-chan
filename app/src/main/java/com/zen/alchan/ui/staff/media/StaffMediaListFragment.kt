@@ -18,7 +18,7 @@ import com.zen.alchan.helper.pojo.StaffMediaListAdapterComponent
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.MediaSort
+import com.zen.alchan.type.MediaSort
 
 
 class StaffMediaListFragment : BaseFragment<LayoutInfiniteScrollingBinding, StaffMediaListViewModel>() {

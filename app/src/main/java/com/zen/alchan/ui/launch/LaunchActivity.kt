@@ -11,7 +11,7 @@ import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.DialogManager
 import com.zen.alchan.ui.base.NavigationManager
 import com.zen.alchan.ui.root.RootActivity
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 class LaunchActivity : BaseActivity<ActivityLaunchBinding>() {
 

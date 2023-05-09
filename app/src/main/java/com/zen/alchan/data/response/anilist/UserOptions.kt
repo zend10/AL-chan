@@ -1,8 +1,8 @@
 package com.zen.alchan.data.response.anilist
 
-import com.zen.alchan.data.response.anilist.NotificationOption
-import type.UserStaffNameLanguage
-import type.UserTitleLanguage
+import com.zen.alchan.type.UserStaffNameLanguage
+import com.zen.alchan.type.UserTitleLanguage
+
 
 data class UserOptions(
     var titleLanguage: UserTitleLanguage? = null,

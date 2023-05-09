@@ -17,7 +17,7 @@ import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.ScoreFormat
+import com.zen.alchan.type.ScoreFormat
 
 class EditorFragment : BaseFragment<FragmentEditorBinding, EditorViewModel>() {
 

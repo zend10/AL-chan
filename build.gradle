@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.8.0'
-    ext.apollo_version = '2.5.13'
+    ext.apollo_version = '3.8.1'
     repositories {
         google()
         mavenCentral()
@@ -10,9 +10,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.apollographql.apollo:apollo-gradle-plugin:$apollo_version"
-//        classpath 'com.google.gms:google-services:4.3.5'
-//        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.1'
+        classpath "com.apollographql.apollo3:apollo-gradle-plugin:$apollo_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

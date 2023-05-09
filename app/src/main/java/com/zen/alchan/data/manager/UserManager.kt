@@ -8,7 +8,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.MediaListCollection
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SaveItem
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 interface UserManager {
     var bearerToken: String?

@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
-import type.NotificationType
+import com.zen.alchan.type.NotificationType
+
 
 data class NotificationOption(
     val type: NotificationType? = null,

@@ -1,6 +1,5 @@
 package com.zen.alchan.ui.medialist
 
-import com.apollographql.apollo.api.CustomTypeValue
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
@@ -16,12 +15,11 @@ import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.Observable.zip
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import type.MediaListStatus
-import type.ScoreFormat
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.ScoreFormat
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 
@@ -187,8 +185,8 @@ class MediaListViewModel(
                             }
 
                             // reload if the custom lists is changed
-                            val oldCustomLists = (previousMediaList?.customLists as? CustomTypeValue<LinkedHashMap<String, Boolean>>)?.value
-                            val newCustomLists = (newMediaList.customLists as? CustomTypeValue<LinkedHashMap<String, Boolean>>)?.value
+                            val oldCustomLists = previousMediaList?.customLists as? LinkedHashMap<String, Boolean>
+                            val newCustomLists = newMediaList.customLists as? LinkedHashMap<String, Boolean>
                             newCustomLists?.forEach { (key, value) ->
                                 if (oldCustomLists?.get(key) != value) {
                                     reloadData()
@@ -756,8 +754,8 @@ class MediaListViewModel(
 
     fun updateProgress(mediaList: MediaList, newProgress: Int, isProgressVolume: Boolean) {
         val currentProgress = when (mediaList.media.type) {
-            type.MediaType.ANIME -> mediaList.progress
-            type.MediaType.MANGA -> if (isProgressVolume) (mediaList.progressVolumes ?: 0) else mediaList.progress
+            com.zen.alchan.type.MediaType.ANIME -> mediaList.progress
+            com.zen.alchan.type.MediaType.MANGA -> if (isProgressVolume) (mediaList.progressVolumes ?: 0) else mediaList.progress
             else -> 0
         }
 
@@ -765,8 +763,8 @@ class MediaListViewModel(
             return
 
         val maxProgress = when (mediaList.media.type) {
-            type.MediaType.ANIME -> mediaList.media.episodes
-            type.MediaType.MANGA -> if (isProgressVolume) mediaList.media.volumes else mediaList.media.chapters
+            com.zen.alchan.type.MediaType.ANIME -> mediaList.media.episodes
+            com.zen.alchan.type.MediaType.MANGA -> if (isProgressVolume) mediaList.media.volumes else mediaList.media.chapters
             else -> null
         }
 

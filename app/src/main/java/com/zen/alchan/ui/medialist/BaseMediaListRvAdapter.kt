@@ -19,9 +19,9 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import type.MediaFormat
-import type.MediaType
-import type.ScoreFormat
+import com.zen.alchan.type.MediaFormat
+import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ScoreFormat
 
 abstract class BaseMediaListRvAdapter(
     protected val context: Context,

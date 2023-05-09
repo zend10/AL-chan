@@ -8,23 +8,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsetsController
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.R
-import com.zen.alchan.helper.pojo.ListItem
-import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.helper.utils.DeepLink
-import com.zen.alchan.ui.common.BottomSheetListDialog
-import com.zen.alchan.ui.common.BottomSheetListRvAdapter
-import com.zen.alchan.ui.common.BottomSheetTextInputDialog
 import com.zen.alchan.ui.launch.LaunchActivity
-import com.zen.alchan.ui.root.RootActivity
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(), ViewContract {
 
