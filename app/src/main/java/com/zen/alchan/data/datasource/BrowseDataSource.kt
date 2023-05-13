@@ -2,6 +2,8 @@ package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.zen.alchan.*
+import com.zen.alchan.data.response.animethemes.AnimePaginationResponse
+import com.zen.alchan.data.response.mal.AnimeResponse
 import com.zen.alchan.data.response.mal.MangaResponse
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
@@ -23,4 +25,6 @@ interface BrowseDataSource {
     fun getStudioQuery(id: Int, page: Int, sort: List<MediaSort>, onList: Boolean?): Observable<ApolloResponse<StudioQuery.Data>>
 
     fun getMangaDetails(malId: Int): Observable<MangaResponse>
+    fun getAnimeDetailsFromMal(malId: Int): Observable<AnimeResponse>
+    fun getAnimeDetailsFromAnimeThemes(malId: Int): Observable<AnimePaginationResponse>
 }

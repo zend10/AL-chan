@@ -6,6 +6,8 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.zen.alchan.data.response.AnimeTheme
+import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaTag
@@ -18,6 +20,8 @@ import com.zen.alchan.ui.common.*
 import com.zen.alchan.ui.common.BottomSheetTagDialog
 import com.zen.alchan.ui.editor.BottomSheetProgressDialog
 import com.zen.alchan.ui.editor.BottomSheetScoreDialog
+import com.zen.alchan.ui.media.MediaListener
+import com.zen.alchan.ui.media.themes.BottomSheetMediaThemesDialog
 import com.zen.alchan.ui.medialist.BottomSheetMediaListQuickDetailDialog
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -38,6 +42,7 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
     private var bottomSheetSpoilerDialog: BottomSheetSpoilerDialog? = null
     private var bottomSheetMediaQuickDetailDialog: BottomSheetMediaQuickDetailDialog? = null
     private var bottomSheetMediaListQuickDetailDialog: BottomSheetMediaListQuickDetailDialog? = null
+    private var bottomSheetMediaThemesDialog: BottomSheetMediaThemesDialog? = null
 
     private var datePickerDialog: DatePickerDialog? = null
 
@@ -365,6 +370,29 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         }
         (context as? AppCompatActivity?)?.supportFragmentManager?.let {
             bottomSheetMediaListQuickDetailDialog?.show(it, null)
+        }
+    }
+
+    override fun showAnimeThemesDialog(
+        media: Media,
+        animeTheme: AnimeTheme,
+        animeThemeEntry: AnimeThemeEntry?,
+        action: (url: String, usePlayer: Boolean) -> Unit
+    ) {
+        bottomSheetMediaThemesDialog = BottomSheetMediaThemesDialog.newInstance(media, animeTheme, animeThemeEntry, object : BottomSheetMediaThemesDialog.BottomSheetMediaThemeListener {
+            override fun playWithPlayer(url: String) {
+                action(url, true)
+            }
+
+            override fun playWithOtherApp(url: String) {
+                action(url, false)
+            }
+        })
+        bottomSheetMediaThemesDialog?.dialog?.setOnCancelListener {
+            bottomSheetMediaThemesDialog = null
+        }
+        (context as? AppCompatActivity?)?.supportFragmentManager?.let {
+            bottomSheetMediaThemesDialog?.show(it, null)
         }
     }
 }

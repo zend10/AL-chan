@@ -38,6 +38,7 @@ import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.media.character.MediaCharacterListViewModel
 import com.zen.alchan.ui.media.MediaViewModel
 import com.zen.alchan.ui.media.staff.MediaStaffListViewModel
+import com.zen.alchan.ui.media.themes.BottomSheetMediaThemesViewModel
 import com.zen.alchan.ui.medialist.BottomSheetMediaListQuickDetailViewModel
 import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.notifications.NotificationsViewModel
@@ -104,7 +105,7 @@ class ALchanApplication : Application() {
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
         single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
-        single<RetrofitHandler> { DefaultRetrofitHandler(Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL) }
+        single<RetrofitHandler> { DefaultRetrofitHandler(Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL, Constant.ANIME_THEMES_URL) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
@@ -138,6 +139,7 @@ class ALchanApplication : Application() {
 
         viewModel { BottomSheetMediaQuickDetailViewModel(get()) }
         viewModel { BottomSheetMediaListQuickDetailViewModel(get(), get()) }
+        viewModel { BottomSheetMediaThemesViewModel() }
 
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel(get(), get()) }

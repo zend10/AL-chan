@@ -4,10 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.AnimeTheme
+import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.*
@@ -86,6 +90,11 @@ class MediaRvAdapter(
                 view.listRecyclerView.layoutManager = GridLayoutManager(context, 2)
                 view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(2, context.resources.getDimensionPixelSize(R.dimen.marginSmall), false))
                 return TagsViewHolder(view)
+            }
+            MediaItem.VIEW_TYPE_THEMES -> {
+                val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
+                view.listRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                return ThemesViewHolder(view)
             }
             MediaItem.VIEW_TYPE_STAFF -> {
                 val view = LayoutHorizontalListBinding.inflate(inflater, parent, false)
@@ -239,6 +248,7 @@ class MediaRvAdapter(
     inner class TagsViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
             binding.titleText.text = context.getString(R.string.tags)
+            binding.seeMoreText.show(item.media.tags.any { it.isGeneralSpoiler || it.isMediaSpoiler })
             binding.seeMoreText.text = if (item.showSpoilerTags) context.getString(R.string.hide_spoilers) else context.getString(R.string.show_spoilers)
             binding.seeMoreText.setTextColor(context.getAttrValue(R.attr.themeSecondaryColor))
             binding.seeMoreText.clicks {
@@ -252,6 +262,27 @@ class MediaRvAdapter(
                 else
                     item.media.tags.filter { !it.isGeneralSpoiler && !it.isMediaSpoiler }
             )
+        }
+    }
+
+    inner class ThemesViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
+        override fun bind(item: MediaItem, index: Int) {
+            with(binding) {
+                titleText.text = "Openings"
+                val openingGroups = item.media.openings?.groupBy { it.group } ?: mapOf()
+                val hasMultipleGroups = openingGroups.keys.size > 1
+                seeMoreText.show(hasMultipleGroups)
+                seeMoreText.text = item.themeGroup
+                seeMoreText.clicks {
+
+                }
+                footnoteText.show(false)
+                listRecyclerView.adapter = MediaThemesRvAdapter(context, openingGroups[item.themeGroup] ?: listOf(), object : MediaThemesRvAdapter.MediaThemesListener {
+                    override fun openThemeDialog(animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry) {
+                        listener.mediaThemesListener.openThemeDialog(item.media, animeTheme, animeThemeEntry)
+                    }
+                })
+            }
         }
     }
 

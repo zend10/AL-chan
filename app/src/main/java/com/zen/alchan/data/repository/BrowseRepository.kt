@@ -1,5 +1,6 @@
 package com.zen.alchan.data.repository
 
+import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
@@ -32,4 +33,5 @@ interface BrowseRepository {
     fun getStudio(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC), onList: Boolean? = null): Observable<Studio>
 
     fun getMangaDetails(malId: Int): Observable<Manga>
+    fun getAnimeDetails(malId: Int): Observable<Anime>
 }

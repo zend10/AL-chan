@@ -6,6 +6,8 @@ import com.apollographql.apollo3.rx3.rxSingle
 import com.zen.alchan.*
 import com.zen.alchan.data.network.apollo.ApolloHandler
 import com.zen.alchan.data.network.retrofit.RetrofitHandler
+import com.zen.alchan.data.response.animethemes.AnimePaginationResponse
+import com.zen.alchan.data.response.mal.AnimeResponse
 import com.zen.alchan.data.response.mal.MangaResponse
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
@@ -95,5 +97,13 @@ class DefaultBrowseDataSource(
 
     override fun getMangaDetails(malId: Int): Observable<MangaResponse> {
         return retrofitHandler.jikanRetrofitClient().getMangaDetails(malId)
+    }
+
+    override fun getAnimeDetailsFromMal(malId: Int): Observable<AnimeResponse> {
+        return retrofitHandler.jikanRetrofitClient().getAnimeDetails(malId)
+    }
+
+    override fun getAnimeDetailsFromAnimeThemes(malId: Int): Observable<AnimePaginationResponse> {
+        return retrofitHandler.animeThemesRetrofitClient().getAnimeDetails(malId)
     }
 }

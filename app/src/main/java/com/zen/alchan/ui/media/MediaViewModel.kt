@@ -5,6 +5,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
@@ -194,12 +195,24 @@ class MediaViewModel(
         disposables.add(
             browseRepository.getMedia(mediaId)
                 .flatMap { media ->
-                    if (media.type == com.zen.alchan.type.MediaType.MANGA && media.idMal != null)
-                        browseRepository.getMangaDetails(media.idMal).onErrorReturn { Manga() }.map {
-                            media.copy(mangaSerialization = it.serializations)
+                    if (media.idMal == null)
+                        return@flatMap Observable.just(media)
+
+                    return@flatMap when (media.type) {
+                        com.zen.alchan.type.MediaType.ANIME -> {
+                            browseRepository.getAnimeDetails(media.idMal).onErrorReturn { Anime() }.map {
+                                media.copy(openings = it.openings, endings = it.endings)
+                            }
                         }
-                    else
-                        Observable.just(media)
+                        com.zen.alchan.type.MediaType.MANGA -> {
+                            browseRepository.getMangaDetails(media.idMal).onErrorReturn { Manga() }.map {
+                                media.copy(mangaSerialization = it.serializations)
+                            }
+                        }
+                        else -> {
+                            Observable.just(media)
+                        }
+                    }
                 }
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
@@ -241,6 +254,9 @@ class MediaViewModel(
 
                         if (media.tags.isNotEmpty())
                             mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_TAGS))
+
+                        if (media.openings?.isNotEmpty() == true || media.endings?.isNotEmpty() == true)
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_THEMES, themeGroup = media.openings?.firstOrNull()?.group ?: ""))
 
                         if (media.staff.edges.isNotEmpty())
                             mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_STAFF))

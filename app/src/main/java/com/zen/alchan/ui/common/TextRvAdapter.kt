@@ -39,6 +39,7 @@ class TextRvAdapter(
     }
 
     interface TextListener {
-        fun getText(text: String)
+        fun getText(text: String) {}
+        fun getSelectedIndex(index: Int) {}
     }
 }

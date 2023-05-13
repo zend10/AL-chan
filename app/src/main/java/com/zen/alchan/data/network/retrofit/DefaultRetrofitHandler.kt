@@ -6,11 +6,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 class DefaultRetrofitHandler(
     private val gitHubBaseUrl: String,
-    private val jikanBaseUrl: String
+    private val jikanBaseUrl: String,
+    private val animeThemesBaseUrl: String
 ) : RetrofitHandler {
 
     private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -21,6 +23,7 @@ class DefaultRetrofitHandler(
 
     private var gitHubRestService: GitHubRestService? = null
     private var jikanRestService: JikanRestService? = null
+    private var animeThemesRestService: AnimeThemesRestService? = null
 
     override fun gitHubRetrofitClient(): GitHubRestService {
         if (gitHubRestService == null) {
@@ -66,5 +69,29 @@ class DefaultRetrofitHandler(
             return jikanRestService!!
         }
         return jikanRestService!!
+    }
+
+    override fun animeThemesRetrofitClient(): AnimeThemesRestService {
+        if (animeThemesRestService == null) {
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(animeThemesBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build()
+
+            animeThemesRestService = retrofit.create(AnimeThemesRestService::class.java)
+
+            return animeThemesRestService!!
+        }
+
+        return animeThemesRestService!!
     }
 }

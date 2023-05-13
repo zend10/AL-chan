@@ -3,6 +3,7 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
+import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
@@ -13,6 +14,7 @@ import com.zen.alchan.data.response.anilist.StaffEdge
 import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListType
+import com.zen.alchan.helper.utils.AnimeThemesException
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
 
@@ -96,6 +98,46 @@ class DefaultBrowseRepository(
 
     override fun getMangaDetails(malId: Int): Observable<Manga> {
         return browseDataSource.getMangaDetails(malId).map {
+            it.convert()
+        }
+    }
+
+    override fun getAnimeDetails(malId: Int): Observable<Anime> {
+        var getFromMal = false
+        return Observable.just(true)
+            .flatMap {
+                if (!getFromMal) {
+                    getAnimeDetailsFromAnimeThemes(malId)
+                        .doOnError { getFromMal = true }
+                        .map {
+                            if (it.id == 0)
+                                throw AnimeThemesException()
+                            else
+                                it
+                        }
+                } else {
+                    getFromMal = false
+                    getAnimeDetailsFromMal(malId)
+                }
+            }
+            .retry { times, throwable ->
+                if (throwable is AnimeThemesException) {
+                    getFromMal = true
+                    true
+                } else {
+                    false
+                }
+            }
+    }
+
+    private fun getAnimeDetailsFromAnimeThemes(malId: Int): Observable<Anime> {
+        return browseDataSource.getAnimeDetailsFromAnimeThemes(malId).map {
+            it.convert()
+        }
+    }
+
+    private fun getAnimeDetailsFromMal(malId: Int): Observable<Anime> {
+        return browseDataSource.getAnimeDetailsFromMal(malId).map {
             it.convert()
         }
     }

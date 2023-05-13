@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.media
 
+import com.zen.alchan.data.response.AnimeTheme
+import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 
@@ -28,6 +30,10 @@ interface MediaListener {
         fun showDescription(tag: MediaTag)
     }
 
+    interface MediaThemesListener {
+        fun openThemeDialog(media: Media, animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?)
+    }
+
     interface MediaStaffListener {
         fun navigateToMediaStaff(media: Media)
         fun navigateToStaff(staff: Staff)
@@ -51,6 +57,7 @@ interface MediaListener {
     val mediaCharacterListener: MediaCharacterListener
     val mediaStudioListener: MediaStudioListener
     val mediaTagsListener: MediaTagsListener
+    val mediaThemesListener: MediaThemesListener
     val mediaStaffListener: MediaStaffListener
     val mediaRelationsListener: MediaRelationsListener
     val mediaRecommendationsListener: MediaRecommendationsListener

@@ -1,5 +1,7 @@
 package com.zen.alchan.ui.base
 
+import com.zen.alchan.data.response.AnimeTheme
+import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaTag
@@ -60,4 +62,6 @@ interface DialogManager {
 
     fun showMediaQuickDetailDialog(media: Media)
     fun showMediaListQuickDetailDialog(userId: Int, mediaList: MediaList)
+
+    fun showAnimeThemesDialog(media: Media, animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?, action: (url: String, usePlayer: Boolean) -> Unit)
 }

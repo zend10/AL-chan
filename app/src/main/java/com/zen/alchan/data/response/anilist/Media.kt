@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.helper.enums.Country
 import com.zen.alchan.helper.enums.MediaNaming
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
@@ -52,6 +53,8 @@ data class Media(
     val stats: MediaStats? = null,
     val siteUrl: String = "",
     val mediaListEntry: MediaList? = null,
+    val openings: List<AnimeTheme>? = null,
+    val endings: List<AnimeTheme>? = null,
     val mangaSerialization: List<MangaSerialization>? = null
 ) {
     fun getId() : Int {

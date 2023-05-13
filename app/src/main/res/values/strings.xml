@@ -510,6 +510,10 @@
     <string name="announcement">Announcement</string>
     <string name="dont_show_again">Don\'t Show Again</string>
     <string name="serializations">Serializations</string>
+    <string name="play_on_youtube">Play on YouTube</string>
+    <string name="play_on_spotify">Play on Spotify</string>
+    <string name="al_chan_has_no_affiliation_with_the_above_players_and_can_end_up_opening_the_wrong_track">AL-chan has no affiliation with the above players and can end up opening the wrong track.</string>
+    <string name="credits_to_animethemes_moe_for_providing_the_music_video_above">Credits to animethemes.moe for providing the music video above.</string>
 
 
     <plurals name="minute">

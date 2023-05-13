@@ -14,6 +14,8 @@ import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.AnimeTheme
+import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentMediaBinding
@@ -215,6 +217,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
             override val mediaStudioListener: MediaListener.MediaStudioListener = getMediaStudioListener()
             override val mediaTagsListener: MediaListener.MediaTagsListener = getMediaTagsListener()
+            override val mediaThemesListener: MediaListener.MediaThemesListener = getMediaThemesListener()
             override val mediaStaffListener: MediaListener.MediaStaffListener = getMediaStaffListener()
             override val mediaRelationsListener: MediaListener.MediaRelationsListener = getMediaRelationsListener()
             override val mediaRecommendationsListener: MediaListener.MediaRecommendationsListener = getMediaRecommendationsListener()
@@ -270,6 +273,20 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
             override fun showDescription(tag: MediaTag) {
                 dialog.showToast(tag.description)
+            }
+        }
+    }
+
+    private fun getMediaThemesListener(): MediaListener.MediaThemesListener {
+        return object : MediaListener.MediaThemesListener {
+            override fun openThemeDialog(
+                media: Media,
+                animeTheme: AnimeTheme,
+                animeThemeEntry: AnimeThemeEntry?
+            ) {
+                dialog.showAnimeThemesDialog(media, animeTheme, animeThemeEntry) { url, usePlayer ->
+                    navigation.openWebView(url)
+                }
             }
         }
     }
