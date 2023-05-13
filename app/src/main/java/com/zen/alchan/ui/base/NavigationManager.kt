@@ -77,6 +77,7 @@ interface NavigationManager {
     fun openEmailClient() {}
     fun openGallery(launcher: ActivityResultLauncher<Intent>) {}
     fun openOnYouTube(videoId: String) {}
+    fun openOnSpotify(url: String) {}
 
     fun isAtPreLoginScreen(): Boolean { return false }
     fun isAtBrowseScreen(): Boolean { return false }

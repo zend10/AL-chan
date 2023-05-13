@@ -5,6 +5,7 @@ import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
 import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
+import com.zen.alchan.data.response.TrackSearch
 import com.zen.alchan.data.response.VideoSearch
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
@@ -16,6 +17,7 @@ import com.zen.alchan.data.response.anilist.Studio
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.utils.AnimeThemesException
+import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
 
@@ -147,5 +149,24 @@ class DefaultBrowseRepository(
         return browseDataSource.getYouTubeVideo(browseManager.youTubeApiKey, searchQuery).map {
             it.convert()
         }
+    }
+
+    override fun getSpotifyTrack(searchQuery: String): Observable<TrackSearch> {
+        return Observable.just(browseManager.spotifyAccessToken)
+            .flatMap { accessToken ->
+                if (accessToken.accessToken == "" || TimeUtil.getCurrentTimeInMillis() >= browseManager.spotifyAccessTokenLastRetrieve + accessToken.expiresIn.toLong() * 1000 ) {
+                    browseDataSource.getSpotifyAccessToken()
+                        .map {
+                            browseManager.spotifyAccessToken = it.convert()
+                            browseManager.spotifyAccessTokenLastRetrieve = TimeUtil.getCurrentTimeInMillis()
+                            Unit
+                        }
+                } else {
+                    Observable.just(Unit)
+                }
+            }
+            .flatMap {
+                browseDataSource.getSpotifyTrack(searchQuery).map { it.convert() }
+            }
     }
 }

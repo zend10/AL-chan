@@ -1,19 +1,24 @@
 package com.zen.alchan.data.network.retrofit
 
-import com.google.gson.Gson
+import com.zen.alchan.data.network.interceptor.HeaderInterceptor
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 class DefaultRetrofitHandler(
     private val gitHubBaseUrl: String,
     private val jikanBaseUrl: String,
     private val animeThemesBaseUrl: String,
-    private val youTubeBaseUrl: String
+    private val youTubeBaseUrl: String,
+    private val spotifyAuthBaseUrl: String,
+    private val spotifyAuthHeaderInterceptor: HeaderInterceptor,
+    private val spotifyBaseUrl: String,
+    private val spotifyHeaderInterceptor: HeaderInterceptor
 ) : RetrofitHandler {
 
     private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -26,6 +31,8 @@ class DefaultRetrofitHandler(
     private var jikanRestService: JikanRestService? = null
     private var animeThemesRestService: AnimeThemesRestService? = null
     private var youTubeRestService: YouTubeRestService? = null
+    private var spotifyAuthRestService: SpotifyAuthRestService? = null
+    private var spotifyRestService: SpotifyRestService? = null
 
     override fun gitHubRetrofitClient(): GitHubRestService {
         if (gitHubRestService == null) {
@@ -119,5 +126,64 @@ class DefaultRetrofitHandler(
         }
 
         return youTubeRestService!!
+    }
+
+    override fun spotifyAuthRetrofitClient(): SpotifyAuthRestService {
+        if (spotifyAuthRestService == null) {
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .addNetworkInterceptor(spotifyAuthHeaderInterceptor)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(spotifyAuthBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build()
+
+            spotifyAuthRestService = retrofit.create(SpotifyAuthRestService::class.java)
+
+            return spotifyAuthRestService!!
+        }
+
+        return spotifyAuthRestService!!
+    }
+
+    override fun spotifyRetrofitClient(): SpotifyRestService {
+        if (spotifyRestService == null) {
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .addNetworkInterceptor(spotifyHeaderInterceptor)
+//                .addNetworkInterceptor(object: Interceptor {
+//                    override fun intercept(chain: Interceptor.Chain) = chain.run {
+//                        proceed(
+//                            request().newBuilder()
+//                                .addHeader("Authorization", "Bearer BQAi6tN97Tw3fVBIyptfcbitNMO9A0mwlqpy9yrn-mYRPEWd_W53tGYq2VrGAIJGKPnoEf0gsQzh6PQMwDSnzqDQMvI80Aj9P92X-xm1N9lJHQKmE6N1")
+//                                .build()
+//                        )
+//                    }
+//                })
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(spotifyBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build()
+
+            spotifyRestService = retrofit.create(SpotifyRestService::class.java)
+
+            return spotifyRestService!!
+        }
+
+        return spotifyRestService!!
     }
 }

@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.entity.ListStyle
+import com.zen.alchan.data.response.SpotifyAccessToken
 import com.zen.alchan.helper.enums.ListType
 
 class DefaultSharedPreferencesHandler(
@@ -61,6 +62,14 @@ class DefaultSharedPreferencesHandler(
         get() = getData(LAST_ANNOUNCEMENT_ID)
         set(value) { setData(LAST_ANNOUNCEMENT_ID, value) }
 
+    override var spotifyAccessToken: SpotifyAccessToken?
+        get() = gson.fromJson(getData(SPOTIFY_ACCESS_TOKEN), SpotifyAccessToken::class.java)
+        set(value) { setData(SPOTIFY_ACCESS_TOKEN, gson.toJson(value)) }
+
+    override var spotifyAccessTokenLastRetrieve: Long?
+        get() = getData(SPOTIFY_ACCESS_TOKEN_LAST_RETRIEVE)?.toLongOrNull()
+        set(value) { setData(SPOTIFY_ACCESS_TOKEN_LAST_RETRIEVE, value.toString()) }
+
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val GUEST_LOGIN = "guestLogin"
@@ -74,5 +83,7 @@ class DefaultSharedPreferencesHandler(
         private const val OTHERS_LIST_TYPE = "othersListType"
         private const val LAST_NOTIFICATION_ID = "lastNotificationId"
         private const val LAST_ANNOUNCEMENT_ID = "lastAnnouncementId"
+        private const val SPOTIFY_ACCESS_TOKEN = "spotifyAccessToken"
+        private const val SPOTIFY_ACCESS_TOKEN_LAST_RETRIEVE = "spotifyAccessTokenLastRetrieve"
     }
 }

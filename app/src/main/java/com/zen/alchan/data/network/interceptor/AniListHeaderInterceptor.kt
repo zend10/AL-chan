@@ -4,7 +4,7 @@ import com.zen.alchan.data.manager.UserManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AniListHeaderInterceptorImpl(private val userManager: UserManager) : HeaderInterceptor {
+class AniListHeaderInterceptor(private val userManager: UserManager) : HeaderInterceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         proceed(

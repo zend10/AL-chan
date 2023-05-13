@@ -7,8 +7,10 @@ import com.zen.alchan.data.localstorage.*
 import com.zen.alchan.data.manager.*
 import com.zen.alchan.data.network.apollo.AniListApolloHandler
 import com.zen.alchan.data.network.apollo.ApolloHandler
-import com.zen.alchan.data.network.interceptor.AniListHeaderInterceptorImpl
+import com.zen.alchan.data.network.interceptor.AniListHeaderInterceptor
 import com.zen.alchan.data.network.interceptor.HeaderInterceptor
+import com.zen.alchan.data.network.interceptor.SpotifyAuthHeaderInterceptor
+import com.zen.alchan.data.network.interceptor.SpotifyHeaderInterceptor
 import com.zen.alchan.data.network.retrofit.DefaultRetrofitHandler
 import com.zen.alchan.data.network.retrofit.RetrofitHandler
 import com.zen.alchan.data.repository.*
@@ -67,6 +69,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 class ALchanApplication : Application() {
@@ -103,9 +106,26 @@ class ALchanApplication : Application() {
         single<BrowseManager> { DefaultBrowseManager(get()) }
 
         // network
-        single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
-        single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
-        single<RetrofitHandler> { DefaultRetrofitHandler(Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL, Constant.ANIME_THEMES_URL, Constant.YOUTUBE_SEARCH_URL) }
+        val aniListHeaderInterceptor = "aniListHeaderInterceptor"
+        val spotifyAuthHeaderInterceptor = "spotifyAuthHeaderInterceptor"
+        val spotifyHeaderInterceptor = "spotifyHeaderInterceptor"
+
+        single<HeaderInterceptor>(named(aniListHeaderInterceptor)) { AniListHeaderInterceptor(get()) }
+        single<HeaderInterceptor>(named(spotifyAuthHeaderInterceptor)) { SpotifyAuthHeaderInterceptor(get()) }
+        single<HeaderInterceptor>(named(spotifyHeaderInterceptor)) { SpotifyHeaderInterceptor(get()) }
+        single<ApolloHandler> { AniListApolloHandler(get(named(aniListHeaderInterceptor)), Constant.ANILIST_API_BASE_URL) }
+        single<RetrofitHandler> {
+            DefaultRetrofitHandler(
+                Constant.ALCHAN_RAW_GITHUB_URL,
+                Constant.JIKAN_API_URL,
+                Constant.ANIME_THEMES_API_URL,
+                Constant.YOUTUBE_SEARCH_API_URL,
+                Constant.SPOTIFY_AUTH_API_URL,
+                get(named(spotifyAuthHeaderInterceptor)),
+                Constant.SPOTIFY_API_URL,
+                get(named(spotifyHeaderInterceptor))
+            )
+        }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }

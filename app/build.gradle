@@ -17,6 +17,7 @@ android {
         def apikeyProperties = new Properties()
         apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
         buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])
+        buildConfigField("String", "SPOTIFY_API_KEY", apikeyProperties['SPOTIFY_API_KEY'])
     }
     buildTypes {
         release {

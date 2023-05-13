@@ -55,6 +55,9 @@ class BottomSheetMediaThemesDialog : BaseDialogFragment<DialogBottomSheetListBin
             },
             viewModel.youTubeVideo.subscribe {
                 listener.playWithYouTube(it.videoId)
+            },
+            viewModel.spotifyTrack.subscribe {
+                listener.playWithSpotify(it.trackUrl)
             }
         )
 

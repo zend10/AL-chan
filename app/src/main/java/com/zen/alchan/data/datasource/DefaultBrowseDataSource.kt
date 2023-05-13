@@ -9,6 +9,8 @@ import com.zen.alchan.data.network.retrofit.RetrofitHandler
 import com.zen.alchan.data.response.animethemes.AnimePaginationResponse
 import com.zen.alchan.data.response.mal.AnimeResponse
 import com.zen.alchan.data.response.mal.MangaResponse
+import com.zen.alchan.data.response.spotify.SpotifyAccessTokenResponse
+import com.zen.alchan.data.response.spotify.TrackSearchResponse
 import com.zen.alchan.data.response.youtube.VideoSearchResponse
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
@@ -110,5 +112,13 @@ class DefaultBrowseDataSource(
 
     override fun getYouTubeVideo(key: String, searchQuery: String): Observable<VideoSearchResponse> {
         return retrofitHandler.youTubeRetrofitClient().getYouTubeVideo(key, searchQuery)
+    }
+
+    override fun getSpotifyAccessToken(): Observable<SpotifyAccessTokenResponse> {
+        return retrofitHandler.spotifyAuthRetrofitClient().getAccessToken()
+    }
+
+    override fun getSpotifyTrack(searchQuery: String): Observable<TrackSearchResponse> {
+        return retrofitHandler.spotifyRetrofitClient().getSpotifyTrack(searchQuery)
     }
 }

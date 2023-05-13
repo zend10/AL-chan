@@ -310,6 +310,10 @@ class DefaultNavigationManager(
         launchWebView(Uri.parse("${Constant.YOUTUBE_URL}$videoId"))
     }
 
+    override fun openOnSpotify(url: String) {
+        launchWebView(Uri.parse(url))
+    }
+
     override fun isAtPreLoginScreen(): Boolean {
         val fragments = fragmentManager.fragments.filterIsInstance<BaseFragment<*, *>>()
         if (fragments.isEmpty()) return true

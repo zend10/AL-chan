@@ -5,6 +5,8 @@ import com.zen.alchan.*
 import com.zen.alchan.data.response.animethemes.AnimePaginationResponse
 import com.zen.alchan.data.response.mal.AnimeResponse
 import com.zen.alchan.data.response.mal.MangaResponse
+import com.zen.alchan.data.response.spotify.SpotifyAccessTokenResponse
+import com.zen.alchan.data.response.spotify.TrackSearchResponse
 import com.zen.alchan.data.response.youtube.VideoSearchResponse
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
@@ -29,4 +31,6 @@ interface BrowseDataSource {
     fun getAnimeDetailsFromMal(malId: Int): Observable<AnimeResponse>
     fun getAnimeDetailsFromAnimeThemes(malId: Int): Observable<AnimePaginationResponse>
     fun getYouTubeVideo(key: String, searchQuery: String): Observable<VideoSearchResponse>
+    fun getSpotifyAccessToken(): Observable<SpotifyAccessTokenResponse>
+    fun getSpotifyTrack(searchQuery: String): Observable<TrackSearchResponse>
 }

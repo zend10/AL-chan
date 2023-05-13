@@ -287,8 +287,10 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 dialog.showAnimeThemesDialog(media, animeTheme, animeThemeEntry) { url, videoId, usePlayer ->
                     if (usePlayer && url != null)
                         navigation.openWebView(url)
-                    else if (videoId != null)
+                    else if (!usePlayer && videoId != null)
                         navigation.openOnYouTube(videoId)
+                    else if (!usePlayer && url != null)
+                        navigation.openOnSpotify(url)
                 }
             }
         }

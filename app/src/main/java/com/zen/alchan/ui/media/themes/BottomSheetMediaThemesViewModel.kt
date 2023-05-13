@@ -2,6 +2,7 @@ package com.zen.alchan.ui.media.themes
 
 import com.zen.alchan.R
 import com.zen.alchan.data.repository.BrowseRepository
+import com.zen.alchan.data.response.TrackSearch
 import com.zen.alchan.data.response.VideoSearch
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
@@ -23,6 +24,10 @@ class BottomSheetMediaThemesViewModel(
     private val _youTubeVideo = PublishSubject.create<VideoSearch>()
     val youTubeVideo: Observable<VideoSearch>
         get() = _youTubeVideo
+
+    private val _spotifyTrack = PublishSubject.create<TrackSearch>()
+    val spotifyTrack: Observable<TrackSearch>
+        get() = _spotifyTrack
 
     override fun loadData(param: BottomSheetMediaThemesParam) {
         loadOnce {
@@ -84,6 +89,21 @@ class BottomSheetMediaThemesViewModel(
     }
 
     fun getSpotifyTrack(searchQuery: String) {
-
+        _loading.onNext(true)
+        disposables.add(
+            browseRepository.getSpotifyTrack(searchQuery)
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        _spotifyTrack.onNext(it)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 }

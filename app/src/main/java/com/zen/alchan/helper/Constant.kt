@@ -32,8 +32,10 @@ object Constant {
 
     const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
 
-    const val JIKAN_URL = "https://api.jikan.moe/v4/"
-    const val ANIME_THEMES_URL = "https://api.animethemes.moe/"
-    const val YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/"
+    const val JIKAN_API_URL = "https://api.jikan.moe/v4/"
+    const val ANIME_THEMES_API_URL = "https://api.animethemes.moe/"
+    const val YOUTUBE_SEARCH_API_URL = "https://www.googleapis.com/youtube/v3/"
     const val YOUTUBE_URL = "https://www.youtube.com/watch?v="
+    const val SPOTIFY_AUTH_API_URL = "https://accounts.spotify.com/api/"
+    const val SPOTIFY_API_URL = "https://api.spotify.com/v1/"
 }
