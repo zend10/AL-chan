@@ -306,6 +306,10 @@ class DefaultNavigationManager(
         launcher.launch(intent)
     }
 
+    override fun openOnYouTube(videoId: String) {
+        launchWebView(Uri.parse("${Constant.YOUTUBE_URL}$videoId"))
+    }
+
     override fun isAtPreLoginScreen(): Boolean {
         val fragments = fragmentManager.fragments.filterIsInstance<BaseFragment<*, *>>()
         if (fragments.isEmpty()) return true

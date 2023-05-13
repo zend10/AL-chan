@@ -76,6 +76,7 @@ interface NavigationManager {
     fun openWebView(url: Url, id: Int? = null) {}
     fun openEmailClient() {}
     fun openGallery(launcher: ActivityResultLauncher<Intent>) {}
+    fun openOnYouTube(videoId: String) {}
 
     fun isAtPreLoginScreen(): Boolean { return false }
     fun isAtBrowseScreen(): Boolean { return false }

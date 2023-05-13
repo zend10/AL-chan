@@ -4,4 +4,5 @@ import com.zen.alchan.helper.enums.ListType
 
 interface BrowseManager {
     var othersListType: ListType
+    val youTubeApiKey: String
 }

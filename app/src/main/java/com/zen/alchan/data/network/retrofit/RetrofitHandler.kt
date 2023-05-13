@@ -4,4 +4,5 @@ interface RetrofitHandler {
     fun gitHubRetrofitClient(): GitHubRestService
     fun jikanRetrofitClient(): JikanRestService
     fun animeThemesRetrofitClient(): AnimeThemesRestService
+    fun youTubeRetrofitClient(): YouTubeRestService
 }

@@ -2,6 +2,7 @@ package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
+import com.zen.alchan.data.response.VideoSearch
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
 import com.zen.alchan.data.response.anilist.Media
@@ -34,4 +35,5 @@ interface BrowseRepository {
 
     fun getMangaDetails(malId: Int): Observable<Manga>
     fun getAnimeDetails(malId: Int): Observable<Anime>
+    fun getYouTubeVideo(searchQuery: String): Observable<VideoSearch>
 }

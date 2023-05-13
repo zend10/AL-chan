@@ -6,6 +6,7 @@ import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.DialogBottomSheetListBinding
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,7 +29,19 @@ class BottomSheetMediaThemesDialog : BaseDialogFragment<DialogBottomSheetListBin
     }
 
     override fun setUpLayout() {
-        adapter = BottomSheetMediaThemeRvAdapter(requireContext(), listOf(), listener)
+        adapter = BottomSheetMediaThemeRvAdapter(requireContext(), listOf(), object : BottomSheetMediaThemeRvAdapter.BottomSheetMediaThemeListener {
+            override fun playWithPlayer(url: String) {
+                listener.playWithPlayer(url)
+            }
+
+            override fun getYouTubeVideo(searchQuery: String) {
+                viewModel.getYouTubeVideo(searchQuery)
+            }
+
+            override fun getSpotifyTrack(searchQuery: String) {
+                viewModel.getSpotifyTrack(searchQuery)
+            }
+        })
         binding.dialogRecyclerView.adapter = adapter
     }
 
@@ -36,6 +49,12 @@ class BottomSheetMediaThemesDialog : BaseDialogFragment<DialogBottomSheetListBin
         disposables.addAll(
             viewModel.themeItems.subscribe {
                 adapter?.updateData(it)
+            },
+            viewModel.loading.subscribe {
+                binding.loadingLayout.loadingLayout.show(it)
+            },
+            viewModel.youTubeVideo.subscribe {
+                listener.playWithYouTube(it.videoId)
             }
         )
 
@@ -63,6 +82,7 @@ class BottomSheetMediaThemesDialog : BaseDialogFragment<DialogBottomSheetListBin
 
     interface BottomSheetMediaThemeListener {
         fun playWithPlayer(url: String)
-        fun playWithOtherApp(url: String)
+        fun playWithYouTube(videoId: String)
+        fun playWithSpotify(url: String)
     }
 }

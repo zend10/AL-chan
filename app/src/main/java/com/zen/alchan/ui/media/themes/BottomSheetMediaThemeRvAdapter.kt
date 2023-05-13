@@ -14,7 +14,7 @@ import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 class BottomSheetMediaThemeRvAdapter(
     private val context: Context,
     list: List<ListItem<ThemeItem>>,
-    private val listener: BottomSheetMediaThemesDialog.BottomSheetMediaThemeListener
+    private val listener: BottomSheetMediaThemeListener
 ) : BaseRecyclerViewAdapter<ListItem<ThemeItem>, ListBottomSheetMediaThemeBinding>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,13 +45,19 @@ class BottomSheetMediaThemeRvAdapter(
                 root.isEnabled = item.data.viewType != ThemeItem.VIEW_TYPE_TEXT
 
                 root.clicks {
-                    if (item.data.viewType == ThemeItem.VIEW_TYPE_VIDEO || item.data.viewType == ThemeItem.VIEW_TYPE_AUDIO) {
-                        listener.playWithPlayer(item.data.url)
-                    } else {
-                        listener.playWithOtherApp(item.data.searchQuery)
+                    when (item.data.viewType) {
+                        ThemeItem.VIEW_TYPE_VIDEO, ThemeItem.VIEW_TYPE_AUDIO -> listener.playWithPlayer(item.data.url)
+                        ThemeItem.VIEW_TYPE_YOUTUBE -> listener.getYouTubeVideo(item.data.searchQuery)
+                        ThemeItem.VIEW_TYPE_SPOTIFY -> listener.getSpotifyTrack(item.data.searchQuery)
                     }
                 }
             }
         }
+    }
+
+    interface BottomSheetMediaThemeListener {
+        fun playWithPlayer(url: String)
+        fun getYouTubeVideo(searchQuery: String)
+        fun getSpotifyTrack(searchQuery: String)
     }
 }

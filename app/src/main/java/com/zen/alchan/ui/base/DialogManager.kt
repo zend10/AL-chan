@@ -63,5 +63,5 @@ interface DialogManager {
     fun showMediaQuickDetailDialog(media: Media)
     fun showMediaListQuickDetailDialog(userId: Int, mediaList: MediaList)
 
-    fun showAnimeThemesDialog(media: Media, animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?, action: (url: String, usePlayer: Boolean) -> Unit)
+    fun showAnimeThemesDialog(media: Media, animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?, action: (url: String?, videoId: String?, usePlayer: Boolean) -> Unit)
 }

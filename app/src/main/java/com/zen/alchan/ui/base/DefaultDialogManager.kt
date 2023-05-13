@@ -377,15 +377,19 @@ class DefaultDialogManager(private val context: Context) : DialogManager {
         media: Media,
         animeTheme: AnimeTheme,
         animeThemeEntry: AnimeThemeEntry?,
-        action: (url: String, usePlayer: Boolean) -> Unit
+        action: (url: String?, videoId: String?, usePlayer: Boolean) -> Unit
     ) {
         bottomSheetMediaThemesDialog = BottomSheetMediaThemesDialog.newInstance(media, animeTheme, animeThemeEntry, object : BottomSheetMediaThemesDialog.BottomSheetMediaThemeListener {
             override fun playWithPlayer(url: String) {
-                action(url, true)
+                action(url, null, true)
             }
 
-            override fun playWithOtherApp(url: String) {
-                action(url, false)
+            override fun playWithYouTube(videoId: String) {
+                action(null, videoId, false)
+            }
+
+            override fun playWithSpotify(url: String) {
+                action(url, null, false)
             }
         })
         bottomSheetMediaThemesDialog?.dialog?.setOnCancelListener {

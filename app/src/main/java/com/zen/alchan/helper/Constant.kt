@@ -34,5 +34,6 @@ object Constant {
 
     const val JIKAN_URL = "https://api.jikan.moe/v4/"
     const val ANIME_THEMES_URL = "https://api.animethemes.moe/"
-    const val YOUTUBE_URL = "https://www.googleapis.com/youtube/v3/"
+    const val YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/"
+    const val YOUTUBE_URL = "https://www.youtube.com/watch?v="
 }

@@ -1,17 +1,28 @@
 package com.zen.alchan.ui.media.themes
 
 import com.zen.alchan.R
+import com.zen.alchan.data.repository.BrowseRepository
+import com.zen.alchan.data.response.VideoSearch
+import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.ThemeItem
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 
-class BottomSheetMediaThemesViewModel : BaseViewModel<BottomSheetMediaThemesParam>() {
+class BottomSheetMediaThemesViewModel(
+    private val browseRepository: BrowseRepository
+) : BaseViewModel<BottomSheetMediaThemesParam>() {
 
     private val _themeItems = BehaviorSubject.createDefault<List<ListItem<ThemeItem>>>(listOf())
     val themeItems: Observable<List<ListItem<ThemeItem>>>
         get() = _themeItems
+
+    private val _youTubeVideo = PublishSubject.create<VideoSearch>()
+    val youTubeVideo: Observable<VideoSearch>
+        get() = _youTubeVideo
 
     override fun loadData(param: BottomSheetMediaThemesParam) {
         loadOnce {
@@ -46,10 +57,33 @@ class BottomSheetMediaThemesViewModel : BaseViewModel<BottomSheetMediaThemesPara
                 "$title $artist"
             }
 
-            items.add(ListItem(R.string.play_on_youtube, ThemeItem(searchQuery = searchQuery, viewType = ThemeItem.VIEW_TYPE_YOUTUBE)))
+            items.add(ListItem(R.string.play_on_youtube, ThemeItem(searchQuery = "${param.media.title.romaji} $searchQuery", viewType = ThemeItem.VIEW_TYPE_YOUTUBE)))
             items.add(ListItem(R.string.play_on_spotify, ThemeItem(searchQuery = searchQuery, viewType = ThemeItem.VIEW_TYPE_SPOTIFY)))
             items.add(ListItem(R.string.al_chan_has_no_affiliation_with_the_above_players_and_can_end_up_opening_the_wrong_track, ThemeItem(viewType = ThemeItem.VIEW_TYPE_TEXT)))
             _themeItems.onNext(items)
         }
+    }
+
+    fun getYouTubeVideo(searchQuery: String) {
+        _loading.onNext(true)
+        disposables.add(
+            browseRepository.getYouTubeVideo(searchQuery)
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        _youTubeVideo.onNext(it)
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
+    }
+
+    fun getSpotifyTrack(searchQuery: String) {
+
     }
 }

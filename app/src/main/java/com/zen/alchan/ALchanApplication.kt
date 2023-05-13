@@ -105,7 +105,7 @@ class ALchanApplication : Application() {
         // network
         single<HeaderInterceptor> { AniListHeaderInterceptorImpl(get()) }
         single<ApolloHandler> { AniListApolloHandler(get(), Constant.ANILIST_API_BASE_URL) }
-        single<RetrofitHandler> { DefaultRetrofitHandler(Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL, Constant.ANIME_THEMES_URL) }
+        single<RetrofitHandler> { DefaultRetrofitHandler(Constant.ALCHAN_RAW_GITHUB_URL, Constant.JIKAN_URL, Constant.ANIME_THEMES_URL, Constant.YOUTUBE_SEARCH_URL) }
 
         // data source
         single<ContentDataSource> { DefaultContentDataSource(get(), Constant.ANILIST_API_STATUS_VERSION, Constant.ANILIST_API_SOURCE_VERSION) }
@@ -139,7 +139,7 @@ class ALchanApplication : Application() {
 
         viewModel { BottomSheetMediaQuickDetailViewModel(get()) }
         viewModel { BottomSheetMediaListQuickDetailViewModel(get(), get()) }
-        viewModel { BottomSheetMediaThemesViewModel() }
+        viewModel { BottomSheetMediaThemesViewModel(get()) }
 
         viewModel { HomeViewModel(get(), get(), get()) }
         viewModel { SearchViewModel(get(), get()) }

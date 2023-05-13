@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit
 class DefaultRetrofitHandler(
     private val gitHubBaseUrl: String,
     private val jikanBaseUrl: String,
-    private val animeThemesBaseUrl: String
+    private val animeThemesBaseUrl: String,
+    private val youTubeBaseUrl: String
 ) : RetrofitHandler {
 
     private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -24,6 +25,7 @@ class DefaultRetrofitHandler(
     private var gitHubRestService: GitHubRestService? = null
     private var jikanRestService: JikanRestService? = null
     private var animeThemesRestService: AnimeThemesRestService? = null
+    private var youTubeRestService: YouTubeRestService? = null
 
     override fun gitHubRetrofitClient(): GitHubRestService {
         if (gitHubRestService == null) {
@@ -93,5 +95,29 @@ class DefaultRetrofitHandler(
         }
 
         return animeThemesRestService!!
+    }
+
+    override fun youTubeRetrofitClient(): YouTubeRestService {
+        if (youTubeRestService == null) {
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(youTubeBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build()
+
+            youTubeRestService = retrofit.create(YouTubeRestService::class.java)
+
+            return youTubeRestService!!
+        }
+
+        return youTubeRestService!!
     }
 }

@@ -5,6 +5,7 @@ import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
 import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
+import com.zen.alchan.data.response.VideoSearch
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
 import com.zen.alchan.data.response.anilist.Media
@@ -138,6 +139,12 @@ class DefaultBrowseRepository(
 
     private fun getAnimeDetailsFromMal(malId: Int): Observable<Anime> {
         return browseDataSource.getAnimeDetailsFromMal(malId).map {
+            it.convert()
+        }
+    }
+
+    override fun getYouTubeVideo(searchQuery: String): Observable<VideoSearch> {
+        return browseDataSource.getYouTubeVideo(browseManager.youTubeApiKey, searchQuery).map {
             it.convert()
         }
     }
