@@ -19,7 +19,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
             ),
             data = Page?.notifications?.filterNotNull()?.map { notification ->
                 when (notification.__typename) {
-                    AiringNotification::class.java.simpleName -> {
+                    "AiringNotification" -> {
                         notification.onAiringNotification?.let {
                             AiringNotification(
                                 id = it.id,
@@ -45,7 +45,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: AiringNotification()
                     }
-                    FollowingNotification::class.java.simpleName -> {
+                    "FollowingNotification" -> {
                         notification.onFollowingNotification?.let {
                             FollowingNotification(
                                 id = it.id,
@@ -63,7 +63,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: FollowingNotification()
                     }
-                    ActivityMessageNotification::class.java.simpleName -> {
+                    "ActivityMessageNotification" -> {
                         notification.onActivityMessageNotification?.let {
                             ActivityMessageNotification(
                                 id = it.id,
@@ -83,7 +83,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ActivityMessageNotification()
                     }
-                    ActivityMentionNotification::class.java.simpleName -> {
+                    "ActivityMentionNotification" -> {
                         notification.onActivityMentionNotification?.let {
                             ActivityMentionNotification(
                                 id = it.id,
@@ -92,13 +92,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
-                                    TextActivity::class.java.simpleName -> {
+                                    "TextActivity" -> {
                                         it.activity?.onNotificationTextActivity?.convert()
                                     }
-                                    ListActivity::class.java.simpleName -> {
+                                    "ListActivity" -> {
                                         it.activity?.onNotificationListActivity?.convert()
                                     }
-                                    MessageActivity::class.java.simpleName -> {
+                                    "MessageActivity" -> {
                                         it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
@@ -114,7 +114,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ActivityMentionNotification()
                     }
-                    ActivityReplyNotification::class.java.simpleName -> {
+                    "ActivityReplyNotification" -> {
                         notification.onActivityReplyNotification?.let {
                             ActivityReplyNotification(
                                 id = it.id,
@@ -123,13 +123,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
-                                    TextActivity::class.java.simpleName -> {
+                                    "TextActivity" -> {
                                         it.activity?.onNotificationTextActivity?.convert()
                                     }
-                                    ListActivity::class.java.simpleName -> {
+                                    "ListActivity" -> {
                                         it.activity?.onNotificationListActivity?.convert()
                                     }
-                                    MessageActivity::class.java.simpleName -> {
+                                    "MessageActivity" -> {
                                         it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
@@ -145,7 +145,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ActivityReplyNotification()
                     }
-                    ActivityReplySubscribedNotification::class.java.simpleName -> {
+                    "ActivityReplySubscribedNotification" -> {
                         notification.onActivityReplySubscribedNotification?.let {
                             ActivityReplySubscribedNotification(
                                 id = it.id,
@@ -154,13 +154,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
-                                    TextActivity::class.java.simpleName -> {
+                                    "TextActivity" -> {
                                         it.activity?.onNotificationTextActivity?.convert()
                                     }
-                                    ListActivity::class.java.simpleName -> {
+                                    "ListActivity" -> {
                                         it.activity?.onNotificationListActivity?.convert()
                                     }
-                                    MessageActivity::class.java.simpleName -> {
+                                    "MessageActivity" -> {
                                         it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
@@ -176,7 +176,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ActivityReplySubscribedNotification()
                     }
-                    ActivityLikeNotification::class.java.simpleName -> {
+                    "ActivityLikeNotification" -> {
                         notification.onActivityLikeNotification?.let {
                             ActivityLikeNotification(
                                 id = it.id,
@@ -185,13 +185,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
-                                    TextActivity::class.java.simpleName -> {
+                                    "TextActivity" -> {
                                         it.activity?.onNotificationTextActivity?.convert()
                                     }
-                                    ListActivity::class.java.simpleName -> {
+                                    "ListActivity" -> {
                                         it.activity?.onNotificationListActivity?.convert()
                                     }
-                                    MessageActivity::class.java.simpleName -> {
+                                    "MessageActivity" -> {
                                         it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
@@ -207,7 +207,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ActivityLikeNotification()
                     }
-                    ActivityReplyLikeNotification::class.java.simpleName -> {
+                    "ActivityReplyLikeNotification" -> {
                         notification.onActivityReplyLikeNotification?.let {
                             ActivityReplyLikeNotification(
                                 id = it.id,
@@ -216,13 +216,13 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                 context = it.context ?: "",
                                 createdAt = it.createdAt ?: 0,
                                 activity = when (it.activity?.__typename) {
-                                    TextActivity::class.java.simpleName -> {
+                                    "TextActivity" -> {
                                         it.activity?.onNotificationTextActivity?.convert()
                                     }
-                                    ListActivity::class.java.simpleName -> {
+                                    "ListActivity" -> {
                                         it.activity?.onNotificationListActivity?.convert()
                                     }
-                                    MessageActivity::class.java.simpleName -> {
+                                    "MessageActivity" -> {
                                         it.activity?.onNotificationMessageActivity?.convert()
                                     }
                                     else -> null
@@ -238,7 +238,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ActivityReplyLikeNotification()
                     }
-                    ThreadCommentMentionNotification::class.java.simpleName -> {
+                    "ThreadCommentMentionNotification" -> {
                         notification.onThreadCommentMentionNotification?.let {
                             ThreadCommentMentionNotification(
                                 id = it.id,
@@ -268,7 +268,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ThreadCommentMentionNotification()
                     }
-                    ThreadCommentReplyNotification::class.java.simpleName -> {
+                    "ThreadCommentReplyNotification" -> {
                         notification.onThreadCommentReplyNotification?.let {
                             ThreadCommentReplyNotification(
                                 id = it.id,
@@ -298,7 +298,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ThreadCommentReplyNotification()
                     }
-                    ThreadCommentSubscribedNotification::class.java.simpleName -> {
+                    "ThreadCommentSubscribedNotification" -> {
                         notification.onThreadCommentSubscribedNotification?.let {
                             ThreadCommentSubscribedNotification(
                                 id = it.id,
@@ -328,7 +328,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ThreadCommentSubscribedNotification()
                     }
-                    ThreadCommentLikeNotification::class.java.simpleName -> {
+                    "ThreadCommentLikeNotification" -> {
                         notification.onThreadCommentLikeNotification?.let {
                             ThreadCommentLikeNotification(
                                 id = it.id,
@@ -358,7 +358,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ThreadCommentLikeNotification()
                     }
-                    ThreadLikeNotification::class.java.simpleName -> {
+                    "ThreadLikeNotification" -> {
                         notification.onThreadLikeNotification?.let {
                             ThreadLikeNotification(
                                 id = it.id,
@@ -388,7 +388,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: ThreadLikeNotification()
                     }
-                    RelatedMediaAdditionNotification::class.java.simpleName -> {
+                    "RelatedMediaAdditionNotification" -> {
                         notification.onRelatedMediaAdditionNotification?.let {
                             RelatedMediaAdditionNotification(
                                 id = it.id,
@@ -413,7 +413,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: RelatedMediaAdditionNotification()
                     }
-                    MediaDataChangeNotification::class.java.simpleName -> {
+                    "MediaDataChangeNotification" -> {
                         notification.onMediaDataChangeNotification?.let {
                             MediaDataChangeNotification(
                                 id = it.id,
@@ -439,7 +439,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: MediaDataChangeNotification()
                     }
-                    MediaMergeNotification::class.java.simpleName -> {
+                    "MediaMergeNotification" -> {
                         notification.onMediaMergeNotification?.let {
                             MediaMergeNotification(
                                 id = it.id,
@@ -466,7 +466,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: MediaMergeNotification()
                     }
-                    MediaDeletionNotification::class.java.simpleName -> {
+                    "MediaDeletionNotification" -> {
                         notification.onMediaDeletionNotification?.let {
                             MediaDeletionNotification(
                                 id = it.id,

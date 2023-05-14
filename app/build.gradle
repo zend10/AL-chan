@@ -19,9 +19,26 @@ android {
         buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])
         buildConfigField("String", "SPOTIFY_API_KEY", apikeyProperties['SPOTIFY_API_KEY'])
     }
+    signingConfigs {
+        debug {
+            storeFile file(KEYSTORE_PATH_DEV)
+            storePassword KEYSTORE_PASSWORD_DEV
+            keyAlias KEY_ALIAS_DEV
+            keyPassword KEY_PASSWORD_DEV
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

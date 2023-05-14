@@ -13,10 +13,10 @@ fun SocialDataQuery.Data.convert(): SocialData {
     return SocialData(
         friendsActivities = friendsActivities?.activities?.filterNotNull()?.map { activity ->
             when (activity.__typename) {
-                TextActivity::class.java.simpleName -> {
+                "TextActivity" -> {
                     activity.onTextActivity?.convert() ?: TextActivity()
                 }
-                ListActivity::class.java.simpleName -> {
+                "ListActivity" -> {
                     activity.onListActivity?.convert() ?: ListActivity()
                 }
                 else -> TextActivity()
@@ -24,7 +24,7 @@ fun SocialDataQuery.Data.convert(): SocialData {
         } ?: listOf(),
         globalActivities = globalActivities?.activities?.filterNotNull()?.map { activity ->
             when (activity.__typename) {
-                TextActivity::class.java.simpleName -> {
+                "TextActivity" -> {
                     activity.onTextActivity?.convert() ?: TextActivity()
                 }
                 else -> TextActivity()

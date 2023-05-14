@@ -14,13 +14,13 @@ fun ActivityListQuery.Data.convert(): Page<Activity> {
         ),
         data = Page?.activities?.filterNotNull()?.map {
             when (it.__typename) {
-                TextActivity::class.java.simpleName -> {
+                "TextActivity" -> {
                     it.onTextActivity?.convert() ?: TextActivity()
                 }
-                ListActivity::class.java.simpleName -> {
+                "ListActivity" -> {
                     it.onListActivity?.convert() ?: ListActivity()
                 }
-                MessageActivity::class.java.simpleName -> {
+                "MessageActivity" -> {
                     it.onMessageActivity?.convert() ?: MessageActivity()
                 }
                 else -> TextActivity()

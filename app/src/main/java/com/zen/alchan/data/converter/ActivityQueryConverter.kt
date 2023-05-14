@@ -8,13 +8,13 @@ import com.zen.alchan.data.response.anilist.TextActivity
 
 fun ActivityQuery.Data.convert(): Activity {
     return when (Activity?.__typename) {
-        TextActivity::class.java.simpleName -> {
+        "TextActivity" -> {
             Activity?.onTextActivity?.convert() ?: TextActivity()
         }
-        ListActivity::class.java.simpleName -> {
+        "ListActivity" -> {
             Activity?.onListActivity?.convert() ?: ListActivity()
         }
-        MessageActivity::class.java.simpleName -> {
+        "MessageActivity" -> {
             Activity?.onMessageActivity?.convert() ?: MessageActivity()
         }
         else -> TextActivity()
