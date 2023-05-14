@@ -282,8 +282,9 @@ class MediaRvAdapter(
                 val hasMultipleGroups = themeGroups.keys.size > 1
                 seeMoreText.show(hasMultipleGroups)
                 seeMoreText.text = item.themeGroup
+                seeMoreText.setTextColor(context.getAttrValue(R.attr.themeSecondaryColor))
                 seeMoreText.clicks {
-
+                    listener.mediaThemesListener.openGroupDialog(item.viewType, themeGroups.keys.toList())
                 }
                 footnoteText.show(false)
                 listRecyclerView.adapter = MediaThemesRvAdapter(context, themeGroups[item.themeGroup] ?: listOf(), object : MediaThemesRvAdapter.MediaThemesListener {

@@ -329,4 +329,13 @@ class MediaViewModel(
                 )
         )
     }
+
+    fun changeThemeGroup(viewType: Int, newGroup: String) {
+        val currentMediaListItems = _mediaItemList.value ?: return
+        val themeSectionIndex = currentMediaListItems.indexOfFirst { it.viewType == viewType }
+        if (themeSectionIndex != -1) {
+            currentMediaListItems[themeSectionIndex].themeGroup = newGroup
+            _mediaItemList.onNext(currentMediaListItems)
+        }
+    }
 }

@@ -34,7 +34,7 @@ data class AnimeTheme(
             if (song.artists.isNotEmpty())
                 titleStringBuilder.append(" by ${song.artists.joinToString(", ") { it.name }}")
 
-            if (themeEntries.size == 1)
+            if (themeEntries.size == 1 && themeEntries.first().episodes.isNotBlank())
                 titleStringBuilder.append(" (Ep. ${themeEntries.first().episodes})")
         }
 

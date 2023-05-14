@@ -21,6 +21,7 @@ import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
@@ -291,6 +292,12 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                         navigation.openOnYouTube(videoId)
                     else if (!usePlayer && url != null)
                         navigation.openOnSpotify(url)
+                }
+            }
+
+            override fun openGroupDialog(viewType: Int, groups: List<String>) {
+                dialog.showListDialog(groups.map { ListItem(it, it) }) { data, index ->
+                    viewModel.changeThemeGroup(viewType, data)
                 }
             }
         }

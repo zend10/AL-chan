@@ -32,6 +32,7 @@ interface MediaListener {
 
     interface MediaThemesListener {
         fun openThemeDialog(media: Media, animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?)
+        fun openGroupDialog(viewType: Int, groups: List<String>)
     }
 
     interface MediaStaffListener {
