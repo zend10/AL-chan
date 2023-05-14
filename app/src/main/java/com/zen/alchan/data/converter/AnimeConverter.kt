@@ -31,7 +31,7 @@ fun AnimePaginationResponse.convert(): Anime {
                 themeEntries = animeTheme.themeEntries?.map { entry ->
                     AnimeThemeEntry(
                         id = entry.id ?: 0,
-                        version = entry.version ?: 0,
+                        version = entry.version ?: 1,
                         episodes = entry.episodes ?: "",
                         nsfw = entry.nsfw ?: false,
                         spoiler = entry.spoiler ?: false,
@@ -75,7 +75,7 @@ fun AnimePaginationResponse.convert(): Anime {
                 themeEntries = animeTheme.themeEntries?.map { entry ->
                     AnimeThemeEntry(
                         id = entry.id ?: 0,
-                        version = entry.version ?: 0,
+                        version = entry.version ?: 1,
                         episodes = entry.episodes ?: "",
                         nsfw = entry.nsfw ?: false,
                         spoiler = entry.spoiler ?: false,

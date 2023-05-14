@@ -158,15 +158,6 @@ class DefaultRetrofitHandler(
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(spotifyHeaderInterceptor)
-//                .addNetworkInterceptor(object: Interceptor {
-//                    override fun intercept(chain: Interceptor.Chain) = chain.run {
-//                        proceed(
-//                            request().newBuilder()
-//                                .addHeader("Authorization", "Bearer BQAi6tN97Tw3fVBIyptfcbitNMO9A0mwlqpy9yrn-mYRPEWd_W53tGYq2VrGAIJGKPnoEf0gsQzh6PQMwDSnzqDQMvI80Aj9P92X-xm1N9lJHQKmE6N1")
-//                                .build()
-//                        )
-//                    }
-//                })
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)

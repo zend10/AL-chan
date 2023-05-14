@@ -14,7 +14,8 @@ data class MediaItem(
         const val VIEW_TYPE_INFO = 300
         const val VIEW_TYPE_GENRE = 400
         const val VIEW_TYPE_TAGS = 500
-        const val VIEW_TYPE_THEMES = 600
+        const val VIEW_TYPE_THEMES_OPENING = 600
+        const val VIEW_TYPE_THEMES_ENDING = 601
         const val VIEW_TYPE_STATS = 700
         const val VIEW_TYPE_RELATIONS = 800
         const val VIEW_TYPE_RECOMMENDATIONS = 900

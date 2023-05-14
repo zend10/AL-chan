@@ -91,7 +91,7 @@ class MediaRvAdapter(
                 view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(2, context.resources.getDimensionPixelSize(R.dimen.marginSmall), false))
                 return TagsViewHolder(view)
             }
-            MediaItem.VIEW_TYPE_THEMES -> {
+            MediaItem.VIEW_TYPE_THEMES_OPENING, MediaItem.VIEW_TYPE_THEMES_ENDING -> {
                 val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
                 view.listRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 return ThemesViewHolder(view)
@@ -268,17 +268,26 @@ class MediaRvAdapter(
     inner class ThemesViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
             with(binding) {
-                titleText.text = "Openings"
-                val openingGroups = item.media.openings?.groupBy { it.group } ?: mapOf()
-                val hasMultipleGroups = openingGroups.keys.size > 1
+                val themeGroups = when (item.viewType) {
+                    MediaItem.VIEW_TYPE_THEMES_ENDING -> {
+                        titleText.text = context.getString(R.string.ending_themes)
+                        item.media.endings?.groupBy { it.group } ?: mapOf()
+                    }
+                    else -> {
+                        titleText.text = context.getString(R.string.opening_themes)
+                        item.media.openings?.groupBy { it.group } ?: mapOf()
+                    }
+                }
+
+                val hasMultipleGroups = themeGroups.keys.size > 1
                 seeMoreText.show(hasMultipleGroups)
                 seeMoreText.text = item.themeGroup
                 seeMoreText.clicks {
 
                 }
                 footnoteText.show(false)
-                listRecyclerView.adapter = MediaThemesRvAdapter(context, openingGroups[item.themeGroup] ?: listOf(), object : MediaThemesRvAdapter.MediaThemesListener {
-                    override fun openThemeDialog(animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry) {
+                listRecyclerView.adapter = MediaThemesRvAdapter(context, themeGroups[item.themeGroup] ?: listOf(), object : MediaThemesRvAdapter.MediaThemesListener {
+                    override fun openThemeDialog(animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?) {
                         listener.mediaThemesListener.openThemeDialog(item.media, animeTheme, animeThemeEntry)
                     }
                 })

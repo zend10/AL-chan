@@ -27,9 +27,7 @@ class MediaThemesRvAdapter(
             with(binding) {
                 themeTitle.text = item.getDisplayTitle()
                 themeTitle.clicks {
-                    item.themeEntries.firstOrNull()?.let {
-                        listener.openThemeDialog(item, it)
-                    }
+                    listener.openThemeDialog(item, item.themeEntries.firstOrNull())
                 }
                 themeVersionRecyclerView.show(item.themeEntries.size > 1)
                 themeVersionRecyclerView.adapter = TextRvAdapter(
@@ -49,6 +47,6 @@ class MediaThemesRvAdapter(
     }
 
     interface MediaThemesListener {
-        fun openThemeDialog(animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry)
+        fun openThemeDialog(animeTheme: AnimeTheme, animeThemeEntry: AnimeThemeEntry?)
     }
 }

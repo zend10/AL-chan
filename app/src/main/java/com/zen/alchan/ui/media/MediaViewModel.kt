@@ -255,8 +255,11 @@ class MediaViewModel(
                         if (media.tags.isNotEmpty())
                             mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_TAGS))
 
-                        if (media.openings?.isNotEmpty() == true || media.endings?.isNotEmpty() == true)
-                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_THEMES, themeGroup = media.openings?.firstOrNull()?.group ?: ""))
+                        if (media.openings?.isNotEmpty() == true)
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_THEMES_OPENING, themeGroup = media.openings.firstOrNull()?.group ?: ""))
+
+                        if (media.endings?.isNotEmpty() == true)
+                            mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_THEMES_ENDING, themeGroup = media.endings.firstOrNull()?.group ?: ""))
 
                         if (media.staff.edges.isNotEmpty())
                             mediaItemList.add(MediaItem(media, MediaItem.VIEW_TYPE_STAFF))

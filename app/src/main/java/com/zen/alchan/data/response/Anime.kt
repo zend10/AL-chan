@@ -22,17 +22,21 @@ data class AnimeTheme(
     fun getDisplayTitle(): String {
         val titleStringBuilder = StringBuilder()
 
-        if (sequence != 0)
-            titleStringBuilder.append("#${sequence}: ")
+        if (themeEntries.isEmpty()) {
+            titleStringBuilder.append(song.title)
+        } else {
+            if (sequence != 0)
+                titleStringBuilder.append("#${sequence}: ")
 
-        if (song.title != "")
-            titleStringBuilder.append("\"${song.title}\"")
+            if (song.title != "")
+                titleStringBuilder.append("\"${song.title}\"")
 
-        if (song.artists.isNotEmpty())
-            titleStringBuilder.append(" by ${song.artists.joinToString(", ") { it.name }}")
+            if (song.artists.isNotEmpty())
+                titleStringBuilder.append(" by ${song.artists.joinToString(", ") { it.name }}")
 
-        if (themeEntries.size == 1)
-            titleStringBuilder.append(" (Ep. ${themeEntries.first().episodes})")
+            if (themeEntries.size == 1)
+                titleStringBuilder.append(" (Ep. ${themeEntries.first().episodes})")
+        }
 
         return titleStringBuilder.toString()
     }
@@ -57,7 +61,7 @@ data class AnimeThemeSongArtist(
 
 data class AnimeThemeEntry(
     val id: Int = 0,
-    val version: Int = 0,
+    val version: Int = 1,
     val episodes: String = "",
     val nsfw: Boolean = false,
     val spoiler: Boolean = false,
