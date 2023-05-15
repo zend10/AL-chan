@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentExploreBinding
 import com.zen.alchan.helper.enums.SearchCategory
@@ -24,6 +25,9 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
     override val viewModel: ExploreViewModel by viewModel()
 
     private var adapter: SearchRvAdapter? = null
+
+    private var listener: ExploreListener? = null
+    private var mediaFilter: MediaFilter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -109,7 +113,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
             viewModel.searchCategoryList.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     binding.exploreRecyclerView.scrollToPosition(0)
-                    viewModel.updateSelectedSearchCategory(data)
+                    viewModel.updateSelectedSearchCategory(data, true)
                 }
             },
             viewModel.searchPlaceholderText.subscribe {
@@ -129,7 +133,8 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
         )
 
         arguments?.getString(SEARCH_CATEGORY)?.let {
-            viewModel.loadData(SearchCategory.valueOf(it))
+            viewModel.loadData(ExploreParam(SearchCategory.valueOf(it), mediaFilter))
+            mediaFilter = null
         }
     }
 
@@ -137,32 +142,51 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
         return object : SearchRvAdapter.SearchListener {
             override fun navigateToMedia(media: Media) {
                 binding.exploreEditText.clearFocus()
-                navigation.navigateToMedia(media.getId())
+                navigateToBrowseScreen {
+                    navigation.navigateToMedia(media.getId())
+                }
             }
 
             override fun navigateToCharacter(character: Character) {
                 binding.exploreEditText.clearFocus()
-                navigation.navigateToCharacter(character.id)
+                navigateToBrowseScreen {
+                    navigation.navigateToCharacter(character.id)
+                }
             }
 
             override fun navigateToStaff(staff: Staff) {
                 binding.exploreEditText.clearFocus()
-                navigation.navigateToStaff(staff.id)
+                navigateToBrowseScreen {
+                    navigation.navigateToStaff(staff.id)
+                }
             }
 
             override fun navigateToStudio(studio: Studio) {
                 binding.exploreEditText.clearFocus()
-                navigation.navigateToStudio(studio.id)
+                navigateToBrowseScreen {
+                    navigation.navigateToStudio(studio.id)
+                }
             }
 
             override fun navigateToUser(user: User) {
                 binding.exploreEditText.clearFocus()
-                navigation.navigateToUser(user.id)
+                navigateToBrowseScreen {
+                    navigation.navigateToUser(user.id)
+                }
             }
 
             override fun showQuickDetail(media: Media) {
                 dialog.showMediaQuickDetailDialog(media)
             }
+        }
+    }
+
+    private fun navigateToBrowseScreen(navigation: () -> Unit) {
+        listener?.let {
+            goBack()
+            it.doNavigation { navigation() }
+        } ?: kotlin.run {
+            navigation()
         }
     }
 
@@ -175,10 +199,16 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
         private const val SEARCH_CATEGORY = "searchCategory"
 
         @JvmStatic
-        fun newInstance(searchCategory: SearchCategory) = ExploreFragment().apply {
+        fun newInstance(searchCategory: SearchCategory, mediaFilter: MediaFilter? = null, listener: ExploreListener? = null) = ExploreFragment().apply {
             arguments = Bundle().apply {
                 putString(SEARCH_CATEGORY, searchCategory.name)
             }
+            this.mediaFilter = mediaFilter
+            this.listener = listener
         }
+    }
+
+    interface ExploreListener {
+        fun doNavigation(navigation: () -> Unit)
     }
 }

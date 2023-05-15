@@ -24,7 +24,7 @@ import com.zen.alchan.type.ScoreFormat
 class ExploreViewModel(
     private val userRepository: UserRepository,
     private val contentRepository: ContentRepository
-) : BaseViewModel<SearchCategory>() {
+) : BaseViewModel<ExploreParam>() {
 
     private val _appSetting = PublishSubject.create<AppSetting>()
     val appSetting: Observable<AppSetting>
@@ -65,16 +65,21 @@ class ExploreViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData(param: SearchCategory) {
-        currentSearchCategory = param
+    override fun loadData(param: ExploreParam) {
+        currentSearchCategory = param.searchCategory
+        param.mediaFilter?.let {
+            this.mediaFilter = it.copy(sort = Sort.POPULARITY, orderByDescending = true)
+        }
 
         loadOnce {
+            updateSelectedSearchCategory(currentSearchCategory, false)
+
             disposables.add(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
                         _appSetting.onNext(it)
-                        updateSelectedSearchCategory(currentSearchCategory)
+                        doSearch(currentSearchQuery)
                     }
             )
         }
@@ -163,7 +168,7 @@ class ExploreViewModel(
         )
     }
 
-    fun updateSelectedSearchCategory(newSearchCategory: SearchCategory) {
+    fun updateSelectedSearchCategory(newSearchCategory: SearchCategory, shouldReload: Boolean) {
         currentSearchCategory = newSearchCategory
         _searchPlaceholderText.onNext(
             when (newSearchCategory) {
@@ -185,16 +190,19 @@ class ExploreViewModel(
                 SearchCategory.USER -> false // should not be used
             }
         )
-        mediaFilter = mediaFilter.copy(
-            mediaFormats = listOf(),
-            mediaSeasons = listOf(),
-            minEpisodes = null,
-            maxEpisodes = null,
-            minDuration = null,
-            maxDuration = null,
-            streamingOn = listOf()
-        )
-        reloadData()
+
+        if (shouldReload) {
+            mediaFilter = mediaFilter.copy(
+                mediaFormats = listOf(),
+                mediaSeasons = listOf(),
+                minEpisodes = null,
+                maxEpisodes = null,
+                minDuration = null,
+                maxDuration = null,
+                streamingOn = listOf()
+            )
+            reloadData()
+        }
     }
 
     fun loadSearchCategories() {

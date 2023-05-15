@@ -19,7 +19,7 @@ interface NavigationManager {
 
     fun navigateToSearch() {}
     fun navigateToSeasonal() {}
-    fun navigateToExplore(searchCategory: SearchCategory) {}
+    fun navigateToExplore(searchCategory: SearchCategory, mediaFilter: MediaFilter? = null, action: ((() -> Unit) -> Unit)? = null) {}
     fun navigateToSocial() {}
     fun navigateToCalendar() {}
     fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {}

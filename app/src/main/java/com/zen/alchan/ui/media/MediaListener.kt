@@ -4,15 +4,18 @@ import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.type.MediaSeason
+import com.zen.alchan.type.MediaType
 
 interface MediaListener {
 
     interface MediaInfoListener {
         fun copyTitle(title: String)
+        fun navigateToExplore(type: MediaType, season: MediaSeason, seasonYear: Int)
     }
 
     interface MediaGenreListener {
-        fun navigateToExplore(genre: Genre)
+        fun navigateToExplore(type: MediaType, genre: Genre)
     }
 
     interface MediaCharacterListener {
@@ -26,7 +29,7 @@ interface MediaListener {
 
     interface MediaTagsListener {
         fun shouldShowSpoilers(show: Boolean)
-        fun navigateToExplore(tag: MediaTag)
+        fun navigateToExplore(type: MediaType, tag: MediaTag)
         fun showDescription(tag: MediaTag)
     }
 

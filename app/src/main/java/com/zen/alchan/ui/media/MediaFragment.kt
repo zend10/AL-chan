@@ -14,17 +14,20 @@ import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
@@ -231,13 +234,27 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override fun copyTitle(title: String) {
                 viewModel.copyText(title)
             }
+
+            override fun navigateToExplore(type: com.zen.alchan.type.MediaType, season: MediaSeason, seasonYear: Int) {
+                navigation.navigateToExplore(
+                    SearchCategory.ANIME,
+                    MediaFilter(mediaSeasons = listOf(season), minYear = seasonYear, maxYear = seasonYear)
+                ) {
+                    it()
+                }
+            }
         }
     }
 
     private fun getMediaGenreListener(): MediaListener.MediaGenreListener {
         return object : MediaListener.MediaGenreListener {
-            override fun navigateToExplore(genre: Genre) {
-                // TODO: navigate to Explore
+            override fun navigateToExplore(type: com.zen.alchan.type.MediaType, genre: Genre) {
+                navigation.navigateToExplore(
+                    if (type == com.zen.alchan.type.MediaType.MANGA) SearchCategory.MANGA else SearchCategory.ANIME,
+                    MediaFilter(includedGenres = listOf(genre.name))
+                ) {
+                    it()
+                }
             }
         }
     }
@@ -268,8 +285,13 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 viewModel.updateShouldShowSpoilerTags(show)
             }
 
-            override fun navigateToExplore(tag: MediaTag) {
-                // TODO: navigate to Explore
+            override fun navigateToExplore(type: com.zen.alchan.type.MediaType, tag: MediaTag) {
+                navigation.navigateToExplore(
+                    if (type == com.zen.alchan.type.MediaType.MANGA) SearchCategory.MANGA else SearchCategory.ANIME,
+                    MediaFilter(includedTags = listOf(tag))
+                ) {
+                    it()
+                }
             }
 
             override fun showDescription(tag: MediaTag) {

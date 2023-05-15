@@ -9,11 +9,13 @@ import com.zen.alchan.databinding.ListMediaTagBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.alchan.helper.extensions.getNumberFormatting
+import com.zen.alchan.type.MediaType
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class MediaTagsRvAdapter(
     private val context: Context,
     list: List<MediaTag>,
+    private val mediaType: MediaType,
     private val listener: MediaListener.MediaTagsListener
 ) : BaseRecyclerViewAdapter<MediaTag, ListMediaTagBinding>(list) {
 
@@ -37,7 +39,7 @@ class MediaTagsRvAdapter(
                 }
 
                 tagLayout.clicks {
-                    listener.navigateToExplore(item)
+                    listener.navigateToExplore(mediaType, item)
                 }
 
                 tagLayout.setOnLongClickListener {

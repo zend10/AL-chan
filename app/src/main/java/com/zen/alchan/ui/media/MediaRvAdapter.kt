@@ -13,7 +13,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
-import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaTag
 import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
@@ -34,11 +34,9 @@ class MediaRvAdapter(
     private val listener: MediaListener
 ) : BaseRecyclerViewAdapter<MediaItem, ViewBinding>(list) {
 
-    private var genreAdapter: GenreRvAdapter? = null
     private var characterAdapter: MediaCharacterRvAdapter? = null
     private var synonymsAdapter: TextRvAdapter? = null
     private var studiosAdapter: TextRvAdapter? = null
-    private var tagsAdapter: MediaTagsRvAdapter? = null
     private var producersAdapter: TextRvAdapter? = null
     private var serializationsAdapter: TextRvAdapter? = null
     private var staffAdapter: MediaStaffRvAdapter? = null
@@ -51,12 +49,6 @@ class MediaRvAdapter(
         when (viewType) {
             MediaItem.VIEW_TYPE_GENRE -> {
                 val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
-                genreAdapter = GenreRvAdapter(context, listOf(), object : GenreRvAdapter.GenreListener {
-                    override fun getGenre(genre: Genre) {
-                        listener.mediaGenreListener.navigateToExplore(genre)
-                    }
-                })
-                view.listRecyclerView.adapter = genreAdapter
                 view.listRecyclerView.layoutManager = FlexboxLayoutManager(context)
                 return GenreViewHolder(view)
             }
@@ -85,8 +77,6 @@ class MediaRvAdapter(
             }
             MediaItem.VIEW_TYPE_TAGS -> {
                 val view = LayoutTitleAndListBinding.inflate(inflater, parent, false)
-                tagsAdapter = MediaTagsRvAdapter(context, listOf(), listener.mediaTagsListener)
-                view.listRecyclerView.adapter = tagsAdapter
                 view.listRecyclerView.layoutManager = GridLayoutManager(context, 2)
                 view.listRecyclerView.addItemDecoration(GridSpacingItemDecoration(2, context.resources.getDimensionPixelSize(R.dimen.marginSmall), false))
                 return TagsViewHolder(view)
@@ -149,7 +139,11 @@ class MediaRvAdapter(
     inner class GenreViewHolder(private val binding: LayoutTitleAndListBinding) : ViewHolder(binding) {
         override fun bind(item: MediaItem, index: Int) {
             binding.titleLayout.show(false)
-            genreAdapter?.updateData(item.media.genres)
+            binding.listRecyclerView.adapter = GenreRvAdapter(context, item.media.genres, object : GenreRvAdapter.GenreListener {
+                override fun getGenre(genre: Genre) {
+                    listener.mediaGenreListener.navigateToExplore(item.media.type ?: com.zen.alchan.type.MediaType.ANIME, genre)
+                }
+            })
         }
     }
 
@@ -228,7 +222,9 @@ class MediaRvAdapter(
                 mediaInfoSeasonLayout.show(item.media.type == com.zen.alchan.type.MediaType.ANIME && item.media.season != null && item.media.seasonYear != null)
                 mediaInfoSeasonText.text = "${item.media.season?.getString()} ${item.media.seasonYear}"
                 mediaInfoSeasonText.clicks {
-
+                    if (item.media.season != null && item.media.seasonYear != null) {
+                        listener.mediaInfoListener.navigateToExplore(item.media.type ?: com.zen.alchan.type.MediaType.ANIME, item.media.season, item.media.seasonYear)
+                    }
                 }
 
                 val studios = item.media.studios.edges.filter { it.isMain }.map { it.node.name }
@@ -256,11 +252,14 @@ class MediaRvAdapter(
             }
             binding.footnoteText.text = context.getString(R.string.long_press_to_see_tag_description)
             binding.footnoteText.show(true)
-            tagsAdapter?.updateData(
+            binding.listRecyclerView.adapter = MediaTagsRvAdapter(
+                context,
                 if (item.showSpoilerTags)
                     item.media.tags
                 else
-                    item.media.tags.filter { !it.isGeneralSpoiler && !it.isMediaSpoiler }
+                    item.media.tags.filter { !it.isGeneralSpoiler && !it.isMediaSpoiler },
+                item.media.type ?: com.zen.alchan.type.MediaType.ANIME,
+                listener.mediaTagsListener
             )
         }
     }

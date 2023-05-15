@@ -88,8 +88,12 @@ class DefaultNavigationManager(
         stackPage(SeasonalFragment.newInstance())
     }
 
-    override fun navigateToExplore(searchCategory: SearchCategory) {
-        stackPage(ExploreFragment.newInstance(searchCategory))
+    override fun navigateToExplore(searchCategory: SearchCategory, mediaFilter: MediaFilter?, action: ((() -> Unit) -> Unit)?) {
+        stackPage(ExploreFragment.newInstance(searchCategory, mediaFilter, object : ExploreFragment.ExploreListener {
+            override fun doNavigation(navigation: () -> Unit) {
+                action?.invoke { navigation() }
+            }
+        }))
     }
 
     override fun navigateToSocial() {
