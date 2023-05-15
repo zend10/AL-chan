@@ -3,6 +3,7 @@ package com.zen.alchan.data.response.animethemes
 import com.google.gson.annotations.SerializedName
 
 data class AnimePaginationResponse(
+    @SerializedName("anime")
     val anime: List<AnimeResponse>? = null
 )
 
