@@ -20,6 +20,15 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepclassmembers,allowobfuscation class * {
- @com.google.gson.annotations.SerializedName <fields>;
+-keep public class com.zen.alchan.data.entity.**{
+    *;
+}
+-keep public class com.zen.alchan.data.response.**{
+    *;
+}
+-keep public class com.zen.alchan.helper.pojo.**{
+    *;
+}
+-keepclassmembers enum * {
+    public *;
 }
