@@ -248,10 +248,14 @@ class MediaRvAdapter(
                 mediaInfoSerializationsLayout.show(serializations.isNotEmpty())
                 mediaInfoDividerThree.root.show(studios.isNotEmpty() || producers.isNotEmpty() || serializations.isNotEmpty())
 
-                mediaInfoStatsAverageScore.text = item.media.averageScore.getNumberFormatting() + "%"
-                mediaInfoStatsMeanScore.text = item.media.meanScore.getNumberFormatting() + "%"
-                mediaInfoStatsPopularity.text = item.media.popularity.getNumberFormatting()
-                mediaInfoStatsFavorites.text = item.media.favourites.getNumberFormatting()
+                mediaInfoStatsLayout.mediaStatsAverageScore.text = item.media.averageScore.getNumberFormatting() + "%"
+                mediaInfoStatsLayout.mediaStatsMeanScore.text = item.media.meanScore.getNumberFormatting() + "%"
+                mediaInfoStatsLayout.mediaStatsPopularity.text = item.media.popularity.getNumberFormatting()
+                mediaInfoStatsLayout.mediaStatsFavorites.text = item.media.favourites.getNumberFormatting()
+
+                mediaInfoStatsSeeMore.clicks {
+                    listener.mediaInfoListener.navigateToMediaStats(item.media)
+                }
             }
         }
     }

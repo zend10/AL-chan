@@ -252,6 +252,10 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                     it()
                 }
             }
+
+            override fun navigateToMediaStats(media: Media) {
+                
+            }
         }
     }
 
