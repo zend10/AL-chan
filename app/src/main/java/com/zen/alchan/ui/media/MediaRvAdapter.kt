@@ -247,6 +247,11 @@ class MediaRvAdapter(
                 mediaInfoProducersLayout.show(producers.isNotEmpty())
                 mediaInfoSerializationsLayout.show(serializations.isNotEmpty())
                 mediaInfoDividerThree.root.show(studios.isNotEmpty() || producers.isNotEmpty() || serializations.isNotEmpty())
+
+                mediaInfoStatsAverageScore.text = item.media.averageScore.getNumberFormatting() + "%"
+                mediaInfoStatsMeanScore.text = item.media.meanScore.getNumberFormatting() + "%"
+                mediaInfoStatsPopularity.text = item.media.popularity.getNumberFormatting()
+                mediaInfoStatsFavorites.text = item.media.favourites.getNumberFormatting()
             }
         }
     }

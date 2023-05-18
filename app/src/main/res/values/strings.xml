@@ -516,6 +516,8 @@
     <string name="credits_to_animethemes_moe_for_providing_the_music_video_above">Credits to animethemes.moe for providing the music video above.</string>
     <string name="opening_themes">Opening Themes</string>
     <string name="ending_themes">Ending Themes</string>
+    <string name="average">Average</string>
+    <string name="mean">Mean</string>
 
 
     <plurals name="minute">
