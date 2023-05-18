@@ -18,10 +18,7 @@ import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaItem
-import com.zen.alchan.helper.utils.GridSpacingItemDecoration
-import com.zen.alchan.helper.utils.MarkdownUtil
-import com.zen.alchan.helper.utils.SpaceItemDecoration
-import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.helper.utils.*
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.ui.common.GenreRvAdapter
 import com.zen.alchan.ui.common.TextRvAdapter
@@ -153,6 +150,19 @@ class MediaRvAdapter(
                 itemTitle.show(true)
                 itemTitle.text = context.getString(R.string.synopsis)
                 MarkdownUtil.applyMarkdown(context, itemText, item.media.description)
+
+                if (item.showFullDescription) {
+                    itemGradientLayer.show(false)
+                    ImageUtil.loadImage(context, R.drawable.ic_chevron_up, itemArrowIcon)
+                } else {
+                    itemGradientLayer.show(true)
+                    ImageUtil.loadImage(context, R.drawable.ic_chevron_down, itemArrowIcon)
+                }
+
+                itemArrowIcon.show(true)
+                itemArrowIcon.clicks {
+                    listener.mediaSynopsisListener.toggleShowMore(!item.showFullDescription)
+                }
             }
         }
     }

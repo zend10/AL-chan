@@ -13,6 +13,7 @@ import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.CharacterItem
 import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.MediaItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
@@ -222,5 +223,14 @@ class CharacterViewModel(
                     }
                 )
         )
+    }
+
+    fun updateShouldShowFullDescription(shouldShowFullDescription: Boolean) {
+        val currentCharacterListItems = _characterItemList.value ?: return
+        val descriptionSectionIndex = currentCharacterListItems.indexOfFirst { it.viewType == MediaItem.VIEW_TYPE_SYNOPSIS }
+        if (descriptionSectionIndex != -1) {
+            currentCharacterListItems[descriptionSectionIndex].showFullDescription = shouldShowFullDescription
+            _characterItemList.onNext(currentCharacterListItems)
+        }
     }
 }

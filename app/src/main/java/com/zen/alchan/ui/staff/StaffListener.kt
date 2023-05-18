@@ -4,7 +4,7 @@ import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 
 interface StaffListener {
-
+    fun toggleShowMore(shouldShowMore: Boolean)
     fun navigateToStaffCharacter()
     fun navigateToStaffMedia()
 

@@ -14,12 +14,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/itemText"
-        style="?themeRegularFont"
+    <RelativeLayout
         app:layout_constraintTop_toBottomOf="@id/itemTitle"
         android:layout_marginTop="@dimen/marginNormal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/itemText"
+            style="?themeRegularFont"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@id/itemGradientLayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:visibility="gone"
+            android:id="@+id/itemGradientLayer"
+            style="?themeRegularFont"
+            android:background="@drawable/background_gradient_two"
+            android:clickable="false"
+            android:focusable="false"
+            android:maxLines="5"
+            android:lines="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="gone"
+            android:id="@+id/itemArrowIcon"
+            android:foreground="?selectableItemBackground"
+            app:srcCompat="@drawable/ic_chevron_down"
+            android:layout_alignBottom="@id/itemText"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"/>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

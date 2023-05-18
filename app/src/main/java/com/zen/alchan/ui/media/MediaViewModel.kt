@@ -291,6 +291,15 @@ class MediaViewModel(
             _bannerImageUrlForPreview.onNext(media.bannerImage)
     }
 
+    fun updateShouldShowFullDescription(shouldShowFullDescription: Boolean) {
+        val currentMediaListItems = _mediaItemList.value ?: return
+        val descriptionSectionIndex = currentMediaListItems.indexOfFirst { it.viewType == MediaItem.VIEW_TYPE_SYNOPSIS }
+        if (descriptionSectionIndex != -1) {
+            currentMediaListItems[descriptionSectionIndex].showFullDescription = shouldShowFullDescription
+            _mediaItemList.onNext(currentMediaListItems)
+        }
+    }
+
     fun updateShouldShowSpoilerTags(shouldShowSpoiler: Boolean) {
         val currentMediaListItems = _mediaItemList.value ?: return
         val tagsSectionIndex = currentMediaListItems.indexOfFirst { it.viewType == MediaItem.VIEW_TYPE_TAGS }

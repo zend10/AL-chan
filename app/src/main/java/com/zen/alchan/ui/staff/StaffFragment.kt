@@ -174,7 +174,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
                 }
             },
             viewModel.staffItemList.subscribe {
-                staffAdapter?.updateData(it)
+                staffAdapter?.updateData(it, true)
             },
             viewModel.staffLink.subscribe {
                 navigation.openWebView(it)
@@ -196,6 +196,10 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
 
     private fun getStaffListener(): StaffListener {
         return object : StaffListener {
+            override fun toggleShowMore(shouldShowMore: Boolean) {
+                viewModel.updateShouldShowFullDescription(shouldShowMore)
+            }
+
             override fun navigateToStaffCharacter() {
                 arguments?.getInt(STAFF_ID)?.let {
                     navigation.navigateToStaffCharacter(it)

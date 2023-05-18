@@ -16,6 +16,7 @@ import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.CharacterItem
 import com.zen.alchan.helper.utils.GridSpacingItemDecoration
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -76,6 +77,19 @@ class CharacterRvAdapter(
                 itemTitle.show(item.character.name.alternative.isNotEmpty())
                 itemTitle.text = item.character.name.alternative.joinToString(", ")
                 MarkdownUtil.applyMarkdown(context, itemText, item.character.description)
+
+                if (item.showFullDescription) {
+                    itemGradientLayer.show(false)
+                    ImageUtil.loadImage(context, R.drawable.ic_chevron_up, itemArrowIcon)
+                } else {
+                    itemGradientLayer.show(true)
+                    ImageUtil.loadImage(context, R.drawable.ic_chevron_down, itemArrowIcon)
+                }
+
+                itemArrowIcon.show(true)
+                itemArrowIcon.clicks {
+                    listener.toggleShowMore(!item.showFullDescription)
+                }
             }
         }
     }

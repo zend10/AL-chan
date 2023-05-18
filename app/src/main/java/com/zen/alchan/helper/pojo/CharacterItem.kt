@@ -6,6 +6,7 @@ import com.zen.alchan.data.response.anilist.StaffRoleType
 data class CharacterItem(
     val character: Character = Character(),
     val voiceActors: List<StaffRoleType> = listOf(),
+    var showFullDescription: Boolean = false,
     val viewType: Int = 0
 ) {
     companion object {

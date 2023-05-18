@@ -82,7 +82,7 @@ class BottomSheetMediaThemesViewModel(
                         _youTubeVideo.onNext(it)
                     },
                     {
-                        _error.onNext(it.getStringResource())
+                        it.printStackTrace()
                     }
                 )
         )
@@ -101,7 +101,7 @@ class BottomSheetMediaThemesViewModel(
                         _spotifyTrack.onNext(it)
                     },
                     {
-                        _error.onNext(it.getStringResource())
+                        it.printStackTrace()
                     }
                 )
         )

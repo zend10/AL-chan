@@ -9,6 +9,10 @@ import com.zen.alchan.type.MediaType
 
 interface MediaListener {
 
+    interface MediaSynopsisListener {
+        fun toggleShowMore(shouldShowMore: Boolean)
+    }
+
     interface MediaInfoListener {
         fun copyTitle(title: String)
         fun navigateToExplore(type: MediaType, season: MediaSeason, seasonYear: Int)
@@ -56,6 +60,7 @@ interface MediaListener {
         fun copyExternalLink(mediaExternalLink: MediaExternalLink)
     }
 
+    val mediaSynopsisListener: MediaSynopsisListener
     val mediaInfoListener: MediaInfoListener
     val mediaGenreListener: MediaGenreListener
     val mediaCharacterListener: MediaCharacterListener

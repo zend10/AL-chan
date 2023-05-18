@@ -5,6 +5,7 @@ import com.zen.alchan.data.response.anilist.Media
 data class MediaItem(
     val media: Media = Media(),
     val viewType: Int = 0,
+    var showFullDescription: Boolean = false,
     var showSpoilerTags: Boolean = false,
     var themeGroup: String = ""
 ) {

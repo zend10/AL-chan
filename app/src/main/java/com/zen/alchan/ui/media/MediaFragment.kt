@@ -216,6 +216,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
     private fun getMediaListener(): MediaListener {
         return object : MediaListener {
+            override val mediaSynopsisListener: MediaListener.MediaSynopsisListener = getMediaSynopsisListener()
             override val mediaInfoListener: MediaListener.MediaInfoListener = getMediaInfoListener()
             override val mediaGenreListener: MediaListener.MediaGenreListener = getMediaGenreListener()
             override val mediaCharacterListener: MediaListener.MediaCharacterListener = getMediaCharacterListener()
@@ -226,6 +227,14 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             override val mediaRelationsListener: MediaListener.MediaRelationsListener = getMediaRelationsListener()
             override val mediaRecommendationsListener: MediaListener.MediaRecommendationsListener = getMediaRecommendationsListener()
             override val mediaLinksListener: MediaListener.MediaLinksListener = getMediaLinksListener()
+        }
+    }
+
+    private fun getMediaSynopsisListener(): MediaListener.MediaSynopsisListener {
+        return object : MediaListener.MediaSynopsisListener {
+            override fun toggleShowMore(shouldShowMore: Boolean) {
+                viewModel.updateShouldShowFullDescription(shouldShowMore)
+            }
         }
     }
 

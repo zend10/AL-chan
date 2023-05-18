@@ -171,7 +171,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
                 }
             },
             viewModel.characterItemList.subscribe {
-                characterAdapter?.updateData(it)
+                characterAdapter?.updateData(it, true)
             },
             viewModel.staffMedia.subscribe {
                 dialog.showListDialog(it) { data, _ ->
@@ -198,6 +198,10 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
 
     private fun getCharacterListener(): CharacterListener {
         return object : CharacterListener {
+            override fun toggleShowMore(shouldShowMore: Boolean) {
+                viewModel.updateShouldShowFullDescription(shouldShowMore)
+            }
+
             override fun navigateToStaff(staff: Staff) {
                 navigation.navigateToStaff(staff.id)
             }

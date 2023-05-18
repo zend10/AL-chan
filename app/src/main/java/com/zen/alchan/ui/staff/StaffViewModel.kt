@@ -9,6 +9,7 @@ import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.MediaItem
 import com.zen.alchan.helper.pojo.StaffItem
 import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.ui.base.BaseViewModel
@@ -219,5 +220,14 @@ class StaffViewModel(
                     }
                 )
         )
+    }
+
+    fun updateShouldShowFullDescription(shouldShowFullDescription: Boolean) {
+        val currentStaffListItems = _staffItemList.value ?: return
+        val descriptionSectionIndex = currentStaffListItems.indexOfFirst { it.viewType == MediaItem.VIEW_TYPE_SYNOPSIS }
+        if (descriptionSectionIndex != -1) {
+            currentStaffListItems[descriptionSectionIndex].showFullDescription = shouldShowFullDescription
+            _staffItemList.onNext(currentStaffListItems)
+        }
     }
 }

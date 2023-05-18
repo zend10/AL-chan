@@ -6,6 +6,7 @@ import com.zen.alchan.data.response.anilist.Staff
 data class StaffItem(
     val staff: Staff = Staff(),
     val media: List<MediaEdge> = listOf(),
+    var showFullDescription: Boolean = false,
     val viewType: Int = 0
 ) {
     companion object {

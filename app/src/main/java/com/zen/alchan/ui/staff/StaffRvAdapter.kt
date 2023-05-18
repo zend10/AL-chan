@@ -12,6 +12,7 @@ import com.zen.alchan.databinding.LayoutTitleAndTextBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.StaffItem
+import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -69,6 +70,19 @@ class StaffRvAdapter(
                 itemTitle.show(true)
                 itemTitle.text = context.getString(R.string.bio)
                 MarkdownUtil.applyMarkdown(context, itemText, item.staff.description)
+
+                if (item.showFullDescription) {
+                    itemGradientLayer.show(false)
+                    ImageUtil.loadImage(context, R.drawable.ic_chevron_up, itemArrowIcon)
+                } else {
+                    itemGradientLayer.show(true)
+                    ImageUtil.loadImage(context, R.drawable.ic_chevron_down, itemArrowIcon)
+                }
+
+                itemArrowIcon.show(true)
+                itemArrowIcon.clicks {
+                    listener.toggleShowMore(!item.showFullDescription)
+                }
             }
         }
     }
