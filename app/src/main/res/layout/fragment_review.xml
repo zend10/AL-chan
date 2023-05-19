@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?themeBackgroundColor"
+    android:focusable="true"
+    android:clickable="true"
+    tools:context=".ui.review.ReviewFragment">
+
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/reviewlSwipeRefresh"
+        app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@id/reviewFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reviewRecyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/marginNormal"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/reviewFilterLayout"
+        android:background="?themeBackgroundColor"
+        android:paddingTop="@dimen/lineWidth"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/divider"/>
+
+        <HorizontalScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:padding="@dimen/marginPageNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/media"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reviewMediaText"
+                    style="?themeRegularClickableFont"
+                    android:maxLines="1"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/sort"
+                    android:layout_marginStart="@dimen/marginPageBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reviewSortText"
+                    style="?themeRegularClickableFont"
+                    android:maxLines="1"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </HorizontalScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

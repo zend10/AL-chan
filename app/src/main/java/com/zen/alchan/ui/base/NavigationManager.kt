@@ -22,6 +22,7 @@ interface NavigationManager {
     fun navigateToExplore(searchCategory: SearchCategory, mediaFilter: MediaFilter? = null, action: ((() -> Unit) -> Unit)? = null) {}
     fun navigateToSocial() {}
     fun navigateToCalendar() {}
+    fun navigateToReview() {}
     fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {}
     fun navigateToActivityList(activityListPage: ActivityListPage, id: Int? = null) {}
     fun navigateToTextEditor(

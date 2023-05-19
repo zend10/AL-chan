@@ -6,8 +6,10 @@ import com.apollographql.apollo3.rx3.rxSingle
 import com.zen.alchan.*
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.network.apollo.ApolloHandler
+import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.helper.enums.getAniListMediaSort
+import com.zen.alchan.helper.enums.getAniListReviewSort
 import com.zen.alchan.type.*
 import io.reactivex.rxjava3.core.Observable
 
@@ -152,6 +154,19 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             page = Optional.present(page),
             airingAtGreater = Optional.present(airingAtGreater),
             airingAtLesser = Optional.present(airingAtLesser)
+        )
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
+    }
+
+    override fun getReviews(
+        mediaType: MediaType?,
+        sort: ReviewSort,
+        page: Int
+    ): Observable<ApolloResponse<ReviewQuery.Data>> {
+        val query = ReviewQuery(
+            mediaType = Optional.presentIfNotNull(mediaType),
+            sort = Optional.present(listOf(sort.getAniListReviewSort())),
+            page = Optional.present(page)
         )
         return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }

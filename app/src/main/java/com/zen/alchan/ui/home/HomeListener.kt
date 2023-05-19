@@ -12,7 +12,7 @@ interface HomeListener {
     interface MenuListener {
         fun navigateToSeasonal()
         fun showExploreDialog()
-        fun navigateToReviews()
+        fun navigateToReview()
         fun navigateToCalendar()
     }
 

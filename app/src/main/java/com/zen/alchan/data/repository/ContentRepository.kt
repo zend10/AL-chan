@@ -5,6 +5,7 @@ import com.zen.alchan.data.response.HomeData
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
@@ -21,4 +22,5 @@ interface ContentRepository {
     fun searchUser(searchQuery: String, page: Int): Observable<Page<User>>
     fun getSeasonal(page: Int, year: Int, season: MediaSeason, sort: Sort, orderByDescending: Boolean, onlyShowOnList: Boolean?, showAdult: Boolean): Observable<Page<Media>>
     fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<Page<AiringSchedule>>
+    fun getReviews(mediaType: MediaType?, sort: ReviewSort, page: Int): Observable<Page<Review>>
 }

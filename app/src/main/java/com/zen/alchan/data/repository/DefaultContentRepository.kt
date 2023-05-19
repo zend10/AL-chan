@@ -9,6 +9,7 @@ import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
@@ -139,6 +140,16 @@ class DefaultContentRepository(
         airingAtLesser: Int
     ): Observable<Page<AiringSchedule>> {
         return contentDataSource.getAiringSchedule(page, airingAtGreater, airingAtLesser).map {
+            it.data?.convert() ?: Page()
+        }
+    }
+
+    override fun getReviews(
+        mediaType: MediaType?,
+        sort: ReviewSort,
+        page: Int
+    ): Observable<Page<Review>> {
+        return contentDataSource.getReviews(mediaType, sort, page).map {
             it.data?.convert() ?: Page()
         }
     }

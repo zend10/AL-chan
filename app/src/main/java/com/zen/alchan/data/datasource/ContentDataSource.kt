@@ -3,6 +3,7 @@ package com.zen.alchan.data.datasource
 import com.apollographql.apollo3.api.ApolloResponse
 import com.zen.alchan.*
 import com.zen.alchan.data.entity.MediaFilter
+import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
@@ -28,4 +29,6 @@ interface ContentDataSource {
     ): Observable<ApolloResponse<SearchMediaQuery.Data>>
 
     fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<ApolloResponse<AiringScheduleQuery.Data>>
+
+    fun getReviews(mediaType: MediaType?, sort: ReviewSort, page: Int): Observable<ApolloResponse<ReviewQuery.Data>>
 }

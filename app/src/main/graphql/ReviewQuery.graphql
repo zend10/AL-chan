@@ -1,0 +1,46 @@
+query ReviewQuery($page:Int,$mediaType:MediaType,$sort:[ReviewSort]) {
+  Page(page:$page) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    reviews(mediaType:$mediaType, sort:$sort) {
+      id
+      userId
+      mediaId
+      mediaType
+      summary
+      body(asHtml:false)
+      rating
+      ratingAmount
+      userRating
+      score
+      private
+      siteUrl
+      createdAt
+      updatedAt
+      user {
+        id
+        name
+        avatar {
+          large
+          medium
+        }
+      }
+      media {
+        id
+        title {
+          romaji
+          english
+          native
+          userPreferred
+        }
+        bannerImage
+        format
+      }
+    }
+  }
+}

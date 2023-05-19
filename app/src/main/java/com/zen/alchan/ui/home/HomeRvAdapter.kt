@@ -93,7 +93,7 @@ class HomeRvAdapter(
             binding.apply {
                 seasonalMenu.clicks { listener.menuListener.navigateToSeasonal() }
                 exploreMenu.clicks { listener.menuListener.showExploreDialog() }
-                reviewsMenu.clicks { listener.menuListener.navigateToReviews() }
+                reviewsMenu.clicks { listener.menuListener.navigateToReview() }
                 calendarMenu.clicks { listener.menuListener.navigateToCalendar() }
             }
         }

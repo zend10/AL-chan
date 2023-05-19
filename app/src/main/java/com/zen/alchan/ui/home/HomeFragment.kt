@@ -103,8 +103,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 viewModel.loadSearchCategories()
             }
 
-            override fun navigateToReviews() {
-
+            override fun navigateToReview() {
+                navigation.navigateToReview()
             }
 
             override fun navigateToCalendar() {

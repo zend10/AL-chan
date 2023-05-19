@@ -1,6 +1,7 @@
 package com.zen.alchan.data.response.anilist
 
 import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ReviewRating
 
 
 data class Review(
@@ -12,7 +13,7 @@ data class Review(
     val body: String = "",
     val rating: Int = 0,
     val ratingAmount: Int = 0,
-//    val userRating: ReviewRating? = null,
+    val userRating: ReviewRating? = null,
     val score: Int = 0,
     val private: Boolean = false,
     val siteUrl: String = "",

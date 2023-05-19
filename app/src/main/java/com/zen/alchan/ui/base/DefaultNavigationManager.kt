@@ -38,6 +38,7 @@ import com.zen.alchan.ui.media.staff.MediaStaffListFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
+import com.zen.alchan.ui.review.ReviewFragment
 import com.zen.alchan.ui.search.SearchFragment
 import com.zen.alchan.ui.seasonal.SeasonalFragment
 import com.zen.alchan.ui.settings.SettingsFragment
@@ -102,6 +103,10 @@ class DefaultNavigationManager(
 
     override fun navigateToCalendar() {
         stackPage(CalendarFragment.newInstance())
+    }
+
+    override fun navigateToReview() {
+        stackPage(ReviewFragment.newInstance())
     }
 
     override fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {

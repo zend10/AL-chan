@@ -1,0 +1,149 @@
+package com.zen.alchan.ui.review
+
+import com.zen.alchan.R
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.repository.ContentRepository
+import com.zen.alchan.data.repository.UserRepository
+import com.zen.alchan.data.response.anilist.Review
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.ReviewSort
+import com.zen.alchan.helper.enums.getAniListMediaType
+import com.zen.alchan.helper.enums.getStringResource
+import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.NullableItem
+import com.zen.alchan.ui.base.BaseViewModel
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+
+class ReviewViewModel(
+    private val userRepository: UserRepository,
+    private val contentRepository: ContentRepository
+) : BaseViewModel<Unit>() {
+
+    private val _appSetting = PublishSubject.create<AppSetting>()
+    val appSetting: Observable<AppSetting>
+        get() = _appSetting
+
+    private val _sort = BehaviorSubject.createDefault(ReviewSort.NEWEST)
+    val sort: Observable<ReviewSort>
+        get() = _sort
+
+    private val _mediaType = BehaviorSubject.createDefault(NullableItem<MediaType>(null))
+    val mediaType: Observable<NullableItem<MediaType>>
+        get() = _mediaType
+
+    private val _reviews = BehaviorSubject.createDefault(listOf<Review?>())
+    val reviews: Observable<List<Review?>>
+        get() = _reviews
+
+    private val _mediaTypes = PublishSubject.create<List<ListItem<MediaType?>>>()
+    val mediaTypes: Observable<List<ListItem<MediaType?>>>
+        get() = _mediaTypes
+
+    private val _sorts = PublishSubject.create<List<ListItem<ReviewSort>>>()
+    val sorts: Observable<List<ListItem<ReviewSort>>>
+        get() = _sorts
+
+    private var hasNextPage = false
+    private var currentPage = 0
+
+    override fun loadData(param: Unit) {
+        loadOnce {
+            disposables.add(
+                userRepository.getAppSetting()
+                    .applyScheduler()
+                    .subscribe {
+                        _appSetting.onNext(it)
+                        loadReviews()
+                    }
+            )
+        }
+    }
+
+    fun reloadData() {
+        loadReviews()
+    }
+
+    fun loadNextPage() {
+        if ((state == State.LOADED || state == State.ERROR) && hasNextPage) {
+            val currentReviews = ArrayList(_reviews.value ?: listOf())
+            currentReviews.add(null)
+            _reviews.onNext(currentReviews)
+
+            loadReviews(true)
+        }
+    }
+
+    private fun loadReviews(isLoadingNextPage: Boolean = false) {
+        if (!isLoadingNextPage)
+            _loading.onNext(true)
+
+        state = State.LOADING
+
+        disposables.add(
+            contentRepository.getReviews(_mediaType.value?.data?.getAniListMediaType(), _sort.value ?: ReviewSort.NEWEST,  if (isLoadingNextPage) currentPage + 1 else 1)
+                .applyScheduler()
+                .doFinally {
+                    if (!isLoadingNextPage) {
+                        _loading.onNext(false)
+                    }
+                }
+                .subscribe(
+                    {
+                        hasNextPage = it.pageInfo.hasNextPage
+                        currentPage = it.pageInfo.currentPage
+
+                        if (isLoadingNextPage) {
+                            val currentReviews = ArrayList(_reviews.value ?: listOf())
+                            currentReviews.remove(null)
+                            currentReviews.addAll(it.data)
+                            _reviews.onNext(currentReviews)
+                        } else {
+                            _reviews.onNext(it.data)
+                        }
+
+                        state = State.LOADED
+                    },
+                    {
+                        if (isLoadingNextPage) {
+                            val currentReviews = ArrayList(_reviews.value ?: listOf())
+                            currentReviews.remove(null)
+                            _reviews.onNext(currentReviews)
+                        }
+
+                        _error.onNext(it.getStringResource())
+                        state = State.ERROR
+                    }
+                )
+        )
+    }
+
+    fun loadMediaTypes() {
+        val items = ArrayList<ListItem<MediaType?>>()
+        items.add(ListItem(R.string.all, null))
+        items.add(ListItem(MediaType.ANIME.getStringResource(), MediaType.ANIME))
+        items.add(ListItem(MediaType.MANGA.getStringResource(), MediaType.MANGA))
+        _mediaTypes.onNext(items)
+    }
+
+    fun updateMediaType(newMediaType: MediaType?) {
+        _mediaType.onNext(NullableItem(newMediaType))
+        reloadData()
+    }
+
+    fun loadSorts() {
+        val items = ArrayList<ListItem<ReviewSort>>()
+        ReviewSort.values().forEach {
+            items.add(ListItem(it.getStringResource(), it))
+        }
+        _sorts.onNext(items)
+    }
+
+    fun updateSort(newSort: ReviewSort) {
+        _sort.onNext(newSort)
+        reloadData()
+    }
+}

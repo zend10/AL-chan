@@ -518,6 +518,11 @@
     <string name="ending_themes">Ending Themes</string>
     <string name="average">Average</string>
     <string name="mean">Mean</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="most_upvote">Most Upvote</string>
+    <string name="fewest_upvote">Fewest Upvote</string>
+    <string name="review_of_x_by_y">Review of %1$s by %2$s</string>
 
 
     <plurals name="minute">

@@ -46,6 +46,7 @@ import com.zen.alchan.ui.medialist.MediaListViewModel
 import com.zen.alchan.ui.notifications.NotificationsViewModel
 import com.zen.alchan.ui.profile.ProfileViewModel
 import com.zen.alchan.ui.reorder.ReorderViewModel
+import com.zen.alchan.ui.review.ReviewViewModel
 import com.zen.alchan.ui.search.SearchViewModel
 import com.zen.alchan.ui.seasonal.SeasonalViewModel
 import com.zen.alchan.ui.settings.SettingsViewModel
@@ -166,6 +167,7 @@ class ALchanApplication : Application() {
         viewModel { SeasonalViewModel(get(), get(), get()) }
         viewModel { ExploreViewModel(get(), get()) }
         viewModel { CalendarViewModel(get(), get()) }
+        viewModel { ReviewViewModel(get(), get()) }
 
         viewModel { MediaListViewModel(get(), get(), get()) }
 
