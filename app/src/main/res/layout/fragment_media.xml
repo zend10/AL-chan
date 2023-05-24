@@ -182,6 +182,7 @@
                         android:backgroundTint="@android:color/transparent"
                         android:minHeight="@dimen/toolbarBigHeight"
                         app:popupTheme="@style/PopupTheme"
+                        app:menu="@menu/menu_media"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

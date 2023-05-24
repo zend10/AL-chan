@@ -16,7 +16,6 @@ interface MediaListener {
     interface MediaInfoListener {
         fun copyTitle(title: String)
         fun navigateToExplore(type: MediaType, season: MediaSeason, seasonYear: Int)
-        fun navigateToMediaStats(media: Media)
     }
 
     interface MediaGenreListener {

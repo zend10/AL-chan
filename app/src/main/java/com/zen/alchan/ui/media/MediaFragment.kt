@@ -4,10 +4,12 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -41,6 +43,8 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     private var isToolbarExpanded = true
 
     private var mediaAdapter: MediaRvAdapter? = null
+    private var menuItemDetailStatistics: MenuItem? = null
+    private var currentMedia: Media? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -57,6 +61,13 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
 
             setUpToolbar(mediaToolbar, "", R.drawable.ic_custom_close) {
                 navigation.closeBrowseScreen()
+            }
+            mediaToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_custom_more)
+
+            menuItemDetailStatistics = mediaToolbar.menu.findItem(R.id.itemMediaStats)
+            menuItemDetailStatistics?.setOnMenuItemClickListener {
+                currentMedia?.let { navigation.navigateToMediaStats(it) }
+                true
             }
 
             mediaRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
@@ -194,6 +205,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 }
             },
             viewModel.mediaItemList.subscribe {
+                currentMedia = it.firstOrNull()?.media
                 mediaAdapter?.updateData(it, true)
             },
             viewModel.coverImageUrlForPreview.subscribe {
@@ -251,10 +263,6 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 ) {
                     it()
                 }
-            }
-
-            override fun navigateToMediaStats(media: Media) {
-
             }
         }
     }

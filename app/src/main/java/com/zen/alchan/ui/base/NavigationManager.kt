@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.type.ScoreFormat
@@ -55,6 +56,7 @@ interface NavigationManager {
     fun navigateToEditor(mediaId: Int, fromMediaList: Boolean, action: (() -> Unit)? = null) {}
 
     fun navigateToMedia(id: Int) {}
+    fun navigateToMediaStats(media: Media) {}
     fun navigateToMediaCharacters(id: Int) {}
     fun navigateToMediaStaff(id: Int) {}
     fun navigateToCharacter(id: Int) {}

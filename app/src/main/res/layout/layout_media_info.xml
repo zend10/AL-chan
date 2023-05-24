@@ -416,21 +416,8 @@
         android:id="@+id/mediaInfoStatsLayout"
         app:layout_constraintTop_toBottomOf="@id/mediaInfoDividerThree"
         android:layout_marginTop="@dimen/marginBig"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/mediaInfoStatsSeeMore"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/mediaInfoStatsSeeMore"
-        app:srcCompat="@drawable/ic_chevron_right"
-        app:tint="?themePrimaryColor"
-        android:foreground="?selectableItemBackground"
-        app:layout_constraintTop_toTopOf="@id/mediaInfoStatsLayout"
-        app:layout_constraintBottom_toBottomOf="@id/mediaInfoStatsLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="@dimen/iconSize"
-        android:layout_height="@dimen/iconSize"/>
 
     <include layout="@layout/divider"
         android:id="@+id/mediaInfoDividerFour"

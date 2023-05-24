@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/list_stats_chart_pie"
+        android:id="@+id/mediaStatsChart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mediaStatsCurrentLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mediaStatsChart"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaStatsCurrentIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsCurrentLabel"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsCurrentText"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mediaStatsPlanningLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mediaStatsCurrentLayout"
+        android:layout_marginTop="@dimen/marginClose"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaStatsPlanningIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsPlanningLabel"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsPlanningText"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mediaStatsCompletedLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mediaStatsPlanningLayout"
+        android:layout_marginTop="@dimen/marginClose"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaStatsCompletedIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsCompletedLabel"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsCompletedText"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mediaStatsDroppedLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mediaStatsCompletedLayout"
+        android:layout_marginTop="@dimen/marginClose"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaStatsDroppedIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsDroppedLabel"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsDroppedText"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mediaStatsPausedLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mediaStatsDroppedLayout"
+        android:layout_marginTop="@dimen/marginClose"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediaStatsPausedIcon"
+            app:srcCompat="@drawable/ic_filled_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsPausedLabel"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mediaStatsPausedText"
+            style="?themeRegularFont"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

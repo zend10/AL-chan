@@ -13,6 +13,7 @@ import com.zen.alchan.R
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.Activity
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
@@ -34,6 +35,7 @@ import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.media.character.MediaCharacterListFragment
+import com.zen.alchan.ui.media.mediastats.MediaStatsFragment
 import com.zen.alchan.ui.media.staff.MediaStaffListFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
@@ -210,6 +212,10 @@ class DefaultNavigationManager(
 
     override fun navigateToMedia(id: Int) {
         pushBrowseScreenPage(MediaFragment.newInstance(id))
+    }
+
+    override fun navigateToMediaStats(media: Media) {
+        pushBrowseScreenPage(MediaStatsFragment.newInstance(media))
     }
 
     override fun navigateToMediaCharacters(id: Int) {

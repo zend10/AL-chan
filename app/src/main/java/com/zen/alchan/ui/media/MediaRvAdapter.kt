@@ -252,10 +252,6 @@ class MediaRvAdapter(
                 mediaInfoStatsLayout.mediaStatsMeanScore.text = item.media.meanScore.getNumberFormatting() + "%"
                 mediaInfoStatsLayout.mediaStatsPopularity.text = item.media.popularity.getNumberFormatting()
                 mediaInfoStatsLayout.mediaStatsFavorites.text = item.media.favourites.getNumberFormatting()
-
-                mediaInfoStatsSeeMore.clicks {
-                    listener.mediaInfoListener.navigateToMediaStats(item.media)
-                }
             }
         }
     }

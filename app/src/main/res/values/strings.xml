@@ -523,6 +523,11 @@
     <string name="most_upvote">Most Upvote</string>
     <string name="fewest_upvote">Fewest Upvote</string>
     <string name="review_of_x_by_y">Review of %1$s by %2$s</string>
+    <string name="media_stats">Media Stats</string>
+    <string name="performance">Performance</string>
+    <string name="rankings">Rankings</string>
+    <string name="status_distribution">Status Distribution</string>
+    <string name="score_distribution">Score Distribution</string>
 
 
     <plurals name="minute">

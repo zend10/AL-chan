@@ -39,6 +39,7 @@ import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.main.SharedMainViewModel
 import com.zen.alchan.ui.media.character.MediaCharacterListViewModel
 import com.zen.alchan.ui.media.MediaViewModel
+import com.zen.alchan.ui.media.mediastats.MediaStatsViewModel
 import com.zen.alchan.ui.media.staff.MediaStaffListViewModel
 import com.zen.alchan.ui.media.themes.BottomSheetMediaThemesViewModel
 import com.zen.alchan.ui.medialist.BottomSheetMediaListQuickDetailViewModel
@@ -193,6 +194,7 @@ class ALchanApplication : Application() {
         viewModel { EditorViewModel(get(), get()) }
 
         viewModel { MediaViewModel(get(), get(), get(), get()) }
+        viewModel { MediaStatsViewModel(get()) }
         viewModel { MediaCharacterListViewModel(get(), get()) }
         viewModel { MediaStaffListViewModel(get(), get()) }
         viewModel { CharacterViewModel(get(), get(), get()) }
