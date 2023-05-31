@@ -10,9 +10,11 @@ import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.getAniListMediaType
 import com.zen.alchan.helper.enums.getStringResource
 import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getMediaType
 import com.zen.alchan.helper.extensions.getStringResource
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
+import com.zen.alchan.helper.pojo.ReviewAdapterComponent
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -21,11 +23,11 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 class ReviewViewModel(
     private val userRepository: UserRepository,
     private val contentRepository: ContentRepository
-) : BaseViewModel<Unit>() {
+) : BaseViewModel<ReviewParam>() {
 
-    private val _appSetting = PublishSubject.create<AppSetting>()
-    val appSetting: Observable<AppSetting>
-        get() = _appSetting
+    private val _reviewAdapterComponent = PublishSubject.create<ReviewAdapterComponent>()
+    val reviewAdapterComponent: Observable<ReviewAdapterComponent>
+        get() = _reviewAdapterComponent
 
     private val _sort = BehaviorSubject.createDefault(ReviewSort.NEWEST)
     val sort: Observable<ReviewSort>
@@ -47,16 +49,30 @@ class ReviewViewModel(
     val sorts: Observable<List<ListItem<ReviewSort>>>
         get() = _sorts
 
+    private val _emptyLayoutVisibility = BehaviorSubject.createDefault(false)
+    val emptyLayoutVisibility: Observable<Boolean>
+        get() = _emptyLayoutVisibility
+
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData(param: Unit) {
+    private var mediaId: Int? = null
+    private var userId: Int? = null
+
+    override fun loadData(param: ReviewParam) {
         loadOnce {
+            mediaId = param.media?.getId()
+            userId = param.userId
+
+            if (mediaId != null) {
+                _mediaType.onNext(NullableItem(param.media?.type?.getMediaType()))
+            }
+
             disposables.add(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
-                        _appSetting.onNext(it)
+                        _reviewAdapterComponent.onNext(ReviewAdapterComponent(it, mediaId != null, userId != null))
                         loadReviews()
                     }
             )
@@ -84,12 +100,14 @@ class ReviewViewModel(
         state = State.LOADING
 
         disposables.add(
-            contentRepository.getReviews(_mediaType.value?.data?.getAniListMediaType(), _sort.value ?: ReviewSort.NEWEST,  if (isLoadingNextPage) currentPage + 1 else 1)
+            contentRepository.getReviews(mediaId, userId, _mediaType.value?.data?.getAniListMediaType(), _sort.value ?: ReviewSort.NEWEST,  if (isLoadingNextPage) currentPage + 1 else 1)
                 .applyScheduler()
                 .doFinally {
                     if (!isLoadingNextPage) {
                         _loading.onNext(false)
                     }
+
+                    _emptyLayoutVisibility.onNext(_reviews.value.isNullOrEmpty())
                 }
                 .subscribe(
                     {

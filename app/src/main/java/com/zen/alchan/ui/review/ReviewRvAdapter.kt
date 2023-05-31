@@ -13,6 +13,7 @@ import com.zen.alchan.databinding.ListReviewBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.getString
+import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -21,6 +22,8 @@ class ReviewRvAdapter(
     private val context: Context,
     list: List<Review?>,
     private val appSetting: AppSetting,
+    private val isMediaReview: Boolean,
+    private val isUserReview: Boolean,
     private val listener: ReviewListener
 ) : BaseRecyclerViewAdapter<Review?, ViewBinding>(list) {
 
@@ -44,9 +47,20 @@ class ReviewRvAdapter(
                 return
 
             with(binding) {
+                if (isMediaReview) {
+                    reviewMediaBanner.show(false)
+                    reviewName.text = context.getString(R.string.review_by_x, item.user.name)
+                } else if (isUserReview) {
+                    reviewUserAvatar.show(false)
+                    reviewName.text = context.getString(R.string.review_of_x, "${item.media.getTitle(appSetting)} (${item.media.format?.getString()})")
+                } else {
+                    reviewMediaBanner.show(true)
+                    reviewUserAvatar.show(true)
+                    reviewName.text = context.getString(R.string.review_of_x_by_y, "${item.media.getTitle(appSetting)} (${item.media.format?.getString()})", item.user.name)
+                }
+
                 ImageUtil.loadCircleImage(context, item.user.avatar.getImageUrl(appSetting), reviewUserAvatar)
                 ImageUtil.loadImage(context, item.media.bannerImage, reviewMediaBanner)
-                reviewName.text = context.getString(R.string.review_of_x_by_y, "${item.media.getTitle(appSetting)} (${item.media.format?.getString()})", item.user.name)
                 reviewDate.text = TimeUtil.displayInDateFormat(item.createdAt)
                 reviewSummary.text = item.summary
                 reviewUpvote.text = item.rating.getNumberFormatting()

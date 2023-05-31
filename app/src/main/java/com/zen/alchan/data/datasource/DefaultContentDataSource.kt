@@ -159,11 +159,15 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
     }
 
     override fun getReviews(
+        mediaId: Int?,
+        userId: Int?,
         mediaType: MediaType?,
         sort: ReviewSort,
         page: Int
     ): Observable<ApolloResponse<ReviewQuery.Data>> {
         val query = ReviewQuery(
+            mediaId = Optional.presentIfNotNull(mediaId),
+            userId = Optional.presentIfNotNull(userId),
             mediaType = Optional.presentIfNotNull(mediaType),
             sort = Optional.present(listOf(sort.getAniListReviewSort())),
             page = Optional.present(page)

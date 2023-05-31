@@ -30,6 +30,9 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <include layout="@layout/layout_empty"
+        android:id="@+id/emptyLayout"/>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/reviewFilterLayout"
         android:background="?themeBackgroundColor"
@@ -52,6 +55,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/reviewMediaLabel"
                     style="?themeSmallFont"
                     android:maxLines="1"
                     android:text="@string/media"

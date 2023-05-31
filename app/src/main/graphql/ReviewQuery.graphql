@@ -1,4 +1,4 @@
-query ReviewQuery($page:Int,$mediaType:MediaType,$sort:[ReviewSort]) {
+query ReviewQuery($page:Int,$mediaId:Int,$userId:Int,$mediaType:MediaType,$sort:[ReviewSort]) {
   Page(page:$page) {
     pageInfo {
       total
@@ -7,7 +7,7 @@ query ReviewQuery($page:Int,$mediaType:MediaType,$sort:[ReviewSort]) {
       lastPage
       hasNextPage
     }
-    reviews(mediaType:$mediaType, sort:$sort) {
+    reviews(mediaId:$mediaId, userId:$userId, mediaType:$mediaType, sort:$sort) {
       id
       userId
       mediaId

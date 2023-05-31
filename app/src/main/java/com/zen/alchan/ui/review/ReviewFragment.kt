@@ -8,15 +8,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Review
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.databinding.FragmentReviewBinding
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.enums.getStringResource
-import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
-import com.zen.alchan.helper.extensions.applySidePaddingInsets
-import com.zen.alchan.helper.extensions.applyTopPaddingInsets
-import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,6 +23,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
     override val viewModel: ReviewViewModel by viewModel()
 
     private var adapter: ReviewRvAdapter? = null
+
+    private var media: Media? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -37,8 +37,13 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
         with(binding) {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.reviews))
 
-            adapter = ReviewRvAdapter(requireContext(), listOf(), AppSetting(), getReviewListener())
+            adapter = ReviewRvAdapter(requireContext(), listOf(), AppSetting(), true, true, getReviewListener())
             reviewRecyclerView.adapter = adapter
+
+            media?.let {
+                reviewMediaText.isEnabled = false
+                reviewMediaText.setTextColor(requireContext().getThemeNegativeColor())
+            }
 
             reviewlSwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -79,8 +84,15 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
             viewModel.error.subscribe {
                 dialog.showToast(it)
             },
-            viewModel.appSetting.subscribe {
-                adapter = ReviewRvAdapter(requireContext(), listOf(), it, getReviewListener())
+            viewModel.emptyLayoutVisibility.subscribe {
+                binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.reviewAdapterComponent.subscribe {
+                media?.let { media ->
+                    binding.defaultToolbar.defaultToolbar.subtitle = media.getTitle(it.appSetting)
+                }
+
+                adapter = ReviewRvAdapter(requireContext(), listOf(), it.appSetting, it.isMediaReview, it.isUserReview, getReviewListener())
                 binding.reviewRecyclerView.adapter = adapter
             },
             viewModel.reviews.subscribe {
@@ -106,7 +118,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
             }
         )
 
-        viewModel.loadData(Unit)
+        arguments?.let {
+            val userId = it.getInt(USER_ID)
+            viewModel.loadData(ReviewParam(media, if (userId == 0) null else userId))
+        }
     }
 
     private fun getReviewListener(): ReviewRvAdapter.ReviewListener {
@@ -127,7 +142,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
     }
 
     companion object {
+        private const val USER_ID = "userId"
+
         @JvmStatic
-        fun newInstance() = ReviewFragment()
+        fun newInstance(media: Media?, userId: Int?) = ReviewFragment().apply {
+            this.media = media
+            arguments = Bundle().apply {
+                userId?.let { putInt(USER_ID, userId) }
+            }
+        }
     }
 }

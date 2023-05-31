@@ -43,7 +43,9 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     private var isToolbarExpanded = true
 
     private var mediaAdapter: MediaRvAdapter? = null
-    private var menuItemDetailStatistics: MenuItem? = null
+    private var menuItemMediaStats: MenuItem? = null
+    private var menuItemSocial: MenuItem? = null
+    private var menuItemReview: MenuItem? = null
     private var currentMedia: Media? = null
 
     override fun generateViewBinding(
@@ -64,9 +66,18 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             }
             mediaToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_custom_more)
 
-            menuItemDetailStatistics = mediaToolbar.menu.findItem(R.id.itemMediaStats)
-            menuItemDetailStatistics?.setOnMenuItemClickListener {
+            menuItemMediaStats = mediaToolbar.menu.findItem(R.id.itemMediaStats)
+            menuItemMediaStats?.setOnMenuItemClickListener {
                 currentMedia?.let { navigation.navigateToMediaStats(it) }
+                true
+            }
+            menuItemSocial?.setOnMenuItemClickListener {
+                currentMedia?.let {  }
+                true
+            }
+            menuItemReview = mediaToolbar.menu.findItem(R.id.itemMediaReview)
+            menuItemReview?.setOnMenuItemClickListener {
+                currentMedia?.let { navigation.navigateToMediaReview(it) }
                 true
             }
 
@@ -389,6 +400,9 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     override fun onDestroyView() {
         super.onDestroyView()
         mediaAdapter = null
+        menuItemMediaStats = null
+        menuItemSocial = null
+        menuItemReview = null
     }
 
     companion object {

@@ -145,11 +145,13 @@ class DefaultContentRepository(
     }
 
     override fun getReviews(
+        mediaId: Int?,
+        userId: Int?,
         mediaType: MediaType?,
         sort: ReviewSort,
         page: Int
     ): Observable<Page<Review>> {
-        return contentDataSource.getReviews(mediaType, sort, page).map {
+        return contentDataSource.getReviews(mediaId, userId, mediaType, sort, page).map {
             it.data?.convert() ?: Page()
         }
     }

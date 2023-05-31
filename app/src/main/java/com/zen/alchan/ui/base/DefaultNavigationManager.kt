@@ -108,7 +108,7 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToReview() {
-        stackPage(ReviewFragment.newInstance())
+        stackPage(ReviewFragment.newInstance(null, null))
     }
 
     override fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {
@@ -216,6 +216,10 @@ class DefaultNavigationManager(
 
     override fun navigateToMediaStats(media: Media) {
         pushBrowseScreenPage(MediaStatsFragment.newInstance(media))
+    }
+
+    override fun navigateToMediaReview(media: Media) {
+        pushBrowseScreenPage(ReviewFragment.newInstance(media, null))
     }
 
     override fun navigateToMediaCharacters(id: Int) {
