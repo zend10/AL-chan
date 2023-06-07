@@ -20,6 +20,7 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
     override val viewModel: FollowViewModel by viewModel()
 
     private var adapter: FollowRvAdapter? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -35,7 +36,7 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
                 if (arguments?.getBoolean(IS_FOLLOWING) == true) getString(R.string.following) else getString(R.string.followers)
             )
 
-            adapter = FollowRvAdapter(requireContext(), listOf(), AppSetting(), getFollowListener())
+            adapter = FollowRvAdapter(requireContext(), listOf(), appSetting, getFollowListener())
             infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             infiniteScrollingRecyclerView.adapter = adapter
 
@@ -68,6 +69,7 @@ class FollowFragment : BaseFragment<LayoutInfiniteScrollingBinding, FollowViewMo
                 dialog.showToast(it)
             },
             viewModel.followAdapterComponent.subscribe {
+                appSetting = it
                 adapter = FollowRvAdapter(requireContext(), listOf(), it, getFollowListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },

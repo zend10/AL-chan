@@ -47,6 +47,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
     private var menuItemSocial: MenuItem? = null
     private var menuItemReview: MenuItem? = null
     private var currentMedia: Media? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -83,7 +84,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
             }
 
             mediaRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
-            assignAdapter(AppSetting())
+            assignAdapter(appSetting)
 
             mediaAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 isToolbarExpanded = verticalOffset == 0
@@ -154,6 +155,7 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 dialog.showToast(it)
             },
             viewModel.mediaAdapterComponent.subscribe {
+                appSetting = it
                 assignAdapter(it)
             },
             viewModel.bannerImage.subscribe {

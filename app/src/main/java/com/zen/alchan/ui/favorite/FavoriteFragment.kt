@@ -24,6 +24,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
 
     private var adapter: FavoriteAdapter? = null
     private var menuItemReorder: MenuItem? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -43,7 +44,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
                 true
             }
 
-            adapter = FavoriteAdapter(requireContext(), listOf(), AppSetting(), getFavoriteListener())
+            adapter = FavoriteAdapter(requireContext(), listOf(), appSetting, getFavoriteListener())
 
             infiniteScrollingRecyclerView.layoutManager = if (arguments?.getString(FAVORITE) == Favorite.STUDIOS.name)
                 FlexboxLayoutManager(requireContext())
@@ -88,6 +89,7 @@ class FavoriteFragment : BaseFragment<LayoutInfiniteScrollingBinding, FavoriteVi
                 dialog.showToast(it)
             },
             viewModel.favoriteAdapterComponent.subscribe {
+                appSetting = it
                 adapter = FavoriteAdapter(requireContext(), listOf(), it, getFavoriteListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },

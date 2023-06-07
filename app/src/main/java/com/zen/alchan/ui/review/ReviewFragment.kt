@@ -15,6 +15,7 @@ import com.zen.alchan.databinding.FragmentReviewBinding
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.enums.getStringResource
 import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.pojo.ReviewAdapterComponent
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,6 +26,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
     private var adapter: ReviewRvAdapter? = null
 
     private var media: Media? = null
+    private var adapterComponent = ReviewAdapterComponent()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -37,7 +39,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
         with(binding) {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.reviews))
 
-            adapter = ReviewRvAdapter(requireContext(), listOf(), AppSetting(), true, true, getReviewListener())
+            adapter = ReviewRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, adapterComponent.isMediaReview, adapterComponent.isUserReview, getReviewListener())
             reviewRecyclerView.adapter = adapter
 
             media?.let {
@@ -88,6 +90,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
                 binding.emptyLayout.emptyLayout.show(it)
             },
             viewModel.reviewAdapterComponent.subscribe {
+                adapterComponent = it
+
                 media?.let { media ->
                     binding.defaultToolbar.defaultToolbar.subtitle = media.getTitle(it.appSetting)
                 }

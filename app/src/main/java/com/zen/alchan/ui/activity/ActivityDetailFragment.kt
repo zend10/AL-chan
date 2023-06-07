@@ -13,6 +13,7 @@ import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.pojo.SocialAdapterComponent
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.social.LikeRvAdapter
 import com.zen.alchan.ui.social.SocialListener
@@ -29,6 +30,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
     private var listener: ActivityDetailListener? = null
 
     private var currentActivityId = 0
+    private var adapterComponent = SocialAdapterComponent()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -45,9 +47,9 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
     override fun setUpLayout() {
         with(binding) {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.activity_detail))
-            adapter = SocialRvAdapter(requireContext(), listOf(), null, AppSetting(), true, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), adapterComponent.viewer, adapterComponent.appSetting, true, getSocialListener())
             activityRecyclerView.adapter = adapter
-            likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
+            likeAdapter = LikeRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, getLikeListener())
 
             activitySwipeRefresh.setOnRefreshListener {
                 viewModel.reloadData()
@@ -86,6 +88,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
                 binding.activitySwipeRefresh.isRefreshing = it
             },
             viewModel.adapterComponent.subscribe {
+                adapterComponent = it
                 adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, true, getSocialListener())
                 binding.activityRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())

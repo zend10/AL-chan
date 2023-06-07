@@ -53,6 +53,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     private var profileAdapter: ProfileRvAdapter? = null
     private var currentUserId = 0
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -86,7 +87,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             profileToolbar.overflowIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_custom_more)
 
             profileRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
-            assignAdapter(AppSetting())
+            assignAdapter(appSetting)
 
             notLoggedInLayout.goToLoginButton.setOnClickListener {
                 viewModel.logout()
@@ -216,6 +217,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 dialog.showToast(it)
             },
             viewModel.profileAdapterComponent.subscribe {
+                appSetting = it
                 assignAdapter(it)
             },
             viewModel.notLoggedInLayoutVisibility.subscribe {

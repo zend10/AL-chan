@@ -17,6 +17,7 @@ import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.pojo.SocialAdapterComponent
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.social.LikeRvAdapter
 import com.zen.alchan.ui.social.SocialListener
@@ -33,8 +34,8 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
 
     private var menuItemSelectActivityType: MenuItem? = null
 
-    private var currentViewer: User? = null
     private var currentActivityUserId = 0
+    private var adapterComponent = SocialAdapterComponent()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -63,7 +64,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
 
             infiniteScrollingRecyclerView.updatePadding(left = 0, right = 0)
 
-            adapter = SocialRvAdapter(requireContext(), listOf(), currentViewer, AppSetting(), false, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), adapterComponent.viewer, adapterComponent.appSetting, false, getSocialListener())
             infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             infiniteScrollingRecyclerView.adapter = adapter
             likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
@@ -124,7 +125,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
                 dialog.showToast(it)
             },
             viewModel.adapterComponent.subscribe {
-                currentViewer = it.viewer
+                adapterComponent = it
                 adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
@@ -236,7 +237,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
     }
 
     private fun isViewerActivity(): Boolean {
-        return currentActivityUserId == 0 || currentActivityUserId == currentViewer?.id
+        return currentActivityUserId == 0 || currentActivityUserId == adapterComponent.viewer?.id
     }
 
     override fun onDestroyView() {

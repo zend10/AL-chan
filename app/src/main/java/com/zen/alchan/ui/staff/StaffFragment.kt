@@ -37,6 +37,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
 
     private var menuViewOnAniList: MenuItem? = null
     private var menuCopyLink: MenuItem? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -70,7 +71,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
             }
 
             staffRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
-            assignAdapter(AppSetting())
+            assignAdapter(appSetting)
 
             staffAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 isToolbarExpanded = verticalOffset == 0
@@ -133,6 +134,7 @@ class StaffFragment : BaseFragment<FragmentStaffBinding, StaffViewModel>() {
                 dialog.showToast(it)
             },
             viewModel.staffAdapterComponent.subscribe {
+                appSetting = it
                 assignAdapter(it)
             },
             viewModel.staffImage.subscribe {

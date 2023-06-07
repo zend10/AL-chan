@@ -26,6 +26,7 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
     private var adapter: MediaCharacterListRvAdapter? = null
 
     private var menuItemChangeVaLanguage: MenuItem? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -45,7 +46,7 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
                 true
             }
 
-            adapter = MediaCharacterListRvAdapter(requireContext(), listOf(), AppSetting(), getMediaCharacterListListener())
+            adapter = MediaCharacterListRvAdapter(requireContext(), listOf(), appSetting, getMediaCharacterListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
@@ -79,6 +80,7 @@ class MediaCharacterListFragment : BaseFragment<LayoutInfiniteScrollingBinding, 
                 dialog.showToast(it)
             },
             viewModel.appSetting.subscribe {
+                appSetting = it
                 adapter = MediaCharacterListRvAdapter(requireContext(), listOf(), it, getMediaCharacterListListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },

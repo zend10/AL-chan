@@ -34,6 +34,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
 
     private var menuViewOnAniList: MenuItem? = null
     private var menuCopyLink: MenuItem? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -67,7 +68,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
             }
 
             characterRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
-            assignAdapter(AppSetting())
+            assignAdapter(appSetting)
 
             characterAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 isToolbarExpanded = verticalOffset == 0
@@ -130,6 +131,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
                 dialog.showToast(it)
             },
             viewModel.characterAdapterComponent.subscribe {
+                appSetting = it
                 assignAdapter(it)
             },
             viewModel.characterImage.subscribe {

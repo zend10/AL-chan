@@ -35,6 +35,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
 
     private var menuViewOnAniList: MenuItem? = null
     private var menuCopyLink: MenuItem? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -68,7 +69,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
             }
 
             studioRecyclerView.addItemDecoration(SpaceItemDecoration(top = resources.getDimensionPixelSize(R.dimen.marginFar)))
-            assignAdapter(AppSetting())
+            assignAdapter(appSetting)
 
             studioAppBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 isToolbarExpanded = verticalOffset == 0
@@ -127,6 +128,7 @@ class StudioFragment : BaseFragment<FragmentStudioBinding, StudioViewModel>() {
                 dialog.showToast(it)
             },
             viewModel.studioAdapterComponent.subscribe {
+                appSetting = it
                 assignAdapter(it)
             },
             viewModel.studioName.subscribe {

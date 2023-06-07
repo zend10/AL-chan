@@ -21,6 +21,7 @@ class MediaStaffListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Medi
     override val viewModel: MediaStaffListViewModel by viewModel()
 
     private var adapter: MediaStaffListRvAdapter? = null
+    private var appSetting = AppSetting()
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -33,7 +34,7 @@ class MediaStaffListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Medi
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.staff_list))
 
-            adapter = MediaStaffListRvAdapter(requireContext(), listOf(), AppSetting(), getMediaStaffListListener())
+            adapter = MediaStaffListRvAdapter(requireContext(), listOf(), appSetting, getMediaStaffListListener())
             infiniteScrollingRecyclerView.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.gridSpan))
             infiniteScrollingRecyclerView.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.gridSpan), resources.getDimensionPixelSize(R.dimen.marginNormal), false))
             infiniteScrollingRecyclerView.adapter = adapter
@@ -67,6 +68,7 @@ class MediaStaffListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Medi
                 dialog.showToast(it)
             },
             viewModel.appSetting.subscribe {
+                appSetting = it
                 adapter = MediaStaffListRvAdapter(requireContext(), listOf(), it, getMediaStaffListListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
             },
