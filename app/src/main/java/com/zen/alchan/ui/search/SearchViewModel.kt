@@ -78,6 +78,16 @@ class SearchViewModel(
     }
 
     fun doSearch(searchQuery: String, isLoadingNextPage: Boolean = false) {
+        if (searchQuery.isBlank()) {
+            _loading.onNext(false)
+            _emptyLayoutVisibility.onNext(false)
+            currentSearchQuery = searchQuery
+            hasNextPage = false
+            currentPage = 0
+            _searchItems.onNext(listOf())
+            return
+        }
+
         if (searchQuery.isNotBlank() && !isLoadingNextPage)
             _loading.onNext(true)
 
