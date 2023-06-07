@@ -41,6 +41,7 @@ query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort],$type:MediaType,$onList
                         large
                         medium
                     }
+                    countryOfOrigin
                     type
                     format
                     averageScore

@@ -85,6 +85,7 @@ query SearchMediaQuery(
         native
         userPreferred
       }
+      countryOfOrigin
       type
       format
       status(version:$statusVersion)

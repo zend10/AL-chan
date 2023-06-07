@@ -21,6 +21,7 @@ fun UserFavouritesQuery.Data.convert(): Favourites {
                         large = it?.coverImage?.large ?: "",
                         medium = it?.coverImage?.medium ?: ""
                     ),
+                    countryOfOrigin = it?.countryOfOrigin,
                     siteUrl = it?.siteUrl ?: ""
                 )
             } ?: listOf(),
@@ -49,6 +50,7 @@ fun UserFavouritesQuery.Data.convert(): Favourites {
                         large = it?.coverImage?.large ?: "",
                         medium = it?.coverImage?.medium ?: ""
                     ),
+                    countryOfOrigin = it?.countryOfOrigin,
                     siteUrl = it?.siteUrl ?: ""
                 )
             } ?: listOf(),

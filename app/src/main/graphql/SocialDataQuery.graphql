@@ -78,6 +78,7 @@ fragment onListActivity on ListActivity {
       native
       userPreferred
     }
+    countryOfOrigin
     type
     format
     startDate {

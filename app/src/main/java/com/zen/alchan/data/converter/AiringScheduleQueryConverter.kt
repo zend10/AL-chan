@@ -27,6 +27,7 @@ fun AiringScheduleQuery.Data.convert(): Page<AiringSchedule> {
                             native = it.title?.native ?: "",
                             userPreferred = it.title?.userPreferred ?: ""
                         ),
+                        countryOfOrigin = it.countryOfOrigin,
                         season = it.season,
                         seasonYear = it.seasonYear,
                         bannerImage = it.bannerImage ?: "",

@@ -54,6 +54,7 @@ fun StaffQuery.Data.convert(): Staff {
                                 large = it.node?.coverImage?.large ?: "",
                                 medium = it.node?.coverImage?.medium ?: "",
                             ),
+                            countryOfOrigin = it.node?.countryOfOrigin,
                             type = it.node?.type,
                             format = it.node?.format,
                             averageScore = it.node?.averageScore ?: 0,
@@ -111,8 +112,8 @@ fun StaffQuery.Data.convert(): Staff {
                                     extraLarge = it?.coverImage?.extraLarge ?: "",
                                     large = it?.coverImage?.large ?: "",
                                     medium = it?.coverImage?.medium ?: ""
-
-                                )
+                                ),
+                                countryOfOrigin = it?.countryOfOrigin
                             )
                         } ?: listOf()
                     )
@@ -141,6 +142,7 @@ fun StaffQuery.Data.convert(): Staff {
                                 large = it.node?.coverImage?.large ?: "",
                                 medium = it.node?.coverImage?.medium ?: "",
                             ),
+                            countryOfOrigin = it.node?.countryOfOrigin,
                             format = it.node?.format,
                             averageScore = it.node?.averageScore ?: 0,
                             meanScore = it.node?.meanScore ?: 0,

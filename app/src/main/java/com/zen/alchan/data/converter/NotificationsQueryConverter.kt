@@ -40,6 +40,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                         large = it.media?.coverImage?.large ?: "",
                                         medium = it.media?.coverImage?.medium ?: ""
                                     ),
+                                    countryOfOrigin = it.media?.countryOfOrigin,
                                     type = it.media?.type
                                 )
                             )
@@ -408,6 +409,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                         large = it.media?.coverImage?.large ?: "",
                                         medium = it.media?.coverImage?.medium ?: ""
                                     ),
+                                    countryOfOrigin = it.media?.countryOfOrigin,
                                     type = it.media?.type
                                 )
                             )
@@ -434,6 +436,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                         large = it.media?.coverImage?.large ?: "",
                                         medium = it.media?.coverImage?.medium ?: ""
                                     ),
+                                    countryOfOrigin = it.media?.countryOfOrigin,
                                     type = it.media?.type
                                 )
                             )
@@ -461,6 +464,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                                         large = it.media?.coverImage?.large ?: "",
                                         medium = it.media?.coverImage?.medium ?: ""
                                     ),
+                                    countryOfOrigin = it.media?.countryOfOrigin,
                                     type = it.media?.type
                                 )
                             )
@@ -506,7 +510,8 @@ private fun OnNotificationListActivity.convert() : ListActivity {
                     english = it.title?.english ?: "",
                     native = it.title?.native ?: "",
                     userPreferred = it.title?.userPreferred ?: ""
-                )
+                ),
+                countryOfOrigin = it.countryOfOrigin
             )
         } ?: Media(),
     )

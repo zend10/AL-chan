@@ -76,6 +76,7 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
                         large
                         medium
                     }
+                    countryOfOrigin
                 }
                 relationType(version: $relationTypeVersion)
             }
@@ -173,6 +174,7 @@ query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeV
                       	native
                       	userPreferred
                     }
+                    countryOfOrigin
                     type
                   	format
                   	status(version: $statusVersion)

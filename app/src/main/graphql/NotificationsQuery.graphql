@@ -58,6 +58,7 @@ fragment onAiringNotification on AiringNotification {
             medium
         }
         type
+        countryOfOrigin
     }
 }
 
@@ -372,6 +373,7 @@ fragment onRelatedMediaAdditionNotification on RelatedMediaAdditionNotification 
             medium
         }
         type
+        countryOfOrigin
     }
 }
 
@@ -396,6 +398,7 @@ fragment onMediaDataChangeNotification on MediaDataChangeNotification {
             medium
         }
         type
+        countryOfOrigin
     }
 }
 
@@ -421,6 +424,7 @@ fragment onMediaMergeNotification on MediaMergeNotification {
             medium
         }
         type
+        countryOfOrigin
     }
 }
 
@@ -452,6 +456,7 @@ fragment onNotificationListActivity on ListActivity {
       native
       userPreferred
     }
+    countryOfOrigin
   }
 }
 

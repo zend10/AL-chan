@@ -27,6 +27,7 @@ fun StudioQuery.Data.convert(): Studio {
                                 large = it?.node?.coverImage?.large ?: "",
                                 medium = it?.node?.coverImage?.medium ?: ""
                             ),
+                            countryOfOrigin = it?.node?.countryOfOrigin,
                             averageScore = it?.node?.averageScore ?: 0,
                             meanScore = it?.node?.meanScore ?: 0,
                             popularity = it?.node?.popularity ?: 0,

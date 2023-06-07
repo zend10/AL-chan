@@ -81,6 +81,7 @@ fun OnListActivity.convert() : ListActivity {
                     native = it.title?.native ?: "",
                     userPreferred = it.title?.userPreferred ?: ""
                 ),
+                countryOfOrigin = it.countryOfOrigin,
                 type = it.type,
                 format = it.format,
                 startDate = it.startDate?.let {

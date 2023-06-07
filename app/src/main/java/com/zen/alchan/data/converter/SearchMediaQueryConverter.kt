@@ -23,6 +23,7 @@ fun SearchMediaQuery.Data.convert(): Page<Media> {
                     native = it.title?.native ?: "",
                     userPreferred = it.title?.userPreferred ?: ""
                 ),
+                countryOfOrigin = it.countryOfOrigin,
                 type = it.type,
                 format = it.format,
                 status = it.status,

@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.resources.MaterialResources.getDimensionPixelSize
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.data.response.anilist.StaffRoleType
 import com.zen.alchan.databinding.LayoutHorizontalListBinding
 import com.zen.alchan.databinding.LayoutTitleAndListBinding
 import com.zen.alchan.databinding.LayoutTitleAndTextBinding
@@ -20,7 +18,6 @@ import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
-import com.zen.alchan.type.MediaSort
 
 class CharacterRvAdapter(
     private val context: Context,

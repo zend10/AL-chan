@@ -85,7 +85,8 @@ fun MediaQuery.Data.convert(): Media {
                             extraLarge = it?.node?.coverImage?.extraLarge ?: "",
                             large = it?.node?.coverImage?.large ?: "",
                             medium = it?.node?.coverImage?.medium ?: ""
-                        )
+                        ),
+                        countryOfOrigin = it?.node?.countryOfOrigin
                     ),
                     relationType = it?.relationType
                 )
@@ -218,7 +219,8 @@ fun MediaQuery.Data.convert(): Media {
                             medium = it?.mediaRecommendation?.coverImage?.medium ?: ""
                         ),
                         averageScore = it?.mediaRecommendation?.averageScore ?: 0,
-                        favourites = it?.mediaRecommendation?.favourites ?: 0
+                        favourites = it?.mediaRecommendation?.favourites ?: 0,
+                        countryOfOrigin = it?.mediaRecommendation?.countryOfOrigin
                     )
                 )
             } ?: listOf()

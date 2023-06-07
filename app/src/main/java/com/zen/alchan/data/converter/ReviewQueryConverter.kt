@@ -44,6 +44,7 @@ fun ReviewQuery.Data.convert(): Page<Review> {
                         native = it?.media?.title?.native ?: "",
                         userPreferred = it?.media?.title?.userPreferred ?: ""
                     ),
+                    countryOfOrigin = it?.media?.countryOfOrigin,
                     bannerImage = it?.media?.bannerImage ?: "",
                     format = it?.media?.format
                 )

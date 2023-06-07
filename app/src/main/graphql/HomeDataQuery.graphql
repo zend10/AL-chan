@@ -19,33 +19,6 @@ query HomeDataQuery($statusVersion:Int) {
       ...HomeMedia
     }
   }
-  review: Page(page: 1, perPage: 10) {
-    reviews(sort: [ID_DESC])	{
-      id
-      userId
-      mediaId
-      mediaType
-      summary
-      rating
-      ratingAmount
-      score
-      user {
-        id
-        name
-        avatar {
-          large
-          medium
-        }
-      }
-      media {
-        id
-        title {
-          userPreferred
-        }
-        bannerImage
-      }
-    }
-  }
 }
 
 fragment HomeMedia on Media {
@@ -57,6 +30,7 @@ fragment HomeMedia on Media {
     native
     userPreferred
   }
+  countryOfOrigin
   type
   status(version: $statusVersion)
   format

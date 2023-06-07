@@ -49,6 +49,7 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                         large
                         medium
                     }
+                    countryOfOrigin
                     type
                     format
                     averageScore
@@ -105,6 +106,7 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                     large
                     medium
                   }
+                  countryOfOrigin
                 }
             }
             pageInfo {
@@ -130,6 +132,7 @@ query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[Character
                       large
                       medium
                     }
+                    countryOfOrigin
                     format
                     averageScore
                     meanScore

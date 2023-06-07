@@ -28,6 +28,7 @@ query AiringScheduleQuery(
           native
           userPreferred
         }
+        countryOfOrigin
         season
         seasonYear
         bannerImage
