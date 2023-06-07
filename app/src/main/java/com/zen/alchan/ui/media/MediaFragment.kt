@@ -71,8 +71,9 @@ class MediaFragment : BaseFragment<FragmentMediaBinding, MediaViewModel>() {
                 currentMedia?.let { navigation.navigateToMediaStats(it) }
                 true
             }
+            menuItemSocial = mediaToolbar.menu.findItem(R.id.itemMediaSocial)
             menuItemSocial?.setOnMenuItemClickListener {
-                currentMedia?.let {  }
+                currentMedia?.let { navigation.navigateToMediaSocial(it) }
                 true
             }
             menuItemReview = mediaToolbar.menu.findItem(R.id.itemMediaReview)

@@ -57,6 +57,7 @@ interface NavigationManager {
 
     fun navigateToMedia(id: Int) {}
     fun navigateToMediaStats(media: Media) {}
+    fun navigateToMediaSocial(media: Media) {}
     fun navigateToMediaReview(media: Media) {}
     fun navigateToMediaCharacters(id: Int) {}
     fun navigateToMediaStaff(id: Int) {}

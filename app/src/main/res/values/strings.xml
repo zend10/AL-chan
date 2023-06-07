@@ -530,6 +530,8 @@
     <string name="rankings">Rankings</string>
     <string name="status_distribution">Status Distribution</string>
     <string name="score_distribution">Score Distribution</string>
+    <string name="friends_list">Friends\' List</string>
+    <string name="recent_activies">Recent Activities</string>
 
 
     <plurals name="minute">

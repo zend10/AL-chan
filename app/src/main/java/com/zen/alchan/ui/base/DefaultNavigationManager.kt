@@ -35,6 +35,7 @@ import com.zen.alchan.ui.login.LoginFragment
 import com.zen.alchan.ui.main.MainFragment
 import com.zen.alchan.ui.media.MediaFragment
 import com.zen.alchan.ui.media.character.MediaCharacterListFragment
+import com.zen.alchan.ui.media.mediasocial.MediaSocialFragment
 import com.zen.alchan.ui.media.mediastats.MediaStatsFragment
 import com.zen.alchan.ui.media.staff.MediaStaffListFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
@@ -92,11 +93,15 @@ class DefaultNavigationManager(
     }
 
     override fun navigateToExplore(searchCategory: SearchCategory, mediaFilter: MediaFilter?, action: ((() -> Unit) -> Unit)?) {
-        stackPage(ExploreFragment.newInstance(searchCategory, mediaFilter, object : ExploreFragment.ExploreListener {
-            override fun doNavigation(navigation: () -> Unit) {
-                action?.invoke { navigation() }
+        val listener = if (action == null)
+            null
+        else
+            object : ExploreFragment.ExploreListener {
+                override fun doNavigation(navigation: () -> Unit) {
+                    action.invoke { navigation() }
+                }
             }
-        }))
+        stackPage(ExploreFragment.newInstance(searchCategory, mediaFilter, listener))
     }
 
     override fun navigateToSocial() {
@@ -216,6 +221,10 @@ class DefaultNavigationManager(
 
     override fun navigateToMediaStats(media: Media) {
         pushBrowseScreenPage(MediaStatsFragment.newInstance(media))
+    }
+
+    override fun navigateToMediaSocial(media: Media) {
+        pushBrowseScreenPage(MediaSocialFragment.newInstance(media))
     }
 
     override fun navigateToMediaReview(media: Media) {

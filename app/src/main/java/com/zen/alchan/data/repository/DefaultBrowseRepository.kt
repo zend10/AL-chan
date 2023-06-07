@@ -7,9 +7,13 @@ import com.zen.alchan.data.response.Anime
 import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.TrackSearch
 import com.zen.alchan.data.response.VideoSearch
+import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
+import com.zen.alchan.data.response.anilist.ListActivity
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.data.response.anilist.Page
 import com.zen.alchan.data.response.anilist.PageInfo
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.StaffEdge
@@ -19,6 +23,7 @@ import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.utils.AnimeThemesException
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.type.*
+import convert
 import io.reactivex.rxjava3.core.Observable
 
 class DefaultBrowseRepository(
@@ -71,6 +76,18 @@ class DefaultBrowseRepository(
         return browseDataSource.getMediaStaffQuery(id, page).map {
             val staffConnection = it.data?.convert() ?: return@map Pair(PageInfo(), listOf())
             staffConnection.pageInfo to staffConnection.edges
+        }
+    }
+
+    override fun getMediaFollowingMediaList(id: Int, page: Int): Observable<Page<MediaList>> {
+        return browseDataSource.getMediaFollowingMediaListQuery(id, page).map {
+            it.data?.convert() ?: Page()
+        }
+    }
+
+    override fun getMediaActivity(id: Int, page: Int): Observable<Page<ListActivity>> {
+        return browseDataSource.getMediaActivityQuery(id, page).map {
+            it.data?.convert() ?: Page()
         }
     }
 

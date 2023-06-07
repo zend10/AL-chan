@@ -16,6 +16,8 @@ interface BrowseDataSource {
     fun getMediaQuery(id: Int): Observable<ApolloResponse<MediaQuery.Data>>
     fun getMediaCharactersQuery(id: Int, page: Int, language: StaffLanguage): Observable<ApolloResponse<MediaCharactersQuery.Data>>
     fun getMediaStaffQuery(id: Int, page: Int): Observable<ApolloResponse<MediaStaffQuery.Data>>
+    fun getMediaFollowingMediaListQuery(id: Int, page: Int): Observable<ApolloResponse<MediaFollowingMediaListQuery.Data>>
+    fun getMediaActivityQuery(id: Int, page: Int): Observable<ApolloResponse<MediaActivityQuery.Data>>
     fun getCharacterQuery(id: Int, page: Int, sort: List<MediaSort>, type: MediaType?, onList: Boolean?): Observable<ApolloResponse<CharacterQuery.Data>>
     fun getStaffQuery(
         id: Int,

@@ -59,6 +59,22 @@ class DefaultBrowseDataSource(
         return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
+    override fun getMediaFollowingMediaListQuery(
+        id: Int,
+        page: Int
+    ): Observable<ApolloResponse<MediaFollowingMediaListQuery.Data>> {
+        val query = MediaFollowingMediaListQuery(mediaId = Optional.present(id), page = Optional.present(page))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
+    }
+
+    override fun getMediaActivityQuery(
+        id: Int,
+        page: Int
+    ): Observable<ApolloResponse<MediaActivityQuery.Data>> {
+        val query = MediaActivityQuery(mediaId = Optional.present(id), page = Optional.present(page))
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
+    }
+
     override fun getCharacterQuery(id: Int, page: Int, sort: List<MediaSort>, type: MediaType?, onList: Boolean?): Observable<ApolloResponse<CharacterQuery.Data>> {
         val query = CharacterQuery(id = Optional.present(id), page = Optional.present(page), sort = Optional.presentIfNotNull(sort), type = Optional.presentIfNotNull(type), onList = Optional.presentIfNotNull(onList))
         return apolloHandler.apolloClient.query(query).rxSingle().toObservable()

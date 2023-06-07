@@ -23,7 +23,8 @@ data class MediaList(
     var completedAt: FuzzyDate? = null,
     var updatedAt: Int = 0,
     var createdAt: Int = 0,
-    val media: Media = Media()
+    val media: Media = Media(),
+    val user: User = User()
 ) {
     fun getScore(): String {
         return score.roundToOneDecimal()
