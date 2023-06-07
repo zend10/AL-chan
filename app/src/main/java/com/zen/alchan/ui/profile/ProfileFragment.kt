@@ -39,6 +39,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     override val viewModel: ProfileViewModel by viewModel()
     private val sharedViewModel by sharedViewModel<SharedMainViewModel>()
 
+    private var menuItemReviews: MenuItem? = null
     private var menuItemActivities: MenuItem? = null
     private var menuItemAddAsBestFriend: MenuItem? = null
     private var menuItemSettings: MenuItem? = null
@@ -75,6 +76,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             }
 
             profileToolbar.menu.apply {
+                menuItemReviews = findItem(R.id.itemReviews)
                 menuItemActivities = findItem(R.id.itemActivities)
                 menuItemAddAsBestFriend = findItem(R.id.itemAddAsBestFriend)
                 menuItemSettings = findItem(R.id.itemSettings)
@@ -92,6 +94,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             notLoggedInLayout.goToLoginButton.setOnClickListener {
                 viewModel.logout()
                 navigation.navigateToLanding()
+            }
+
+            menuItemReviews?.setOnMenuItemClickListener {
+                doIfUserIdIsLoaded {
+                    navigation.navigateToUserReview(currentUserId)
+                }
+                true
             }
 
             menuItemActivities?.setOnMenuItemClickListener {
@@ -406,6 +415,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     override fun onDestroyView() {
         super.onDestroyView()
+        menuItemReviews = null
         menuItemActivities = null
         menuItemAddAsBestFriend = null
         menuItemSettings = null

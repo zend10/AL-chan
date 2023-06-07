@@ -67,6 +67,7 @@ interface NavigationManager {
     fun navigateToStaffCharacter(id: Int) {}
     fun navigateToStaffMedia(id: Int) {}
     fun navigateToUser(id: Int? = null, username: String? = null) {}
+    fun navigateToUserReview(id: Int) {}
     fun navigateToStudio(id: Int) {}
     fun navigateToStudioMedia(id: Int) {}
 

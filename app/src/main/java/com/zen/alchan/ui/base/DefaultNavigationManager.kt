@@ -263,6 +263,10 @@ class DefaultNavigationManager(
         pushBrowseScreenPage(ProfileFragment.newInstance(id, username))
     }
 
+    override fun navigateToUserReview(id: Int) {
+        pushBrowseScreenPage(ReviewFragment.newInstance(null, id))
+    }
+
     override fun navigateToStudio(id: Int) {
         pushBrowseScreenPage(StudioFragment.newInstance(id))
     }
