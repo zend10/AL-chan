@@ -164,4 +164,17 @@ class ReviewViewModel(
         _sort.onNext(newSort)
         reloadData()
     }
+
+    fun updateRatingReview(review: Review) {
+        val currentReviews = ArrayList(_reviews.value ?: listOf())
+        val index = currentReviews.indexOfFirst { it?.id == review.id }
+        if (index != -1) {
+            currentReviews[index]?.let {
+                it.rating = review.rating
+                it.ratingAmount = review.ratingAmount
+                it.userRating = review.userRating
+            }
+            _reviews.onNext(currentReviews)
+        }
+    }
 }

@@ -40,6 +40,7 @@ query ReviewQuery($page:Int,$mediaId:Int,$userId:Int,$mediaType:MediaType,$sort:
         }
         bannerImage
         format
+        type
         countryOfOrigin
       }
     }

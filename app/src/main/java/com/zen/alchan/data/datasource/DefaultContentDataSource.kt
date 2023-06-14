@@ -174,4 +174,12 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
         )
         return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
+
+    override fun rateReview(id: Int, rating: ReviewRating): Observable<ApolloResponse<RateReviewMutation.Data>> {
+        val mutation = RateReviewMutation(
+            id = Optional.present(id),
+            rating = Optional.present(rating)
+        )
+        return apolloHandler.apolloClient.mutation(mutation).rxSingle().toObservable()
+    }
 }

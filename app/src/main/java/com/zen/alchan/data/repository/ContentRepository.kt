@@ -9,6 +9,7 @@ import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ReviewRating
 import io.reactivex.rxjava3.core.Observable
 
 interface ContentRepository {
@@ -23,4 +24,5 @@ interface ContentRepository {
     fun getSeasonal(page: Int, year: Int, season: MediaSeason, sort: Sort, orderByDescending: Boolean, onlyShowOnList: Boolean?, showAdult: Boolean): Observable<Page<Media>>
     fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<Page<AiringSchedule>>
     fun getReviews(mediaId: Int?, userId: Int?, mediaType: MediaType?, sort: ReviewSort, page: Int): Observable<Page<Review>>
+    fun rateReview(id: Int, rating: ReviewRating): Observable<Review>
 }

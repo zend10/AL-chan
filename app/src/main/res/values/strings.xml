@@ -532,6 +532,10 @@
     <string name="score_distribution">Score Distribution</string>
     <string name="friends_list">Friends\' List</string>
     <string name="recent_activies">Recent Activities</string>
+    <string name="like_this_review">Like this review?</string>
+    <string name="x_out_of_y_users_liked_this_review">%1$d out of %2$d users liked this review</string>
+    <string name="anime_review">Anime Review</string>
+    <string name="manga_review">Manga Review</string>
 
 
     <plurals name="minute">

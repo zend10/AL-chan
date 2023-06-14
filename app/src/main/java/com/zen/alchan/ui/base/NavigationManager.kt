@@ -6,6 +6,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Review
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.type.ScoreFormat
@@ -24,6 +25,7 @@ interface NavigationManager {
     fun navigateToSocial() {}
     fun navigateToCalendar() {}
     fun navigateToReview() {}
+    fun navigateToReader(review: Review, action: ((review: Review) -> Unit)) {}
     fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {}
     fun navigateToActivityList(activityListPage: ActivityListPage, id: Int? = null) {}
     fun navigateToTextEditor(

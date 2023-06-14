@@ -135,7 +135,9 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding, ReviewViewModel>() {
             }
 
             override fun navigateToReviewReader(review: Review) {
-
+                navigation.navigateToReader(review) {
+                    viewModel.updateRatingReview(it)
+                }
             }
         }
     }

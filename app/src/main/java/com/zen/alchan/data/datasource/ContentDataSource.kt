@@ -7,6 +7,7 @@ import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ReviewRating
 import io.reactivex.rxjava3.core.Observable
 
 interface ContentDataSource {
@@ -31,4 +32,5 @@ interface ContentDataSource {
     fun getAiringSchedule(page: Int, airingAtGreater: Int, airingAtLesser: Int): Observable<ApolloResponse<AiringScheduleQuery.Data>>
 
     fun getReviews(mediaId: Int?, userId: Int?, mediaType: MediaType?, sort: ReviewSort, page: Int): Observable<ApolloResponse<ReviewQuery.Data>>
+    fun rateReview(id: Int, rating: ReviewRating): Observable<ApolloResponse<RateReviewMutation.Data>>
 }

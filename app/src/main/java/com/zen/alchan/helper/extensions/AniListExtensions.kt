@@ -1,6 +1,7 @@
 package com.zen.alchan.helper.extensions
 
 import android.content.Context
+import android.graphics.Color
 import com.zen.alchan.R
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.type.*
@@ -105,6 +106,25 @@ fun MediaSort.getStringResource(): Int {
 
 fun ActivityType.getString(): String {
     return name.convertFromSnakeCase(false)
+}
+
+fun Int.getScoreColor(): Int? {
+    val hexColor = when (this) {
+        10 -> "#d2492d"
+        20 -> "#d2642c"
+        30 -> "#d2802e"
+        40 -> "#d29d2f"
+        50 -> "#d2b72e"
+        60 -> "#d3d22e"
+        70 -> "#b8d22c"
+        80 -> "#9cd42e"
+        90 -> "#81d12d"
+        100 -> "#63d42e"
+        else -> null
+    }
+    return hexColor?.let {
+        Color.parseColor(hexColor)
+    }
 }
 
 inline fun <reified T: Enum<T>> getNonUnknownValues(): List<T> {

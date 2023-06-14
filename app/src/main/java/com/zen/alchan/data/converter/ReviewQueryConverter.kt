@@ -46,7 +46,8 @@ fun ReviewQuery.Data.convert(): Page<Review> {
                     ),
                     countryOfOrigin = it?.media?.countryOfOrigin,
                     bannerImage = it?.media?.bannerImage ?: "",
-                    format = it?.media?.format
+                    format = it?.media?.format,
+                    type = it?.media?.type
                 )
             )
         } ?: listOf()

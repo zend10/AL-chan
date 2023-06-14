@@ -15,6 +15,7 @@ import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
+import com.zen.alchan.type.ReviewRating
 import io.reactivex.rxjava3.core.Observable
 
 class DefaultContentRepository(
@@ -153,6 +154,12 @@ class DefaultContentRepository(
     ): Observable<Page<Review>> {
         return contentDataSource.getReviews(mediaId, userId, mediaType, sort, page).map {
             it.data?.convert() ?: Page()
+        }
+    }
+
+    override fun rateReview(id: Int, rating: ReviewRating): Observable<Review> {
+        return contentDataSource.rateReview(id, rating).map {
+            it.data?.convert() ?: Review()
         }
     }
 }

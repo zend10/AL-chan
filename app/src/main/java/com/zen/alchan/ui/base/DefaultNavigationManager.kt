@@ -14,6 +14,7 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.Review
 import com.zen.alchan.helper.Constant
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.utils.DeepLink
@@ -42,6 +43,7 @@ import com.zen.alchan.ui.medialist.MediaListFragment
 import com.zen.alchan.ui.profile.ProfileFragment
 import com.zen.alchan.ui.reorder.ReorderFragment
 import com.zen.alchan.ui.review.ReviewFragment
+import com.zen.alchan.ui.review.reader.ReaderFragment
 import com.zen.alchan.ui.search.SearchFragment
 import com.zen.alchan.ui.seasonal.SeasonalFragment
 import com.zen.alchan.ui.settings.SettingsFragment
@@ -114,6 +116,14 @@ class DefaultNavigationManager(
 
     override fun navigateToReview() {
         stackPage(ReviewFragment.newInstance(null, null))
+    }
+
+    override fun navigateToReader(review: Review, action: (review: Review) -> Unit) {
+        pushBrowseScreenPage(ReaderFragment.newInstance(review, object : ReaderFragment.ReaderListener {
+            override fun updateRating(review: Review) {
+                action(review)
+            }
+        }))
     }
 
     override fun navigateToActivityDetail(id: Int, action: (activity: Activity, isDeleted: Boolean) -> Unit) {
