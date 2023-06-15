@@ -9,8 +9,8 @@ android {
         applicationId "com.zen.alchan"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 100907
-        versionName "1.9.6"
+        versionCode 100908
+        versionName "1.9.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         def apikeyPropertiesFile = rootProject.file("apikey.properties")
