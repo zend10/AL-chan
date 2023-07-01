@@ -590,6 +590,7 @@ class MediaListViewModel(
                     }
                     .any { tag ->
                         mediaList.media.tags
+                            .filter { it.rank > mediaFilter.minTagPercentage }
                             .map { it.id }
                             .contains(tag)
                     }
@@ -604,6 +605,7 @@ class MediaListViewModel(
                     }
                     .any { tag ->
                         mediaList.media.tags
+                            .filter { it.rank > mediaFilter.minTagPercentage }
                             .map { it.id }
                             .contains(tag)
                     }
