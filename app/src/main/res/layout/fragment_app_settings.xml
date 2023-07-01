@@ -116,9 +116,7 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <!--    TODO: Readd back for dev -->
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
                     android:id="@+id/appSettingsRecentReviewsLayout"
                     app:layout_constraintTop_toBottomOf="@id/appSettingsCircularAvatarLayout"
                     android:layout_marginTop="@dimen/marginNormal"
@@ -252,36 +250,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <!--    TODO: Readd back for dev -->
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
-                    android:id="@+id/appSettingsStaffNameLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/display_japanese_staff_name"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginNormal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/appSettingsStaffNameText"
-                        style="?themeRegularClickableFont"
-                        android:foreground="?selectableItemBackground"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/appSettingsJapaneseMediaLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/appSettingsStaffNameLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
                     android:layout_marginTop="@dimen/marginNormal"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -577,9 +548,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--    TODO: Readd back for dev -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:visibility="gone"
                 android:id="@+id/appSettingsMemorySaverLayout"
                 app:layout_constraintTop_toBottomOf="@id/appSettingsPushNotificationsLayout"
                 android:layout_marginTop="@dimen/marginFar"
@@ -618,86 +587,6 @@
                         android:layout_height="@dimen/iconSize"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/appSettingsSocialFeatureLayout"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsHighestQualityImageLayout"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/enable_social_feature"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginNormal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/appSettingsSocialFeatureCheckBox"
-                        style="?themeRegularCheckBox"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/appSettingsShowBioAutomaticallyLayout"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsSocialFeatureLayout"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/show_bio_automatically"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginNormal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/appSettingsShowBioAutomaticallyCheckBox"
-                        style="?themeRegularCheckBox"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/appSettingsShowStatsChartAutomaticallyLayout"
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsShowBioAutomaticallyLayout"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="Show Stats chart automatically"
-                        style="?themeRegularFont"
-                        android:layout_marginEnd="@dimen/marginNormal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/appSettingsShowStatsChartAutomaticallyCheckBox"
-                        style="?themeRegularCheckBox"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/these_features_are_not_suitable_for_devices_with_limited_memory_it_is_recommended_to_uncheck_all_for_better_performance_and_stability_sorry_for_the_inconvenience"
-                    style='?themeSmallFont'
-                    app:layout_constraintTop_toBottomOf="@id/appSettingsShowStatsChartAutomaticallyLayout"
-                    android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

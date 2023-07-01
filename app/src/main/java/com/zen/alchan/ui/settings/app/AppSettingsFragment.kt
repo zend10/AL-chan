@@ -18,11 +18,6 @@ import com.zen.alchan.helper.utils.DeepLink
 
 class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettingsViewModel>() {
 
-    /**
-     * TODO:
-     * Starting tab
-     */
-
     override val viewModel: AppSettingsViewModel by viewModel()
 
     private var appThemeAdapter: AppThemeRvAdapter? = null
@@ -60,10 +55,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
 
             appSettingsRelativeDateCheckBox.setOnClickListener {
                 viewModel.updateUseRelativeDateForNextAiringEpisode(appSettingsRelativeDateCheckBox.isChecked)
-            }
-
-            appSettingsStaffNameLayout.clicks {
-                viewModel.loadStaffNamingItems()
             }
 
             appSettingsJapaneseMediaLayout.clicks {
@@ -112,18 +103,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
 
             appSettingsHighestQualityImageCheckBox.setOnClickListener {
                 viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
-            }
-
-            appSettingsSocialFeatureCheckBox.setOnClickListener {
-                viewModel.updateEnableSocialFeature(appSettingsSocialFeatureCheckBox.isChecked)
-            }
-
-            appSettingsShowBioAutomaticallyCheckBox.setOnClickListener {
-                viewModel.updateShowBioAutomatically(appSettingsShowBioAutomaticallyCheckBox.isChecked)
-            }
-
-            appSettingsShowStatsChartAutomaticallyCheckBox.setOnClickListener {
-                viewModel.updateShowStatsChartAutomatically(appSettingsShowStatsChartAutomaticallyCheckBox.isChecked)
             }
 
             appSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
@@ -196,9 +175,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.useRelativeDateForNextAiringEpisode.subscribe {
                 binding.appSettingsRelativeDateCheckBox.isChecked = it
             },
-            viewModel.japaneseStaffNaming.subscribe {
-                binding.appSettingsStaffNameText.text = it.getString()
-            },
             viewModel.japaneseMediaNaming.subscribe {
                 binding.appSettingsJapaneseMediaText.text = it.getString()
             },
@@ -235,15 +211,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.useHighestQualityImage.subscribe {
                 binding.appSettingsHighestQualityImageCheckBox.isChecked = it
             },
-            viewModel.enableSocialFeature.subscribe {
-                binding.appSettingsSocialFeatureCheckBox.isChecked = it
-            },
-            viewModel.showBioAutomatically.subscribe {
-                binding.appSettingsShowBioAutomaticallyCheckBox.isChecked = it
-            },
-            viewModel.showStatsChartAutomatically.subscribe {
-                binding.appSettingsShowStatsChartAutomaticallyCheckBox.isChecked = it
-            },
             viewModel.appThemeItems.subscribe {
                 appThemeAdapter = AppThemeRvAdapter(requireContext(), it, object : AppThemeRvAdapter.AppThemeListener {
                     override fun getSelectedAppTheme(appTheme: AppTheme) {
@@ -262,11 +229,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.allMangaListPositionItems.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     viewModel.updateIsAllMangaListPositionAtTop(data)
-                }
-            },
-            viewModel.staffNamingItems.subscribe {
-                dialog.showListDialog(it) { data, _ ->
-                    viewModel.updateJapaneseStaffNaming(data)
                 }
             },
             viewModel.mediaNamingItems.subscribe { (list, country) ->

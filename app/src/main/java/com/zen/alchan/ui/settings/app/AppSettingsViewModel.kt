@@ -46,10 +46,6 @@ class AppSettingsViewModel(
     val useRelativeDateForNextAiringEpisode: Observable<Boolean>
         get() = _useRelativeDateForNextAiringEpisode
 
-    private val _japaneseStaffNaming = BehaviorSubject.createDefault(StaffNaming.FOLLOW_ANILIST)
-    val japaneseStaffNaming: Observable<StaffNaming>
-        get() = _japaneseStaffNaming
-
     private val _japaneseMediaNaming = BehaviorSubject.createDefault(MediaNaming.FOLLOW_ANILIST)
     val japaneseMediaNaming: Observable<MediaNaming>
         get() = _japaneseMediaNaming
@@ -97,18 +93,6 @@ class AppSettingsViewModel(
     private val _useHighestQualityImage = BehaviorSubject.createDefault(false)
     val useHighestQualityImage: Observable<Boolean>
         get() = _useHighestQualityImage
-
-    private val _enableSocialFeature = BehaviorSubject.createDefault(true)
-    val enableSocialFeature: Observable<Boolean>
-        get() = _enableSocialFeature
-
-    private val _showBioAutomatically = BehaviorSubject.createDefault(true)
-    val showBioAutomatically: Observable<Boolean>
-        get() = _showBioAutomatically
-
-    private val _showStatsChartAutomatically = BehaviorSubject.createDefault(true)
-    val showStatsChartAutomatically: Observable<Boolean>
-        get() = _showStatsChartAutomatically
 
     private val _appThemeItems = PublishSubject.create<List<AppThemeItem>>()
     val appThemeItems: Observable<List<AppThemeItem>>
@@ -158,7 +142,6 @@ class AppSettingsViewModel(
                         updateIsAllMangaListPositionAtTop(appSetting.isAllMangaListPositionAtTop)
                         updateUseRelativeDateForNextAiringEpisode(appSetting.useRelativeDateForNextAiringEpisode)
 
-                        updateJapaneseStaffNaming(appSetting.japaneseStaffNaming)
                         updateJapaneseMediaNaming(appSetting.japaneseMediaNaming)
                         updateKoreanMediaNaming(appSetting.koreanMediaNaming)
                         updateChineseMediaNaming(appSetting.chineseMediaNaming)
@@ -173,9 +156,6 @@ class AppSettingsViewModel(
                         updateShowPushNotificationsInterval(appSetting.showPushNotificationsInterval)
 
                         updateUseHighestQualityImage(appSetting.useHighestQualityImage)
-                        updateEnableSocialFeature(appSetting.enableSocialFeature)
-                        updateShowBioAutomatically(appSetting.showBioAutomatically)
-                        updateShowStatsChartAutomatically(appSetting.showStatsChartAutomatically)
 
                         state = State.LOADED
                     }
@@ -244,11 +224,6 @@ class AppSettingsViewModel(
     fun updateUseRelativeDateForNextAiringEpisode(shouldUseRelativeDateForNextAiringEpisode: Boolean) {
         currentAppSetting?.useRelativeDateForNextAiringEpisode = shouldUseRelativeDateForNextAiringEpisode
         _useRelativeDateForNextAiringEpisode.onNext(shouldUseRelativeDateForNextAiringEpisode)
-    }
-
-    fun updateJapaneseStaffNaming(newJapaneseStaffNaming: StaffNaming) {
-        currentAppSetting?.japaneseStaffNaming = newJapaneseStaffNaming
-        _japaneseStaffNaming.onNext(newJapaneseStaffNaming)
     }
 
     fun updateMediaNaming(newMediaNaming: MediaNaming, country: Country) {
@@ -320,21 +295,6 @@ class AppSettingsViewModel(
         _useHighestQualityImage.onNext(shouldUseHighestQualityImage)
     }
 
-    fun updateEnableSocialFeature(shouldEnableSocialFeature: Boolean) {
-        currentAppSetting?.enableSocialFeature = shouldEnableSocialFeature
-        _enableSocialFeature.onNext(shouldEnableSocialFeature)
-    }
-
-    fun updateShowBioAutomatically(shouldShowBioAutomatically: Boolean) {
-        currentAppSetting?.showBioAutomatically = shouldShowBioAutomatically
-        _showBioAutomatically.onNext(shouldShowBioAutomatically)
-    }
-
-    fun updateShowStatsChartAutomatically(shouldShowStatsChartAutomatically: Boolean) {
-        currentAppSetting?.showStatsChartAutomatically = shouldShowStatsChartAutomatically
-        _showStatsChartAutomatically.onNext(shouldShowStatsChartAutomatically)
-    }
-
     fun loadAppThemeItems() {
         val items = ArrayList<AppThemeItem>()
         var currentHeader = ""
@@ -363,15 +323,6 @@ class AppSettingsViewModel(
             MediaType.ANIME -> _allAnimeListPositionItems.onNext(items)
             MediaType.MANGA -> _allMangaListPositionItems.onNext(items)
         }
-    }
-
-    fun loadStaffNamingItems() {
-        val items = ArrayList<ListItem<StaffNaming>>()
-        items.add(ListItem(R.string.follow_anilist_setting, StaffNaming.FOLLOW_ANILIST))
-        items.add(ListItem(R.string.use_staff_first_middle_last_name_format, StaffNaming.FIRST_MIDDLE_LAST))
-        items.add(ListItem(R.string.use_staff_last_middle_first_name_format, StaffNaming.LAST_MIDDLE_FIRST))
-        items.add(ListItem(R.string.native_name, StaffNaming.NATIVE))
-        _staffNamingItems.onNext(items)
     }
 
     fun loadMediaNamingItems(country: Country) {
