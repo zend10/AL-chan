@@ -433,7 +433,7 @@ class EditorViewModel(
     fun loadScoreValues() {
         val scoreFormat = user.mediaListOptions.scoreFormat ?: ScoreFormat.POINT_100
         val currentScore = _score.value ?: 0.0
-        val advancedScores = _advancedScores.value?.data
+        val advancedScores = if (user.mediaListOptions.animeList.advancedScoringEnabled) _advancedScores.value?.data else null
         _scoreValues.onNext(Triple(scoreFormat, currentScore, advancedScores))
     }
 

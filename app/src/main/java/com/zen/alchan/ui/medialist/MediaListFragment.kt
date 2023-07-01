@@ -187,7 +187,7 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             },
             viewModel.scoreValues.subscribe { (mediaList: MediaList, scoreFormat: ScoreFormat) ->
                 val currentScore = mediaList.score
-                val advancedScores = mediaList.advancedScores as? LinkedHashMap<String, Double>
+                val advancedScores = if (viewModel.user.mediaListOptions.animeList.advancedScoringEnabled) mediaList.advancedScores as? LinkedHashMap<String, Double> else null
                 dialog.showScoreDialog(scoreFormat, currentScore, advancedScores) { newScore, newAdvancedScores ->
                     viewModel.updateScore(mediaList, newScore, newAdvancedScores)
                 }
