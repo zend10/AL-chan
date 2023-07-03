@@ -19,6 +19,8 @@ import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
+import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.type.MediaFormat
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -341,6 +343,12 @@ class EditorViewModel(
     fun updateStatus(newStatus: MediaListStatus) {
         _status.onNext(newStatus)
 
+        if (newStatus == MediaListStatus.CURRENT) {
+            if (_startDate.value?.data == null || _startDate.value?.data?.isNull() == true) {
+                updateStartDate(TimeUtil.getCurrentFuzzyDate())
+            }
+        }
+
         if (newStatus == MediaListStatus.COMPLETED) {
             val (maxProgress, maxProgressVolume) = when (mediaType) {
                 MediaType.ANIME -> media.episodes to null
@@ -353,6 +361,16 @@ class EditorViewModel(
 
             maxProgressVolume?.let {
                 updateProgressVolume(it)
+            }
+
+            if (_startDate.value?.data == null || _startDate.value?.data?.isNull() == true) {
+                if (maxProgress == 1 || maxProgress == 1) {
+                    updateStartDate(TimeUtil.getCurrentFuzzyDate())
+                }
+            }
+
+            if (_finishDate.value?.data == null || _finishDate.value?.data?.isNull() == true) {
+                updateFinishDate(TimeUtil.getCurrentFuzzyDate())
             }
         }
     }
