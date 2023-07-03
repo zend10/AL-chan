@@ -20,6 +20,7 @@ import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.SearchItem
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.type.MediaStatus
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.ui.common.GenreRvAdapter
 import com.zen.alchan.type.MediaType
@@ -57,7 +58,7 @@ class SearchRvAdapter(
                         ImageUtil.loadImage(context, item.media.getCoverImage(appSetting), searchImage)
                         searchTitle.text = item.media.getTitle(appSetting)
                         searchMediaExtraInfoLayout.show(true)
-                        searchMediaYearText.text = item.media.startDate?.year?.toString() ?: "TBA"
+                        searchMediaYearText.text = item.media.startDate?.year?.toString() ?: if (item.media.status == MediaStatus.NOT_YET_RELEASED) "TBA" else "?"
                         searchMediaFormatText.text = item.media.getFormattedMediaFormat(true)
                         searchMediaInfoDividerIcon.show(true)
                         searchStatsLayout.show(true)
