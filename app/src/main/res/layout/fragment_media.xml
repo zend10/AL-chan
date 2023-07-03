@@ -83,6 +83,8 @@
                                 app:layout_constraintDimensionRatio="2:3"
                                 android:layout_marginTop="@dimen/marginPageBig"
                                 android:layout_marginStart="@dimen/marginPageBig"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"/>
 
