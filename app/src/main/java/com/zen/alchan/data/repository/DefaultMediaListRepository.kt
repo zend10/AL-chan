@@ -94,8 +94,16 @@ class DefaultMediaListRepository(
         return if (source == Source.CACHE) {
             val mediaListCollection = if (isViewer) {
                 when (mediaType) {
-                    MediaType.ANIME -> userManager.animeList?.data
-                    MediaType.MANGA -> userManager.mangaList?.data
+                    MediaType.ANIME -> {
+                        userIdToAnimeListCollectionMap.getOrElse(userId) {
+                            userManager.animeList?.data
+                        }
+                    }
+                    MediaType.MANGA -> {
+                        userIdToMangaListCollectionMap.getOrElse(userId) {
+                            userManager.mangaList?.data
+                        }
+                    }
                 } ?: return Observable.error(NotInStorageException())
             } else {
                 when (mediaType) {
@@ -121,9 +129,21 @@ class DefaultMediaListRepository(
                 val newMediaListCollection = it.data?.convert()
 
                 if (newMediaListCollection != null && isViewer) {
+                    var totalEntriesSize = 0
+                    newMediaListCollection.lists.forEach {
+                        totalEntriesSize += it.entries.size
+                    }
                     when (mediaType) {
-                        MediaType.ANIME -> userManager.animeList = SaveItem(newMediaListCollection)
-                        MediaType.MANGA -> userManager.mangaList = SaveItem(newMediaListCollection)
+                        MediaType.ANIME -> {
+                            userIdToAnimeListCollectionMap[userId] = newMediaListCollection
+                            if (totalEntriesSize < MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT)
+                                userManager.animeList = SaveItem(newMediaListCollection)
+                        }
+                        MediaType.MANGA -> {
+                            userIdToMangaListCollectionMap[userId] = newMediaListCollection
+                            if (totalEntriesSize < MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT)
+                                userManager.mangaList = SaveItem(newMediaListCollection)
+                        }
                     }
                 }
 
@@ -299,5 +319,9 @@ class DefaultMediaListRepository(
 
     override fun triggerReleasingToday() {
         _releasingTodayTrigger.onNext(Unit)
+    }
+
+    companion object {
+        private const val MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT = 1000 // trying to cache huge list can cause OutOfMemoryException
     }
 }

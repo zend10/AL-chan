@@ -169,23 +169,28 @@ class MediaViewModel(
                     mediaListRepository.getMediaListCollection(Source.CACHE, it.id, media.type?.getMediaType() ?: MediaType.ANIME)
                 }
                 .applyScheduler()
-                .subscribe { mediaListCollection ->
-                    var itemFound = false
+                .subscribe(
+                    { mediaListCollection ->
+                        var itemFound = false
 
-                    mediaListCollection.lists.forEach collection@{ mediaListGroup ->
-                        mediaListGroup.entries.forEach { mediaList ->
-                            if (mediaList.media.getId() == mediaId) {
-                                _addToListButtonText.onNext(mediaList.status?.getString(media.type?.getMediaType() ?: MediaType.ANIME) ?: "")
-                                itemFound = true
-                                return@collection
+                        mediaListCollection.lists.forEach collection@{ mediaListGroup ->
+                            mediaListGroup.entries.forEach { mediaList ->
+                                if (mediaList.media.getId() == mediaId) {
+                                    _addToListButtonText.onNext(mediaList.status?.getString(media.type?.getMediaType() ?: MediaType.ANIME) ?: "")
+                                    itemFound = true
+                                    return@collection
+                                }
                             }
                         }
-                    }
 
-                    if (!itemFound) {
-                        _addToListButtonText.onNext("")
+                        if (!itemFound) {
+                            _addToListButtonText.onNext("")
+                        }
+                    },
+                    {
+                        it.printStackTrace()
                     }
-                }
+                )
         )
     }
 

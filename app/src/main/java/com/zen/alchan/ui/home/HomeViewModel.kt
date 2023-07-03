@@ -96,14 +96,19 @@ class HomeViewModel(
 
                                     releasingTodayItem.sortedBy { it.timeUntilAiring }
                                 }
-                                .subscribe {
-                                    val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
-                                    val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
-                                    if (index != -1) {
-                                        currentHomeList[index] = HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY)
+                                .subscribe(
+                                    {
+                                        val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
+                                        val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
+                                        if (index != -1) {
+                                            currentHomeList[index] = HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY)
+                                        }
+                                        _homeItemList.onNext(currentHomeList)
+                                    },
+                                    {
+                                        it.printStackTrace()
                                     }
-                                    _homeItemList.onNext(currentHomeList)
-                                }
+                                )
                         )
                     }
             )
