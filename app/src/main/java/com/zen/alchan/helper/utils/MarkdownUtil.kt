@@ -6,6 +6,7 @@ import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.AlignmentSpan
 import android.text.style.CharacterStyle
+import android.text.style.StrikethroughSpan
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import com.zen.alchan.helper.Constant
@@ -21,19 +22,11 @@ import io.noties.markwon.html.TagHandler
 import io.noties.markwon.image.DefaultDownScalingMediaDecoder
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.gif.GifMediaDecoder
+import io.noties.markwon.image.network.OkHttpNetworkSchemeHandler
 import org.commonmark.node.Link
+import java.net.URLEncoder
 import java.util.*
 import java.util.regex.Pattern
-import android.text.TextPaint
-
-import android.text.Spanned
-
-import android.text.Spannable
-import android.text.style.StrikethroughSpan
-
-import io.noties.markwon.AbstractMarkwonPlugin
-import java.net.URLEncoder
-
 
 typealias MarkdownSetup = Markwon
 
@@ -45,6 +38,10 @@ object MarkdownUtil {
                 ImagesPlugin.create { plugin ->
                     plugin.defaultMediaDecoder(DefaultDownScalingMediaDecoder.create(maxWidth, 0))
                     plugin.addMediaDecoder(GifMediaDecoder.create())
+                    plugin.addSchemeHandler(OkHttpNetworkSchemeHandler.create())
+                    plugin.errorHandler { url, throwable ->
+                        null
+                    }
                 }
             )
             .usePlugin(StrikethroughPlugin.create())
@@ -63,6 +60,9 @@ object MarkdownUtil {
                     }
                     registry.require(CorePlugin::class.java) {
                         it.addOnTextAddedListener(MentionTextAddedListener())
+                    }
+                    registry.require(ImagesPlugin::class.java) {
+                        it.addSchemeHandler(OkHttpNetworkSchemeHandler.create())
                     }
                 }
 

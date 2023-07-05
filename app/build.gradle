@@ -133,7 +133,7 @@ dependencies {
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.27'
     implementation 'com.github.zend10:OverlapImageListView:v1.0.1'
 
     def markwon_version = "4.6.2"
