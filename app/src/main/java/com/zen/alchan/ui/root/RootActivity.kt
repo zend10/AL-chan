@@ -1,6 +1,9 @@
 package com.zen.alchan.ui.root
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
@@ -31,6 +34,7 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
         ImageUtil.init(this)
 
         handleDeepLink(intent)
+        requestNotificationPermission()
     }
 
     override fun setUpObserver() {
@@ -73,6 +77,17 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
             deepLink.uri != null -> {
                 _incomingDeepLink.onNext(deepLink)
                 intent.data = null
+            }
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
+            val isPermissionDenied = checkSelfPermission(notificationPermission) != PackageManager.PERMISSION_GRANTED
+            val isNeverDeniedOrCurrentlyGranted = !shouldShowRequestPermissionRationale(notificationPermission)
+            if (isPermissionDenied && isNeverDeniedOrCurrentlyGranted) {
+                requestPermissions(arrayOf(notificationPermission), 0)
             }
         }
     }
