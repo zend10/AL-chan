@@ -15,7 +15,6 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
 import coil.load
-import coil.request.Disposable
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -78,7 +77,6 @@ object ImageUtil {
 
         urls.forEach {
             val loader = ImageLoader(context)
-            var disposable: Disposable? = null
 
             val request = ImageRequest.Builder(context)
                 .data(it)
@@ -88,13 +86,11 @@ object ImageUtil {
 
                     if (bitmaps.size == overlapImageListView.circleCount) {
                         overlapImageListView.imageList = bitmaps
-                        disposable?.dispose()
-                        disposable = null
                     }
                 }
                 .build()
 
-            disposable = loader.enqueue(request)
+            loader.enqueue(request)
         }
     }
 }
