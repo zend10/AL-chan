@@ -30,7 +30,7 @@ object TimeUtil {
         val calendar = Calendar.getInstance()
         return FuzzyDate(
             year = calendar.get(Calendar.YEAR),
-            month = calendar.get(Calendar.MONTH + 1),
+            month = calendar.get(Calendar.MONTH) + 1,
             day = calendar.get(Calendar.DAY_OF_MONTH)
         )
     }
