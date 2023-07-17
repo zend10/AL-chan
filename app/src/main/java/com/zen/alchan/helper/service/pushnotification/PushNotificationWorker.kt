@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.WorkerParameters
 import androidx.work.rxjava3.RxWorker
@@ -137,7 +136,8 @@ class PushNotificationWorker(private val context: Context, workerParameters: Wor
         notificationIntent.data = DeepLink.generateNotifications().uri
         notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-        val notificationPendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
+        val notificationPendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notif)
@@ -157,13 +157,10 @@ class PushNotificationWorker(private val context: Context, workerParameters: Wor
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
 
-        with(NotificationManagerCompat.from(context)) {
-            notify(id, builder.build())
-        }
+        notificationManager.notify(id, builder.build())
     }
 
     companion object {

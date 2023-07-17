@@ -97,10 +97,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 viewModel.updateMergePushNotifications(appSettingsMergePushNotificationsCheckBox.isChecked)
             }
 
-            appSettingsShowPushNotificationsEveryHourLayout.clicks {
-                viewModel.loadPushNotificationsIntervalItems()
-            }
-
             appSettingsHighestQualityImageCheckBox.setOnClickListener {
                 viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
             }
@@ -205,9 +201,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.mergePushNotifications.subscribe {
                 binding.appSettingsMergePushNotificationsCheckBox.isChecked = it
             },
-            viewModel.showPushNotificationsInterval.subscribe {
-                binding.appSettingsShowPushNotificationsEveryHourText.text = it.showUnit(requireContext(), R.plurals.hour)
-            },
             viewModel.useHighestQualityImage.subscribe {
                 binding.appSettingsHighestQualityImageCheckBox.isChecked = it
             },
@@ -234,11 +227,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             viewModel.mediaNamingItems.subscribe { (list, country) ->
                 dialog.showListDialog(list) { data, _ ->
                     viewModel.updateMediaNaming(data, country)
-                }
-            },
-            viewModel.pushNotificationsIntervalItems.subscribe {
-                dialog.showListDialog(it) { data, _ ->
-                    viewModel.updateShowPushNotificationsInterval(data)
                 }
             }
         )

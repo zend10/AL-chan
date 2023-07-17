@@ -11,7 +11,7 @@ data class AppSetting(
     var isAllAnimeListPositionAtTop: Boolean = true,
     var isAllMangaListPositionAtTop: Boolean = true,
     var useRelativeDateForNextAiringEpisode: Boolean = false,
-    var japaneseStaffNaming: StaffNaming = StaffNaming.FOLLOW_ANILIST,
+    var japaneseStaffNaming: StaffNaming = StaffNaming.FOLLOW_ANILIST, // not used anymore
     var japaneseMediaNaming: MediaNaming = MediaNaming.FOLLOW_ANILIST,
     var koreanMediaNaming: MediaNaming = MediaNaming.FOLLOW_ANILIST,
     var chineseMediaNaming: MediaNaming = MediaNaming.FOLLOW_ANILIST,
@@ -22,9 +22,9 @@ data class AppSetting(
     var sendFollowsPushNotifications: Boolean = true,
     var sendRelationsPushNotifications: Boolean = true,
     var mergePushNotifications: Boolean = false,
-    var showPushNotificationsInterval: Int = 1,
+    var showPushNotificationsInterval: Int = 1, // not used anymore
     var useHighestQualityImage: Boolean = false,
-    var enableSocialFeature: Boolean = true,
-    var showBioAutomatically: Boolean = true,
-    var showStatsChartAutomatically: Boolean = true,
+    var enableSocialFeature: Boolean = true, // not used anymore
+    var showBioAutomatically: Boolean = true, // not used anymore
+    var showStatsChartAutomatically: Boolean = true, // not used anymore
 )

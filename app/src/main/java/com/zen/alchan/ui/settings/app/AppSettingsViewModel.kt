@@ -86,10 +86,6 @@ class AppSettingsViewModel(
     val mergePushNotifications: Observable<Boolean>
         get() = _mergePushNotifications
 
-    private val _showPushNotificationsInterval = BehaviorSubject.createDefault(1)
-    val showPushNotificationsInterval: Observable<Int>
-        get() = _showPushNotificationsInterval
-
     private val _useHighestQualityImage = BehaviorSubject.createDefault(false)
     val useHighestQualityImage: Observable<Boolean>
         get() = _useHighestQualityImage
@@ -113,10 +109,6 @@ class AppSettingsViewModel(
     private val _mediaNamingItems = PublishSubject.create<Pair<List<ListItem<MediaNaming>>, Country>>()
     val mediaNamingItems: Observable<Pair<List<ListItem<MediaNaming>>, Country>>
         get() = _mediaNamingItems
-
-    private val _pushNotificationsIntervalItems = PublishSubject.create<List<ListItem<Int>>>()
-    val pushNotificationsIntervalItems: Observable<List<ListItem<Int>>>
-        get() = _pushNotificationsIntervalItems
 
     private var viewer: User? = null
     private var currentAppSetting: AppSetting? = null
@@ -153,7 +145,6 @@ class AppSettingsViewModel(
                         updateSendFollowsPushNotifications(appSetting.sendFollowsPushNotifications)
                         updateSendRelationsPushNotifications(appSetting.sendRelationsPushNotifications)
                         updateMergePushNotifications(appSetting.mergePushNotifications)
-                        updateShowPushNotificationsInterval(appSetting.showPushNotificationsInterval)
 
                         updateUseHighestQualityImage(appSetting.useHighestQualityImage)
 
@@ -168,18 +159,7 @@ class AppSettingsViewModel(
             userRepository.setAppSetting(currentAppSetting)
                 .applyScheduler()
                 .subscribe{
-                    currentAppSetting?.let {
-                        if (it.sendFollowsPushNotifications ||
-                            it.sendRelationsPushNotifications ||
-                            it.sendForumPushNotifications ||
-                            it.sendActivityPushNotifications ||
-                            it.sendAiringPushNotifications
-                        ) {
-                            pushNotificationService.startPushNotification()
-                        } else {
-                            pushNotificationService.stopPushNotification()
-                        }
-                    }
+                    pushNotificationService.startPushNotification()
                     _success.onNext(R.string.settings_saved)
                 }
         )
@@ -285,11 +265,6 @@ class AppSettingsViewModel(
         _mergePushNotifications.onNext(shouldMergePushNotifications)
     }
 
-    fun updateShowPushNotificationsInterval(newInterval: Int) {
-        currentAppSetting?.showPushNotificationsInterval = newInterval
-        _showPushNotificationsInterval.onNext(newInterval)
-    }
-
     fun updateUseHighestQualityImage(shouldUseHighestQualityImage: Boolean) {
         currentAppSetting?.useHighestQualityImage = shouldUseHighestQualityImage
         _useHighestQualityImage.onNext(shouldUseHighestQualityImage)
@@ -332,17 +307,5 @@ class AppSettingsViewModel(
         items.add(ListItem(R.string.use_media_romaji_name_format, MediaNaming.ROMAJI))
         items.add(ListItem(R.string.use_media_native_name_format, MediaNaming.NATIVE))
         _mediaNamingItems.onNext(items to country)
-    }
-
-    fun loadPushNotificationsIntervalItems() {
-        val items = ArrayList<ListItem<Int>>()
-        (1..24).forEach {
-            if (it == 1) {
-                items.add(ListItem("$it {0}", listOf(R.string.hour), it))
-            } else {
-                items.add(ListItem("$it {0}", listOf(R.string.hours), it))
-            }
-        }
-        _pushNotificationsIntervalItems.onNext(items)
     }
 }

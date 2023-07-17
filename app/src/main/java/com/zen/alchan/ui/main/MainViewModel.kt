@@ -43,16 +43,7 @@ class MainViewModel(
                 userRepository.getAppSetting()
                     .applyScheduler()
                     .subscribe {
-                        if (it.sendFollowsPushNotifications ||
-                            it.sendRelationsPushNotifications ||
-                            it.sendForumPushNotifications ||
-                            it.sendActivityPushNotifications ||
-                            it.sendAiringPushNotifications
-                        ) {
-                            pushNotificationService.startPushNotification()
-                        } else {
-                            pushNotificationService.stopPushNotification()
-                        }
+                        pushNotificationService.startPushNotification()
                     }
             )
         }
