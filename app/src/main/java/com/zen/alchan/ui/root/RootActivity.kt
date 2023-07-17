@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
@@ -25,6 +27,21 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
 
     override fun generateViewBinding(): ActivityRootBinding {
         return ActivityRootBinding.inflate(layoutInflater)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (navigationManager.shouldPopFromBrowseScreen()) {
+                    navigationManager.popBrowseScreenPage()
+                } else if (navigationManager.hasBackStack()) {
+                    navigationManager.popBackStack()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     override fun setUpLayout() {
@@ -90,13 +107,5 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
                 requestPermissions(arrayOf(notificationPermission), 0)
             }
         }
-    }
-
-    override fun onBackPressed() {
-        if (navigationManager.shouldPopFromBrowseScreen()) {
-            navigationManager.popBrowseScreenPage()
-            return
-        }
-        super.onBackPressed()
     }
 }

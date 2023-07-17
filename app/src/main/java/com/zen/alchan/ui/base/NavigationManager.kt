@@ -92,6 +92,8 @@ interface NavigationManager {
     fun popBrowseScreenPage() {}
     fun shouldPopFromBrowseScreen(): Boolean { return false }
     fun closeBrowseScreen() {}
+    fun hasBackStack(): Boolean { return false }
+    fun popBackStack() {}
 
     enum class Url {
         ANILIST_WEBSITE,

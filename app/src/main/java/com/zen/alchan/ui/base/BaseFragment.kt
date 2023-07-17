@@ -1,9 +1,7 @@
 package com.zen.alchan.ui.base
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import androidx.window.layout.WindowMetricsCalculator
 import com.zen.alchan.R
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.launch.LaunchActivity
@@ -63,15 +62,10 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        screenWidth = displayMetrics.widthPixels
+        val windowMetrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(parentActivity)
+        screenWidth = windowMetrics.bounds.width()
 
         setUpLayout()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         setUpInsets()
     }
 
@@ -115,7 +109,7 @@ abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel<*>> : Fragment(),
     }
 
     protected fun goBack() {
-        parentActivity.onBackPressed()
+        parentActivity.onBackPressedDispatcher.onBackPressed()
     }
 
     protected fun setUpToolbar(

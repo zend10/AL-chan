@@ -416,6 +416,14 @@ class DefaultNavigationManager(
         }
     }
 
+    override fun hasBackStack(): Boolean {
+        return fragmentManager.backStackEntryCount != 0
+    }
+
+    override fun popBackStack() {
+        fragmentManager.popBackStack()
+    }
+
     private fun swapPage(fragment: Fragment, skipBackStack: Boolean = false, disableAnimation: Boolean = false) {
         val fragmentTransaction = fragmentManager.beginTransaction()
         if (!disableAnimation) {
