@@ -1,142 +1,170 @@
 package com.zen.alchan.ui.settings.notifications
 
-
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-
 import com.zen.alchan.R
-import com.zen.alchan.data.response.NotificationOption
-import com.zen.alchan.helper.doOnApplyWindowInsets
-import com.zen.alchan.helper.enums.ResponseStatus
-import com.zen.alchan.helper.updateBottomPadding
-import com.zen.alchan.helper.utils.DialogUtility
-import kotlinx.android.synthetic.main.fragment_notifications_settings.*
-import kotlinx.android.synthetic.main.layout_loading.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import com.zen.alchan.databinding.FragmentNotificationsSettingsBinding
+import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.ui.base.BaseFragment
+import io.reactivex.rxjava3.core.Observable
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.NotificationType
+import com.zen.alchan.type.NotificationType
 
-/**
- * A simple [Fragment] subclass.
- */
-class NotificationsSettingsFragment : Fragment() {
+class NotificationsSettingsFragment : BaseFragment<FragmentNotificationsSettingsBinding, NotificationsSettingsViewModel>() {
 
-    private val viewModel by viewModel<NotificationsSettingsViewModel>()
+    override val viewModel: NotificationsSettingsViewModel by viewModel()
 
-    private lateinit var itemSave: MenuItem
-    private lateinit var checkBoxList: HashMap<CheckBox, NotificationType>
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications_settings, container, false)
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentNotificationsSettingsBinding {
+        return FragmentNotificationsSettingsBinding.inflate(inflater, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun setUpLayout() {
+        binding.apply {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.notifications_settings))
 
-        toolbarLayout.apply {
-            title = getString(R.string.notifications_settings)
-            navigationIcon = ContextCompat.getDrawable(activity!!, R.drawable.ic_left)
-            setNavigationOnClickListener { activity?.onBackPressed() }
+            notificationsSettingsSubscribeActivityCreatedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.ACTIVITY_REPLY, notificationsSettingsSubscribeActivityCreatedCheckBox.isChecked)
+            }
 
-            inflateMenu(R.menu.menu_save)
-            itemSave = menu.findItem(R.id.itemSave)
+            notificationsSettingsSubscribeActivityRepliedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.ACTIVITY_REPLY_SUBSCRIBED, notificationsSettingsSubscribeActivityRepliedCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneFollowCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.FOLLOWING, notificationsSettingsSomeoneFollowCheckBox.isChecked)
+            }
+
+            notificationsSettingsReceiveMessageCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.ACTIVITY_MESSAGE, notificationsSettingsReceiveMessageCheckBox.isChecked)
+            }
+
+            notificationsSettingsMentionedInActivityCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.ACTIVITY_MENTION, notificationsSettingsMentionedInActivityCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneLikesActivityCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.ACTIVITY_LIKE, notificationsSettingsSomeoneLikesActivityCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneLikesActivityReplyCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.ACTIVITY_REPLY_LIKE, notificationsSettingsSomeoneLikesActivityReplyCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneRepliesForumCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.THREAD_COMMENT_REPLY, notificationsSettingsSomeoneRepliesForumCheckBox.isChecked)
+            }
+
+            notificationsSettingsMentionedInForumCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.THREAD_COMMENT_MENTION, notificationsSettingsMentionedInForumCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneLikesForumCommentCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.THREAD_COMMENT_LIKE, notificationsSettingsSomeoneLikesForumCommentCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneRepliesForumSubscribedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.THREAD_SUBSCRIBED, notificationsSettingsSomeoneRepliesForumSubscribedCheckBox.isChecked)
+            }
+
+            notificationsSettingsSomeoneLikesForumThreadCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.THREAD_LIKE, notificationsSettingsSomeoneLikesForumThreadCheckBox.isChecked)
+            }
+
+            notificationsSettingsEntryCreatedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.RELATED_MEDIA_ADDITION, notificationsSettingsEntryCreatedCheckBox.isChecked)
+            }
+
+            notificationsSettingsDataChangedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.MEDIA_DATA_CHANGE, notificationsSettingsDataChangedCheckBox.isChecked)
+            }
+
+            notificationsSettingsEntryMergedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.MEDIA_MERGE, notificationsSettingsEntryMergedCheckBox.isChecked)
+            }
+
+            notificationsSettingsEntryDeletedCheckBox.setOnClickListener {
+                viewModel.updateNotificationOption(NotificationType.MEDIA_DELETION, notificationsSettingsEntryDeletedCheckBox.isChecked)
+            }
+
+            notificationsSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
+            notificationsSettingsSaveLayout.positiveButton.clicks {
+                viewModel.saveNotificationsSettings()
+            }
         }
+    }
 
-        notificationsSettingsLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateBottomPadding(windowInsets, initialPadding)
-        }
+    override fun setUpInsets() {
+        binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.notificationSettingsLayout.applySidePaddingInsets()
+        binding.notificationsSettingsSaveLayout.oneButtonLayout.applyBottomPaddingInsets()
+    }
 
-        checkBoxList = hashMapOf(
-            Pair(activityReplyCheckBox, NotificationType.ACTIVITY_REPLY),
-            Pair(activityReplySubscribedCheckBox, NotificationType.ACTIVITY_REPLY_SUBSCRIBED),
-            Pair(followingCheckBox, NotificationType.FOLLOWING),
-            Pair(activityMessageCheckBox, NotificationType.ACTIVITY_MESSAGE),
-            Pair(activityMentionCheckBox, NotificationType.ACTIVITY_MENTION),
-            Pair(activityLikeCheckBox, NotificationType.ACTIVITY_LIKE),
-            Pair(activityReplyLikeCheckBox, NotificationType.ACTIVITY_REPLY_LIKE),
-            Pair(threadCommentReplyCheckBox, NotificationType.THREAD_COMMENT_REPLY),
-            Pair(threadCommentMentionCheckBox, NotificationType.THREAD_COMMENT_MENTION),
-            Pair(threadCommentLikeCheckBox, NotificationType.THREAD_COMMENT_LIKE),
-            Pair(threadSubscribedCheckBox, NotificationType.THREAD_SUBSCRIBED),
-            Pair(threadLikeCheckBox, NotificationType.THREAD_LIKE)
+    override fun setUpObserver() {
+        disposables.addAll(
+            viewModel.loading.subscribe {
+                binding.loadingLayout.loadingLayout.show(it)
+            },
+            Observable.merge(viewModel.success, viewModel.error).subscribe {
+                dialog.showToast(it)
+            },
+            viewModel.activityReply.subscribe {
+                binding.notificationsSettingsSubscribeActivityCreatedCheckBox.isChecked = it
+            },
+            viewModel.activityReplySubscribed.subscribe {
+                binding.notificationsSettingsSubscribeActivityRepliedCheckBox.isChecked = it
+            },
+            viewModel.following.subscribe {
+                binding.notificationsSettingsSomeoneFollowCheckBox.isChecked = it
+            },
+            viewModel.activityMessage.subscribe {
+                binding.notificationsSettingsReceiveMessageCheckBox.isChecked = it
+            },
+            viewModel.activityMention.subscribe {
+                binding.notificationsSettingsMentionedInActivityCheckBox.isChecked = it
+            },
+            viewModel.activityLike.subscribe {
+                binding.notificationsSettingsSomeoneLikesActivityCheckBox.isChecked = it
+            },
+            viewModel.activityReplyLike.subscribe {
+                binding.notificationsSettingsSomeoneLikesActivityReplyCheckBox.isChecked = it
+            },
+            viewModel.threadCommentReply.subscribe {
+                binding.notificationsSettingsSomeoneRepliesForumCheckBox.isChecked = it
+            },
+            viewModel.threadCommentMention.subscribe {
+                binding.notificationsSettingsMentionedInForumCheckBox.isChecked = it
+            },
+            viewModel.threadCommentLike.subscribe {
+                binding.notificationsSettingsSomeoneLikesForumCommentCheckBox.isChecked = it
+            },
+            viewModel.threadSubscribed.subscribe {
+                binding.notificationsSettingsSomeoneRepliesForumSubscribedCheckBox.isChecked = it
+            },
+            viewModel.threadLike.subscribe {
+                binding.notificationsSettingsSomeoneLikesForumThreadCheckBox.isChecked = it
+            },
+            viewModel.relatedMediaAddition.subscribe {
+                binding.notificationsSettingsEntryCreatedCheckBox.isChecked = it
+            },
+            viewModel.mediaDataChange.subscribe {
+                binding.notificationsSettingsDataChangedCheckBox.isChecked = it
+            },
+            viewModel.mediaMerge.subscribe {
+                binding.notificationsSettingsEntryMergedCheckBox.isChecked = it
+            },
+            viewModel.mediaDeletion.subscribe {
+                binding.notificationsSettingsEntryDeletedCheckBox.isChecked = it
+            }
         )
 
-        setupObserver()
-        initLayout()
+        viewModel.loadData(Unit)
     }
 
-    private fun setupObserver() {
-        viewModel.viewerData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                initLayout()
-            }
-        })
-
-        viewModel.updateAniListSettingsResponse.observe(viewLifecycleOwner, Observer {
-            when (it.responseStatus) {
-                ResponseStatus.LOADING -> {
-                    loadingLayout.visibility = View.VISIBLE
-                }
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, R.string.settings_saved)
-                }
-                ResponseStatus.ERROR -> {
-                    loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, it.message)
-                }
-            }
-        })
-
-        viewModel.initData()
-    }
-
-    private fun initLayout() {
-        val options = viewModel.viewerData.value?.options?.notificationOptions
-
-        /*
-            Automatically subscribe me to activity I create -> ACTIVITY_REPLY
-            Automatically subscribe me to activity I reply to -> ACTIVITY_REPLY_SUBSCRIBED
-
-            When someone follows me -> FOLLOWING
-            When I receive message -> ACTIVITY_MESSAGE
-            When I am @ mentioned in an activity or activity reply -> ACTIVITY_MENTION
-            When someone likes my activity -> ACTIVITY_LIKE
-            When someone likes my activity reply -> ACTIVITY_REPLY_LIKE
-            When someone replies to my forum comment -> THREAD_COMMENT_REPLY
-            When I am @ mentioned in a forum comment -> THREAD_COMMENT_MENTION
-            When someone likes my forum comment -> THREAD_COMMENT_LIKE
-            When someone replies to a forum thread I'm subscribed to -> THREAD_SUBSCRIBED
-            When someone likes my forum thread -> THREAD_LIKE
-
-            AIRING and RELATED_MEDIA_ADDITION are not in AniList notification settings
-         */
-
-        if (!viewModel.isInit) {
-            checkBoxList.forEach {
-                it.key.isChecked = options?.find { option -> option.type == it.value }?.enabled == true
-            }
-            viewModel.isInit = true
-        }
-
-        itemSave.setOnMenuItemClickListener {
-            val optionList = ArrayList<NotificationOption>()
-            checkBoxList.forEach {
-                optionList.add(NotificationOption(it.value, it.key.isChecked))
-            }
-            viewModel.updateNotificationsSettings(optionList)
-            true
-        }
+    companion object {
+        @JvmStatic
+        fun newInstance() = NotificationsSettingsFragment()
     }
 }

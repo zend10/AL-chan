@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?themeBackgroundColor"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.texteditor.TextEditorFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textEditorToolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="@dimen/marginClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorClose"
+            app:srcCompat="@drawable/ic_delete"
+            app:layout_constraintTop_toTopOf="@id/textEditorPostButton"
+            app:layout_constraintBottom_toBottomOf="@id/textEditorPostButton"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/marginClose"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textEditorPostButton"
+            android:text="@string/post"
+            style="?themeRegularClickableBoldFont"
+            android:textSize="@dimen/fontBig"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/marginClose"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textEditorPreviewButton"
+            android:text="@string/preview"
+            style="?themeRegularClickableBoldFont"
+            android:textSize="@dimen/fontBig"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textEditorPostButton"
+            android:layout_marginEnd="@dimen/marginSmall"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/divider"
+            app:layout_constraintTop_toBottomOf="@id/textEditorPostButton"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lineWidth"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        app:layout_constraintTop_toBottomOf="@id/textEditorToolbar"
+        app:layout_constraintBottom_toTopOf="@id/textEditorFormatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditorEditText"
+            android:inputType="textCapSentences|textMultiLine"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/marginNormal"
+            android:hint="@string/type_here"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/textEditorFormatLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="@dimen/elevationNormal"
+        app:flexWrap="wrap"
+        android:background="?themeCardColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatBold"
+            app:srcCompat="@drawable/ic_format_bold"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatItalic"
+            android:src="@drawable/ic_format_italic"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatStrikeThrough"
+            android:src="@drawable/ic_strikethrough_s"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatSpoiler"
+            android:src="@drawable/ic_visibility_off"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatLink"
+            android:src="@drawable/ic_insert_link"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatImage"
+            android:src="@drawable/ic_image"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatYoutube"
+            android:src="@drawable/ic_play_button"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatVideo"
+            android:src="@drawable/ic_videocam"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatOrderedList"
+            android:src="@drawable/ic_numbered_list"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatUnorderedList"
+            android:src="@drawable/ic_format_list_bulleted"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatHeader"
+            android:src="@drawable/ic_title"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatCenter"
+            android:src="@drawable/ic_format_align_center"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatQuote"
+            android:src="@drawable/ic_format_quote"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textEditorFormatCode"
+            android:src="@drawable/ic_code"
+            android:padding="@dimen/marginNormal"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <include layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

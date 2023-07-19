@@ -1,82 +1,41 @@
 package com.zen.alchan.data.datasource
 
-import ViewerQuery
-import com.apollographql.apollo.api.Response
-import com.zen.alchan.data.response.MediaListOptions
-import com.zen.alchan.data.response.MediaListTypeOptions
-import com.zen.alchan.data.response.NotificationOption
-import io.reactivex.Completable
-import io.reactivex.Observable
-import type.MediaType
-import type.NotificationType
-import type.ScoreFormat
-import type.UserTitleLanguage
+import com.apollographql.apollo3.api.ApolloResponse
+import com.zen.alchan.*
+import com.zen.alchan.data.response.anilist.ListActivityOption
+import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
+import com.zen.alchan.helper.enums.Favorite
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Observable
 
 interface UserDataSource {
-    fun checkSession(): Observable<Response<SessionQuery.Data>>
-
-    fun getViewerData(): Observable<Response<ViewerQuery.Data>>
-
+    fun getViewerQuery(sort: List<UserStatisticsSort>): Observable<ApolloResponse<ViewerQuery.Data>>
+    fun getFollowingAndFollowersCount(userId: Int): Observable<ApolloResponse<FollowingAndFollowersCountQuery.Data>>
+    fun getFollowing(userId: Int, page: Int): Observable<ApolloResponse<FollowingQuery.Data>>
+    fun getFollowers(userId: Int, page: Int): Observable<ApolloResponse<FollowersQuery.Data>>
+    fun toggleFollow(userId: Int): Observable<ApolloResponse<ToggleFollowMutation.Data>>
+    fun getUserStatistics(userId: Int, sort: List<UserStatisticsSort>): Observable<ApolloResponse<UserStatisticsQuery.Data>>
+    fun getFavorites(userId: Int, page: Int): Observable<ApolloResponse<UserFavouritesQuery.Data>>
+    fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Observable<ApolloResponse<UpdateFavouriteOrderMutation.Data>>
+    fun toggleFavorite(animeId: Int?, mangaId: Int?, characterId: Int?, staffId: Int?, studioId: Int?): Observable<ApolloResponse<ToggleFavouriteMutation.Data>>
     fun updateAniListSettings(
         titleLanguage: UserTitleLanguage,
-        adultContent: Boolean,
+        staffNameLanguage: UserStaffNameLanguage,
+        activityMergeTime: Int,
+        displayAdultContent: Boolean,
         airingNotifications: Boolean
-    ): Observable<Response<AniListSettingsMutation.Data>>
-
+    ): Observable<ApolloResponse<UpdateUserMutation.Data>>
     fun updateListSettings(
         scoreFormat: ScoreFormat,
         rowOrder: String,
         animeListOptions: MediaListTypeOptions,
-        mangaListOptions: MediaListTypeOptions
-    ): Observable<Response<ListSettingsMutation.Data>>
-
+        mangaListOptions: MediaListTypeOptions,
+        disabledListActivity: List<ListActivityOption>
+    ): Observable<ApolloResponse<UpdateUserMutation.Data>>
     fun updateNotificationsSettings(
         notificationOptions: List<NotificationOption>
-    ): Observable<Response<AniListSettingsMutation.Data>>
-
-    fun toggleFavourite(
-        animeId: Int?,
-        mangaId: Int?,
-        characterId: Int?,
-        staffId: Int?,
-        studioId: Int?
-    ): Completable
-
-    fun getFavoriteAnime(id: Int, page: Int): Observable<Response<FavoritesAnimeQuery.Data>>
-    fun getFavoriteManga(id: Int, page: Int): Observable<Response<FavoritesMangaQuery.Data>>
-    fun getFavoriteCharacters(id: Int, page: Int): Observable<Response<FavoritesCharactersQuery.Data>>
-    fun getFavoriteStaffs(id: Int, page: Int): Observable<Response<FavoritesStaffsQuery.Data>>
-    fun getFavoriteStudios(id: Int, page: Int): Observable<Response<FavoritesStudiosQuery.Data>>
-
-    fun reorderFavorites(
-        animeIds: List<Int>?,
-        mangaIds: List<Int>?,
-        characterIds: List<Int>?,
-        staffIds: List<Int>?,
-        studioIds: List<Int>?,
-        animeOrder: List<Int>?,
-        mangaOrder: List<Int>?,
-        characterOrder: List<Int>?,
-        staffOrder: List<Int>?,
-        studioOrder: List<Int>?
-    ): Completable
-
-    fun getReviews(userId: Int, page: Int): Observable<Response<UserReviewsQuery.Data>>
-
-    fun getStatistics(userId: Int): Observable<Response<UserStatisticsQuery.Data>>
-
-    fun getFollowers(userId: Int, page: Int): Observable<Response<UserFollowersQuery.Data>>
-    fun getFollowings(userId: Int, page: Int): Observable<Response<UserFollowingsQuery.Data>>
-
-    fun toggleFollow(userId: Int): Observable<Response<ToggleFollowMutation.Data>>
-
-    fun getUserData(id: Int): Observable<Response<UserQuery.Data>>
-    fun getUserMediaCollection(userId: Int, type: MediaType): Observable<Response<UserMediaListCollectionQuery.Data>>
-
-    fun getNotification(page: Int, typeIn: List<NotificationType>?, reset: Boolean): Observable<Response<NotificationsQuery.Data>>
-    fun getNotificationCount(): Observable<Response<ViewerNotificationCountQuery.Data>>
-
-    fun getUserScores(currentUserId: Int, otherUserId: Int, type: MediaType): Observable<Response<MediaListScoreCollectionQuery.Data>>
-
-    fun sendFirebaseToken(token: String)
+    ): Observable<ApolloResponse<UpdateUserMutation.Data>>
+    fun getNotifications(page: Int, typeIn: List<NotificationType>?, resetNotificationCount: Boolean): Observable<ApolloResponse<NotificationsQuery.Data>>
+    fun getUnreadNotificationCount(): Observable<ApolloResponse<UnreadNotificationCountQuery.Data>>
 }

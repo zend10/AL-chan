@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/marginPageBig"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemTitle"
+        android:text="@string/bio"
+        style="?themeRegularBoldFont"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        app:layout_constraintTop_toBottomOf="@id/itemTitle"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/itemText"
+            style="?themeRegularFont"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@id/itemGradientLayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:visibility="gone"
+            android:id="@+id/itemGradientLayer"
+            style="?themeRegularFont"
+            android:background="@drawable/background_gradient_two"
+            android:clickable="false"
+            android:focusable="false"
+            android:maxLines="5"
+            android:lines="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="gone"
+            android:id="@+id/itemArrowIcon"
+            android:foreground="?selectableItemBackground"
+            app:srcCompat="@drawable/ic_chevron_down"
+            android:layout_below="@id/itemText"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"/>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

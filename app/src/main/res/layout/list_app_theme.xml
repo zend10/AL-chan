@@ -1,47 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:padding="@dimen/marginNormal"
-    android:gravity="center_vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/appThemeLayout"
+    android:paddingHorizontal="@dimen/marginPageBig"
+    android:paddingVertical="@dimen/marginSmall"
+    android:foreground="?selectableItemBackground"
+    android:background="?themeCardColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/themeName"
+        android:id="@+id/appThemeText"
         style="?themeRegularFont"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/appThemePrimaryColor"
         android:layout_marginEnd="@dimen/marginNormal"
-        android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/primaryColorItem"
+        android:id="@+id/appThemePrimaryColor"
         app:strokeColor="?themeContentColor"
         app:strokeWidth="@dimen/lineWidth"
-        app:cardCornerRadius="12dp"
-        android:padding="@dimen/iconPadding"
-        android:layout_width="@dimen/iconSize"
-        android:layout_height="@dimen/iconSize"/>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/secondaryColorItem"
-        app:strokeColor="?themeContentColor"
-        app:strokeWidth="@dimen/lineWidth"
-        app:cardCornerRadius="12dp"
-        android:padding="@dimen/iconPadding"
-        android:layout_marginStart="@dimen/marginNormal"
+        app:cardCornerRadius="@dimen/marginNormal"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toStartOf="@id/appThemeSecondaryColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="@dimen/marginNormal"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"/>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/negativeColorItem"
+        android:id="@+id/appThemeSecondaryColor"
         app:strokeColor="?themeContentColor"
         app:strokeWidth="@dimen/lineWidth"
-        app:cardCornerRadius="12dp"
-        android:padding="@dimen/iconPadding"
+        app:cardCornerRadius="@dimen/marginNormal"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toStartOf="@id/appThemeNegativeColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/marginNormal"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/appThemeNegativeColor"
+        app:strokeColor="?themeContentColor"
+        app:strokeWidth="@dimen/lineWidth"
+        app:cardCornerRadius="@dimen/marginNormal"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="@dimen/iconSize"
+        android:layout_height="@dimen/iconSize"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

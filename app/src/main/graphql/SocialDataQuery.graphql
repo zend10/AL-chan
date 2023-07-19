@@ -1,0 +1,164 @@
+query SocialDataQuery {
+  friendsActivities: Page(page:1, perPage:10) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    activities(isFollowing:true, type_not:MESSAGE, sort:[ID_DESC]) {
+      __typename
+      ... onTextActivity
+      ... onListActivity
+    }
+  }
+  globalActivities: Page(page:1, perPage:10) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    activities(type:TEXT, sort:[ID_DESC]) {
+      __typename
+      ... onTextActivity
+    }
+  }
+}
+
+fragment onTextActivity on TextActivity {
+  id
+  userId
+  type
+  replyCount
+  text(asHtml:false)
+  siteUrl
+  isLocked
+  isSubscribed
+  likeCount
+  isLiked
+  isPinned
+  createdAt
+  user {
+    ... activityUser
+  }
+  replies {
+  	... activityReply
+  }
+  likes {
+    ... activityUser
+  }
+}
+
+fragment onListActivity on ListActivity {
+  id
+  userId
+  type
+  replyCount
+  status
+  progress
+  isLocked
+  isSubscribed
+  likeCount
+  isLiked
+  isPinned
+  siteUrl
+  createdAt
+  user {
+    ... activityUser
+  }
+  media {
+    id
+    idMal
+    title {
+      romaji
+      english
+      native
+      userPreferred
+    }
+    countryOfOrigin
+    type
+    format
+    startDate {
+      year
+      month
+      day
+    }
+    episodes
+    duration
+    chapters
+    volumes
+    coverImage {
+      extraLarge
+      large
+      medium
+    }
+    bannerImage
+  }
+  replies {
+    ... activityReply
+  }
+  likes {
+    ... activityUser
+  }
+}
+
+fragment onMessageActivity on MessageActivity {
+  id
+  recipientId
+  messengerId
+  type
+  replyCount
+  message(asHtml:false)
+  isLocked
+  isSubscribed
+  likeCount
+  isLiked
+  isPrivate
+  siteUrl
+  createdAt
+  recipient {
+    ... activityUser
+  }
+  messenger {
+    ... activityUser
+  }
+  replies {
+  	... activityReply
+  }
+  likes {
+    ... activityUser
+  }
+}
+
+fragment activityReply on ActivityReply {
+  id
+  userId
+  activityId
+  text(asHtml:false)
+  likeCount
+  isLiked
+  createdAt
+  user {
+    ... activityUser
+  }
+  likes {
+    ... activityUser
+  }
+}
+
+fragment activityUser on User {
+  id
+  name
+  avatar {
+    large
+    medium
+  }
+  isFollowing
+  isFollower
+  donatorTier
+  donatorBadge
+  moderatorRoles
+}

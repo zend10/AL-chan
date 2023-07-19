@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginEnd="@dimen/marginPageBig"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/trendingBannerImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="3:2"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            app:srcCompat="@drawable/background_gradient_three"
+            app:layout_constraintTop_toTopOf="@id/trendingBannerImage"
+            app:layout_constraintBottom_toBottomOf="@id/trendingBannerImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/trendingImageGuideline"
+            app:layout_constraintGuide_percent="@fraction/listImageBigRatio"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@id/trendingImageGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/trendingCoverImage"
+            android:layout_marginHorizontal="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/trendingMediaTitleText"
+                style="?themeRegularBoldFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/trendingMediaProducerText"
+                style="?themeRegularFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/trendingMediaScoreText"
+                    app:drawableStartCompat="@drawable/ic_star_filled"
+                    app:drawableTint="@color/brightYellow"
+                    android:drawablePadding="@dimen/marginClose"
+                    style="?themeRegularBoldFont"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/trendingMediaFavouriteText"
+                    app:drawableStartCompat="@drawable/ic_heart_outline"
+                    app:drawableTint="@color/brightRed"
+                    android:drawablePadding="@dimen/marginClose"
+                    style="?themeRegularBoldFont"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/trendingCoverImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/trendingImageGuideline"
+            app:layout_constraintBottom_toBottomOf="@id/trendingBannerImage"
+            app:layout_constraintDimensionRatio="2:3"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            app:layout_constraintTop_toBottomOf="@id/trendingBannerImage"
+            android:orientation="vertical"
+            android:padding="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trendingMediaGenreRecyclerView"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/trendingMediaDescriptionText"
+                style="?themeRegularFont"
+                android:layout_marginTop="@dimen/marginClose"
+                android:maxLines="5"
+                android:lines="5"
+                android:ellipsize="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

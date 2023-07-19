@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/marginPageNormal"
+    android:layout_marginBottom="@dimen/marginPageNormal"
+    android:foreground="?selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/marginNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/statsInfoItemLabelContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:visibility="gone"
+                android:id="@+id/statsInfoRankLayout"
+                android:background="@drawable/shape_oval_with_border"
+                android:backgroundTint="@color/brightYellow"
+                android:padding="@dimen/marginSmall"
+                android:layout_marginEnd="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoRankText"
+                    style="?themeTitleFont"
+                    android:textColor="?themeCardColor"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </FrameLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/statsInfoItemLabel"
+                style="?themeTitleFont"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/divider"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lineWidth"
+            app:layout_constraintTop_toBottomOf="@id/statsInfoItemLabelContainer"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            app:layout_constraintTop_toBottomOf="@id/statsInfoItemLabelContainer"
+            android:layout_marginTop="@dimen/marginPageNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/count"
+                    style="?themeSmallFont"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoItemCount"
+                    style="?themeTitleFont"
+                    android:textAlignment="center"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_marginBottom="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoItemCountPercentage"
+                    style="?themeSmallFont"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:background="?themeDividerColor"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:layout_width="@dimen/lineWidth"
+                android:layout_height="match_parent"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoItemDurationTitle"
+                    style="?themeSmallFont"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoItemDuration"
+                    style="?themeTitleFont"
+                    android:textAlignment="center"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_marginBottom="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoItemDurationPercentage"
+                    style="?themeSmallFont"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:background="?themeDividerColor"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:layout_width="@dimen/lineWidth"
+                android:layout_height="match_parent"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/mean_score"
+                    style="?themeSmallFont"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statsInfoItemMeanScore"
+                    style="?themeTitleFont"
+                    android:textAlignment="center"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_marginBottom="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

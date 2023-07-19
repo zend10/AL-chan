@@ -1,306 +1,477 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?themeBackgroundColor"
+    android:focusable="true"
+    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.notifications.NotificationsSettingsFragment">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
 
-    <ScrollView
-        android:layout_below="@+id/toolbarLayout"
+    <androidx.core.widget.NestedScrollView
+        app:layout_constraintTop_toBottomOf="@id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@id/notificationsSettingsSaveLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/notificationsSettingsLayout"
-            android:orientation="vertical"
-            android:padding="@dimen/marginPage"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/notificationSettingsLayout"
+            android:padding="@dimen/marginPageBig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/activity_subscriptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/notificationsSettingsActivitySubscriptionLayout"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/automatically_subscribe_me_to_activity_i_create"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:id="@+id/notificationsSettingsActivitySubscriptionTitle"
+                    android:text="@string/activity_subscription"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/activityReplyCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSubscribeActivityCreatedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsActivitySubscriptionTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/automatically_subscribe_me_to_activity_i_create"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSubscribeActivityCreatedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSubscribeActivityRepliedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSubscribeActivityCreatedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/automatically_subscribe_me_to_activity_i_reply_to"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSubscribeActivityRepliedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/notificationsSettingsSocialLayout"
+                app:layout_constraintTop_toBottomOf="@id/notificationsSettingsActivitySubscriptionLayout"
+                android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/automatically_subscribe_me_to_activity_i_reply_to"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:id="@+id/notificationsSettingsSocialTitle"
+                    android:text="@string/social"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/activityReplySubscribedCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneFollowLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSocialTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_follows_me"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/notifications"
-                android:layout_marginTop="@dimen/marginPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneFollowCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsReceiveMessageLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSomeoneFollowLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_i_receive_message"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsReceiveMessageCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsMentionedInActivityLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsReceiveMessageLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_i_am_mentioned_in_an_activity_or_activity_reply"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsMentionedInActivityCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneLikesActivityLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsMentionedInActivityLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_likes_my_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneLikesActivityCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneLikesActivityReplyLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSomeoneLikesActivityLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_likes_my_activity_reply"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneLikesActivityReplyCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneRepliesForumLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSomeoneLikesActivityReplyLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_replies_to_my_forum_comment"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneRepliesForumCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsMentionedInForumLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSomeoneRepliesForumLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_i_am_mentioned_in_a_forum_comment"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsMentionedInForumCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneLikesForumCommentLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsMentionedInForumLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_likes_my_forum_comment"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneLikesForumCommentCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneRepliesForumSubscribedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSomeoneLikesForumCommentLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_replies_to_a_forum_thread_i_m_subscribed_to"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneRepliesForumSubscribedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsSomeoneLikesForumThreadLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSomeoneRepliesForumSubscribedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_someone_likes_my_forum_thread"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsSomeoneLikesForumThreadCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/notificationsSettingsSiteDataChangesLayout"
+                app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSocialLayout"
+                android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_follows_me"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:id="@+id/notificationsSettingsSiteDataChangesTitle"
+                    android:text="@string/site_data_changes"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/followingCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsEntryCreatedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsSiteDataChangesTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_an_anime_or_manga_in_my_list_has_a_new_related_entry_created"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsEntryCreatedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_i_receive_message"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/activityMessageCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsDataChangedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsEntryCreatedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_an_anime_or_manga_in_my_list_has_its_data_changed_that_affects_my_list"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsDataChangedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_i_am_mentioned_in_an_activity_or_activity_reply"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/activityMentionCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsEntryMergedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsDataChangedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_one_or_more_anime_or_manga_in_my_list_are_merged_into_another"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsEntryMergedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_likes_my_activity"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/activityLikeCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/notificationsSettingsEntryDeletedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/notificationsSettingsEntryMergedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/when_an_anime_or_manga_in_my_list_is_deleted_from_the_site"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/notificationsSettingsEntryDeletedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_likes_my_activity_reply"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/activityReplyLikeCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    </androidx.core.widget.NestedScrollView>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_replies_to_my_forum_comment"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+    <include layout="@layout/layout_one_button"
+        android:id="@+id/notificationsSettingsSaveLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/threadCommentReplyCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+    <include layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_i_am_mentioned_in_a_forum_comment"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/threadCommentMentionCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_likes_my_forum_comment"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/threadCommentLikeCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_replies_to_a_forum_thread_i_m_subscribed_to"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/threadSubscribedCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/when_someone_likes_my_forum_thread"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/threadLikeCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </ScrollView>
-
-    <include layout="@layout/layout_loading"/>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginNormal"
+    app:cardBackgroundColor="?themeCardColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/reviewMediaBanner"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <View
+            android:background="?themeBackgroundTransparent50Color"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:rotation="180"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reviewInfoLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/reviewAvatarGuideline"
+                app:layout_constraintGuide_percent="@fraction/listImageSmallRatio"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/reviewUserAvatar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/reviewAvatarGuideline"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewName"
+                style="?themeRegularBoldFont"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/reviewAvatarGuideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewDate"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toBottomOf="@+id/reviewName"
+                app:layout_constraintStart_toStartOf="@id/reviewName"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/marginClose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewSummary"
+            style="?themeRegularFont"
+            app:layout_constraintTop_toBottomOf="@id/reviewInfoLayout"
+            app:layout_constraintBottom_toTopOf="@id/reviewStatsLayout"
+            app:layout_constraintStart_toStartOf="@id/reviewInfoLayout"
+            app:layout_constraintEnd_toEndOf="@id/reviewInfoLayout"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/reviewStatsLayout"
+            app:layout_constraintTop_toBottomOf="@id/reviewSummary"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginHorizontal="@dimen/marginNormal"
+            android:paddingBottom="@dimen/marginNormal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_thumbs_up"
+                app:tint="@color/brightGreen"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewUpvote"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_thumbs_down"
+                app:tint="@color/brightRed"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewDownvote"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_star_filled"
+                app:tint="@color/brightYellow"
+                android:layout_marginStart="@dimen/marginSmall"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewScore"
+                style="?themeRegularBoldFont"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

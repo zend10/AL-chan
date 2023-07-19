@@ -1,0 +1,114 @@
+query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int, $sourceVersion: Int) {
+  MediaListCollection(userId:$userId, type:$type) {
+    lists {
+      entries {
+        id
+        status
+        score
+        progress
+        progressVolumes
+        repeat
+        priority
+        private
+        notes
+        hiddenFromStatusLists
+        customLists
+        advancedScores
+        startedAt {
+          year
+          month
+          day
+        }
+        completedAt {
+          year
+          month
+          day
+        }
+        updatedAt
+        createdAt
+        media {
+          id
+          idMal
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          type
+          format
+          status(version:$statusVersion)
+          startDate {
+            year
+            month
+            day
+          }
+          endDate {
+            year
+            month
+            day
+          }
+          season
+          seasonYear
+          episodes
+          duration
+          chapters
+          volumes
+          countryOfOrigin
+          isLicensed
+          source(version:$sourceVersion)
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          bannerImage
+          genres
+          synonyms
+          averageScore
+          meanScore
+          popularity
+          trending
+          favourites
+          tags {
+            id
+            name
+            description
+            category
+            rank
+            isGeneralSpoiler
+            isMediaSpoiler
+            isAdult
+          }
+          isFavourite
+          isAdult
+          nextAiringEpisode {
+            id
+            airingAt
+            timeUntilAiring
+            episode
+          }
+          airingSchedule(notYetAired: false) {
+            nodes {
+              id
+              airingAt
+              timeUntilAiring
+              episode
+            }
+          }
+          externalLinks {
+            id
+            url
+            site
+            siteId
+          }
+          siteUrl
+        }
+      }
+      name
+      isCustomList
+      isSplitCompletedList
+      status
+    }
+  }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linkCard"
+    app:contentPadding="@dimen/marginSmall"
+    app:cardBackgroundColor="?themeCardColor"
+    android:layout_marginEnd="@dimen/marginSmall"
+    android:layout_marginBottom="@dimen/marginSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/linkIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="@dimen/iconSmallSize"
+            android:layout_height="@dimen/iconSmallSize"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/linkName"
+            style="?themeRegularBoldFont"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/linkIcon"
+            android:layout_marginStart="@dimen/marginClose"
+            app:layout_goneMarginStart="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

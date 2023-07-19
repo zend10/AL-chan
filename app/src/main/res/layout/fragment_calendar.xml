@@ -1,18 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?themeBackgroundColor"
+    android:focusable="true"
+    android:clickable="true"
     tools:context=".ui.calendar.CalendarFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/scheduleRecyclerView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:clipToPadding="false"
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/calendarSwipeRefresh"
+        app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@id/calendarFilterLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp">
 
-    <include layout="@layout/layout_empty"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendarRecyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/marginNormal"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-</RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_empty"
+        android:id="@+id/emptyLayout"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/calendarFilterLayout"
+        android:background="?themeBackgroundColor"
+        android:paddingTop="@dimen/lineWidth"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/divider"/>
+
+        <HorizontalScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:padding="@dimen/marginPageNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/calendarDateText"
+                    style="?themeRegularClickableFont"
+                    android:maxLines="1"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/show_only_in_your_watching_and_planning_list"
+                    android:layout_marginStart="@dimen/marginPageBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/calendarShowOnListCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/show_only_from_current_season"
+                    android:layout_marginStart="@dimen/marginPageBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/calendarShowCurrentSeasonCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?themeSmallFont"
+                    android:maxLines="1"
+                    android:text="@string/show_adult_content"
+                    android:layout_marginStart="@dimen/marginPageBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/seriesShowAdultContentCheckBox"
+                    style="?themeRegularCheckBox"
+                    android:layout_marginStart="@dimen/marginNormal"
+                    android:layout_width="@dimen/iconSize"
+                    android:layout_height="@dimen/iconSize"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </HorizontalScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

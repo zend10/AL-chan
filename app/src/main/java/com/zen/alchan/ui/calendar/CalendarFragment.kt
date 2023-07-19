@@ -1,75 +1,130 @@
 package com.zen.alchan.ui.calendar
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.zen.alchan.R
-import com.zen.alchan.helper.doOnApplyWindowInsets
-import com.zen.alchan.helper.enums.BrowsePage
-import com.zen.alchan.helper.updateBottomPadding
-import com.zen.alchan.ui.browse.BrowseActivity
-import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.android.synthetic.main.layout_empty.*
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaExternalLink
+import com.zen.alchan.databinding.FragmentCalendarBinding
+import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * A simple [Fragment] subclass.
- */
-class CalendarFragment : Fragment() {
 
-    private val viewModel by viewModel<CalendarScheduleViewModel>()
+class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
+
+    override val viewModel: CalendarViewModel by viewModel()
+
+    private var adapter: CalendarRvAdapter? = null
+
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentCalendarBinding {
+        return FragmentCalendarBinding.inflate(inflater, container, false)
+    }
+
+    override fun setUpLayout() {
+        with(binding) {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.calendar))
+
+            adapter = CalendarRvAdapter(requireContext(), listOf(), AppSetting(), getCalendarListener())
+            calendarRecyclerView.adapter = adapter
+
+            calendarSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadCalendar()
+            }
+
+            calendarDateText.clicks {
+                viewModel.loadDateCalendar()
+            }
+
+            calendarShowOnListCheckBox.setOnClickListener {
+                viewModel.updateShowOnlyWatchingAndPlanning(calendarShowOnListCheckBox.isChecked)
+            }
+
+            calendarShowCurrentSeasonCheckBox.setOnClickListener {
+                viewModel.updateShowOnlyCurrentSeason(calendarShowCurrentSeasonCheckBox.isChecked)
+            }
+
+            seriesShowAdultContentCheckBox.setOnClickListener {
+                viewModel.updateShowAdult(seriesShowAdultContentCheckBox.isChecked)
+            }
+        }
+    }
+
+    override fun setUpInsets() {
+        with(binding) {
+            defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+            calendarRecyclerView.applySidePaddingInsets()
+            calendarFilterLayout.applyBottomSidePaddingInsets()
+        }
+    }
+
+    override fun setUpObserver() {
+        disposables.addAll(
+            viewModel.loading.subscribe {
+                binding.calendarSwipeRefresh.isRefreshing = it
+            },
+            viewModel.error.subscribe {
+                dialog.showToast(it)
+            },
+            viewModel.appSetting.subscribe {
+                adapter = CalendarRvAdapter(requireContext(), listOf(), it, getCalendarListener())
+                binding.calendarRecyclerView.adapter = adapter
+            },
+            viewModel.emptyLayoutVisibility.subscribe {
+                binding.emptyLayout.emptyLayout.show(it)
+            },
+            viewModel.airingSchedules.subscribe {
+                adapter?.updateData(it, true)
+            },
+            viewModel.date.subscribe {
+                binding.calendarDateText.text = TimeUtil.displayInDateFormat(it)
+            },
+            viewModel.showOnlyWatchingAndPlanning.subscribe {
+                binding.calendarShowOnListCheckBox.isChecked = it
+            },
+            viewModel.showOnlyCurrentSeason.subscribe {
+                binding.calendarShowCurrentSeasonCheckBox.isChecked = it
+            },
+            viewModel.showAdult.subscribe {
+                binding.seriesShowAdultContentCheckBox.isChecked = it
+            },
+            viewModel.calendarDate.subscribe {
+                dialog.showDatePicker(it) { year, month, dayOfMonth ->
+                    viewModel.updateDate(dayOfMonth, month, year)
+                }
+            }
+        )
+
+        viewModel.loadData(Unit)
+    }
+
+    private fun getCalendarListener(): CalendarRvAdapter.CalendarListener {
+        return object : CalendarRvAdapter.CalendarListener {
+            override fun navigateToMedia(media: Media) {
+                navigation.navigateToMedia(media.getId())
+            }
+
+            override fun navigateToUrl(mediaExternalLink: MediaExternalLink) {
+                navigation.openWebView(mediaExternalLink.url)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+    }
 
     companion object {
-        const val START_DATE = "startDate"
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        scheduleRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding ->
-            view.updateBottomPadding(windowInsets, initialPadding)
-        }
-
-        viewModel.startDate = arguments?.getLong(START_DATE) ?: 0
-
-        setupObserver()
-    }
-
-    private fun setupObserver() {
-        viewModel.filteredAiringSchedule.observe(viewLifecycleOwner, Observer {
-            viewModel.filterList(it)
-            initLayout()
-        })
-    }
-
-    private fun initLayout() {
-        if (viewModel.scheduleList.isNullOrEmpty()) {
-            emptyLayout.visibility = View.VISIBLE
-            scheduleRecyclerView.visibility = View.GONE
-        } else {
-            emptyLayout.visibility = View.GONE
-            scheduleRecyclerView.visibility = View.VISIBLE
-
-            scheduleRecyclerView.adapter = CalendarScheduleRvAdapter(requireActivity(), viewModel.scheduleList, object : CalendarScheduleRvAdapter.CalendarScheduleListener {
-                override fun openMedia(id: Int) {
-                    val intent = Intent(activity, BrowseActivity::class.java)
-                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ANIME.name)
-                    intent.putExtra(BrowseActivity.LOAD_ID, id)
-                    startActivity(intent)
-                }
-            })
-        }
+        @JvmStatic
+        fun newInstance() = CalendarFragment()
     }
 }

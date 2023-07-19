@@ -1,538 +1,578 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="?themeBackgroundColor"
+    android:focusable="true"
+    android:clickable="true"
     tools:context=".ui.settings.app.AppSettingsFragment">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
 
-    <ScrollView
-        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
+    <androidx.core.widget.NestedScrollView
+        app:layout_constraintTop_toBottomOf="@id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@id/appSettingsSaveLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/appSettingsLayout"
-            android:orientation="vertical"
-            android:padding="@dimen/marginPage"
+            android:padding="@dimen/marginPageBig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/theme"
-                android:layout_width="wrap_content"
+                android:id="@+id/appSettingsInfoText"
+                android:text="@string/all_the_configurations_here_only_applies_to_al_chan_and_will_not_affect_the_website_anilist_co"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsThemeLayout"
+                app:layout_constraintTop_toBottomOf="@+id/appSettingsInfoText"
+                android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/selected_theme"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/selectedThemeText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
+                    android:id="@+id/appSettingsThemeTitle"
+                    android:text="@string/theme"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <RelativeLayout
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/primaryColorLayout"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignEnd="@id/secondaryColorLayout"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/primary"
-                        style="?themeRegularFont"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/primaryColorItem"
-                        app:cardBackgroundColor="?themePrimaryColor"
-                        app:strokeColor="?themeContentColor"
-                        app:strokeWidth="@dimen/lineWidth"
-                        app:cardCornerRadius="12dp"
-                        android:padding="@dimen/iconPadding"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/secondaryColorLayout"
-                    android:layout_below="@id/primaryColorLayout"
+                    android:id="@+id/appSettingsSelectedThemeLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsThemeTitle"
                     android:layout_marginTop="@dimen/marginNormal"
                     android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/secondary"
+                        android:text="@string/selected_theme"
                         style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsSelectedThemeText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/secondaryColorItem"
-                        app:cardBackgroundColor="?themeSecondaryColor"
-                        app:strokeColor="?themeContentColor"
-                        app:strokeWidth="@dimen/lineWidth"
-                        app:cardCornerRadius="12dp"
-                        android:layout_marginStart="@dimen/marginPage"
-                        android:padding="@dimen/iconPadding"
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsAppearanceLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsThemeLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsAppearanceTitle"
+                    android:text="@string/appearance"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsCircularAvatarLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsAppearanceTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/use_circular_avatar_for_profile"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsCircularAvatarCheckBox"
+                        style="?themeRegularCheckBox"
                         android:layout_width="@dimen/iconSize"
                         android:layout_height="@dimen/iconSize"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_below="@id/secondaryColorLayout"
+                    android:id="@+id/appSettingsRecentReviewsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsCircularAvatarLayout"
                     android:layout_marginTop="@dimen/marginNormal"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignEnd="@id/secondaryColorLayout"
                     android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/negative"
+                        android:text="@string/show_recent_reviews_at_home"
                         style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/negativeColorItem"
-                        app:cardBackgroundColor="?themeNegativeColor"
-                        app:strokeColor="?themeContentColor"
-                        app:strokeWidth="@dimen/lineWidth"
-                        app:cardCornerRadius="12dp"
-                        android:padding="@dimen/iconPadding"
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsRecentReviewsCheckBox"
+                        style="?themeRegularCheckBox"
                         android:layout_width="@dimen/iconSize"
                         android:layout_height="@dimen/iconSize"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-            </RelativeLayout>
-
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/appearance"
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/use_circular_avatar"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/circularAvatarCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/add_white_background_to_circular_avatar"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/whiteBackgroundAvatarCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/show_recent_reviews_at_home"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/showRecentReviewsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/memory_saver"
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/enable_social_feature"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/enableSocialCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/show_bio_automatically"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/showBioCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/show_stats_automatically"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/showStatsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeSmallFont"
-                    android:text="@string/these_features_are_not_suitable_for_devices_with_limited_memory_it_is_recommended_to_uncheck_all_for_better_performance_and_stability"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:visibility="invisible"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/push_notifications"
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/send_airing_push_notifications"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sendAiringPushNotificationsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/send_activity_push_notifications"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sendActivityPushNotificationsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/send_forum_push_notifications"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sendForumPushNotificationsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/send_follows_push_notifications"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sendFollowsPushNotificationsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/send_relations_push_notifications"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sendRelationsPushNotificationsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/merge_activity_forum_follows_and_relations_push_notifications_into_one"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/mergePushNotificationsCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/show_push_notification_not_earlier_than_every"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/pushNotificationMinHoursText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/pushNotificationExplanation"
-                    style="?themeSmallFont"
-                    android:text="@string/important_to_know_n1_push_notification_will_show_up_periodically_not_real_time_2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:visibility="invisible"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/others"
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/use_relative_date_for_next_airing_episode"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/useRelativeDateCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/resetDefaultButton"
-                style="?themeButtonBorderNegative"
-                android:text="@string/reset_to_default"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsListLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsAppearanceLayout"
                 android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsListTitle"
+                    android:text="@string/list"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    </ScrollView>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsAllAnimeLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsListTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/quot_all_quot_anime_list_position"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsAllAnimeText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsAllMangaLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsAllAnimeLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/quot_all_quot_manga_list_position"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsAllMangaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <LinearLayout
+                    android:id="@+id/appSettingsRelativeDateLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsAllMangaLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/use_relative_date_for_next_airing_episode"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsRelativeDateCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsNamingLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsListLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsNamingTitle"
+                    android:text="@string/naming"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsJapaneseMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsNamingTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_japanese_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsJapaneseMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsKoreanMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsJapaneseMediaLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_korean_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsKoreanMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsChineseMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsKoreanMediaLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_chinese_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsChineseMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsTaiwaneseMediaLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/appSettingsChineseMediaLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/display_taiwanese_media_title"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/appSettingsTaiwaneseMediaText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsPushNotificationsLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsNamingLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsPushNotificationsTitle"
+                    android:text="@string/push_notifications"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsAiringPushNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsPushNotificationsTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/send_airing_push_notifications"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsAiringPushNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsActivityPushNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsAiringPushNotificationsLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/send_activity_push_notifications"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsActivityPushNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsForumPushNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsActivityPushNotificationsLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/send_forum_push_notifications"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsForumPushNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsFollowsPushNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsForumPushNotificationsLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/send_follows_push_notifications"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsFollowsPushNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsRelationsPushNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsFollowsPushNotificationsLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/send_relations_push_notifications"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsRelationsPushNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsMergePushNotificationsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsRelationsPushNotificationsLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/merge_activity_forum_follows_and_relations_push_notifications_into_one"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsMergePushNotificationsCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsPushNotificationsInfoText"
+                    android:text="@string/important_to_know_n1_push_notifications_will_show_up_periodically_not_real_time_n2_depending_on_your_rom_and_phone_setting_it_might_not_show_up_at_all_reference_https_dontkillmyapp_com"
+                    style='?themeSmallFont'
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsMergePushNotificationsLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsMemorySaverLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsPushNotificationsLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsMemorySaverTitle"
+                    android:text="@string/memory_saver"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsHighestQualityImageLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsMemorySaverTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/use_the_highest_quality_image"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsHighestQualityImageCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/layout_two_buttons"
+        android:id="@+id/appSettingsSaveLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

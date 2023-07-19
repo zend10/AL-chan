@@ -1,4 +1,4 @@
-query ViewerQuery {
+query ViewerQuery($sort: [UserStatisticsSort]) {
   Viewer {
     id
     name
@@ -8,6 +8,9 @@ query ViewerQuery {
       medium
     }
     bannerImage
+    isFollowing
+    isFollower
+    isBlocked
     options {
       titleLanguage
       displayAdultContent
@@ -15,6 +18,14 @@ query ViewerQuery {
       notificationOptions {
         type
         enabled
+      }
+      timezone
+      activityMergeTime
+      staffNameLanguage
+      restrictMessagesToFollowing
+      disabledListActivity {
+        disabled
+        type
       }
     }
     mediaListOptions {
@@ -35,30 +46,102 @@ query ViewerQuery {
         advancedScoringEnabled
       }
     }
-    statistics {
+    favourites {
       anime {
-        count
-        meanScore
-        standardDeviation
-        minutesWatched
-        episodesWatched
-        chaptersRead
-        volumesRead
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          siteUrl
+        }
       }
       manga {
-        count
-        meanScore
-        standardDeviation
-        minutesWatched
-        episodesWatched
-        chaptersRead
-        volumesRead
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      characters {
+        nodes {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            alternativeSpoiler
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      staff {
+        nodes {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            userPreferred
+          }
+          languageV2
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+      studios {
+        nodes {
+          id
+          name
+          siteUrl
+        }
+      }
+    }
+    statistics {
+      anime {
+        ...UserStatistics
+      }
+      manga {
+        ...UserStatistics
       }
     }
     unreadNotificationCount
     donatorTier
     donatorBadge
-    moderatorStatus
+    moderatorRoles
     siteUrl
+    createdAt
   }
 }

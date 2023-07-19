@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginEnd="@dimen/marginNormal"
+    android:layout_marginBottom="@dimen/marginNormal"
+    android:foreground="?selectableItemBackground"
+    app:cardBackgroundColor="?themeCardColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/seasonalRootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/seasonalImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/seasonalImageGuideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="2:3"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/seasonalImageGuideline"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="@fraction/listImageRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seasonalTitle"
+            style="?themeRegularBoldFont"
+            app:layout_constraintStart_toEndOf="@id/seasonalImageGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seasonalStudio"
+            style="?themeSmallFont"
+            app:layout_constraintTop_toBottomOf="@id/seasonalTitle"
+            app:layout_constraintStart_toStartOf="@id/seasonalTitle"
+            android:layout_marginTop="@dimen/marginClose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/seasonalStatsLayout"
+            app:layout_constraintTop_toBottomOf="@id/seasonalStudio"
+            app:layout_constraintStart_toStartOf="@id/seasonalStudio"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/seasonalScoreText"
+                app:drawableStartCompat="@drawable/ic_star_filled"
+                app:drawableTint="@color/brightYellow"
+                android:drawablePadding="@dimen/marginClose"
+                style="?themeRegularBoldFont"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="@dimen/marginNormal"
+                android:layout_height="0dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/seasonalFavouriteText"
+                app:drawableStartCompat="@drawable/ic_heart_outline"
+                app:drawableTint="@color/brightRed"
+                android:drawablePadding="@dimen/marginClose"
+                style="?themeRegularBoldFont"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="@dimen/marginNormal"
+                android:layout_height="0dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/seasonalPopularityText"
+                app:drawableStartCompat="@drawable/ic_calculator"
+                app:drawableTint="@color/brightGreen"
+                android:drawablePadding="@dimen/marginClose"
+                style="?themeRegularBoldFont"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/seasonalMediaListStatusLayout"
+            app:layout_constraintStart_toStartOf="@id/seasonalTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/marginSmall"
+            android:gravity="center_vertical"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/seasonalMediaListStatusIcon"
+                app:srcCompat="@drawable/ic_filled_circle"
+                app:tint="?themeNegativeColor"
+                android:layout_width="@dimen/iconSmallSize"
+                android:layout_height="@dimen/iconSmallSize"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/seasonalMediaListStatusText"
+                style="?themeSmallFont"
+                android:textColor="?themeNegativeColor"
+                android:layout_marginStart="@dimen/marginClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

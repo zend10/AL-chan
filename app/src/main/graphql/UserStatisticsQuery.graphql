@@ -1,49 +1,150 @@
-query UserStatisticsQuery($id: Int) {
-    User(id: $id) {
+query UserStatisticsQuery($id:Int, $sort:[UserStatisticsSort]) {
+  User(id:$id) {
+    id
+    name
+    statistics {
+      anime {
+        ...UserStatistics
+      }
+      manga {
+        ...UserStatistics
+      }
+    }
+  }
+}
+
+fragment UserStatistics on UserStatistics {
+    count
+    meanScore
+    standardDeviation
+    minutesWatched
+    episodesWatched
+    chaptersRead
+    volumesRead
+    formats(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      format
+    }
+    statuses(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      status
+    }
+    scores(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      score
+    }
+    lengths(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      length
+    }
+    releaseYears(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      releaseYear
+    }
+    startYears(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      startYear
+    }
+    genres(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      genre
+    }
+    tags(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      tag {
         id
         name
-        mediaListOptions {
-            scoreFormat
+      }
+    }
+    countries(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      country
+    }
+    voiceActors(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      voiceActor {
+        id
+        name {
+          first
+          middle
+          last
+          full
+          native
+          alternative
+          userPreferred
         }
-        statistics {
-            anime {
-                count
-                meanScore
-                standardDeviation
-                minutesWatched
-                episodesWatched
-                statuses {
-                    count
-                    meanScore
-                    minutesWatched
-                    status
-                }
-                scores {
-                    count
-                    meanScore
-                    minutesWatched
-                    score
-                }
-            }
-            manga {
-                count
-                meanScore
-                standardDeviation
-                chaptersRead
-                volumesRead
-                statuses {
-                    count
-                    meanScore
-                    chaptersRead
-                    status
-                }
-                scores {
-                    count
-                    meanScore
-                    chaptersRead
-                    score
-                }
-            }
+      }
+      characterIds
+    }
+    staff(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      staff {
+        id
+        name {
+          first
+          middle
+          last
+          full
+          native
+          alternative
+          userPreferred
         }
+      }
+    }
+    studios(sort:$sort) {
+      count
+      meanScore
+      minutesWatched
+      chaptersRead
+      mediaIds
+      studio {
+        id
+        name
+        isAnimationStudio
+      }
     }
 }

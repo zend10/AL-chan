@@ -2,7 +2,7 @@ query MediaActivityQuery(
     $mediaId: Int,
     $page: Int
 ) {
-    Page(page: $page, perPage: 10) {
+    Page(page: $page) {
         pageInfo {
             total
             perPage

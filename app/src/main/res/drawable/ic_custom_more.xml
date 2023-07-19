@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/background"
+        android:width="32dp"
+        android:height="32dp">
+        <shape android:shape="oval"
+            android:tint="?themeBackgroundTransparent50Color"/>
+    </item>
+    <item android:id="@+id/icon"
+        android:width="24dp"
+        android:height="24dp"
+        android:top="@dimen/marginClose"
+        android:bottom="@dimen/marginClose"
+        android:left="@dimen/marginClose"
+        android:right="@dimen/marginClose"
+        android:drawable="@drawable/ic_menu_vertical"/>
+</layer-list>

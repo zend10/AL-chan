@@ -1,116 +1,94 @@
 package com.zen.alchan.data.repository
 
-import androidx.lifecycle.LiveData
-import com.zen.alchan.data.network.Resource
-import com.zen.alchan.data.response.MediaListTypeOptions
-import com.zen.alchan.data.response.NotificationOption
-import com.zen.alchan.data.response.User
-import com.zen.alchan.helper.enums.FollowPage
-import com.zen.alchan.helper.pojo.BestFriend
-import io.reactivex.Completable
-import type.NotificationType
-import type.ScoreFormat
-import type.UserTitleLanguage
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.helper.enums.AppTheme
+import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.data.response.NotificationData
+import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.data.response.anilist.Favourites
+import com.zen.alchan.data.response.anilist.ListActivityOption
+import com.zen.alchan.data.response.anilist.MediaListTypeOptions
+import com.zen.alchan.data.response.anilist.NotificationOption
+import com.zen.alchan.data.response.anilist.Page
+import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.data.response.anilist.UserStatisticTypes
+import com.zen.alchan.helper.enums.Favorite
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 interface UserRepository {
-    val currentUser: User?
 
-    val sessionResponse: LiveData<Boolean>
+    val refreshFavoriteTrigger: Observable<User>
+    val unreadNotificationCount: Observable<Int>
 
-    val viewerDataResponse: LiveData<Resource<Boolean>>
-    val viewerData: LiveData<User?>
-    val listOrAniListSettingsChanged: LiveData<Boolean>
+    fun getIsLoggedInAsGuest(): Observable<Boolean>
+    fun getIsAuthenticated(): Observable<Boolean>
+    fun getViewer(
+        source: Source? = null,
+        sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)
+    ): Observable<User>
+    fun loginAsGuest()
+    fun logoutAsGuest()
+    fun logout()
+    fun saveBearerToken(newBearerToken: String?)
 
-    val followersCount: LiveData<Int>
-    val followingsCount: LiveData<Int>
+    fun getFollowingAndFollowersCount(
+        userId: Int,
+        source: Source? = null
+    ): Observable<Pair<Int, Int>>
 
-    val updateAniListSettingsResponse: LiveData<Resource<Boolean>>
-    val updateListSettingsResponse: LiveData<Resource<Boolean>>
-    val toggleFavouriteResponse: LiveData<Resource<Boolean>>
+    fun getFollowing(userId: Int, page: Int): Observable<Page<User>>
+    fun getFollowers(userId: Int, page: Int): Observable<Page<User>>
+    fun toggleFollow(userId: Int): Observable<Boolean>
 
-    val favoriteAnimeResponse: LiveData<Resource<FavoritesAnimeQuery.Data>>
-    val favoriteMangaResponse: LiveData<Resource<FavoritesMangaQuery.Data>>
-    val favoriteCharactersResponse: LiveData<Resource<FavoritesCharactersQuery.Data>>
-    val favoriteStaffsResponse: LiveData<Resource<FavoritesStaffsQuery.Data>>
-    val favoriteStudiosResponse: LiveData<Resource<FavoritesStudiosQuery.Data>>
-    val triggerRefreshFavorite: LiveData<Boolean>
-    val triggerRefreshReviews: LiveData<Boolean>
-    val reorderFavoritesResponse: LiveData<Resource<Boolean>>
+    fun getUserStatistics(userId: Int, sort: UserStatisticsSort): Observable<UserStatisticTypes>
+    fun getFavorites(userId: Int, page: Int): Observable<Favourites>
+    fun updateFavoriteOrder(ids: List<Int>, favorite: Favorite): Observable<Favourites>
+    fun toggleFavorite(
+        animeId: Int? = null,
+        mangaId: Int? = null,
+        characterId: Int? = null,
+        staffId: Int? = null,
+        studioId: Int? = null
+    ): Completable
 
-    val viewerReviewsResponse: LiveData<Resource<UserReviewsQuery.Data>>
+    fun getAppSetting(): Observable<AppSetting>
+    fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>
 
-    val userStatisticsResponse: LiveData<Resource<UserStatisticsQuery.Data>>
+    fun getAppTheme(): AppTheme
 
-    val userFollowersResponse: LiveData<Resource<UserFollowersQuery.Data>>
-    val userFollowingsResponse: LiveData<Resource<UserFollowingsQuery.Data>>
-    val toggleFollowingResponse: LiveData<Resource<ToggleFollowMutation.Data>>
-    val toggleFollowerResponse: LiveData<Resource<ToggleFollowMutation.Data>>
-    val toggleFollowResponse: LiveData<Resource<ToggleFollowMutation.Data>>
+    fun updateAniListSettings(
+        titleLanguage: UserTitleLanguage,
+        staffNameLanguage: UserStaffNameLanguage,
+        activityMergeTime: Int,
+        displayAdultContent: Boolean,
+        airingNotifications: Boolean
+    ): Observable<User>
 
-    val viewerDataLastRetrieved: Long?
-    val followersCountLastRetrieved: Long?
-    val followingsCountLastRetrieved: Long?
+    fun updateListSettings(
+        scoreFormat: ScoreFormat,
+        rowOrder: String,
+        animeListOptions: MediaListTypeOptions,
+        mangaListOptions: MediaListTypeOptions,
+        disabledListActivity: List<ListActivityOption>
+    ): Observable<User>
 
-    val bestFriends: List<BestFriend>?
-    val bestFriendChangedNotifier: LiveData<List<BestFriend>>
+    fun updateNotificationsSettings(
+        notificationOptions: List<NotificationOption>
+    ): Observable<User>
 
-    val notificationsResponse: LiveData<Resource<NotificationsQuery.Data>>
-    val notificationCount: LiveData<Int>
+    fun getNotifications(
+        page: Int,
+        typeIn: List<NotificationType>?,
+        resetNotificationCount: Boolean
+    ): Observable<NotificationData>
 
-    fun checkSession()
+    fun getLatestUnreadNotificationCount(): Observable<Int>
 
-    fun getViewerData()
-    fun retrieveViewerData()
+    fun clearUnreadNotificationCount()
 
-    fun updateAniListSettings(titleLanguage: UserTitleLanguage, adultContent: Boolean, airingNotifications: Boolean)
-    fun updateListSettings(scoreFormat: ScoreFormat, rowOrder: String, animeListOptions: MediaListTypeOptions, mangaListOptions: MediaListTypeOptions)
-    fun updateNotificationsSettings(notificationOptions: List<NotificationOption>)
-    fun toggleFavourite(
-        animeId: Int?,
-        mangaId: Int?,
-        characterId: Int?,
-        staffId: Int?,
-        studioId: Int?
-    )
-
-    fun getFavoriteAnime(page: Int)
-    fun getFavoriteManga(page: Int)
-    fun getFavoriteCharacters(page: Int)
-    fun getFavoriteStaffs(page: Int)
-    fun getFavoriteStudios(page: Int)
-
-    fun triggerRefreshProfilePageChild()
-
-    fun reorderFavorites(
-        animeIds: List<Int>?,
-        mangaIds: List<Int>?,
-        characterIds: List<Int>?,
-        staffIds: List<Int>?,
-        studioIds: List<Int>?,
-        animeOrder: List<Int>?,
-        mangaOrder: List<Int>?,
-        characterOrder: List<Int>?,
-        staffOrder: List<Int>?,
-        studioOrder: List<Int>?
-    )
-
-    fun getReviews(page: Int)
-
-    fun getStatistics()
-
-    fun getFollowersCount()
-    fun getFollowingsCount()
-
-    fun getUserFollowers(page: Int)
-    fun getUserFollowings(page: Int)
-    fun toggleFollow(userId: Int, fromPage: FollowPage)
-    fun toggleFollow(userId: Int)
-
-    fun handleBestFriend(bestFriend: BestFriend, isEdit: Boolean = false)
-
-    fun getNotifications(page: Int, typeIn: List<NotificationType>?, reset: Boolean)
-    fun getNotificationCount()
-
-    fun sendFirebaseToken(token: String)
-    fun setLatestNotification(notificationId: Int)
+    fun getLastNotificationId(): Observable<Int>
+    fun setLastNotificationId(lastNotificationId: Int)
 }

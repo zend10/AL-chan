@@ -1,44 +1,47 @@
 package com.zen.alchan.data.repository
 
-import androidx.lifecycle.LiveData
-import com.zen.alchan.data.network.Resource
-import type.MediaSort
-import type.MediaType
+import com.zen.alchan.data.response.Anime
+import com.zen.alchan.data.response.Manga
+import com.zen.alchan.data.response.TrackSearch
+import com.zen.alchan.data.response.VideoSearch
+import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.data.response.anilist.Character
+import com.zen.alchan.data.response.anilist.CharacterEdge
+import com.zen.alchan.data.response.anilist.ListActivity
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.data.response.anilist.Page
+import com.zen.alchan.data.response.anilist.PageInfo
+import com.zen.alchan.data.response.anilist.Staff
+import com.zen.alchan.data.response.anilist.StaffEdge
+import com.zen.alchan.data.response.anilist.Studio
+import com.zen.alchan.data.response.anilist.User
+import com.zen.alchan.helper.enums.ListType
+import com.zen.alchan.type.*
+import io.reactivex.rxjava3.core.Observable
 
 interface BrowseRepository {
-    val characterData: LiveData<Resource<CharacterQuery.Data>>
-    val characterMediaData: LiveData<Resource<CharacterMediaConnectionQuery.Data>>
-    val characterIsFavoriteData: LiveData<Resource<CharacterIsFavoriteQuery.Data>>
+    fun getUser(id: Int? = null, name: String? = null, sort: List<UserStatisticsSort> = listOf(UserStatisticsSort.COUNT_DESC)): Observable<User>
+    fun getOthersListType(): Observable<ListType>
+    fun updateOthersListType(newListType: ListType)
+    fun getMedia(id: Int): Observable<Media>
+    fun getMediaCharacters(id: Int, page: Int, language: StaffLanguage): Observable<Pair<PageInfo, List<CharacterEdge>>>
+    fun getMediaStaff(id: Int, page: Int): Observable<Pair<PageInfo, List<StaffEdge>>>
+    fun getMediaFollowingMediaList(id: Int, page: Int): Observable<Page<MediaList>>
+    fun getMediaActivity(id: Int, page: Int): Observable<Page<ListActivity>>
+    fun getCharacter(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC), type: MediaType? = null, onList: Boolean? = null): Observable<Character>
+    fun getStaff(
+        id: Int,
+        page: Int,
+        staffMediaSort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC),
+        characterSort: List<CharacterSort> = listOf(CharacterSort.FAVOURITES_DESC),
+        characterMediaSort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC),
+        onList: Boolean? = null
+    ): Observable<Staff>
+    fun getStudio(id: Int, page: Int, sort: List<MediaSort> = listOf(MediaSort.POPULARITY_DESC), onList: Boolean? = null): Observable<Studio>
 
-    val staffData: LiveData<Resource<StaffQuery.Data>>
-    val staffBioData: LiveData<Resource<StaffBioQuery.Data>>
-    val staffCharacterData: LiveData<Resource<StaffCharacterConnectionQuery.Data>>
-    val staffMediaCharacterData: LiveData<Resource<StaffMediaCharacterConnectionQuery.Data>>
-    val staffAnimeData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
-    val staffMangaData: LiveData<Resource<StaffMediaConnectionQuery.Data>>
-    val staffIsFavoriteData: LiveData<Resource<StaffIsFavoriteQuery.Data>>
-
-    val studioData: LiveData<Resource<StudioQuery.Data>>
-    val studioMediaData: LiveData<Resource<StudioMediaConnectionQuery.Data>>
-    val studioIsFavoriteData: LiveData<Resource<StudioIsFavoriteQuery.Data>>
-
-    val idFromNameData: LiveData<Resource<IdFromNameQuery.Data>>
-
-    fun getCharacter(id: Int)
-    fun getCharacterMedia(id: Int, page: Int)
-    fun checkCharacterIsFavorite(id: Int)
-
-    fun getStaff(id: Int)
-    fun getStaffBio(id: Int)
-    fun getStaffCharacter(id: Int, page: Int)
-    fun getStaffMediaCharacter(id: Int, page: Int, sort: MediaSort, onList: Boolean?)
-    fun getStaffAnime(id:Int, page: Int, sort: MediaSort, onList: Boolean?)
-    fun getStaffManga(id:Int, page: Int, sort: MediaSort, onList: Boolean?)
-    fun checkStaffIsFavorite(id: Int)
-
-    fun getStudio(id: Int)
-    fun getStudioMedia(id: Int, page: Int, sort: MediaSort)
-    fun checkStudioIsFavorite(id: Int)
-
-    fun getIdFromName(name: String)
+    fun getMangaDetails(malId: Int): Observable<Manga>
+    fun getAnimeDetails(malId: Int): Observable<Anime>
+    fun getYouTubeVideo(searchQuery: String): Observable<VideoSearch>
+    fun getSpotifyTrack(searchQuery: String): Observable<TrackSearch>
 }

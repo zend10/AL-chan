@@ -1,394 +1,646 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="?themeBackgroundColor"
+    android:focusable="true"
+    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.list.ListSettingsFragment">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/toolbar_default"
+        android:id="@+id/defaultToolbar"/>
 
-    <ScrollView
-        android:layout_below="@+id/toolbarLayout"
+    <androidx.core.widget.NestedScrollView
+        app:layout_constraintTop_toBottomOf="@id/defaultToolbar"
+        app:layout_constraintBottom_toTopOf="@+id/listSettingsSaveLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/listSettingsLayout"
-            android:orientation="vertical"
-            android:padding="@dimen/marginPage"
+            android:padding="@dimen/marginPageBig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/scoring"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsScoringLayout"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/scoring_system"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
+                    android:id="@+id/listSettingsScoringTitle"
+                    android:text="@string/scoring"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/scoringSystemText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/advancedScoringCheckBoxLayout"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/use_advanced_scoring"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/advancedScoringCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/advancedScoringLayout"
-                android:layout_marginTop="@dimen/marginFar"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsScoringSystemLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsScoringTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textview.MaterialTextView
-                        style="?themeRegularBoldFont"
-                        android:text="@string/advanced_scoring_criteria"
+                        android:text="@string/scoring_system"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/addMoreAdvancedScoringText"
+                        android:id="@+id/listSettingsScoringSystemText"
                         style="?themeRegularClickableFont"
                         android:foreground="?selectableItemBackground"
-                        android:text="@string/add_more"
-                        android:padding="@dimen/iconPadding"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <RelativeLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsUseAdvancedScoringLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsScoringSystemLayout"
                     android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/advancedScoringRecyclerView"
-                        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                        android:orientation="horizontal"
-                        android:nestedScrollingEnabled="false"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/use_advanced_scoring"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsUseAdvancedScoringCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsAdvancedScoringCriteriaLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsScoringLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/listSettingsAdvancedScoringCriteriaTitleLayout"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/advanced_scoring_criteria"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsAdvancedScoringCriteriaAddMoreText"
+                        android:text="@string/add_more"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/listSettingsAdvancedScoringCriteriaNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallNegativeFont"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsAdvancedScoringCriteriaTitleLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listSettingsAdvancedScoringCriteriaRecyclerView"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsAdvancedScoringCriteriaTitleLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsListLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsAdvancedScoringCriteriaLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/listSettingsListTitle"
+                    android:text="@string/list"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsDefaultListOrderLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsListTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/default_list_order"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsDefaultListOrderText"
+                        style="?themeRegularClickableFont"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsSplitAnimeCompletedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsDefaultListOrderLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/split_anime_completed_list_section_by_format"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsSplitAnimeCompletedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsSplitMangaCompletedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsSplitAnimeCompletedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/split_manga_completed_list_section_by_format"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsSplitMangaCompletedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsDisableActivityLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsListLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/listSettingsDisableActivityTitle"
+                    android:text="@string/disable_list_activity_creation"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsStopWatchingReadingLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsDisableActivityTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/stop_creating_watching_reading_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsStopWatchingReadingCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsStopPlanningLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsStopWatchingReadingLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/stop_creating_planning_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsStopPlanningCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsStopCompletedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsStopPlanningLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/stop_creating_completed_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsStopCompletedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsStopDroppedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsStopCompletedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/stop_creating_dropped_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsStopDroppedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsStopPausedLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsStopDroppedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/stop_creating_paused_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsStopPausedCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/listSettingsStopRepeatingLayout"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsStopPausedLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/stop_creating_rewatching_rereading_activity"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/listSettingsStopRepeatingCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsCustomAnimeListsLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsDisableActivityLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/listSettingsCustomAnimeListsTitleLayout"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/custom_anime_lists"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsCustomAnimeListsAddMoreText"
+                        android:text="@string/add_more"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/listSettingsCustomAnimeListsNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallNegativeFont"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsCustomAnimeListsTitleLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listSettingsCustomAnimeListsRecyclerView"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsCustomAnimeListsTitleLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsCustomMangaListsLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsCustomAnimeListsLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/listSettingsCustomMangaListsTitleLayout"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/custom_manga_lists"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsCustomMangaListsAddMoreText"
+                        android:text="@string/add_more"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone"
+                    android:id="@+id/listSettingsCustomMangaListsNoItemText"
+                    android:text="@string/no_item"
+                    style="?themeSmallNegativeFont"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsCustomMangaListsTitleLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listSettingsCustomMangaListsRecyclerView"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsCustomMangaListsTitleLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsAnimeSectionOrderLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsCustomMangaListsLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/listSettingsAnimeSectionOrderTitleLayout"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/anime_section_order"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsAnimeSectionOrderResetText"
+                        android:text="@string/reset_to_default"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_marginEnd="@dimen/marginClose"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:visibility="gone"
-                        android:id="@+id/advancedScoringNoItemText"
-                        android:text="@string/no_item"
-                        style="?themeSmallFont"
-                        android:textColor="?themeNegativeColor"
-                        android:layout_centerInParent="true"
+                        android:id="@+id/listSettingsAnimeSectionOrderReorderText"
+                        android:text="@string/start_reorder"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listSettingsAnimeSectionOrderRecyclerView"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsAnimeSectionOrderTitleLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listSettingsMangaSectionOrderLayout"
+                app:layout_constraintTop_toBottomOf="@id/listSettingsAnimeSectionOrderLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/listSettingsMangaSectionOrderTitleLayout"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/manga_section_order"
+                        style="?themeRegularBoldFont"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsMangaSectionOrderResetText"
+                        android:text="@string/reset_to_default"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginClose"
+                        android:layout_marginEnd="@dimen/marginClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listSettingsMangaSectionOrderReorderText"
+                        android:text="@string/start_reorder"
+                        style="?themeSmallClickableFont"
+                        android:padding="@dimen/iconPadding"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listSettingsMangaSectionOrderRecyclerView"
+                    app:layout_constraintTop_toBottomOf="@id/listSettingsMangaSectionOrderTitleLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textview.MaterialTextView
-                style="?themeRegularBoldFont"
-                android:text="@string/list"
+                android:text="@string/custom_lists_feature_is_a_bit_glitchy_if_your_custom_lists_are_not_showing_in_your_list_you_can_try_clicking_on_reset_to_default_and_save_changes"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toBottomOf="@+id/listSettingsMangaSectionOrderLayout"
                 android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/default_list_order"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/defaultListOrderText"
-                    style="?themeRegularClickableFont"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/split_anime_completed_list_section_by_format"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/splitAnimeCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginNormal"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularFont"
-                    android:text="@string/split_manga_completed_list_section_by_format"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/splitMangaCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularBoldFont"
-                    android:text="@string/custom_anime_lists"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/addMoreCustomAnimeListsText"
-                    style="?themeRegularClickableFont"
-                    android:text="@string/add_more"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <RelativeLayout
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/customAnimeListsRecyclerView"
-                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                    android:orientation="horizontal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:visibility="gone"
-                    android:id="@+id/customAnimeListsNoItemText"
-                    android:text="@string/no_item"
-                    style="?themeSmallFont"
-                    android:textColor="?themeNegativeColor"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginFar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularBoldFont"
-                    android:text="@string/custom_manga_lists"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/addMoreCustomMangaListsText"
-                    style="?themeRegularClickableFont"
-                    android:text="@string/add_more"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <RelativeLayout
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/customMangaListsRecyclerView"
-                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                    android:orientation="horizontal"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:visibility="gone"
-                    android:id="@+id/customMangaListsNoItemText"
-                    android:text="@string/no_item"
-                    style="?themeSmallFont"
-                    android:textColor="?themeNegativeColor"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginFar"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularBoldFont"
-                    android:text="@string/anime_section_order"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/resetAnimeSectionText"
-                    style="?themeRegularClickableFont"
-                    android:text="@string/reset_to_default"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/reorderAnimeSectionText"
-                    style="?themeRegularClickableFont"
-                    android:text="@string/start_reorder"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/animeSectionOrderRecyclerView"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginEnd="@dimen/marginPage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/marginFar"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeRegularBoldFont"
-                    android:text="@string/manga_section_order"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+    </androidx.core.widget.NestedScrollView>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/resetMangaSectionText"
-                    style="?themeRegularClickableFont"
-                    android:text="@string/reset_to_default"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+    <include layout="@layout/layout_one_button"
+        android:id="@+id/listSettingsSaveLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/reorderMangaSectionText"
-                    style="?themeRegularClickableFont"
-                    android:text="@string/start_reorder"
-                    android:foreground="?selectableItemBackground"
-                    android:padding="@dimen/iconPadding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+    <include layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mangaSectionOrderRecyclerView"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginEnd="@dimen/marginPage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </ScrollView>
-
-    <include layout="@layout/layout_loading"/>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

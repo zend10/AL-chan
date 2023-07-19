@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.review.reader.ReaderFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/readerAppBarLayout"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/readerCollapsingToolbar"
+            app:toolbarId="@id/readerToolbar"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@android:color/transparent"
+            app:scrimAnimationDuration="200"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/readerBannerImage"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+                <View
+                    android:background="@drawable/background_gradient_three"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/readerToolbar"
+                app:layout_collapseMode="pin"
+                android:elevation="0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:minHeight="@dimen/toolbarBigHeight"
+                app:popupTheme="@style/PopupTheme"
+                app:menu="@menu/menu_view_on_anilist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/readerScrollingLayout"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="@dimen/marginPageNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/readerMediaType"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/readerTitle"
+                style="?themeTitleFont"
+                android:textColor="?themePrimaryColor"
+                app:layout_constraintTop_toBottomOf="@id/readerMediaType"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/readerSummary"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toBottomOf="@id/readerTitle"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:textIsSelectable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/readerAvatarGuideline"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="@fraction/listImageSmallRatio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/readerUserAvatar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/readerAvatarGuideline"
+                app:layout_constraintTop_toBottomOf="@id/readerSummary"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_marginTop="@dimen/marginPageBig"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                app:layout_constraintTop_toTopOf="@id/readerUserAvatar"
+                app:layout_constraintBottom_toBottomOf="@id/readerUserAvatar"
+                app:layout_constraintStart_toEndOf="@id/readerUserAvatar"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/readerUserName"
+                    style="?themeRegularClickableBoldFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/readerDate"
+                    style="?themeSmallFont"
+                    android:layout_marginTop="@dimen/marginClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/readerText"
+                style="?themeRegularFont"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.4"
+                app:layout_constraintTop_toBottomOf="@id/readerUserAvatar"
+                android:layout_marginTop="@dimen/marginPageNormal"
+                android:textIsSelectable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/readerScoreCard"
+                app:layout_constraintTop_toBottomOf="@id/readerText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/marginPageNormal"
+                app:cardBackgroundColor="?themeCardColor"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:visibility="invisible"
+                        android:text="100/100"
+                        style="?themeTitleFont"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/readerScore"
+                        style="?themeTitleFont"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <include layout="@layout/divider"
+                android:id="@+id/readerFooterDivider"
+                app:layout_constraintTop_toTopOf="@id/readerScoreCard"
+                app:layout_constraintBottom_toBottomOf="@id/readerScoreCard"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lineWidth"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/readerLikeLabel"
+                android:text="@string/like_this_review"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toBottomOf="@id/readerScoreCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/marginPageNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/readerLikeLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/readerLikeLabel"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/readerLikeCard"
+                    app:cardBackgroundColor="@color/brightGreen"
+                    android:layout_marginEnd="@dimen/marginClose"
+                    app:contentPadding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/readerLikeIcon"
+                        app:srcCompat="@drawable/ic_thumbs_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/readerDislikeCard"
+                    app:cardBackgroundColor="@color/brightRed"
+                    android:layout_marginStart="@dimen/marginClose"
+                    app:contentPadding="@dimen/iconPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/readerDislikeIcon"
+                        app:srcCompat="@drawable/ic_thumbs_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/readerLikeCount"
+                style="?themeSmallFont"
+                app:layout_constraintTop_toBottomOf="@id/readerLikeLayout"
+                android:layout_marginTop="@dimen/marginSmall"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

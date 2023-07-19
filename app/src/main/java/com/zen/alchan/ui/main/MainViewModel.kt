@@ -1,54 +1,55 @@
 package com.zen.alchan.ui.main
 
-import android.view.WindowInsets
-import androidx.lifecycle.ViewModel
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.zen.alchan.data.repository.AppSettingsRepository
-import com.zen.alchan.data.repository.AuthRepository
-import com.zen.alchan.data.repository.MediaListRepository
+import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.pojo.InitialPadding
+import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.service.pushnotification.PushNotificationService
+import com.zen.alchan.ui.base.BaseViewModel
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class MainViewModel(private val appSettingsRepository: AppSettingsRepository,
-                    private val userRepository: UserRepository
-) : ViewModel() {
+class MainViewModel(
+    private val userRepository: UserRepository,
+    private val contentRepository: ContentRepository,
+    private val pushNotificationService: PushNotificationService
+) : BaseViewModel<Unit>() {
 
-    val appColorThemeLiveData by lazy {
-        appSettingsRepository.appColorThemeLiveData
-    }
+    val isViewerAuthenticated: Boolean
+        get() = userRepository.getIsAuthenticated().blockingFirst()
 
-    val listOrAniListSettingsChanged by lazy {
-        userRepository.listOrAniListSettingsChanged
-    }
+    private val _unreadNotificationCount = BehaviorSubject.createDefault(0)
+    val unreadNotificationCount: Observable<Int>
+        get() = _unreadNotificationCount
 
-    val sessionResponse by lazy {
-        userRepository.sessionResponse
-    }
+    override fun loadData(param: Unit) {
+        loadOnce {
+            disposables.add(
+                contentRepository.getGenres().subscribe({}, {})
+            )
 
-    val notificationCount by lazy {
-        userRepository.notificationCount
-    }
+            disposables.add(
+                contentRepository.getTags().subscribe({}, {})
+            )
 
-    val appColorTheme: AppColorTheme?
-        get() = appSettingsRepository.appSettings.appTheme
+            disposables.add(
+                userRepository.unreadNotificationCount
+                    .applyScheduler()
+                    .subscribe {
+                        _unreadNotificationCount.onNext(it)
+                    }
+            )
 
-    fun checkSession() {
-        userRepository.checkSession()
-    }
-
-    fun getNotificationCount() {
-        userRepository.getNotificationCount()
-    }
-
-    fun clearStorage() {
-        appSettingsRepository.clearStorage()
-    }
-
-    fun sendFirebaseToken(token: String?) {
-        if (!token.isNullOrBlank()) {
-            userRepository.sendFirebaseToken(token)
+            disposables.add(
+                userRepository.getAppSetting()
+                    .applyScheduler()
+                    .subscribe {
+                        pushNotificationService.startPushNotification()
+                    }
+            )
         }
+    }
+
+    fun clearUnreadNotificationCountBadge() {
+        userRepository.clearUnreadNotificationCount()
     }
 }

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titleText"
-        style="?themeLargeFont"
-        android:layout_marginTop="@dimen/marginNormal"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="@dimen/marginNormal"
+        style="?themeBigFont"
+        android:layout_margin="@dimen/marginNormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

@@ -1,0 +1,72 @@
+query HomeDataQuery($statusVersion:Int) {
+  trendingAnime: Page(page: 1, perPage: 10) {
+    media(type: ANIME, sort: [TRENDING_DESC], isAdult: false) {
+      ...HomeMedia
+    }
+  }
+  trendingManga: Page(page: 1, perPage: 10) {
+    media(type: MANGA, sort: [TRENDING_DESC], isAdult: false) {
+      ...HomeMedia
+    }
+  }
+  newAnime: Page(page: 1, perPage:10) {
+    media(type: ANIME, sort: [ID_DESC], isAdult: false) {
+      ...HomeMedia
+    }
+  }
+  newManga: Page(page: 1, perPage: 10) {
+    media(type: MANGA, sort: [ID_DESC], isAdult: false) {
+      ...HomeMedia
+    }
+  }
+}
+
+fragment HomeMedia on Media {
+  id
+  idMal
+  title {
+    romaji
+    english
+    native
+    userPreferred
+  }
+  countryOfOrigin
+  type
+  status(version: $statusVersion)
+  format
+  description
+  coverImage {
+    extraLarge
+    large
+    medium
+  }
+  bannerImage
+  genres
+  averageScore
+  favourites
+  staff(sort:[RELEVANCE]) {
+    edges {
+      node {
+        id
+        name {
+          full
+        }
+      }
+      role
+    }
+  }
+  studios(isMain:true) {
+    edges {
+      node {
+        id
+        name
+      }
+      isMain
+    }
+  }
+  startDate {
+    year
+    month
+    day
+  }
+}

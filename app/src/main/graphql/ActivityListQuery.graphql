@@ -1,0 +1,17 @@
+query ActivityListQuery($page:Int, $userId:Int, $typeIn:[ActivityType], $isFollowing:Boolean) {
+  Page(page:$page) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    activities(userId:$userId, type_in:$typeIn, isFollowing:$isFollowing, sort:[ID_DESC]) {
+      __typename
+    ... onTextActivity
+    ... onListActivity
+    ... onMessageActivity
+    }
+  }
+}

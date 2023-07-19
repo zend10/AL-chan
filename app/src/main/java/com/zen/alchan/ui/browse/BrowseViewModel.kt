@@ -1,15 +1,8 @@
 package com.zen.alchan.ui.browse
 
-import androidx.lifecycle.ViewModel
-import com.zen.alchan.data.repository.BrowseRepository
+import com.zen.alchan.ui.base.BaseViewModel
 
-class BrowseViewModel(private val browseRepository: BrowseRepository) : ViewModel() {
+class BrowseViewModel : BaseViewModel<Unit>() {
 
-    val idFromNameData by lazy {
-        browseRepository.idFromNameData
-    }
-
-    fun getIdFromName(name: String) {
-        browseRepository.getIdFromName(name)
-    }
+    override fun loadData(param: Unit) = Unit
 }

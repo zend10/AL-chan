@@ -1,11 +1,5 @@
-mutation ToggleActivitySubsriptionMutation(
-    $activityId: Int,
-    $subscribe: Boolean
-) {
-    ToggleActivitySubscription(
-        activityId: $activityId,
-        subscribe: $subscribe
-    ) {
-        __typename
-    }
+mutation ToggleActivitySubscriptionMutation($activityId:Int, $subscribe:Boolean) {
+  ToggleActivitySubscription(activityId:$activityId, subscribe:$subscribe) {
+    __typename
+  }
 }

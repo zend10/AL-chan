@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/relationImage"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="2:3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardBackgroundColor="?themeCardTransparentColor"
+        app:contentPadding="@dimen/marginClose"
+        android:layout_margin="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/relationFormat"
+            style="?themeSmallFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/relationTitle"
+        style="?themeRegularClickableFont"
+        android:textAlignment="center"
+        android:maxLines="2"
+        android:lines="2"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/relationImage"
+        app:layout_constraintStart_toStartOf="@id/relationImage"
+        app:layout_constraintEnd_toEndOf="@id/relationImage"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/relationRelationship"
+        style="?themeSmallFont"
+        android:textAlignment="center"
+        android:maxLines="1"
+        android:lines="1"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/relationTitle"
+        app:layout_constraintStart_toStartOf="@id/relationImage"
+        app:layout_constraintEnd_toEndOf="@id/relationImage"
+        android:layout_marginTop="@dimen/marginClose"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

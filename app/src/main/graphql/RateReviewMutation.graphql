@@ -1,40 +1,8 @@
-mutation RateReviewMutation(
-    $reviewId: Int,
-    $rating: ReviewRating
-) {
-    RateReview(
-        reviewId: $reviewId,
-        rating: $rating
-    ) {
-        id
-        userId
-        mediaId
-        mediaType
-        summary
-        body
-        rating
-        ratingAmount
-        userRating
-        score
-        siteUrl
-        createdAt
-        updatedAt
-        user {
-            id
-            name
-            avatar {
-                medium
-            }
-        }
-        media {
-            id
-            title {
-                userPreferred
-            }
-            coverImage {
-                medium
-            }
-            bannerImage
-        }
-    }
+mutation RateReviewMutation($id:Int, $rating:ReviewRating) {
+  RateReview(reviewId:$id, rating:$rating) {
+    id
+    rating
+    ratingAmount
+    userRating
+  }
 }

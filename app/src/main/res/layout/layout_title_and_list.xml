@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/titleLayout"
+        android:layout_marginHorizontal="@dimen/marginPageBig"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/titleText"
+            style="?themeRegularBoldFont"
+            android:layout_marginEnd="@dimen/marginNormal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seeMoreText"
+            style="?themeSmallClickableFont"
+            android:foreground="?selectableItemBackground"
+            android:text="@string/see_more"
+            android:paddingVertical="@dimen/iconPadding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_marginHorizontal="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:visibility="gone"
+        android:id="@+id/footnoteText"
+        style="?themeSmallFont"
+        android:textColor="?themeDividerColor"
+        app:layout_constraintTop_toBottomOf="@+id/listRecyclerView"
+        android:layout_marginTop="@dimen/marginBig"
+        android:layout_marginHorizontal="@dimen/marginPageBig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

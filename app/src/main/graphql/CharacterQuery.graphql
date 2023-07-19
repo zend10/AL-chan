@@ -1,19 +1,90 @@
-query CharacterQuery($id: Int) {
-    Character(id: $id) {
+query CharacterQuery($id:Int,$page:Int,$sort:[MediaSort],$type:MediaType,$onList:Boolean) {
+    Character(id:$id) {
         id
         name {
             first
+            middle
             last
             full
             native
             alternative
+            alternativeSpoiler
+            userPreferred
         }
         image {
             large
+            medium
         }
-        description(asHtml: true)
+        description(asHtml:false)
+        gender
+        dateOfBirth {
+            year
+            month
+            day
+        }
+        age
+        bloodType
         isFavourite
         siteUrl
+        media(page:$page,sort:$sort,type:$type,onList:$onList) {
+            edges {
+                node {
+                    id
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                    countryOfOrigin
+                    type
+                    format
+                    averageScore
+                    meanScore
+                    popularity
+                    favourites
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                }
+                characterRole
+              	voiceActorRoles {
+                  voiceActor {
+                    id
+                    name {
+                      first
+                      middle
+                      last
+                      full
+                      native
+                      alternative
+                      userPreferred
+                    }
+                    languageV2
+                    image {
+                      large
+                      medium
+                    }
+                  }
+                  roleNotes
+                  dubGroup
+                }
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
         favourites
     }
 }

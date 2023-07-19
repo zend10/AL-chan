@@ -1,0 +1,142 @@
+mutation UpdateFavouriteOrderMutation(
+  $animeIds:[Int],
+  $mangaIds:[Int],
+  $characterIds:[Int],
+  $staffIds:[Int],
+  $studioIds:[Int],
+  $animeOrder:[Int],
+  $mangaOrder:[Int],
+  $characterOrder:[Int],
+  $staffOrder:[Int],
+  $studioOrder:[Int]
+) {
+  UpdateFavouriteOrder(
+    animeIds:$animeIds,
+    mangaIds:$mangaIds,
+    characterIds:$characterIds,
+    staffIds:$staffIds,
+    studioIds:$studioIds,
+    animeOrder:$animeOrder,
+    mangaOrder:$mangaOrder,
+    characterOrder:$characterOrder,
+    staffOrder:$staffOrder,
+    studioOrder:$studioOrder
+  ) {
+    anime {
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          siteUrl
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+      manga {
+        nodes {
+          id
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+            large
+            medium
+          }
+          siteUrl
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+      characters {
+        nodes {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            alternativeSpoiler
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+      staff {
+        nodes {
+          id
+          name {
+            first
+            middle
+            last
+            full
+            native
+            alternative
+            userPreferred
+          }
+          languageV2
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+      studios {
+        nodes {
+          id
+          name
+          siteUrl
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+  }
+}

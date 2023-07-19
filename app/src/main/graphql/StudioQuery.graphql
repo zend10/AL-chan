@@ -1,10 +1,48 @@
-query StudioQuery($id: Int) {
-    Studio(id: $id) {
-        id
-        name
-        isAnimationStudio
-        siteUrl
-        isFavourite
-        favourites
+query StudioQuery($id:Int, $sort:[MediaSort], $onList:Boolean $page:Int) {
+    Studio(id:$id) {
+      id
+      name
+      isAnimationStudio
+      media(page:$page, sort:$sort, onList:$onList) {
+        edges {
+          node {
+            id
+            title {
+              romaji
+              english
+              native
+              userPreferred
+            }
+            type
+            format
+            coverImage {
+                extraLarge
+                large
+                medium
+            }
+            countryOfOrigin
+            averageScore
+            meanScore
+            popularity
+            favourites
+            startDate {
+                year
+                month
+                day
+            }
+          }
+          isMainStudio
+        }
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+      }
+      siteUrl
+      isFavourite
+      favourites
     }
 }

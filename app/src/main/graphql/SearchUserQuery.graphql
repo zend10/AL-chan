@@ -1,0 +1,19 @@
+query SearchUserQuery($page:Int, $search:String) {
+  Page(page:$page) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    users(search:$search) {
+      id
+      name
+      avatar {
+        large
+        medium
+      }
+    }
+  }
+}

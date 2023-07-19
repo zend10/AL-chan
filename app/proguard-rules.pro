@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep public class com.zen.alchan.data.entity.**{
+    *;
+}
+-keep public class com.zen.alchan.data.response.**{
+    *;
+}
+-keep public class com.zen.alchan.helper.pojo.**{
+    *;
+}
+-keepclassmembers enum * {
+    public *;
+}

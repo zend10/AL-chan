@@ -1,7 +1,7 @@
 query NotificationsQuery(
     $page: Int,
     $type_in: [NotificationType],
-    $reset: Boolean
+    $resetNotificationCount: Boolean
 ) {
     Page(page: $page, perPage: 25) {
         pageInfo {
@@ -13,7 +13,7 @@ query NotificationsQuery(
         }
         notifications(
             type_in: $type_in,
-            resetNotificationCount: $reset
+            resetNotificationCount: $resetNotificationCount
         ) {
             __typename
             ... onAiringNotification
@@ -30,10 +30,10 @@ query NotificationsQuery(
             ... onThreadCommentLikeNotification
             ... onThreadLikeNotification
             ... onRelatedMediaAdditionNotification
+            ... onMediaDataChangeNotification
+            ... onMediaMergeNotification
+            ... onMediaDeletionNotification
         }
-    }
-    Viewer {
-        unreadNotificationCount
     }
 }
 
@@ -47,12 +47,18 @@ fragment onAiringNotification on AiringNotification {
     media {
         id
         title {
+            romaji
+            english
+            native
             userPreferred
         }
         coverImage {
+            extraLarge
             large
+            medium
         }
         type
+        countryOfOrigin
     }
 }
 
@@ -67,6 +73,7 @@ fragment onFollowingNotification on FollowingNotification {
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -78,11 +85,15 @@ fragment onActivityMessageNotification on ActivityMessageNotification {
     activityId
     context
     createdAt
+    message {
+        ... onNotificationMessageActivity
+    }
     user {
         id
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -94,11 +105,18 @@ fragment onActivityMentionNotification on ActivityMentionNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -110,11 +128,18 @@ fragment onActivityReplyNotification on ActivityReplyNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -126,11 +151,18 @@ fragment onActivityReplySubscribedNotification on ActivityReplySubscribedNotific
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -142,11 +174,18 @@ fragment onActivityLikeNotification on ActivityLikeNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -158,11 +197,18 @@ fragment onActivityReplyLikeNotification on ActivityReplyLikeNotification {
     activityId
     context
     createdAt
+  	activity {
+      __typename
+      ... onNotificationTextActivity
+      ... onNotificationListActivity
+      ... onNotificationMessageActivity
+    }
     user {
         id
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -181,6 +227,8 @@ fragment onThreadCommentMentionNotification on ThreadCommentMentionNotification 
     }
     comment {
         id
+        threadId
+        comment(asHtml: false)
         siteUrl
     }
     user {
@@ -188,6 +236,7 @@ fragment onThreadCommentMentionNotification on ThreadCommentMentionNotification 
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -206,6 +255,8 @@ fragment onThreadCommentReplyNotification on ThreadCommentReplyNotification {
     }
     comment {
         id
+        threadId
+        comment(asHtml: false)
         siteUrl
     }
     user {
@@ -213,6 +264,7 @@ fragment onThreadCommentReplyNotification on ThreadCommentReplyNotification {
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -231,6 +283,8 @@ fragment onThreadCommentSubscribedNotification on ThreadCommentSubscribedNotific
     }
     comment {
         id
+        threadId
+        comment(asHtml: false)
         siteUrl
     }
     user {
@@ -238,6 +292,7 @@ fragment onThreadCommentSubscribedNotification on ThreadCommentSubscribedNotific
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -256,6 +311,8 @@ fragment onThreadCommentLikeNotification on ThreadCommentLikeNotification {
     }
     comment {
         id
+        threadId
+        comment(asHtml: false)
         siteUrl
     }
     user {
@@ -263,6 +320,7 @@ fragment onThreadCommentLikeNotification on ThreadCommentLikeNotification {
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -281,6 +339,8 @@ fragment onThreadLikeNotification on ThreadLikeNotification {
     }
     comment {
         id
+        threadId
+        comment(asHtml: false)
         siteUrl
     }
     user {
@@ -288,6 +348,7 @@ fragment onThreadLikeNotification on ThreadLikeNotification {
         name
         avatar {
             large
+            medium
         }
     }
 }
@@ -301,11 +362,106 @@ fragment onRelatedMediaAdditionNotification on RelatedMediaAdditionNotification 
     media {
         id
         title {
+            romaji
+            english
+            native
             userPreferred
         }
         coverImage {
+            extraLarge
             large
+            medium
         }
         type
+        countryOfOrigin
     }
+}
+
+fragment onMediaDataChangeNotification on MediaDataChangeNotification {
+    id
+    type
+    mediaId
+    context
+    reason
+    createdAt
+    media {
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        type
+        countryOfOrigin
+    }
+}
+
+fragment onMediaMergeNotification on MediaMergeNotification {
+    id
+    type
+    mediaId
+    deletedMediaTitles
+    context
+    reason
+    createdAt
+    media {
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+        coverImage {
+            extraLarge
+            large
+            medium
+        }
+        type
+        countryOfOrigin
+    }
+}
+
+fragment onMediaDeletionNotification on MediaDeletionNotification {
+    id
+    type
+    deletedMediaTitle
+    context
+    reason
+    createdAt
+}
+
+fragment onNotificationTextActivity on TextActivity {
+  id
+  text(asHtml:false)
+  siteUrl
+}
+
+fragment onNotificationListActivity on ListActivity {
+  id
+  status
+  progress
+  siteUrl
+  media {
+    id
+    title {
+      romaji
+      english
+      native
+      userPreferred
+    }
+    countryOfOrigin
+  }
+}
+
+fragment onNotificationMessageActivity on MessageActivity {
+  id
+  message(asHtml:false)
+  siteUrl
 }

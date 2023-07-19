@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/marginPageBig"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/profileAnimeTendencyLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="?themeRegularBoldFont"
+            android:text="@string/anime_tendencies"
+            android:layout_marginBottom="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileAnimeTendencyMostFavoriteGenre"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileAnimeTendencyLeastFavoriteGenre"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileAnimeTendencyMostFavoriteTag"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileAnimeTendencyMostFavoriteYear"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileAnimeTendencyStartYear"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileAnimeTendencyCompletedSeriesPercentage"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:id="@+id/profileTendencyGapView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/marginBig"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/profileMangaTendencyLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="?themeRegularBoldFont"
+            android:text="@string/manga_tendencies"
+            android:layout_marginBottom="@dimen/marginClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileMangaTendencyMostFavoriteGenre"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileMangaTendencyLeastFavoriteGenre"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileMangaTendencyMostFavoriteTag"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileMangaTendencyMostFavoriteYear"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileMangaTendencyStartYear"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profileMangaTendencyCompletedSeriesPercentage"
+            style="?themeRegularFont"
+            app:drawableStartCompat="@drawable/ic_filled_circle_small"
+            app:drawableTint="?themeContentColor"
+            android:drawablePadding="@dimen/marginSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:text="@string/tendency_is_generated_automatically_based_on_user_stats_it_might_or_might_not_be_accurate"
+        style="?themeSmallFont"
+        android:textColor="?themeDividerColor"
+        android:layout_marginTop="@dimen/marginBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,15 +1,179 @@
-query StaffQuery($id: Int) {
-    Staff(id: $id) {
+query StaffQuery($id:Int, $staffMediaSort:[MediaSort], $characterSort:[CharacterSort], $characterMediaSort:[MediaSort], $onList: Boolean, $page:Int) {
+    Staff(id:$id) {
         id
         name {
+            first
+            middle
+            last
             full
             native
+            alternative
+            userPreferred
         }
+        languageV2
         image {
             large
+            medium
         }
+        description(asHtml:false)
+        primaryOccupations
+        gender
+        dateOfBirth {
+            year
+            month
+            day
+        }
+        dateOfDeath {
+            year
+            month
+            day
+        }
+        age
+        yearsActive
+        homeTown
+        bloodType
         isFavourite
         siteUrl
+        staffMedia(sort:$staffMediaSort, onList:$onList page:$page) {
+            edges {
+                node {
+                    id
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                    countryOfOrigin
+                    type
+                    format
+                    averageScore
+                    meanScore
+                    popularity
+                    favourites
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                }
+                staffRole
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+        characters(sort:$characterSort, page:$page) {
+            edges {
+                node {
+                    id
+                    name {
+                        first
+                        middle
+                        last
+                        full
+                        native
+                        alternative
+                        alternativeSpoiler
+                        userPreferred
+                    }
+                    image {
+                        large
+                        medium
+                    }
+                }
+                role
+                name
+                media {
+                  id
+                  title {
+                    romaji
+                    english
+                    native
+                    userPreferred
+                  }
+                  coverImage {
+                    extraLarge
+                    large
+                    medium
+                  }
+                  countryOfOrigin
+                }
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+        characterMedia(sort:$characterMediaSort, onList:$onList, page:$page) {
+            edges {
+              	node {
+                  	id
+                    title {
+                      romaji
+                      english
+                      native
+                      userPreferred
+                    }
+                    coverImage {
+                      extraLarge
+                      large
+                      medium
+                    }
+                    countryOfOrigin
+                    format
+                    averageScore
+                    meanScore
+                    popularity
+                    favourites
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                }
+              	characters {
+                  	id
+                  	name {
+                      first
+                      middle
+                      last
+                      full
+                      native
+                      alternative
+                      alternativeSpoiler
+                      userPreferred
+                    }
+                  	image {
+                      large
+                      medium
+                    }
+                }
+                characterRole
+                characterName
+                roleNotes
+                dubGroup
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
         favourites
     }
 }

@@ -1,18 +1,17 @@
-query MediaQuery(
-    $id: Int,
-    $sort: [MediaSort]
-) {
-    Media(id: $id, sort: $sort) {
+query MediaQuery($id:Int, $statusVersion:Int, $sourceVersion:Int, $relationTypeVersion: Int) {
+    Media(id:$id) {
         id
+        idMal
         title {
-            userPreferred
             romaji
             english
             native
+            userPreferred
         }
         type
         format
-        status(version: 2)
+        status(version: $statusVersion)
+        description(asHtml: false)
         startDate {
             year
             month
@@ -26,30 +25,186 @@ query MediaQuery(
         season
         seasonYear
         episodes
+        duration
         chapters
         volumes
+        countryOfOrigin
+        isLicensed
+        source(version: $sourceVersion)
+        trailer {
+            id
+            site
+            thumbnail
+        }
         coverImage {
             extraLarge
+            large
+            medium
         }
         bannerImage
+        genres
+        synonyms
         averageScore
         meanScore
         popularity
+        trending
         favourites
-        isFavourite
-        isAdult
-        nextAiringEpisode {
-            airingAt
-            episode
+        tags {
+            id
+            name
+            description
+            category
+            rank
+            isGeneralSpoiler
+            isMediaSpoiler
+            isAdult
         }
-        airingSchedule {
+        relations {
             edges {
                 node {
                     id
-                    airingAt
-                    episode
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    type
+                    format
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                    countryOfOrigin
+                }
+                relationType(version: $relationTypeVersion)
+            }
+        }
+        characters(role: MAIN, sort: [ID]) {
+            nodes {
+                id
+                name {
+                    first
+                    middle
+                    last
+                    full
+                    native
+                    alternative
+                    alternativeSpoiler
+                    userPreferred
+                }
+                image {
+                    large
+                    medium
                 }
             }
         }
+        staff(sort:[RELEVANCE, ID]) {
+            edges {
+                node {
+                    id
+                    name {
+                        first
+                        middle
+                        last
+                        full
+                        native
+                        alternative
+                        userPreferred
+                    }
+                    image {
+                        large
+                        medium
+                    }
+                }
+                id
+                role
+            }
+        }
+        studios {
+            edges {
+                node {
+                    id
+                    name
+                    isAnimationStudio
+                }
+                id
+                isMain
+            }
+        }
+        isFavourite
+        isAdult
+        nextAiringEpisode {
+            id
+            airingAt
+            timeUntilAiring
+            episode
+        }
+        externalLinks {
+            id
+            url
+            site
+            siteId
+            type
+            language
+            color
+            icon
+        }
+        rankings {
+            id
+            rank
+            type
+            format
+            year
+            season
+            allTime
+            context
+        }
+        recommendations(sort:[RATING_DESC]) {
+            nodes {
+                id
+              	rating
+              	userRating
+              	mediaRecommendation {
+                  	id
+                  	title {
+                      	romaji
+                      	english
+                      	native
+                      	userPreferred
+                    }
+                    countryOfOrigin
+                    type
+                  	format
+                  	status(version: $statusVersion)
+                  	startDate {
+                        year
+                        month
+                        day
+                    }
+                  	episodes
+                  	chapters
+                  	coverImage {
+                      	extraLarge
+                      	large
+                      	medium
+                    }
+                  	averageScore
+                  	favourites
+                }
+            }
+        }
+        stats {
+            scoreDistribution {
+                score
+                amount
+            }
+            statusDistribution {
+                status
+                amount
+            }
+        }
+        siteUrl
     }
 }

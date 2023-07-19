@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/itemMediaStats"
+        android:title="@string/media_stats"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemMediaSocial"
+        android:title="@string/social"
+        app:showAsAction="never"/>
+    <item android:id="@+id/itemMediaReview"
+        android:title="@string/reviews"
+        app:showAsAction="never"/>
+</menu>

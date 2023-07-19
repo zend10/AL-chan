@@ -1,109 +1,235 @@
 package com.zen.alchan.ui.home
 
-import androidx.lifecycle.ViewModel
-import com.zen.alchan.data.repository.AppSettingsRepository
+import com.zen.alchan.R
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.MediaListRepository
-import com.zen.alchan.data.repository.MediaRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.helper.enums.AppColorTheme
-import com.zen.alchan.helper.enums.BrowsePage
-import com.zen.alchan.helper.pojo.Review
-import com.zen.alchan.helper.utils.Utility
-import type.MediaListStatus
-import type.ReviewSort
+import com.zen.alchan.data.response.anilist.Media
+import com.zen.alchan.data.response.anilist.MediaList
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.SearchCategory
+import com.zen.alchan.helper.enums.Source
+import com.zen.alchan.helper.extensions.applyScheduler
+import com.zen.alchan.helper.extensions.getStringResource
+import com.zen.alchan.helper.extensions.moreThanADay
+import com.zen.alchan.helper.pojo.HomeAdapterComponent
+import com.zen.alchan.helper.pojo.HomeItem
+import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.helper.pojo.ReleasingTodayItem
+import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.ui.base.BaseViewModel
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
+import com.zen.alchan.type.MediaListStatus
+import kotlin.math.abs
 
-class HomeViewModel(private val userRepository: UserRepository,
-                    private val appSettingsRepository: AppSettingsRepository,
-                    private val mediaRepository: MediaRepository,
-                    private val mediaListRepository: MediaListRepository
-) : ViewModel() {
+class HomeViewModel(
+    private val contentRepository: ContentRepository,
+    private val userRepository: UserRepository,
+    private val mediaListRepository: MediaListRepository
+) : BaseViewModel<Unit>() {
 
-    var isInit = false
-    var page = 1
-    var hasNextPage = true
-    var releasingTodayList = ArrayList<HomeFragment.ReleasingTodayItem>()
+    private val _homeItemList = BehaviorSubject.createDefault(listOf<HomeItem>())
+    val homeItemList: Observable<List<HomeItem>>
+        get() = _homeItemList
 
-    var trendingAnimeList = ArrayList<HomeFragment.TrendingMediaItem>()
-    var trendingMangaList = ArrayList<HomeFragment.TrendingMediaItem>()
-    var recentReviewsList = ArrayList<Review>()
+    private val _adapterComponent = PublishSubject.create<HomeAdapterComponent>()
+    val adapterComponent: Observable<HomeAdapterComponent>
+        get() = _adapterComponent
 
-    var explorePageArray = arrayOf(
-        BrowsePage.ANIME.name, BrowsePage.MANGA.name, BrowsePage.CHARACTER.name, BrowsePage.STAFF.name, BrowsePage.STUDIO.name
-    )
+    private val _searchCategoryList = PublishSubject.create<List<ListItem<SearchCategory>>>()
+    val searchCategoryList: Observable<List<ListItem<SearchCategory>>>
+        get() = _searchCategoryList
 
-    val viewerDataResponse by lazy {
-        userRepository.viewerDataResponse
-    }
+    override fun loadData(param: Unit) {
+        loadOnce {
+            disposables.add(
+                userRepository.getAppSetting()
+                    .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, user ->
+                        HomeAdapterComponent(user, appSetting)
+                    }
+                    .applyScheduler()
+                    .subscribe {
+                        _adapterComponent.onNext(it)
+                        getHomeData()
+                    }
+            )
 
-    val viewerData by lazy {
-        userRepository.viewerData
-    }
+            disposables.add(
+                mediaListRepository.releasingTodayTrigger
+                    .applyScheduler()
+                    .subscribe {
+                        disposables.add(
+                            userRepository.getViewer(Source.CACHE)
+                                .flatMap {
+                                    mediaListRepository.getMediaListCollection(Source.CACHE, it.id, MediaType.ANIME)
+                                }
+                                .map {
+                                    it.lists.filter { it.status != MediaListStatus.DROPPED }
+                                }
+                                .map {
+                                    val releasingTodayItem = mutableSetOf<ReleasingTodayItem>()
 
-    val trendingAnimeData by lazy {
-        mediaRepository.trendingAnimeData
-    }
+                                    it.forEach {
+                                        it.entries.forEach { mediaList ->
+                                            val media = mediaList.media
+                                            var currentEpisode = 0
 
-    val trendingMangaData by lazy {
-        mediaRepository.trendingMangaData
-    }
+                                            if (media.nextAiringEpisode != null) {
+                                                if (media.nextAiringEpisode.timeUntilAiring < 3600 * 24) {
+                                                    releasingTodayItem.add(ReleasingTodayItem(mediaList, media.nextAiringEpisode.episode, media.nextAiringEpisode.timeUntilAiring))
+                                                } else {
+                                                    currentEpisode = media.nextAiringEpisode.episode - 1
+                                                }
+                                            }
 
-    val releasingTodayData by lazy {
-        mediaRepository.releasingTodayData
-    }
+                                            if (media.airingSchedule.nodes.isNotEmpty()) {
+                                                val currentEpisodeSchedule = media.airingSchedule.nodes.find { it.episode == currentEpisode }
+                                                if (currentEpisodeSchedule != null && abs(currentEpisodeSchedule.timeUntilAiring) < 3600 * 24) {
+                                                    releasingTodayItem.add(ReleasingTodayItem(mediaList, currentEpisodeSchedule.episode, currentEpisodeSchedule.timeUntilAiring))
+                                                }
+                                            }
+                                        }
+                                    }
 
-    val recentReviewsData by lazy {
-        mediaRepository.recentReviewsData
-    }
-
-    val animeListData by lazy {
-        mediaListRepository.animeListData
-    }
-
-    val circularAvatar
-        get() = appSettingsRepository.appSettings.circularAvatar == true
-
-    val whiteBackgroundAvatar
-        get() = appSettingsRepository.appSettings.whiteBackgroundAvatar == true
-
-    val showRecentReviews: Boolean
-        get() = appSettingsRepository.appSettings.showRecentReviews == true
-
-    fun initData() {
-        userRepository.getViewerData()
-        mediaRepository.getTrendingAnime()
-        mediaRepository.getTrendingManga()
-
-        if (Utility.timeDiffMoreThanOneDay(userRepository.viewerDataLastRetrieved)) {
-            userRepository.retrieveViewerData()
+                                    releasingTodayItem.sortedBy { it.timeUntilAiring }
+                                }
+                                .subscribe(
+                                    {
+                                        val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
+                                        val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
+                                        if (index != -1) {
+                                            currentHomeList[index] = HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY)
+                                        }
+                                        _homeItemList.onNext(currentHomeList)
+                                    },
+                                    {
+                                        it.printStackTrace()
+                                    }
+                                )
+                        )
+                    }
+            )
         }
-
-        if (Utility.timeDiffMoreThanOneDay(mediaRepository.genreListLastRetrieved) || mediaRepository.genreList.isNullOrEmpty()) {
-            mediaRepository.getGenre()
-        }
-
-        if (showRecentReviews) {
-            mediaRepository.getReviews(1, 10, null, listOf(ReviewSort.CREATED_AT_DESC), true)
-        }
-
-        if (Utility.timeDiffMoreThanOneDay(mediaRepository.tagListLastRetrieved) || mediaRepository.tagList.isNullOrEmpty()) {
-            mediaRepository.getTag()
-        }
     }
 
-    fun getReleasingToday() {
-        if (hasNextPage) mediaRepository.getReleasingToday(page)
+    fun reloadData() {
+        getHomeData(true)
     }
 
-    fun getNotificationCount() {
-        userRepository.getNotificationCount()
+    private fun getHomeData(isReloading: Boolean = false) {
+        if (!isReloading && state == State.LOADED) return
+
+        if (isReloading)
+            _loading.onNext(true)
+        else
+            _homeItemList.onNext(
+                listOf(
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_SOCIAL),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
+                    HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
+                )
+            )
+
+        requestHomeData(if (isReloading) Source.NETWORK else null)
     }
 
-    fun updateAnimeProgress(
-        entryId: Int,
-        status: MediaListStatus,
-        repeat: Int,
-        progress: Int
-    ) {
-        mediaListRepository.updateAnimeProgress(entryId, status, repeat, progress)
+    private fun requestHomeData(source: Source?) {
+        state = State.LOADING
+
+        disposables.add(
+            contentRepository.getHomeData(source)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        val currentHomeItems = ArrayList(_homeItemList.value ?: listOf())
+                        val trendingAnimeIndex = currentHomeItems.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_TRENDING_ANIME }
+                        if (trendingAnimeIndex != -1) {
+                            currentHomeItems[trendingAnimeIndex] = HomeItem(media = it.trendingAnime, viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME)
+                        }
+                        val trendingMangaIndex = currentHomeItems.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_TRENDING_MANGA }
+                        if (trendingMangaIndex != -1) {
+                            currentHomeItems[trendingMangaIndex] = HomeItem(media = it.trendingManga, viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
+                        }
+                        _homeItemList.onNext(currentHomeItems)
+                        _loading.onNext(false)
+                        state = State.LOADED
+                    },
+                    {
+                        if (source == Source.CACHE) {
+                            _error.onNext(it.getStringResource())
+                            _loading.onNext(false)
+                            state = State.ERROR
+                        } else {
+                            requestHomeData(Source.CACHE)
+                        }
+                    }
+                )
+        )
+    }
+
+    fun loadSearchCategories() {
+        val list = ArrayList<ListItem<SearchCategory>>()
+        list.add(ListItem(R.string.explore_anime, SearchCategory.ANIME))
+        list.add(ListItem(R.string.explore_manga, SearchCategory.MANGA))
+        list.add(ListItem(R.string.explore_characters, SearchCategory.CHARACTER))
+        list.add(ListItem(R.string.explore_staff, SearchCategory.STAFF))
+        list.add(ListItem(R.string.explore_studios, SearchCategory.STUDIO))
+        _searchCategoryList.onNext(list)
+    }
+
+    fun updateProgress(mediaList: MediaList, newProgress: Int) {
+        if (mediaList.progress == newProgress)
+            return
+
+        val maxProgress = mediaList.media.episodes
+
+        var targetProgress = newProgress
+        var status: MediaListStatus? = null
+        var repeat: Int? = null
+
+        if (maxProgress != null && newProgress >= maxProgress) {
+            if (mediaList.status == MediaListStatus.REPEATING)
+                repeat = mediaList.repeat + 1
+
+            status = MediaListStatus.COMPLETED
+            targetProgress = maxProgress
+        } else {
+            if (mediaList.status == MediaListStatus.PLANNING ||
+                mediaList.status == MediaListStatus.PAUSED ||
+                mediaList.status == MediaListStatus.DROPPED
+            ) {
+                status = MediaListStatus.CURRENT
+            }
+        }
+        _loading.onNext(true)
+
+        disposables.add(
+            mediaListRepository.updateMediaListProgress(
+                MediaType.ANIME,
+                mediaList.id ?: 0,
+                status,
+                repeat,
+                targetProgress,
+                null
+            )
+                .applyScheduler()
+                .doFinally {
+                    _loading.onNext(false)
+                }
+                .subscribe(
+                    {
+                        // do nothing
+                    },
+                    {
+                        _error.onNext(it.getStringResource())
+                    }
+                )
+        )
     }
 }

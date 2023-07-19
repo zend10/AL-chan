@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?themeBackgroundColor"
+    android:focusable="true"
+    android:clickable="true"
+    tools:context=".ui.explore.ExploreFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exploreLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/marginPageNormal"
+        android:elevation="@dimen/elevationNormal"
+        android:background="?themeCardColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/exploreBarLayout"
+            app:contentPadding="@dimen/marginSmall"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/exploreCategoryButton"
+            android:layout_marginEnd="@dimen/marginPageNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/exploreBackButton"
+                    app:srcCompat="@drawable/ic_long_arrow_left"
+                    android:padding="@dimen/iconPadding"
+                    app:tint="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/exploreEditText"
+                    style="?themeRegularFont"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/blackLightTransparent80"
+                    android:hint="@string/explore"
+                    android:inputType="textCapWords"
+                    android:imeOptions="actionSearch"
+                    android:background="@android:color/transparent"
+                    android:maxLines="1"
+                    android:layout_marginStart="@dimen/marginSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/exploreCategoryButton"
+            app:cardBackgroundColor="?themePrimaryColor"
+            app:layout_constraintEnd_toStartOf="@id/exploreSettingButton"
+            app:layout_constraintTop_toTopOf="@id/exploreBarLayout"
+            app:layout_constraintBottom_toBottomOf="@id/exploreBarLayout"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_marginEnd="@dimen/marginPageNormal"
+            app:layout_goneMarginEnd="0dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_compass"
+                app:tint="?themeBackgroundColor"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/exploreSettingButton"
+            app:cardBackgroundColor="?themePrimaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/exploreBarLayout"
+            app:layout_constraintBottom_toBottomOf="@id/exploreBarLayout"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="0dp"
+            android:layout_height="0dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_tune"
+                app:tint="?themeBackgroundColor"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/exploreSwipeRefresh"
+        app:layout_constraintTop_toBottomOf="@id/exploreLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/exploreRecyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/marginNormal"
+            android:paddingHorizontal="@dimen/marginNormal"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_empty"
+        android:id="@+id/emptyLayout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

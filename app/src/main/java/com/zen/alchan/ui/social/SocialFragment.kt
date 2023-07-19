@@ -1,347 +1,195 @@
 package com.zen.alchan.ui.social
 
-
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.lifecycle.Observer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
-import com.zen.alchan.data.response.*
-import com.zen.alchan.helper.doOnApplyWindowInsets
-import com.zen.alchan.helper.enums.BrowsePage
-import com.zen.alchan.helper.enums.EditorType
-import com.zen.alchan.helper.enums.ResponseStatus
-import com.zen.alchan.helper.libs.GlideApp
-import com.zen.alchan.helper.pojo.ListActivity
-import com.zen.alchan.helper.pojo.MessageActivity
-import com.zen.alchan.helper.pojo.TextActivity
-import com.zen.alchan.helper.updateSidePadding
-import com.zen.alchan.helper.utils.AndroidUtility
-import com.zen.alchan.helper.utils.DialogUtility
-import com.zen.alchan.ui.browse.BrowseActivity
-import com.zen.alchan.ui.browse.activity.ActivityListRvAdapter
-import com.zen.alchan.ui.browse.activity.ActivityListener
-import com.zen.alchan.ui.common.TextEditorActivity
-import com.zen.alchan.ui.search.SearchActivity
-import com.zen.alchan.ui.social.global.GlobalFeedActivity
-import io.noties.markwon.Markwon
-import kotlinx.android.synthetic.main.fragment_social.*
-import kotlinx.android.synthetic.main.layout_empty.*
-import kotlinx.android.synthetic.main.layout_loading.*
+import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.databinding.FragmentSocialBinding
+import com.zen.alchan.helper.enums.ActivityListPage
+import com.zen.alchan.helper.enums.TextEditorType
+import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
+import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.pojo.ListItem
+import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import type.ActivityType
-import type.MediaType
 
-/**
- * A simple [Fragment] subclass.
- */
-class SocialFragment : Fragment() {
 
-    private val viewModel by viewModel<SocialViewModel>()
+class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
 
-    private lateinit var friendsActivityAdapter: ActivityListRvAdapter
+    override val viewModel: SocialViewModel by viewModel()
 
-    private var maxWidth = 0
-    private lateinit var markwon: Markwon
+    private var adapter: SocialRvAdapter? = null
+    private var likeAdapter: LikeRvAdapter? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_social, container, false)
+    private var currentViewer: User? = null
+
+    override fun generateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSocialBinding {
+        return FragmentSocialBinding.inflate(inflater, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkIfNeedReload()
+    }
 
-        maxWidth = AndroidUtility.getScreenWidth(activity)
-        markwon = AndroidUtility.initMarkwon(activity!!)
+    override fun setUpLayout() {
+        binding.apply {
+            setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.social_hub), R.drawable.ic_delete)
+            adapter = SocialRvAdapter(requireContext(), listOf(), currentViewer, AppSetting(), false, getSocialListener())
+            socialRecyclerView.adapter = adapter
+            likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
 
-        friendsActivityAdapter = assignAdapter()
-        friendsActivityRecyclerView.adapter= friendsActivityAdapter
+            socialSwipeRefresh.setOnRefreshListener {
+                viewModel.reloadData()
+            }
 
-        if (!viewModel.enableSocial) {
-            socialDisabledText.visibility = View.VISIBLE
-            socialRefreshLayout.visibility = View.GONE
-            newActivityButton.visibility = View.GONE
-        } else {
-            socialDisabledText.visibility = View.GONE
-            socialRefreshLayout.visibility = View.VISIBLE
-            newActivityButton.visibility = View.VISIBLE
-            initLayout()
-            setupObserver()
+            socialRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0)
+                        socialPostNewActivityButton.hide()
+                    else
+                        socialPostNewActivityButton.show()
+                }
+            })
+
+            socialPostNewActivityButton.clicks {
+                navigation.navigateToTextEditor(TextEditorType.TEXT_ACTIVITY)
+            }
         }
     }
 
-    private fun setupObserver() {
-        viewModel.mostTrendingAnimeBannerLiveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                viewModel.socialFilter.bannerUrl = it
-                friendsActivityAdapter.notifyItemChanged(0)
-            }
-        })
-
-        viewModel.bestFriendChangedNotifier.observe(viewLifecycleOwner, Observer {
-            viewModel.reinitBestFriends()
-            friendsActivityAdapter.notifyDataSetChanged()
-            viewModel.socialFilter.selectedBestFriend = null
-            viewModel.retrieveFriendsActivity()
-        })
-
-        viewModel.notifyFriendsActivity.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                viewModel.retrieveFriendsActivity()
-            }
-        })
-
-        viewModel.friendsActivityResponse.observe(viewLifecycleOwner, Observer {
-            when (it.responseStatus) {
-                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                    viewModel.activityList.clear()
-                    it.data?.page?.activities?.forEach { act ->
-                        val activityItem = when (act?.__typename) {
-                            viewModel.textActivityText -> {
-                                val item = act.fragments.onTextActivity
-                                if (item?.user?.id == null) {
-                                    null
-                                } else {
-                                    val user = User(id = item.user.id, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
-                                    TextActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.text, user)
-                                }
-                            }
-                            viewModel.listActivityText -> {
-                                val item = act.fragments.onListActivity
-                                if (item?.media?.id == null || item.user?.id == null) {
-                                    null
-                                } else {
-                                    val media = Media(id = item.media.id, title = MediaTitle(userPreferred = item.media.title?.userPreferred!!), coverImage = MediaCoverImage(null, item.media.coverImage?.medium), type = item.media.type, format = item.media.format, startDate = FuzzyDate(item.media.startDate?.year, item.media.startDate?.month, item.media.startDate?.day))
-                                    val user = User(id = item.user.id, name = item.user.name, avatar = UserAvatar(null, item.user.avatar?.medium))
-                                    ListActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.userId, item.status, item.progress, media, user)
-                                }
-                            }
-                            viewModel.messageActivityText -> {
-                                val item = act.fragments.onMessageActivity
-                                if (item?.recipient?.id == null || item.messenger?.id == null) {
-                                    null
-                                } else {
-                                    val recipient = User(id = item.recipient.id, name = item.recipient.name, avatar = UserAvatar(null, item.recipient.avatar?.medium))
-                                    val messenger = User(id = item.messenger.id, name = item.messenger.name, avatar = UserAvatar(null, item.messenger.avatar?.medium))
-                                    MessageActivity(item.id, item.type, item.replyCount, item.siteUrl, item.isSubscribed, item.likeCount, item.isLiked, item.createdAt, null, null, item.recipientId, item.messengerId, item.message, item.isPrivate, recipient, messenger)
-                                }
-                            }
-                            else -> null
-                        }
-
-                        if (activityItem != null) {
-                            viewModel.activityList.add(activityItem)
-                        }
-                    }
-
-                    friendsActivityAdapter = assignAdapter()
-                    friendsActivityRecyclerView.adapter= friendsActivityAdapter
-
-                    if (viewModel.activityList.size == 0) {
-                        emptyLayout.visibility = View.VISIBLE
-                        friendsActivityRecyclerView.visibility = View.GONE
-                    } else {
-                        emptyLayout.visibility = View.GONE
-                        friendsActivityRecyclerView.visibility = View.VISIBLE
-                    }
-                }
-                ResponseStatus.ERROR -> {
-                    loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, it.message)
-                }
-            }
-        })
-
-        viewModel.toggleLikeResponse.observe(viewLifecycleOwner, Observer {
-            when (it.responseStatus) {
-                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                    val findActivity = viewModel.activityList.find { item -> item.id == it.data?.id }
-                    val activityIndex = viewModel.activityList.indexOf(findActivity)
-                    if (activityIndex != -1) {
-                        viewModel.activityList[activityIndex].isLiked = it.data?.isLiked
-                        viewModel.activityList[activityIndex].likeCount = it.data?.likeCount ?: 0
-                        friendsActivityAdapter.notifyItemChanged(activityIndex + 1)
-                    }
-                }
-                ResponseStatus.ERROR -> {
-                    loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, it.message)
-                }
-            }
-        })
-
-        viewModel.toggleActivitySubscriptionResponse.observe(viewLifecycleOwner, Observer {
-            when (it.responseStatus) {
-                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                    val findActivity = viewModel.activityList.find { item -> item.id == it.data?.id }
-                    val activityIndex = viewModel.activityList.indexOf(findActivity)
-                    if (activityIndex != -1) {
-                        viewModel.activityList[activityIndex].isSubscribed = it.data?.isSubscribed
-                        friendsActivityAdapter.notifyItemChanged(activityIndex + 1)
-                    }
-                }
-                ResponseStatus.ERROR -> {
-                    loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, it.message)
-                }
-            }
-        })
-
-        viewModel.deleteActivityResponse.observe(viewLifecycleOwner, Observer {
-            when (it.responseStatus) {
-                ResponseStatus.LOADING -> loadingLayout.visibility = View.VISIBLE
-                ResponseStatus.SUCCESS -> {
-                    loadingLayout.visibility = View.GONE
-                    viewModel.retrieveFriendsActivity()
-                }
-                ResponseStatus.ERROR -> {
-                    loadingLayout.visibility = View.GONE
-                    DialogUtility.showToast(activity, it.message)
-                }
-            }
-        })
-
-        viewModel.initData()
+    override fun setUpInsets() {
+        binding.defaultToolbar.defaultToolbar.applyTopPaddingInsets()
+        binding.socialRecyclerView.applyBottomSidePaddingInsets()
+        binding.socialPostNewActivityLayout.applyBottomSidePaddingInsets()
     }
 
-    private fun initLayout() {
-        socialRefreshLayout.setOnRefreshListener {
-            socialRefreshLayout.isRefreshing = false
-            viewModel.retrieveFriendsActivity()
-        }
-
-        newActivityButton.setOnClickListener {
-            val intent = Intent(activity, TextEditorActivity::class.java)
-            startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
-        }
-    }
-
-    private fun assignAdapter(): ActivityListRvAdapter {
-        return ActivityListRvAdapter(activity!!, viewModel.activityList, viewModel.currentUserId, maxWidth, markwon, viewModel.socialFilter,
-            object : ActivityListener {
-                override fun openActivityPage(activityId: Int) {
-                    val intent = Intent(activity, BrowseActivity::class.java)
-                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.ACTIVITY_DETAIL.name)
-                    intent.putExtra(BrowseActivity.LOAD_ID, activityId)
-                    startActivity(intent)
-                }
-
-                override fun openUserPage(userId: Int) {
-                    val intent = Intent(activity, BrowseActivity::class.java)
-                    intent.putExtra(BrowseActivity.TARGET_PAGE, BrowsePage.USER.name)
-                    intent.putExtra(BrowseActivity.LOAD_ID, userId)
-                    startActivity(intent)
-                }
-
-                override fun toggleLike(activityId: Int) {
-                    viewModel.toggleLike(activityId)
-                }
-
-                override fun toggleSubscribe(activityId: Int, subscribe: Boolean) {
-                    viewModel.toggleSubscription(activityId, subscribe)
-                }
-
-                override fun editActivity(
-                    activityId: Int,
-                    text: String,
-                    recipientId: Int?,
-                    recipientName: String?
-                ) {
-                    val intent = Intent(activity, TextEditorActivity::class.java)
-                    intent.putExtra(TextEditorActivity.ACTIVITY_ID, activityId)
-                    intent.putExtra(TextEditorActivity.TEXT_CONTENT, text)
-                    intent.putExtra(TextEditorActivity.RECIPIENT_ID, recipientId)
-                    intent.putExtra(TextEditorActivity.RECIPIENT_NAME, recipientName)
-                    startActivityForResult(intent, EditorType.ACTIVITY.ordinal)
-                }
-
-                override fun deleteActivity(activityId: Int) {
-                    DialogUtility.showOptionDialog(
-                        requireActivity(),
-                        R.string.delete_activity,
-                        R.string.are_you_sure_you_want_to_delete_this_activity,
-                        R.string.delete,
-                        {
-                            viewModel.deleteActivity(activityId)
-                        },
-                        R.string.cancel,
-                        { }
-                    )
-                }
-
-                override fun viewOnAniList(siteUrl: String?) {
-                    if (siteUrl.isNullOrBlank()) {
-                        DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
-                        return
-                    }
-
-                    CustomTabsIntent.Builder().build().launchUrl(activity!!, Uri.parse(siteUrl))
-                }
-
-                override fun copyLink(siteUrl: String?) {
-                    if (siteUrl.isNullOrBlank()) {
-                        DialogUtility.showToast(activity, R.string.some_data_has_not_been_retrieved)
-                        return
-                    }
-
-                    AndroidUtility.copyToClipboard(activity, siteUrl)
-                    DialogUtility.showToast(activity, R.string.link_copied)
-                }
-
-                override fun openMediaPage(mediaId: Int, mediaType: MediaType?) {
-                    val intent = Intent(activity, BrowseActivity::class.java)
-                    intent.putExtra(BrowseActivity.TARGET_PAGE, mediaType?.name)
-                    intent.putExtra(BrowseActivity.LOAD_ID, mediaId)
-                    startActivity(intent)
-                }
-
-                override fun changeActivityType(selectedActivityType: ArrayList<ActivityType>?) {
-                    viewModel.changeActivityType(selectedActivityType)
-                    viewModel.retrieveFriendsActivity()
-                }
-
-                override fun changeBestFriend(selectedBestFriendPosition: Int) {
-                    viewModel.socialFilter.selectedBestFriend = null
-
-                    viewModel.socialFilter.bestFriends.forEachIndexed { index, bestFriend ->
-                        if (index == selectedBestFriendPosition) {
-                            viewModel.socialFilter.bestFriends[index].isSelected = !viewModel.socialFilter.bestFriends[index].isSelected
-                            if (viewModel.socialFilter.bestFriends[index].isSelected) {
-                                viewModel.socialFilter.selectedBestFriend = viewModel.socialFilter.bestFriends[index]
-                            }
-                        } else {
-                            viewModel.socialFilter.bestFriends[index].isSelected = false
-                        }
-                    }
-
-                    viewModel.retrieveFriendsActivity()
-                }
+    override fun setUpObserver() {
+        disposables.addAll(
+            viewModel.error.subscribe {
+                dialog.showToast(it)
+            },
+            viewModel.success.subscribe {
+                dialog.showToast(it)
+            },
+            viewModel.loading.subscribe {
+                binding.socialSwipeRefresh.isRefreshing = it
+            },
+            viewModel.adapterComponent.subscribe {
+                currentViewer = it.viewer
+                adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
+                binding.socialRecyclerView.adapter = adapter
+                likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
+            },
+            viewModel.socialItemList.subscribe {
+                adapter?.updateData(it, true)
             }
         )
+
+        viewModel.loadData(Unit)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == EditorType.ACTIVITY.ordinal && resultCode == Activity.RESULT_OK) {
-            viewModel.retrieveFriendsActivity()
+    private fun getSocialListener(): SocialListener {
+        return object : SocialListener {
+            override fun navigateToUser(user: User) {
+                navigation.navigateToUser(user.id)
+            }
+
+            override fun navigateToMedia(media: Media) {
+                navigation.navigateToMedia(media.getId())
+            }
+
+            override fun navigateToActivityDetail(activity: Activity) {
+                navigation.navigateToActivityDetail(activity.id) { activityResult, isDeleted ->
+                    viewModel.handleActivityDetailResult(activityResult, isDeleted)
+                }
+            }
+
+            override fun navigateToActivityList(activityListPage: ActivityListPage) {
+                navigation.navigateToActivityList(activityListPage)
+            }
+
+            override fun toggleLike(activity: Activity, activityReply: ActivityReply?) {
+                viewModel.toggleLike(activity)
+            }
+
+            override fun viewLikes(activity: Activity, activityReply: ActivityReply?) {
+                likeAdapter?.let {
+                    it.updateData(activity.likes)
+                    dialog.showListDialog(it)
+                }
+            }
+
+            override fun toggleSubscribe(activity: Activity) {
+                viewModel.toggleSubscription(activity)
+            }
+
+            override fun viewOnAniList(activity: Activity) {
+                if (activity.siteUrl.isNotBlank())
+                    navigation.openWebView(activity.siteUrl)
+                else
+                    dialog.showToast(R.string.this_activity_is_already_removed)
+            }
+
+            override fun copyActivityLink(activity: Activity) {
+                viewModel.copyActivityLink(activity)
+            }
+
+            override fun report(activity: Activity) {
+                if (activity.siteUrl.isNotBlank()) {
+                    navigation.openWebView(activity.siteUrl)
+                    dialog.showToast(R.string.please_click_on_the_more_icon_beside_the_date_and_click_report)
+                } else
+                    dialog.showToast(R.string.this_activity_is_already_removed)
+            }
+
+            override fun edit(activity: Activity, activityReply: ActivityReply?) {
+                viewModel.setActivityToBeEdited(activity)
+                navigation.navigateToTextEditor(
+                    if (activity is MessageActivity) TextEditorType.MESSAGE else TextEditorType.TEXT_ACTIVITY,
+                    activity.id,
+                    null,
+                    if (activity is MessageActivity) activity.recipientId else null,
+                    null
+                )
+            }
+
+            override fun delete(activity: Activity, activityReply: ActivityReply?) {
+                viewModel.deleteActivity(activity)
+            }
+
+            override fun reply(activity: Activity, activityReply: ActivityReply?) {
+                navigation.navigateToActivityDetail(activity.id) { activityResult, isDeleted ->
+                    viewModel.handleActivityDetailResult(activityResult, isDeleted)
+                }
+            }
         }
+    }
+
+    private fun getLikeListener(): LikeRvAdapter.LikeListener {
+        return object : LikeRvAdapter.LikeListener {
+            override fun navigateToUser(user: User) {
+                dialog.dismissListDialog()
+                navigation.navigateToUser(user.id)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+        likeAdapter = null
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = SocialFragment()
     }
 }

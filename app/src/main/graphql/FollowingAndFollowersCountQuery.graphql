@@ -1,0 +1,20 @@
+query FollowingAndFollowersCountQuery($userId: Int!) {
+  following: Page {
+    pageInfo {
+      total
+    }
+    following(userId: $userId, sort:[USERNAME]) {
+      id
+      name
+    }
+  }
+  followers: Page {
+    pageInfo {
+      total
+    }
+    followers(userId: $userId, sort:[USERNAME]) {
+      id
+      name
+    }
+  }
+}

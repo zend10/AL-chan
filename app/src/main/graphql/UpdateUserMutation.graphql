@@ -1,0 +1,81 @@
+mutation UpdateUserMutation(
+  $titleLanguage:UserTitleLanguage,
+  $displayAdultContent:Boolean,
+  $airingNotifications:Boolean,
+  $scoreFormat:ScoreFormat,
+  $rowOrder:String,
+  $notificationOptions:[NotificationOptionInput],
+  $timezone:String,
+  $activityMergeTime:Int,
+  $animeListOptions:MediaListOptionsInput,
+  $mangaListOptions:MediaListOptionsInput,
+  $staffNameLanguage:UserStaffNameLanguage,
+  $restrictMessagesToFollowing:Boolean,
+  $disabledListActivity:[ListActivityOptionInput]
+) {
+  UpdateUser(
+    titleLanguage:$titleLanguage,
+    displayAdultContent:$displayAdultContent,
+    airingNotifications:$airingNotifications,
+    scoreFormat:$scoreFormat,
+    rowOrder:$rowOrder,
+    notificationOptions:$notificationOptions,
+    timezone:$timezone,
+    activityMergeTime:$activityMergeTime,
+    animeListOptions:$animeListOptions,
+    mangaListOptions:$mangaListOptions,
+    staffNameLanguage:$staffNameLanguage,
+    restrictMessagesToFollowing:$restrictMessagesToFollowing,
+    disabledListActivity:$disabledListActivity
+  ) {
+    id
+    name
+    about(asHtml: false)
+    avatar {
+      large
+      medium
+    }
+    bannerImage
+    options {
+      titleLanguage
+      displayAdultContent
+      airingNotifications
+      notificationOptions {
+        type
+        enabled
+      }
+      timezone
+      activityMergeTime
+      staffNameLanguage
+      restrictMessagesToFollowing
+      disabledListActivity {
+        disabled
+        type
+      }
+    }
+    mediaListOptions {
+      scoreFormat
+      rowOrder
+      animeList {
+        sectionOrder
+        splitCompletedSectionByFormat
+        customLists
+        advancedScoring
+        advancedScoringEnabled
+      }
+      mangaList {
+        sectionOrder
+        splitCompletedSectionByFormat
+        customLists
+        advancedScoring
+        advancedScoringEnabled
+      }
+    }
+    unreadNotificationCount
+    donatorTier
+    donatorBadge
+    moderatorRoles
+    siteUrl
+    createdAt
+  }
+}
