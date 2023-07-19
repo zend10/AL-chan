@@ -3,6 +3,7 @@ package com.zen.alchan.ui.customise
 import android.Manifest
 import android.app.Activity
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -163,7 +164,10 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             }
 
             customiseSelectImageText.clicks {
-                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                    navigation.openGallery(activityResultLauncher)
+                else
+                    permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
 
             customiseRemoveImageText.clicks {
