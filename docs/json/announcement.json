@@ -1,8 +1,8 @@
 {
     "id": "2",
-    "from_date": "2022-11-04",
-    "until_date": "2022-12-04",
-    "message": "Sorry for the inconvenience caused by the rate limit issue. Join the Beta and grab version v.1.9 from there. If you have any problem/question, reply to my pinned tweet at @alchan_app on Twitter.",
-    "app_version": "",
+    "from_date": "2023-07-20",
+    "until_date": "2023-07-31",
+    "message": "",
+    "app_version": "200000",
     "required_update": ""
 }
