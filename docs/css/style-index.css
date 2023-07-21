@@ -92,30 +92,11 @@ nav li img {
 
 #right-side >*:first-child {
     margin-left: 1vw;
-    padding-bottom: 10vh;
-}
-
-#right-side >*:nth-child(2) {
-    padding-top: 14vh;
-}
-
-#right-side >*:nth-child(3) {
-    padding-bottom: 12vh;
-}
-
-#right-side >*:nth-child(4) {
-    padding-top: 8vh;
 }
 
 #right-side img {
     width: 100%;
     border: gray 1px solid;
-}
-
-figcaption {
-    margin: 1vw;
-    font-size: 0.9em;
-    text-align: center;
 }
 
 #right-side h2 {
