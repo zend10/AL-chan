@@ -2,7 +2,7 @@
     "id": "2",
     "from_date": "2023-07-20",
     "until_date": "2023-07-31",
-    "message": "",
+    "message": "v2.0.0 is here. Please head to Play Store to get it.",
     "app_version": "200000",
     "required_update": ""
 }
