@@ -9,6 +9,8 @@ import androidx.activity.OnBackPressedCallback
 import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
+import com.zen.alchan.helper.utils.PushNotificationUtil
+import com.zen.alchan.type.NotificationUnion
 import com.zen.alchan.ui.base.*
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -99,6 +101,7 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
     }
 
     private fun requestNotificationPermission() {
+        PushNotificationUtil.createNotificationChannel(applicationContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
             val isPermissionDenied = checkSelfPermission(notificationPermission) != PackageManager.PERMISSION_GRANTED

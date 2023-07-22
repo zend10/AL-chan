@@ -1,21 +1,13 @@
 package com.zen.alchan.helper.service.pushnotification
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.work.WorkerParameters
 import androidx.work.rxjava3.RxWorker
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.helper.utils.DeepLink
-import com.zen.alchan.ui.deeplink.DeepLinkActivity
+import com.zen.alchan.helper.utils.PushNotificationUtil
 import io.reactivex.rxjava3.core.Single
 import org.koin.java.KoinJavaComponent.inject
 import kotlin.random.Random
@@ -121,50 +113,13 @@ class PushNotificationWorker(private val context: Context, workerParameters: Wor
 
         // check if should merge push notification into 1
         if (appSetting.mergePushNotifications && notificationsToBeShown.size > 1) {
-            createPushNotification(MERGED_NOTIFICATION_ID, context.getString(R.string.you_have_unread_notifications))
+            PushNotificationUtil.createPushNotificationWithDefaultId(context, context.getString(R.string.you_have_unread_notifications))
             return
         }
 
         // show each notification one by one
         notificationsToBeShown.forEach { notification ->
-            createPushNotification(Random.nextInt(), notification.getMessage(appSetting))
+            PushNotificationUtil.createPushNotification(context, Random.nextInt(), notification.getMessage(appSetting))
         }
-    }
-
-    private fun createPushNotification(id: Int, message: String) {
-        val notificationIntent = Intent(context, DeepLinkActivity::class.java)
-        notificationIntent.data = DeepLink.generateNotifications().uri
-        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-        val notificationPendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notif)
-            .setContentTitle(context.getString(R.string.app_name))
-            .setContentText(message)
-            .setColorized(true)
-            .setColor(ContextCompat.getColor(context, R.color.yellow))
-            .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(notificationPendingIntent)
-            .setAutoCancel(true)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Notifications"
-            val descriptionText = "AniList Notifications"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(id, builder.build())
-    }
-
-    companion object {
-        private const val CHANNEL_ID = "Notifications"
-        private const val MERGED_NOTIFICATION_ID = 1017
     }
 }
