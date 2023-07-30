@@ -28,7 +28,7 @@ class DefaultBrowseDataSource(
         name:  String?,
         sort: List<UserStatisticsSort>
     ): Observable<ApolloResponse<UserQuery.Data>> {
-        val query = UserQuery(id = Optional.present(id), name = Optional.presentIfNotNull(name), sort = Optional.present(sort))
+        val query = UserQuery(id = Optional.presentIfNotNull(id), name = Optional.presentIfNotNull(name), sort = Optional.present(sort))
         return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
     }
 
