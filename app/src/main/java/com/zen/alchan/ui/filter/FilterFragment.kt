@@ -173,6 +173,14 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 viewModel.loadUserPrioritiesSliderItem()
             }
 
+            filterHideOnListCheckBox.setOnClickListener {
+                viewModel.updateHideSeriesOnList(filterHideOnListCheckBox.isChecked)
+            }
+
+            filterShowOnListCheckBox.setOnClickListener {
+                viewModel.updateOnlyShowSeriesOnList(filterShowOnListCheckBox.isChecked)
+            }
+
             filterHideDoujinCheckBox.setOnClickListener {
                 viewModel.updateHideDoujin(filterHideDoujinCheckBox.isChecked)
             }
@@ -275,6 +283,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
             },
             viewModel.priorities.subscribe {
                 binding.filterPriorityText.text = getPairString(it.data)
+            },
+            viewModel.hideSeriesOnList.subscribe {
+                binding.filterHideOnListCheckBox.isChecked = it
+            },
+            viewModel.onlyShowSeriesOnList.subscribe {
+                binding.filterShowOnListCheckBox.isChecked = it
             },
             viewModel.hideDoujin.subscribe {
                 binding.filterHideDoujinCheckBox.isChecked = it
@@ -429,7 +443,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 binding.filterSettingsLayout.show(it)
             },
             viewModel.userListFilterVisibility.subscribe {
-                binding.filterUserListLayout.show(it)
+                binding.filterScoreLayout.show(it)
+                binding.filterStartYearLayout.show(it)
+                binding.filterCompletedYearLayout.show(it)
+                binding.filterPriorityLayout.show(it)
+                binding.filterHideOnListLayout.show(!it)
+                binding.filterShowOnListLayout.show(!it)
             }
         )
 

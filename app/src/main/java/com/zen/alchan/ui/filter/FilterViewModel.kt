@@ -122,6 +122,14 @@ class FilterViewModel(
     val priorities: Observable<NullableItem<Pair<Int, Int>>>
         get() = _priorities
 
+    private val _hideSeriesOnList = BehaviorSubject.createDefault(false)
+    val hideSeriesOnList: Observable<Boolean>
+        get() = _hideSeriesOnList
+
+    private val _onlyShowSeriesOnList = BehaviorSubject.createDefault(false)
+    val onlyShowSeriesOnList: Observable<Boolean>
+        get() = _onlyShowSeriesOnList
+
     private val _hideDoujin = BehaviorSubject.createDefault(false)
     val hideDoujin: Observable<Boolean>
         get() = _hideDoujin
@@ -340,6 +348,20 @@ class FilterViewModel(
                 updateStartYears(minUserStartYear, maxUserStartYear)
                 updateCompletedYears(minUserCompletedYear, maxUserCompletedYear)
                 updatePriorities(minUserPriority, maxUserPriority)
+                when (onList) {
+                    true -> {
+                        _hideSeriesOnList.onNext(false)
+                        _onlyShowSeriesOnList.onNext(true)
+                    }
+                    false -> {
+                        _hideSeriesOnList.onNext(true)
+                        _onlyShowSeriesOnList.onNext(false)
+                    }
+                    else -> {
+                        _hideSeriesOnList.onNext(false)
+                        _onlyShowSeriesOnList.onNext(false)
+                    }
+                }
                 when (isDoujin) {
                     true -> {
                         _hideDoujin.onNext(false)
@@ -681,6 +703,30 @@ class FilterViewModel(
         }
 
         _priorities.onNext(priorities)
+    }
+
+    fun updateHideSeriesOnList(shouldHideSeriesOnList: Boolean) {
+        if (shouldHideSeriesOnList)
+            _onlyShowSeriesOnList.onNext(false)
+
+        _hideSeriesOnList.onNext(shouldHideSeriesOnList)
+        syncShowHideOnList()
+    }
+
+    fun updateOnlyShowSeriesOnList(shouldOnlyShowSeriesOnList: Boolean) {
+        if (shouldOnlyShowSeriesOnList)
+            _hideSeriesOnList.onNext(false)
+
+        _onlyShowSeriesOnList.onNext(shouldOnlyShowSeriesOnList)
+        syncShowHideOnList()
+    }
+
+    private fun syncShowHideOnList() {
+        currentMediaFilter.onList = when {
+            _hideSeriesOnList.value == true -> false
+            _onlyShowSeriesOnList.value == true -> true
+            else -> null
+        }
     }
 
     fun updateHideDoujin(shouldHideDoujin: Boolean) {
