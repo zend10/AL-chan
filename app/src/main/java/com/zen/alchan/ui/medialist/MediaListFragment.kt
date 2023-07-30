@@ -221,6 +221,20 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
                     }
                 )
             },
+            viewModel.setToCompletedDialog.subscribe { (mediaList, newProgress, isProgressVolume) ->
+                dialog.showConfirmationDialog(
+                    R.string.move_to_completed,
+                    R.string.do_you_want_to_set_this_entry_into_completed,
+                    R.string.move,
+                    {
+                        viewModel.updateProgress(mediaList, MediaListStatus.COMPLETED, newProgress, isProgressVolume)
+                    },
+                    R.string.stay,
+                    {
+                        viewModel.updateProgress(mediaList, null, newProgress, isProgressVolume)
+                    }
+                )
+            },
             viewModel.listTypes.subscribe {
                 dialog.showListDialog(it) { data, _ ->
                     viewModel.updateListType(data)

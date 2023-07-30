@@ -319,6 +319,8 @@
     <string name="do_you_want_to_set_this_entry_into_watching">Do you want to set this entry into Watching?</string>
     <string name="move">Move</string>
     <string name="stay">Stay</string>
+    <string name="move_to_completed">Move to Completed</string>
+    <string name="do_you_want_to_set_this_entry_into_completed">Do you want to set this entry into Completed?</string>
     <string name="anime_list_is_loaded_from_cache">Failed to fetch the latest data. Anime List is loaded from cache.</string>
     <string name="manga_list_is_loaded_from_cache">Failed to fetch the latest data. Manga List is loaded from cache.</string>
     <string name="affinity">Affinity</string>

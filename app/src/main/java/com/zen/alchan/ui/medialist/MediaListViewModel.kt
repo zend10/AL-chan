@@ -69,6 +69,10 @@ class MediaListViewModel(
     val setToWatchingDialog: Observable<Triple<MediaList, Int, Boolean>> // media list, new progress, isProgressVolume
         get() = _setToWatchingDialog
 
+    private val _setToCompletedDialog = PublishSubject.create<Triple<MediaList, Int, Boolean>>()
+    val setToCompletedDialog: Observable<Triple<MediaList, Int, Boolean>> // media list, new progress, isProgressVolume
+        get() = _setToCompletedDialog
+
     private val _listTypes = PublishSubject.create<List<ListItem<ListType>>>()
     val listTypes: Observable<List<ListItem<ListType>>>
         get() = _listTypes
@@ -770,31 +774,31 @@ class MediaListViewModel(
             else -> null
         }
 
-        var targetProgress = newProgress
-        var status: MediaListStatus? = null
-        var repeat: Int? = null
-
-        if (maxProgress != null && targetProgress >= maxProgress) {
-            if (mediaList.status == MediaListStatus.REPEATING)
-                repeat = mediaList.repeat + 1
-
-            status = MediaListStatus.COMPLETED
-            targetProgress = maxProgress
+        if (maxProgress != null && newProgress >= maxProgress) {
+            if (mediaList.status != MediaListStatus.COMPLETED) {
+                _setToCompletedDialog.onNext(Triple(mediaList, newProgress, isProgressVolume))
+                return
+            }
         } else {
             if (mediaList.status == MediaListStatus.PLANNING ||
                 mediaList.status == MediaListStatus.PAUSED ||
                 mediaList.status == MediaListStatus.DROPPED
             ) {
-                _setToWatchingDialog.onNext(Triple(mediaList, targetProgress, isProgressVolume))
+                _setToWatchingDialog.onNext(Triple(mediaList, newProgress, isProgressVolume))
                 return
             }
         }
 
-        updateProgress(mediaList.id ?: 0, status, repeat, targetProgress, isProgressVolume)
+        updateProgress(mediaList.id ?: 0, null, null, newProgress, isProgressVolume)
     }
 
     fun updateProgress(mediaList: MediaList, status: MediaListStatus?, newProgress: Int, isProgressVolume: Boolean) {
-        updateProgress(mediaList.id ?: 0, status, null,  newProgress, isProgressVolume)
+        val repeat = if (status == MediaListStatus.COMPLETED && mediaList.status == MediaListStatus.REPEATING) {
+            mediaList.repeat + 1
+        } else
+            null
+
+        updateProgress(mediaList.id ?: 0, status ?: mediaList.status, repeat,  newProgress, isProgressVolume)
     }
 
     private fun updateProgress(mediaListId: Int, status: MediaListStatus?, repeat: Int?, progress: Int, isProgressVolume: Boolean) {
