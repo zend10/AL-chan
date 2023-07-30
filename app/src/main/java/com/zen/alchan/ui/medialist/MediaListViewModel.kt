@@ -13,6 +13,7 @@ import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.pojo.MediaListAdapterComponent
 import com.zen.alchan.helper.pojo.MediaListItem
+import com.zen.alchan.helper.service.clipboard.ClipboardService
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
@@ -26,7 +27,8 @@ import kotlin.collections.LinkedHashMap
 class MediaListViewModel(
     private val mediaListRepository: MediaListRepository,
     private val userRepository: UserRepository,
-    private val browseRepository: BrowseRepository
+    private val browseRepository: BrowseRepository,
+    private val clipboardService: ClipboardService
 ) : BaseViewModel<Unit>() {
 
     private val _toolbarTitle = BehaviorSubject.createDefault(R.string.anime_list)
@@ -848,5 +850,15 @@ class MediaListViewModel(
         _mediaListItems.value?.let {
             _mediaListItems.onNext(it)
         }
+    }
+
+    fun copyText(text: String) {
+        disposables.add(
+            clipboardService.copyPlainText(text)
+                .applyScheduler()
+                .subscribe {
+                    _success.onNext(R.string.text_copied)
+                }
+        )
     }
 }

@@ -51,6 +51,10 @@ class MediaListAlbumRvAdapter(
                 mediaListTitleText.clicks {
                     listener.navigateToMedia(media)
                 }
+                mediaListTitleText.setOnLongClickListener {
+                    listener.copyMediaTitle(getTitle(media))
+                    true
+                }
 
                 // airing indicator
                 mediaListAiringIndicator.show(shouldShowAiringIndicator(media))

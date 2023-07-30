@@ -173,7 +173,7 @@ class ALchanApplication : Application() {
         viewModel { ReviewViewModel(get(), get()) }
         viewModel { ReaderViewModel(get(), get(), get()) }
 
-        viewModel { MediaListViewModel(get(), get(), get()) }
+        viewModel { MediaListViewModel(get(), get(), get(), get()) }
 
         viewModel { NotificationsViewModel(get()) }
 

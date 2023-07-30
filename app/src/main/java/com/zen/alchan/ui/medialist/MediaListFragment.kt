@@ -362,6 +362,10 @@ class MediaListFragment : BaseFragment<FragmentMediaListBinding, MediaListViewMo
             override fun incrementProgress(mediaList: MediaList, newProgress: Int, isVolumeProgress: Boolean) {
                 viewModel.updateProgress(mediaList, newProgress, isVolumeProgress)
             }
+
+            override fun copyMediaTitle(title: String) {
+                viewModel.copyText(title)
+            }
         }
     }
 
