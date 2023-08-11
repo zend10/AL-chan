@@ -22,6 +22,7 @@ import com.zen.alchan.helper.service.pushnotification.PushNotificationService
 import com.zen.alchan.ui.activity.ActivityDetailViewModel
 import com.zen.alchan.ui.activity.ActivityListViewModel
 import com.zen.alchan.ui.base.BaseActivityViewModel
+import com.zen.alchan.ui.calendar.CalendarDayViewModel
 import com.zen.alchan.ui.calendar.CalendarViewModel
 import com.zen.alchan.ui.character.CharacterViewModel
 import com.zen.alchan.ui.character.media.CharacterMediaListViewModel
@@ -170,6 +171,7 @@ class ALchanApplication : Application() {
         viewModel { SeasonalViewModel(get(), get(), get()) }
         viewModel { ExploreViewModel(get(), get()) }
         viewModel { CalendarViewModel(get(), get()) }
+        viewModel { CalendarDayViewModel(get(), get()) }
         viewModel { ReviewViewModel(get(), get()) }
         viewModel { ReaderViewModel(get(), get(), get()) }
 

@@ -9,26 +9,14 @@
     android:clickable="true"
     tools:context=".ui.calendar.CalendarFragment">
 
-    <include layout="@layout/toolbar_default"
-        android:id="@+id/defaultToolbar"/>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/calendarSwipeRefresh"
-        app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"
-        app:layout_constraintBottom_toTopOf="@id/calendarFilterLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/calendarRecyclerView"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/marginNormal"
-            android:clipToPadding="false"
+    <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="0dp"
+            android:id="@+id/calendarPager"
+            app:layout_constraintBottom_toTopOf="@id/calendarFilterLayout"
+            app:layout_constraintTop_toBottomOf="@+id/defaultToolbar"/>
+    <include layout="@layout/toolbar_default"
+             android:id="@+id/defaultToolbar"/>
 
     <include layout="@layout/layout_empty"
         android:id="@+id/emptyLayout"/>
