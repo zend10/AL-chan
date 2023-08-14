@@ -224,6 +224,9 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                         navigation.navigateToUser(id = it.toInt())
                 }
             }
+            deepLink.isActivity() -> {
+                deepLink.getAniListPageId()?.let { navigation.navigateToActivityDetail(it.toInt()) { _, _ -> } }
+            }
         }
 
         this.deepLink = null

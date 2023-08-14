@@ -47,6 +47,7 @@ class DeepLink(
     fun isStaff() = isAniListAuthority() && getFirstPath() == ANILIST_STAFF && getSecondPath() != null
     fun isStudio() = isAniListAuthority() && getFirstPath() == ANILIST_STUDIO && getSecondPath() != null
     fun isUser() = isAniListAuthority() && getFirstPath() == ANILIST_USER && getSecondPath() != null
+    fun isActivity() = isAniListAuthority() && getFirstPath() == ANILIST_ACTIVITY && getSecondPath() != null
 
     companion object {
         fun create(uri: Uri?): DeepLink {
@@ -88,6 +89,7 @@ class DeepLink(
         private const val ANILIST_STAFF = "staff"
         private const val ANILIST_STUDIO = "studio"
         private const val ANILIST_USER = "user"
+        private const val ANILIST_ACTIVITY = "activity"
         // endregion
 
         const val QUERY_PARAM_DATA = "data"
