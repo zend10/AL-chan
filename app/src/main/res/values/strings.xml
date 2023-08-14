@@ -538,6 +538,7 @@
     <string name="x_out_of_y_users_liked_this_review">%1$d out of %2$d users liked this review</string>
     <string name="anime_review">Anime Review</string>
     <string name="manga_review">Manga Review</string>
+    <string name="delete_account">Delete Account</string>
 
 
     <plurals name="minute">

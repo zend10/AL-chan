@@ -48,6 +48,10 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding, Acc
                 navigation.openWebView(NavigationManager.Url.ANILIST_CONNECT_WITH_TWITTER)
             }
 
+            accountSettingsDeleteAccountLayout.clicks {
+                navigation.openWebView(NavigationManager.Url.ANILIST_ACCOUNT_SETTINGS)
+            }
+
             accountSettingsLogoutButton.text = getString(R.string.logout)
             accountSettingsLogoutButton.clicks {
                 dialog.showConfirmationDialog(

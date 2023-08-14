@@ -127,6 +127,25 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/accountSettingsDeleteAccountLayout"
+                app:layout_constraintTop_toBottomOf="@id/accountSettingsConnectWithTwitterLayout"
+                app:cardBackgroundColor="?themeCardColor"
+                app:cardCornerRadius="@dimen/cornerNormal"
+                app:cardElevation="0dp"
+                app:contentPadding="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/delete_account"
+                    style="?themeRegularFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
