@@ -69,7 +69,7 @@ class StaffRvAdapter(
             binding.apply {
                 itemTitle.show(true)
                 itemTitle.text = context.getString(R.string.bio)
-                MarkdownUtil.applyMarkdown(context, itemText, item.staff.description)
+                MarkdownUtil.applyMarkdown(context, width, itemText, item.staff.description)
 
                 if (item.showFullDescription) {
                     itemGradientLayer.show(false)

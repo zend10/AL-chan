@@ -149,7 +149,7 @@ class MediaRvAdapter(
             binding.apply {
                 itemTitle.show(true)
                 itemTitle.text = context.getString(R.string.synopsis)
-                MarkdownUtil.applyMarkdown(context, itemText, item.media.description)
+                MarkdownUtil.applyMarkdown(context, width, itemText, item.media.description)
 
                 if (item.showFullDescription) {
                     itemGradientLayer.show(false)

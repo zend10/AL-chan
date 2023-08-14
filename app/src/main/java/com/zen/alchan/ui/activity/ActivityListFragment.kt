@@ -64,7 +64,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
 
             infiniteScrollingRecyclerView.updatePadding(left = 0, right = 0)
 
-            adapter = SocialRvAdapter(requireContext(), listOf(), adapterComponent.viewer, adapterComponent.appSetting, false, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), screenWidth, adapterComponent.viewer, adapterComponent.appSetting, false, getSocialListener())
             infiniteScrollingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             infiniteScrollingRecyclerView.adapter = adapter
             likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
@@ -126,7 +126,7 @@ class ActivityListFragment : BaseFragment<LayoutInfiniteScrollingBinding, Activi
             },
             viewModel.adapterComponent.subscribe {
                 adapterComponent = it
-                adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
+                adapter = SocialRvAdapter(requireContext(), listOf(), screenWidth, it.viewer, it.appSetting, false, getSocialListener())
                 binding.infiniteScrollingRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
             },

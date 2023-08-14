@@ -62,7 +62,7 @@ class BottomSheetMediaQuickDetailDialog : BaseDialogFragment<DialogBottomSheetMe
                     dialogMediaDroppedCount.text = media.stats?.statusDistribution?.find { it.status == MediaListStatus.DROPPED }?.amount?.getNumberFormatting()
                     dialogMediaPausedCount.text = media.stats?.statusDistribution?.find { it.status == MediaListStatus.PAUSED }?.amount?.getNumberFormatting()
 
-                    MarkdownUtil.applyMarkdown(requireContext(), dialogMediaDescription, media.description)
+                    MarkdownUtil.applyMarkdown(requireContext(), screenWidth, dialogMediaDescription, media.description)
                 }
             }
         )

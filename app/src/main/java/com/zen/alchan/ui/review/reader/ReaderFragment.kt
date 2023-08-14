@@ -116,7 +116,7 @@ class ReaderFragment : BaseFragment<FragmentReaderBinding, ReaderViewModel>() {
                 binding.readerDate.text = it
             },
             viewModel.reviewContent.subscribe {
-                MarkdownUtil.applyMarkdown(requireContext(), binding.readerText, it)
+                MarkdownUtil.applyMarkdown(requireContext(), screenWidth, binding.readerText, it)
             },
             viewModel.score.subscribe {
                 binding.readerScore.text = "${it}/100"

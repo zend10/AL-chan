@@ -41,7 +41,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
     override fun setUpLayout() {
         binding.apply {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.social_hub), R.drawable.ic_delete)
-            adapter = SocialRvAdapter(requireContext(), listOf(), currentViewer, AppSetting(), false, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), screenWidth, currentViewer, AppSetting(), false, getSocialListener())
             socialRecyclerView.adapter = adapter
             likeAdapter = LikeRvAdapter(requireContext(), listOf(), AppSetting(), getLikeListener())
 
@@ -84,7 +84,7 @@ class SocialFragment : BaseFragment<FragmentSocialBinding, SocialViewModel>() {
             },
             viewModel.adapterComponent.subscribe {
                 currentViewer = it.viewer
-                adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, false, getSocialListener())
+                adapter = SocialRvAdapter(requireContext(), listOf(), screenWidth, it.viewer, it.appSetting, false, getSocialListener())
                 binding.socialRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
             },

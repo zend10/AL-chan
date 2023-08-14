@@ -47,7 +47,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
     override fun setUpLayout() {
         with(binding) {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.activity_detail))
-            adapter = SocialRvAdapter(requireContext(), listOf(), adapterComponent.viewer, adapterComponent.appSetting, true, getSocialListener())
+            adapter = SocialRvAdapter(requireContext(), listOf(), screenWidth, adapterComponent.viewer, adapterComponent.appSetting, true, getSocialListener())
             activityRecyclerView.adapter = adapter
             likeAdapter = LikeRvAdapter(requireContext(), listOf(), adapterComponent.appSetting, getLikeListener())
 
@@ -89,7 +89,7 @@ class ActivityDetailFragment : BaseFragment<FragmentActivityDetailBinding, Activ
             },
             viewModel.adapterComponent.subscribe {
                 adapterComponent = it
-                adapter = SocialRvAdapter(requireContext(), listOf(), it.viewer, it.appSetting, true, getSocialListener())
+                adapter = SocialRvAdapter(requireContext(), listOf(), screenWidth, it.viewer, it.appSetting, true, getSocialListener())
                 binding.activityRecyclerView.adapter = adapter
                 likeAdapter = LikeRvAdapter(requireContext(), listOf(), it.appSetting, getLikeListener())
             },

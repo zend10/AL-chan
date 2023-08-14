@@ -36,7 +36,7 @@ object MarkdownUtil {
         return Markwon.builder(context)
             .usePlugin(
                 ImagesPlugin.create { plugin ->
-                    plugin.defaultMediaDecoder(DefaultDownScalingMediaDecoder.create(maxWidth, 0))
+                    plugin.defaultMediaDecoder(DefaultDownScalingMediaDecoder.create(maxWidth, maxWidth))
                     plugin.addMediaDecoder(GifMediaDecoder.create())
                     plugin.addSchemeHandler(OkHttpNetworkSchemeHandler.create())
                     plugin.errorHandler { url, throwable ->
@@ -90,10 +90,10 @@ object MarkdownUtil {
         }
     }
 
-    fun applyMarkdown(context: Context, textView: AppCompatTextView, markdownText: String) {
+    fun applyMarkdown(context: Context, maxWidth: Int, textView: AppCompatTextView, markdownText: String) {
         try {
             val markdownTextModified = replaceMarkdownText(markdownText)
-            val markdownSetup = getMarkdownSetup(context, 0, null)
+            val markdownSetup = getMarkdownSetup(context, maxWidth, null)
             val node = markdownSetup.parse(markdownTextModified)
             val markdown = markdownSetup.render(node)
             markdownSetup.setParsedMarkdown(textView, markdown)

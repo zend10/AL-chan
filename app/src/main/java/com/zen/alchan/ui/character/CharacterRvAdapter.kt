@@ -73,7 +73,7 @@ class CharacterRvAdapter(
             binding.apply {
                 itemTitle.show(item.character.name.alternative.isNotEmpty())
                 itemTitle.text = item.character.name.alternative.joinToString(", ")
-                MarkdownUtil.applyMarkdown(context, itemText, item.character.description)
+                MarkdownUtil.applyMarkdown(context, width, itemText, item.character.description)
 
                 if (item.showFullDescription) {
                     itemGradientLayer.show(false)

@@ -19,6 +19,7 @@ import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.SocialItem
 import com.zen.alchan.helper.utils.ImageUtil
+import com.zen.alchan.helper.utils.MarkdownSetup
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
@@ -27,6 +28,7 @@ import com.zen.alchan.type.MediaStatus
 class SocialRvAdapter(
     private val context: Context,
     list: List<SocialItem?>,
+    private val width: Int,
     private val viewer: User?,
     private val appSetting: AppSetting,
     private val viewDetails: Boolean,
@@ -110,7 +112,7 @@ class SocialRvAdapter(
 
                 activityTime.text = TimeUtil.displayInDayDateTimeFormat(activity.createdAt)
 
-                MarkdownUtil.applyMarkdown(context, activityText, activity.message(appSetting))
+                MarkdownUtil.applyMarkdown(context, width, activityText, activity.message(appSetting))
 
                 activityMediaPreviewLayout.show(activity.hasMedia())
                 activityMediaPreviewTitle.text = activity.media().getTitle(appSetting)
@@ -202,7 +204,7 @@ class SocialRvAdapter(
 
                 activityTime.text = TimeUtil.displayInDayDateTimeFormat(activityReply.createdAt)
 
-                MarkdownUtil.applyMarkdown(context, activityText, activityReply.text)
+                MarkdownUtil.applyMarkdown(context, width, activityText, activityReply.text)
 
                 activityReplyLayout.clicks {
                     listener.reply(activity, activityReply)
