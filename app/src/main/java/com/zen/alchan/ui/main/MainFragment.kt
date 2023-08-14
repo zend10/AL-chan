@@ -8,6 +8,7 @@ import com.zen.alchan.R
 import com.zen.alchan.databinding.FragmentMainBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
+import com.zen.alchan.helper.utils.PushNotificationUtil
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.home.HomeFragment
 import com.zen.alchan.ui.medialist.MediaListFragment
@@ -168,6 +169,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                 val notificationsIndex = fragments?.indexOfFirst { it == notificationsFragment }
                 if (notificationsIndex != null && notificationsIndex != -1) {
                     changeTabWithDelay(notificationsIndex)
+                    context?.let { PushNotificationUtil.clearAllPushNotification(it) }
                 }
             }
             deepLink.isProfile() && isViewerAuthenticated -> {

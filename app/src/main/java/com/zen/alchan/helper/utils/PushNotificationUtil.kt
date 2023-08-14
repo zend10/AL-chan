@@ -51,10 +51,16 @@ object PushNotificationUtil {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(notificationPendingIntent)
             .setAutoCancel(true)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
 
         createNotificationChannel(context)
 
         notificationManager.notify(id, builder.build())
+    }
+
+    fun clearAllPushNotification(context: Context) {
+        val notificationManager = getNotificationManager(context)
+        notificationManager.cancelAll()
     }
 
     private fun getNotificationManager(context: Context): NotificationManager {
