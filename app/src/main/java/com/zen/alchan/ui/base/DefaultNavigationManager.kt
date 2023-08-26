@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
+import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -16,7 +17,11 @@ import com.zen.alchan.data.response.anilist.Activity
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Review
 import com.zen.alchan.helper.Constant
-import com.zen.alchan.helper.enums.*
+import com.zen.alchan.helper.enums.ActivityListPage
+import com.zen.alchan.helper.enums.Favorite
+import com.zen.alchan.helper.enums.MediaType
+import com.zen.alchan.helper.enums.SearchCategory
+import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.type.ScoreFormat
 import com.zen.alchan.ui.activity.ActivityDetailFragment
@@ -63,6 +68,7 @@ import com.zen.alchan.ui.studio.media.StudioMediaListFragment
 import com.zen.alchan.ui.texteditor.TextEditorActivity
 import com.zen.alchan.ui.userstats.UserStatsFragment
 import io.reactivex.rxjava3.disposables.Disposable
+
 
 class DefaultNavigationManager(
     private val context: Context,
@@ -457,8 +463,19 @@ class DefaultNavigationManager(
     }
 
     private fun launchWebView(uri: Uri) {
-        CustomTabsIntent.Builder()
-            .build()
-            .launchUrl(context, uri)
+        fun getBrowserPackageName(uri: Uri): String? {
+            return CustomTabsClient.getPackageName(context, emptyList())
+        }
+
+        val customTabsIntent = CustomTabsIntent.Builder().build()
+
+        // Force open AniList page with WebView
+        if ("${uri.scheme}://${uri.authority}" == Constant.ANILIST_WEBSITE_URL) {
+            getBrowserPackageName(uri)?.let {
+                customTabsIntent.intent.`package` = it
+            }
+        }
+
+        customTabsIntent.launchUrl(context, uri)
     }
 }
