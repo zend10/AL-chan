@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.calendar
 
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.AiringSchedule
@@ -55,13 +56,26 @@ class CalendarViewModel(
     private val previousPagesAiringSchedules = ArrayList<AiringSchedule>()
     private var allAiringSchedules = ArrayList<AiringSchedule>()
 
+    private var calendarSetting = CalendarSetting()
+
     override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
-                userRepository.getAppSetting()
+                Observable.zip(
+                    userRepository.getAppSetting(),
+                    userRepository.getCalendarSetting()
+                ) { appSetting, calendarSetting ->
+                    appSetting to calendarSetting
+                }
                     .applyScheduler()
-                    .subscribe {
-                        _appSetting.onNext(it)
+                    .subscribe { (appSetting, calendarSetting) ->
+                        _appSetting.onNext(appSetting)
+
+                        this.calendarSetting = calendarSetting
+                        _showOnlyWatchingAndPlanning.onNext(calendarSetting.showOnlyWatchingAndPlanning)
+                        _showOnlyCurrentSeason.onNext(calendarSetting.showOnlyCurrentSeason)
+                        _showAdult.onNext(calendarSetting.showAdult)
+
                         loadCalendar()
                     }
             )
@@ -136,6 +150,9 @@ class CalendarViewModel(
     }
 
     fun updateShowOnlyWatchingAndPlanning(shouldShowOnlyWatchingAndPlanning: Boolean) {
+        calendarSetting.showOnlyWatchingAndPlanning = shouldShowOnlyWatchingAndPlanning
+        saveCalendarSetting()
+
         _showOnlyWatchingAndPlanning.onNext(shouldShowOnlyWatchingAndPlanning)
         val filteredAiringSchedules = getFilteredAiringSchedules()
         _airingSchedules.onNext(filteredAiringSchedules)
@@ -143,6 +160,9 @@ class CalendarViewModel(
     }
 
     fun updateShowOnlyCurrentSeason(shouldShowOnlyCurrentSeason: Boolean) {
+        calendarSetting.showOnlyCurrentSeason = shouldShowOnlyCurrentSeason
+        saveCalendarSetting()
+
         _showOnlyCurrentSeason.onNext(shouldShowOnlyCurrentSeason)
         val filteredAiringSchedules = getFilteredAiringSchedules()
         _airingSchedules.onNext(filteredAiringSchedules)
@@ -150,10 +170,28 @@ class CalendarViewModel(
     }
 
     fun updateShowAdult(shouldShowAdult: Boolean) {
+        calendarSetting.showAdult = shouldShowAdult
+        saveCalendarSetting()
+
         _showAdult.onNext(shouldShowAdult)
         val filteredAiringSchedules = getFilteredAiringSchedules()
         _airingSchedules.onNext(filteredAiringSchedules)
         _emptyLayoutVisibility.onNext(filteredAiringSchedules.isEmpty())
+    }
+
+    private fun saveCalendarSetting() {
+        disposables.add(
+            userRepository.setCalendarSetting(calendarSetting)
+                .applyScheduler()
+                .subscribe(
+                    {
+                        // do nothing
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
+        )
     }
 
     private fun getFilteredAiringSchedules(): List<AiringSchedule> {

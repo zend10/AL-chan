@@ -2,6 +2,7 @@ package com.zen.alchan.data.manager
 
 import android.net.Uri
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.entity.ListStyle
@@ -20,6 +21,7 @@ interface UserManager {
     var animeFilter: MediaFilter
     var mangaFilter: MediaFilter
     var appSetting: AppSetting
+    var calendarSetting: CalendarSetting
 
     val animeListBackground: Observable<NullableItem<Uri>>
     val mangaListBackground: Observable<NullableItem<Uri>>

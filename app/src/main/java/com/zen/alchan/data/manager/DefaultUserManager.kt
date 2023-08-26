@@ -2,6 +2,7 @@ package com.zen.alchan.data.manager
 
 import android.net.Uri
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.localstorage.JsonStorageHandler
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
@@ -49,6 +50,10 @@ class DefaultUserManager(
     override var appSetting: AppSetting
         get() = sharedPreferencesHandler.appSetting ?: AppSetting()
         set(value) { sharedPreferencesHandler.appSetting = value }
+
+    override var calendarSetting: CalendarSetting
+        get() = sharedPreferencesHandler.calendarSetting ?: CalendarSetting()
+        set(value) { sharedPreferencesHandler.calendarSetting = value }
 
     override val animeListBackground: Observable<NullableItem<Uri>>
         get() = fileStorageHandler.animeListBackground

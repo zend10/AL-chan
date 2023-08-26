@@ -1,6 +1,7 @@
 package com.zen.alchan.data.localstorage
 
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.SpotifyAccessToken
@@ -14,6 +15,7 @@ interface SharedPreferencesHandler {
     var animeFilter: MediaFilter?
     var mangaFilter: MediaFilter?
     var appSetting: AppSetting?
+    var calendarSetting: CalendarSetting?
     var followingCount: Int?
     var followersCount: Int?
     var othersListType: ListType?

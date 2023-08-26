@@ -3,6 +3,7 @@ package com.zen.alchan.data.localstorage
 import android.content.Context
 import com.google.gson.Gson
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.SpotifyAccessToken
@@ -42,6 +43,10 @@ class DefaultSharedPreferencesHandler(
         get() = gson.fromJson(getData(APP_SETTING), AppSetting::class.java)
         set(value) { setData(APP_SETTING, gson.toJson(value)) }
 
+    override var calendarSetting: CalendarSetting?
+        get() = gson.fromJson(getData(CALENDAR_SETTING), CalendarSetting::class.java)
+        set(value) { setData(CALENDAR_SETTING, gson.toJson(value)) }
+
     override var followingCount: Int?
         get() = getData(FOLLOWING_COUNT)?.toIntOrNull()
         set(value) { setData(FOLLOWING_COUNT, value.toString()) }
@@ -78,6 +83,7 @@ class DefaultSharedPreferencesHandler(
         private const val ANIME_FILTER = "animeFilter"
         private const val MANGA_FILTER = "mangaFilter"
         private const val APP_SETTING = "appSetting"
+        private const val CALENDAR_SETTING = "calendarSetting"
         private const val FOLLOWING_COUNT = "followingCount"
         private const val FOLLOWERS_COUNT = "followersCount"
         private const val OTHERS_LIST_TYPE = "othersListType"

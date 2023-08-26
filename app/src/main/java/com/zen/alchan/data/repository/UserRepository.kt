@@ -1,6 +1,7 @@
 package com.zen.alchan.data.repository
 
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.response.NotificationData
@@ -56,6 +57,9 @@ interface UserRepository {
 
     fun getAppSetting(): Observable<AppSetting>
     fun setAppSetting(newAppSetting: AppSetting?): Observable<Unit>
+
+    fun getCalendarSetting(): Observable<CalendarSetting>
+    fun setCalendarSetting(newCalendarSetting: CalendarSetting): Observable<Unit>
 
     fun getAppTheme(): AppTheme
 

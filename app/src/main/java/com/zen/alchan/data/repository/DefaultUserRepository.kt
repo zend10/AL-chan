@@ -4,6 +4,7 @@ import android.net.Uri
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.UserDataSource
 import com.zen.alchan.data.entity.AppSetting
+import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.manager.UserManager
 import com.zen.alchan.helper.enums.AppTheme
@@ -203,6 +204,22 @@ class DefaultUserRepository(
         return Observable.create {
             try {
                 userManager.appSetting = newAppSetting ?: AppSetting()
+                it.onNext(Unit)
+                it.onComplete()
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }
+    }
+
+    override fun getCalendarSetting(): Observable<CalendarSetting> {
+        return Observable.just(userManager.calendarSetting)
+    }
+
+    override fun setCalendarSetting(newCalendarSetting: CalendarSetting): Observable<Unit> {
+        return Observable.create {
+            try {
+                userManager.calendarSetting = newCalendarSetting
                 it.onNext(Unit)
                 it.onComplete()
             } catch (e: Exception) {
