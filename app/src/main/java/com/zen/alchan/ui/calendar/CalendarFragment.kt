@@ -5,22 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaExternalLink
 import com.zen.alchan.databinding.FragmentCalendarBinding
+import com.zen.alchan.databinding.FragmentCalendarDayBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.sql.Time
+import java.util.Calendar
 
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
 
     override val viewModel: CalendarViewModel by viewModel()
-
-    private var adapter: CalendarRvAdapter? = null
 
     override fun generateViewBinding(
         inflater: LayoutInflater,
@@ -33,12 +36,25 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         with(binding) {
             setUpToolbar(defaultToolbar.defaultToolbar, getString(R.string.calendar))
 
-            adapter = CalendarRvAdapter(requireContext(), listOf(), AppSetting(), getCalendarListener())
-            calendarRecyclerView.adapter = adapter
+            var a = object : FragmentStateAdapter(this@CalendarFragment) {
+                override fun getItemCount(): Int {
+                    return Int.MAX_VALUE
+                }
 
-            calendarSwipeRefresh.setOnRefreshListener {
-                viewModel.reloadCalendar()
+                override fun createFragment(position: Int): Fragment {
+                    return CalendarDayFragment(getDateFromPagePosition(position), viewModel.calendarSettings);
+                }
             }
+
+            calendarPager.adapter = a;
+            calendarPager.setCurrentItem(Int.MAX_VALUE / 2, false)
+            calendarPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    viewModel.updateDate(getDateFromPagePosition(position))
+                }
+            })
+
 
             calendarDateText.clicks {
                 viewModel.loadDateCalendar()
@@ -58,69 +74,59 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         }
     }
 
+
     override fun setUpInsets() {
         with(binding) {
             defaultToolbar.defaultToolbar.applyTopPaddingInsets()
-            calendarRecyclerView.applySidePaddingInsets()
+            calendarPager.applySidePaddingInsets()
             calendarFilterLayout.applyBottomSidePaddingInsets()
         }
     }
 
     override fun setUpObserver() {
         disposables.addAll(
-            viewModel.loading.subscribe {
-                binding.calendarSwipeRefresh.isRefreshing = it
-            },
             viewModel.error.subscribe {
                 dialog.showToast(it)
-            },
-            viewModel.appSetting.subscribe {
-                adapter = CalendarRvAdapter(requireContext(), listOf(), it, getCalendarListener())
-                binding.calendarRecyclerView.adapter = adapter
-            },
-            viewModel.emptyLayoutVisibility.subscribe {
-                binding.emptyLayout.emptyLayout.show(it)
-            },
-            viewModel.airingSchedules.subscribe {
-                adapter?.updateData(it, true)
             },
             viewModel.date.subscribe {
                 binding.calendarDateText.text = TimeUtil.displayInDateFormat(it)
             },
-            viewModel.showOnlyWatchingAndPlanning.subscribe {
-                binding.calendarShowOnListCheckBox.isChecked = it
-            },
-            viewModel.showOnlyCurrentSeason.subscribe {
-                binding.calendarShowCurrentSeasonCheckBox.isChecked = it
-            },
-            viewModel.showAdult.subscribe {
-                binding.seriesShowAdultContentCheckBox.isChecked = it
+            viewModel.calendarSettings.subscribe {
+                binding.calendarShowOnListCheckBox.isChecked = it.showOnlyWatchingAndPlanning
+                binding.calendarShowCurrentSeasonCheckBox.isChecked = it.showOnlyCurrentSeason
+                binding.seriesShowAdultContentCheckBox.isChecked = it.showAdult
             },
             viewModel.calendarDate.subscribe {
                 dialog.showDatePicker(it) { year, month, dayOfMonth ->
-                    viewModel.updateDate(dayOfMonth, month, year)
+                    val calendar = Calendar.getInstance()
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    calendar.set(Calendar.MONTH, month - 1)
+                    calendar.set(Calendar.YEAR, year)
+                    calendar.set(Calendar.HOUR_OF_DAY, 0)
+                    calendar.set(Calendar.MINUTE, 0)
+                    calendar.set(Calendar.SECOND, 0)
+                    calendar.set(Calendar.MILLISECOND, 0)
+
+                    binding.calendarPager.currentItem = getPagePositionFromDate(calendar)
                 }
             }
         )
 
         viewModel.loadData(Unit)
     }
-
-    private fun getCalendarListener(): CalendarRvAdapter.CalendarListener {
-        return object : CalendarRvAdapter.CalendarListener {
-            override fun navigateToMedia(media: Media) {
-                navigation.navigateToMedia(media.getId())
-            }
-
-            override fun navigateToUrl(mediaExternalLink: MediaExternalLink) {
-                navigation.openWebView(mediaExternalLink.url)
-            }
-        }
+    private fun getDateFromPagePosition(position: Int) : Int {
+        val middle = Int.MAX_VALUE / 2
+        val pageDifference = position - middle
+        return TimeUtil.getTodayInSeconds() + (3600 * 24) * pageDifference;
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        adapter = null
+    private fun getPagePositionFromDate(calendar: Calendar): Int {
+        // Thanks, ChatGPT my brain was to smol for this
+        val dateInSeconds = (calendar.timeInMillis / 1000L).toInt()
+        val todayInSeconds = TimeUtil.getTodayInSeconds()
+        val middle = Int.MAX_VALUE / 2
+        val pageDifference = (dateInSeconds - todayInSeconds) / (3600 * 24)
+        return middle + pageDifference
     }
 
     companion object {
