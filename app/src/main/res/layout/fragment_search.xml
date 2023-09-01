@@ -71,7 +71,7 @@
             android:layout_height="0dp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                app:srcCompat="@drawable/ic_tune"
+                app:srcCompat="@drawable/ic_compass"
                 app:tint="?themeBackgroundColor"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
