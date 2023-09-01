@@ -19,7 +19,7 @@ interface NavigationManager {
     fun navigateToLogin(bearerToken: String? = null, disableAnimation: Boolean = false) {}
     fun navigateToMain(deepLink: DeepLink? = null) {}
 
-    fun navigateToSearch() {}
+    fun navigateToSearch(searchCategory: SearchCategory) {}
     fun navigateToSeasonal() {}
     fun navigateToExplore(searchCategory: SearchCategory, mediaFilter: MediaFilter? = null, action: ((() -> Unit) -> Unit)? = null) {}
     fun navigateToSocial() {}

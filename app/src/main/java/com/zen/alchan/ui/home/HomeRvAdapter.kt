@@ -83,7 +83,7 @@ class HomeRvAdapter(
                         ImageUtil.loadRectangleImage(context, it.avatar.getImageUrl(appSetting), homeHeaderAvatar)
                 } ?: homeHeaderAvatar.show(false)
 
-                searchLayout.clicks { listener.headerListener.navigateToSearch() }
+                searchLayout.clicks { listener.headerListener.showSearchDialog() }
             }
         }
     }

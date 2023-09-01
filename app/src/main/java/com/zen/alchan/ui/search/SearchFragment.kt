@@ -1,5 +1,6 @@
 package com.zen.alchan.ui.search
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentSearchBinding
+import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
@@ -114,7 +116,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             }
         )
 
-        viewModel.loadData(Unit)
+        arguments?.getString(SEARCH_CATEGORY)?.let {
+            viewModel.loadData(SearchParam(SearchCategory.valueOf(it)))
+        }
     }
 
     private fun getSearchListener(): SearchRvAdapter.SearchListener {
@@ -156,7 +160,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     }
 
     companion object {
+        private const val SEARCH_CATEGORY = "searchCategory"
+
         @JvmStatic
-        fun newInstance() = SearchFragment()
+        fun newInstance(searchCategory: SearchCategory) = SearchFragment().apply {
+            arguments = Bundle().apply {
+                putString(SEARCH_CATEGORY, searchCategory.name)
+            }
+        }
     }
 }

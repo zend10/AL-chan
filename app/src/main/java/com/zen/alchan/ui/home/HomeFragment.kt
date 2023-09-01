@@ -59,6 +59,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             },
             viewModel.searchCategoryList.subscribe {
                 dialog.showListDialog(it) { data, _ ->
+                    navigation.navigateToSearch(data)
+                }
+            },
+            viewModel.exploreCategoryList.subscribe {
+                dialog.showListDialog(it) { data, _ ->
                     navigation.navigateToExplore(data)
                 }
             }
@@ -87,8 +92,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun getHeaderListener(): HomeListener.HeaderListener {
         return object : HomeListener.HeaderListener {
-            override fun navigateToSearch() {
-                navigation.navigateToSearch()
+            override fun showSearchDialog() {
+                viewModel.loadSearchCategories()
             }
         }
     }
@@ -100,7 +105,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
 
             override fun showExploreDialog() {
-                viewModel.loadSearchCategories()
+                viewModel.loadExploreCategories()
             }
 
             override fun navigateToReview() {

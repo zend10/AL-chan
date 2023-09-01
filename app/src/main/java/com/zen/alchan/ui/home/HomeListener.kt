@@ -6,7 +6,7 @@ import com.zen.alchan.data.response.anilist.MediaList
 interface HomeListener {
 
     interface HeaderListener {
-        fun navigateToSearch()
+        fun showSearchDialog()
     }
 
     interface MenuListener {

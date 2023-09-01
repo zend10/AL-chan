@@ -92,8 +92,8 @@ class DefaultNavigationManager(
         swapPage(MainFragment.newInstance(deepLink), true)
     }
 
-    override fun navigateToSearch() {
-        stackPage(SearchFragment.newInstance())
+    override fun navigateToSearch(searchCategory: SearchCategory) {
+        stackPage(SearchFragment.newInstance(searchCategory))
     }
 
     override fun navigateToSeasonal() {

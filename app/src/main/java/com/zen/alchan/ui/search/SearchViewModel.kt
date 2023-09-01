@@ -19,7 +19,7 @@ import com.zen.alchan.type.MediaType
 class SearchViewModel(
     private val userRepository: UserRepository,
     private val contentRepository: ContentRepository
-) : BaseViewModel<Unit>() {
+) : BaseViewModel<SearchParam>() {
 
     private val _appSetting = PublishSubject.create<AppSetting>()
     val appSetting: Observable<AppSetting>
@@ -51,8 +51,12 @@ class SearchViewModel(
     private var hasNextPage = false
     private var currentPage = 0
 
-    override fun loadData(param: Unit) {
+    override fun loadData(param: SearchParam) {
+        currentSearchCategory = param.searchCategory
+
         loadOnce {
+            updateSelectedSearchCategory(currentSearchCategory)
+
             disposables.add(
                 userRepository.getAppSetting()
                     .applyScheduler()

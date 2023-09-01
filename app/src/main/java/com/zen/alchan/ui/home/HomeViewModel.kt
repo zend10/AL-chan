@@ -43,6 +43,10 @@ class HomeViewModel(
     val searchCategoryList: Observable<List<ListItem<SearchCategory>>>
         get() = _searchCategoryList
 
+    private val _exploreCategoryList = PublishSubject.create<List<ListItem<SearchCategory>>>()
+    val exploreCategoryList: Observable<List<ListItem<SearchCategory>>>
+        get() = _exploreCategoryList
+
     override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
@@ -175,12 +179,23 @@ class HomeViewModel(
 
     fun loadSearchCategories() {
         val list = ArrayList<ListItem<SearchCategory>>()
+        list.add(ListItem(R.string.search_anime, SearchCategory.ANIME))
+        list.add(ListItem(R.string.search_manga, SearchCategory.MANGA))
+        list.add(ListItem(R.string.search_characters, SearchCategory.CHARACTER))
+        list.add(ListItem(R.string.search_staff, SearchCategory.STAFF))
+        list.add(ListItem(R.string.search_studios, SearchCategory.STUDIO))
+        list.add(ListItem(R.string.search_users, SearchCategory.USER))
+        _searchCategoryList.onNext(list)
+    }
+
+    fun loadExploreCategories() {
+        val list = ArrayList<ListItem<SearchCategory>>()
         list.add(ListItem(R.string.explore_anime, SearchCategory.ANIME))
         list.add(ListItem(R.string.explore_manga, SearchCategory.MANGA))
         list.add(ListItem(R.string.explore_characters, SearchCategory.CHARACTER))
         list.add(ListItem(R.string.explore_staff, SearchCategory.STAFF))
         list.add(ListItem(R.string.explore_studios, SearchCategory.STUDIO))
-        _searchCategoryList.onNext(list)
+        _exploreCategoryList.onNext(list)
     }
 
     fun updateProgress(mediaList: MediaList, newProgress: Int) {
