@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
@@ -55,6 +56,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             seriesShowAdultContentCheckBox.setOnClickListener {
                 viewModel.updateShowAdult(seriesShowAdultContentCheckBox.isChecked)
             }
+
+            calendarPreviousDayButton.clicks {
+                calendarRecyclerView.scrollToPosition(0)
+                viewModel.loadPreviousDay()
+            }
+
+            calendarNextDayButton.clicks {
+                calendarRecyclerView.scrollToPosition(0)
+                viewModel.loadNextDay()
+            }
+
         }
     }
 

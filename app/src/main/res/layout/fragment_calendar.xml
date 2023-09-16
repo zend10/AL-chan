@@ -44,80 +44,118 @@
 
         <include layout="@layout/divider"/>
 
-        <HorizontalScrollView
-            android:scrollbars="none"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:padding="@dimen/marginPageNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:padding="@dimen/marginPageNormal"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/calendarPreviousDayButton"
+                app:srcCompat="@drawable/ic_long_arrow_left"
+                app:tint="?themePrimaryColor"
+                android:layout_gravity="center_vertical"
+                android:foreground="?selectableItemBackground"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:background="?themeDividerColor"
+                android:layout_marginHorizontal="@dimen/marginNormal"
+                android:layout_width="@dimen/lineWidth"
+                android:layout_height="match_parent"/>
+
+            <HorizontalScrollView
+                android:scrollbars="none"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeSmallFont"
-                    android:maxLines="1"
-                    android:text="@string/date"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/calendarDateText"
-                    style="?themeRegularClickableFont"
-                    android:maxLines="1"
-                    android:foreground="?selectableItemBackground"
-                    android:layout_marginStart="@dimen/marginNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?themeSmallFont"
+                        android:maxLines="1"
+                        android:text="@string/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeSmallFont"
-                    android:maxLines="1"
-                    android:text="@string/show_only_in_your_watching_and_planning_list"
-                    android:layout_marginStart="@dimen/marginPageBig"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/calendarDateText"
+                        style="?themeRegularClickableFont"
+                        android:maxLines="1"
+                        android:foreground="?selectableItemBackground"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/calendarShowOnListCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_marginStart="@dimen/marginNormal"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?themeSmallFont"
+                        android:maxLines="1"
+                        android:text="@string/show_only_in_your_watching_and_planning_list"
+                        android:layout_marginStart="@dimen/marginPageBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeSmallFont"
-                    android:maxLines="1"
-                    android:text="@string/show_only_from_current_season"
-                    android:layout_marginStart="@dimen/marginPageBig"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/calendarShowOnListCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/calendarShowCurrentSeasonCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_marginStart="@dimen/marginNormal"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?themeSmallFont"
+                        android:maxLines="1"
+                        android:text="@string/show_only_from_current_season"
+                        android:layout_marginStart="@dimen/marginPageBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?themeSmallFont"
-                    android:maxLines="1"
-                    android:text="@string/show_adult_content"
-                    android:layout_marginStart="@dimen/marginPageBig"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/calendarShowCurrentSeasonCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/seriesShowAdultContentCheckBox"
-                    style="?themeRegularCheckBox"
-                    android:layout_marginStart="@dimen/marginNormal"
-                    android:layout_width="@dimen/iconSize"
-                    android:layout_height="@dimen/iconSize"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?themeSmallFont"
+                        android:maxLines="1"
+                        android:text="@string/show_adult_content"
+                        android:layout_marginStart="@dimen/marginPageBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/seriesShowAdultContentCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
 
-        </HorizontalScrollView>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </HorizontalScrollView>
+
+            <View
+                android:background="?themeDividerColor"
+                android:layout_marginHorizontal="@dimen/marginNormal"
+                android:layout_width="@dimen/lineWidth"
+                android:layout_height="match_parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/calendarNextDayButton"
+                app:srcCompat="@drawable/ic_right_arrow"
+                app:tint="?themePrimaryColor"
+                android:layout_gravity="center_vertical"
+                android:foreground="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

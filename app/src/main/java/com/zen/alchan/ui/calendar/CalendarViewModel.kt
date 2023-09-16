@@ -179,6 +179,18 @@ class CalendarViewModel(
         _emptyLayoutVisibility.onNext(filteredAiringSchedules.isEmpty())
     }
 
+    fun loadPreviousDay() {
+        val previousDay = (_date.value ?: TimeUtil.getTodayInSeconds()) - (24 * 3600)
+        _date.onNext(previousDay)
+        reloadCalendar()
+    }
+
+    fun loadNextDay() {
+        val nextDay = (_date.value ?: TimeUtil.getTodayInSeconds()) + (24 * 3600)
+        _date.onNext(nextDay)
+        reloadCalendar()
+    }
+
     private fun saveCalendarSetting() {
         disposables.add(
             userRepository.setCalendarSetting(calendarSetting)
