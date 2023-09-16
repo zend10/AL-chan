@@ -51,6 +51,9 @@ class MediaListGridRvAdapter(
                 mediaListTitleLayout.clicks {
                     listener.navigateToMedia(media)
                 }
+                mediaListTitleText.clicks {
+                    listener.navigateToMedia(media)
+                }
                 mediaListTitleText.setOnLongClickListener {
                     listener.copyMediaTitle(getTitle(media))
                     true
