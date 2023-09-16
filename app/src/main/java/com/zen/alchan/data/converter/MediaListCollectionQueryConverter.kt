@@ -93,13 +93,7 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             tags = media?.tags?.mapNotNull {
                 MediaTag(
                     id = it?.id ?: 0,
-                    name = it?.name ?: "",
-                    description = it?.description ?: "",
-                    category = it?.category ?: "",
                     rank = it?.rank ?: 0,
-                    isGeneralSpoiler = it?.isGeneralSpoiler ?: false,
-                    isMediaSpoiler = it?.isMediaSpoiler ?: false,
-                    isAdult = it?.isAdult ?: false
                 )
             } ?: listOf(),
             isFavourite = media?.isFavourite ?: false,
@@ -126,9 +120,6 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             ),
             externalLinks = media?.externalLinks?.mapNotNull {
                 MediaExternalLink(
-                    id = it?.id ?: 0,
-                    url = it?.url ?: "",
-                    site = it?.site ?: "",
                     siteId = it?.siteId ?: 0
                 )
             } ?: listOf(),

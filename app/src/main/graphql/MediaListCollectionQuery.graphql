@@ -72,13 +72,7 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
           favourites
           tags {
             id
-            name
-            description
-            category
             rank
-            isGeneralSpoiler
-            isMediaSpoiler
-            isAdult
           }
           isFavourite
           isAdult
@@ -97,9 +91,6 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
             }
           }
           externalLinks {
-            id
-            url
-            site
             siteId
           }
           siteUrl
