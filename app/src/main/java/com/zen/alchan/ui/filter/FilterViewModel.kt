@@ -23,7 +23,7 @@ import com.zen.alchan.type.*
 
 class FilterViewModel(
     private val contentRepository: ContentRepository,
-    private val mediaListRepository: MediaListRepository
+    private val mediaListRepository: MediaListRepository,
 ) : BaseViewModel<FilterParam>() {
 
     private val _mediaFilter = PublishSubject.create<MediaFilter>()
@@ -278,8 +278,13 @@ class FilterViewModel(
     val userListFilterVisibility: Observable<Boolean>
         get() = _userListFilterVisibility
 
+    private val _tagFilterVisibility = BehaviorSubject.createDefault(true)
+    val tagFilterVisibility: Observable<Boolean>
+        get() = _tagFilterVisibility
+
     private var mediaType: MediaType = MediaType.ANIME
     private var isUserList: Boolean = true
+    private var hasBigList: Boolean = false
     private var isCurrentUser: Boolean = true
     private var genres: List<Genre> = listOf()
     private var tags: List<MediaTag> = listOf()
@@ -294,9 +299,11 @@ class FilterViewModel(
             mediaType = param.mediaType
             scoreFormat = param.scoreFormat
             isUserList = param.isUserList
+            hasBigList = param.hasBigList
             isCurrentUser = param.isCurrentUser
 
             _filterSettingsVisibility.onNext(isUserList && isCurrentUser)
+            _tagFilterVisibility.onNext(!hasBigList)
 
             disposables.add(
                 contentRepository.getGenres()
@@ -311,6 +318,7 @@ class FilterViewModel(
 
             disposables.add(
                 contentRepository.getTags()
+                    .filter { !hasBigList }
                     .subscribe {
                         tags = it
 

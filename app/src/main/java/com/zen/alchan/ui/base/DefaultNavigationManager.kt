@@ -207,8 +207,16 @@ class DefaultNavigationManager(
         }))
     }
 
-    override fun navigateToFilter(mediaFilter: MediaFilter?, mediaType: MediaType, scoreFormat: ScoreFormat, isUserList: Boolean, isCurrentUser: Boolean, action: (filterResult: MediaFilter) -> Unit) {
-        stackPage(FilterFragment.newInstance(mediaFilter, mediaType, scoreFormat, isUserList, isCurrentUser, object : FilterFragment.FilterListener {
+    override fun navigateToFilter(
+        mediaFilter: MediaFilter?,
+        mediaType: MediaType,
+        scoreFormat: ScoreFormat,
+        isUserList: Boolean,
+        hasBigList: Boolean,
+        isCurrentUser: Boolean,
+        action: (filterResult: MediaFilter) -> Unit
+    ) {
+        stackPage(FilterFragment.newInstance(mediaFilter, mediaType, scoreFormat, isUserList, hasBigList, isCurrentUser, object : FilterFragment.FilterListener {
             override fun getFilterResult(filterResult: MediaFilter) {
                 action(filterResult)
             }

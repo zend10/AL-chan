@@ -166,7 +166,7 @@ class MediaViewModel(
         disposables.add(
             userRepository.getViewer(Source.CACHE)
                 .flatMap {
-                    mediaListRepository.getMediaListCollection(Source.CACHE, it.id, media.type?.getMediaType() ?: MediaType.ANIME)
+                    mediaListRepository.getMediaListCollection(Source.CACHE, it, media.type?.getMediaType() ?: MediaType.ANIME)
                 }
                 .applyScheduler()
                 .subscribe(

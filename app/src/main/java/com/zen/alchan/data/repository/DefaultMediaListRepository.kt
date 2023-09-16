@@ -10,6 +10,7 @@ import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListCollection
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.enums.getAniListMediaType
@@ -87,28 +88,34 @@ class DefaultMediaListRepository(
 
     override fun getMediaListCollection(
         source: Source,
-        userId: Int,
+        user: User,
         mediaType: MediaType
     ): Observable<MediaListCollection> {
-        val isViewer = userManager.viewerData?.data?.id == userId
+        val isViewer = userManager.viewerData?.data?.id == user.id
+        val mediaListEntryCount = if (mediaType == MediaType.ANIME)
+            userManager.animeListEntryCount ?: user.animeListEntryCount()
+        else
+            userManager.mangaListEntryCount ?: user.mangaListEntryCount()
+        val hasBigList = mediaListEntryCount > MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT
+
         return if (source == Source.CACHE) {
             val mediaListCollection = if (isViewer) {
                 when (mediaType) {
                     MediaType.ANIME -> {
-                        userIdToAnimeListCollectionMap.getOrElse(userId) {
+                        userIdToAnimeListCollectionMap.getOrElse(user.id) {
                             userManager.animeList?.data
                         }
                     }
                     MediaType.MANGA -> {
-                        userIdToMangaListCollectionMap.getOrElse(userId) {
+                        userIdToMangaListCollectionMap.getOrElse(user.id) {
                             userManager.mangaList?.data
                         }
                     }
                 } ?: return Observable.error(NotInStorageException())
             } else {
                 when (mediaType) {
-                    MediaType.ANIME -> userIdToAnimeListCollectionMap[userId]
-                    MediaType.MANGA -> userIdToMangaListCollectionMap[userId]
+                    MediaType.ANIME -> userIdToAnimeListCollectionMap[user.id]
+                    MediaType.MANGA -> userIdToMangaListCollectionMap[user.id]
                 } ?: return Observable.error(NotInStorageException())
             }
 
@@ -116,47 +123,67 @@ class DefaultMediaListRepository(
         } else {
             // for other person's list, simply get from memory cache if exist
             if (!isViewer) {
-                if (mediaType == MediaType.ANIME && userIdToAnimeListCollectionMap.containsKey(userId)) {
-                    return Observable.just(userIdToAnimeListCollectionMap[userId] ?: MediaListCollection())
+                if (mediaType == MediaType.ANIME && userIdToAnimeListCollectionMap.containsKey(user.id)) {
+                    return Observable.just(userIdToAnimeListCollectionMap[user.id] ?: MediaListCollection())
                 }
 
-                if (mediaType == MediaType.MANGA && userIdToMangaListCollectionMap.containsKey(userId)) {
-                    return Observable.just(userIdToMangaListCollectionMap[userId] ?: MediaListCollection())
+                if (mediaType == MediaType.MANGA && userIdToMangaListCollectionMap.containsKey(user.id)) {
+                    return Observable.just(userIdToMangaListCollectionMap[user.id] ?: MediaListCollection())
                 }
             }
 
-            mediaListDataSource.getMediaListCollectionQuery(userId, mediaType.getAniListMediaType()).map {
-                val newMediaListCollection = it.data?.convert()
+            val mediaListCollectionObservable = if (hasBigList) {
+                mediaListDataSource.getMediaListCollectionTrimmedQuery(user.id, mediaType.getAniListMediaType()).flatMap {
+                    Observable.just(it.data?.convert() ?: MediaListCollection())
+                }
+            }
+            else {
+                mediaListDataSource.getMediaListCollectionQuery(user.id, mediaType.getAniListMediaType()).flatMap {
+                    Observable.just(it.data?.convert() ?: MediaListCollection())
+                }
+            }
 
-                if (newMediaListCollection != null && isViewer) {
+            mediaListCollectionObservable.map { newMediaListCollection ->
+                if (isViewer) {
                     var totalEntriesSize = 0
                     newMediaListCollection.lists.forEach {
                         totalEntriesSize += it.entries.size
                     }
                     when (mediaType) {
                         MediaType.ANIME -> {
-                            userIdToAnimeListCollectionMap[userId] = newMediaListCollection
-                            if (totalEntriesSize < MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT)
+                            userIdToAnimeListCollectionMap[user.id] = newMediaListCollection
+                            userManager.animeListEntryCount = totalEntriesSize
+                            if (!hasBigList)
                                 userManager.animeList = SaveItem(newMediaListCollection)
                         }
                         MediaType.MANGA -> {
-                            userIdToMangaListCollectionMap[userId] = newMediaListCollection
-                            if (totalEntriesSize < MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT)
+                            userIdToMangaListCollectionMap[user.id] = newMediaListCollection
+                            userManager.mangaListEntryCount = totalEntriesSize
+                            if (!hasBigList)
                                 userManager.mangaList = SaveItem(newMediaListCollection)
                         }
                     }
                 }
 
-                if (newMediaListCollection != null && !isViewer) {
+                if (!isViewer) {
                     when (mediaType) {
-                        MediaType.ANIME -> userIdToAnimeListCollectionMap[userId] = newMediaListCollection
-                        MediaType.MANGA -> userIdToMangaListCollectionMap[userId] = newMediaListCollection
+                        MediaType.ANIME -> userIdToAnimeListCollectionMap[user.id] = newMediaListCollection
+                        MediaType.MANGA -> userIdToMangaListCollectionMap[user.id] = newMediaListCollection
                     }
                 }
 
-                newMediaListCollection ?: MediaListCollection()
+                newMediaListCollection
             }
         }
+    }
+
+    override fun hasBigList(user: User, mediaType: MediaType): Observable<Boolean> {
+        val entryCount = if (mediaType == MediaType.ANIME) {
+            userManager.animeListEntryCount ?: user.animeListEntryCount()
+        } else {
+            userManager.mangaListEntryCount ?: user.mangaListEntryCount()
+        }
+        return Observable.just(entryCount > MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT)
     }
 
     override fun updateCacheMediaList(
@@ -322,6 +349,6 @@ class DefaultMediaListRepository(
     }
 
     companion object {
-        private const val MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT = 1000 // trying to cache huge list can cause OutOfMemoryException
+        private const val MEDIA_LIST_ENTRY_SIZE_CACHE_HARD_LIMIT = 1500 // trying to cache huge list can cause OutOfMemoryException
     }
 }

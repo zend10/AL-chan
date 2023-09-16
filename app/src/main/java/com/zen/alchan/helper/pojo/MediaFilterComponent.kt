@@ -9,5 +9,6 @@ data class MediaFilterComponent(
     val mediaType: MediaType,
     val scoreFormat: ScoreFormat,
     val isUserList: Boolean,
+    val hasBigList: Boolean,
     val isViewer: Boolean
 )

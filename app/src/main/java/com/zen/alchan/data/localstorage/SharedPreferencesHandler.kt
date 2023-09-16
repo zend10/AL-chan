@@ -18,6 +18,8 @@ interface SharedPreferencesHandler {
     var calendarSetting: CalendarSetting?
     var followingCount: Int?
     var followersCount: Int?
+    var animeListEntryCount: Int?
+    var mangaListEntryCount: Int?
     var othersListType: ListType?
     var lastNotificationId: Int?
     var lastAnnouncementId: String?

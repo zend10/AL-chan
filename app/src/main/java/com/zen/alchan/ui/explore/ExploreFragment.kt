@@ -123,7 +123,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding, ExploreViewModel>()
                 binding.exploreSettingButton.show(it)
             },
             viewModel.mediaFilterComponent.subscribe {
-                navigation.navigateToFilter(it.mediaFilter, it.mediaType, it.scoreFormat, it.isUserList, it.isViewer) {
+                navigation.navigateToFilter(it.mediaFilter, it.mediaType, it.scoreFormat, it.isUserList, it.hasBigList, it.isViewer) {
                     viewModel.updateMediaFilter(it)
                 }
             },

@@ -31,6 +31,8 @@ interface UserManager {
     var viewerData: SaveItem<User>?
     var followingCount: Int?
     var followersCount: Int?
+    var animeListEntryCount: Int?
+    var mangaListEntryCount: Int?
 
     var animeList: SaveItem<MediaListCollection>?
     var mangaList: SaveItem<MediaListCollection>?

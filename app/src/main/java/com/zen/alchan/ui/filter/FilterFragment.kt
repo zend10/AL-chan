@@ -449,6 +449,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 binding.filterPriorityLayout.show(it)
                 binding.filterHideOnListLayout.show(!it)
                 binding.filterShowOnListLayout.show(!it)
+            },
+            viewModel.tagFilterVisibility.subscribe {
+                binding.filterTagsLayout.show(it)
             }
         )
 
@@ -458,6 +461,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
                 MediaType.valueOf(arguments?.getString(MEDIA_TYPE) ?: MediaType.ANIME.name),
                 ScoreFormat.valueOf(arguments?.getString(SCORE_FORMAT) ?: ScoreFormat.POINT_100.name),
                 arguments?.getBoolean(IS_USER_LIST) ?: false,
+                arguments?.getBoolean(HAS_BIG_LIST) ?: false,
                 arguments?.getBoolean(IS_CURRENT_USER) ?: false
             )
         )
@@ -481,15 +485,25 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>() {
         private const val MEDIA_TYPE = "mediaType"
         private const val SCORE_FORMAT = "scoreFormat"
         private const val IS_USER_LIST = "isUserList"
+        private const val HAS_BIG_LIST = "hasBigList"
         private const val IS_CURRENT_USER = "isCurrentUser"
 
         @JvmStatic
-        fun newInstance(mediaFilter: MediaFilter?, mediaType: MediaType, scoreFormat: ScoreFormat, isUserList: Boolean, isCurrentUser: Boolean, listener: FilterListener) =
+        fun newInstance(
+            mediaFilter: MediaFilter?,
+            mediaType: MediaType,
+            scoreFormat: ScoreFormat,
+            isUserList: Boolean,
+            hasBigList: Boolean,
+            isCurrentUser: Boolean,
+            listener: FilterListener
+        ) =
             FilterFragment().apply {
                 arguments = Bundle().apply {
                     putString(MEDIA_TYPE, mediaType.name)
                     putString(SCORE_FORMAT, scoreFormat.name)
                     putBoolean(IS_USER_LIST, isUserList)
+                    putBoolean(HAS_BIG_LIST, hasBigList)
                     putBoolean(IS_CURRENT_USER, isCurrentUser)
                 }
                 this.oldMediaFilter = mediaFilter

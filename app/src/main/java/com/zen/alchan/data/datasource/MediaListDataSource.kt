@@ -2,6 +2,7 @@ package com.zen.alchan.data.datasource
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.zen.alchan.MediaListCollectionQuery
+import com.zen.alchan.MediaListCollectionTrimmedQuery
 import com.zen.alchan.MediaWithMediaListQuery
 import com.zen.alchan.SaveMediaListEntryMutation
 import com.zen.alchan.data.response.anilist.FuzzyDate
@@ -12,6 +13,7 @@ import io.reactivex.rxjava3.core.Observable
 
 interface MediaListDataSource {
     fun getMediaListCollectionQuery(userId: Int, mediaType: MediaType): Observable<ApolloResponse<MediaListCollectionQuery.Data>>
+    fun getMediaListCollectionTrimmedQuery(userId: Int, mediaType: MediaType): Observable<ApolloResponse<MediaListCollectionTrimmedQuery.Data>>
     fun getMediaWithMediaListQuery(mediaId: Int): Observable<ApolloResponse<MediaWithMediaListQuery.Data>>
     fun updateMediaListEntry(
         id: Int?,

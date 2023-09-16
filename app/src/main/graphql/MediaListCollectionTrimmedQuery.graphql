@@ -1,4 +1,4 @@
-query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int, $sourceVersion: Int) {
+query MediaListCollectionTrimmedQuery($userId:Int, $type:MediaType, $statusVersion:Int, $sourceVersion: Int) {
   MediaListCollection(userId:$userId, type:$type) {
     lists {
       entries {
@@ -62,23 +62,11 @@ query MediaListCollectionQuery($userId:Int, $type:MediaType, $statusVersion:Int,
           popularity
           trending
           favourites
-          tags {
-            id
-            rank
-          }
           nextAiringEpisode {
             id
             airingAt
             timeUntilAiring
             episode
-          }
-          airingSchedule(notYetAired: false) {
-            nodes {
-              id
-              airingAt
-              timeUntilAiring
-              episode
-            }
           }
           externalLinks {
             siteId

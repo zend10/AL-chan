@@ -5,13 +5,11 @@ import com.zen.alchan.data.entity.CalendarSetting
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.data.response.NotificationData
-import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.data.response.anilist.Favourites
 import com.zen.alchan.data.response.anilist.ListActivityOption
 import com.zen.alchan.data.response.anilist.MediaListTypeOptions
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.data.response.anilist.Page
-import com.zen.alchan.data.response.anilist.PageInfo
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserStatisticTypes
 import com.zen.alchan.helper.enums.Favorite

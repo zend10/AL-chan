@@ -117,7 +117,7 @@ class ProfileViewModel(
         get() = _currentUserId
 
     private var isViewer = false
-    private var viewerId = 0
+    private var viewer = User()
 
     private var userId: Int? = null
     private var name: String? = null
@@ -225,7 +225,7 @@ class ProfileViewModel(
             userRepository.getViewer(if (isReloading) Source.NETWORK else null)
                 .map { user ->
                     isViewer = true
-                    viewerId = user.id
+                    viewer = user
                     user
                 }
         else
@@ -234,7 +234,7 @@ class ProfileViewModel(
                     userRepository.getViewer(Source.CACHE)
                         .map { viewer ->
                             isViewer = user.id == viewer.id
-                            viewerId = viewer.id
+                            this.viewer = viewer
                             user
                         }
                 }
@@ -335,8 +335,8 @@ class ProfileViewModel(
 
         disposables.add(
             Observable.zip(
-                mediaListRepository.getMediaListCollection(userId = user.id, mediaType = MediaType.ANIME),
-                mediaListRepository.getMediaListCollection(userId = user.id, mediaType = MediaType.MANGA)
+                mediaListRepository.getMediaListCollection(user = user, mediaType = MediaType.ANIME),
+                mediaListRepository.getMediaListCollection(user = user, mediaType = MediaType.MANGA)
             ) { otherPersonAnimeList, otherPersonMangaList ->
                 val otherPersonAnimeMediaIdToScoreMap = HashMap<Int, Double>()
                 val otherPersonMangaMediaIdToScoreMap = HashMap<Int, Double>()
@@ -368,8 +368,8 @@ class ProfileViewModel(
                 .applyScheduler()
                 .flatMap { (otherPersonAnimeMediaIdToScoreMap, otherPersonMangaMediaIdToScoreMap) ->
                     Observable.zip(
-                        mediaListRepository.getMediaListCollection(Source.CACHE, viewerId, MediaType.ANIME),
-                        mediaListRepository.getMediaListCollection(Source.CACHE, viewerId, MediaType.MANGA)
+                        mediaListRepository.getMediaListCollection(Source.CACHE, viewer, MediaType.ANIME),
+                        mediaListRepository.getMediaListCollection(Source.CACHE, viewer, MediaType.MANGA)
                     ) { viewerAnimeList, viewerMangaList ->
                         val viewerAnimeMediaIdToScoreMap = HashMap<Int, Double>()
                         val viewerMangaMediaIdToScoreMap = HashMap<Int, Double>()

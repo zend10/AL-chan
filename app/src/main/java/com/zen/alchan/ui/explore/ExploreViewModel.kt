@@ -226,6 +226,7 @@ class ExploreViewModel(
                 },
                 ScoreFormat.POINT_100,
                 false,
+                false,
                 false
             )
         )

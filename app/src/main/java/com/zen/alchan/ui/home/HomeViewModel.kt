@@ -67,8 +67,28 @@ class HomeViewModel(
                     .subscribe {
                         disposables.add(
                             userRepository.getViewer(Source.CACHE)
+                                .flatMap { user ->
+                                    mediaListRepository.hasBigList(user, MediaType.ANIME)
+                                        .map {
+                                            user to it
+                                        }
+                                }
+                                .filter {
+                                    if (it.second) {
+                                        val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
+                                        val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
+                                        if (index != -1) {
+                                            currentHomeList.removeAt(index)
+                                        }
+                                        _homeItemList.onNext(currentHomeList)
+                                    }
+                                    !it.second
+                                }
+                                .map {
+                                    it.first
+                                }
                                 .flatMap {
-                                    mediaListRepository.getMediaListCollection(Source.CACHE, it.id, MediaType.ANIME)
+                                    mediaListRepository.getMediaListCollection(Source.CACHE, it, MediaType.ANIME)
                                 }
                                 .map {
                                     it.lists.filter { it.status != MediaListStatus.DROPPED }
@@ -103,9 +123,9 @@ class HomeViewModel(
                                 .subscribe(
                                     {
                                         val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
-                                        val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
+                                        val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_SOCIAL } + 1
                                         if (index != -1) {
-                                            currentHomeList[index] = HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY)
+                                            currentHomeList.add(index, HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY))
                                         }
                                         _homeItemList.onNext(currentHomeList)
                                     },
@@ -134,7 +154,6 @@ class HomeViewModel(
                     HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_SOCIAL),
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
                     HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
                 )

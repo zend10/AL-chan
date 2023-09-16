@@ -87,6 +87,7 @@ class MediaListViewModel(
     var appSetting = AppSetting()
     var listStyle = ListStyle()
     var mediaFilter = MediaFilter()
+    var hasBigList = false
     private var isAllListPositionAtTop = true
 
     private var rawMediaListCollection: MediaListCollection? = null // needed when applying filter
@@ -346,7 +347,7 @@ class MediaListViewModel(
             _loading.onNext(true)
 
         disposables.add(
-            mediaListRepository.getMediaListCollection(Source.NETWORK, userId, mediaType)
+            mediaListRepository.getMediaListCollection(Source.NETWORK, user, mediaType)
                 .applyScheduler()
                 .doFinally { _loading.onNext(false) }
                 .subscribe(
@@ -362,6 +363,19 @@ class MediaListViewModel(
                             mediaListRepository.triggerReleasingToday()
                         
                         state = State.LOADED
+
+                        disposables.add(
+                            mediaListRepository.hasBigList(user, mediaType)
+                                .applyScheduler()
+                                .subscribe(
+                                    {
+                                        this.hasBigList = it
+                                    },
+                                    {
+                                        it.printStackTrace()
+                                    }
+                                )
+                        )
                     },
                     {
                         getMediaListCollectionFromCache()
@@ -375,7 +389,7 @@ class MediaListViewModel(
      */
     private fun getMediaListCollectionFromCache() {
         disposables.add(
-            mediaListRepository.getMediaListCollection(Source.CACHE, userId, mediaType)
+            mediaListRepository.getMediaListCollection(Source.CACHE, user, mediaType)
                 .applyScheduler()
                 .subscribe(
                     {

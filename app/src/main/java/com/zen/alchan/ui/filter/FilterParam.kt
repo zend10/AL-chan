@@ -9,5 +9,6 @@ data class FilterParam(
     val mediaType: MediaType,
     val scoreFormat: ScoreFormat,
     val isUserList: Boolean,
+    val hasBigList: Boolean,
     val isCurrentUser: Boolean
 )

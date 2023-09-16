@@ -50,6 +50,7 @@ interface NavigationManager {
         mediaType: MediaType,
         scoreFormat: ScoreFormat,
         isUserList: Boolean,
+        hasBigList: Boolean,
         isCurrentUser: Boolean,
         action: (filterResult: MediaFilter) -> Unit
     ) {}

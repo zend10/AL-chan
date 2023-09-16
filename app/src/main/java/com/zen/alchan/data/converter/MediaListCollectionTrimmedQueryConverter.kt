@@ -1,10 +1,10 @@
 package com.zen.alchan.data.converter
 
-import com.zen.alchan.MediaListCollectionQuery
+import com.zen.alchan.MediaListCollectionTrimmedQuery
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.data.response.Genre
 
-fun MediaListCollectionQuery.Data.convert(): MediaListCollection {
+fun MediaListCollectionTrimmedQuery.Data.convert(): MediaListCollection {
     return MediaListCollection(
         lists = MediaListCollection?.lists?.mapNotNull {
             MediaListGroup(
@@ -18,7 +18,7 @@ fun MediaListCollectionQuery.Data.convert(): MediaListCollection {
     )
 }
 
-private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
+private fun MediaListCollectionTrimmedQuery.Entry?.convert(): MediaList {
     if (this == null) return MediaList()
 
     return MediaList(
@@ -82,12 +82,6 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             popularity = media?.popularity ?: 0,
             trending = media?.trending ?: 0,
             favourites = media?.favourites ?: 0,
-            tags = media?.tags?.mapNotNull {
-                MediaTag(
-                    id = it?.id ?: 0,
-                    rank = it?.rank ?: 0,
-                )
-            } ?: listOf(),
             nextAiringEpisode = if (media?.nextAiringEpisode != null) {
                 AiringSchedule(
                     id = media.nextAiringEpisode.id,
@@ -98,16 +92,6 @@ private fun MediaListCollectionQuery.Entry?.convert(): MediaList {
             } else {
                 null
             },
-            airingSchedule = AiringScheduleConnection(
-                nodes = media?.airingSchedule?.nodes?.filterNotNull()?.map {
-                    AiringSchedule(
-                        id = it.id,
-                        airingAt = it.airingAt,
-                        timeUntilAiring = it.timeUntilAiring,
-                        episode = it.episode
-                    )
-                } ?: listOf()
-            ),
             externalLinks = media?.externalLinks?.mapNotNull {
                 MediaExternalLink(
                     siteId = it?.siteId ?: 0

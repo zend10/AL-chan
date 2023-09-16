@@ -22,4 +22,12 @@ data class User(
     val donatorBadge: String = "",
     val moderatorRoles: List<ModRole> = listOf(),
     val createdAt: Int = 0
-)
+) {
+    fun animeListEntryCount(): Int {
+        return statistics.anime.statuses.sumOf { it.count }
+    }
+
+    fun mangaListEntryCount(): Int {
+        return statistics.manga.statuses.sumOf { it.count }
+    }
+}

@@ -55,6 +55,14 @@ class DefaultSharedPreferencesHandler(
         get() = getData(FOLLOWERS_COUNT)?.toIntOrNull()
         set(value) { setData(FOLLOWERS_COUNT, value.toString()) }
 
+    override var animeListEntryCount: Int?
+        get() = getData(ANIME_LIST_ENTRY_COUNT)?.toIntOrNull()
+        set(value) { setData(ANIME_LIST_ENTRY_COUNT, value.toString()) }
+
+    override var mangaListEntryCount: Int?
+        get() = getData(MANGA_LIST_ENTRY_COUNT)?.toIntOrNull()
+        set(value) { setData(MANGA_LIST_ENTRY_COUNT, value.toString()) }
+
     override var othersListType: ListType?
         get() = ListType.valueOf(getData(OTHERS_LIST_TYPE) ?: ListType.LINEAR.name)
         set(value) { setData(OTHERS_LIST_TYPE, value?.name) }
@@ -86,6 +94,8 @@ class DefaultSharedPreferencesHandler(
         private const val CALENDAR_SETTING = "calendarSetting"
         private const val FOLLOWING_COUNT = "followingCount"
         private const val FOLLOWERS_COUNT = "followersCount"
+        private const val ANIME_LIST_ENTRY_COUNT = "animeListEntryCount"
+        private const val MANGA_LIST_ENTRY_COUNT = "mangaListEntryCount"
         private const val OTHERS_LIST_TYPE = "othersListType"
         private const val LAST_NOTIFICATION_ID = "lastNotificationId"
         private const val LAST_ANNOUNCEMENT_ID = "lastAnnouncementId"

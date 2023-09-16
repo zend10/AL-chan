@@ -5,6 +5,7 @@ import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.rx3.rxSingle
 import com.zen.alchan.DeleteMediaListEntryMutation
 import com.zen.alchan.MediaListCollectionQuery
+import com.zen.alchan.MediaListCollectionTrimmedQuery
 import com.zen.alchan.MediaWithMediaListQuery
 import com.zen.alchan.SaveMediaListEntryMutation
 import com.zen.alchan.data.network.apollo.ApolloHandler
@@ -26,6 +27,19 @@ class DefaultMediaListDataSource(
         mediaType: MediaType
     ): Observable<ApolloResponse<MediaListCollectionQuery.Data>> {
         val query = MediaListCollectionQuery(
+            Optional.present(userId),
+            Optional.present(mediaType),
+            Optional.present(statusVersion),
+            Optional.present(sourceVersion)
+        )
+        return apolloHandler.apolloClient.query(query).rxSingle().toObservable()
+    }
+
+    override fun getMediaListCollectionTrimmedQuery(
+        userId: Int,
+        mediaType: MediaType
+    ): Observable<ApolloResponse<MediaListCollectionTrimmedQuery.Data>> {
+        val query = MediaListCollectionTrimmedQuery(
             Optional.present(userId),
             Optional.present(mediaType),
             Optional.present(statusVersion),

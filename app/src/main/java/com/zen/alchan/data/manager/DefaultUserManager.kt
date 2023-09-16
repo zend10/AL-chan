@@ -81,6 +81,14 @@ class DefaultUserManager(
         get() = sharedPreferencesHandler.followersCount
         set(value) { sharedPreferencesHandler.followersCount = value }
 
+    override var animeListEntryCount: Int?
+        get() = sharedPreferencesHandler.animeListEntryCount
+        set(value) { sharedPreferencesHandler.animeListEntryCount = value }
+
+    override var mangaListEntryCount: Int?
+        get() = sharedPreferencesHandler.mangaListEntryCount
+        set(value) { sharedPreferencesHandler.mangaListEntryCount = value }
+
     override var animeList: SaveItem<MediaListCollection>?
         get() = jsonStorageHandler.animeList
         set(value) { jsonStorageHandler.animeList = value }

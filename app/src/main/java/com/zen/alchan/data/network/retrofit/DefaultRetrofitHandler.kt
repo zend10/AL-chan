@@ -38,9 +38,9 @@ class DefaultRetrofitHandler(
         if (gitHubRestService == null) {
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -61,9 +61,9 @@ class DefaultRetrofitHandler(
         if (jikanRestService == null) {
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -84,9 +84,9 @@ class DefaultRetrofitHandler(
         if (animeThemesRestService == null) {
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -108,9 +108,9 @@ class DefaultRetrofitHandler(
         if (youTubeRestService == null) {
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -133,9 +133,9 @@ class DefaultRetrofitHandler(
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(spotifyAuthHeaderInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -158,9 +158,9 @@ class DefaultRetrofitHandler(
             val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(spotifyHeaderInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()

@@ -7,6 +7,7 @@ import com.zen.alchan.data.response.anilist.FuzzyDate
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListCollection
+import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.pojo.NullableItem
@@ -22,7 +23,8 @@ interface MediaListRepository {
     val refreshMediaListTrigger: Observable<Pair<MediaType, MediaList?>>
     val releasingTodayTrigger: Observable<Unit>
 
-    fun getMediaListCollection(source: Source = Source.NETWORK, userId: Int, mediaType: MediaType): Observable<MediaListCollection>
+    fun getMediaListCollection(source: Source = Source.NETWORK, user: User, mediaType: MediaType): Observable<MediaListCollection>
+    fun hasBigList(user: User, mediaType: MediaType) : Observable<Boolean>
     fun updateCacheMediaList(mediaType: MediaType, mediaListCollection: MediaListCollection)
     fun getMediaWithMediaList(mediaId: Int): Observable<Media>
     fun updateMediaListEntry(
