@@ -41,10 +41,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 viewModel.updateUseCircularAvatarForProfile(appSettingsCircularAvatarCheckBox.isChecked)
             }
 
-            appSettingsRecentReviewsCheckBox.setOnClickListener {
-                viewModel.updateShowRecentReviewsAtHome(appSettingsRecentReviewsCheckBox.isChecked)
-            }
-
             appSettingsAllAnimeLayout.clicks {
                 viewModel.loadAllListPositionItems(MediaType.ANIME)
             }
@@ -150,9 +146,6 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             },
             viewModel.useCircularAvatarForProfile.subscribe {
                 binding.appSettingsCircularAvatarCheckBox.isChecked = it
-            },
-            viewModel.showRecentReviewsAtHome.subscribe {
-                binding.appSettingsRecentReviewsCheckBox.isChecked = it
             },
             viewModel.isAllAnimeListPositionAtTop.subscribe {
                 binding.appSettingsAllAnimeText.text = if (it) {

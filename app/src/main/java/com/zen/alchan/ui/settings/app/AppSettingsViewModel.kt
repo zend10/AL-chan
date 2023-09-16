@@ -30,10 +30,6 @@ class AppSettingsViewModel(
     val useCircularAvatarForProfile: Observable<Boolean>
         get() = _useCircularAvatarForProfile
 
-    private val _showRecentReviewsAtHome = BehaviorSubject.createDefault(true)
-    val showRecentReviewsAtHome: Observable<Boolean>
-        get() = _showRecentReviewsAtHome
-
     private val _isAllAnimeListPositionAtTop = BehaviorSubject.createDefault(true)
     val isAllAnimeListPositionAtTop: Observable<Boolean>
         get() = _isAllAnimeListPositionAtTop
@@ -128,7 +124,6 @@ class AppSettingsViewModel(
                         updateAppTheme(appSetting.appTheme)
 
                         updateUseCircularAvatarForProfile(appSetting.useCircularAvatarForProfile)
-                        updateShowRecentReviewsAtHome(appSetting.showRecentReviewsAtHome)
 
                         updateIsAllAnimeListPositionAtTop(appSetting.isAllAnimeListPositionAtTop)
                         updateIsAllMangaListPositionAtTop(appSetting.isAllMangaListPositionAtTop)
@@ -184,11 +179,6 @@ class AppSettingsViewModel(
     fun updateUseCircularAvatarForProfile(shouldUseCircularAvatarForProfile: Boolean) {
         currentAppSetting?.useCircularAvatarForProfile = shouldUseCircularAvatarForProfile
         _useCircularAvatarForProfile.onNext(shouldUseCircularAvatarForProfile)
-    }
-
-    fun updateShowRecentReviewsAtHome(shouldShowRecentReviewsAtHome: Boolean) {
-        currentAppSetting?.showRecentReviewsAtHome = shouldShowRecentReviewsAtHome
-        _showRecentReviewsAtHome.onNext(shouldShowRecentReviewsAtHome)
     }
 
     fun updateIsAllAnimeListPositionAtTop(isAtTop: Boolean) {
