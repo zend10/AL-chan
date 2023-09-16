@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import com.zen.alchan.databinding.ListAdvancedScoringBinding
-import com.zen.alchan.helper.extensions.roundToOneDecimal
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.type.ScoreFormat
 
@@ -25,7 +24,7 @@ class AdvancedScoringRvAdapter(
         override fun bind(item: Pair<String, Double>, index: Int) {
             binding.advancedScoringName.text = item.first
             binding.advancedScoringValue.isEnabled = !readOnly
-            binding.advancedScoringValue.setText(if (item.second == 0.0 && !readOnly) "" else item.second.roundToOneDecimal())
+            binding.advancedScoringValue.setText(if (item.second == 0.0 && !readOnly) "" else item.second.toString())
             binding.advancedScoringValue.addTextChangedListener {
                 var newScore = it.toString().toDoubleOrNull() ?: 0.0
                 newScore = if (scoreFormat == ScoreFormat.POINT_100 && newScore > 100)
