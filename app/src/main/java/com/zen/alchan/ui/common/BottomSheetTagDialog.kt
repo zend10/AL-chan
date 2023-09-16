@@ -48,12 +48,33 @@ class BottomSheetTagDialog : BaseDialogFragment<DialogBottomSheetTagBinding>() {
         binding.dialogEditText.addTextChangedListener {
             if (it.isNullOrBlank())
                 adapter?.updateData(list)
-            else
-                adapter?.updateData(
-                    list.filter { listItem ->
-                        listItem.data == null || listItem.data.name.contains(it, true)
+            else {
+                val filteredItems = list.filter { listItem ->
+                    listItem.data == null || listItem.data.name.contains(it, true)
+                }
+                val filteredTags = ArrayList<ListItem<MediaTag?>>()
+                filteredItems.forEachIndexed { index, listItem ->
+                    val hasNextItem = index + 1 < filteredItems.size
+                    val isCategory = listItem.data == null
+                    var shouldAdd = true
+                    if (isCategory) {
+                        if (hasNextItem) {
+                            if (filteredItems[index + 1].data == null) {
+                                shouldAdd = false
+                            }
+                        } else {
+                            shouldAdd = false
+                        }
                     }
+                    if (shouldAdd) {
+                        filteredTags.add(listItem)
+                    }
+                }
+                adapter?.updateData(
+                    filteredTags
                 )
+            }
+
         }
         binding.dialogRecyclerView.adapter = adapter
 
