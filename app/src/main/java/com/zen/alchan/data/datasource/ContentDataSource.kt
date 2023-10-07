@@ -8,6 +8,7 @@ import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
 import com.zen.alchan.type.ReviewRating
+import com.zen.alchan.type.UserTitleLanguage
 import io.reactivex.rxjava3.core.Observable
 
 interface ContentDataSource {
@@ -24,6 +25,7 @@ interface ContentDataSource {
         year: Int,
         season: MediaSeason,
         sort: Sort,
+        titleLanguage: UserTitleLanguage,
         orderByDescending: Boolean,
         onlyShowOnList: Boolean?,
         showAdult: Boolean

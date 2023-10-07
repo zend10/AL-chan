@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import com.zen.alchan.type.MediaFormat
 import com.zen.alchan.type.MediaListStatus
 import com.zen.alchan.type.MediaSeason
+import com.zen.alchan.type.UserTitleLanguage
 
 class SeasonalViewModel(
     private val userRepository: UserRepository,
@@ -93,6 +94,7 @@ class SeasonalViewModel(
 
     private var previousPagesSeasonals = ArrayList<Media>()
     private var appSetting = AppSetting()
+    private var mediaTitleLanguage = UserTitleLanguage.ROMAJI
 
     private val formatOrder = listOf(
         MediaFormat.TV,
@@ -107,11 +109,17 @@ class SeasonalViewModel(
     override fun loadData(param: Unit) {
         loadOnce {
             disposables.add(
-                userRepository.getAppSetting()
+                Observable.zip(
+                    userRepository.getAppSetting(),
+                    userRepository.getViewer(Source.CACHE)
+                ) { appSetting, user ->
+                    appSetting to user
+                }
                     .applyScheduler()
-                    .subscribe {
-                        appSetting = it
-                        _seasonalAdapterComponent.onNext(SeasonalAdapterComponent(ListType.LINEAR, it))
+                    .subscribe { (appSetting, user) ->
+                        this.appSetting = appSetting
+                        this.mediaTitleLanguage = user.options.titleLanguage ?: UserTitleLanguage.ROMAJI
+                        _seasonalAdapterComponent.onNext(SeasonalAdapterComponent(ListType.LINEAR, appSetting))
                         loadSeasonal()
                     }
             )
@@ -127,7 +135,7 @@ class SeasonalViewModel(
         state = State.LOADING
 
         disposables.add(
-            contentRepository.getSeasonal(page, _year.value ?: TimeUtil.getCurrentYear(), _season.value ?: TimeUtil.getCurrentSeason(), _sort.value ?: Sort.POPULARITY, _orderByDescending.value ?: true, getOnlyShowOnList(), _showAdult.value ?: false)
+            contentRepository.getSeasonal(page, _year.value ?: TimeUtil.getCurrentYear(), _season.value ?: TimeUtil.getCurrentSeason(), _sort.value ?: Sort.POPULARITY, mediaTitleLanguage, _orderByDescending.value ?: true, getOnlyShowOnList(), _showAdult.value ?: false)
                 .applyScheduler()
                 .doFinally {
                     if (state != State.LOADING)

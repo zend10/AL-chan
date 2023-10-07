@@ -8,10 +8,12 @@ import com.zen.alchan.type.MediaFormat
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaSource
 import com.zen.alchan.type.MediaStatus
+import com.zen.alchan.type.UserTitleLanguage
 
 data class MediaFilter(
     var persistFilter: Boolean = false,
     var sort: Sort = Sort.FOLLOW_LIST_SETTINGS,
+    var titleLanguage: UserTitleLanguage = UserTitleLanguage.ROMAJI,
     var orderByDescending: Boolean = true,
     var mediaFormats: List<MediaFormat> = listOf(),
     var mediaStatuses: List<MediaStatus> = listOf(),

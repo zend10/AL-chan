@@ -16,6 +16,7 @@ import com.zen.alchan.helper.utils.NotInStorageException
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
 import com.zen.alchan.type.ReviewRating
+import com.zen.alchan.type.UserTitleLanguage
 import io.reactivex.rxjava3.core.Observable
 
 class DefaultContentRepository(
@@ -126,11 +127,12 @@ class DefaultContentRepository(
         year: Int,
         season: MediaSeason,
         sort: Sort,
+        titleLanguage: UserTitleLanguage,
         orderByDescending: Boolean,
         onlyShowOnList: Boolean?,
         showAdult: Boolean
     ): Observable<Page<Media>> {
-        return contentDataSource.getSeasonal(page, year, season, sort, orderByDescending, onlyShowOnList, showAdult).map {
+        return contentDataSource.getSeasonal(page, year, season, sort, titleLanguage, orderByDescending, onlyShowOnList, showAdult).map {
             it.data?.convert() ?: Page()
         }
     }

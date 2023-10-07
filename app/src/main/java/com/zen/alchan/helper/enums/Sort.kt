@@ -3,6 +3,7 @@ package com.zen.alchan.helper.enums
 import android.content.Context
 import com.zen.alchan.R
 import com.zen.alchan.type.MediaSort
+import com.zen.alchan.type.UserTitleLanguage
 
 enum class Sort {
     FOLLOW_LIST_SETTINGS,
@@ -46,11 +47,16 @@ fun Sort.getStringResource(): Int {
     }
 }
 
-fun Sort.getAniListMediaSort(orderByDescending: Boolean): MediaSort? {
+fun Sort.getAniListMediaSort(titleLanguage: UserTitleLanguage, orderByDescending: Boolean): MediaSort? {
     return if (orderByDescending) {
         when (this) {
             Sort.FOLLOW_LIST_SETTINGS -> null
-            Sort.TITLE -> null
+            Sort.TITLE -> when (titleLanguage) {
+                UserTitleLanguage.ENGLISH -> MediaSort.TITLE_ENGLISH_DESC
+                UserTitleLanguage.ROMAJI -> MediaSort.TITLE_ROMAJI_DESC
+                UserTitleLanguage.NATIVE -> MediaSort.TITLE_NATIVE_DESC
+                else -> MediaSort.TITLE_ROMAJI_DESC
+            }
             Sort.SCORE -> MediaSort.SCORE_DESC
             Sort.PROGRESS -> null
             Sort.LAST_UPDATED -> null
@@ -68,7 +74,12 @@ fun Sort.getAniListMediaSort(orderByDescending: Boolean): MediaSort? {
     } else {
         when (this) {
             Sort.FOLLOW_LIST_SETTINGS -> null
-            Sort.TITLE -> null
+            Sort.TITLE -> when (titleLanguage) {
+                UserTitleLanguage.ENGLISH -> MediaSort.TITLE_ENGLISH
+                UserTitleLanguage.ROMAJI -> MediaSort.TITLE_ROMAJI
+                UserTitleLanguage.NATIVE -> MediaSort.TITLE_NATIVE
+                else -> MediaSort.TITLE_ROMAJI
+            }
             Sort.SCORE -> MediaSort.SCORE
             Sort.PROGRESS -> null
             Sort.LAST_UPDATED -> null

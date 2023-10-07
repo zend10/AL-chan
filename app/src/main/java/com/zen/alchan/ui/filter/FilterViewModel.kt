@@ -765,7 +765,7 @@ class FilterViewModel(
         val sortBy = ArrayList<ListItem<Sort>>()
         sortBy.addAll(Sort.values().map { ListItem(it.getStringResource(), it) })
         if (!isUserList) {
-            sortBy.removeAll { it.data.getAniListMediaSort(true) == null }
+            sortBy.removeAll { it.data.getAniListMediaSort(UserTitleLanguage.ROMAJI, true) == null }
         }
         _sortByList.onNext(sortBy)
     }

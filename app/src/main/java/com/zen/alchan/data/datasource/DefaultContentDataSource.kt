@@ -42,7 +42,7 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             page = Optional.present(page),
             statusVersion = Optional.present(statusVersion),
             sourceVersion = Optional.present(sourceVersion),
-            sort = Optional.present(mediaFilter?.let { listOf(mediaFilter.sort.getAniListMediaSort(mediaFilter.orderByDescending)) }),
+            sort = Optional.present(mediaFilter?.let { listOf(mediaFilter.sort.getAniListMediaSort(mediaFilter.titleLanguage, mediaFilter.orderByDescending)) }),
             formatIn = Optional.presentIfNotNull(if (mediaFilter?.mediaFormats?.isNotEmpty() == true) mediaFilter.mediaFormats else null),
             statusIn = Optional.presentIfNotNull(if (mediaFilter?.mediaStatuses?.isNotEmpty() == true) mediaFilter.mediaStatuses else null),
             sourceIn = Optional.presentIfNotNull(if (mediaFilter?.mediaSources?.isNotEmpty() == true) mediaFilter.mediaSources else null),
@@ -127,6 +127,7 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
         year: Int,
         season: MediaSeason,
         sort: Sort,
+        titleLanguage: UserTitleLanguage,
         orderByDescending: Boolean,
         onlyShowOnList: Boolean?,
         showAdult: Boolean
@@ -138,7 +139,7 @@ class DefaultContentDataSource(private val apolloHandler: ApolloHandler, private
             sourceVersion = Optional.present(sourceVersion),
             seasonYear = Optional.present(year),
             season = Optional.present(season),
-            sort = Optional.present(listOf(sort.getAniListMediaSort(orderByDescending))),
+            sort = Optional.present(listOf(sort.getAniListMediaSort(titleLanguage, orderByDescending))),
             onList = Optional.presentIfNotNull(onlyShowOnList),
             isAdult = Optional.present(showAdult)
         )
