@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.enums
 
 import android.content.Context
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.showUnit
 
 enum class ActivityMergeTime(val minute: Int) {

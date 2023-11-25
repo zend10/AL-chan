@@ -7,11 +7,11 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.widget.PopupMenuCompat
 import androidx.viewbinding.ViewBinding
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.User
-import com.zen.databinding.ListFollowBinding
-import com.zen.databinding.ListLoadingBinding
+import com.zen.alchan.databinding.ListFollowBinding
+import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil

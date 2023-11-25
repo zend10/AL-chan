@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.extensions
 
 import com.apollographql.apollo3.exception.ApolloHttpException
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.helper.utils.NotInStorageException
 
 fun Throwable.getStringResource(): Int {

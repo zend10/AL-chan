@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zen.R
-import com.zen.databinding.FragmentUserStatsBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentUserStatsBinding
 import com.zen.alchan.helper.enums.getStringResource
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment

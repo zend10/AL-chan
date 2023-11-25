@@ -1,6 +1,6 @@
 package com.zen.alchan.helper.enums
 
-import com.zen.R
+import com.zen.alchan.R
 
 enum class Statistic {
     STATUS,

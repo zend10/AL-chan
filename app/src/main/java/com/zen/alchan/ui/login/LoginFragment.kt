@@ -8,8 +8,8 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zen.R
-import com.zen.databinding.FragmentLoginBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentLoginBinding
 import com.zen.alchan.helper.extensions.applyTopBottomPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show

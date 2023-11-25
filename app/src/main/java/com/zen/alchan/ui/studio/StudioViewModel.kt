@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.studio
 
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.UserRepository

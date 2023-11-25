@@ -18,7 +18,7 @@ import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.stfalcon.imageviewer.StfalconImageViewer
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.overlapimagelistview.OverlapImageListView
 

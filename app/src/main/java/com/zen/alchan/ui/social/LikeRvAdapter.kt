@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.User
-import com.zen.databinding.ListLikeBinding
+import com.zen.alchan.databinding.ListLikeBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.utils.ImageUtil

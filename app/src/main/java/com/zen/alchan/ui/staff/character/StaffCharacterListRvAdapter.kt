@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.databinding.ListCardImageAndTextBinding
-import com.zen.databinding.ListLoadingBinding
+import com.zen.alchan.databinding.ListCardImageAndTextBinding
+import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import com.zen.alchan.helper.extensions.show

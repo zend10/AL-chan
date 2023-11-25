@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.databinding.ListStaffCharacterMediaBinding
+import com.zen.alchan.databinding.ListStaffCharacterMediaBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter

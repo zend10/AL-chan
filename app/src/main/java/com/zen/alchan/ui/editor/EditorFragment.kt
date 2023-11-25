@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.FuzzyDate
-import com.zen.databinding.FragmentEditorBinding
+import com.zen.alchan.databinding.FragmentEditorBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil

@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import com.zen.R
-import com.zen.databinding.ActivityLaunchBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.ActivityLaunchBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseActivity
 import com.zen.alchan.ui.base.DialogManager

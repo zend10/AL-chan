@@ -2,7 +2,7 @@ package com.zen.alchan.ui.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.databinding.DialogBottomSheetSpoilerBinding
+import com.zen.alchan.databinding.DialogBottomSheetSpoilerBinding
 import com.zen.alchan.helper.utils.MarkdownUtil
 import com.zen.alchan.ui.base.BaseDialogFragment
 

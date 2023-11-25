@@ -9,7 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.zen.alchan.data.response.anilist.MediaTag
-import com.zen.databinding.DialogBottomSheetTagBinding
+import com.zen.alchan.databinding.DialogBottomSheetTagBinding
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseDialogFragment
 import kotlinx.coroutines.selects.select

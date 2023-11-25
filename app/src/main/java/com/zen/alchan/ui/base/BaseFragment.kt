@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import androidx.window.layout.WindowMetricsCalculator
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.launch.LaunchActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable

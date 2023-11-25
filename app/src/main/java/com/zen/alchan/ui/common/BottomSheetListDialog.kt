@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.zen.databinding.DialogBottomSheetListBinding
+import com.zen.alchan.databinding.DialogBottomSheetListBinding
 import com.zen.alchan.ui.base.BaseDialogFragment
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.databinding.DialogBottomSheetListBinding
+import com.zen.alchan.databinding.DialogBottomSheetListBinding
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -3,8 +3,8 @@ package com.zen.alchan.ui.common
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.android.material.slider.RangeSlider
-import com.zen.R
-import com.zen.databinding.DialogBottomSheetSliderBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.DialogBottomSheetSliderBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.SliderItem

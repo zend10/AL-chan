@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.ui.deeplink.DeepLinkActivity
 
 object PushNotificationUtil {

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.shared.Greeting
 import io.reactivex.rxjava3.core.Observable

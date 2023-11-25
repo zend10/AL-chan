@@ -3,7 +3,7 @@ package com.zen.alchan.helper.service.clipboard
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import com.zen.BuildConfig
+import com.zen.alchan.BuildConfig
 import io.reactivex.rxjava3.core.Observable
 
 class DefaultClipboardService(private val context: Context) : ClipboardService {

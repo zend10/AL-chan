@@ -3,9 +3,9 @@ package com.zen.alchan.ui.media
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.MediaTag
-import com.zen.databinding.ListMediaTagBinding
+import com.zen.alchan.databinding.ListMediaTagBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.alchan.helper.extensions.getNumberFormatting

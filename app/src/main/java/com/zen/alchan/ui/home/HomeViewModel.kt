@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.home
 
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.MediaListRepository

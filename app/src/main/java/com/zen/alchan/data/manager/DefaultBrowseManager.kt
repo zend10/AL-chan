@@ -1,6 +1,6 @@
 package com.zen.alchan.data.manager
 
-import com.zen.BuildConfig
+import com.zen.alchan.BuildConfig
 import com.zen.alchan.data.localstorage.SharedPreferencesHandler
 import com.zen.alchan.data.response.SpotifyAccessToken
 import com.zen.alchan.helper.enums.ListType

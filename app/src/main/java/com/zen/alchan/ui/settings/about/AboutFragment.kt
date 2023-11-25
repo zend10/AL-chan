@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zen.BuildConfig
-import com.zen.R
-import com.zen.databinding.FragmentAboutBinding
+import com.zen.alchan.BuildConfig
+import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentAboutBinding
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks

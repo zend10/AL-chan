@@ -13,10 +13,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.databinding.FragmentStudioBinding
+import com.zen.alchan.databinding.FragmentStudioBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.SpaceItemDecoration
 import com.zen.alchan.ui.base.BaseFragment

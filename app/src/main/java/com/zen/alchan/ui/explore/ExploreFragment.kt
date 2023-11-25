@@ -8,7 +8,7 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.anilist.*
-import com.zen.databinding.FragmentExploreBinding
+import com.zen.alchan.databinding.FragmentExploreBinding
 import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets

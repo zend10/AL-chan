@@ -14,14 +14,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
 import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
-import com.zen.databinding.FragmentMediaBinding
+import com.zen.alchan.databinding.FragmentMediaBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.extensions.*

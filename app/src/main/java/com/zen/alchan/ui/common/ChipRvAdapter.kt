@@ -3,7 +3,7 @@ package com.zen.alchan.ui.common
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zen.databinding.ListChipBinding
+import com.zen.alchan.databinding.ListChipBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 

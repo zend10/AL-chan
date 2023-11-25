@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.widget.addTextChangedListener
-import com.zen.R
-import com.zen.databinding.DialogBottomSheetScoreBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.DialogBottomSheetScoreBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseDialogFragment
 import com.zen.alchan.type.ScoreFormat

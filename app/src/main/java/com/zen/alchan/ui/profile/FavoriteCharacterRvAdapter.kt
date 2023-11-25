@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
-import com.zen.databinding.ListCircularBinding
-import com.zen.databinding.ListRectangleBinding
+import com.zen.alchan.databinding.ListCircularBinding
+import com.zen.alchan.databinding.ListRectangleBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.utils.ImageUtil

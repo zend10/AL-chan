@@ -6,12 +6,12 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.databinding.ListMediaListLinearBinding
-import com.zen.databinding.ListSeasonalGridBinding
-import com.zen.databinding.ListSeasonalLinearBinding
-import com.zen.databinding.ListTitleBinding
+import com.zen.alchan.databinding.ListMediaListLinearBinding
+import com.zen.alchan.databinding.ListSeasonalGridBinding
+import com.zen.alchan.databinding.ListSeasonalLinearBinding
+import com.zen.alchan.databinding.ListTitleBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.SeasonalItem
 import com.zen.alchan.helper.utils.ImageUtil

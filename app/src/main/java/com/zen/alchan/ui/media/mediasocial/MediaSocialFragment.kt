@@ -3,10 +3,10 @@ package com.zen.alchan.ui.media.mediasocial
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.User
-import com.zen.databinding.LayoutInfiniteScrollingBinding
+import com.zen.alchan.databinding.LayoutInfiniteScrollingBinding
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.show

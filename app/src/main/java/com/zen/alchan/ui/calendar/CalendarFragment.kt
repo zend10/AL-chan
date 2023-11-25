@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaExternalLink
-import com.zen.databinding.FragmentCalendarBinding
+import com.zen.alchan.databinding.FragmentCalendarBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.TimeUtil
 import com.zen.alchan.ui.base.BaseFragment

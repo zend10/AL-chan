@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.databinding.*
+import com.zen.alchan.databinding.*
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.Affinity

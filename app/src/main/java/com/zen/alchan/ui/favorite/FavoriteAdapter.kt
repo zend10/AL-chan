@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.databinding.ListCardTextBinding
-import com.zen.databinding.ListLoadingBinding
-import com.zen.databinding.ListRectangleBinding
+import com.zen.alchan.databinding.ListCardTextBinding
+import com.zen.alchan.databinding.ListLoadingBinding
+import com.zen.alchan.databinding.ListRectangleBinding
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show

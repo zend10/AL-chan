@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.databinding.FragmentSeasonalBinding
+import com.zen.alchan.databinding.FragmentSeasonalBinding
 import com.zen.alchan.helper.enums.ListType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.enums.getStringResource

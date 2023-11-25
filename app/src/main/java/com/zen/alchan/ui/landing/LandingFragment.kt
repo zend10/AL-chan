@@ -2,8 +2,8 @@ package com.zen.alchan.ui.landing
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.R
-import com.zen.databinding.FragmentLandingBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentLandingBinding
 import com.zen.alchan.helper.extensions.applyTopBottomPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.utils.ImageUtil

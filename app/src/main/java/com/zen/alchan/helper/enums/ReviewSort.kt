@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.enums
 
 import android.content.Context
-import com.zen.R
+import com.zen.alchan.R
 
 enum class ReviewSort {
     NEWEST,

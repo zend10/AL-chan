@@ -14,7 +14,7 @@
     </queries>
 
     <application
-        android:name=".alchan.ALchanApplication"
+        android:name=".ALchanApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <receiver android:name=".alchan.helper.service.pushnotification.PushNotificationBroadcastReceiver"
+        <receiver android:name=".helper.service.pushnotification.PushNotificationBroadcastReceiver"
             android:enabled="false"
             android:exported="false">
             <intent-filter>
@@ -30,12 +30,12 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name=".alchan.ui.texteditor.TextEditorActivity"
+            android:name=".ui.texteditor.TextEditorActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".alchan.ui.deeplink.DeepLinkActivity"
+            android:name=".ui.deeplink.DeepLinkActivity"
             android:launchMode="singleTask"
             android:exported="true" >
             <intent-filter>
@@ -83,7 +83,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".alchan.ui.launch.LaunchActivity"
+            android:name=".ui.launch.LaunchActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -92,7 +92,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".alchan.ui.root.RootActivity"
+            android:name=".ui.root.RootActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:launchMode="singleTop"

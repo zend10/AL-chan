@@ -3,8 +3,8 @@ package com.zen.alchan.ui.texteditor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
-import com.zen.R
-import com.zen.databinding.ActivityTextEditorBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.ActivityTextEditorBinding
 import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.*

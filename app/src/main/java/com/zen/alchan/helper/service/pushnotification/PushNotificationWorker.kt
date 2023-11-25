@@ -3,7 +3,7 @@ package com.zen.alchan.helper.service.pushnotification
 import android.content.Context
 import androidx.work.WorkerParameters
 import androidx.work.rxjava3.RxWorker
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.*

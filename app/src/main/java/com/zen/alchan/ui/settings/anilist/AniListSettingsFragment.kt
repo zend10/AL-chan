@@ -2,8 +2,8 @@ package com.zen.alchan.ui.settings.anilist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.R
-import com.zen.databinding.FragmentAnilistSettingsBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentAnilistSettingsBinding
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.DeepLink

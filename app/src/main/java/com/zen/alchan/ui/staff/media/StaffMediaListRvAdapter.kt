@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaEdge
-import com.zen.databinding.ListCardImageAndTextBinding
-import com.zen.databinding.ListLoadingBinding
+import com.zen.alchan.databinding.ListCardImageAndTextBinding
+import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.show

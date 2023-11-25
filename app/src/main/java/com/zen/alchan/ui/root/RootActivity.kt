@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import com.zen.databinding.ActivityRootBinding
+import com.zen.alchan.databinding.ActivityRootBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.PushNotificationUtil

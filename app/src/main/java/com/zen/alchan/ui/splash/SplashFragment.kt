@@ -4,8 +4,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.R
-import com.zen.databinding.FragmentSplashBinding
+import com.zen.alchan.R
+import com.zen.alchan.databinding.FragmentSplashBinding
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.ui.base.BaseFragment
 import com.zen.alchan.ui.base.NavigationManager

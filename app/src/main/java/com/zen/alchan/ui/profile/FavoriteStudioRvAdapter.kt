@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.response.anilist.Studio
-import com.zen.databinding.ListCardTextBinding
-import com.zen.databinding.ListCircularBinding
-import com.zen.databinding.ListRectangleBinding
+import com.zen.alchan.databinding.ListCardTextBinding
+import com.zen.alchan.databinding.ListCircularBinding
+import com.zen.alchan.databinding.ListRectangleBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter

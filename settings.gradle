@@ -1,3 +1,0 @@
-include ':app'
-include ':shared'
-rootProject.name='AL-chan'

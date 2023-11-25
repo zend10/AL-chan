@@ -2,7 +2,7 @@ package com.zen.alchan.ui.editor
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.databinding.ListCustomListsBinding
+import com.zen.alchan.databinding.ListCustomListsBinding
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 
 class CustomListsRvAdapter(

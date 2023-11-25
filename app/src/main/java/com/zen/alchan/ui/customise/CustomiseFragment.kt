@@ -11,9 +11,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import com.zen.R
+import com.zen.alchan.R
 import com.zen.alchan.data.entity.ListStyle
-import com.zen.databinding.FragmentCustomiseBinding
+import com.zen.alchan.databinding.FragmentCustomiseBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*
