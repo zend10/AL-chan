@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.settings.anilist
 
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.User
 import com.zen.alchan.data.response.anilist.UserOptions

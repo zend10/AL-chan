@@ -2,13 +2,15 @@ package com.zen.alchan.ui.base
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.helper.utils.DeepLink
+import com.zen.shared.Greeting
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,6 +37,9 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity(), ViewContract 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d("KMM_TEST", "can you see? ${Greeting().greet()}")
+        Log.d("KMM_TEST", "can you see?")
 
         val appThemeResource = viewModel.getAppThemeResource()
         val isLightMode = viewModel.isLightMode()

@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import com.zen.alchan.databinding.ListAdvancedScoringBinding
+import com.zen.databinding.ListAdvancedScoringBinding
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import com.zen.alchan.type.ScoreFormat
 

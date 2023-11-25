@@ -2,8 +2,8 @@ package com.zen.alchan.ui.settings.notifications
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentNotificationsSettingsBinding
+import com.zen.R
+import com.zen.databinding.FragmentNotificationsSettingsBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment
 import io.reactivex.rxjava3.core.Observable

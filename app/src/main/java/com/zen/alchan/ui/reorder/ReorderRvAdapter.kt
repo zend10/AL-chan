@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import com.zen.alchan.databinding.ListReorderBinding
+import com.zen.databinding.ListReorderBinding
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter
 import java.util.*

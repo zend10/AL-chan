@@ -2,7 +2,7 @@ package com.zen.alchan.helper.extensions
 
 import android.content.Context
 import android.graphics.Color
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.type.*
 

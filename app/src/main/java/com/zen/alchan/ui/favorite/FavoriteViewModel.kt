@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.favorite
 
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.Favourites

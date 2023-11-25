@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.databinding.ListLoadingBinding
-import com.zen.alchan.databinding.ListNotificationBinding
+import com.zen.databinding.ListLoadingBinding
+import com.zen.databinding.ListNotificationBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.makeVisible
 import com.zen.alchan.helper.extensions.show

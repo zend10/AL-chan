@@ -3,7 +3,7 @@ package com.zen.alchan.ui.common
 import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.databinding.DialogBottomSheetTextInputBinding
+import com.zen.databinding.DialogBottomSheetTextInputBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.ui.base.BaseDialogFragment

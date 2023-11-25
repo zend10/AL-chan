@@ -3,10 +3,10 @@ package com.zen.alchan.ui.social
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.databinding.FragmentSocialBinding
+import com.zen.databinding.FragmentSocialBinding
 import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets

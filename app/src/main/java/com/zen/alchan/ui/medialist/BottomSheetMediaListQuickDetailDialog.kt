@@ -3,10 +3,10 @@ package com.zen.alchan.ui.medialist
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.network.apollo.adapter.JsonAdapter
 import com.zen.alchan.data.response.anilist.MediaList
-import com.zen.alchan.databinding.DialogBottomSheetMediaListQuickDetailBinding
+import com.zen.databinding.DialogBottomSheetMediaListQuickDetailBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil

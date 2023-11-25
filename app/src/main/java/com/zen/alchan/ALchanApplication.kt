@@ -1,6 +1,7 @@
 package com.zen.alchan
 
 import android.app.Application
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.zen.alchan.data.datasource.*
 import com.zen.alchan.data.localstorage.*
@@ -67,6 +68,7 @@ import com.zen.alchan.ui.studio.StudioViewModel
 import com.zen.alchan.ui.studio.media.StudioMediaListViewModel
 import com.zen.alchan.ui.texteditor.TextEditorViewModel
 import com.zen.alchan.ui.userstats.UserStatsViewModel
+import com.zen.shared.Greeting
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

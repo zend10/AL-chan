@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.databinding.ListGenreBinding
+import com.zen.databinding.ListGenreBinding
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.getHexColor
 import com.zen.alchan.helper.extensions.clicks

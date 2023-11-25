@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.databinding.LayoutHeaderBinding
-import com.zen.alchan.databinding.ListAppThemeBinding
+import com.zen.databinding.LayoutHeaderBinding
+import com.zen.databinding.ListAppThemeBinding
 import com.zen.alchan.helper.enums.AppTheme
 import com.zen.alchan.helper.enums.getColorName
 import com.zen.alchan.helper.extensions.clicks

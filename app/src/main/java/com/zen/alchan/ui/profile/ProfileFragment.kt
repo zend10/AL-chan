@@ -12,13 +12,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.Staff
 import com.zen.alchan.data.response.anilist.Studio
-import com.zen.alchan.databinding.FragmentProfileBinding
+import com.zen.databinding.FragmentProfileBinding
 import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.enums.Favorite
 import com.zen.alchan.helper.enums.MediaType

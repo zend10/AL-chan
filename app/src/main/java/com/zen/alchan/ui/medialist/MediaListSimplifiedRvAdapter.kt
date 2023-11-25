@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.MediaListOptions
-import com.zen.alchan.databinding.ListMediaListSimplifiedBinding
-import com.zen.alchan.databinding.ListTitleBinding
+import com.zen.databinding.ListMediaListSimplifiedBinding
+import com.zen.databinding.ListTitleBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.MediaListItem

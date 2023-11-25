@@ -11,9 +11,9 @@ import androidx.viewbinding.ViewBinding
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.databinding.*
+import com.zen.databinding.*
 import com.zen.alchan.helper.extensions.getAttrValue
 import com.zen.alchan.helper.extensions.getColor
 import com.zen.alchan.helper.extensions.getNumberFormatting

@@ -5,14 +5,14 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaListOptions
-import com.zen.alchan.databinding.ListMediaListLinearBinding
-import com.zen.alchan.databinding.ListTitleBinding
+import com.zen.databinding.ListMediaListLinearBinding
+import com.zen.databinding.ListTitleBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.MediaListItem
 import com.zen.alchan.helper.utils.ImageUtil

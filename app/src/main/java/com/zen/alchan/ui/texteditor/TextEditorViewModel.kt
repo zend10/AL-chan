@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.texteditor
 
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.repository.SocialRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.helper.enums.TextEditorType

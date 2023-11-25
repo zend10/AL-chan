@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.pojo
 
 import android.text.InputType
-import com.zen.alchan.R
+import com.zen.R
 
 data class TextInputSetting(
     val inputType: Int = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES,

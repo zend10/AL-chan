@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.response.AnimeTheme
 import com.zen.alchan.data.response.AnimeThemeEntry
-import com.zen.alchan.databinding.ListMediaThemeBinding
+import com.zen.databinding.ListMediaThemeBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter

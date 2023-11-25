@@ -1,6 +1,6 @@
 package com.zen.alchan.helper.enums
 
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.helper.extensions.convertFromSnakeCase
 import java.util.*
 

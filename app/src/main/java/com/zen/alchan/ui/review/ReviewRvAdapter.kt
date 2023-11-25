@@ -8,12 +8,12 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.updateMargins
 import androidx.core.view.updateMarginsRelative
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Review
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.databinding.ListLoadingBinding
-import com.zen.alchan.databinding.ListReviewBinding
+import com.zen.databinding.ListLoadingBinding
+import com.zen.databinding.ListReviewBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.getString

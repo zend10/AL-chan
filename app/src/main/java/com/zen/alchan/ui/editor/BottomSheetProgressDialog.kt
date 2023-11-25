@@ -2,8 +2,8 @@ package com.zen.alchan.ui.editor
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
-import com.zen.alchan.databinding.DialogBottomSheetProgressBinding
+import com.zen.R
+import com.zen.databinding.DialogBottomSheetProgressBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show

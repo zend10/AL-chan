@@ -3,10 +3,10 @@ package com.zen.alchan.ui.seasonal
 import android.content.Context
 import android.graphics.Color
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.databinding.ListTitleBinding
+import com.zen.databinding.ListTitleBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.getColor
 import com.zen.alchan.helper.extensions.getString

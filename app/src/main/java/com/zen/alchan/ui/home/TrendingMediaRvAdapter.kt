@@ -9,7 +9,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.databinding.ListMediaTrendingBinding
+import com.zen.databinding.ListMediaTrendingBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.utils.ImageUtil

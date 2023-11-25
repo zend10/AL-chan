@@ -6,10 +6,10 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.response.anilist.MediaExternalLink
-import com.zen.alchan.databinding.ListCalendarMediaLinkBinding
-import com.zen.alchan.databinding.ListMediaLinkBinding
+import com.zen.databinding.ListCalendarMediaLinkBinding
+import com.zen.databinding.ListMediaLinkBinding
 import com.zen.alchan.helper.enums.OtherLink
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.getAttrValue

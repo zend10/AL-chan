@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.settings.notifications
 
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.anilist.NotificationOption
 import com.zen.alchan.helper.enums.Source

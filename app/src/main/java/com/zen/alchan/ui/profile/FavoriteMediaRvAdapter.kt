@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.databinding.ListRectangleBinding
+import com.zen.databinding.ListRectangleBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show

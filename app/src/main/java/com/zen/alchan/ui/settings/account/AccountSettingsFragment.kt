@@ -3,8 +3,8 @@ package com.zen.alchan.ui.settings.account
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentAccountSettingsBinding
+import com.zen.R
+import com.zen.databinding.FragmentAccountSettingsBinding
 import com.zen.alchan.helper.extensions.applyBottomPaddingInsets
 import com.zen.alchan.helper.extensions.applySidePaddingInsets
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets

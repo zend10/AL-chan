@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentTextEditorBinding
+import com.zen.R
+import com.zen.databinding.FragmentTextEditorBinding
 import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
 import com.zen.alchan.helper.extensions.clicks

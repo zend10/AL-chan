@@ -11,10 +11,10 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.updatePadding
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.User
-import com.zen.alchan.databinding.*
+import com.zen.databinding.*
 import com.zen.alchan.helper.enums.ActivityListPage
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.SocialItem

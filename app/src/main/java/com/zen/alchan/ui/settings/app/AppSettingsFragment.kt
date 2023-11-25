@@ -7,8 +7,8 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentAppSettingsBinding
+import com.zen.R
+import com.zen.databinding.FragmentAppSettingsBinding
 import com.zen.alchan.helper.enums.*
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.ui.base.BaseFragment

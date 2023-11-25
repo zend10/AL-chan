@@ -2,8 +2,8 @@ package com.zen.alchan.ui.settings
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentSettingsBinding
+import com.zen.R
+import com.zen.databinding.FragmentSettingsBinding
 import com.zen.alchan.helper.extensions.applyTopPaddingInsets
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.ui.base.BaseFragment

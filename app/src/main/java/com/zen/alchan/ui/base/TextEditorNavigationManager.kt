@@ -9,7 +9,7 @@ import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTI
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.helper.enums.TextEditorType
 import com.zen.alchan.ui.texteditor.TextEditorFragment
 

@@ -1,6 +1,6 @@
 package com.zen.alchan.helper
 
-import com.zen.alchan.BuildConfig
+import com.zen.BuildConfig
 
 object Constant {
     const val ANILIST_API_BASE_URL = "https://graphql.anilist.co"

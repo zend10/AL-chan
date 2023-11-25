@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.media.themes
 
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.response.TrackSearch
 import com.zen.alchan.data.response.VideoSearch

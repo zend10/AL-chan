@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.response.anilist.Review
-import com.zen.alchan.databinding.FragmentReaderBinding
+import com.zen.databinding.FragmentReaderBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.MarkdownUtil

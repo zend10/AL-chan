@@ -3,7 +3,7 @@ package com.zen.alchan.ui.common
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.databinding.ListCheckboxTextBinding
+import com.zen.databinding.ListCheckboxTextBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter

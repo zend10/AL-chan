@@ -2,7 +2,7 @@ package com.zen.alchan.data.response.anilist
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.helper.extensions.roundToOneDecimal
 import com.zen.alchan.type.MediaListStatus
 

@@ -4,8 +4,8 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.view.get
 import androidx.viewpager2.widget.ViewPager2
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentMainBinding
+import com.zen.R
+import com.zen.databinding.FragmentMainBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.utils.DeepLink
 import com.zen.alchan.helper.utils.PushNotificationUtil

@@ -10,11 +10,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
-import com.zen.alchan.databinding.ListLoadingBinding
-import com.zen.alchan.databinding.ListSearchBinding
+import com.zen.databinding.ListLoadingBinding
+import com.zen.databinding.ListSearchBinding
 import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.pojo.SearchItem

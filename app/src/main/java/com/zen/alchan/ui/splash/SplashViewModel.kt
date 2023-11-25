@@ -1,6 +1,6 @@
 package com.zen.alchan.ui.splash
 
-import com.zen.alchan.BuildConfig
+import com.zen.BuildConfig
 import com.zen.alchan.data.repository.InfoRepository
 import com.zen.alchan.data.repository.UserRepository
 import com.zen.alchan.data.response.Announcement

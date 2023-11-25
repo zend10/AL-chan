@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.response.anilist.MediaTag
-import com.zen.alchan.databinding.LayoutHeaderBinding
-import com.zen.alchan.databinding.ListCheckboxTextBinding
+import com.zen.databinding.LayoutHeaderBinding
+import com.zen.databinding.ListCheckboxTextBinding
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.ui.base.BaseRecyclerViewAdapter

@@ -1,7 +1,7 @@
 package com.zen.alchan.helper.enums
 
 import android.content.Context
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.type.MediaSort
 import com.zen.alchan.type.UserTitleLanguage
 

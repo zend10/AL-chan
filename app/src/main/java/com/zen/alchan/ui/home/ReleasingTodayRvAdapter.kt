@@ -3,10 +3,10 @@ package com.zen.alchan.ui.home
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.MediaList
-import com.zen.alchan.databinding.ListMediaListGridBinding
+import com.zen.databinding.ListMediaListGridBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.ReleasingTodayItem

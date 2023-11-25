@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo3.api.nullable
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.databinding.FragmentMediaListBinding
+import com.zen.databinding.FragmentMediaListBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.data.network.apollo.adapter.JsonAdapter

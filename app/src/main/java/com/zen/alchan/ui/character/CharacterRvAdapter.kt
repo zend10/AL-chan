@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
-import com.zen.alchan.databinding.LayoutHorizontalListBinding
-import com.zen.alchan.databinding.LayoutTitleAndListBinding
-import com.zen.alchan.databinding.LayoutTitleAndTextBinding
+import com.zen.databinding.LayoutHorizontalListBinding
+import com.zen.databinding.LayoutTitleAndListBinding
+import com.zen.databinding.LayoutTitleAndTextBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.show
 import com.zen.alchan.helper.pojo.CharacterItem

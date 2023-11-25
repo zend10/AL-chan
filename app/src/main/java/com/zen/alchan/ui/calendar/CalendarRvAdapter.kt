@@ -5,12 +5,12 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaExternalLink
-import com.zen.alchan.databinding.ListCalendarBinding
+import com.zen.databinding.ListCalendarBinding
 import com.zen.alchan.helper.extensions.*
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.helper.utils.TimeUtil

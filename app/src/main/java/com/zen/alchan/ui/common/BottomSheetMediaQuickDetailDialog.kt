@@ -2,10 +2,10 @@ package com.zen.alchan.ui.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
+import com.zen.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.Media
-import com.zen.alchan.databinding.DialogBottomSheetMediaQuickDetailBinding
+import com.zen.databinding.DialogBottomSheetMediaQuickDetailBinding
 import com.zen.alchan.helper.extensions.getNumberFormatting
 import com.zen.alchan.helper.extensions.getString
 import com.zen.alchan.helper.utils.MarkdownUtil

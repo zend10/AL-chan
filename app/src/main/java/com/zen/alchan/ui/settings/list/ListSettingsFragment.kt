@@ -3,8 +3,8 @@ package com.zen.alchan.ui.settings.list
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.R
-import com.zen.alchan.databinding.FragmentListSettingsBinding
+import com.zen.R
+import com.zen.databinding.FragmentListSettingsBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
 import com.zen.alchan.helper.extensions.*

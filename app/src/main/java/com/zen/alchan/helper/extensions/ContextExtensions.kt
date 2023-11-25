@@ -2,7 +2,7 @@ package com.zen.alchan.helper.extensions
 
 import android.content.Context
 import android.util.TypedValue
-import com.zen.alchan.R
+import com.zen.R
 
 fun Context.getAttrValue(attrResId: Int): Int {
     val typedValue = TypedValue()
