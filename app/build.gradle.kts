@@ -61,7 +61,7 @@ android {
 dependencies {
 //    implementation(fileTree(dir: "libs", include: ["*.jar"])))
     implementation(project(":shared"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.core:core-ktx:1.9.0")
