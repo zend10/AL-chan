@@ -5,7 +5,7 @@ import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.Anime
+import com.zen.shared.data.response.Anime
 import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.anilist.AiringSchedule
 import com.zen.alchan.data.response.anilist.Media
@@ -24,7 +24,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import com.zen.alchan.type.MediaFormat
-import com.zen.alchan.type.MediaListStatus
 import com.zen.alchan.type.MediaRelation
 import com.zen.alchan.type.MediaStatus
 

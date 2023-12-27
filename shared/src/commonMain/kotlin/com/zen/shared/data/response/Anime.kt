@@ -1,4 +1,4 @@
-package com.zen.alchan.data.response
+package com.zen.shared.data.response
 
 
 

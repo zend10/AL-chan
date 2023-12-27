@@ -2,8 +2,8 @@ package com.zen.alchan.ui.media.themes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.zen.alchan.data.response.AnimeTheme
-import com.zen.alchan.data.response.AnimeThemeEntry
+import com.zen.shared.data.response.AnimeTheme
+import com.zen.shared.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.databinding.DialogBottomSheetListBinding
 import com.zen.alchan.helper.extensions.show

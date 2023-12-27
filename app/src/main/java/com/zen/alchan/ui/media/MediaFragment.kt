@@ -17,8 +17,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.entity.MediaFilter
-import com.zen.alchan.data.response.AnimeTheme
-import com.zen.alchan.data.response.AnimeThemeEntry
+import com.zen.shared.data.response.AnimeTheme
+import com.zen.shared.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.Genre
 import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.databinding.FragmentMediaBinding

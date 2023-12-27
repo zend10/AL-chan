@@ -6,8 +6,8 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.zen.alchan.data.response.AnimeTheme
-import com.zen.alchan.data.response.AnimeThemeEntry
+import com.zen.shared.data.response.AnimeTheme
+import com.zen.shared.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaTag
@@ -20,7 +20,6 @@ import com.zen.alchan.ui.common.*
 import com.zen.alchan.ui.common.BottomSheetTagDialog
 import com.zen.alchan.ui.editor.BottomSheetProgressDialog
 import com.zen.alchan.ui.editor.BottomSheetScoreDialog
-import com.zen.alchan.ui.media.MediaListener
 import com.zen.alchan.ui.media.themes.BottomSheetMediaThemesDialog
 import com.zen.alchan.ui.medialist.BottomSheetMediaListQuickDetailDialog
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

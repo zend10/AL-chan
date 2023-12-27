@@ -1,8 +1,14 @@
 package com.zen.alchan.data.converter
 
-import com.zen.alchan.data.response.*
 import com.zen.alchan.data.response.animethemes.AnimePaginationResponse
 import com.zen.alchan.data.response.mal.AnimeResponse
+import com.zen.shared.data.response.Anime
+import com.zen.shared.data.response.AnimeTheme
+import com.zen.shared.data.response.AnimeThemeEntry
+import com.zen.shared.data.response.AnimeThemeEntryVideo
+import com.zen.shared.data.response.AnimeThemeEntryVideoAudio
+import com.zen.shared.data.response.AnimeThemeSong
+import com.zen.shared.data.response.AnimeThemeSongArtist
 
 fun AnimePaginationResponse.convert(): Anime {
     val anime = anime?.firstOrNull() ?: com.zen.alchan.data.response.animethemes.AnimeResponse()

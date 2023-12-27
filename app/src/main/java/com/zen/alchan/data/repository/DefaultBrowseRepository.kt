@@ -3,11 +3,10 @@ package com.zen.alchan.data.repository
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.BrowseDataSource
 import com.zen.alchan.data.manager.BrowseManager
-import com.zen.alchan.data.response.Anime
+import com.zen.shared.data.response.Anime
 import com.zen.alchan.data.response.Manga
 import com.zen.alchan.data.response.TrackSearch
 import com.zen.alchan.data.response.VideoSearch
-import com.zen.alchan.data.response.anilist.*
 import com.zen.alchan.data.response.anilist.Character
 import com.zen.alchan.data.response.anilist.CharacterEdge
 import com.zen.alchan.data.response.anilist.ListActivity

@@ -1,7 +1,7 @@
 package com.zen.alchan.ui.base
 
-import com.zen.alchan.data.response.AnimeTheme
-import com.zen.alchan.data.response.AnimeThemeEntry
+import com.zen.shared.data.response.AnimeTheme
+import com.zen.shared.data.response.AnimeThemeEntry
 import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.data.response.anilist.MediaTag
