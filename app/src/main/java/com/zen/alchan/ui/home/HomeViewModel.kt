@@ -1,28 +1,24 @@
 package com.zen.alchan.ui.home
 
 import com.zen.alchan.R
-import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
-import com.zen.alchan.data.response.anilist.Media
 import com.zen.alchan.data.response.anilist.MediaList
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.SearchCategory
 import com.zen.alchan.helper.enums.Source
 import com.zen.alchan.helper.extensions.applyScheduler
 import com.zen.alchan.helper.extensions.getStringResource
-import com.zen.alchan.helper.extensions.moreThanADay
 import com.zen.alchan.helper.pojo.HomeAdapterComponent
 import com.zen.alchan.helper.pojo.HomeItem
 import com.zen.alchan.helper.pojo.ListItem
 import com.zen.alchan.helper.pojo.ReleasingTodayItem
-import com.zen.alchan.helper.utils.TimeUtil
+import com.zen.alchan.type.MediaListStatus
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import com.zen.alchan.type.MediaListStatus
 import kotlin.math.abs
 
 class HomeViewModel(
@@ -123,9 +119,13 @@ class HomeViewModel(
                                 .subscribe(
                                     {
                                         val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
-                                        val index = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_SOCIAL } + 1
-                                        if (index != -1) {
-                                            currentHomeList.add(index, HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY))
+                                        val releasingTodayIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
+                                        if (releasingTodayIndex != - 1) {
+                                            currentHomeList.removeAt(releasingTodayIndex)
+                                        }
+                                        val socialIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_SOCIAL } + 1
+                                        if (socialIndex != -1) {
+                                            currentHomeList.add(socialIndex, HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY))
                                         }
                                         _homeItemList.onNext(currentHomeList)
                                     },
