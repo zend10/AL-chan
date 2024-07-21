@@ -4,11 +4,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.apollo3'
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.zen.alchan"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdk 34
         versionCode 200004
         versionName "2.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -43,15 +43,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
+    namespace 'com.zen.alchan'
 }
 
 dependencies {

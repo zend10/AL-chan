@@ -16,7 +16,21 @@ import com.zen.alchan.data.entity.ListStyle
 import com.zen.alchan.databinding.FragmentCustomiseBinding
 import com.zen.alchan.helper.enums.MediaType
 import com.zen.alchan.helper.enums.getString
-import com.zen.alchan.helper.extensions.*
+import com.zen.alchan.helper.extensions.applyBottomSidePaddingInsets
+import com.zen.alchan.helper.extensions.applySidePaddingInsets
+import com.zen.alchan.helper.extensions.applyTopPaddingInsets
+import com.zen.alchan.helper.extensions.clicks
+import com.zen.alchan.helper.extensions.getThemeBackgroundColor
+import com.zen.alchan.helper.extensions.getThemeCardColor
+import com.zen.alchan.helper.extensions.getThemeFloatingButtonColor
+import com.zen.alchan.helper.extensions.getThemeFloatingIconColor
+import com.zen.alchan.helper.extensions.getThemePrimaryColor
+import com.zen.alchan.helper.extensions.getThemeSecondaryColor
+import com.zen.alchan.helper.extensions.getThemeTextColor
+import com.zen.alchan.helper.extensions.getThemeToolbarColor
+import com.zen.alchan.helper.extensions.show
+import com.zen.alchan.helper.extensions.toAlphaHex
+import com.zen.alchan.helper.extensions.toHex
 import com.zen.alchan.helper.utils.ImageUtil
 import com.zen.alchan.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -164,7 +178,7 @@ class CustomiseFragment : BaseFragment<FragmentCustomiseBinding, CustomiseViewMo
             }
 
             customiseSelectImageText.clicks {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
                     navigation.openGallery(activityResultLauncher)
                 else
                     permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
