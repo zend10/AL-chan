@@ -20,21 +20,57 @@
             android:layout_width="@dimen/marginFar"
             android:layout_height="@dimen/marginClose"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dialogEditText"
-            style="?themeRegularFont"
-            android:hint="@string/type_here"
+        <FrameLayout
+            android:id="@+id/dialogEditTextContainer"
             app:layout_constraintTop_toBottomOf="@id/dragIcon"
             android:layout_marginTop="@dimen/marginPageBig"
             android:layout_marginHorizontal="@dimen/marginPageBig"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
+                android:id="@+id/dialogCapSentencesEditText"
+                style="?themeRegularFont"
+                android:inputType="textCapSentences"
+                android:hint="@string/type_here"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
+                android:id="@+id/dialogNumberEditText"
+                style="?themeRegularFont"
+                android:inputType="number"
+                android:hint="@string/type_here"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
+                android:id="@+id/dialogCapWordsEditText"
+                style="?themeRegularFont"
+                android:inputType="textCapWords"
+                android:hint="@string/type_here"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
+                android:id="@+id/dialogUriEditText"
+                android:inputType="textUri"
+                style="?themeRegularFont"
+                android:hint="@string/type_here"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dialogSaveButton"
             android:text="@string/save_changes"
             style="?themePrimaryButton"
-            app:layout_constraintTop_toBottomOf="@id/dialogEditText"
+            app:layout_constraintTop_toBottomOf="@id/dialogEditTextContainer"
             android:layout_marginTop="@dimen/marginPageNormal"
             android:layout_marginHorizontal="@dimen/marginPageBig"
             android:layout_width="match_parent"

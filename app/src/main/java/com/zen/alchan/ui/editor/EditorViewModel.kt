@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.editor
 
 import android.text.InputType
-import com.apollographql.apollo3.api.Adapter
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.MediaListRepository
@@ -20,15 +19,13 @@ import com.zen.alchan.helper.pojo.NullableItem
 import com.zen.alchan.helper.pojo.SliderItem
 import com.zen.alchan.helper.pojo.TextInputSetting
 import com.zen.alchan.helper.utils.TimeUtil
-import com.zen.alchan.type.MediaFormat
+import com.zen.alchan.type.MediaListStatus
+import com.zen.alchan.type.ScoreFormat
 import com.zen.alchan.ui.base.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import com.zen.alchan.type.MediaListStatus
-import com.zen.alchan.type.ScoreFormat
-import java.util.*
-import kotlin.collections.LinkedHashMap
+import java.util.Calendar
 
 class EditorViewModel(
     private val mediaListRepository: MediaListRepository,
