@@ -32,3 +32,26 @@
 -keepclassmembers enum * {
     public *;
 }
+
+# Please add these rules to your existing keep rules in order to suppress warnings.
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.bouncycastle.jsse.provider.BouncyCastleJsseProvider
+-dontwarn org.conscrypt.Conscrypt$Version
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+-dontwarn org.openjsse.javax.net.ssl.SSLParameters
+-dontwarn org.openjsse.javax.net.ssl.SSLSocket
+-dontwarn org.openjsse.net.ssl.OpenJSSE
+
+ # Keep generic signature of RxJava3 (R8 full mode strips signatures from non-kept items).
+ -keep,allowobfuscation,allowshrinking class io.reactivex.rxjava3.core.Flowable
+ -keep,allowobfuscation,allowshrinking class io.reactivex.rxjava3.core.Maybe
+ -keep,allowobfuscation,allowshrinking class io.reactivex.rxjava3.core.Observable
+ -keep,allowobfuscation,allowshrinking class io.reactivex.rxjava3.core.Single
+
+
+-keep class com.google.gson.reflect.TypeToken
+-keep class * extends com.google.gson.reflect.TypeToken
+-keep public class * implements java.lang.reflect.Type
