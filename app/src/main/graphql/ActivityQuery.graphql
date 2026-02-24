@@ -1,8 +1,0 @@
-query ActivityQuery($id:Int) {
-  Activity(id:$id) {
-    __typename
-    ... onTextActivity
-    ... onListActivity
-    ... onMessageActivity
-  }
-}
