@@ -1,0 +1,12 @@
+package com.zen.alchan.di
+
+import com.zen.alchan.ui.base.DefaultDispatcher
+import com.zen.alchan.ui.base.Dispatcher
+import com.zen.alchan.ui.landing.LandingViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
+
+val featureModule = module {
+    factory<Dispatcher> { DefaultDispatcher() }
+    viewModel { LandingViewModel(get()) }
+}

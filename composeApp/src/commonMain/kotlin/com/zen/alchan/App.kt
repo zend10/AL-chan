@@ -1,48 +1,30 @@
 package com.zen.alchan
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
-
-import al_chan.composeapp.generated.resources.Res
-import al_chan.composeapp.generated.resources.compose_multiplatform
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.zen.alchan.di.featureModule
+import com.zen.alchan.ui.landing.Landing
+import com.zen.alchan.ui.landing.landingDestination
+import com.zen.alchan.ui.login.loginDestination
+import com.zen.alchan.ui.login.navigateToLogin
+import org.koin.compose.KoinApplication
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
+    KoinApplication(application = {
+        modules(featureModule)
+    }) {
+        val navController = rememberNavController()
+        AppTheme {
+            NavHost(navController = navController, startDestination = Landing) {
+                landingDestination(
+                    onNavigateToLogin = { navController.navigateToLogin() },
+                    onNavigateToMain = {  }
+                )
+                loginDestination()
             }
         }
     }
