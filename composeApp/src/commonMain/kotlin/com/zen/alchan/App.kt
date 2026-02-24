@@ -9,6 +9,8 @@ import com.zen.alchan.ui.landing.Landing
 import com.zen.alchan.ui.landing.landingDestination
 import com.zen.alchan.ui.login.loginDestination
 import com.zen.alchan.ui.login.navigateToLogin
+import com.zen.alchan.ui.main.mainDestination
+import com.zen.alchan.ui.main.navigateToMain
 import org.koin.compose.KoinApplication
 
 @Composable
@@ -22,9 +24,10 @@ fun App() {
             NavHost(navController = navController, startDestination = Landing) {
                 landingDestination(
                     onNavigateToLogin = { navController.navigateToLogin() },
-                    onNavigateToMain = {  }
+                    onNavigateToMain = { navController.navigateToMain() }
                 )
                 loginDestination()
+                mainDestination()
             }
         }
     }

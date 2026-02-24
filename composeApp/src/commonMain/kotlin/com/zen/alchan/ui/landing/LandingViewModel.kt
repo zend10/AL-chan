@@ -20,3 +20,12 @@ class LandingViewModel(dispatcher: Dispatcher) : BaseViewModel<LandingUiState, L
         }
     }
 }
+
+data class LandingUiState(
+    val isLoading: Boolean = false
+)
+
+sealed interface LandingUiEffect {
+    object NavigateToLogin : LandingUiEffect
+    object NavigateToMain : LandingUiEffect
+}
