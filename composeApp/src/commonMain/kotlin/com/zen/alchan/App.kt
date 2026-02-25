@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.zen.alchan.di.dataModule
 import com.zen.alchan.di.featureModule
 import com.zen.alchan.ui.landing.Landing
 import com.zen.alchan.ui.landing.landingDestination
@@ -17,10 +18,10 @@ import org.koin.compose.KoinApplication
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(featureModule)
+        modules(dataModule, featureModule)
     }) {
         val navController = rememberNavController()
-        AppTheme {
+        ALChanTheme {
             NavHost(navController = navController, startDestination = Landing) {
                 landingDestination(
                     onNavigateToLogin = { navController.navigateToLogin() },

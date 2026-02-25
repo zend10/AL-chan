@@ -103,6 +103,7 @@ dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
 
+
 compose.desktop {
     application {
         mainClass = "com.zen.alchan.MainKt"
