@@ -8,19 +8,44 @@ object AppColor {
     val Black = Color(0xFF212121)
     val White = Color(0xFFFFFFFF)
     val PureBlack = Color(0xFF000000)
+
+    val Yellow = Color(0xFFFCF1C2)
+    val Cyan = Color(0xFFDCFDF9)
+    val Magenta = Color(0xFFC987C4)
+
+    val LightBlue = Color(0xFF007AFF)
+    val LightCream = Color(0xFFFF2A19)
+    val LightGold = Color(0xFF9DB309)
 }
 
 val DefaultTheme = darkColorScheme(
+    primary = AppColor.Yellow,
+    secondary = AppColor.Cyan,
+    error = AppColor.Magenta,
     background = AppColor.Black,
     onBackground = AppColor.White,
 )
 
 val LightTheme = lightColorScheme(
+    primary = AppColor.LightBlue,
+    secondary = AppColor.LightCream,
+    error = AppColor.LightGold,
     background = AppColor.White,
     onBackground = AppColor.Black,
 )
 
 val DarkTheme = darkColorScheme(
+    primary = AppColor.Yellow,
+    secondary = AppColor.Cyan,
+    error = AppColor.Magenta,
     background = AppColor.PureBlack,
     onBackground = AppColor.White,
+)
+
+val AniListLightTheme = lightColorScheme(
+
+)
+
+val AniListDarkTheme = darkColorScheme(
+
 )

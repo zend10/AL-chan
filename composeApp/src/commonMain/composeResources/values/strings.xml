@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">AL-chan</string>
     <string name="app_name_subtitle">Powered by AniList</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
+    <string name="press_to_start">Press to start</string>
+    <string name="landing_footer"><![CDATA[AL-chan is an unofficial client for AniList, a place where you can track, share, discover, and experience Anime & Manga.]]></string>
 </resources>

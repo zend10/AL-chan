@@ -11,3 +11,7 @@ object PreviewConfig {
         const val HEIGHT = 720
     }
 }
+
+object AppConstant {
+
+}

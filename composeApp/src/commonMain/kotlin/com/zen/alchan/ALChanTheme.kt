@@ -64,7 +64,7 @@ fun ALChanTheme(
     }
 }
 
-object AppTheme {
+object DefaultTheme {
     val dimen: AppDimen
         @Composable
         get() = LocalDimen.current
