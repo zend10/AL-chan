@@ -5,6 +5,7 @@ import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.ConfigRepository
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.base.Dispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
@@ -20,6 +21,7 @@ class SplashViewModel(
 
     private fun loadData() {
         viewModelScope.launch(dispatcher.io) {
+            delay(2000)
             val appConfig = configRepository.getAppConfig()
             val isLoggedIn = authRepository.isLoggedIn()
 

@@ -17,6 +17,10 @@ class LandingViewModel(
     fun loadData() {
 
     }
+
+    fun onStartPressed() {
+        sendNewEffect(LandingUiEffect.NavigateToMain)
+    }
 }
 
 data class LandingUiState(
@@ -25,5 +29,4 @@ data class LandingUiState(
 
 sealed interface LandingUiEffect {
     object NavigateToMain : LandingUiEffect
-    class OpenWebView(val url: String) : LandingUiEffect
 }
