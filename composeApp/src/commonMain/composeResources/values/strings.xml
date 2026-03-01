@@ -6,4 +6,8 @@
     <string name="register">Register</string>
     <string name="press_to_start">Press to start</string>
     <string name="landing_footer"><![CDATA[AL-chan is an unofficial client for AniList, a place where you can track, share, discover, and experience Anime & Manga.]]></string>
+    <string name="guest_greetings_title">Welcome to AL-chan</string>
+    <string name="guest_greetings_body">Log in to start tracking your Anime and participate in the community.</string>
+    <string name="login_title">Important to Know</string>
+    <string name="login_body">You'll be redirected to anilist.co to log in/register. Make sure the URL is anilist.co before entering your email and password.</string>
 </resources>

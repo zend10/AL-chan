@@ -14,7 +14,7 @@ class LandingViewModel(
         loadData()
     }
 
-    fun loadData() {
+    private fun loadData() {
 
     }
 

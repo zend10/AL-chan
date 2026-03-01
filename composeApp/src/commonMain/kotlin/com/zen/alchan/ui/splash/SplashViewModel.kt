@@ -22,7 +22,7 @@ class SplashViewModel(
     private fun loadData() {
         viewModelScope.launch(dispatcher.io) {
             delay(2000)
-            val appConfig = configRepository.getAppConfig()
+            val remoteConfig = configRepository.getRemoteConfig()
             val isLoggedIn = authRepository.isLoggedIn()
 
             sendNewEffect(

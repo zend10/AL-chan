@@ -1,5 +1,5 @@
 package com.zen.alchan.data.model
 
 data class AppConfig(
-    val announcement: String = "",
+    val defaultMainTabIndex: Int = 0
 )
