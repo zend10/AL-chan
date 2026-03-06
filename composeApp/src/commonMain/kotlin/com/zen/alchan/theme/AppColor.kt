@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 
 object AppColor {
     val Black = Color(0xFF212121)
+
     val White = Color(0xFFFFFFFF)
     val PureBlack = Color(0xFF000000)
 
@@ -16,6 +17,8 @@ object AppColor {
     val LightBlue = Color(0xFF007AFF)
     val LightCream = Color(0xFFFF2A19)
     val LightGold = Color(0xFF9DB309)
+
+    val TransparentBlack = Color(0x80212121)
 }
 
 val DefaultTheme = darkColorScheme(
@@ -24,6 +27,7 @@ val DefaultTheme = darkColorScheme(
     error = AppColor.Magenta,
     background = AppColor.Black,
     onBackground = AppColor.White,
+    surfaceDim = AppColor.TransparentBlack
 )
 
 val LightTheme = lightColorScheme(

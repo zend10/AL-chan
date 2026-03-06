@@ -62,6 +62,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.coil)
             implementation(libs.coil.gif)
+            implementation(libs.coil.ktor)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.content.negotiation)

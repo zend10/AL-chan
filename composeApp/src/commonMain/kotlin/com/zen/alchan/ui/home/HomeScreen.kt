@@ -45,7 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
 import com.zen.alchan.DefaultTheme
+import com.zen.alchan.data.model.api.Media
 import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.ClickableText
 import com.zen.alchan.ui.component.DisplayText
@@ -81,7 +85,7 @@ fun HomeScreen() {
     ) {
         GuestHeader()
         QuickMenu()
-        TrendingSection()
+        TrendingSection(state.trending)
     }
 }
 
@@ -210,7 +214,7 @@ private fun QuicKMenuChip(
 }
 
 @Composable
-private fun TrendingSection() {
+private fun TrendingSection(trending: List<Media>) {
     Column {
         DisplayText(
             text = "Trending Right Now",
@@ -219,23 +223,28 @@ private fun TrendingSection() {
                 .padding(DefaultTheme.dimen.paddingNormal)
                 .padding(top = DefaultTheme.dimen.paddingVeryBig)
         )
-        TrendingItem("One Piece", "Episode 1145")
-        TrendingItem("Naruto", "Episode 434")
-        TrendingItem("World Trigger", "Chapter 234")
-        TrendingItem("Slam Dunk", "Chapter 532")
+        repeat(trending.size) { index ->
+            val trendingItem = trending[index]
+            TrendingItem(
+                trendingItem.title.userPreferred,
+                "Episode ${trendingItem.episodes ?: 0}",
+                trendingItem.bannerImage
+            )
+        }
     }
 }
 
 @Composable
 fun TrendingItem(
     title: String,
-    caption: String
+    caption: String,
+    imageUrl: String
 ) {
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Image(
-            painterResource(Res.drawable.agumon),
+        AsyncImage(
+            imageUrl,
             contentDescription = "",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier

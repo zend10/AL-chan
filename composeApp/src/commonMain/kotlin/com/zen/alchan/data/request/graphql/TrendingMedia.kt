@@ -12,6 +12,19 @@ const val TRENDING_MEDIA = """
             native
             userPreferred
           }
+          bannerImage
+          coverImage {
+            color
+            extraLarge
+            large
+            medium
+          }
+          episodes
+          chapters
+          volumes
+          nextAiringEpisode {
+            episode
+          }
         }
       }
       trendingManga: Page(page: 1, perPage: 10) {
@@ -23,6 +36,19 @@ const val TRENDING_MEDIA = """
             english
             native
             userPreferred
+          }
+          bannerImage
+          coverImage {
+            color
+            extraLarge
+            large
+            medium
+          }
+          episodes
+          chapters
+          volumes
+          nextAiringEpisode {
+            episode
           }
         }
       }

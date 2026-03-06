@@ -7,12 +7,13 @@ import com.zen.alchan.di.dataModule
 import com.zen.alchan.di.featureModule
 import com.zen.alchan.di.getLocalStorageModule
 import com.zen.alchan.di.networkModule
+import com.zen.alchan.di.previewLocalStorageModule
 import org.koin.compose.KoinApplicationPreview
 
 @Composable
 fun PreviewScreen(screen: @Composable () -> Unit) {
     KoinApplicationPreview(application = {
-        modules(getLocalStorageModule(),  networkModule, dataModule, featureModule)
+        modules(previewLocalStorageModule, networkModule, dataModule, featureModule)
     }) {
         ALChanTheme {
             screen()
