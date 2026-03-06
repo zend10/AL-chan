@@ -46,7 +46,7 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { newEffect ->
             when (newEffect) {
-                SplashUiEffect.NavigateToLogin -> onNavigateToLanding()
+                SplashUiEffect.NavigateToLanding -> onNavigateToLanding()
                 SplashUiEffect.NavigateToMain -> onNavigateToMain()
             }
         }

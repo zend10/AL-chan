@@ -1,12 +1,15 @@
 package com.zen.alchan.ui.landing
 
+import androidx.lifecycle.viewModelScope
 import com.zen.alchan.data.repository.AuthRepository
+import com.zen.alchan.data.repository.ConfigRepository
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.base.Dispatcher
+import kotlinx.coroutines.launch
 
 class LandingViewModel(
     dispatcher: Dispatcher,
-    private val authRepository: AuthRepository
+    private val configRepository: ConfigRepository
 ) : BaseViewModel<LandingUiState, LandingUiEffect>(
     LandingUiState(), dispatcher,
 ) {
@@ -19,7 +22,10 @@ class LandingViewModel(
     }
 
     fun onStartPressed() {
-        sendNewEffect(LandingUiEffect.NavigateToMain)
+        viewModelScope.launch(dispatcher.io) {
+            configRepository.setLandingCompleted()
+            sendNewEffect(LandingUiEffect.NavigateToMain)
+        }
     }
 }
 

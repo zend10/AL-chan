@@ -20,6 +20,6 @@ import org.koin.dsl.module
 val dataModule = module {
     single<ApiProvider> { AniListApiProvider(KtorHttpClient(get())) }
     single<AuthRepository> { DefaultAuthRepository() }
-    single<ConfigRepository> { DefaultConfigRepository() }
+    single<ConfigRepository> { DefaultConfigRepository(get()) }
     single<ContentRepository> { DefaultContentRepository(get()) }
 }

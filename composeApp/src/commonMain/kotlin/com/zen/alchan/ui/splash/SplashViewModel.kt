@@ -24,9 +24,10 @@ class SplashViewModel(
             delay(2000)
             val remoteConfig = configRepository.getRemoteConfig()
             val isLoggedIn = authRepository.isLoggedIn()
+            val landingCompleted = configRepository.getLandingCompleted()
 
             sendNewEffect(
-                if (isLoggedIn) SplashUiEffect.NavigateToMain else SplashUiEffect.NavigateToLogin
+                if (landingCompleted) SplashUiEffect.NavigateToMain else SplashUiEffect.NavigateToLanding
             )
         }
     }
@@ -37,6 +38,6 @@ data class SplashUiState(
 )
 
 sealed interface SplashUiEffect {
-    object NavigateToLogin : SplashUiEffect
+    object NavigateToLanding : SplashUiEffect
     object NavigateToMain : SplashUiEffect
 }
