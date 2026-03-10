@@ -30,6 +30,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -54,6 +55,9 @@ import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.ClickableText
 import com.zen.alchan.ui.component.DisplayText
 import com.zen.alchan.ui.component.PrimaryButton
+import com.zen.alchan.ui.main.MainUiEffect
+import com.zen.alchan.ui.main.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -62,8 +66,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 object Home
 
-fun NavGraphBuilder.homeDestination() {
-    composable<Home> { HomeScreen() }
+fun NavGraphBuilder.homeDestination(mainViewModel: MainViewModel) {
+    composable<Home> { HomeScreen(mainViewModel) }
 }
 
 fun NavController.navigateToHome() {
@@ -71,11 +75,20 @@ fun NavController.navigateToHome() {
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(mainViewModel: MainViewModel?) {
     val viewModel = koinViewModel<HomeViewModel>()
     val state by viewModel.state.collectAsState()
 
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(Unit) {
+        mainViewModel?.bottomNavigationTabEffect?.collectLatest { newEffect ->
+            when (newEffect) {
+                MainUiEffect.ScrollHomeToTop -> scrollState.animateScrollTo(0)
+                else -> { }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -280,7 +293,7 @@ fun TrendingItem(
 )
 fun PreviewPhone_HomeScreen() {
     PreviewScreen {
-        HomeScreen()
+        HomeScreen(null)
     }
 }
 
@@ -291,6 +304,6 @@ fun PreviewPhone_HomeScreen() {
 )
 fun PreviewTablet_HomeScreen() {
     PreviewScreen {
-        HomeScreen()
+        HomeScreen(null)
     }
 }
