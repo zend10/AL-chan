@@ -13,6 +13,10 @@ data class AiringNotification(
     val media: Media = Media()
 ) : Notification {
     override fun getMessage(appSetting: AppSetting): String {
-        return "${contexts[0]}${episode}${contexts[1]}${media.getTitle(appSetting)}${contexts[2]}"
+        return if (contexts.size == 3) {
+            "${contexts[0]}${episode}${contexts[1]}${media.getTitle(appSetting)}${contexts[2]}"
+        } else {
+            ""
+        }
     }
 }

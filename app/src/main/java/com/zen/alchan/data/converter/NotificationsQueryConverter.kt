@@ -481,7 +481,7 @@ fun NotificationsQuery.Data.convert() : NotificationData {
                             )
                         } ?: MediaDeletionNotification()
                     }
-                    else -> AiringNotification()
+                    else -> UnknownNotification()
                 }
             } ?: listOf()
         )
