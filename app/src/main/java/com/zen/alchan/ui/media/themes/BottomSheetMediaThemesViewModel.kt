@@ -63,7 +63,8 @@ class BottomSheetMediaThemesViewModel(
             }
 
             items.add(ListItem(R.string.play_on_youtube, ThemeItem(searchQuery = "${param.media.title.romaji} $searchQuery", viewType = ThemeItem.VIEW_TYPE_YOUTUBE)))
-            items.add(ListItem(R.string.play_on_spotify, ThemeItem(searchQuery = searchQuery, viewType = ThemeItem.VIEW_TYPE_SPOTIFY)))
+            // Spotify wants my money just to use Search API, so now it's disabled
+//            items.add(ListItem(R.string.play_on_spotify, ThemeItem(searchQuery = searchQuery, viewType = ThemeItem.VIEW_TYPE_SPOTIFY)))
             items.add(ListItem(R.string.al_chan_has_no_affiliation_with_the_above_players_and_can_end_up_opening_the_wrong_track, ThemeItem(viewType = ThemeItem.VIEW_TYPE_TEXT)))
             _themeItems.onNext(items)
         }
