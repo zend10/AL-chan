@@ -4,11 +4,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.apollo3'
 
 android {
-    compileSdk 34
+    compileSdk 35
     defaultConfig {
         applicationId "com.zen.alchan"
         minSdkVersion 23
-        targetSdk 34
+        targetSdk 35
         versionCode 200005
         versionName "2.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -18,14 +18,6 @@ android {
         apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
         buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])
         buildConfigField("String", "SPOTIFY_API_KEY", apikeyProperties['SPOTIFY_API_KEY'])
-    }
-    signingConfigs {
-        debug {
-            storeFile file(KEYSTORE_PATH_DEV)
-            storePassword KEYSTORE_PASSWORD_DEV
-            keyAlias KEY_ALIAS_DEV
-            keyPassword KEY_PASSWORD_DEV
-        }
     }
     buildTypes {
         debug {
@@ -58,6 +50,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':imageviewer')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -134,9 +128,8 @@ dependencies {
 
     // Others
     implementation 'com.jaredrummler:colorpicker:1.1.0'
-    implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.27'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.31'
     implementation 'com.github.zend10:OverlapImageListView:v1.0.1'
 
     def markwon_version = "4.6.2"
