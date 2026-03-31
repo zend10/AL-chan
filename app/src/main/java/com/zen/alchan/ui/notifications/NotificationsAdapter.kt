@@ -1,13 +1,16 @@
 package com.zen.alchan.ui.notifications
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.response.anilist.*
+import com.zen.alchan.databinding.DividerBinding
 import com.zen.alchan.databinding.ListLoadingBinding
 import com.zen.alchan.databinding.ListNotificationBinding
+import com.zen.alchan.databinding.ListUnknownNotificationBinding
 import com.zen.alchan.helper.extensions.clicks
 import com.zen.alchan.helper.extensions.makeVisible
 import com.zen.alchan.helper.extensions.show
@@ -22,6 +25,10 @@ class NotificationsAdapter(
     private val listener: NotificationsListener
 ) : BaseRecyclerViewAdapter<Notification?, ViewBinding>(list) {
 
+    companion object {
+        private const val VIEW_TYPE_UNKNOWN_NOTIFICATION = -3
+    }
+
     private var unreadNotificationCount = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +38,10 @@ class NotificationsAdapter(
                 val view = ListLoadingBinding.inflate(inflater, parent, false)
                 LoadingViewHolder(view)
             }
+            VIEW_TYPE_UNKNOWN_NOTIFICATION -> {
+                val view = ListUnknownNotificationBinding.inflate(inflater, parent, false)
+                UnknownItemViewHolder(view)
+            }
             else -> {
                 val view = ListNotificationBinding.inflate(inflater, parent, false)
                 ItemViewHolder(view)
@@ -38,8 +49,24 @@ class NotificationsAdapter(
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (list[position] == null) {
+            VIEW_TYPE_LOADING
+        } else if (list[position] is UnknownNotification) {
+            VIEW_TYPE_UNKNOWN_NOTIFICATION
+        } else {
+            VIEW_TYPE_CONTENT
+        }
+
+    }
+
     fun setUnreadNotificationCount(newUnreadNotificationCount: Int) {
         unreadNotificationCount = newUnreadNotificationCount
+    }
+
+    inner class UnknownItemViewHolder(private val binding: ListUnknownNotificationBinding) : ViewHolder(binding) {
+        override fun bind(item: Notification?, index: Int) {
+        }
     }
 
     inner class ItemViewHolder(private val binding: ListNotificationBinding) : ViewHolder(binding) {
