@@ -9,20 +9,19 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zen.alchan.data.enums.AppTheme
 import com.zen.alchan.theme.AppDimen
+import com.zen.alchan.theme.BrandTheme
 import com.zen.alchan.theme.DarkTheme
-import com.zen.alchan.theme.DefaultTheme
 import com.zen.alchan.theme.LightTheme
 import org.jetbrains.compose.resources.Font
 
 @Composable
 fun ALChanTheme(
-    appTheme: AppTheme = AppTheme.DEFAULT,
+    appTheme: AppTheme = AppTheme.BRAND,
     content: @Composable () -> Unit
 ) {
     val ubuntuMedium = FontFamily(Font(Res.font.ubuntu_medium))
@@ -47,7 +46,7 @@ fun ALChanTheme(
     )
 
     val colorScheme = when (appTheme) {
-        AppTheme.DEFAULT -> DefaultTheme
+        AppTheme.BRAND -> BrandTheme
         AppTheme.LIGHT -> LightTheme
         AppTheme.DARK -> DarkTheme
         AppTheme.ANILIST_LIGHT -> LightTheme

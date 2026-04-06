@@ -23,7 +23,7 @@ object AppColor {
     val BlackLight = Color(0xFF2F2F2F)
 }
 
-val DefaultTheme = darkColorScheme(
+val BrandTheme = darkColorScheme(
     primary = AppColor.Yellow,
     secondary = AppColor.Cyan,
     error = AppColor.Magenta,

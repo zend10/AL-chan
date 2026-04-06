@@ -20,6 +20,7 @@ koin-bom = "4.1.1"
 coil = "3.3.0"
 ktor = "3.4.0"
 datastore = "1.2.0"
+richeditor = "1.0.0-rc13"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -54,6 +55,7 @@ ktor_client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
+richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

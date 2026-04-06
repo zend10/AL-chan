@@ -1,7 +1,7 @@
 package com.zen.alchan.data.enums
 
 enum class AppTheme {
-    DEFAULT,
+    BRAND,
     LIGHT,
     DARK,
     ANILIST_LIGHT,
