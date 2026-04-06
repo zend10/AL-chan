@@ -9,16 +9,16 @@ import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.DefaultAuthRepository
 import com.zen.alchan.data.repository.DefaultConfigRepository
 import com.zen.alchan.data.repository.DefaultContentRepository
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
+import com.zen.alchan.helper.AniListConstant
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<ApiProvider> { AniListApiProvider(KtorHttpClient(get())) }
+    single<ApiProvider> {
+        AniListApiProvider(
+            KtorHttpClient(get(), AniListConstant.ANILIST_GRAPHQL_BASE_URL),
+            AniListConstant
+        )
+    }
     single<AuthRepository> { DefaultAuthRepository() }
     single<ConfigRepository> { DefaultConfigRepository(get()) }
     single<ContentRepository> { DefaultContentRepository(get()) }

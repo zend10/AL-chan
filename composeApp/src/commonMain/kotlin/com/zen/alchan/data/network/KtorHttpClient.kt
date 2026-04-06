@@ -16,14 +16,14 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 
 
-class KtorHttpClient(val httpClient: HttpClient) {
+class KtorHttpClient(val httpClient: HttpClient, val baseUrl: String) {
 
     suspend inline fun <reified T> query(
         query: String,
         variables: Map<String, JsonElement>
     ): T {
         val request = GraphQLRequest(query, variables)
-        val response = httpClient.post("https://graphql.anilist.co") {
+        val response = httpClient.post(baseUrl) {
             contentType(ContentType.Application.Json)
             setBody(request)
         }
