@@ -69,6 +69,7 @@ kotlin {
             implementation(libs.ktor.serialization)
             implementation(libs.datastore.preferences.core)
             implementation(libs.datastore.core)
+            implementation(libs.richeditor)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

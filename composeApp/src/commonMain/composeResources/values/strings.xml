@@ -9,8 +9,13 @@
     <string name="guest_greetings_title">Welcome to AL-chan</string>
     <string name="guest_greetings_body">Log in to start tracking your Anime and participate in the community.</string>
     <string name="login_title">Important to Know</string>
-    <string name="login_body">You'll be redirected to anilist.co to log in/register. Make sure the URL is anilist.co before entering your email and password.</string>
+    <string name="login_body">You'll be redirected to [anilist.co](https://anilist.co) to log in/register. Make sure the URL is anilist.co before entering your email and password.</string>
     <string name="home">Home</string>
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
+    <string name="seasonal">Seasonal</string>
+    <string name="calendar">Calendar</string>
+    <string name="explore">Explore</string>
+    <string name="social">Social</string>
+    <string name="trending_title">Trending Right Now</string>
 </resources>

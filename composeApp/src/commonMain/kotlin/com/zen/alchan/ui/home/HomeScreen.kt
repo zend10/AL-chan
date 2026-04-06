@@ -1,34 +1,37 @@
 package com.zen.alchan.ui.home
 
 import al_chan.composeapp.generated.resources.Res
-import al_chan.composeapp.generated.resources.agumon
+import al_chan.composeapp.generated.resources.calendar
+import al_chan.composeapp.generated.resources.explore
 import al_chan.composeapp.generated.resources.guest_greetings_body
 import al_chan.composeapp.generated.resources.guest_greetings_title
+import al_chan.composeapp.generated.resources.ic_calendar
+import al_chan.composeapp.generated.resources.ic_explore
+import al_chan.composeapp.generated.resources.ic_seasonal
+import al_chan.composeapp.generated.resources.ic_social
 import al_chan.composeapp.generated.resources.log_in
 import al_chan.composeapp.generated.resources.login_body
 import al_chan.composeapp.generated.resources.login_title
 import al_chan.composeapp.generated.resources.register
-import androidx.compose.foundation.Image
+import al_chan.composeapp.generated.resources.seasonal
+import al_chan.composeapp.generated.resources.social
+import al_chan.composeapp.generated.resources.trending_title
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,27 +42,32 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil3.compose.AsyncImage
-import coil3.compose.LocalPlatformContext
-import coil3.request.ImageRequest
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.zen.alchan.DefaultTheme
 import com.zen.alchan.data.model.api.Media
 import com.zen.alchan.ui.common.PreviewScreen
+import com.zen.alchan.ui.component.Card
 import com.zen.alchan.ui.component.ClickableText
 import com.zen.alchan.ui.component.DisplayText
+import com.zen.alchan.ui.component.Image
+import com.zen.alchan.ui.component.LoadingIndicator
+import com.zen.alchan.ui.component.MarkdownText
 import com.zen.alchan.ui.component.PrimaryButton
 import com.zen.alchan.ui.main.MainUiEffect
 import com.zen.alchan.ui.main.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -85,7 +93,18 @@ fun HomeScreen(mainViewModel: MainViewModel?) {
         mainViewModel?.bottomNavigationTabEffect?.collectLatest { newEffect ->
             when (newEffect) {
                 MainUiEffect.ScrollHomeToTop -> scrollState.animateScrollTo(0)
-                else -> { }
+                else -> {}
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collectLatest { newEffect ->
+            when (newEffect) {
+                HomeUiEffect.NavigateToCalendar -> {}
+                HomeUiEffect.NavigateToExplore -> {}
+                HomeUiEffect.NavigateToSeasonal -> {}
+                HomeUiEffect.NavigateToSocial -> {}
             }
         }
     }
@@ -96,61 +115,55 @@ fun HomeScreen(mainViewModel: MainViewModel?) {
             .verticalScroll(scrollState)
             .background(MaterialTheme.colorScheme.background)
     ) {
-        GuestHeader()
-        QuickMenu()
-        TrendingSection(state.trending)
-    }
-}
-
-@Composable
-private fun Header() {
-    Box(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.secondary)
-            .fillMaxWidth()
-            .safeDrawingPadding()
-    ) {
-        PrimaryButton(
-            text = "Login",
-            onClick = { },
-            modifier = Modifier.align(Alignment.BottomEnd)
-        )
-        DisplayText(
-            "Welcome",
-            textStyle = MaterialTheme.typography.titleSmall,
+        if (state.user.isGuest()) {
+            GuestHeader()
+        } else {
+            Header()
+        }
+        QuickMenu(viewModel)
+        TrendingSection(
+            state.isLoading,
+            state.homeData.trendingAnime.media,
+            state.homeData.trendingManga.media
         )
     }
 }
 
 @Composable
 private fun GuestHeader() {
+    val guestLoginRichTextState = rememberRichTextState()
+    val guestText = stringResource(Res.string.login_body)
+
+    LaunchedEffect(Unit) {
+        guestLoginRichTextState.setMarkdown(guestText)
+    }
+
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth()
             .statusBarsPadding()
             .padding(DefaultTheme.dimen.paddingNormal)
     ) {
         DisplayText(
             text = stringResource(Res.string.guest_greetings_title),
-            textStyle = MaterialTheme.typography.titleSmall,
+            textStyle = MaterialTheme.typography.titleMedium,
         )
         DisplayText(
             text = stringResource(Res.string.guest_greetings_body),
             textStyle = MaterialTheme.typography.bodySmall,
         )
-        Spacer(Modifier.height(DefaultTheme.dimen.paddingNormal))
         DisplayText(
             text = stringResource(Res.string.login_title),
-            textStyle = MaterialTheme.typography.titleSmall,
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(top = DefaultTheme.dimen.paddingNormal)
         )
-        DisplayText(
-            text = stringResource(Res.string.login_body),
+        MarkdownText(
+            richTextState = guestLoginRichTextState,
             textStyle = MaterialTheme.typography.bodySmall
         )
-        Spacer(Modifier.height(DefaultTheme.dimen.paddingNormal))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = DefaultTheme.dimen.paddingNormal),
             horizontalArrangement = Arrangement.spacedBy(
                 DefaultTheme.dimen.paddingNormal,
                 Alignment.End
@@ -171,78 +184,164 @@ private fun GuestHeader() {
 }
 
 @Composable
-private fun QuickMenu() {
+private fun Header() {
+
+}
+
+@Composable
+private fun QuickMenu(viewModel: HomeViewModel) {
     val scrollState = rememberScrollState()
     Row(
         modifier = Modifier
             .horizontalScroll(scrollState)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = DefaultTheme.dimen.paddingNormal)
             .padding(top = DefaultTheme.dimen.paddingVeryBig),
         horizontalArrangement = Arrangement.spacedBy(DefaultTheme.dimen.paddingVerySmall)
     ) {
-        QuicKMenuChip("Search", onClick = { })
-        QuicKMenuChip("Seasonal", onClick = { })
-        QuicKMenuChip("Explore", onClick = { })
-        QuicKMenuChip("Calendar", onClick = { })
-        QuicKMenuChip("Reviews", onClick = { })
-        QuicKMenuChip("Timeline", onClick = { })
-        QuicKMenuChip("Forum", onClick = { })
+        QuicKMenuItem(
+            Res.string.seasonal,
+            Res.drawable.ic_seasonal,
+            onClick = { viewModel.onSeasonalPressed() }
+        )
+        QuicKMenuItem(
+            Res.string.explore,
+            Res.drawable.ic_explore,
+            onClick = { viewModel.onExplorePressed() }
+        )
+        QuicKMenuItem(
+            Res.string.calendar,
+            Res.drawable.ic_calendar,
+            onClick = { viewModel.onCalendarPressed() }
+        )
+        QuicKMenuItem(
+            Res.string.social,
+            Res.drawable.ic_social,
+            onClick = { viewModel.onSocialPressed() }
+        )
     }
 }
 
 @Composable
-private fun QuicKMenuChip(
-    label: String,
+private fun QuicKMenuItem(
+    label: StringResource,
+    icon: DrawableResource,
     onClick: () -> Unit
 ) {
-    ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color.Black,
-            contentColor = Color.White
-        )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable(onClick = onClick)
     ) {
-        Text(
-            label,
-            modifier = Modifier.padding(8.dp)
+        Card(
+            shape = CircleShape
+        ) {
+            Image(
+                drawableResource = icon,
+                contentDescription = stringResource(label),
+                modifier = Modifier.padding(DefaultTheme.dimen.paddingNormal),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+            )
+        }
+        ClickableText(
+            text = stringResource(label),
+            textStyle = MaterialTheme.typography.bodySmall,
+            onClick = { },
+            modifier = Modifier.padding(top = DefaultTheme.dimen.paddingVerySmall)
         )
     }
-//    AssistChip(
-//        onClick = onClick,
-//        label = {
-//            Text(
-//                label,
-//                style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary)
-//            )
-//        },
-//        leadingIcon = {
-//            Image(
-//                painterResource(Res.drawable.agumon),
-//                contentDescription = label,
-//                modifier = Modifier.size(DefaultTheme.dimen.iconNormal)
-//            )
-//        },
-//        shape = RoundedCornerShape(DefaultTheme.dimen.paddingVeryBig),
-//        border = BorderStroke(DefaultTheme.dimen.lineWidth, MaterialTheme.colorScheme.primary),
-//    )
 }
 
 @Composable
-private fun TrendingSection(trending: List<Media>) {
+private fun TrendingSection(
+    isLoading: Boolean,
+    trendingAnime: List<Media>,
+    trendingManga: List<Media>
+) {
     Column {
         DisplayText(
-            text = "Trending Right Now",
-            textStyle = MaterialTheme.typography.titleSmall,
+            text = stringResource(Res.string.trending_title),
+            textStyle = MaterialTheme.typography.titleMedium,
             modifier = Modifier
-                .padding(DefaultTheme.dimen.paddingNormal)
+                .padding(horizontal = DefaultTheme.dimen.paddingNormal)
+                .padding(bottom = DefaultTheme.dimen.paddingNormal)
                 .padding(top = DefaultTheme.dimen.paddingVeryBig)
         )
-        repeat(trending.size) { index ->
-            val trendingItem = trending[index]
-            TrendingItem(
-                trendingItem.title.userPreferred,
-                "Episode ${trendingItem.episodes ?: 0}",
-                trendingItem.bannerImage
-            )
+        if (isLoading) {
+            LoadingIndicator()
+        } else {
+            if (trendingAnime.isNotEmpty()) {
+                Card(
+                    modifier = Modifier.padding(horizontal = DefaultTheme.dimen.paddingNormal)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(18f / 16f),
+                    ) {
+                        val shapeLeft = GenericShape { size, layoutDirection ->
+                            val width = size.width
+                            val height = size.height
+                            moveTo(0f, height)
+                            lineTo(0f, 0f)
+                            lineTo(width * 0.6f, 0f)
+                            lineTo(width * 0.4f, height)
+                            close()
+                        }
+
+                        val shapeRight = GenericShape { size, layoutDirection ->
+                            val width = size.width
+                            val height = size.height
+                            moveTo(width, 0f)
+                            lineTo(width, height)
+                            lineTo(width * 0.4f, height)
+                            lineTo(width * 0.6f, 0f)
+                            close()
+                        }
+
+                        val modifierLeft = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(9f / 16f)
+                            .align(Alignment.TopStart)
+                            .graphicsLayer {
+                                clip = true
+                                shape = shapeLeft
+                            }
+
+                        val modifierRight = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(9f / 16f)
+                            .align(Alignment.TopEnd)
+                            .graphicsLayer {
+                                clip = true
+                                shape = shapeRight
+                            }
+
+                        Image(
+                            imageUrl = trendingAnime[0].coverImage.extraLarge,
+                            contentDescription = trendingAnime[0].title.userPreferred,
+                            modifier = modifierLeft,
+                            contentScale = ContentScale.Fit
+                        )
+
+                        Image(
+                            imageUrl = trendingAnime[1].coverImage.extraLarge,
+                            contentDescription = trendingAnime[1].title.userPreferred,
+                            modifier = modifierRight,
+                            contentScale = ContentScale.Fit
+                        )
+                    }
+
+                }
+            }
+
+
+//            repeat(trending.size) { index ->
+//                val trendingItem = trending[index]
+//                TrendingItem(
+//                    trendingItem.title.userPreferred,
+//                    "Episode ${trendingItem.episodes ?: 0}",
+//                    trendingItem.bannerImage
+//                )
+//            }
         }
     }
 }
