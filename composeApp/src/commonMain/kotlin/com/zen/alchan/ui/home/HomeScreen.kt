@@ -79,7 +79,13 @@ fun NavGraphBuilder.homeDestination(mainViewModel: MainViewModel) {
 }
 
 fun NavController.navigateToHome() {
-    navigate(Home)
+    navigate(Home) {
+        popUpTo(graph.id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 @Composable
@@ -256,7 +262,9 @@ private fun TrendingSection(
     trendingAnime: List<Media>,
     trendingManga: List<Media>
 ) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         DisplayText(
             text = stringResource(Res.string.trending_title),
             textStyle = MaterialTheme.typography.titleMedium,
@@ -266,9 +274,9 @@ private fun TrendingSection(
                 .padding(top = DefaultTheme.dimen.paddingVeryBig)
         )
         if (isLoading) {
-            LoadingIndicator()
+            LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         } else {
-            if (trendingAnime.isNotEmpty()) {
+            if (trendingAnime.isNotEmpty() && trendingManga.isNotEmpty()) {
                 Card(
                     modifier = Modifier.padding(horizontal = DefaultTheme.dimen.paddingNormal)
                 ) {
@@ -305,6 +313,17 @@ private fun TrendingSection(
                                 clip = true
                                 shape = shapeLeft
                             }
+                            .drawWithCache {
+                                val gradient = Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, Color.Black),
+                                    startY = size.height / 3,
+                                    endY = size.height,
+                                )
+                                onDrawWithContent {
+                                    drawContent()
+                                    drawRect(gradient, blendMode = BlendMode.Multiply)
+                                }
+                            }
 
                         val modifierRight = Modifier
                             .fillMaxWidth()
@@ -314,34 +333,43 @@ private fun TrendingSection(
                                 clip = true
                                 shape = shapeRight
                             }
+                            .drawWithCache {
+                                val gradient = Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, Color.Black),
+                                    startY = size.height / 3,
+                                    endY = size.height,
+                                )
+                                onDrawWithContent {
+                                    drawContent()
+                                    drawRect(gradient, blendMode = BlendMode.Multiply)
+                                }
+                            }
 
                         Image(
-                            imageUrl = trendingAnime[0].coverImage.extraLarge,
-                            contentDescription = trendingAnime[0].title.userPreferred,
+                            imageUrl = trendingAnime.first().coverImage.extraLarge,
+                            contentDescription = trendingAnime.first().title.userPreferred,
                             modifier = modifierLeft,
                             contentScale = ContentScale.Fit
                         )
 
                         Image(
-                            imageUrl = trendingAnime[1].coverImage.extraLarge,
-                            contentDescription = trendingAnime[1].title.userPreferred,
+                            imageUrl = trendingManga.first().coverImage.extraLarge,
+                            contentDescription = trendingManga.first().title.userPreferred,
                             modifier = modifierRight,
                             contentScale = ContentScale.Fit
                         )
                     }
-
                 }
             }
 
-
-//            repeat(trending.size) { index ->
-//                val trendingItem = trending[index]
-//                TrendingItem(
-//                    trendingItem.title.userPreferred,
-//                    "Episode ${trendingItem.episodes ?: 0}",
-//                    trendingItem.bannerImage
-//                )
-//            }
+            repeat(trendingAnime.size) { index ->
+                val trendingItem = trendingAnime[index]
+                TrendingItem(
+                    trendingItem.title.userPreferred,
+                    "Episode ${trendingItem.episodes ?: 0}",
+                    trendingItem.bannerImage
+                )
+            }
         }
     }
 }

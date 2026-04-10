@@ -1,7 +1,11 @@
 package com.zen.alchan.ui.animelist
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -15,10 +19,21 @@ fun NavGraphBuilder.animeListDestination() {
 }
 
 fun NavController.navigateToAnimeList() {
-    navigate(AnimeList)
+    navigate(AnimeList) {
+        popUpTo(graph.id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 @Composable
 fun AnimeListScreen() {
-    Text("Anime List")
+    val scrollState = rememberScrollState()
+    Column(Modifier.verticalScroll(scrollState)) {
+        repeat(50) {
+            Text("Anime List $it")
+        }
+    }
 }

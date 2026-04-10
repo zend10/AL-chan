@@ -25,7 +25,6 @@ import com.zen.alchan.ui.animelist.AnimeList
 import com.zen.alchan.ui.animelist.animeListDestination
 import com.zen.alchan.ui.animelist.navigateToAnimeList
 import com.zen.alchan.ui.common.PreviewScreen
-import com.zen.alchan.ui.component.DisplayText
 import com.zen.alchan.ui.home.Home
 import com.zen.alchan.ui.home.homeDestination
 import com.zen.alchan.ui.home.navigateToHome
@@ -46,7 +45,9 @@ fun NavGraphBuilder.mainDestination() {
 }
 
 fun NavController.navigateToMain() {
-    navigate(Main)
+    navigate(Main) {
+        popUpTo(graph.id)
+    }
 }
 
 @Composable
@@ -69,7 +70,7 @@ fun MainScreen() {
                 MainUiEffect.NavigateToHome -> navController.navigateToHome()
                 MainUiEffect.NavigateToAnimeList -> navController.navigateToAnimeList()
                 MainUiEffect.NavigateToMangaList -> navController.navigateToMangaList()
-                else -> { }
+                else -> {}
             }
         }
     }
