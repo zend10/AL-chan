@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.zen.alchan.di.dataModule
 import com.zen.alchan.di.featureModule
-import com.zen.alchan.di.getLocalStorageModule
+import com.zen.alchan.di.localStorageModule
 import com.zen.alchan.di.networkModule
 import com.zen.alchan.ui.landing.landingDestination
 import com.zen.alchan.ui.landing.navigateToLanding
@@ -20,7 +20,7 @@ import org.koin.compose.KoinApplication
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(getLocalStorageModule(), networkModule, dataModule, featureModule)
+        modules(localStorageModule, networkModule, dataModule, featureModule)
     }) {
         val navController = rememberNavController()
         ALChanTheme {
