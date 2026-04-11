@@ -14,7 +14,7 @@ fun initPreferencesDataStore(appContext: Context) {
 fun getPreferencesDataStorePath(appContext: Context): String =
     appContext.filesDir.resolve(LocalStorageConstant.DATASTORE_FILE_NAME).absolutePath
 
-actual fun createPreferencesDataStore(): DataStore<Preferences> {
+actual fun createPreferencesDataStore(dataStoreFileName: String): DataStore<Preferences> {
     val path = getPreferencesDataStorePath(applicationContext)
     return getPreferencesDataStore(path)
 }

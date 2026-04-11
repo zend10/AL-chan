@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.zen.alchan.ui.common.PreviewScreen
 
 @Composable
-fun Card(
+fun DefaultCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.elevatedShape,
     content: @Composable (ColumnScope.() -> Unit)
@@ -30,9 +30,9 @@ fun Card(
 
 @Composable
 @Preview
-fun PreviewScreen_Card() {
+fun PreviewScreen_DefaultCard() {
     PreviewScreen {
-        Card {
+        DefaultCard {
             Text("Hello, World!")
         }
     }

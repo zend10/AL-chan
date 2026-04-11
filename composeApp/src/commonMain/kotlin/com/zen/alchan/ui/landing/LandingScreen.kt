@@ -11,6 +11,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextMotion
@@ -33,14 +33,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zen.alchan.DefaultTheme
+import com.zen.alchan.helper.applyGradientOverlay
 import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.AppLogo
 import com.zen.alchan.ui.component.ClickableText
+import com.zen.alchan.ui.component.DefaultImage
 import com.zen.alchan.ui.component.DisplayText
-import com.zen.alchan.ui.component.GradientOverlayBox
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -74,12 +74,8 @@ fun LandingScreen(
     }
 
     val interactionSource = remember { MutableInteractionSource() }
-    GradientOverlayBox(
+    Box(
         modifier = Modifier
-            .paint(
-                painterResource(Res.drawable.landing_wallpaper),
-                contentScale = ContentScale.Crop
-            )
             .fillMaxSize()
             .clickable(
                 interactionSource = interactionSource,
@@ -87,6 +83,12 @@ fun LandingScreen(
                 onClick = { viewModel.onStartPressed() }
             )
     ) {
+        DefaultImage(
+            drawableResource = Res.drawable.landing_wallpaper,
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth().applyGradientOverlay()
+        )
         AppLogo(Modifier.align(Alignment.Center))
         Column {
             Spacer(Modifier.weight(1f))

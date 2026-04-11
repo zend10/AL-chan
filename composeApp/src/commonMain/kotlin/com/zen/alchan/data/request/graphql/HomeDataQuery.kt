@@ -1,6 +1,6 @@
 package com.zen.alchan.data.request.graphql
 
-const val HOME_DATA = $$"""
+const val HOME_DATA_QUERY = $$"""
     query HomeDataQuery($statusVersion: Int) {
       trendingAnime: Page(page: 1, perPage: 10) {
         media(type: ANIME, sort: [TRENDING_DESC], isAdult: false) {
@@ -44,6 +44,9 @@ const val HOME_DATA = $$"""
         medium
       }
       bannerImage
+      chapters
+      volumes
+      episodes
       genres
       averageScore
       favourites

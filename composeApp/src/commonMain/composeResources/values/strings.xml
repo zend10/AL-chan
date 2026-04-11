@@ -17,5 +17,10 @@
     <string name="calendar">Calendar</string>
     <string name="explore">Explore</string>
     <string name="social">Social</string>
-    <string name="trending_title">Trending Right Now</string>
+    <string name="trending_anime">Trending Anime</string>
+    <string name="trending_manga">Trending Manga</string>
+    <string name="new_anime">New Anime</string>
+    <string name="new_manga">New Manga</string>
+    <string name="episode">Episode</string>
+    <string name="chapter">Chapter</string>
 </resources>

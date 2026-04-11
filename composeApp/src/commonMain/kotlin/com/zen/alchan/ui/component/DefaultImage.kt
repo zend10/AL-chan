@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun Image(
+fun DefaultImage(
     imageUrl: String? = null,
     drawableResource: DrawableResource? = null,
     contentDescription: String?,
@@ -46,9 +46,9 @@ fun Image(
 
 @Composable
 @Preview
-fun PreviewScreen_Image() {
+fun PreviewScreen_DefaultImage() {
     PreviewScreen {
-        Image(
+        DefaultImage(
             drawableResource = Res.drawable.ic_anime,
             contentDescription = ""
         )

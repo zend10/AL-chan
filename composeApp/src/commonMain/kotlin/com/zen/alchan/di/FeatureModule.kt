@@ -16,7 +16,7 @@ val featureModule = module {
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { LandingViewModel(get(), get()) }
     viewModel { MainViewModel(get(), get()) }
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { AnimeListViewModel(get()) }
     viewModel { MangaListViewModel(get()) }
 }

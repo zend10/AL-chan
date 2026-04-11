@@ -12,7 +12,7 @@ import org.koin.dsl.module
 
 val networkModule = module {
     single {
-        val httpClient = HttpClient() {
+        val httpClient = HttpClient {
             expectSuccess = true
             install(Logging) {
                 logger = Logger.DEFAULT
