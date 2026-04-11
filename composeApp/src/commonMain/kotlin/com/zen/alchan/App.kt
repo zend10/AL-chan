@@ -1,5 +1,7 @@
 package com.zen.alchan
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -8,10 +10,19 @@ import com.zen.alchan.di.dataModule
 import com.zen.alchan.di.featureModule
 import com.zen.alchan.di.localStorageModule
 import com.zen.alchan.di.networkModule
+import com.zen.alchan.ui.calendar.calendarDestination
+import com.zen.alchan.ui.calendar.navigateToCalendar
+import com.zen.alchan.ui.explore.exploreDestination
+import com.zen.alchan.ui.explore.navigateToExplore
 import com.zen.alchan.ui.landing.landingDestination
 import com.zen.alchan.ui.landing.navigateToLanding
 import com.zen.alchan.ui.main.mainDestination
 import com.zen.alchan.ui.main.navigateToMain
+import com.zen.alchan.ui.maindetail.mainDetailDestination
+import com.zen.alchan.ui.seasonal.navigateToSeasonal
+import com.zen.alchan.ui.seasonal.seasonalDestination
+import com.zen.alchan.ui.social.navigateToSocial
+import com.zen.alchan.ui.social.socialDestination
 import com.zen.alchan.ui.splash.Splash
 import com.zen.alchan.ui.splash.splashDestination
 import org.koin.compose.KoinApplication
@@ -24,7 +35,22 @@ fun App() {
     }) {
         val navController = rememberNavController()
         ALChanTheme {
-            NavHost(navController = navController, startDestination = Splash) {
+            NavHost(
+                navController = navController,
+                startDestination = Splash,
+                enterTransition = {
+                    slideInHorizontally()
+                },
+                exitTransition = {
+                    slideOutHorizontally()
+                },
+                popEnterTransition = {
+                    slideInHorizontally()
+                },
+                popExitTransition = {
+                    slideOutHorizontally()
+                }
+            ) {
                 splashDestination(
                     onNavigateToLanding = { navController.navigateToLanding() },
                     onNavigateToMain = { navController.navigateToMain() }
@@ -32,7 +58,17 @@ fun App() {
                 landingDestination(
                     onNavigateToMain = { navController.navigateToMain() }
                 )
-                mainDestination()
+                mainDestination(
+                    onNavigateToSeasonal = { navController.navigateToSeasonal() },
+                    onNavigateToExplore = { navController.navigateToExplore() },
+                    onNavigateToCalendar = { navController.navigateToCalendar() },
+                    onNavigateToSocial = { navController.navigateToSocial() }
+                )
+                seasonalDestination()
+                exploreDestination()
+                calendarDestination()
+                socialDestination()
+                mainDetailDestination()
             }
         }
     }

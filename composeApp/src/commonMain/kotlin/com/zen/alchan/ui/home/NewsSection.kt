@@ -35,11 +35,17 @@ import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.DefaultCard
 import com.zen.alchan.ui.component.DefaultImage
 import com.zen.alchan.ui.component.DisplayText
+import com.zen.alchan.ui.component.LoadingIndicator
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsSection(news: List<News>, appConfig: AppConfig, onClick: (Media) -> Unit) {
+fun NewsSection(
+    isLoading: Boolean,
+    news: List<News>,
+    appConfig: AppConfig,
+    onClick: (Media) -> Unit
+) {
     val lazyListState = rememberLazyListState()
     val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState)
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -53,52 +59,56 @@ fun NewsSection(news: List<News>, appConfig: AppConfig, onClick: (Media) -> Unit
                 end = DefaultTheme.dimen.paddingNormal
             ),
         )
-        LazyRow(
-            state = lazyListState,
-            flingBehavior = snapFlingBehavior,
-            horizontalArrangement = Arrangement.spacedBy(DefaultTheme.dimen.paddingNormal),
-            contentPadding = PaddingValues(horizontal = DefaultTheme.dimen.paddingNormal)
-        ) {
-            items(
-                news,
-                key = { it.id }
+        if (isLoading) {
+            LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+        } else {
+            LazyRow(
+                state = lazyListState,
+                flingBehavior = snapFlingBehavior,
+                horizontalArrangement = Arrangement.spacedBy(DefaultTheme.dimen.paddingNormal),
+                contentPadding = PaddingValues(horizontal = DefaultTheme.dimen.paddingNormal)
             ) {
-                DefaultCard(
-                    modifier = Modifier
-                        .applyWidthFromScreenWidth(0.8f)
-                        .aspectRatio(4f / 3f)
-                        .clickable { onClick(it.media) }
+                items(
+                    news,
+                    key = { it.id }
                 ) {
-                    Box {
-                        DefaultImage(
-                            imageUrl = it.getImage(appConfig),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(4f / 3f)
-                                .applyGradientOverlay()
-                        )
-                        Column(
-                            modifier = Modifier
-                                .align(Alignment.BottomStart)
-                                .padding(DefaultTheme.dimen.paddingNormal)
-                        ) {
-                            DisplayText(
-                                it.getTitle(appConfig),
-                                MaterialTheme.typography.titleMedium,
-                                maxLines = 2
+                    DefaultCard(
+                        modifier = Modifier
+                            .applyWidthFromScreenWidth(0.8f)
+                            .aspectRatio(4f / 3f)
+                            .clickable { onClick(it.media) }
+                    ) {
+                        Box {
+                            DefaultImage(
+                                imageUrl = it.getImage(appConfig),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(4f / 3f)
+                                    .applyGradientOverlay()
                             )
-                            DisplayText(
-                                it.getSubtitle(
-                                    if (it.media.type == MediaType.MANGA)
-                                        stringResource(Res.string.chapter)
-                                    else
-                                        stringResource(Res.string.episode)
-                                ),
-                                MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(top = DefaultTheme.dimen.paddingVerySmall)
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .padding(DefaultTheme.dimen.paddingNormal)
+                            ) {
+                                DisplayText(
+                                    it.getTitle(appConfig),
+                                    MaterialTheme.typography.titleMedium,
+                                    maxLines = 2
+                                )
+                                DisplayText(
+                                    it.getSubtitle(
+                                        if (it.media.type == MediaType.MANGA)
+                                            stringResource(Res.string.chapter)
+                                        else
+                                            stringResource(Res.string.episode)
+                                    ),
+                                    MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.padding(top = DefaultTheme.dimen.paddingVerySmall)
+                                )
+                            }
                         }
                     }
                 }
@@ -111,9 +121,8 @@ fun NewsSection(news: List<News>, appConfig: AppConfig, onClick: (Media) -> Unit
 @Preview
 fun PreviewScreen_NewsSection() {
     val media = Media(title = MediaTitle(userPreferred = "Hello, World!"))
-    val news = News(media.id, media)
-    val newsList = listOf(news, news, news)
+    val newsList = listOf(News("1", media), News("2", media), News("3", media))
     PreviewScreen {
-        NewsSection(newsList, AppConfig(), {})
+        NewsSection(isLoading = false, newsList, AppConfig(), {})
     }
 }

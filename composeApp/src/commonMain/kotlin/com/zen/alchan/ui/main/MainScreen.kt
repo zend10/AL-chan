@@ -40,8 +40,20 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 object Main
 
-fun NavGraphBuilder.mainDestination() {
-    composable<Main> { MainScreen() }
+fun NavGraphBuilder.mainDestination(
+    onNavigateToSeasonal: () -> Unit,
+    onNavigateToExplore: () -> Unit,
+    onNavigateToCalendar: () -> Unit,
+    onNavigateToSocial: () -> Unit
+) {
+    composable<Main> {
+        MainScreen(
+            onNavigateToSeasonal,
+            onNavigateToExplore,
+            onNavigateToCalendar,
+            onNavigateToSocial
+        )
+    }
 }
 
 fun NavController.navigateToMain() {
@@ -51,7 +63,12 @@ fun NavController.navigateToMain() {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onNavigateToSeasonal: () -> Unit,
+    onNavigateToExplore: () -> Unit,
+    onNavigateToCalendar: () -> Unit,
+    onNavigateToSocial: () -> Unit
+) {
     val viewModel = koinViewModel<MainViewModel>()
     val state by viewModel.state.collectAsState()
 
@@ -88,7 +105,13 @@ fun MainScreen() {
             navController = navController,
             startDestination = tabs[state.defaultTabIndex],
         ) {
-            homeDestination(viewModel)
+            homeDestination(
+                viewModel,
+                onNavigateToSeasonal,
+                onNavigateToExplore,
+                onNavigateToCalendar,
+                onNavigateToSocial
+            )
             animeListDestination()
             mangaListDestination()
         }
@@ -136,7 +159,7 @@ private fun MainBottomNavigationBar(
 )
 fun PreviewPhone_MainScreen() {
     PreviewScreen {
-        MainScreen()
+        MainScreen({}, {}, {}, {})
     }
 }
 
@@ -147,6 +170,6 @@ fun PreviewPhone_MainScreen() {
 )
 fun PreviewTable_MainScreen() {
     PreviewScreen {
-        MainScreen()
+        MainScreen({}, {}, {}, {})
     }
 }

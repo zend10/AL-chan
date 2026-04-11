@@ -29,8 +29,22 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 object Home
 
-fun NavGraphBuilder.homeDestination(mainViewModel: MainViewModel) {
-    composable<Home> { HomeScreen(mainViewModel) }
+fun NavGraphBuilder.homeDestination(
+    mainViewModel: MainViewModel,
+    onNavigateToSeasonal: () -> Unit,
+    onNavigateToExplore: () -> Unit,
+    onNavigateToCalendar: () -> Unit,
+    onNavigateToSocial: () -> Unit
+) {
+    composable<Home> {
+        HomeScreen(
+            mainViewModel,
+            onNavigateToSeasonal,
+            onNavigateToExplore,
+            onNavigateToCalendar,
+            onNavigateToSocial
+        )
+    }
 }
 
 fun NavController.navigateToHome() {
@@ -45,7 +59,13 @@ fun NavController.navigateToHome() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(mainViewModel: MainViewModel?) {
+fun HomeScreen(
+    mainViewModel: MainViewModel?,
+    onNavigateToSeasonal: () -> Unit,
+    onNavigateToExplore: () -> Unit,
+    onNavigateToCalendar: () -> Unit,
+    onNavigateToSocial: () -> Unit
+) {
     val viewModel = koinViewModel<HomeViewModel>()
     val state by viewModel.state.collectAsState()
 
@@ -63,10 +83,22 @@ fun HomeScreen(mainViewModel: MainViewModel?) {
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { newEffect ->
             when (newEffect) {
-                HomeUiEffect.NavigateToCalendar -> {}
-                HomeUiEffect.NavigateToExplore -> {}
-                HomeUiEffect.NavigateToSeasonal -> {}
-                HomeUiEffect.NavigateToSocial -> {}
+                HomeUiEffect.NavigateToCalendar -> {
+                    onNavigateToCalendar()
+                }
+
+                HomeUiEffect.NavigateToExplore -> {
+                    onNavigateToExplore()
+                }
+
+                HomeUiEffect.NavigateToSeasonal -> {
+                    onNavigateToSeasonal()
+                }
+
+                HomeUiEffect.NavigateToSocial -> {
+                    onNavigateToSocial()
+                }
+
                 is HomeUiEffect.NavigateToMediaDetail -> {}
             }
         }
@@ -90,7 +122,12 @@ fun HomeScreen(mainViewModel: MainViewModel?) {
             onCalendarPressed = { viewModel.onCalendarPressed() },
             onSocialPressed = { viewModel.onSocialPressed() },
         )
-        NewsSection(state.news, state.appConfig, onClick = { viewModel.onMediaPressed(it) })
+        NewsSection(
+            state.isLoading,
+            state.news,
+            state.appConfig,
+            onClick = { viewModel.onMediaPressed(it) }
+        )
     }
 }
 
@@ -108,7 +145,7 @@ private fun Header() {
 )
 fun PreviewPhone_HomeScreen() {
     PreviewScreen {
-        HomeScreen(null)
+        HomeScreen(null, {}, {}, {}, {})
     }
 }
 
@@ -119,6 +156,6 @@ fun PreviewPhone_HomeScreen() {
 )
 fun PreviewTablet_HomeScreen() {
     PreviewScreen {
-        HomeScreen(null)
+        HomeScreen(null, {}, {}, {}, {})
     }
 }

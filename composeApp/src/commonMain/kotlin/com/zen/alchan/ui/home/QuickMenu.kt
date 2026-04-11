@@ -21,8 +21,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.tooling.preview.Preview
 import com.zen.alchan.DefaultTheme
+import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.ClickableText
 import com.zen.alchan.ui.component.DefaultCard
 import com.zen.alchan.ui.component.DefaultImage
@@ -75,11 +78,11 @@ private fun QuicKMenuItem(
     onClick: () -> Unit
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable(onClick = onClick)
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DefaultCard(
-            shape = CircleShape
+            shape = CircleShape,
+            modifier = Modifier.clip(CircleShape).clickable(onClick = onClick)
         ) {
             DefaultImage(
                 drawableResource = icon,
@@ -92,7 +95,15 @@ private fun QuicKMenuItem(
             text = stringResource(label),
             textStyle = MaterialTheme.typography.bodySmall,
             onClick = { },
-            modifier = Modifier.padding(top = DefaultTheme.dimen.paddingVerySmall)
+            modifier = Modifier
+                .padding(top = DefaultTheme.dimen.paddingVerySmall)
+                .clickable(enabled = false, onClick = {})
         )
     }
+}
+
+@Composable
+@Preview
+fun PreviewScreen_QuickMenu() {
+    PreviewScreen { QuickMenu({}, {}, {}, {}) }
 }
