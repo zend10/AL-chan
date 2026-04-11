@@ -1,10 +1,9 @@
 package com.zen.alchan.ui.home
 
 import androidx.lifecycle.viewModelScope
-import com.zen.alchan.data.enums.MediaType
 import com.zen.alchan.data.model.AppConfig
+import com.zen.alchan.data.model.News
 import com.zen.alchan.data.model.User
-import com.zen.alchan.data.model.api.HomeData
 import com.zen.alchan.data.model.api.Media
 import com.zen.alchan.data.repository.ConfigRepository
 import com.zen.alchan.data.repository.ContentRepository
@@ -33,7 +32,7 @@ class HomeViewModel(
                     it.copy(
                         isLoading = false,
                         appConfig = appConfig,
-                        homeData = homeData
+                        news = homeData.getNews()
                     )
                 }
             } catch (exception: Exception) {
@@ -67,8 +66,7 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val appConfig: AppConfig = AppConfig(),
     val user: User = User(),
-    val homeData: HomeData = HomeData(),
-    val trendingMediaType: MediaType = MediaType.ANIME
+    val news: List<News> = listOf()
 )
 
 sealed interface HomeUiEffect {

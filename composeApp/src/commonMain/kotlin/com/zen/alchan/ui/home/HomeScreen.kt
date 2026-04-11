@@ -1,16 +1,12 @@
 package com.zen.alchan.ui.home
 
-import al_chan.composeapp.generated.resources.Res
-import al_chan.composeapp.generated.resources.new_anime
-import al_chan.composeapp.generated.resources.new_manga
-import al_chan.composeapp.generated.resources.trending_anime
-import al_chan.composeapp.generated.resources.trending_manga
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,13 +19,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zen.alchan.DefaultTheme
-import com.zen.alchan.data.enums.MediaType
 import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.main.MainUiEffect
 import com.zen.alchan.ui.main.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
@@ -49,6 +43,7 @@ fun NavController.navigateToHome() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(mainViewModel: MainViewModel?) {
     val viewModel = koinViewModel<HomeViewModel>()
@@ -95,38 +90,7 @@ fun HomeScreen(mainViewModel: MainViewModel?) {
             onCalendarPressed = { viewModel.onCalendarPressed() },
             onSocialPressed = { viewModel.onSocialPressed() },
         )
-        SwimlaneSection(
-            state.isLoading,
-            stringResource(Res.string.trending_anime),
-            state.homeData.trendingAnime.media,
-            state.appConfig,
-            MediaType.ANIME,
-            onMediaClick = { viewModel.onMediaPressed(it) },
-        )
-        SwimlaneSection(
-            state.isLoading,
-            stringResource(Res.string.trending_manga),
-            state.homeData.trendingManga.media,
-            state.appConfig,
-            MediaType.MANGA,
-            onMediaClick = { viewModel.onMediaPressed(it) },
-        )
-        SwimlaneSection(
-            state.isLoading,
-            stringResource(Res.string.new_anime),
-            state.homeData.newAnime.media,
-            state.appConfig,
-            MediaType.ANIME,
-            onMediaClick = { viewModel.onMediaPressed(it) },
-        )
-        SwimlaneSection(
-            state.isLoading,
-            stringResource(Res.string.new_manga),
-            state.homeData.newManga.media,
-            state.appConfig,
-            MediaType.MANGA,
-            onMediaClick = { viewModel.onMediaPressed(it) },
-        )
+        NewsSection(state.news, state.appConfig, onClick = { viewModel.onMediaPressed(it) })
     }
 }
 
