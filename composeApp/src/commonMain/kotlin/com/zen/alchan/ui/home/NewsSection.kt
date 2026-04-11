@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,7 +37,6 @@ import com.zen.alchan.ui.component.DisplayText
 import com.zen.alchan.ui.component.LoadingIndicator
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsSection(
     isLoading: Boolean,
@@ -60,7 +58,11 @@ fun NewsSection(
             ),
         )
         if (isLoading) {
-            LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            LoadingIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = DefaultTheme.dimen.paddingNormal)
+            )
         } else {
             LazyRow(
                 state = lazyListState,

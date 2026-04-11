@@ -35,7 +35,7 @@ import com.zen.alchan.ui.component.PrimaryButton
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun GuestHeader() {
+fun GuestHeader(onClickRegister: () -> Unit, onClickLogin: () -> Unit) {
     val guestLoginRichTextState = rememberRichTextState()
     val guestText = stringResource(Res.string.login_body)
 
@@ -84,12 +84,12 @@ fun GuestHeader() {
             ) {
                 ClickableText(
                     text = stringResource(Res.string.register),
-                    onClick = { },
+                    onClick = { onClickRegister() },
                     textStyle = MaterialTheme.typography.bodyLarge
                 )
                 PrimaryButton(
                     text = stringResource(Res.string.log_in),
-                    onClick = { },
+                    onClick = { onClickLogin() },
                 )
             }
         }
@@ -99,5 +99,5 @@ fun GuestHeader() {
 @Composable
 @Preview
 fun PreviewScreen_GuestHeader() {
-    PreviewScreen { GuestHeader() }
+    PreviewScreen { GuestHeader({}, {}) }
 }

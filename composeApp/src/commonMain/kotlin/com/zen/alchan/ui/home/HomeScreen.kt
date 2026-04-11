@@ -1,7 +1,11 @@
 package com.zen.alchan.ui.home
 
+import al_chan.composeapp.generated.resources.Res
+import al_chan.composeapp.generated.resources.welcome
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -12,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,10 +25,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zen.alchan.DefaultTheme
 import com.zen.alchan.ui.common.PreviewScreen
+import com.zen.alchan.ui.component.LoadingIndicator
 import com.zen.alchan.ui.main.MainUiEffect
 import com.zen.alchan.ui.main.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
@@ -34,7 +41,8 @@ fun NavGraphBuilder.homeDestination(
     onNavigateToSeasonal: () -> Unit,
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
-    onNavigateToSocial: () -> Unit
+    onNavigateToSocial: () -> Unit,
+    onNavigateToWeb: (String) -> Unit
 ) {
     composable<Home> {
         HomeScreen(
@@ -42,7 +50,8 @@ fun NavGraphBuilder.homeDestination(
             onNavigateToSeasonal,
             onNavigateToExplore,
             onNavigateToCalendar,
-            onNavigateToSocial
+            onNavigateToSocial,
+            onNavigateToWeb
         )
     }
 }
@@ -64,7 +73,8 @@ fun HomeScreen(
     onNavigateToSeasonal: () -> Unit,
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
-    onNavigateToSocial: () -> Unit
+    onNavigateToSocial: () -> Unit,
+    onNavigateToWeb: (String) -> Unit
 ) {
     val viewModel = koinViewModel<HomeViewModel>()
     val state by viewModel.state.collectAsState()
@@ -100,8 +110,16 @@ fun HomeScreen(
                 }
 
                 is HomeUiEffect.NavigateToMediaDetail -> {}
+                is HomeUiEffect.NavigateToWeb -> {
+                    onNavigateToWeb(newEffect.url)
+                }
             }
         }
+    }
+
+    if (state.isLoggingIn) {
+        LoginLoading()
+        return
     }
 
     Column(
@@ -112,7 +130,10 @@ fun HomeScreen(
             .padding(bottom = DefaultTheme.dimen.paddingVeryBig)
     ) {
         if (state.user.isGuest()) {
-            GuestHeader()
+            GuestHeader(
+                onClickRegister = { viewModel.onRegisterPressed() },
+                onClickLogin = { viewModel.onLoginPressed() }
+            )
         } else {
             Header()
         }
@@ -131,6 +152,15 @@ fun HomeScreen(
     }
 }
 
+@Composable
+private fun LoginLoading() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        LoadingIndicator(text = stringResource(Res.string.welcome))
+    }
+}
 
 @Composable
 private fun Header() {
@@ -145,7 +175,7 @@ private fun Header() {
 )
 fun PreviewPhone_HomeScreen() {
     PreviewScreen {
-        HomeScreen(null, {}, {}, {}, {})
+        HomeScreen(null, {}, {}, {}, {}, {})
     }
 }
 
@@ -156,6 +186,6 @@ fun PreviewPhone_HomeScreen() {
 )
 fun PreviewTablet_HomeScreen() {
     PreviewScreen {
-        HomeScreen(null, {}, {}, {}, {})
+        HomeScreen(null, {}, {}, {}, {}, {})
     }
 }

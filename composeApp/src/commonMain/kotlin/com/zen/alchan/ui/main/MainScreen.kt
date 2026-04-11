@@ -44,14 +44,16 @@ fun NavGraphBuilder.mainDestination(
     onNavigateToSeasonal: () -> Unit,
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
-    onNavigateToSocial: () -> Unit
+    onNavigateToSocial: () -> Unit,
+    onNavigateToWeb: (String) -> Unit
 ) {
     composable<Main> {
         MainScreen(
             onNavigateToSeasonal,
             onNavigateToExplore,
             onNavigateToCalendar,
-            onNavigateToSocial
+            onNavigateToSocial,
+            onNavigateToWeb
         )
     }
 }
@@ -67,7 +69,8 @@ fun MainScreen(
     onNavigateToSeasonal: () -> Unit,
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
-    onNavigateToSocial: () -> Unit
+    onNavigateToSocial: () -> Unit,
+    onNavigateToWeb: (String) -> Unit
 ) {
     val viewModel = koinViewModel<MainViewModel>()
     val state by viewModel.state.collectAsState()
@@ -110,7 +113,8 @@ fun MainScreen(
                 onNavigateToSeasonal,
                 onNavigateToExplore,
                 onNavigateToCalendar,
-                onNavigateToSocial
+                onNavigateToSocial,
+                onNavigateToWeb
             )
             animeListDestination()
             mangaListDestination()
@@ -159,7 +163,7 @@ private fun MainBottomNavigationBar(
 )
 fun PreviewPhone_MainScreen() {
     PreviewScreen {
-        MainScreen({}, {}, {}, {})
+        MainScreen({}, {}, {}, {}, {})
     }
 }
 
@@ -170,6 +174,6 @@ fun PreviewPhone_MainScreen() {
 )
 fun PreviewTable_MainScreen() {
     PreviewScreen {
-        MainScreen({}, {}, {}, {})
+        MainScreen({}, {}, {}, {}, {})
     }
 }

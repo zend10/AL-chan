@@ -12,8 +12,8 @@ class SplashViewModel(
     dispatcher: Dispatcher,
     private val configRepository: ConfigRepository,
     private val authRepository: AuthRepository
-) : BaseViewModel<SplashUiState, SplashUiEffect>(
-    SplashUiState(), dispatcher,
+) : BaseViewModel<Unit, SplashUiEffect>(
+    Unit, dispatcher,
 ) {
     init {
         loadData()
@@ -23,19 +23,16 @@ class SplashViewModel(
         viewModelScope.launch(dispatcher.io) {
             delay(2000)
             val remoteConfig = configRepository.getRemoteConfig()
-            val isLoggedIn = authRepository.isLoggedIn()
             val landingCompleted = configRepository.getLandingCompleted()
-
+            if (landingCompleted) {
+                authRepository.getCurrentUser()
+            }
             sendNewEffect(
                 if (landingCompleted) SplashUiEffect.NavigateToMain else SplashUiEffect.NavigateToLanding
             )
         }
     }
 }
-
-data class SplashUiState(
-    val isLoading: Boolean = false
-)
 
 sealed interface SplashUiEffect {
     object NavigateToLanding : SplashUiEffect

@@ -8,7 +8,6 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 
 @Composable
 fun Modifier.applyGradientOverlay(heightRatio: Float = 0.3f): Modifier {
@@ -28,8 +27,5 @@ fun Modifier.applyGradientOverlay(heightRatio: Float = 0.3f): Modifier {
 
 @Composable
 fun Modifier.applyWidthFromScreenWidth(ratio: Float): Modifier {
-    return width(getScreenSize() * ratio)
+    return width(getScreenWidth() * ratio)
 }
-
-@Composable
-expect fun getScreenSize(): Dp

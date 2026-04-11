@@ -19,7 +19,7 @@ val dataModule = module {
             AniListConstant
         )
     }
-    single<AuthRepository> { DefaultAuthRepository() }
+    single<AuthRepository> { DefaultAuthRepository(get(), get()) }
     single<ConfigRepository> { DefaultConfigRepository(get()) }
     single<ContentRepository> { DefaultContentRepository(get()) }
 }

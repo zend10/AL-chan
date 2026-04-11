@@ -2,7 +2,9 @@ package com.zen.alchan.data.provider
 
 import com.zen.alchan.data.network.KtorHttpClient
 import com.zen.alchan.data.request.graphql.HOME_DATA_QUERY
+import com.zen.alchan.data.request.graphql.VIEWER_QUERY
 import com.zen.alchan.data.response.anilist.HomeDataResponse
+import com.zen.alchan.data.response.anilist.ViewerResponse
 import com.zen.alchan.helper.AniListConstant
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
@@ -17,6 +19,15 @@ class AniListApiProvider(
                 HOME_DATA_QUERY,
                 mapOf(getStatusVersionVariable())
             )
+            return result
+        } catch (exception: Exception) {
+            throw exception
+        }
+    }
+
+    override suspend fun getCurrentUser(token: String): ViewerResponse {
+        try {
+            val result = httpClient.query<ViewerResponse>(VIEWER_QUERY, token = token)
             return result
         } catch (exception: Exception) {
             throw exception
