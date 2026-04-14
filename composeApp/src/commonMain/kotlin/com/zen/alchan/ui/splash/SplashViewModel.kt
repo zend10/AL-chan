@@ -5,7 +5,6 @@ import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.ConfigRepository
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.base.Dispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
@@ -21,15 +20,20 @@ class SplashViewModel(
 
     private fun loadData() {
         viewModelScope.launch(dispatcher.io) {
-            delay(2000)
-            val remoteConfig = configRepository.getRemoteConfig()
-            val landingCompleted = configRepository.getLandingCompleted()
-            if (landingCompleted) {
-                authRepository.getCurrentUser()
+            var landingCompleted = false
+            try {
+                val remoteConfig = configRepository.getRemoteConfig()
+                landingCompleted = configRepository.getLandingCompleted()
+                if (landingCompleted) {
+                    authRepository.getCurrentUser()
+                }
+            } catch (exception: Exception) {
+
+            } finally {
+                sendNewEffect(
+                    if (landingCompleted) SplashUiEffect.NavigateToMain else SplashUiEffect.NavigateToLanding
+                )
             }
-            sendNewEffect(
-                if (landingCompleted) SplashUiEffect.NavigateToMain else SplashUiEffect.NavigateToLanding
-            )
         }
     }
 }

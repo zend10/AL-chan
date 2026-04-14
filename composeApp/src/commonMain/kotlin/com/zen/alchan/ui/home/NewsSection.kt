@@ -30,6 +30,7 @@ import com.zen.alchan.data.model.api.Media
 import com.zen.alchan.data.model.api.MediaTitle
 import com.zen.alchan.helper.applyGradientOverlay
 import com.zen.alchan.helper.applyWidthFromScreenWidth
+import com.zen.alchan.helper.isWideScreen
 import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.DefaultCard
 import com.zen.alchan.ui.component.DefaultImage
@@ -46,6 +47,8 @@ fun NewsSection(
 ) {
     val lazyListState = rememberLazyListState()
     val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState)
+    val aspectRatio = if (isWideScreen()) 2.5f else 4f / 3f
+
     Column(modifier = Modifier.fillMaxWidth()) {
         DisplayText(
             text = stringResource(Res.string.latest_update),
@@ -57,60 +60,62 @@ fun NewsSection(
                 end = DefaultTheme.dimen.paddingNormal
             ),
         )
+
         if (isLoading) {
             LoadingIndicator(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = DefaultTheme.dimen.paddingNormal)
             )
-        } else {
-            LazyRow(
-                state = lazyListState,
-                flingBehavior = snapFlingBehavior,
-                horizontalArrangement = Arrangement.spacedBy(DefaultTheme.dimen.paddingNormal),
-                contentPadding = PaddingValues(horizontal = DefaultTheme.dimen.paddingNormal)
+            return
+        }
+
+        LazyRow(
+            state = lazyListState,
+            flingBehavior = snapFlingBehavior,
+            horizontalArrangement = Arrangement.spacedBy(DefaultTheme.dimen.paddingNormal),
+            contentPadding = PaddingValues(horizontal = DefaultTheme.dimen.paddingNormal)
+        ) {
+            items(
+                news,
+                key = { it.id }
             ) {
-                items(
-                    news,
-                    key = { it.id }
+                DefaultCard(
+                    modifier = Modifier
+                        .applyWidthFromScreenWidth(0.8f)
+                        .aspectRatio(aspectRatio)
+                        .clickable { onClick(it.media) }
                 ) {
-                    DefaultCard(
-                        modifier = Modifier
-                            .applyWidthFromScreenWidth(0.8f)
-                            .aspectRatio(4f / 3f)
-                            .clickable { onClick(it.media) }
-                    ) {
-                        Box {
-                            DefaultImage(
-                                imageUrl = it.getImage(appConfig),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(4f / 3f)
-                                    .applyGradientOverlay()
+                    Box {
+                        DefaultImage(
+                            imageUrl = it.getImage(appConfig),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(aspectRatio)
+                                .applyGradientOverlay()
+                        )
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(DefaultTheme.dimen.paddingNormal)
+                        ) {
+                            DisplayText(
+                                it.getTitle(appConfig),
+                                MaterialTheme.typography.titleMedium,
+                                maxLines = 2
                             )
-                            Column(
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .padding(DefaultTheme.dimen.paddingNormal)
-                            ) {
-                                DisplayText(
-                                    it.getTitle(appConfig),
-                                    MaterialTheme.typography.titleMedium,
-                                    maxLines = 2
-                                )
-                                DisplayText(
-                                    it.getSubtitle(
-                                        if (it.media.type == MediaType.MANGA)
-                                            stringResource(Res.string.chapter)
-                                        else
-                                            stringResource(Res.string.episode)
-                                    ),
-                                    MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = DefaultTheme.dimen.paddingVerySmall)
-                                )
-                            }
+                            DisplayText(
+                                it.getSubtitle(
+                                    if (it.media.type == MediaType.MANGA)
+                                        stringResource(Res.string.chapter)
+                                    else
+                                        stringResource(Res.string.episode)
+                                ),
+                                MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(top = DefaultTheme.dimen.paddingVerySmall)
+                            )
                         }
                     }
                 }

@@ -8,3 +8,8 @@ expect fun getScreenWidth(): Dp
 
 @Composable
 expect fun getScreenHeight(): Dp
+
+@Composable
+fun isWideScreen(): Boolean {
+    return getScreenWidth() >= getScreenHeight()
+}

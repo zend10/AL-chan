@@ -94,10 +94,11 @@ fun LandingScreen(
             Spacer(Modifier.weight(1f))
             Column(
                 modifier = Modifier.weight(1f)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(top = DefaultTheme.dimen.paddingBig),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(Modifier.weight(2f))
+                Spacer(Modifier.weight(1f))
                 PressToStatText()
                 Spacer(Modifier.weight(1f))
                 DisplayText(
@@ -107,7 +108,8 @@ fun LandingScreen(
                     ),
                     modifier = Modifier
                         .safeDrawingPadding()
-                        .padding(DefaultTheme.dimen.paddingBig)
+                        .padding(horizontal = DefaultTheme.dimen.paddingBig)
+                        .padding(bottom = DefaultTheme.dimen.paddingBig)
                 )
             }
         }
