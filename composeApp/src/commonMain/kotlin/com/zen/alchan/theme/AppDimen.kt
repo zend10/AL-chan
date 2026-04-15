@@ -10,6 +10,7 @@ data class AppDimen(
     val paddingNormal: Dp,
     val paddingSmall: Dp,
     val paddingVerySmall: Dp,
+    val iconBig: Dp,
     val iconNormal: Dp,
     val iconSmall: Dp,
     val lineWidth: Dp,

@@ -40,6 +40,7 @@ fun ALChanTheme(
         paddingNormal = 16.dp,
         paddingSmall = 12.dp,
         paddingVerySmall = 8.dp,
+        iconBig = 48.dp,
         iconNormal = 24.dp,
         iconSmall = 16.dp,
         lineWidth = 1.dp
@@ -77,6 +78,7 @@ val LocalDimen = staticCompositionLocalOf {
         paddingNormal = Dp.Unspecified,
         paddingSmall = Dp.Unspecified,
         paddingVerySmall = Dp.Unspecified,
+        iconBig = Dp.Unspecified,
         iconNormal = Dp.Unspecified,
         iconSmall = Dp.Unspecified,
         lineWidth = Dp.Unspecified

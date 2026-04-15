@@ -3,18 +3,25 @@
 package com.zen.alchan.ui.home
 
 import al_chan.composeapp.generated.resources.Res
+import al_chan.composeapp.generated.resources.ic_search
+import al_chan.composeapp.generated.resources.search_bar_label
 import al_chan.composeapp.generated.resources.welcome
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +38,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zen.alchan.DefaultTheme
 import com.zen.alchan.ui.common.PreviewScreen
+import com.zen.alchan.ui.component.DefaultImage
 import com.zen.alchan.ui.component.LoadingIndicator
 import com.zen.alchan.ui.main.MainUiEffect
 import com.zen.alchan.ui.main.MainViewModel
@@ -89,7 +98,11 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         mainViewModel?.bottomNavigationTabEffect?.collectLatest { newEffect ->
             when (newEffect) {
-                MainUiEffect.ScrollHomeToTop -> scrollState.animateScrollTo(0)
+                MainUiEffect.ScrollHomeToTop -> {
+                    topAppBarScrollBehavior.state.heightOffset = 0f
+                    scrollState.animateScrollTo(0)
+                }
+
                 else -> {}
             }
         }
@@ -118,6 +131,10 @@ fun HomeScreen(
                 is HomeUiEffect.NavigateToWeb -> {
                     onNavigateToWeb(newEffect.url)
                 }
+
+                HomeUiEffect.NavigateToProfile -> {}
+                HomeUiEffect.NavigateToNotifications -> {}
+                HomeUiEffect.NavigateToSearch -> {}
             }
         }
     }
@@ -137,7 +154,13 @@ fun HomeScreen(
                     onClickLogin = { viewModel.onLoginPressed() }
                 )
             } else {
-                UserHeader(state.user, state.appConfig)
+                UserHeader(
+                    topAppBarScrollBehavior,
+                    state.user,
+                    state.appConfig,
+                    onProfileClick = { viewModel.onProfilePressed() },
+                    onNotificationsClick = { viewModel.onNotificationsPressed() }
+                )
             }
         }
     ) { contentPadding ->
@@ -149,6 +172,9 @@ fun HomeScreen(
                 .padding(contentPadding)
                 .padding(bottom = DefaultTheme.dimen.paddingVeryBig)
         ) {
+            SearchBar(
+                onSearchBarClick = { viewModel.onSearchPressed() }
+            )
             QuickMenu(
                 onSeasonalPressed = { viewModel.onSeasonalPressed() },
                 onExplorePressed = { viewModel.onExplorePressed() },
@@ -172,6 +198,33 @@ private fun LoginLoading() {
         contentAlignment = Alignment.Center
     ) {
         LoadingIndicator(text = stringResource(Res.string.welcome))
+    }
+}
+
+@Composable
+private fun SearchBar(onSearchBarClick: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+            .padding(horizontal = DefaultTheme.dimen.paddingNormal)
+            .padding(top = DefaultTheme.dimen.paddingVeryBig)
+            .clickable(onClick = onSearchBarClick),
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.onBackground)
+    ) {
+        Row(
+            modifier = Modifier.padding(DefaultTheme.dimen.paddingNormal),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DefaultImage(
+                drawableResource = Res.drawable.ic_search,
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface)
+            )
+            Text(
+                stringResource(Res.string.search_bar_label),
+                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.surface),
+                modifier = Modifier.padding(start = DefaultTheme.dimen.paddingVerySmall)
+            )
+        }
     }
 }
 

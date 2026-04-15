@@ -88,6 +88,18 @@ class HomeViewModel(
         sendNewEffect(HomeUiEffect.NavigateToWeb(aniListConstant.ANILIST_LOGIN_URL))
     }
 
+    fun onProfilePressed() {
+        sendNewEffect(HomeUiEffect.NavigateToProfile)
+    }
+
+    fun onNotificationsPressed() {
+        sendNewEffect(HomeUiEffect.NavigateToNotifications)
+    }
+
+    fun onSearchPressed() {
+        sendNewEffect(HomeUiEffect.NavigateToSearch)
+    }
+
     fun onSeasonalPressed() {
         sendNewEffect(HomeUiEffect.NavigateToSeasonal)
     }
@@ -124,4 +136,7 @@ sealed interface HomeUiEffect {
     object NavigateToSocial : HomeUiEffect
     class NavigateToMediaDetail(val media: Media) : HomeUiEffect
     class NavigateToWeb(val url: String) : HomeUiEffect
+    object NavigateToProfile : HomeUiEffect
+    object NavigateToNotifications : HomeUiEffect
+    object NavigateToSearch : HomeUiEffect
 }

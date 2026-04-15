@@ -21,4 +21,7 @@
     <string name="chapter">Chapter</string>
     <string name="latest_update">Latest Update</string>
     <string name="welcome">Welcome</string>
+    <string name="more">More</string>
+    <string name="notifications">Notifications</string>
+    <string name="search_bar_label">What are you looking for?</string>
 </resources>

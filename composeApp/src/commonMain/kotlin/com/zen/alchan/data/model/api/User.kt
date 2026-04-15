@@ -1,5 +1,6 @@
 package com.zen.alchan.data.model.api
 
+import com.zen.alchan.data.model.AppConfig
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,5 +13,9 @@ data class User(
 ) {
     fun isGuest(): Boolean {
         return id.isBlank()
+    }
+
+    fun getAvatar(appConfig: AppConfig): String {
+        return avatar.large
     }
 }
