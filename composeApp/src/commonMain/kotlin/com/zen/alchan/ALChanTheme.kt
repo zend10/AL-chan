@@ -43,7 +43,9 @@ fun ALChanTheme(
         iconBig = 48.dp,
         iconNormal = 24.dp,
         iconSmall = 16.dp,
-        lineWidth = 1.dp
+        avatarSize = 96.dp,
+        lineWidth = 1.dp,
+        topBarMinHeight = 72.dp
     )
 
     val colorScheme = when (appTheme) {
@@ -81,6 +83,8 @@ val LocalDimen = staticCompositionLocalOf {
         iconBig = Dp.Unspecified,
         iconNormal = Dp.Unspecified,
         iconSmall = Dp.Unspecified,
-        lineWidth = Dp.Unspecified
+        lineWidth = Dp.Unspecified,
+        avatarSize = Dp.Unspecified,
+        topBarMinHeight = Dp.Unspecified
     )
 }

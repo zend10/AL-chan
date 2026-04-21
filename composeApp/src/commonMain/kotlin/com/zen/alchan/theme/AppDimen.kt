@@ -13,5 +13,7 @@ data class AppDimen(
     val iconBig: Dp,
     val iconNormal: Dp,
     val iconSmall: Dp,
+    val avatarSize: Dp,
     val lineWidth: Dp,
+    val topBarMinHeight: Dp
 )

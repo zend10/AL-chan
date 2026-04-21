@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Devices
@@ -56,7 +57,8 @@ fun NavGraphBuilder.homeDestination(
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToWeb: (String) -> Unit
+    onNavigateToWeb: (String) -> Unit,
+    onNavigateToUser: (id: String) -> Unit
 ) {
     composable<Home> {
         HomeScreen(
@@ -65,7 +67,8 @@ fun NavGraphBuilder.homeDestination(
             onNavigateToExplore,
             onNavigateToCalendar,
             onNavigateToSocial,
-            onNavigateToWeb
+            onNavigateToWeb,
+            onNavigateToUser
         )
     }
 }
@@ -87,7 +90,8 @@ fun HomeScreen(
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToWeb: (String) -> Unit
+    onNavigateToWeb: (url: String) -> Unit,
+    onNavigateToUser: (id: String) -> Unit
 ) {
     val viewModel = koinViewModel<HomeViewModel>()
     val state by viewModel.state.collectAsState()
@@ -132,8 +136,12 @@ fun HomeScreen(
                     onNavigateToWeb(newEffect.url)
                 }
 
-                HomeUiEffect.NavigateToProfile -> {}
+                is HomeUiEffect.NavigateToUser -> {
+                    onNavigateToUser(newEffect.id)
+                }
+
                 HomeUiEffect.NavigateToNotifications -> {}
+                HomeUiEffect.NavigateToSettings -> {}
                 HomeUiEffect.NavigateToSearch -> {}
             }
         }
@@ -154,12 +162,13 @@ fun HomeScreen(
                     onClickLogin = { viewModel.onLoginPressed() }
                 )
             } else {
-                UserHeader(
+                MiniUserHeader(
                     topAppBarScrollBehavior,
                     state.user,
                     state.appConfig,
-                    onProfileClick = { viewModel.onProfilePressed() },
-                    onNotificationsClick = { viewModel.onNotificationsPressed() }
+                    onUserClick = { viewModel.onUserPressed() },
+                    onNotificationsClick = { viewModel.onNotificationsPressed() },
+                    onSettingsClick = { viewModel.onSettingsPressed() }
                 )
             }
         }
@@ -175,7 +184,7 @@ fun HomeScreen(
             SearchBar(
                 onSearchBarClick = { viewModel.onSearchPressed() }
             )
-            QuickMenu(
+            HomeQuickMenu(
                 onSeasonalPressed = { viewModel.onSeasonalPressed() },
                 onExplorePressed = { viewModel.onExplorePressed() },
                 onCalendarPressed = { viewModel.onCalendarPressed() },
@@ -206,7 +215,8 @@ private fun SearchBar(onSearchBarClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth()
             .padding(horizontal = DefaultTheme.dimen.paddingNormal)
-            .padding(top = DefaultTheme.dimen.paddingVeryBig)
+            .padding(top = DefaultTheme.dimen.paddingNormal)
+            .clip(CardDefaults.shape)
             .clickable(onClick = onSearchBarClick),
         colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.onBackground)
     ) {
@@ -235,7 +245,15 @@ private fun SearchBar(onSearchBarClick: () -> Unit) {
 )
 fun PreviewPhone_HomeScreen() {
     PreviewScreen {
-        HomeScreen(null, {}, {}, {}, {}, {})
+        HomeScreen(
+            null,
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+        )
     }
 }
 
@@ -246,6 +264,14 @@ fun PreviewPhone_HomeScreen() {
 )
 fun PreviewTablet_HomeScreen() {
     PreviewScreen {
-        HomeScreen(null, {}, {}, {}, {}, {})
+        HomeScreen(
+            null,
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+        )
     }
 }

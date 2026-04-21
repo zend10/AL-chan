@@ -88,12 +88,16 @@ class HomeViewModel(
         sendNewEffect(HomeUiEffect.NavigateToWeb(aniListConstant.ANILIST_LOGIN_URL))
     }
 
-    fun onProfilePressed() {
-        sendNewEffect(HomeUiEffect.NavigateToProfile)
+    fun onUserPressed() {
+        sendNewEffect(HomeUiEffect.NavigateToUser(state.value.user.id))
     }
 
     fun onNotificationsPressed() {
         sendNewEffect(HomeUiEffect.NavigateToNotifications)
+    }
+
+    fun onSettingsPressed() {
+        sendNewEffect(HomeUiEffect.NavigateToSettings)
     }
 
     fun onSearchPressed() {
@@ -136,7 +140,8 @@ sealed interface HomeUiEffect {
     object NavigateToSocial : HomeUiEffect
     class NavigateToMediaDetail(val media: Media) : HomeUiEffect
     class NavigateToWeb(val url: String) : HomeUiEffect
-    object NavigateToProfile : HomeUiEffect
+    class NavigateToUser(val id: String) : HomeUiEffect
     object NavigateToNotifications : HomeUiEffect
+    object NavigateToSettings : HomeUiEffect
     object NavigateToSearch : HomeUiEffect
 }

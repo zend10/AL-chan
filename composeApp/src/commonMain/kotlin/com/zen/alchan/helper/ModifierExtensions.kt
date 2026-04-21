@@ -1,5 +1,6 @@
 package com.zen.alchan.helper
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.zen.alchan.DefaultTheme
 
 @Composable
 fun Modifier.applyGradientOverlay(heightRatio: Float = 0.3f): Modifier {
@@ -28,4 +30,9 @@ fun Modifier.applyGradientOverlay(heightRatio: Float = 0.3f): Modifier {
 @Composable
 fun Modifier.applyWidthFromScreenWidth(ratio: Float): Modifier {
     return width(getScreenWidth() * ratio)
+}
+
+@Composable
+fun Modifier.applyTopBarMinHeight(): Modifier {
+    return height(DefaultTheme.dimen.topBarMinHeight)
 }

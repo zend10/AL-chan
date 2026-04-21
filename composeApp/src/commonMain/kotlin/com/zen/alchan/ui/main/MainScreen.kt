@@ -45,7 +45,8 @@ fun NavGraphBuilder.mainDestination(
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToWeb: (String) -> Unit
+    onNavigateToWeb: (url: String) -> Unit,
+    onNavigateToUser: (id: String) -> Unit
 ) {
     composable<Main> {
         MainScreen(
@@ -53,7 +54,8 @@ fun NavGraphBuilder.mainDestination(
             onNavigateToExplore,
             onNavigateToCalendar,
             onNavigateToSocial,
-            onNavigateToWeb
+            onNavigateToWeb,
+            onNavigateToUser
         )
     }
 }
@@ -70,7 +72,8 @@ fun MainScreen(
     onNavigateToExplore: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToWeb: (String) -> Unit
+    onNavigateToWeb: (url: String) -> Unit,
+    onNavigateToUser: (id: String) -> Unit
 ) {
     val viewModel = koinViewModel<MainViewModel>()
     val state by viewModel.state.collectAsState()
@@ -114,7 +117,8 @@ fun MainScreen(
                 onNavigateToExplore,
                 onNavigateToCalendar,
                 onNavigateToSocial,
-                onNavigateToWeb
+                onNavigateToWeb,
+                onNavigateToUser
             )
             animeListDestination()
             mangaListDestination()
@@ -163,7 +167,14 @@ private fun MainBottomNavigationBar(
 )
 fun PreviewPhone_MainScreen() {
     PreviewScreen {
-        MainScreen({}, {}, {}, {}, {})
+        MainScreen(
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+        )
     }
 }
 
@@ -174,6 +185,13 @@ fun PreviewPhone_MainScreen() {
 )
 fun PreviewTable_MainScreen() {
     PreviewScreen {
-        MainScreen({}, {}, {}, {}, {})
+        MainScreen(
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+        )
     }
 }

@@ -4,15 +4,19 @@ package com.zen.alchan.ui.component
 
 import al_chan.composeapp.generated.resources.Res
 import al_chan.composeapp.generated.resources.guest_wallpaper
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
@@ -28,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import com.zen.alchan.DefaultTheme
@@ -43,11 +48,15 @@ fun CollapsingTopBar(
     backgroundImageUrl: String? = null,
     backgroundImageDrawableResource: DrawableResource? = null,
     aspectRatio: Float = if (isWideScreen()) 2.5f else 1f,
-    fullyExpandedContent: @Composable (ColumnScope.() -> Unit)? = null,
-    alwaysDisplayedContent: @Composable (ColumnScope.() -> Unit)
+    anchorContent: @Composable (BoxScope.() -> Unit)? = null,
+    anchorContentHeight: Dp = 0.dp,
+    fullyExpandedContent: @Composable (BoxScope.() -> Unit)? = null,
+    alwaysDisplayedHeight: Dp = DefaultTheme.dimen.topBarMinHeight,
+    alwaysDisplayedContent: @Composable (BoxScope.() -> Unit)
 ) {
     val screenWidth = getScreenWidth()
-    val collapsedAppBarMinHeight = 72.dp
+    val collapsedAppBarMinHeight =
+        alwaysDisplayedHeight + if (anchorContentHeight > 0.dp) anchorContentHeight / 2 else 0.dp
     val bannerHeight by remember {
         derivedStateOf {
             val calculatedHeight =
@@ -55,9 +64,9 @@ fun CollapsingTopBar(
             max(calculatedHeight, collapsedAppBarMinHeight)
         }
     }
-    val isFullyExpanded by remember {
+    val isContentVisible by remember {
         derivedStateOf {
-            topAppBarScrollBehavior.state.collapsedFraction == 0f
+            topAppBarScrollBehavior.state.collapsedFraction < 0.1
         }
     }
 
@@ -73,10 +82,12 @@ fun CollapsingTopBar(
         )
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
+                .background(Color.Transparent)
                 .fillMaxWidth()
                 .height(
-                    bannerHeight + WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+                    bannerHeight +
+                            WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
+                            (if (anchorContentHeight > 0.dp) anchorContentHeight / 2 else 0.dp)
                 )
         ) {
             DefaultImage(
@@ -90,16 +101,37 @@ fun CollapsingTopBar(
                         bannerHeight + WindowInsets.statusBars.asPaddingValues()
                             .calculateTopPadding()
                     )
-                    .applyGradientOverlay(0f)
+                    .applyGradientOverlay(0.3f)
             )
-            Column(
+
+            if (anchorContent != null && anchorContentHeight > 0.dp) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(anchorContentHeight / 2)
+                        .background(Color.Transparent)
+                        .align(Alignment.BottomCenter)
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = DefaultTheme.dimen.paddingNormal)
+                        .height(anchorContentHeight)
+                ) {
+                    anchorContent()
+                }
+            }
+
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(horizontal = DefaultTheme.dimen.paddingNormal)
-                    .align(Alignment.BottomStart)
+                    .padding(top = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding())
+                    .padding(bottom = if (anchorContentHeight > 0.dp) anchorContentHeight else 0.dp)
             ) {
-                if (isFullyExpanded) {
-                    fullyExpandedContent?.invoke(this)
+                AnimatedVisibility(isContentVisible, enter = scaleIn(), exit = scaleOut()) {
+                    fullyExpandedContent?.invoke(this@Box)
                 }
                 alwaysDisplayedContent()
             }
