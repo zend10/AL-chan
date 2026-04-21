@@ -23,5 +23,15 @@
     <string name="welcome">Welcome</string>
     <string name="more">More</string>
     <string name="notifications">Notifications</string>
+    <string name="settings">Settings</string>
     <string name="search_bar_label">What are you looking for?</string>
+    <string name="follow">Follow</string>
+    <string name="follows_you">Follows You</string>
+    <string name="following">Following</string>
+    <string name="mutual">Mutual</string>
+    <string name="followers">Followers</string>
+    <string name="reviews">Reviews</string>
+    <string name="activity">Activity</string>
+    <string name="bio">Bio</string>
+    <string name="back">Back</string>
 </resources>

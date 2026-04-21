@@ -34,7 +34,7 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun QuickMenu(
+fun HomeQuickMenu(
     onSeasonalPressed: () -> Unit,
     onExplorePressed: () -> Unit,
     onCalendarPressed: () -> Unit,
@@ -48,22 +48,22 @@ fun QuickMenu(
             .padding(top = DefaultTheme.dimen.paddingVeryBig),
         horizontalArrangement = Arrangement.spacedBy(DefaultTheme.dimen.paddingVerySmall)
     ) {
-        QuicKMenuItem(
+        HomeQuickMenuItem(
             Res.string.seasonal,
             Res.drawable.ic_seasonal,
             onClick = { onSeasonalPressed() }
         )
-        QuicKMenuItem(
+        HomeQuickMenuItem(
             Res.string.explore,
             Res.drawable.ic_explore,
             onClick = { onExplorePressed() }
         )
-        QuicKMenuItem(
+        HomeQuickMenuItem(
             Res.string.calendar,
             Res.drawable.ic_calendar,
             onClick = { onCalendarPressed() }
         )
-        QuicKMenuItem(
+        HomeQuickMenuItem(
             Res.string.social,
             Res.drawable.ic_social,
             onClick = { onSocialPressed() }
@@ -72,7 +72,7 @@ fun QuickMenu(
 }
 
 @Composable
-private fun QuicKMenuItem(
+private fun HomeQuickMenuItem(
     label: StringResource,
     icon: DrawableResource,
     onClick: () -> Unit
@@ -104,6 +104,6 @@ private fun QuicKMenuItem(
 
 @Composable
 @Preview
-fun PreviewScreen_QuickMenu() {
-    PreviewScreen { QuickMenu({}, {}, {}, {}) }
+fun PreviewScreen_Home_QuickMenu() {
+    PreviewScreen { HomeQuickMenu({}, {}, {}, {}) }
 }

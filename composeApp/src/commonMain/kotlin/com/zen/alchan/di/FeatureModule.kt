@@ -11,6 +11,8 @@ import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.main.MainViewModel
 import com.zen.alchan.ui.mangalist.MangaListViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
+import com.zen.alchan.ui.user.UserParam
+import com.zen.alchan.ui.user.UserViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -23,4 +25,5 @@ val featureModule = module {
     viewModel { HomeViewModel(get(), get(), get(), get(), AniListConstant) }
     viewModel { AnimeListViewModel(get()) }
     viewModel { MangaListViewModel(get()) }
+    viewModel { (userParam: UserParam) -> UserViewModel(get(), userParam, get(), get()) }
 }

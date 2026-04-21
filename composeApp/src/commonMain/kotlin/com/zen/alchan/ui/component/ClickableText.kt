@@ -4,6 +4,7 @@ import al_chan.composeapp.generated.resources.Res
 import al_chan.composeapp.generated.resources.ic_arrow_forward
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +40,9 @@ fun ClickableText(
                 drawableResource = trailingIcon,
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                modifier = Modifier.size(DefaultTheme.dimen.iconSmall)
+                modifier = Modifier
+                    .padding(start = DefaultTheme.dimen.paddingVerySmall)
+                    .size(DefaultTheme.dimen.iconSmall)
             )
         }
     }

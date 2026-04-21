@@ -99,7 +99,7 @@ fun LandingScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(Modifier.weight(1f))
-                PressToStatText()
+                PressToStartText()
                 Spacer(Modifier.weight(1f))
                 DisplayText(
                     text = stringResource(Res.string.landing_footer),
@@ -117,7 +117,7 @@ fun LandingScreen(
 }
 
 @Composable
-private fun PressToStatText() {
+private fun PressToStartText() {
     val infiniteTransition = rememberInfiniteTransition(label = "startTextInfiniteTransition")
     val startTextAnimation = infiniteTransition.animateFloat(
         initialValue = 0f,
