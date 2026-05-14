@@ -101,7 +101,7 @@ fun CollapsingTopBar(
                         bannerHeight + WindowInsets.statusBars.asPaddingValues()
                             .calculateTopPadding()
                     )
-                    .applyGradientOverlay(0.3f)
+                    .applyGradientOverlay(0.1f)
             )
 
             if (anchorContent != null && anchorContentHeight > 0.dp) {

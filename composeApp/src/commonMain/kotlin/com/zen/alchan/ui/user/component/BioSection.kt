@@ -1,4 +1,4 @@
-package com.zen.alchan.ui.user
+package com.zen.alchan.ui.user.component
 
 import al_chan.composeapp.generated.resources.Res
 import al_chan.composeapp.generated.resources.bio
@@ -18,7 +18,11 @@ import com.zen.alchan.ui.component.MarkdownText
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun UserBio(bio: String) {
+fun BioSection(bio: String) {
+    if (bio.isBlank()) {
+        return
+    }
+
     val bioRichTextState = rememberRichTextState()
 
     LaunchedEffect(bio) {
@@ -38,7 +42,7 @@ fun UserBio(bio: String) {
         )
         MarkdownText(
             richTextState = bioRichTextState,
-            textStyle = MaterialTheme.typography.bodySmall,
+            textStyle = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = DefaultTheme.dimen.paddingNormal)
         )
@@ -47,6 +51,6 @@ fun UserBio(bio: String) {
 
 @Composable
 @Preview
-fun PreviewScreen_UserBio() {
-    PreviewScreen { UserBio("Hello, World!") }
+fun PreviewScreen_BioSection() {
+    PreviewScreen { BioSection("Hello, World!") }
 }

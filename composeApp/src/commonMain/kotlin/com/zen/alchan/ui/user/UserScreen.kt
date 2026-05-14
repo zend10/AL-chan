@@ -25,6 +25,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.zen.alchan.DefaultTheme
 import com.zen.alchan.ui.common.PreviewScreen
+import com.zen.alchan.ui.user.component.BioSection
+import com.zen.alchan.ui.user.component.UserHeader
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -36,8 +38,14 @@ fun NavGraphBuilder.userDestination() {
     composable<User> { UserScreen(UserParam(it.toRoute<User>().id)) }
 }
 
-fun NavController.navigateToUser(id: String) {
-    navigate(User(id))
+fun NavController.navigateToUser(id: String, isStartDestination: Boolean) {
+    navigate(User(id)) {
+        if (isStartDestination) {
+            popUpTo(graph.startDestinationId) {
+                inclusive = true
+            }
+        }
+    }
 }
 
 @Composable
@@ -67,15 +75,7 @@ fun UserScreen(userParam: UserParam) {
                 .padding(contentPadding)
                 .padding(bottom = DefaultTheme.dimen.paddingVeryBig)
         ) {
-            UserQuickMenu()
-            UserBio(state.user.about)
-            UserBio(state.user.about)
-            UserBio(state.user.about)
-            UserBio(state.user.about)
-            UserBio(state.user.about)
-            UserBio(state.user.about)
-            UserBio(state.user.about)
-            UserBio(state.user.about)
+            BioSection(state.user.about)
         }
     }
 }
