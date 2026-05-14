@@ -9,6 +9,8 @@ import com.zen.alchan.ui.base.Dispatcher
 import com.zen.alchan.ui.home.HomeViewModel
 import com.zen.alchan.ui.landing.LandingViewModel
 import com.zen.alchan.ui.main.MainViewModel
+import com.zen.alchan.ui.maindetail.MainDetailParam
+import com.zen.alchan.ui.maindetail.MainDetailViewModel
 import com.zen.alchan.ui.mangalist.MangaListViewModel
 import com.zen.alchan.ui.splash.SplashViewModel
 import com.zen.alchan.ui.user.UserParam
@@ -25,5 +27,6 @@ val featureModule = module {
     viewModel { HomeViewModel(get(), get(), get(), get(), AniListConstant) }
     viewModel { AnimeListViewModel(get()) }
     viewModel { MangaListViewModel(get()) }
+    viewModel { (mainDetailParam: MainDetailParam) -> MainDetailViewModel(get(), mainDetailParam) }
     viewModel { (userParam: UserParam) -> UserViewModel(get(), userParam, get(), get()) }
 }
