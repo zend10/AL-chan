@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.zen.alchan.ui.home
+package com.zen.alchan.ui.home.component
 
 import al_chan.composeapp.generated.resources.Res
 import al_chan.composeapp.generated.resources.ic_arrow_forward

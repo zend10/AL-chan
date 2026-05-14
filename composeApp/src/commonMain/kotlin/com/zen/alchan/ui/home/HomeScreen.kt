@@ -41,6 +41,10 @@ import com.zen.alchan.DefaultTheme
 import com.zen.alchan.ui.common.PreviewScreen
 import com.zen.alchan.ui.component.DefaultImage
 import com.zen.alchan.ui.component.LoadingIndicator
+import com.zen.alchan.ui.home.component.GuestHeader
+import com.zen.alchan.ui.home.component.HomeQuickMenu
+import com.zen.alchan.ui.home.component.MiniUserHeader
+import com.zen.alchan.ui.home.component.NewsSection
 import com.zen.alchan.ui.main.MainUiEffect
 import com.zen.alchan.ui.main.MainViewModel
 import kotlinx.coroutines.flow.collectLatest

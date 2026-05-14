@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.zen.alchan.ui.user
+package com.zen.alchan.ui.user.component
 
 import al_chan.composeapp.generated.resources.Res
 import al_chan.composeapp.generated.resources.anime
