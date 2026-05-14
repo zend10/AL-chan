@@ -22,6 +22,10 @@ class MainDetailViewModel(
             }
         )
     }
+
+    fun onBackClick() {
+        sendNewEffect(MainDetailUiEffect.NavigateBackOrClose)
+    }
 }
 
 @Serializable
@@ -37,4 +41,5 @@ data class MainDetailUiState(
 sealed interface MainDetailUiEffect {
     class NavigateToUser(val id: String) : MainDetailUiEffect
     class NavigateToMediaDetail(val id: String) : MainDetailUiEffect
+    object NavigateBackOrClose : MainDetailUiEffect
 }

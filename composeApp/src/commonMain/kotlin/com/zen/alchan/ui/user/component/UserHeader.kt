@@ -5,9 +5,11 @@ package com.zen.alchan.ui.user.component
 import al_chan.composeapp.generated.resources.Res
 import al_chan.composeapp.generated.resources.anime
 import al_chan.composeapp.generated.resources.back
+import al_chan.composeapp.generated.resources.close
 import al_chan.composeapp.generated.resources.followers
 import al_chan.composeapp.generated.resources.following
 import al_chan.composeapp.generated.resources.ic_back
+import al_chan.composeapp.generated.resources.ic_close
 import al_chan.composeapp.generated.resources.manga
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -49,7 +51,9 @@ fun UserHeader(
     topAppBarScrollBehavior: TopAppBarScrollBehavior,
     user: User,
     appConfig: AppConfig,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+    onFollowClick: () -> Unit
 ) {
     CollapsingTopBar(
         topAppBarScrollBehavior,
@@ -59,7 +63,7 @@ fun UserHeader(
         },
         anchorContentHeight = 60.dp,
         fullyExpandedContent = {
-            HeaderContent(user, appConfig)
+            HeaderContent(user, appConfig, onFollowClick)
         },
         alwaysDisplayedContent = {
             Row(
@@ -72,13 +76,18 @@ fun UserHeader(
                     onBackClick
                 )
                 Spacer(Modifier.weight(1f))
+                TopBarButton(
+                    Res.drawable.ic_close,
+                    Res.string.close,
+                    onCloseClick
+                )
             }
         }
     )
 }
 
 @Composable
-private fun HeaderContent(user: User, appConfig: AppConfig) {
+private fun HeaderContent(user: User, appConfig: AppConfig, onFollowClick: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize().padding(bottom = DefaultTheme.dimen.paddingNormal),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,7 +123,7 @@ private fun HeaderContent(user: User, appConfig: AppConfig) {
         }
         PrimaryButton(
             "Follow",
-            onClick = {},
+            onClick = { onFollowClick() },
             modifier = Modifier.padding(top = DefaultTheme.dimen.paddingSmall)
         )
     }
@@ -187,6 +196,13 @@ private fun AnchorContentItem(
 fun PreviewScreen_UserHeader() {
     val user = User(name = "Bob")
     PreviewScreen {
-        UserHeader(TopAppBarDefaults.exitUntilCollapsedScrollBehavior(), user, AppConfig(), {})
+        UserHeader(
+            TopAppBarDefaults.exitUntilCollapsedScrollBehavior(),
+            user,
+            AppConfig(),
+            {},
+            {},
+            {}
+        )
     }
 }

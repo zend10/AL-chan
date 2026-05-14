@@ -27,7 +27,6 @@ import com.zen.alchan.ui.social.navigateToSocial
 import com.zen.alchan.ui.social.socialDestination
 import com.zen.alchan.ui.splash.Splash
 import com.zen.alchan.ui.splash.splashDestination
-import com.zen.alchan.ui.user.userDestination
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
@@ -97,8 +96,7 @@ fun App(
                 exploreDestination()
                 calendarDestination()
                 socialDestination()
-                mainDetailDestination()
-                userDestination()
+                mainDetailDestination(onCloseClick = { navController.popBackStack() })
             }
         }
     }

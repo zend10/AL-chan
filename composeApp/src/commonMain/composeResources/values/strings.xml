@@ -34,4 +34,5 @@
     <string name="activity">Activity</string>
     <string name="bio">Bio</string>
     <string name="back">Back</string>
+    <string name="close">Close</string>
 </resources>

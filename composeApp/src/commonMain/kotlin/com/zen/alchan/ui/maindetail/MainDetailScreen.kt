@@ -23,10 +23,10 @@ import org.koin.core.parameter.parametersOf
 @Serializable
 data class MainDetail(val startDestination: DetailPage, val id: String)
 
-fun NavGraphBuilder.mainDetailDestination() {
+fun NavGraphBuilder.mainDetailDestination(onCloseClick: () -> Unit) {
     composable<MainDetail> {
         val route = it.toRoute<MainDetail>()
-        MainDetailScreen(MainDetailParam(route.startDestination, route.id))
+        MainDetailScreen(MainDetailParam(route.startDestination, route.id), onCloseClick)
     }
 }
 
@@ -35,7 +35,7 @@ fun NavController.navigateToMainDetail(startDestination: DetailPage, id: String)
 }
 
 @Composable
-fun MainDetailScreen(mainDetailParam: MainDetailParam) {
+fun MainDetailScreen(mainDetailParam: MainDetailParam, onCloseClick: () -> Unit) {
     val viewModel = koinViewModel<MainDetailViewModel> { parametersOf(mainDetailParam) }
     val navController = rememberNavController()
 
@@ -45,6 +45,14 @@ fun MainDetailScreen(mainDetailParam: MainDetailParam) {
                 is MainDetailUiEffect.NavigateToMediaDetail -> {}
                 is MainDetailUiEffect.NavigateToUser -> {
                     navController.navigateToUser(newEffect.id, true)
+                }
+
+                MainDetailUiEffect.NavigateBackOrClose -> {
+                    if (navController.previousBackStackEntry == null) {
+                        onCloseClick()
+                    } else {
+                        navController.popBackStack()
+                    }
                 }
             }
         }
@@ -60,7 +68,10 @@ fun MainDetailScreen(mainDetailParam: MainDetailParam) {
             startDestination = MainDetailSplash
         ) {
             mainDetailSplashDestination()
-            userDestination()
+            userDestination(
+                onBackClick = { viewModel.onBackClick() },
+                onCloseClick = { onCloseClick() }
+            )
         }
     }
 }
@@ -72,7 +83,7 @@ fun MainDetailScreen(mainDetailParam: MainDetailParam) {
 )
 fun PreviewPhone_MainDetailScreen() {
     PreviewScreen {
-        MainDetailScreen(MainDetailParam(DetailPage.USER, "123"))
+        MainDetailScreen(MainDetailParam(DetailPage.USER, "123"), {})
     }
 }
 
@@ -83,6 +94,6 @@ fun PreviewPhone_MainDetailScreen() {
 )
 fun PreviewTablet_MainDetailScreen() {
     PreviewScreen {
-        MainDetailScreen(MainDetailParam(DetailPage.USER, "123"))
+        MainDetailScreen(MainDetailParam(DetailPage.USER, "123"), {})
     }
 }

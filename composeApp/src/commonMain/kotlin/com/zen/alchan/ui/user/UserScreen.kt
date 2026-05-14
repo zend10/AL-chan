@@ -34,8 +34,17 @@ import org.koin.core.parameter.parametersOf
 @Serializable
 data class User(val id: String)
 
-fun NavGraphBuilder.userDestination() {
-    composable<User> { UserScreen(UserParam(it.toRoute<User>().id)) }
+fun NavGraphBuilder.userDestination(
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+) {
+    composable<User> {
+        UserScreen(
+            UserParam(it.toRoute<User>().id),
+            onBackClick,
+            onCloseClick,
+        )
+    }
 }
 
 fun NavController.navigateToUser(id: String, isStartDestination: Boolean) {
@@ -49,7 +58,11 @@ fun NavController.navigateToUser(id: String, isStartDestination: Boolean) {
 }
 
 @Composable
-fun UserScreen(userParam: UserParam) {
+fun UserScreen(
+    userParam: UserParam,
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+) {
     val viewModel = koinViewModel<UserViewModel> { parametersOf(userParam) }
     val state by viewModel.state.collectAsState()
 
@@ -63,7 +76,9 @@ fun UserScreen(userParam: UserParam) {
                 topAppBarScrollBehavior,
                 state.user,
                 state.appConfig,
-                onBackClick = {}
+                onBackClick = { onBackClick() },
+                onCloseClick = { onCloseClick() },
+                onFollowClick = { }
             )
         }
     ) { contentPadding ->
@@ -87,7 +102,7 @@ fun UserScreen(userParam: UserParam) {
 )
 fun PreviewPhone_UserScreen() {
     PreviewScreen {
-        UserScreen(UserParam())
+        UserScreen(UserParam(), {}, {})
     }
 }
 
@@ -98,6 +113,6 @@ fun PreviewPhone_UserScreen() {
 )
 fun PreviewTablet_UserScreen() {
     PreviewScreen {
-        UserScreen(UserParam())
+        UserScreen(UserParam(), {}, {})
     }
 }
