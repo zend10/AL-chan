@@ -101,7 +101,7 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             MainBottomNavigationBar(
-                { tab -> viewModel.onTabPressed(tab) },
+                { tab -> viewModel.onTabClick(tab) },
                 state
             )
         }
@@ -128,7 +128,7 @@ fun MainScreen(
 
 @Composable
 private fun MainBottomNavigationBar(
-    onTabPressed: (tab: BottomNavigationTab) -> Unit,
+    onTabClick: (tab: BottomNavigationTab) -> Unit,
     state: MainUiState
 ) {
     NavigationBar(
@@ -138,7 +138,7 @@ private fun MainBottomNavigationBar(
             val tab = state.bottomNavigationTabs[index]
             NavigationBarItem(
                 selected = state.selectedTabIndex == index,
-                onClick = { onTabPressed(tab) },
+                onClick = { onTabClick(tab) },
                 icon = {
                     Image(painterResource(tab.icon), contentDescription = null)
                 },

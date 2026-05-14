@@ -162,17 +162,17 @@ fun HomeScreen(
             if (state.user.isGuest()) {
                 GuestHeader(
                     topAppBarScrollBehavior,
-                    onClickRegister = { viewModel.onRegisterPressed() },
-                    onClickLogin = { viewModel.onLoginPressed() }
+                    onRegisterClick = { viewModel.onRegisterClick() },
+                    onLoginClick = { viewModel.onLoginClick() }
                 )
             } else {
                 MiniUserHeader(
                     topAppBarScrollBehavior,
                     state.user,
                     state.appConfig,
-                    onUserClick = { viewModel.onUserPressed() },
-                    onNotificationsClick = { viewModel.onNotificationsPressed() },
-                    onSettingsClick = { viewModel.onSettingsPressed() }
+                    onUserClick = { viewModel.onUserClick() },
+                    onNotificationsClick = { viewModel.onNotificationsClick() },
+                    onSettingsClick = { viewModel.onSettingsClick() }
                 )
             }
         }
@@ -186,19 +186,19 @@ fun HomeScreen(
                 .padding(bottom = DefaultTheme.dimen.paddingVeryBig)
         ) {
             SearchBar(
-                onSearchBarClick = { viewModel.onSearchPressed() }
+                onSearchClick = { viewModel.onSearchClick() }
             )
             HomeQuickMenu(
-                onSeasonalPressed = { viewModel.onSeasonalPressed() },
-                onExplorePressed = { viewModel.onExplorePressed() },
-                onCalendarPressed = { viewModel.onCalendarPressed() },
-                onSocialPressed = { viewModel.onSocialPressed() },
+                onSeasonalClick = { viewModel.onSeasonalClick() },
+                onExploreClick = { viewModel.onExploreClick() },
+                onCalendarClick = { viewModel.onCalendarClick() },
+                onSocialClick = { viewModel.onSocialClick() },
             )
             NewsSection(
                 state.isLoading,
                 state.news,
                 state.appConfig,
-                onClick = { viewModel.onMediaPressed(it) }
+                onClick = { viewModel.onMediaClick(it) }
             )
         }
     }
@@ -215,13 +215,13 @@ private fun LoginLoading() {
 }
 
 @Composable
-private fun SearchBar(onSearchBarClick: () -> Unit) {
+private fun SearchBar(onSearchClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth()
             .padding(horizontal = DefaultTheme.dimen.paddingNormal)
             .padding(top = DefaultTheme.dimen.paddingNormal)
             .clip(CardDefaults.shape)
-            .clickable(onClick = onSearchBarClick),
+            .clickable(onClick = onSearchClick),
         colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.onBackground)
     ) {
         Row(

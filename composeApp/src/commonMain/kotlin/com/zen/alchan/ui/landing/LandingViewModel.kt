@@ -1,7 +1,6 @@
 package com.zen.alchan.ui.landing
 
 import androidx.lifecycle.viewModelScope
-import com.zen.alchan.data.repository.AuthRepository
 import com.zen.alchan.data.repository.ConfigRepository
 import com.zen.alchan.ui.base.BaseViewModel
 import com.zen.alchan.ui.base.Dispatcher
@@ -21,7 +20,7 @@ class LandingViewModel(
 
     }
 
-    fun onStartPressed() {
+    fun onStartClick() {
         viewModelScope.launch(dispatcher.io) {
             configRepository.setLandingCompleted()
             sendNewEffect(LandingUiEffect.NavigateToMain)

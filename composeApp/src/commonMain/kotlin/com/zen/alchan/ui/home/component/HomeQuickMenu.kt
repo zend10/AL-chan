@@ -35,10 +35,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HomeQuickMenu(
-    onSeasonalPressed: () -> Unit,
-    onExplorePressed: () -> Unit,
-    onCalendarPressed: () -> Unit,
-    onSocialPressed: () -> Unit,
+    onSeasonalClick: () -> Unit,
+    onExploreClick: () -> Unit,
+    onCalendarClick: () -> Unit,
+    onSocialClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Row(
@@ -51,22 +51,22 @@ fun HomeQuickMenu(
         HomeQuickMenuItem(
             Res.string.seasonal,
             Res.drawable.ic_seasonal,
-            onClick = { onSeasonalPressed() }
+            onClick = { onSeasonalClick() }
         )
         HomeQuickMenuItem(
             Res.string.explore,
             Res.drawable.ic_explore,
-            onClick = { onExplorePressed() }
+            onClick = { onExploreClick() }
         )
         HomeQuickMenuItem(
             Res.string.calendar,
             Res.drawable.ic_calendar,
-            onClick = { onCalendarPressed() }
+            onClick = { onCalendarClick() }
         )
         HomeQuickMenuItem(
             Res.string.social,
             Res.drawable.ic_social,
-            onClick = { onSocialPressed() }
+            onClick = { onSocialClick() }
         )
     }
 }

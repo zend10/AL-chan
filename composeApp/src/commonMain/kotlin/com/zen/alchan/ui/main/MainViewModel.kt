@@ -37,7 +37,7 @@ class MainViewModel(
         }
     }
 
-    fun onTabPressed(tab: BottomNavigationTab) {
+    fun onTabClick(tab: BottomNavigationTab) {
         viewModelScope.launch(dispatcher.ui) {
             val selectedTabIndex = state.value.bottomNavigationTabs.indexOf(tab)
             if (state.value.selectedTabIndex == selectedTabIndex) {

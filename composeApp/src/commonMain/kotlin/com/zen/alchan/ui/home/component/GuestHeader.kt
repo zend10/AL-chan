@@ -39,8 +39,8 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun GuestHeader(
     topAppBarScrollBehavior: TopAppBarScrollBehavior,
-    onClickRegister: () -> Unit,
-    onClickLogin: () -> Unit
+    onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit
 ) {
     val guestLoginRichTextState = rememberRichTextState()
     val guestText = stringResource(Res.string.login_body)
@@ -92,12 +92,12 @@ fun GuestHeader(
             ) {
                 ClickableText(
                     text = stringResource(Res.string.register),
-                    onClick = { onClickRegister() },
+                    onClick = { onRegisterClick() },
                     textStyle = MaterialTheme.typography.bodyLarge,
                 )
                 PrimaryButton(
                     text = stringResource(Res.string.log_in),
-                    onClick = { onClickLogin() },
+                    onClick = { onLoginClick() },
                 )
             }
         }

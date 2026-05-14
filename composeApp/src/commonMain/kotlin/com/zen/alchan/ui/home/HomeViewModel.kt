@@ -80,47 +80,47 @@ class HomeViewModel(
         }
     }
 
-    fun onRegisterPressed() {
+    fun onRegisterClick() {
         sendNewEffect(HomeUiEffect.NavigateToWeb(aniListConstant.ANILIST_REGISTER_URL))
     }
 
-    fun onLoginPressed() {
+    fun onLoginClick() {
         sendNewEffect(HomeUiEffect.NavigateToWeb(aniListConstant.ANILIST_LOGIN_URL))
     }
 
-    fun onUserPressed() {
+    fun onUserClick() {
         sendNewEffect(HomeUiEffect.NavigateToUser(state.value.user.id))
     }
 
-    fun onNotificationsPressed() {
+    fun onNotificationsClick() {
         sendNewEffect(HomeUiEffect.NavigateToNotifications)
     }
 
-    fun onSettingsPressed() {
+    fun onSettingsClick() {
         sendNewEffect(HomeUiEffect.NavigateToSettings)
     }
 
-    fun onSearchPressed() {
+    fun onSearchClick() {
         sendNewEffect(HomeUiEffect.NavigateToSearch)
     }
 
-    fun onSeasonalPressed() {
+    fun onSeasonalClick() {
         sendNewEffect(HomeUiEffect.NavigateToSeasonal)
     }
 
-    fun onExplorePressed() {
+    fun onExploreClick() {
         sendNewEffect(HomeUiEffect.NavigateToExplore)
     }
 
-    fun onCalendarPressed() {
+    fun onCalendarClick() {
         sendNewEffect(HomeUiEffect.NavigateToCalendar)
     }
 
-    fun onSocialPressed() {
+    fun onSocialClick() {
         sendNewEffect(HomeUiEffect.NavigateToSocial)
     }
 
-    fun onMediaPressed(media: Media) {
+    fun onMediaClick(media: Media) {
         sendNewEffect(HomeUiEffect.NavigateToMediaDetail(media))
     }
 }

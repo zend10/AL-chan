@@ -80,7 +80,7 @@ fun LandingScreen(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = { viewModel.onStartPressed() }
+                onClick = { viewModel.onStartClick() }
             )
     ) {
         DefaultImage(

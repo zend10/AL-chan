@@ -80,7 +80,7 @@ fun MiniUserHeader(
                     TopBarButton(
                         Res.drawable.ic_settings,
                         Res.string.settings,
-                        onNotificationsClick
+                        onSettingsClick
                     )
                 }
             }
