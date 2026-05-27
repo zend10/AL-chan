@@ -20,8 +20,7 @@ class DefaultAuthRepository(
     }
 
     override suspend fun getCurrentUser(): User {
-        val token = localStorageProvider.getAniListToken()
-        val user = apiProvider.getCurrentUser(token).toModel()
+        val user = apiProvider.getCurrentUser().toModel()
         localStorageProvider.setCurrentAniListUser(user)
         return user
     }
@@ -37,7 +36,8 @@ class DefaultAuthRepository(
 
     override suspend fun login(token: String): User {
         localStorageProvider.setAniListToken(token)
-        val user = apiProvider.getCurrentUser(token).toModel()
+        apiProvider.setBearerToken(token)
+        val user = apiProvider.getCurrentUser().toModel()
         localStorageProvider.setCurrentAniListUser(user)
         return user
     }

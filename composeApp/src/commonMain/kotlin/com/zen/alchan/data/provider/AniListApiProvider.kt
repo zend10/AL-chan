@@ -13,6 +13,11 @@ class AniListApiProvider(
     private val httpClient: KtorHttpClient,
     private val aniListConstant: AniListConstant
 ) : ApiProvider {
+
+    override fun setBearerToken(token: String) {
+        httpClient.setBearerToken(token)
+    }
+
     override suspend fun getHomeData(): HomeDataResponse {
         try {
             val result = httpClient.query<HomeDataResponse>(
@@ -25,9 +30,9 @@ class AniListApiProvider(
         }
     }
 
-    override suspend fun getCurrentUser(token: String): ViewerResponse {
+    override suspend fun getCurrentUser(): ViewerResponse {
         try {
-            val result = httpClient.query<ViewerResponse>(VIEWER_QUERY, token = token)
+            val result = httpClient.query<ViewerResponse>(VIEWER_QUERY)
             return result
         } catch (exception: Exception) {
             throw exception

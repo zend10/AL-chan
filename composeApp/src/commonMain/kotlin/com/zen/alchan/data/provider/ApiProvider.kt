@@ -4,6 +4,7 @@ import com.zen.alchan.data.response.anilist.HomeDataResponse
 import com.zen.alchan.data.response.anilist.ViewerResponse
 
 interface ApiProvider {
+    fun setBearerToken(token: String)
     suspend fun getHomeData(): HomeDataResponse
-    suspend fun getCurrentUser(token: String): ViewerResponse
+    suspend fun getCurrentUser(): ViewerResponse
 }
