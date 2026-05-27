@@ -4,13 +4,9 @@ import com.zen.alchan.data.enums.getCountryEnum
 import com.zen.alchan.data.enums.getMediaFormatEnum
 import com.zen.alchan.data.enums.getMediaStatusEnum
 import com.zen.alchan.data.enums.getMediaTypeEnum
-import com.zen.alchan.data.model.api.FuzzyDate
 import com.zen.alchan.data.model.api.Media
 import com.zen.alchan.data.model.api.MediaCoverImage
 import com.zen.alchan.data.model.api.MediaTitle
-import com.zen.alchan.data.model.api.Staff
-import com.zen.alchan.data.model.api.StaffName
-import com.zen.alchan.data.model.api.Studio
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -54,29 +50,9 @@ data class MediaResponse(
             genres = genres ?: listOf(),
             averageScore = averageScore ?: 0,
             favourites = favourites ?: 0,
-            staff = staff?.edges?.map {
-                Staff(
-                    id = it.node?.id?.toString() ?: "",
-                    name = StaffName(
-                        full = it.node?.name?.full ?: ""
-                    ),
-                    role = it.role ?: ""
-                )
-            } ?: listOf(),
-            studios = studios?.edges?.map {
-                Studio(
-                    id = it.node?.id?.toString() ?: "",
-                    name = it.node?.name ?: "",
-                    isMain = it.isMain ?: false
-                )
-            } ?: listOf(),
-            startDate = startDate?.let {
-                FuzzyDate(
-                    year = it.year ?: 0,
-                    month = it.month ?: 0,
-                    day = it.day ?: 0
-                )
-            },
+            staff = staff?.toModel() ?: listOf(),
+            studios = studios?.toModel() ?: listOf(),
+            startDate = startDate?.toModel(),
             nextAiringEpisode = nextAiringEpisode?.toModel()
         )
     }
