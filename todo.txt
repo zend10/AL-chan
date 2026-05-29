@@ -1,4 +1,44 @@
-ELO
-Attributes
+
+
+
+
+
+Home page:
+Mini profile at top
+Airing Yesterday/Today/Tomorrow
+News (trending and new series are included into this news carousel)
+
+
+List page:
+Find show that's on both PTW
+Compare score
+Find random show
+
+
+
+
+
+Profile page:
+Affinity
+Attributes (Fire rate: show/year, Consistency: rate / career, Rigor: finished show / dropped show, Easy to Please: high score show / low score show, Sheep: Popular show / unpopular show)
+Tendencies
 Best Friend
+Create 3x3 favorites
+
+
+Features:
+Search/Explore (search history)
+Seasonal (recommendation for the season based on user list)
+Calendar
+Timeline (draft, schedule post, share activity to social media)
+Forum
 News
+Multi account
+
+
+
+
+Config:
+Force update
+Announcement
+Rate limit

@@ -1,0 +1,111 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
+package com.zen.alchan.ui.home.component
+
+import al_chan.shared.generated.resources.Res
+import al_chan.shared.generated.resources.guest_greetings_body
+import al_chan.shared.generated.resources.guest_greetings_title
+import al_chan.shared.generated.resources.guest_wallpaper
+import al_chan.shared.generated.resources.log_in
+import al_chan.shared.generated.resources.login_body
+import al_chan.shared.generated.resources.login_title
+import al_chan.shared.generated.resources.register
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.zen.alchan.DefaultTheme
+import com.zen.alchan.helper.applyTopBarMinHeight
+import com.zen.alchan.ui.common.PreviewScreen
+import com.zen.alchan.ui.component.ClickableText
+import com.zen.alchan.ui.component.CollapsingTopBar
+import com.zen.alchan.ui.component.DisplayText
+import com.zen.alchan.ui.component.MarkdownText
+import com.zen.alchan.ui.component.PrimaryButton
+import org.jetbrains.compose.resources.stringResource
+
+@Composable
+fun GuestHeader(
+    topAppBarScrollBehavior: TopAppBarScrollBehavior,
+    onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit
+) {
+    val guestLoginRichTextState = rememberRichTextState()
+    val guestText = stringResource(Res.string.login_body)
+
+    LaunchedEffect(Unit) {
+        guestLoginRichTextState.setMarkdown(guestText)
+    }
+
+    CollapsingTopBar(
+        topAppBarScrollBehavior,
+        backgroundImageDrawableResource = Res.drawable.guest_wallpaper,
+        fullyExpandedContent = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = DefaultTheme.dimen.topBarMinHeight),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                DisplayText(
+                    text = stringResource(Res.string.guest_greetings_title),
+                    textStyle = MaterialTheme.typography.titleMedium,
+                )
+                DisplayText(
+                    text = stringResource(Res.string.guest_greetings_body),
+                    textStyle = MaterialTheme.typography.bodySmall,
+                )
+                DisplayText(
+                    text = stringResource(Res.string.login_title),
+                    textStyle = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = DefaultTheme.dimen.paddingNormal)
+                )
+                MarkdownText(
+                    richTextState = guestLoginRichTextState,
+                    textStyle = MaterialTheme.typography.bodySmall
+                )
+            }
+        },
+        alwaysDisplayedContent = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .applyTopBarMinHeight()
+                    .align(Alignment.BottomEnd),
+                horizontalArrangement = Arrangement.spacedBy(
+                    DefaultTheme.dimen.paddingNormal,
+                    Alignment.End
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ClickableText(
+                    text = stringResource(Res.string.register),
+                    onClick = { onRegisterClick() },
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                )
+                PrimaryButton(
+                    text = stringResource(Res.string.log_in),
+                    onClick = { onLoginClick() },
+                )
+            }
+        }
+    )
+}
+
+@Composable
+@Preview
+fun PreviewScreen_GuestHeader() {
+    PreviewScreen { GuestHeader(TopAppBarDefaults.exitUntilCollapsedScrollBehavior(), {}, {}) }
+}

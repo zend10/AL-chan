@@ -19,3 +19,4 @@ captures
 node_modules/
 app/
 apikey.properties
+yarn.lock
