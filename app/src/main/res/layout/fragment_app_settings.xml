@@ -116,11 +116,93 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appSettingsDubLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsAppearanceLayout"
+                android:layout_marginTop="@dimen/marginFar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/appSettingsDubTitle"
+                    android:text="@string/dub_settings"
+                    style="?themeRegularBoldFont"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsShowDubTextLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsDubTitle"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/show_dub_text_if_available"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/appSettingsShowDubTextCheckBox"
+                        style="?themeRegularCheckBox"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsClearDubCacheLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsShowDubTextLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/clear_anime_dubs_cache"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/appSettingsForceRefreshDubLayout"
+                    app:layout_constraintTop_toBottomOf="@id/appSettingsClearDubCacheLayout"
+                    android:layout_marginTop="@dimen/marginNormal"
+                    android:gravity="center_vertical"
+                    android:foreground="?selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:text="@string/force_refresh_anime_dubs"
+                        style="?themeRegularFont"
+                        android:layout_marginEnd="@dimen/marginNormal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/appSettingsListLayout"
-                app:layout_constraintTop_toBottomOf="@id/appSettingsAppearanceLayout"
+                app:layout_constraintTop_toBottomOf="@id/appSettingsDubLayout"
                 android:layout_marginTop="@dimen/marginFar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

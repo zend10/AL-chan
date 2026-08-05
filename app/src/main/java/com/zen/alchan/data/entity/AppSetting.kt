@@ -7,6 +7,7 @@ import com.zen.alchan.helper.enums.StaffNaming
 data class AppSetting(
     var appTheme: AppTheme = AppTheme.DEFAULT_THEME_YELLOW,
     var useCircularAvatarForProfile: Boolean = true,
+    var showDubText: Boolean = true,
     var showRecentReviewsAtHome: Boolean = true,
     var isAllAnimeListPositionAtTop: Boolean = true,
     var isAllMangaListPositionAtTop: Boolean = true,

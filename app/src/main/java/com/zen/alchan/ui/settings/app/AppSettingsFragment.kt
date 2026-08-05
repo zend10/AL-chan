@@ -41,6 +41,18 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 viewModel.updateUseCircularAvatarForProfile(appSettingsCircularAvatarCheckBox.isChecked)
             }
 
+            appSettingsShowDubTextCheckBox.setOnClickListener {
+                viewModel.updateShowDubText(appSettingsShowDubTextCheckBox.isChecked)
+            }
+
+            appSettingsClearDubCacheLayout.clicks {
+                viewModel.clearAnimeDubsCache()
+            }
+
+            appSettingsForceRefreshDubLayout.clicks {
+                viewModel.forceRefreshAnimeDubs()
+            }
+
             appSettingsAllAnimeLayout.clicks {
                 viewModel.loadAllListPositionItems(MediaType.ANIME)
             }
@@ -146,6 +158,9 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             },
             viewModel.useCircularAvatarForProfile.subscribe {
                 binding.appSettingsCircularAvatarCheckBox.isChecked = it
+            },
+            viewModel.showDubText.subscribe {
+                binding.appSettingsShowDubTextCheckBox.isChecked = it
             },
             viewModel.isAllAnimeListPositionAtTop.subscribe {
                 binding.appSettingsAllAnimeText.text = if (it) {

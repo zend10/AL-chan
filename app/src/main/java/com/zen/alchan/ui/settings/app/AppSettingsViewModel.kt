@@ -1,5 +1,9 @@
 package com.zen.alchan.ui.settings.app
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import com.animedubs.AnimeDubs
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.UserRepository
@@ -29,6 +33,10 @@ class AppSettingsViewModel(
     private val _useCircularAvatarForProfile = BehaviorSubject.createDefault(true)
     val useCircularAvatarForProfile: Observable<Boolean>
         get() = _useCircularAvatarForProfile
+
+    private val _showDubText = BehaviorSubject.createDefault(true)
+    val showDubText: Observable<Boolean>
+        get() = _showDubText
 
     private val _isAllAnimeListPositionAtTop = BehaviorSubject.createDefault(true)
     val isAllAnimeListPositionAtTop: Observable<Boolean>
@@ -124,6 +132,7 @@ class AppSettingsViewModel(
                         updateAppTheme(appSetting.appTheme)
 
                         updateUseCircularAvatarForProfile(appSetting.useCircularAvatarForProfile)
+                        updateShowDubText(appSetting.showDubText)
 
                         updateIsAllAnimeListPositionAtTop(appSetting.isAllAnimeListPositionAtTop)
                         updateIsAllMangaListPositionAtTop(appSetting.isAllMangaListPositionAtTop)
@@ -171,6 +180,22 @@ class AppSettingsViewModel(
         )
     }
 
+    fun clearAnimeDubsCache() {
+        AnimeDubs.clearCache()
+        _success.onNext(R.string.settings_saved) // Reuse string or a standard one
+    }
+
+    fun forceRefreshAnimeDubs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                AnimeDubs.forceRefresh()
+                _success.onNext(R.string.settings_saved) // Reuse string
+            } catch (e: Exception) {
+                _error.onNext(R.string.error)
+            }
+        }
+    }
+
     fun updateAppTheme(newAppTheme: AppTheme) {
         currentAppSetting?.appTheme = newAppTheme
         _appTheme.onNext(newAppTheme)
@@ -179,6 +204,11 @@ class AppSettingsViewModel(
     fun updateUseCircularAvatarForProfile(shouldUseCircularAvatarForProfile: Boolean) {
         currentAppSetting?.useCircularAvatarForProfile = shouldUseCircularAvatarForProfile
         _useCircularAvatarForProfile.onNext(shouldUseCircularAvatarForProfile)
+    }
+
+    fun updateShowDubText(show: Boolean) {
+        currentAppSetting?.showDubText = show
+        _showDubText.onNext(show)
     }
 
     fun updateIsAllAnimeListPositionAtTop(isAtTop: Boolean) {

@@ -1,5 +1,10 @@
 package com.zen.alchan.ui.media
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import com.animedubs.AnimeDubs
+import com.animedubs.DubStatus
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.BrowseRepository
@@ -233,7 +238,28 @@ class MediaViewModel(
 
                         _bannerImage.onNext(media.bannerImage)
                         _coverImage.onNext(media.getCoverImage(appSetting))
-                        _mediaTitle.onNext(media.getTitle(appSetting))
+                        
+                        viewModelScope.launch(Dispatchers.IO) {
+                            var isDubbed = false
+                            if (appSetting.showDubText && media.type?.getMediaType() == MediaType.ANIME) {
+                                val malId = media.idMal
+                                if (malId != null && malId > 0) {
+                                    val result = AnimeDubs.getStatusByMalId(malId)
+                                    isDubbed = result.status == DubStatus.YES || result.status == DubStatus.PARTIAL
+                                } else {
+                                    val anilistId = media.getId()
+                                    if (anilistId > 0) {
+                                        val result = AnimeDubs.getStatusByAnilistId(anilistId)
+                                        isDubbed = result.status == DubStatus.YES || result.status == DubStatus.PARTIAL
+                                    }
+                                }
+                            }
+                            
+                            val baseTitle = media.getTitle(appSetting)
+                            val finalTitle = if (isDubbed) "[DUB] $baseTitle" else baseTitle
+                            _mediaTitle.onNext(finalTitle)
+                        }
+
                         _mediaYear.onNext(media.startDate?.year?.toString() ?: "TBA")
                         _mediaYearVisibility.onNext(media.startDate?.year != null || media.status == MediaStatus.NOT_YET_RELEASED)
                         _mediaFormat.onNext(NullableItem(media.format))

@@ -83,6 +83,10 @@
     <string name="top_of_the_list">Top of the list</string>
     <string name="bottom_of_the_list">Bottom of the list</string>
     <string name="use_circular_avatar_for_profile">Use circular avatar for Profile</string>
+    <string name="show_dub_text_if_available">Show [DUB] tag if available</string>
+    <string name="dub_settings">Dub</string>
+    <string name="clear_anime_dubs_cache">Clear Anime Dubs Cache</string>
+    <string name="force_refresh_anime_dubs">Force Refresh Dub Status</string>
     <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
     <string name="follow_anilist_setting">Follow AniList setting</string>
     <string name="native_name">Native name (ex: 初音ミク, 宮崎駿, 花澤香菜)</string>
