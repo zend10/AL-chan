@@ -98,6 +98,7 @@
     <string name="push_notifications">Push Notifications</string>
     <string name="send_airing_push_notifications">Send Airing push notifications</string>
     <string name="send_activity_push_notifications">Send Activity push notifications</string>
+    <string name="error">Error</string>
     <string name="send_forum_push_notifications">Send Forum push notifications</string>
     <string name="send_follows_push_notifications">Send Follows push notifications</string>
     <string name="send_relations_push_notifications">Send Media push notifications</string>

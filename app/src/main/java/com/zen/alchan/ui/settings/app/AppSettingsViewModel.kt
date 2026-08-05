@@ -181,8 +181,14 @@ class AppSettingsViewModel(
     }
 
     fun clearAnimeDubsCache() {
-        AnimeDubs.clearCache()
-        _success.onNext(R.string.settings_saved) // Reuse string or a standard one
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                AnimeDubs.clearCache()
+                _success.onNext(R.string.settings_saved) // Reuse string or a standard one
+            } catch (e: Exception) {
+                _error.onNext(R.string.error)
+            }
+        }
     }
 
     fun forceRefreshAnimeDubs() {
