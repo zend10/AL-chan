@@ -55,7 +55,8 @@ data class Media(
     val mediaListEntry: MediaList? = null,
     val openings: List<AnimeTheme>? = null,
     val endings: List<AnimeTheme>? = null,
-    val mangaSerialization: List<MangaSerialization>? = null
+    val mangaSerialization: List<MangaSerialization>? = null,
+    var isDubbed: Boolean = false
 ) {
     fun getId() : Int {
         return idAniList
@@ -66,12 +67,17 @@ data class Media(
     }
 
     fun getTitle(appSetting: AppSetting): String {
-        return when (countryOfOrigin) {
+        val baseTitle = when (countryOfOrigin) {
             Country.JAPAN.iso -> getPreferredNaming(appSetting.japaneseMediaNaming)
             Country.SOUTH_KOREA.iso -> getPreferredNaming(appSetting.koreanMediaNaming)
             Country.CHINA.iso -> getPreferredNaming(appSetting.chineseMediaNaming)
             Country.TAIWAN.iso -> getPreferredNaming(appSetting.taiwaneseMediaNaming)
             else -> getPreferredNaming(MediaNaming.FOLLOW_ANILIST)
+        }
+        return if (isDubbed && appSetting.showDubText && type == MediaType.ANIME) {
+            "[DUB] $baseTitle"
+        } else {
+            baseTitle
         }
     }
 

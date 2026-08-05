@@ -13,6 +13,7 @@ import com.zen.alchan.helper.enums.ReviewSort
 import com.zen.alchan.helper.enums.Sort
 import com.zen.alchan.helper.pojo.SaveItem
 import com.zen.alchan.helper.utils.NotInStorageException
+import com.zen.alchan.helper.extensions.applyDubStatus
 import com.zen.alchan.type.MediaSeason
 import com.zen.alchan.type.MediaType
 import com.zen.alchan.type.ReviewRating
@@ -44,7 +45,7 @@ class DefaultContentRepository(
             val newHomeData = it.data?.convert() ?: HomeData()
             contentManager.homeData = SaveItem(newHomeData)
             newHomeData
-        }
+        }.flatMap { it.applyDubStatus() }
     }
 
     private fun getHomeDataFromCache(): Observable<HomeData> {
@@ -95,7 +96,7 @@ class DefaultContentRepository(
     ): Observable<Page<Media>> {
         return contentDataSource.searchMedia(searchQuery, type, mediaFilter, page).map {
             it.data?.convert() ?: Page()
-        }
+        }.flatMap { it.applyDubStatus() }
     }
 
     override fun searchCharacter(searchQuery: String, page: Int): Observable<Page<Character>> {
@@ -134,7 +135,7 @@ class DefaultContentRepository(
     ): Observable<Page<Media>> {
         return contentDataSource.getSeasonal(page, year, season, sort, titleLanguage, orderByDescending, onlyShowOnList, showAdult).map {
             it.data?.convert() ?: Page()
-        }
+        }.flatMap { it.applyDubStatus() }
     }
 
     override fun getAiringSchedule(

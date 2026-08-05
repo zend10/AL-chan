@@ -1,5 +1,7 @@
 package com.zen.alchan.data.repository
 
+import com.zen.alchan.helper.extensions.applyDubStatus
+
 import android.net.Uri
 import com.zen.alchan.data.converter.convert
 import com.zen.alchan.data.datasource.MediaListDataSource
@@ -135,12 +137,12 @@ class DefaultMediaListRepository(
             val mediaListCollectionObservable = if (hasBigList) {
                 mediaListDataSource.getMediaListCollectionTrimmedQuery(user.id, mediaType.getAniListMediaType()).flatMap {
                     Observable.just(it.data?.convert() ?: MediaListCollection())
-                }
+                }.flatMap { it.applyDubStatus() }
             }
             else {
                 mediaListDataSource.getMediaListCollectionQuery(user.id, mediaType.getAniListMediaType()).flatMap {
                     Observable.just(it.data?.convert() ?: MediaListCollection())
-                }
+                }.flatMap { it.applyDubStatus() }
             }
 
             mediaListCollectionObservable.map { newMediaListCollection ->

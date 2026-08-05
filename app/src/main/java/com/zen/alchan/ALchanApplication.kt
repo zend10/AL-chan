@@ -76,6 +76,8 @@ import org.koin.core.logger.Level
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import com.animedubs.AnimeDubs
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ALchanApplication : Application() {
 
@@ -219,6 +221,7 @@ class ALchanApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         AnimeDubs.init(this)
+        GlobalScope.launch { AnimeDubs.warmUp() }
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@ALchanApplication)
