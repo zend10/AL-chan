@@ -3,6 +3,7 @@ package com.zen.alchan.ui.settings.app
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.animedubs.AnimeDubs
 import com.zen.alchan.R
 import com.zen.alchan.data.entity.AppSetting
@@ -181,9 +182,11 @@ class AppSettingsViewModel(
     }
 
     fun clearAnimeDubsCache() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                AnimeDubs.clearCache()
+                withContext(Dispatchers.IO) {
+                    AnimeDubs.clearCache()
+                }
                 _success.onNext(R.string.settings_saved) // Reuse string or a standard one
             } catch (e: Exception) {
                 _error.onNext(R.string.error)
@@ -192,9 +195,11 @@ class AppSettingsViewModel(
     }
 
     fun forceRefreshAnimeDubs() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                AnimeDubs.forceRefresh()
+                withContext(Dispatchers.IO) {
+                    AnimeDubs.forceRefresh()
+                }
                 _success.onNext(R.string.settings_saved) // Reuse string
             } catch (e: Exception) {
                 _error.onNext(R.string.error)
