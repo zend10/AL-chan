@@ -37,13 +37,13 @@ fun List<Media>.applyDubStatus(): Observable<List<Media>> = rxObservable(Dispatc
 }
 
 fun Page<Media>.applyDubStatus(): Observable<Page<Media>> = rxObservable(Dispatchers.IO) {
-    val items = this@applyDubStatus.items ?: listOf()
+    val items = this@applyDubStatus.data ?: listOf()
     applyStatuses(items)
     send(this@applyDubStatus)
 }
 
 fun Page<MediaList>.applyDubStatusForMediaList(): Observable<Page<MediaList>> = rxObservable(Dispatchers.IO) {
-    val items = this@applyDubStatusForMediaList.items?.mapNotNull { it.media } ?: listOf()
+    val items = this@applyDubStatusForMediaList.data?.mapNotNull { it.media } ?: listOf()
     applyStatuses(items)
     send(this@applyDubStatusForMediaList)
 }
