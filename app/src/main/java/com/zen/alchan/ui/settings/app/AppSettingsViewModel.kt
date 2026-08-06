@@ -182,6 +182,8 @@ class AppSettingsViewModel(
     }
 
     fun clearAnimeDubsCache() {
+        if (_loading.value == true) return
+        _loading.onNext(true)
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
@@ -190,11 +192,15 @@ class AppSettingsViewModel(
                 _toastMessage.onNext(R.string.anime_dubs_cache_cleared)
             } catch (e: Exception) {
                 _error.onNext(R.string.error)
+            } finally {
+                _loading.onNext(false)
             }
         }
     }
 
     fun forceRefreshAnimeDubs() {
+        if (_loading.value == true) return
+        _loading.onNext(true)
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
@@ -203,6 +209,8 @@ class AppSettingsViewModel(
                 _toastMessage.onNext(R.string.anime_dubs_status_refreshed)
             } catch (e: Exception) {
                 _error.onNext(R.string.error)
+            } finally {
+                _loading.onNext(false)
             }
         }
     }
