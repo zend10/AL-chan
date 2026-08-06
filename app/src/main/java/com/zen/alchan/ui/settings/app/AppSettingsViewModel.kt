@@ -187,7 +187,7 @@ class AppSettingsViewModel(
                 withContext(Dispatchers.IO) {
                     AnimeDubs.clearCache()
                 }
-                _success.onNext(R.string.settings_saved) // Reuse string or a standard one
+                _toastMessage.onNext(R.string.anime_dubs_cache_cleared)
             } catch (e: Exception) {
                 _error.onNext(R.string.error)
             }
@@ -200,7 +200,7 @@ class AppSettingsViewModel(
                 withContext(Dispatchers.IO) {
                     AnimeDubs.forceRefresh()
                 }
-                _success.onNext(R.string.settings_saved) // Reuse string
+                _toastMessage.onNext(R.string.anime_dubs_status_refreshed)
             } catch (e: Exception) {
                 _error.onNext(R.string.error)
             }

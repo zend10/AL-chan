@@ -153,6 +153,9 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
                 dialog.showToast(it)
                 restartApp(DeepLink.generateAppSettings(), false)
             },
+            viewModel.toastMessage.subscribe {
+                dialog.showToast(it)
+            },
             viewModel.appTheme.subscribe {
                 binding.appSettingsSelectedThemeText.text = it.getString()
             },

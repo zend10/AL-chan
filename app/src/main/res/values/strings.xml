@@ -87,6 +87,8 @@
     <string name="dub_settings">Dub</string>
     <string name="clear_anime_dubs_cache">Clear Anime Dubs Cache</string>
     <string name="force_refresh_anime_dubs">Force Refresh Dub Status</string>
+    <string name="anime_dubs_cache_cleared">Anime Dubs cache cleared</string>
+    <string name="anime_dubs_status_refreshed">Anime Dubs status refreshed</string>
     <string name="show_recent_reviews_at_home">Show Recent Reviews at Home</string>
     <string name="follow_anilist_setting">Follow AniList setting</string>
     <string name="native_name">Native name (ex: 初音ミク, 宮崎駿, 花澤香菜)</string>

@@ -18,6 +18,10 @@ abstract class BaseViewModel<T> : ViewModel(), ViewModelContract<T> {
     val success: Observable<Int>
         get() = _success
 
+    protected val _toastMessage = PublishSubject.create<Int>()
+    val toastMessage: Observable<Int>
+        get() = _toastMessage
+
     protected val _error = PublishSubject.create<Int>()
     val error: Observable<Int>
         get() = _error
