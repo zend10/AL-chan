@@ -240,10 +240,10 @@ class MediaViewModel(
                         _bannerImage.onNext(media.bannerImage)
                         _coverImage.onNext(media.getCoverImage(appSetting))
                         
-                        viewModelScope.launch {
-                            try {
-                                var isDubbed = false
-                                if (appSetting.showDubText && media.type?.getMediaType() == MediaType.ANIME) {
+                        if (appSetting.showDubText && media.type?.getMediaType() == MediaType.ANIME) {
+                            viewModelScope.launch {
+                                try {
+                                    var isDubbed = false
                                     val malId = media.idMal
                                     if (malId != null && malId > 0) {
                                         val result = withContext(Dispatchers.IO) { AnimeDubs.getStatusByMalId(malId) }
@@ -255,15 +255,17 @@ class MediaViewModel(
                                             isDubbed = result.status == DubStatus.YES || result.status == DubStatus.PARTIAL
                                         }
                                     }
+                                    
+                                    val baseTitle = media.getTitle(appSetting)
+                                    val finalTitle = if (isDubbed) "[DUB] $baseTitle" else baseTitle
+                                    _mediaTitle.onNext(finalTitle)
+                                } catch (e: Exception) {
+                                    val baseTitle = media.getTitle(appSetting)
+                                    _mediaTitle.onNext(baseTitle)
                                 }
-                                
-                                val baseTitle = media.getTitle(appSetting)
-                                val finalTitle = if (isDubbed) "[DUB] $baseTitle" else baseTitle
-                                _mediaTitle.onNext(finalTitle)
-                            } catch (e: Exception) {
-                                val baseTitle = media.getTitle(appSetting)
-                                _mediaTitle.onNext(baseTitle)
                             }
+                        } else {
+                            _mediaTitle.onNext(media.getTitle(appSetting))
                         }
 
                         _mediaYear.onNext(media.startDate?.year?.toString() ?: "TBA")
