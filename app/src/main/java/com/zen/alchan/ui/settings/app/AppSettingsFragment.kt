@@ -96,6 +96,21 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             appSettingsHighestQualityImageCheckBox.setOnClickListener {
                 viewModel.updateUseHighestQualityImage(appSettingsHighestQualityImageCheckBox.isChecked)
             }
+            appSettingsShowReleasingTodayCheckBox.setOnClickListener {
+                viewModel.updateShowHomeReleasingToday(appSettingsShowReleasingTodayCheckBox.isChecked)
+            }
+            appSettingsShowContinueWatchingCheckBox.setOnClickListener {
+                viewModel.updateShowHomeContinueWatching(appSettingsShowContinueWatchingCheckBox.isChecked)
+            }
+            appSettingsShowTrendingAnimeCheckBox.setOnClickListener {
+                viewModel.updateShowHomeTrendingAnime(appSettingsShowTrendingAnimeCheckBox.isChecked)
+            }
+            appSettingsShowTrendingMangaCheckBox.setOnClickListener {
+                viewModel.updateShowHomeTrendingManga(appSettingsShowTrendingMangaCheckBox.isChecked)
+            }
+            appSettingsCompactHomeCheckBox.setOnClickListener {
+                viewModel.updateUseCompactHomeLayout(appSettingsCompactHomeCheckBox.isChecked)
+            }
 
             appSettingsSaveLayout.positiveButton.text = getString(R.string.save_changes)
             appSettingsSaveLayout.positiveButton.clicks {
@@ -196,6 +211,21 @@ class AppSettingsFragment : BaseFragment<FragmentAppSettingsBinding, AppSettings
             },
             viewModel.useHighestQualityImage.subscribe {
                 binding.appSettingsHighestQualityImageCheckBox.isChecked = it
+            },
+            viewModel.showHomeReleasingToday.subscribe {
+                binding.appSettingsShowReleasingTodayCheckBox.isChecked = it
+            },
+            viewModel.showHomeContinueWatching.subscribe {
+                binding.appSettingsShowContinueWatchingCheckBox.isChecked = it
+            },
+            viewModel.showHomeTrendingAnime.subscribe {
+                binding.appSettingsShowTrendingAnimeCheckBox.isChecked = it
+            },
+            viewModel.showHomeTrendingManga.subscribe {
+                binding.appSettingsShowTrendingMangaCheckBox.isChecked = it
+            },
+            viewModel.useCompactHomeLayout.subscribe {
+                binding.appSettingsCompactHomeCheckBox.isChecked = it
             },
             viewModel.appThemeItems.subscribe {
                 appThemeAdapter = AppThemeRvAdapter(requireContext(), it, object : AppThemeRvAdapter.AppThemeListener {

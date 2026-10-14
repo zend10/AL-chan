@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/homeHeaderAvatar"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="@dimen/homeHeaderTopMargin"
             android:layout_marginEnd="@dimen/marginPageNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
@@ -54,8 +54,8 @@
             android:layout_marginTop="@dimen/marginNormal"
             app:cardElevation="0dp"
             app:strokeWidth="@dimen/lineWidth"
-            app:strokeColor="@color/white"
-            app:cardBackgroundColor="@color/white"
+            app:strokeColor="?themeDividerColor"
+            app:cardBackgroundColor="?themeCardColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -66,7 +66,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:srcCompat="@drawable/ic_search"
-                    app:tint="@color/blackLightTransparent80"
+                    app:tint="?themeContentTransparentColor"
                     android:layout_marginEnd="@dimen/marginSmall"
                     android:layout_width="@dimen/iconSmallSize"
                     android:layout_height="@dimen/iconSmallSize"/>
@@ -74,7 +74,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:text="@string/what_are_you_looking_for"
                     style="?themeRegularFont"
-                    android:textColor="@color/blackLightTransparent80"
+                    android:textColor="?themeContentTransparentColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

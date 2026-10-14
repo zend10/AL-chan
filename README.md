@@ -1,36 +1,81 @@
+<p align="center">
+  <img alt="Tokyo's — Anime and Manga Tracker" src="docs/images/tokyos-logo.svg" width="100%" />
+</p>
 
-<h1 align="center">AL-chan</h1>
-<p align="center"><img alt="AL-chan logo" src="https://raw.githubusercontent.com/zend10/AL-chan/master/app/src/main/ic_launcher-web.png" width="30%"></p>
+<p align="center"><strong>An unofficial Android client for AniList, customized by Tokyo for anime and manga tracking.</strong></p>
 
-<p align="center">AL-chan is an unofficial Android client for AniList, a place where you can track, share, discover, and experience Anime and Manga.</p>
+<p align="center">
+  <a href="https://github.com/tokyo720022-create/AL-chan">Source code</a> ·
+  <a href="https://anilist.co/">AniList</a>
+</p>
 
-<br>
+## About
 
+**Tokyo's** is a personal customization of the open-source AL-chan Android app. It focuses on tracking anime and manga through AniList, with a customized interface and ongoing maintenance of the Android build toolchain.
 
-## Links
-<a href='https://play.google.com/store/apps/details?id=com.zen.alchan&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="20%" ></a>
-<a href='https://zend10.github.io/AL-chan/'><img alt='More info on Official Site' src='https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/site-badge.png' width="20%" ></a> <a href='https://twitter.com/alchan_app'><img alt='Latest news on Twitter' src='https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/twitter-badge.png' width="20%" ></a>
+Tokyo's is unofficial and is not affiliated with, endorsed by, or sponsored by AniList.
 
-## Screenshots
-<img alt="Anime List First Part" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/play_store_1.png" width="24%" ></a> <img alt="Anime List Second Part" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/play_store_2.png" width="24%" ></a> <img alt="Anime Page" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/play_store_3.png" width="24%" ></a> <img alt="Activity Page" src="https://raw.githubusercontent.com/zend10/AL-chan/master/docs/images/play_store_4.png" width="24%" ></a>
+## Features
 
-## Features so far
-- Manage your anime and manga lists.
-- Support various types of scoring method and custom lists.
-- Customise your anime and manga lists.
-- Find out your anime's release schedule.
-- See the most popular and the highest rated anime and manga.
-- Seasonal chart to see what anime are coming next.
-- Search for anime, manga, characters, staffs, and studios.
-- View detailed info of anime, manga, characters, staffs, and studios.
-- Robust stats based on your anime and manga lists.
-- View recommendations and read reviews.
-- Interact with the community.
-- Light and Dark theme.
+- Track anime and manga lists, progress, statuses, and scores.
+- Discover trending, popular, seasonal, and upcoming anime.
+- Browse information about anime, manga, characters, staff, and studios.
+- Check anime airing schedules and upcoming episodes.
+- Explore personal statistics and recommendations.
+- Customize list layouts and the app's appearance.
 
-## Contributing (Important)
-- Create new Issue, explain your plan, and mention that you're planning to work on it.
-- Wait for my confirmation. Only start working after I approve it, for both our sake. 
-- Branch out from `master`.
-- For example, assuming the latest version is `v2.0.0`, target your Pull Request to `version/2.1.0`. Check Releases page to find the latest version.
+## Project status
 
+- **Current provider:** AniList.
+- **Platform:** Android.
+- **App version:** 2.1.3 (build version code 200008).
+- **Minimum Android API:** 23.
+- **Target Android API:** 35.
+- **Compile SDK:** 36.
+
+Multi-provider two-way synchronization with MyAnimeList and Simkl is a planned development goal, not a released feature. Until it is implemented and tested, this app should be treated as an AniList client.
+
+## Build environment
+
+Use the following versions for a build environment matching the current GitHub Actions configuration:
+
+| Component | Version |
+| --- | --- |
+| JDK | 17 (GitHub Actions uses Eclipse Temurin 17) |
+| Android Gradle Plugin | 8.11.1 |
+| Gradle Wrapper | 8.14.6 |
+| Kotlin Gradle Plugin | 2.2.21 |
+| Android SDK Platform | 36 |
+| Android SDK Build Tools | 35.0.0 |
+
+The app's Java source and target compatibility are set to Java 17, and Kotlin bytecode targets JVM 17. These are **build and bytecode settings**; they do not mean the installed app runs a desktop JDK on the phone. Android runs the app using the Android runtime on the device.
+
+### About `.java-version`
+
+The `.java-version` file is a local development-tool hint, not an Android runtime setting. Some Java version managers read it to choose a JDK for commands run in the project directory. The current file pins an older Oracle JDK 17.0.8 label, while CI explicitly selects Temurin JDK 17. It does not override the GitHub Actions JDK selection and does not change the Java version inside the installed app. If a local version manager honors this file, align its value with the JDK actually installed on that machine.
+
+## Build locally
+
+1. Install JDK 17 and Android SDK Platform 36 with Build Tools 35.0.0.
+2. Create `apikey.properties` in the repository root. This file is intentionally excluded from Git. For a compile-only local build, it can contain empty Java string literals:
+
+   ```properties
+   YOUTUBE_API_KEY=""
+   SPOTIFY_API_KEY=""
+   ```
+
+   Some features that depend on API credentials will not work with empty values. Do not commit real API keys. A key bundled into an APK can be extracted, so restrict any YouTube key in the provider console and monitor its usage.
+
+3. From the repository root, run:
+
+   ```bash
+   ./gradlew assembleDebug
+   ```
+
+4. The debug APK is generated under `app/build/outputs/apk/debug/`.
+
+On Windows, use `gradlew.bat assembleDebug` instead of `./gradlew assembleDebug`.
+
+## License
+
+See [LICENSE](LICENSE) for license terms and upstream attribution.

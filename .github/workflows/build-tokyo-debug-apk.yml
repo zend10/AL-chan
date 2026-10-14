@@ -1,0 +1,88 @@
+name: Tokyo AL-chan Debug APK
+run-name: Build Tokyo AL-chan debug APK (${{ github.ref_name }})
+
+on:
+  push:
+    branches:
+      - tokyo/ui-home-cleanup-20261012
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tokyo-alchan-debug-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Compile and package debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout complete repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android SDK 36 components
+        run: sdkmanager "platforms;android-36" "build-tools;35.0.0"
+
+      - name: Create temporary API properties file
+        shell: bash
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          # app/build.gradle expects valid Java string literals in this file.
+          # json.dumps safely produces the quoting needed by BuildConfig.
+          youtube_key = os.environ.get("YOUTUBE_API_KEY", "")
+          props = Path("apikey.properties")
+          props.write_text(
+              "YOUTUBE_API_KEY=" + json.dumps(youtube_key) + "\n" +
+              'SPOTIFY_API_KEY=""\n',
+              encoding="utf-8",
+          )
+          print("Created temporary apikey.properties (values not printed).")
+          if youtube_key:
+              print("YouTube key supplied through repository Actions secret.")
+              print("WARNING: the YouTube key is embedded in the APK and can be extracted; restrict it to the YouTube Data API and monitor quota.")
+          else:
+              print("WARNING: YOUTUBE_API_KEY secret is absent; YouTube video lookups will not work in this APK.")
+          print("Spotify credential intentionally left blank. Spotify track lookup remains unavailable until the client authentication is refactored safely.")
+          PY
+
+      - name: Verify full Gradle project is present
+        run: |
+          test -f gradlew
+          test -f gradle/wrapper/gradle-wrapper.jar
+          test -f gradle/wrapper/gradle-wrapper.properties
+          test -f settings.gradle
+          test -f build.gradle
+          test -f app/build.gradle
+          test -f imageviewer/build.gradle
+
+      - name: Build debug APK
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Upload debug APK artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: tokyo-alchan-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14

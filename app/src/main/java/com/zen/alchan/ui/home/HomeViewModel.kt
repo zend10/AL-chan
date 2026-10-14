@@ -1,6 +1,7 @@
 package com.zen.alchan.ui.home
 
 import com.zen.alchan.R
+import com.zen.alchan.data.entity.AppSetting
 import com.zen.alchan.data.repository.ContentRepository
 import com.zen.alchan.data.repository.MediaListRepository
 import com.zen.alchan.data.repository.UserRepository
@@ -27,6 +28,8 @@ class HomeViewModel(
     private val mediaListRepository: MediaListRepository
 ) : BaseViewModel<Unit>() {
 
+    private var homeAppSetting: AppSetting = AppSetting()
+
     private val _homeItemList = BehaviorSubject.createDefault(listOf<HomeItem>())
     val homeItemList: Observable<List<HomeItem>>
         get() = _homeItemList
@@ -44,7 +47,25 @@ class HomeViewModel(
         get() = _exploreCategoryList
 
     override fun loadData(param: Unit) {
+        // BaseFragment re-enters setUpObserver when returning to this screen.
+        // Refresh saved home preferences after the first successful home load.
+        if (state == State.LOADED) refreshHomeSettings()
         loadOnce {
+            disposables.add(
+                mediaListRepository.refreshMediaListTrigger
+                    .filter { it.first == MediaType.ANIME }
+                    .applyScheduler()
+                    .subscribe { (_, newMediaList) ->
+                        if (newMediaList == null) {
+                            // A deleted entry has no payload; fetch fresh data rather than trusting stale cache.
+                            loadContinueWatching(preferNetwork = true)
+                        } else {
+                            // Progress/status updates carry the updated entry; refresh the card immediately.
+                            updateContinueWatchingEntry(newMediaList)
+                        }
+                    }
+            )
+
             disposables.add(
                 userRepository.getAppSetting()
                     .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, user ->
@@ -52,8 +73,10 @@ class HomeViewModel(
                     }
                     .applyScheduler()
                     .subscribe {
+                        homeAppSetting = it.appSetting
                         _adapterComponent.onNext(it)
                         getHomeData()
+                        loadContinueWatching()
                     }
             )
 
@@ -61,6 +84,7 @@ class HomeViewModel(
                 mediaListRepository.releasingTodayTrigger
                     .applyScheduler()
                     .subscribe {
+                        if (homeAppSetting.showHomeReleasingToday == false) return@subscribe
                         disposables.add(
                             userRepository.getViewer(Source.CACHE)
                                 .flatMap { user ->
@@ -123,9 +147,11 @@ class HomeViewModel(
                                         if (releasingTodayIndex != - 1) {
                                             currentHomeList.removeAt(releasingTodayIndex)
                                         }
-                                        val socialIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_SOCIAL } + 1
-                                        if (socialIndex != -1) {
-                                            currentHomeList.add(socialIndex, HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY))
+                                        val menuIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_MENU }
+                                        val continueWatchingIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_CONTINUE_WATCHING }
+                                        if (menuIndex != -1 && homeAppSetting.showHomeReleasingToday != false) {
+                                            val insertIndex = if (continueWatchingIndex != -1) continueWatchingIndex + 1 else menuIndex + 1
+                                            currentHomeList.add(insertIndex.coerceAtMost(currentHomeList.size), HomeItem(releasingToday = it, viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY))
                                         }
                                         _homeItemList.onNext(currentHomeList)
                                     },
@@ -139,6 +165,93 @@ class HomeViewModel(
         }
     }
 
+    private fun refreshHomeSettings() {
+        disposables.add(
+            userRepository.getAppSetting()
+                .zipWith(userRepository.getViewer(Source.CACHE)) { appSetting, user ->
+                    HomeAdapterComponent(user, appSetting)
+                }
+                .applyScheduler()
+                .subscribe(
+                    { component ->
+                        val previous = homeAppSetting
+                        val updated = component.appSetting
+                        val releasingChanged = (previous.showHomeReleasingToday != false) != (updated.showHomeReleasingToday != false)
+                        val continueChanged = (previous.showHomeContinueWatching != false) != (updated.showHomeContinueWatching != false)
+                        val trendingAnimeChanged = (previous.showHomeTrendingAnime != false) != (updated.showHomeTrendingAnime != false)
+                        val trendingMangaChanged = (previous.showHomeTrendingManga != false) != (updated.showHomeTrendingManga != false)
+
+                        homeAppSetting = updated
+                        _adapterComponent.onNext(component)
+                        // HomeFragment replaces its adapter when adapterComponent emits.
+                        // Re-emit the current list so the new adapter receives its items even
+                        // when the saved section preferences have not changed.
+                        _homeItemList.onNext(_homeItemList.value ?: listOf())
+
+                        if (releasingChanged || continueChanged || trendingAnimeChanged || trendingMangaChanged) {
+                            synchronizeHomeSections(
+                                releasingChanged,
+                                continueChanged,
+                                trendingAnimeChanged,
+                                trendingMangaChanged
+                            )
+                        }
+                    },
+                    { it.printStackTrace() }
+                )
+        )
+    }
+
+    private fun synchronizeHomeSections(
+        releasingChanged: Boolean,
+        continueChanged: Boolean,
+        trendingAnimeChanged: Boolean,
+        trendingMangaChanged: Boolean
+    ) {
+        val existingItems = _homeItemList.value ?: listOf()
+        if (existingItems.isEmpty()) return
+
+        val header = existingItems.firstOrNull { it.viewType == HomeItem.VIEW_TYPE_HEADER }
+            ?: HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER)
+        val menu = existingItems.firstOrNull { it.viewType == HomeItem.VIEW_TYPE_MENU }
+            ?: HomeItem(viewType = HomeItem.VIEW_TYPE_MENU)
+        val releasing = existingItems.firstOrNull { it.viewType == HomeItem.VIEW_TYPE_RELEASING_TODAY }
+            ?: HomeItem(viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY)
+        val continuing = existingItems.firstOrNull { it.viewType == HomeItem.VIEW_TYPE_CONTINUE_WATCHING }
+            ?: HomeItem(viewType = HomeItem.VIEW_TYPE_CONTINUE_WATCHING)
+        val trendingAnime = existingItems.firstOrNull { it.viewType == HomeItem.VIEW_TYPE_TRENDING_ANIME }
+            ?: HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME)
+        val trendingManga = existingItems.firstOrNull { it.viewType == HomeItem.VIEW_TYPE_TRENDING_MANGA }
+            ?: HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
+        val knownSections = setOf(
+            HomeItem.VIEW_TYPE_HEADER,
+            HomeItem.VIEW_TYPE_MENU,
+            HomeItem.VIEW_TYPE_RELEASING_TODAY,
+            HomeItem.VIEW_TYPE_CONTINUE_WATCHING,
+            HomeItem.VIEW_TYPE_TRENDING_ANIME,
+            HomeItem.VIEW_TYPE_TRENDING_MANGA
+        )
+        val otherItems = existingItems.filterNot { it.viewType in knownSections }
+        val nextItems = mutableListOf(header, menu)
+        if (homeAppSetting.showHomeContinueWatching != false) nextItems.add(continuing)
+        if (homeAppSetting.showHomeReleasingToday != false) nextItems.add(releasing)
+        if (homeAppSetting.showHomeTrendingAnime != false) nextItems.add(trendingAnime)
+        if (homeAppSetting.showHomeTrendingManga != false) nextItems.add(trendingManga)
+        nextItems.addAll(otherItems)
+        _homeItemList.onNext(nextItems)
+
+        if (releasingChanged && homeAppSetting.showHomeReleasingToday != false) {
+            mediaListRepository.triggerReleasingToday()
+        }
+        if (continueChanged && homeAppSetting.showHomeContinueWatching != false) {
+            loadContinueWatching()
+        }
+        if ((trendingAnimeChanged && homeAppSetting.showHomeTrendingAnime != false) ||
+            (trendingMangaChanged && homeAppSetting.showHomeTrendingManga != false)) {
+            requestHomeData(null)
+        }
+    }
+
     fun reloadData() {
         getHomeData(true)
     }
@@ -146,18 +259,27 @@ class HomeViewModel(
     private fun getHomeData(isReloading: Boolean = false) {
         if (!isReloading && state == State.LOADED) return
 
-        if (isReloading)
+        if (isReloading) {
             _loading.onNext(true)
-        else
-            _homeItemList.onNext(
-                listOf(
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_MENU),
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_SOCIAL),
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME),
-                    HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA)
-                )
+        } else {
+            val initialItems = mutableListOf(
+                HomeItem(viewType = HomeItem.VIEW_TYPE_HEADER),
+                HomeItem(viewType = HomeItem.VIEW_TYPE_MENU)
             )
+            if (homeAppSetting.showHomeContinueWatching != false) {
+                initialItems.add(HomeItem(viewType = HomeItem.VIEW_TYPE_CONTINUE_WATCHING))
+            }
+            if (homeAppSetting.showHomeReleasingToday != false) {
+                initialItems.add(HomeItem(viewType = HomeItem.VIEW_TYPE_RELEASING_TODAY))
+            }
+            if (homeAppSetting.showHomeTrendingAnime != false) {
+                initialItems.add(HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_ANIME))
+            }
+            if (homeAppSetting.showHomeTrendingManga != false) {
+                initialItems.add(HomeItem(viewType = HomeItem.VIEW_TYPE_TRENDING_MANGA))
+            }
+            _homeItemList.onNext(initialItems)
+        }
 
         requestHomeData(if (isReloading) Source.NETWORK else null)
     }
@@ -194,6 +316,113 @@ class HomeViewModel(
                     }
                 )
         )
+    }
+
+    private fun loadContinueWatching(preferNetwork: Boolean = false) {
+        if (homeAppSetting.showHomeContinueWatching == false) return
+
+        disposables.add(
+            userRepository.getViewer(Source.CACHE)
+                .onErrorResumeNext { _: Throwable -> userRepository.getViewer(Source.NETWORK) }
+                .flatMap { user ->
+                    if (preferNetwork) {
+                        mediaListRepository.getMediaListCollection(Source.NETWORK, user, MediaType.ANIME)
+                    } else {
+                        mediaListRepository.getMediaListCollection(Source.CACHE, user, MediaType.ANIME)
+                            .onErrorResumeNext { _: Throwable ->
+                                mediaListRepository.getMediaListCollection(Source.NETWORK, user, MediaType.ANIME)
+                            }
+                    }
+                }
+                .map { collection ->
+                    collection.lists.flatMap { group -> group.entries }
+                        .filter { it.status == MediaListStatus.CURRENT || it.status == MediaListStatus.REPEATING }
+                        .sortedByDescending { it.updatedAt }
+                        .take(6)
+                }
+                .applyScheduler()
+                .subscribe(
+                    { mediaLists ->
+                        val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
+                        val itemIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_CONTINUE_WATCHING }
+                        val continueWatchingItem = HomeItem(
+                            continueWatching = mediaLists,
+                            viewType = HomeItem.VIEW_TYPE_CONTINUE_WATCHING
+                        )
+                        if (itemIndex != -1) {
+                            currentHomeList[itemIndex] = continueWatchingItem
+                        } else {
+                            val menuIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_MENU }
+                            if (menuIndex == -1) return@subscribe
+                            val insertIndex = menuIndex + 1
+                            currentHomeList.add(insertIndex.coerceAtMost(currentHomeList.size), continueWatchingItem)
+                        }
+                        _homeItemList.onNext(currentHomeList)
+                    },
+                    { _error.onNext(it.getStringResource()) }
+                )
+        )
+    }
+
+    private fun updateContinueWatchingEntry(updatedMediaList: MediaList) {
+        if (homeAppSetting.showHomeContinueWatching == false) return
+
+        val currentHomeList = ArrayList(_homeItemList.value ?: listOf())
+        if (currentHomeList.isEmpty()) return
+
+        val itemIndex = currentHomeList.indexOfFirst { it.viewType == HomeItem.VIEW_TYPE_CONTINUE_WATCHING }
+        val oldEntries = if (itemIndex != -1) currentHomeList[itemIndex].continueWatching else emptyList()
+        val updatedMediaId = updatedMediaList.media.getId()
+        val matchIndex = oldEntries.indexOfFirst { existing ->
+            (updatedMediaList.id != null && existing.id == updatedMediaList.id) ||
+                (updatedMediaId != 0 && existing.media.getId() == updatedMediaId)
+        }
+
+        // The mutation response can contain only a partial Media object. If the
+        // entry is absent or status is missing, reload the full list rather than
+        // adding a card with a blank title/poster or removing a valid entry.
+        if (updatedMediaList.status == null) {
+            loadContinueWatching(preferNetwork = true)
+            return
+        }
+        if (matchIndex == -1) {
+            if (updatedMediaList.status == MediaListStatus.CURRENT || updatedMediaList.status == MediaListStatus.REPEATING) {
+                loadContinueWatching(preferNetwork = true)
+            }
+            return
+        }
+
+        val nextEntries = oldEntries.toMutableList()
+        if (updatedMediaList.status == MediaListStatus.CURRENT || updatedMediaList.status == MediaListStatus.REPEATING) {
+            val existing = oldEntries[matchIndex]
+            // Keep the complete media metadata from the fetched list; merge only
+            // list-entry fields returned by SaveMediaListEntryMutation.
+            nextEntries[matchIndex] = existing.copy(
+                id = updatedMediaList.id ?: existing.id,
+                status = updatedMediaList.status,
+                score = updatedMediaList.score,
+                progress = updatedMediaList.progress,
+                progressVolumes = updatedMediaList.progressVolumes,
+                repeat = updatedMediaList.repeat,
+                priority = updatedMediaList.priority,
+                private = updatedMediaList.private,
+                notes = updatedMediaList.notes,
+                hiddenFromStatusLists = updatedMediaList.hiddenFromStatusLists,
+                customLists = updatedMediaList.customLists,
+                advancedScores = updatedMediaList.advancedScores,
+                startedAt = updatedMediaList.startedAt,
+                completedAt = updatedMediaList.completedAt,
+                updatedAt = updatedMediaList.updatedAt,
+                createdAt = updatedMediaList.createdAt,
+                media = existing.media
+            )
+        } else {
+            nextEntries.removeAt(matchIndex)
+        }
+
+        val sortedEntries = nextEntries.sortedByDescending { it.updatedAt }.take(6)
+        currentHomeList[itemIndex] = currentHomeList[itemIndex].copy(continueWatching = sortedEntries)
+        _homeItemList.onNext(currentHomeList)
     }
 
     fun loadSearchCategories() {

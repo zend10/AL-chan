@@ -27,4 +27,10 @@ data class AppSetting(
     var enableSocialFeature: Boolean = true, // not used anymore
     var showBioAutomatically: Boolean = true, // not used anymore
     var showStatsChartAutomatically: Boolean = true, // not used anymore
+    // Nullable defaults keep older saved settings compatible with Gson deserialization.
+    var showHomeReleasingToday: Boolean? = null,
+    var showHomeContinueWatching: Boolean? = null,
+    var showHomeTrendingAnime: Boolean? = null,
+    var showHomeTrendingManga: Boolean? = null,
+    var useCompactHomeLayout: Boolean? = null,
 )

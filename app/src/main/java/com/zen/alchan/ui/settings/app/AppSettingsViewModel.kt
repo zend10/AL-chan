@@ -86,6 +86,26 @@ class AppSettingsViewModel(
     val useHighestQualityImage: Observable<Boolean>
         get() = _useHighestQualityImage
 
+    private val _showHomeReleasingToday = BehaviorSubject.createDefault(true)
+    val showHomeReleasingToday: Observable<Boolean>
+        get() = _showHomeReleasingToday
+
+    private val _showHomeContinueWatching = BehaviorSubject.createDefault(true)
+    val showHomeContinueWatching: Observable<Boolean>
+        get() = _showHomeContinueWatching
+
+    private val _showHomeTrendingAnime = BehaviorSubject.createDefault(true)
+    val showHomeTrendingAnime: Observable<Boolean>
+        get() = _showHomeTrendingAnime
+
+    private val _showHomeTrendingManga = BehaviorSubject.createDefault(true)
+    val showHomeTrendingManga: Observable<Boolean>
+        get() = _showHomeTrendingManga
+
+    private val _useCompactHomeLayout = BehaviorSubject.createDefault(true)
+    val useCompactHomeLayout: Observable<Boolean>
+        get() = _useCompactHomeLayout
+
     private val _appThemeItems = PublishSubject.create<List<AppThemeItem>>()
     val appThemeItems: Observable<List<AppThemeItem>>
         get() = _appThemeItems
@@ -142,6 +162,11 @@ class AppSettingsViewModel(
                         updateMergePushNotifications(appSetting.mergePushNotifications)
 
                         updateUseHighestQualityImage(appSetting.useHighestQualityImage)
+                        updateShowHomeReleasingToday(appSetting.showHomeReleasingToday ?: true)
+                        updateShowHomeContinueWatching(appSetting.showHomeContinueWatching ?: true)
+                        updateShowHomeTrendingAnime(appSetting.showHomeTrendingAnime ?: true)
+                        updateShowHomeTrendingManga(appSetting.showHomeTrendingManga ?: true)
+                        updateUseCompactHomeLayout(appSetting.useCompactHomeLayout ?: true)
 
                         state = State.LOADED
                     }
@@ -258,6 +283,31 @@ class AppSettingsViewModel(
     fun updateUseHighestQualityImage(shouldUseHighestQualityImage: Boolean) {
         currentAppSetting?.useHighestQualityImage = shouldUseHighestQualityImage
         _useHighestQualityImage.onNext(shouldUseHighestQualityImage)
+    }
+
+    fun updateShowHomeReleasingToday(enabled: Boolean) {
+        currentAppSetting?.showHomeReleasingToday = enabled
+        _showHomeReleasingToday.onNext(enabled)
+    }
+
+    fun updateShowHomeContinueWatching(enabled: Boolean) {
+        currentAppSetting?.showHomeContinueWatching = enabled
+        _showHomeContinueWatching.onNext(enabled)
+    }
+
+    fun updateShowHomeTrendingAnime(enabled: Boolean) {
+        currentAppSetting?.showHomeTrendingAnime = enabled
+        _showHomeTrendingAnime.onNext(enabled)
+    }
+
+    fun updateShowHomeTrendingManga(enabled: Boolean) {
+        currentAppSetting?.showHomeTrendingManga = enabled
+        _showHomeTrendingManga.onNext(enabled)
+    }
+
+    fun updateUseCompactHomeLayout(enabled: Boolean) {
+        currentAppSetting?.useCompactHomeLayout = enabled
+        _useCompactHomeLayout.onNext(enabled)
     }
 
     fun loadAppThemeItems() {

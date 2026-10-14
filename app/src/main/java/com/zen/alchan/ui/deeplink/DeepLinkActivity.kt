@@ -12,11 +12,9 @@ class DeepLinkActivity : AppCompatActivity() {
         openRootActivity(intent)
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.let {
-            openRootActivity(it)
-        }
+        openRootActivity(intent)
     }
 
     private fun openRootActivity(intent: Intent) {

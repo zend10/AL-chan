@@ -68,10 +68,10 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        if (intent?.data != null) {
+        if (intent.data != null) {
             newIntent = intent
         }
     }

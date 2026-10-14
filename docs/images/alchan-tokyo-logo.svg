@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">AL-chan — Anime and Manga Tracker</title>
+  <desc id="desc">A dark AL-chan wordmark with soft crimson and neon pink accents, and a stylized page-inspired A monogram.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#12131a"/><stop offset="1" stop-color="#08090e"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff668d"/><stop offset="1" stop-color="#c93455"/></linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff789b"/><stop offset="1" stop-color="#e34466"/></linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect x="2" y="2" width="1196" height="316" rx="34" fill="url(#bg)" stroke="#35313b" stroke-width="3"/>
+  <path d="M36 254 H1164" stroke="#33202a" stroke-width="2"/><path d="M36 254 H390" stroke="url(#accent)" stroke-width="3" opacity=".9" filter="url(#glow)"/>
+  <g transform="translate(42 40)">
+    <rect width="240" height="240" rx="43" fill="#17121a" stroke="url(#accent)" stroke-width="7"/>
+    <path d="M47 175 L105 56 Q111 43 120 56 L172 157" fill="none" stroke="#f8f6fa" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M88 160 L128 116 L170 160 Q179 169 168 178 L145 195 Q136 202 126 193 L106 177" fill="none" stroke="url(#accent)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    <path d="M120 147 L120 179" stroke="#f8f6fa" stroke-width="9" stroke-linecap="round" opacity=".95"/>
+    <circle cx="190" cy="49" r="5" fill="#ff6b91"/><circle cx="204" cy="63" r="3" fill="#ff6b91" opacity=".7"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif"><text x="330" y="137" font-size="96" font-weight="800" letter-spacing="-4" fill="#f7f5f8">AL<tspan fill="url(#word)">-chan</tspan></text>
+    <text x="336" y="185" font-size="24" font-weight="700" letter-spacing="5" fill="#ff6e91">ANIME &amp; MANGA TRACKER</text>
+    <text x="336" y="226" font-size="23" fill="#c7c0cc">Track your progress. Discover your next favorite.</text></g>
+  <g transform="translate(1010 92)" fill="none" stroke="url(#accent)" stroke-linecap="round" stroke-linejoin="round" opacity=".8">
+    <path d="M0 0 l7 19 20 7 -20 7 -7 20 -7 -20 -20 -7 20 -7z" stroke-width="3"/>
+    <path d="M82 29 l4 11 12 4 -12 4 -4 12 -4 -12 -12 -4 12 -4z" stroke-width="2"/>
+    <path d="M20 93 q25 -14 50 0 v60 q-25 -14 -50 0z M20 93 q-25 -14 -50 0 v60 q25 -14 50 0z" stroke-width="3"/><path d="M20 93 v60" stroke-width="2"/>
+  </g>
+</svg>

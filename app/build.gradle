@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.apollo3'
 
 android {
-    compileSdk 35
+    compileSdk 36
     defaultConfig {
         applicationId "com.zen.alchan"
         minSdkVersion 23
@@ -61,18 +61,18 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.browser:browser:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
+    implementation 'androidx.browser:browser:1.10.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.window:window:1.1.0"
+    implementation "androidx.window:window:1.5.1"
 
     // Google Material
     implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
 
     // JUnit4 for Instrumentation Test
-    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.13.2'
 
     // AndroidX Test
     def androidx_test_version = "1.2.0"
@@ -80,7 +80,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$androidx_test_version"
 
     // Architecture Components Test
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
 
     // JUnit5 for Local Unit Test
     def junit_jupiter_version = "5.6.2"
@@ -92,7 +92,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.19.0'
 
     // Rx
-    implementation "io.reactivex.rxjava3:rxjava:3.1.6"
+    implementation "io.reactivex.rxjava3:rxjava:3.1.12"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
@@ -103,7 +103,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.14.0'
 
     // Coil
     def coil_version = "1.4.0"
@@ -134,7 +134,7 @@ dependencies {
     // Others
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.31'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.32'
     implementation 'com.github.zend10:OverlapImageListView:v1.0.1'
 
     def markwon_version = "4.6.2"
@@ -144,11 +144,11 @@ dependencies {
     implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
     implementation "io.noties.markwon:inline-parser:$markwon_version"
 
-    def work_version = "2.8.1"
+    def work_version = "2.11.2"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation "androidx.work:work-rxjava3:$work_version"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
 }
 
 apollo {

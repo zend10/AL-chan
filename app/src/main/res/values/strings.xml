@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AL-chan</string>
+    <string name="app_name">Tokyo\'s</string>
     <string name="home">Home</string>
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
@@ -16,8 +16,8 @@
     <string name="trending_anime_right_now">Trending Anime Right Now</string>
     <string name="trending_manga_right_now">Trending Manga Right Now</string>
     <string name="powered_by_anilist">Powered by AniList</string>
-    <string name="welcome_to_al_chan">Welcome to AL-chan</string>
-    <string name="al_chan_is_an_unofficial_client_for_anilist_a_place_where_you_can_track_share_discover_and_experience_anime_manga"><![CDATA[AL-chan is an unofficial client for AniList, a place where you can track, share, discover, and experience Anime & Manga.]]></string>
+    <string name="welcome_to_al_chan">Welcome to Tokyo\'s</string>
+    <string name="al_chan_is_an_unofficial_client_for_anilist_a_place_where_you_can_track_share_discover_and_experience_anime_manga">Tokyo\'s is an unofficial Android client for AniList, focused on tracking anime and manga.</string>
     <string name="get_started">Get Started</string>
     <string name="back">Back</string>
     <string name="important_to_know">Important to Know</string>
@@ -54,7 +54,7 @@
     <string name="copy_link">Copy Link</string>
     <string name="add_as_best_friend">Add as Best Friend</string>
     <string name="app_settings">App Settings</string>
-    <string name="personalise_al_chan_to_suit_your_taste">Personalise AL-chan to suit your taste</string>
+    <string name="personalise_al_chan_to_suit_your_taste">Personalise Tokyo\'s to suit your taste</string>
     <string name="anilist_settings">AniList Settings</string>
     <string name="modify_anilist_settings">Modify AniList settings</string>
     <string name="list_settings">List Settings</string>
@@ -63,8 +63,8 @@
     <string name="set_how_you_want_to_be_notified">Set how you want to be notified</string>
     <string name="account_settings">Account Settings</string>
     <string name="manage_your_account">Manage your account</string>
-    <string name="about_al_chan">About AL-chan</string>
-    <string name="know_more_about_al_chan">Know more about AL-chan</string>
+    <string name="about_al_chan">About Tokyo\'s</string>
+    <string name="know_more_about_al_chan">Know more about Tokyo\'s</string>
     <string name="theme">Theme</string>
     <string name="selected_theme">Selected theme</string>
     <string name="save_changes">Save Changes</string>
@@ -105,7 +105,7 @@
     <string name="enable_social_feature">Enable Social feature</string>
     <string name="show_bio_automatically">Show Bio automatically</string>
     <string name="these_features_are_not_suitable_for_devices_with_limited_memory_it_is_recommended_to_uncheck_all_for_better_performance_and_stability_sorry_for_the_inconvenience">These features are not suitable for devices with limited memory. It is recommended to uncheck all for better performance and stability. Sorry for the inconvenience.</string>
-    <string name="all_the_configurations_here_only_applies_to_al_chan_and_will_not_affect_the_website_anilist_co">All the configurations here only applies to AL-chan and will not affect the website anilist.co.</string>
+    <string name="all_the_configurations_here_only_applies_to_al_chan_and_will_not_affect_the_website_anilist_co">All the configurations here only applies to Tokyo\'s and will not affect the website anilist.co.</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="the_app_will_be_restarted_to_apply_the_change">"The app will be restarted to apply the change."</string>
@@ -194,15 +194,15 @@
     <string name="import_lists">Import Lists</string>
     <string name="connect_account_with_twitter">Connect Account with Twitter</string>
     <string name="logout">Logout</string>
-    <string name="logout_from_alchan">Logout from AL-chan</string>
-    <string name="logging_out_from_alchan_doesnt_mean_logging_out_from_anilist">Logging out from AL-chan doesn\'t mean logging out from AniList. If you also want to logout from AniList, you have to logout from the web.</string>
+    <string name="logout_from_alchan">Logout from Tokyo\'s</string>
+    <string name="logging_out_from_alchan_doesnt_mean_logging_out_from_anilist">Logging out from Tokyo\'s doesn\'t mean logging out from AniList. If you also want to logout from AniList, you have to logout from the web.</string>
     <string name="important_links">Important Links</string>
     <string name="anilist">AniList</string>
     <string name="github">GitHub</string>
     <string name="alchanapp_gmail_com">alchanapp@gmail.com</string>
     <string name="play_store">Play Store</string>
     <string name="alchan_app">\@alchan_app</string>
-    <string name="al_chan_is_an_unofficial_app_for_anilist_this_app_exists_with_the_purpose_to_help_manage_your_anilist_account">AL-chan is an unofficial app for AniList. This app exists with the purpose to help manage your AniList account.</string>
+    <string name="al_chan_is_an_unofficial_app_for_anilist_this_app_exists_with_the_purpose_to_help_manage_your_anilist_account">Tokyo\'s is an unofficial app for AniList. This app exists with the purpose to help manage your AniList account.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="the_privacy_policy_of_this_app_can_be_read_fully_here">The privacy policy of this app can be read fully here.</string>
     <string name="filter">Filter</string>
@@ -514,7 +514,7 @@
     <string name="serializations">Serializations</string>
     <string name="play_on_youtube">Play on YouTube</string>
     <string name="play_on_spotify">Play on Spotify</string>
-    <string name="al_chan_has_no_affiliation_with_the_above_players_and_can_end_up_opening_the_wrong_track">AL-chan has no affiliation with the above players and can end up opening the wrong track.</string>
+    <string name="al_chan_has_no_affiliation_with_the_above_players_and_can_end_up_opening_the_wrong_track">Tokyo\'s has no affiliation with the above players and can end up opening the wrong track.</string>
     <string name="credits_to_animethemes_moe_for_providing_the_music_video_above">Credits to animethemes.moe for providing the music video above.</string>
     <string name="opening_themes">Opening Themes</string>
     <string name="ending_themes">Ending Themes</string>
@@ -569,4 +569,13 @@
         <item quantity="one">volume</item>
         <item quantity="other">volumes</item>
     </plurals>
+    <string name="home_screen_customisation">Home Screen</string>
+    <string name="show_releasing_today">Show Releasing Today</string>
+    <string name="show_continue_watching">Show Continue Watching</string>
+    <string name="show_trending_anime">Show Trending Anime</string>
+    <string name="show_trending_manga">Show Trending Manga</string>
+    <string name="use_compact_home_layout">Use Compact Home Header</string>
+    <string name="continue_watching">Continue Watching</string>
+    <string name="continue_watching_next_episode">Up next: Episode %1$d</string>
+    <string name="continue_watching_empty">No anime currently in progress.</string>
 </resources>

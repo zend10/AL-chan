@@ -34,6 +34,7 @@ class BaseActivityViewModel(private val userRepository: UserRepository) : BaseVi
 //            AppTheme.DARK_THEME_ORANGE -> 0
             AppTheme.DARK_THEME_RED -> R.style.AppTheme_ThemeDarkRed
             AppTheme.DARK_THEME_PINK -> R.style.AppTheme_ThemeDarkPink
+            AppTheme.TOKYO_RED -> R.style.AppTheme_ThemeTokyoRed
             AppTheme.ANILIST_LIGHT_BLUE -> R.style.AppTheme_ThemeAniListLightBlue
             AppTheme.ANILIST_LIGHT_PURPLE -> R.style.AppTheme_ThemeAniListLightPurple
             AppTheme.ANILIST_LIGHT_GREEN -> R.style.AppTheme_ThemeAniListLightGreen

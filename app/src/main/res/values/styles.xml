@@ -229,6 +229,16 @@
         <item name="themeNegativeTransparent50Color">@color/jadeTransparent50</item>
     </style>
 
+    <style name="AppTheme.ThemeTokyoRed" parent="DarkAppTheme">
+        <item name="themePrimaryColor">@color/tokyoRed</item>
+        <item name="themeSecondaryColor">@color/white</item>
+        <item name="themeSecondaryTransparent50Color">@color/whiteTransparent50</item>
+        <item name="themeSecondaryTransparent20Color">@color/whiteTransparent36</item>
+        <item name="themeNegativeColor">@color/tokyoRed</item>
+        <item name="themeNegativeTransparent50Color">@color/tokyoRedTransparent50</item>
+        <item name="colorAccent">@color/tokyoNeon</item>
+    </style>
+
     <!-- AniList Light Theme -->
     <style name="AppTheme.ThemeAniListLightBlue" parent="AniListLightAppTheme">
         <item name="themePrimaryColor">@color/anilistBlue</item>

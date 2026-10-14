@@ -25,6 +25,7 @@ enum class AppTheme(val colors: Triple<Int, Int, Int>) {
 //    DARK_THEME_ORANGE(Triple(R.color.white, R.color.white, R.color.white)),
     DARK_THEME_RED(Triple(R.color.red, R.color.aloevera, R.color.purple)),
     DARK_THEME_PINK(Triple(R.color.pink, R.color.sunshine, R.color.jade)),
+    TOKYO_RED(Triple(R.color.tokyoRed, R.color.white, R.color.anilistBrightRed)),
     ANILIST_LIGHT_BLUE(Triple(R.color.anilistBlue, R.color.anilistLightBlue, R.color.anilistBrightRed)),
     ANILIST_LIGHT_PURPLE(Triple(R.color.anilistPurple, R.color.anilistLightPurple, R.color.anilistPaleOrange)),
     ANILIST_LIGHT_GREEN(Triple(R.color.anilistGreen, R.color.anilistLightGreen, R.color.anilistDarkPurple)),
@@ -42,6 +43,7 @@ enum class AppTheme(val colors: Triple<Int, Int, Int>) {
 }
 
 fun AppTheme.getColorName(): String {
+    if (this == AppTheme.TOKYO_RED) return "Tokyo Red"
     return this.name.split("_").last().lowercase()
         .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 }
